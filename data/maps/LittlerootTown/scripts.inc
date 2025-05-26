@@ -2053,101 +2053,100 @@ LittlerootTown_EventScript_ProfPalmSign::
 
 LittlerootTown_EventScript_TestTrainer::
 # 1035 "data/maps/LittlerootTown/scripts.pory"
-	lockall
+	trainerbattle_single TRAINER_TEST_TRAINER, Trainer_Intro, Trainer_Outro
 # 1036 "data/maps/LittlerootTown/scripts.pory"
-	faceplayer
+	msgbox Trainer_PostBattle, MSGBOX_AUTOCLOSE
 # 1037 "data/maps/LittlerootTown/scripts.pory"
-	releaseall
-	return
+	waitmessage
+	end
 
 
 LittlerootTown_ProfPalmBag::
-# 1041 "data/maps/LittlerootTown/scripts.pory"
+# 1055 "data/maps/LittlerootTown/scripts.pory"
 	lockall
-# 1042 "data/maps/LittlerootTown/scripts.pory"
+# 1056 "data/maps/LittlerootTown/scripts.pory"
 	faceplayer
-# 1043 "data/maps/LittlerootTown/scripts.pory"
+# 1057 "data/maps/LittlerootTown/scripts.pory"
 	goto_if_set FLAG_FOUNDSTARTER, LittlerootTown_ProfPalmBag_2
-# 1048 "data/maps/LittlerootTown/scripts.pory"
+# 1062 "data/maps/LittlerootTown/scripts.pory"
 	msgbox LittlerootTown_ProfPalmBag_Text_1, MSGBOX_DEFAULT
-# 1050 "data/maps/LittlerootTown/scripts.pory"
+# 1064 "data/maps/LittlerootTown/scripts.pory"
 	msgbox LittlerootTown_ProfPalmBag_Text_2, MSGBOX_YESNO
-# 1052 "data/maps/LittlerootTown/scripts.pory"
+# 1066 "data/maps/LittlerootTown/scripts.pory"
 	compare VAR_RESULT, 1
 	goto_if_eq LittlerootTown_ProfPalmBag_4
-# 1082 "data/maps/LittlerootTown/scripts.pory"
+# 1095 "data/maps/LittlerootTown/scripts.pory"
 	msgbox LittlerootTown_ProfPalmBag_Text_8
-# 1083 "data/maps/LittlerootTown/scripts.pory"
+# 1096 "data/maps/LittlerootTown/scripts.pory"
 	releaseall
 	end
 
 LittlerootTown_ProfPalmBag_2:
-# 1044 "data/maps/LittlerootTown/scripts.pory"
+# 1058 "data/maps/LittlerootTown/scripts.pory"
 	msgbox LittlerootTown_ProfPalmBag_Text_0
-# 1045 "data/maps/LittlerootTown/scripts.pory"
+# 1059 "data/maps/LittlerootTown/scripts.pory"
 	releaseall
 	end
 
 LittlerootTown_ProfPalmBag_4:
-# 1053 "data/maps/LittlerootTown/scripts.pory"
+# 1067 "data/maps/LittlerootTown/scripts.pory"
 	playse SE_CONTEST_ICON_CLEAR
-# 1054 "data/maps/LittlerootTown/scripts.pory"
+# 1068 "data/maps/LittlerootTown/scripts.pory"
 	waitse
-# 1055 "data/maps/LittlerootTown/scripts.pory"
+# 1069 "data/maps/LittlerootTown/scripts.pory"
 	msgbox LittlerootTown_ProfPalmBag_Text_3
-# 1056 "data/maps/LittlerootTown/scripts.pory"
+# 1070 "data/maps/LittlerootTown/scripts.pory"
 	givemon SPECIES_FENNEKIN, 5, ITEM_ORAN_BERRY
-# 1057 "data/maps/LittlerootTown/scripts.pory"
+# 1071 "data/maps/LittlerootTown/scripts.pory"
 	playfanfare MUS_OBTAIN_ITEM
-# 1058 "data/maps/LittlerootTown/scripts.pory"
+# 1072 "data/maps/LittlerootTown/scripts.pory"
 	msgbox LittlerootTown_ProfPalmBag_Text_4
-# 1059 "data/maps/LittlerootTown/scripts.pory"
+# 1073 "data/maps/LittlerootTown/scripts.pory"
 	waitfanfare
-# 1060 "data/maps/LittlerootTown/scripts.pory"
+# 1074 "data/maps/LittlerootTown/scripts.pory"
 	setflag FLAG_SYS_POKEMON_GET
-# 1061 "data/maps/LittlerootTown/scripts.pory"
+# 1075 "data/maps/LittlerootTown/scripts.pory"
 	setflag FLAG_FOUNDSTARTER
-# 1063 "data/maps/LittlerootTown/scripts.pory"
+# 1077 "data/maps/LittlerootTown/scripts.pory"
 	msgbox LittlerootTown_ProfPalmBag_Text_5, MSGBOX_YESNO
-# 1064 "data/maps/LittlerootTown/scripts.pory"
+# 1078 "data/maps/LittlerootTown/scripts.pory"
 	compare VAR_RESULT, 1
 	goto_if_eq LittlerootTown_ProfPalmBag_7
-# 1076 "data/maps/LittlerootTown/scripts.pory"
+# 1089 "data/maps/LittlerootTown/scripts.pory"
 	msgbox LittlerootTown_ProfPalmBag_Text_7
-# 1077 "data/maps/LittlerootTown/scripts.pory"
+# 1090 "data/maps/LittlerootTown/scripts.pory"
 	releaseall
 	end
 
 LittlerootTown_ProfPalmBag_7:
-# 1066 "data/maps/LittlerootTown/scripts.pory"
+# 1080 "data/maps/LittlerootTown/scripts.pory"
 	setvar VAR_0x8004, 0
-# 1067 "data/maps/LittlerootTown/scripts.pory"
+# 1081 "data/maps/LittlerootTown/scripts.pory"
 	fadescreen FADE_TO_BLACK
-# 1068 "data/maps/LittlerootTown/scripts.pory"
+# 1082 "data/maps/LittlerootTown/scripts.pory"
 	special ChangePokemonNickname
-# 1069 "data/maps/LittlerootTown/scripts.pory"
+# 1083 "data/maps/LittlerootTown/scripts.pory"
 	waitstate
-# 1070 "data/maps/LittlerootTown/scripts.pory"
+# 1084 "data/maps/LittlerootTown/scripts.pory"
 	bufferpartymonnick 2, 0
-# 1071 "data/maps/LittlerootTown/scripts.pory"
+# 1085 "data/maps/LittlerootTown/scripts.pory"
 	msgbox LittlerootTown_ProfPalmBag_Text_6
-# 1073 "data/maps/LittlerootTown/scripts.pory"
+# 1086 "data/maps/LittlerootTown/scripts.pory"
 	releaseall
 	end
 
 
 LittlerootTown_EventScript_ProfPalmSign_Text_0:
 # 1030 "data/maps/LittlerootTown/scripts.pory"
-	.string "Professor Palm's Laboratory\n"
-	.string "{COLOR LIGHT_GRAY}Driving Humans & Pokémon Forward$"
+	.string "Professor Palm's Laboratory\n{COLOR LIGHT_GRAY}Driving Humans & Pokémon Forward$"
 
 LittlerootTown_ProfPalmBag_Text_0:
-# 1044 "data/maps/LittlerootTown/scripts.pory"
+# 1058 "data/maps/LittlerootTown/scripts.pory"
 	.string "There's nothing but empty papers in the\n"
 	.string "bag.$"
 
 LittlerootTown_ProfPalmBag_Text_1:
-# 1048 "data/maps/LittlerootTown/scripts.pory"
+# 1062 "data/maps/LittlerootTown/scripts.pory"
 	.string "The professor has left a note on this\n"
 	.string "bag...\p"
 	.string "{COLOR GREEN}{PLAYER}, seeing as you won't have\n"
@@ -2156,32 +2155,45 @@ LittlerootTown_ProfPalmBag_Text_1:
 	.string "that you'll take great care of it!$"
 
 LittlerootTown_ProfPalmBag_Text_2:
-# 1050 "data/maps/LittlerootTown/scripts.pory"
+# 1064 "data/maps/LittlerootTown/scripts.pory"
 	.string "You open the bag and find a Poké Ball.\p"
 	.string "Do you want to take it?$"
 
 LittlerootTown_ProfPalmBag_Text_3:
-# 1055 "data/maps/LittlerootTown/scripts.pory"
+# 1069 "data/maps/LittlerootTown/scripts.pory"
 	.string "You take the Poké Ball.$"
 
 LittlerootTown_ProfPalmBag_Text_4:
-# 1058 "data/maps/LittlerootTown/scripts.pory"
+# 1072 "data/maps/LittlerootTown/scripts.pory"
 	.string "You received a Fennekin!$"
 
 LittlerootTown_ProfPalmBag_Text_5:
-# 1063 "data/maps/LittlerootTown/scripts.pory"
+# 1077 "data/maps/LittlerootTown/scripts.pory"
 	.string "Should I give Fennekin a nickname?$"
 
 LittlerootTown_ProfPalmBag_Text_6:
-# 1071 "data/maps/LittlerootTown/scripts.pory"
+# 1085 "data/maps/LittlerootTown/scripts.pory"
 	.string "{STR_VAR_2}...a perfect name.\p"
 	.string "You close the bag.$"
 
 LittlerootTown_ProfPalmBag_Text_7:
-# 1076 "data/maps/LittlerootTown/scripts.pory"
+# 1089 "data/maps/LittlerootTown/scripts.pory"
 	.string "You decide not to give Fennekin a\n"
 	.string "nickname and close the bag.$"
 
 LittlerootTown_ProfPalmBag_Text_8:
-# 1082 "data/maps/LittlerootTown/scripts.pory"
+# 1095 "data/maps/LittlerootTown/scripts.pory"
 	.string "You decide not to take the Poké Ball.$"
+
+Trainer_Intro::
+# 1041 "data/maps/LittlerootTown/scripts.pory"
+	.string "Ugh..I'm totally lost! Might as well stop\nfor a battle!$"
+
+Trainer_Outro::
+# 1045 "data/maps/LittlerootTown/scripts.pory"
+	.string "I've totally lost my way...$"
+
+Trainer_PostBattle::
+# 1049 "data/maps/LittlerootTown/scripts.pory"
+	.string "Make sure you pay close attention to\nyour map.\p"
+	.string "The nature reserve is a big place!$"

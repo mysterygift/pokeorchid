@@ -42178,3 +42178,46 @@ F_TRAINER_FEMALE |
             },
         },
     },
+#line 16877
+    [DIFFICULTY_NORMAL][TRAINER_TEST_TRAINER] =
+    {
+#line 16878
+        .trainerName = _("Valentine"),
+#line 16879
+        .trainerClass = TRAINER_CLASS_RUIN_MANIAC,
+#line 16880
+        .trainerPic = TRAINER_PIC_RUIN_MANIAC,
+        .encounterMusic_gender =
+#line 16882
+            TRAINER_ENCOUNTER_MUSIC_HIKER,
+#line 16883
+        .doubleBattle = FALSE,
+#line 16884
+        .aiFlags = AI_FLAG_CHECK_BAD_MOVE,
+        .partySize = 2,
+        .party = (const struct TrainerMon[])
+        {
+            {
+#line 16886
+            .species = SPECIES_YAMASK,
+            .gender = TRAINER_MON_RANDOM_GENDER,
+#line 16888
+            .iv = TRAINER_PARTY_IVS(2, 2, 2, 2, 2, 2),
+#line 16887
+            .lvl = 5,
+            .nature = NATURE_HARDY,
+            .dynamaxLevel = MAX_DYNAMAX_LEVEL,
+            },
+            {
+#line 16890
+            .species = SPECIES_UNOWN,
+            .gender = TRAINER_MON_RANDOM_GENDER,
+#line 16892
+            .iv = TRAINER_PARTY_IVS(0, 0, 0, 0, 0, 0),
+#line 16891
+            .lvl = 3,
+            .nature = NATURE_HARDY,
+            .dynamaxLevel = MAX_DYNAMAX_LEVEL,
+            },
+        },
+    },
