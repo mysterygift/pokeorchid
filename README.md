@@ -6,7 +6,7 @@
 
 **`Pokémon Orchid Version`** features a breadth of quality-of-life improvements found in contemporary Pokémon games, as well as a beautiful custom soundtrack. We've taken great care to maintain the feel of the Gen III Pokémon experience whilst giving more seasoned players just enough challenge that they can't mash the A button through battles.
 
-*Some highlights include:*
+*Some highlights include:*<br />
 👋🏻 Localised quest-system that encourages exploration and minimises backtracking (looking at you Sinnoh).<br />
 🦓 A mix of Pokémon from generations 1-9, this is NOT a catch-em-all game!<br />
 🌴 The Tosa Region: based on Singapore and Southern Malaysia!<br />
