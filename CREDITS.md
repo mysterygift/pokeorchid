@@ -1,14 +1,4 @@
-<!-- ## Old List of Credits -->
-<!-- - **mvit**: ability pop up and mega evo gfx -->
-<!-- - **Doesnt**: berries gfx, pokeball particles -->
-<!-- - **MrDollSteak**: Pokedex descriptions -->
-<!-- - **Avara**: item descriptions -->
-<!-- - **TheLaw**: move animations -->
-<!-- - **BreadCrumbs**: code review -->
-<!-- - **Syreldar**: testing, wrote an explanation post -->
-<!-- - **Pyredrid**: automating issue creation, code review and testing -->
-
-## Credits ✨
+## Credits 🎉
 
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
 
@@ -80,9 +70,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 - [Data Files](https://www.pokecommunity.com/showthread.php?t=417909)
 - [Complete FireRed Upgrade](https://github.com/Skeli789/Complete-Fire-Red-Upgrade)
 - [pokeemerald](https://github.com/pret/pokeemerald/)
-
-
-This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
+- [Team Aqua's Asset Repo](https://github.com/Pawkkie/Team-Aquas-Asset-Repo/tree/main)
 
 ## Contributors ✨
 
