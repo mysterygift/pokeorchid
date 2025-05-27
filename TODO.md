@@ -5,7 +5,8 @@
 * Insert new primary tilesets
 * Insert player character sprite
 * Might be nice to try to have a feature where when you visit a town for the first time, the camera pans around key areas of interest, maybe two or three locations?
-* Get debug menu working and figure out adding custom scripts to it.
+* Custom scripts in debug menu
+* Fix map design in map preview –> refer to code used in Gen 5 style map banners (these have been toggled in /include/config/overworld.h)
 * Intro Sequence
     * Black on-screen, choose your character (male, female, NB)
     * Fade into sat at desk, writing in diary.
