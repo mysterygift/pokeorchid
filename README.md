@@ -21,5 +21,5 @@ Huge thanks to the ROM Hacking Hideout for the pokeemerald-expansion this was ba
 Click [here](CREDITS.md) for a full list of contributors.
 
 ```
-Based off RHH's pokeemerald-expansion 1.11.2 https://github.com/rh-hideout/pokeemerald-expansion/
+Based off RHH's pokeemerald-expansion 1.11.3 https://github.com/rh-hideout/pokeemerald-expansion/
 ```
