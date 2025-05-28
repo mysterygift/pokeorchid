@@ -1025,10 +1025,29 @@ LittlerootTown_Text_BirchSomethingToShowYouAtLab:
 `
 // New scripts start here.
 
+mapscripts LittlerootTown_MapScript_Hide_Reserve_Gatekeeper {
+	// This mapscript hides the gatekeeper if the reserve gate is closed.
+	MAP_SCRIPT_ON_TRANSITION {
+		if(!flag(FLAG_RESERVE_GATE_OPEN)) {
+			setflag(FLAG_HIDE_RESERVE_GATEKEEPER) // If the gate is closed, hide the second position of the gatekeeper.
+		}
+    	
+    }
+}
+
 script LittlerootTown_EventScript_ProfPalmSign {
     lockall
     msgbox("Professor Palm's Laboratory\n{COLOR LIGHT_GRAY}Driving Humans & Pokémon Forward", MSGBOX_SIGN)
     releaseall
+}
+
+script LittlerootTown_EventScript_TrainerPermit {
+	lockall
+	setflag(FLAG_ITEM_LITTLEROOT_TRAINER_PERMIT)
+	removeobject(11)
+	giveitem(ITEM_TRAINER_PERMIT, 1)
+	releaseall
+	end
 }
 
 script LittlerootTown_EventScript_TestTrainer {
@@ -1097,4 +1116,59 @@ script LittlerootTown_ProfPalmBag {
 		end
 	}
 
+}
+
+script LittlerootTown_EventScript_Gatekeeper_CheckPermit {
+	lockall
+	faceplayer
+
+	// Use a switch statement here with a variable that tracks the state of the gatekeeper.
+
+	if(flag(FLAG_RESERVE_GATE_OPEN)) { // If the guard has moved out of the way, just show the message.
+		faceplayer
+		msgbox(format("The Tosa Nature Reserve is a\n"
+			"beautiful place, isn't it?\p"
+			"Please take care of it while you're here!"))
+		releaseall
+		end
+
+	} elif(checkitem(ITEM_TRAINER_PERMIT) == 0) { // If this player doesn't have a Trainer Permit, show the message.
+		msgbox(format("Hey!\p"
+			"You need a {COLOR GREEN}Trainer Permit{COLOR DARK_GRAY} to enter the\n"
+			"nature reserve."), MSGBOX_DEFAULT)
+		releaseall
+		end
+
+	} else { // The trainer has the permit, and the guard moves out of the way.
+		setflag(FLAG_RESERVE_GATE_OPEN) // Hides the gatekeepers initial position.
+		clearflag(FLAG_HIDE_RESERVE_GATEKEEPER) // Clears the flag that hides the second position of the gatekeeper.
+		msgbox(format("You flash your Trainer Permit..."), MSGBOX_AUTOCLOSE)
+		playse(SE_PIN)
+		applymovement(12, moves(
+			emote_exclamation_mark
+		))
+		delay(20)
+		waitmovement(0)
+		msgbox(format("Ah! That's a {COLOR GREEN}Trainer Permit{COLOR DARK_GRAY}!\n"
+			"Go on through."), MSGBOX_AUTOCLOSE)
+		applymovement(12, moves(
+			walk_down
+			walk_left
+			face_down
+		))
+		waitmovement(0 )
+		releaseall
+		end
+	}
+}
+
+
+script LittlerootTown_EventScript_Gatekeeper_GateOpen {
+	lockall
+	faceplayer
+	msgbox(format("The Tosa Nature Reserve is a\n"
+		"beautiful place, isn't it?\p"
+		"Please take care of it while you're here!"))
+	releaseall
+	end
 }

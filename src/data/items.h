@@ -13015,6 +13015,22 @@ const struct Item gItemsInfo[] =
         .iconPic = gItemIcon_AbilityShield,
         .iconPalette = gItemIconPalette_AbilityShield,
     },
+// TOSA ITEMS
+    [ITEM_TRAINER_PERMIT] =
+        {
+        .name = _("Trainer Permit"),
+        .price = 0,
+        .description = COMPOUND_STRING(
+            "This card permits the\n"
+            "holder to train and\n"
+            "trade {PKMN} in Tosa."),
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .iconPic = gItemIcon_TriPass,
+        .iconPalette = gItemIconPalette_TriPass,
+    },
 
 // GEN 9 ITEMS
 

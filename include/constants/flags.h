@@ -1223,9 +1223,9 @@
 #define FLAG_ITEM_SAFARI_ZONE_SOUTH_EAST_BIG_PEARL                  0x492
 
 #define FLAG_TRAINER_LITTLEROOT_TEST                                0x493 // Littleroot Town Test Trainer, used to test the battle system.
-#define FLAG_UNUSED_0x494                                           0x494 // Unused Flag
-#define FLAG_UNUSED_0x495                                           0x495 // Unused Flag
-#define FLAG_UNUSED_0x496                                           0x496 // Unused Flag
+#define FLAG_ITEM_LITTLEROOT_TRAINER_PERMIT                         0x494 // Littleroot Town Trainer Permit, used to test checkitem and roadblock.
+#define FLAG_RESERVE_GATE_OPEN                                      0x495 // Tosa Reserve Gate now open.
+#define FLAG_HIDE_RESERVE_GATEKEEPER                                0x496 // Hides the Gatekeeper in his open position. Set in Littleroot Mapscripts.
 #define FLAG_UNUSED_0x497                                           0x497 // Unused Flag
 #define FLAG_UNUSED_0x498                                           0x498 // Unused Flag
 #define FLAG_UNUSED_0x499                                           0x499 // Unused Flag
