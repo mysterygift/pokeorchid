@@ -1574,6 +1574,13 @@ extern const u32 gItemIcon_FameChecker[];
 extern const u32 gItemIconPalette_FameChecker[];
 extern const u32 gItemIcon_TeachyTV[];
 extern const u32 gItemIconPalette_TeachyTV[];
+
+// Tosa Key Items
+extern const u32 gItemIcon_RailCard[];
+extern const u32 gItemIconPalette_RailCard[];
+extern const u32 gItemIcon_TrainerPermit[];
+extern const u32 gItemIconPalette_TrainerPermit[];
+
 // Story Key Items
 extern const u32 gItemIcon_SSTicket[];
 extern const u32 gItemIconPalette_SSTicket[];

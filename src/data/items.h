@@ -13017,19 +13017,35 @@ const struct Item gItemsInfo[] =
     },
 // TOSA ITEMS
     [ITEM_TRAINER_PERMIT] =
-        {
+    {
         .name = _("Trainer Permit"),
         .price = 0,
         .description = COMPOUND_STRING(
             "This card permits the\n"
-            "holder to train and\n"
+            "holder to train &\n"
             "trade {PKMN} in Tosa."),
         .importance = 1,
         .pocket = POCKET_KEY_ITEMS,
         .type = ITEM_USE_BAG_MENU,
         .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
-        .iconPic = gItemIcon_TriPass,
-        .iconPalette = gItemIconPalette_TriPass,
+        .iconPic = gItemIcon_TrainerPermit,
+        .iconPalette = gItemIconPalette_TrainerPermit,
+    },
+
+    [ITEM_RAIL_CARD] =
+    {
+        .name = _("Rail Card"),
+        .price = 0,
+        .description = COMPOUND_STRING(
+            "A card that allows\n"
+            "the holder to use\n"
+            "the Tosa Rail System."),
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .iconPic = gItemIcon_RailCard,
+        .iconPalette = gItemIconPalette_RailCard,
     },
 
 // GEN 9 ITEMS

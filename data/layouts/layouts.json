@@ -4417,7 +4417,7 @@
       "width": 80,
       "height": 40,
       "primary_tileset": "gTileset_General",
-      "secondary_tileset": "gTileset_Unused1",
+      "secondary_tileset": "gTileset_Petalburg",
       "border_filepath": "data/layouts/TosaReserve/border.bin",
       "blockdata_filepath": "data/layouts/TosaReserve/map.bin"
     }

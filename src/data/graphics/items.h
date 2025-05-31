@@ -1870,6 +1870,14 @@ const u32 gItemIconPalette_FameChecker[] = INCBIN_U32("graphics/items/icon_palet
 const u32 gItemIcon_TeachyTV[] = INCBIN_U32("graphics/items/icons/teachy_tv.4bpp.lz");
 const u32 gItemIconPalette_TeachyTV[] = INCBIN_U32("graphics/items/icon_palettes/teachy_tv.gbapal.lz");
 
+// Tosa Key Items
+
+const u32 gItemIcon_RailCard[] = INCBIN_U32("graphics/items/icons/rail_card.4bpp.lz");
+const u32 gItemIconPalette_RailCard[] = INCBIN_U32("graphics/items/icon_palettes/rail_card.gbapal.lz");
+
+const u32 gItemIcon_TrainerPermit[] = INCBIN_U32("graphics/items/icons/trainer_permit.4bpp.lz");
+const u32 gItemIconPalette_TrainerPermit[] = INCBIN_U32("graphics/items/icon_palettes/trainer_permit.gbapal.lz");
+
 // Story Key Items
 
 const u32 gItemIcon_SSTicket[] = INCBIN_U32("graphics/items/icons/ss_ticket.4bpp.lz");
