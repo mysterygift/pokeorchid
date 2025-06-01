@@ -137,8 +137,16 @@ Debug_EventScript_Text_DefensiveIVs:
 	.string "HP IVs: {STR_VAR_1}, DEF IVs: {STR_VAR_2}, SPDEF IVs: {STR_VAR_3}$"
 
 Debug_EventScript_Script_1::
+	lockall
+	msgbox Debug_Script_1_Msg
+	playbgm MUS_VS_TOSA_E4, FALSE
+	waitbuttonpress
+	fadedefaultbgm
 	release
 	end
+
+Debug_Script_1_Msg::
+	.string "Hey Aran! Debug Innit$"
 
 Debug_EventScript_Script_2::
 	release
