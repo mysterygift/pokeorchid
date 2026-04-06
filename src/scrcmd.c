@@ -52,6 +52,7 @@
 #include "script_pokemon_util.h"
 #include "shop.h"
 #include "slot_machine.h"
+#include "type_rps_minigame.h"
 #include "sound.h"
 #include "string_util.h"
 #include "text.h"
@@ -2593,6 +2594,15 @@ bool8 ScrCmd_playslotmachine(struct ScriptContext *ctx)
     Script_RequestEffects(SCREFF_V1 | SCREFF_HARDWARE);
 
     PlaySlotMachine(machineId, CB2_ReturnToFieldContinueScriptPlayMapMusic);
+    ScriptContext_Stop();
+    return TRUE;
+}
+
+bool8 ScrCmd_playtyperms(struct ScriptContext *ctx)
+{
+    Script_RequestEffects(SCREFF_V1 | SCREFF_HARDWARE);
+
+    PlayTypeRpsMinigame(CB2_ReturnToFieldContinueScriptPlayMapMusic);
     ScriptContext_Stop();
     return TRUE;
 }

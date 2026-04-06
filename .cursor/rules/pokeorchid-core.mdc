@@ -1,0 +1,11 @@
+---
+description: Pokeorchid fork context and universal constraints
+alwaysApply: true
+---
+
+# Pokeorchid — core
+
+- **Upstream**: pokeemerald-expansion style tree (C + asm + `data/`). Prefer matching existing patterns in the file you touch; avoid drive-by refactors.
+- **Build**: After engine or script-table changes, run `make` from the repo root; fix compile errors before stopping.
+- **Docs**: Use `INSTALL.md`, `docs/`, and upstream expansion docs for toolchain and workflows; do not hand-edit auto-generated headers (see script-commands rule).
+- **Scope**: Keep diffs minimal and tied to the requested feature or fix.

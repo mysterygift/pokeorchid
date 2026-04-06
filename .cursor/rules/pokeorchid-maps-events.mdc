@@ -1,0 +1,13 @@
+---
+description: Map JSON, map scripts, and shared field script includes
+globs: data/maps/**/*.json,data/maps/**/scripts.inc,data/scripts/**/*.inc
+alwaysApply: false
+---
+
+# Maps and field scripts
+
+- **`data/maps/<MapName>/map.json`**: Map metadata, connections, music, encounters references. Preserve valid JSON; follow keys and structure of neighboring maps when adding fields.
+- **`data/maps/<MapName>/scripts.inc`**: Map-local event scripts (labels, `script` / `event` macros from `asm/macros/event.inc`). Keep flag/var usage consistent with the rest of the map and `include/constants/flags.h` / vars where applicable.
+- **`data/scripts/*.inc`**: Shared fragments included from map scripts or events; avoid duplicating logic that already lives in a standard macro or `scrcmd`.
+
+When adding interactions, prefer **existing script commands and macros** before adding new C opcodes. If map tooling (e.g. Porymap) regenerates files in your workflow, edit the source the tool expects and re-export rather than fighting generated layout.

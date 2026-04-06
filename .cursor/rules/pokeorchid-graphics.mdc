@@ -1,0 +1,13 @@
+---
+description: Graphics assets and makefile rules for pokeorchid
+globs: graphics/**/*,data/tilesets/**/*,graphics_file_rules.mk
+alwaysApply: false
+---
+
+# Graphics and tilesets
+
+- **`graphics/`**: Source art (tiles, sprites, UI). Naming and folder layout should match similar assets; follow existing bit depth and dimensions for the asset class (sprites vs backgrounds vs UI).
+- **`data/tilesets/`**: Built or authored tileset data (metatiles, palettes). Palette indices and transparency rules must stay consistent with how maps reference the tileset.
+- **`graphics_file_rules.mk`**: Declares how graphics convert into objects the build consumes. When adding a new graphic, copy the pattern of the closest existing rule (same tool chain, same output type).
+
+Prefer **regenerating** from source assets over hand-editing compiled binary blobs when the repo already uses a tool for that path.

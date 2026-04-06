@@ -1,0 +1,13 @@
+---
+description: Minigame-style C features and headers
+globs: src/**/*minigame*.c,include/**/*minigame*.h
+alwaysApply: false
+---
+
+# Minigames
+
+- **Patterns**: For full-screen interactive loops (input, sprites, state machine, teardown), study `src/slot_machine.c` and other large field minigames in `src/` before introducing a new architecture.
+- **Lifecycle**: Match how similar features allocate tasks, windows, and sprites — and how they restore the field (fade, callbacks, `Free`/`Destroy` symmetry).
+- **Scripts**: If the minigame is started from events, keep the script side thin (call one or few cmds); put gameplay logic in C.
+
+Reuse existing **text**, **menu**, and **sound** helpers where possible instead of duplicating low-level engine code.

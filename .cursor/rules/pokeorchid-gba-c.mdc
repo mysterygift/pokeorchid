@@ -1,0 +1,12 @@
+---
+description: GBA engine C and public headers for pokeorchid
+globs: src/**/*.c,include/**/*.h
+alwaysApply: false
+---
+
+# GBA / engine C
+
+- **Style**: Match surrounding code (naming, `static`, early returns, comment density). This repo targets old GCC/agbcc-era constraints; avoid C99+ features unless already used nearby.
+- **Types**: Prefer existing `include/` types and constants; include only what you need.
+- **VRAM / hardware**: Respect tile, palette, and OAM limits; follow patterns in similar features (e.g. other UI or scene code) rather than inventing new low-level paths without cause.
+- **Headers**: Keep include guards and declarations consistent with neighboring files; new public APIs belong in a sensible `include/` header co-located with the implementation.

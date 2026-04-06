@@ -1,0 +1,13 @@
+---
+description: ARM assembly sources (non-macro) in asm/
+globs: asm/**/*.s
+alwaysApply: false
+---
+
+# Assembly (`.s`)
+
+- **Conventions**: Match register usage, section directives, and symbol naming used in the same file or sibling routines.
+- **Interfacing with C**: Respect calling convention and structure layouts defined in headers; verify offsets if touching `struct` members used from asm.
+- **Scope**: Prefer small, localized changes; large routine additions should mirror an existing equivalent in the codebase.
+
+Macros used by event scripts live primarily in `asm/macros/event.inc` — see the script-commands rule when changing script bytecode layout.
