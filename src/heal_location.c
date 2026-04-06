@@ -65,17 +65,13 @@ static bool32 IsLastHealLocation(u32 healLocation)
         && warpData->y == loc->y;
 }
 
-bool32 IsLastHealLocationPlayerHouse()
-{
-    if (IsLastHealLocation(HEAL_LOCATION_LITTLEROOT_TOWN_MAYS_HOUSE)
-        || IsLastHealLocation(HEAL_LOCATION_LITTLEROOT_TOWN_MAYS_HOUSE_2F)
-        || IsLastHealLocation(HEAL_LOCATION_LITTLEROOT_TOWN_BRENDANS_HOUSE)
-        || IsLastHealLocation(HEAL_LOCATION_LITTLEROOT_TOWN_BRENDANS_HOUSE_2F)
-        || IsLastHealLocation(HEAL_LOCATION_PALLET_TOWN))
-        return TRUE;
+// bool32 IsLastHealLocationPlayerHouse()
+// {
+//     if (IsLastHealLocation(HEAL_LOCATION_LITTLEROOT_TOWN_MAYS_HOUSE)
+//         return TRUE;
 
-    return FALSE;
-}
+//     return FALSE;
+// }
 
 u32 GetHealNpcLocalId(u32 healLocationId)
 {
