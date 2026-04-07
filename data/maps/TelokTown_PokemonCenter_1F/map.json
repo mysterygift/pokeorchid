@@ -1,6 +1,6 @@
 {
   "id": "MAP_OLDALE_TOWN_POKEMON_CENTER_1F",
-  "name": "OldaleTown_PokemonCenter_1F",
+  "name": "TelokTown_PokemonCenter_1F",
   "layout": "LAYOUT_POKEMON_CENTER_1F",
   "music": "MUS_POKE_CENTER",
   "region_map_section": "MAPSEC_OLDALE_TOWN",
@@ -25,7 +25,7 @@
       "movement_range_y": 0,
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
-      "script": "OldaleTown_PokemonCenter_1F_EventScript_Nurse",
+      "script": "TelokTown_PokemonCenter_1F_EventScript_Nurse",
       "flag": "0"
     },
     {
@@ -38,7 +38,7 @@
       "movement_range_y": 0,
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
-      "script": "OldaleTown_PokemonCenter_1F_EventScript_Gentleman",
+      "script": "TelokTown_PokemonCenter_1F_EventScript_Gentleman",
       "flag": "0"
     },
     {
@@ -51,7 +51,7 @@
       "movement_range_y": 0,
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
-      "script": "OldaleTown_PokemonCenter_1F_EventScript_Boy",
+      "script": "TelokTown_PokemonCenter_1F_EventScript_Boy",
       "flag": "0"
     },
     {
@@ -64,7 +64,7 @@
       "movement_range_y": 1,
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
-      "script": "OldaleTown_PokemonCenter_1F_EventScript_Girl",
+      "script": "TelokTown_PokemonCenter_1F_EventScript_Girl",
       "flag": "0"
     }
   ],
@@ -74,14 +74,14 @@
       "y": 8,
       "elevation": 3,
       "dest_map": "MAP_OLDALE_TOWN",
-      "dest_warp_id": "2"
+      "dest_warp_id": "0"
     },
     {
       "x": 6,
       "y": 8,
       "elevation": 3,
       "dest_map": "MAP_OLDALE_TOWN",
-      "dest_warp_id": "2"
+      "dest_warp_id": "0"
     },
     {
       "x": 1,

@@ -1427,9 +1427,9 @@ static u8 GetMapsecType(mapsec_u16_t mapSecId)
     case MAPSEC_NONE:
         return MAPSECTYPE_NONE;
     case MAPSEC_LITTLEROOT_TOWN:
-        return FlagGet(FLAG_VISITED_LITTLEROOT_TOWN) ? MAPSECTYPE_CITY_CANFLY : MAPSECTYPE_CITY_CANTFLY;
+        return FlagGet(FLAG_VISITED_TOSA_PORT) ? MAPSECTYPE_CITY_CANFLY : MAPSECTYPE_CITY_CANTFLY;
     case MAPSEC_OLDALE_TOWN:
-        return FlagGet(FLAG_VISITED_OLDALE_TOWN) ? MAPSECTYPE_CITY_CANFLY : MAPSECTYPE_CITY_CANTFLY;
+        return FlagGet(FLAG_VISITED_TELOK_TOWN) ? MAPSECTYPE_CITY_CANFLY : MAPSECTYPE_CITY_CANTFLY;
     case MAPSEC_DEWFORD_TOWN:
         return FlagGet(FLAG_VISITED_DEWFORD_TOWN) ? MAPSECTYPE_CITY_CANFLY : MAPSECTYPE_CITY_CANTFLY;
     case MAPSEC_LAVARIDGE_TOWN:
@@ -2142,12 +2142,12 @@ static const struct FlyLocation sFlyLocations[] =
     {
         .regionMapType = REGION_MAP_HOENN,
         .mapsec = MAPSEC_LITTLEROOT_TOWN,
-        .flag = FLAG_VISITED_LITTLEROOT_TOWN,
+        .flag = FLAG_VISITED_TOSA_PORT,
     },
     {
         .regionMapType = REGION_MAP_HOENN,
         .mapsec = MAPSEC_OLDALE_TOWN,
-        .flag = FLAG_VISITED_OLDALE_TOWN,
+        .flag = FLAG_VISITED_TELOK_TOWN,
     },
     {
         .regionMapType = REGION_MAP_HOENN,

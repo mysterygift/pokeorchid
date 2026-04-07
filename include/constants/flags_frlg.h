@@ -2498,8 +2498,8 @@
 #define FLAG_UNLOCKED_TRENDY_SAYINGS                 0
 
 // Towns and Cities
-#define FLAG_VISITED_LITTLEROOT_TOWN                0
-#define FLAG_VISITED_OLDALE_TOWN                    0
+#define FLAG_VISITED_TOSA_PORT                0
+#define FLAG_VISITED_TELOK_TOWN                    0
 #define FLAG_VISITED_DEWFORD_TOWN                   0
 #define FLAG_VISITED_LAVARIDGE_TOWN                 0
 #define FLAG_VISITED_FALLARBOR_TOWN                 0

@@ -46,7 +46,7 @@
     "SootopolisCity",
     "EverGrandeCity",
     "LittlerootTown",
-    "OldaleTown",
+    "TelokTown",
     "DewfordTown",
     "LavaridgeTown",
     "FallarborTown",
@@ -102,11 +102,11 @@
     "LittlerootTown_ProfessorBirchsLab"
   ],
   "gMapGroup_IndoorOldale": [
-    "OldaleTown_House1",
-    "OldaleTown_House2",
-    "OldaleTown_PokemonCenter_1F",
-    "OldaleTown_PokemonCenter_2F",
-    "OldaleTown_Mart"
+    "TelokTown_House1",
+    "TelokTown_House2",
+    "TelokTown_PokemonCenter_1F",
+    "TelokTown_PokemonCenter_2F",
+    "TelokTown_Mart"
   ],
   "gMapGroup_IndoorDewford": [
     "DewfordTown_House1",
