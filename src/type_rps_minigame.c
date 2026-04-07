@@ -455,7 +455,7 @@ static void CB2_TypeRpsMain(void)
     BuildOamBuffer();
     UpdatePaletteFade();
 }
-
+// Sets up the initial state of the minigame.
 static void Task_TypeRpsFadeIn(u8 taskId)
 {
     if (!gPaletteFade.active)
@@ -466,9 +466,10 @@ static void Task_TypeRpsFadeIn(u8 taskId)
         gTasks[taskId].data[2] = 0;
         gTasks[taskId].data[3] = 0;
         gTasks[taskId].data[4] = 0;
+        gTasks[taskId].data[5] = 0; // Bobbing timer for the circles.
     }
 }
-
+// Runs the minigame.
 static void Task_TypeRpsRun(u8 taskId)
 {
     u8 phase = gTasks[taskId].data[0];
@@ -476,6 +477,7 @@ static void Task_TypeRpsRun(u8 taskId)
     s16 *timer = &gTasks[taskId].data[2];
     u8 playerChoice = gTasks[taskId].data[3];
     u8 opponentChoice = gTasks[taskId].data[4];
+    u8 bobbingTimer = ++gTasks[taskId].data[5];
     u8 i;
 
     switch (phase)
@@ -498,9 +500,11 @@ static void Task_TypeRpsRun(u8 taskId)
             *selection = (*selection + 1) % 3;
             PlaySE(SE_SELECT);
         }
+        bobbingTimer++;
+        s16 bob = ((bobbingTimer / 12) & 1) ? -4 : -2; // Defined as a local variable, used to be declared outside the loop.
         for (i = 0; i < 3; i++)
         {
-            s16 bounce = (i == *selection) ? (s16)-4 : 0;
+            s16 bounce = (i == *selection) ? bob : 0;
 
             if (sCircleSpriteIds[i] < MAX_SPRITES)
                 gSprites[sCircleSpriteIds[i]].y2 = bounce;

@@ -1278,6 +1278,7 @@
 	.2byte \id
 	.endm
 
+	@ Triggers the rock-paper-scissors type minigame.
 	.macro playtyperms
 	.byte SCR_OP_PLAYTYPERPS
 	.endm

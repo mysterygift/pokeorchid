@@ -2022,6 +2022,8 @@ const u32 gUnionRoomChat_Keyboard_Gfx[] = INCBIN_U32("graphics/union_room_chat/k
 const u32 gUnionRoomChat_Keyboard_Tilemap[] = INCBIN_U32("graphics/union_room_chat/keyboard.bin.smolTM");
 const u32 gUnionRoomChat_RButtonLabels[] = INCBIN_U32("graphics/union_room_chat/r_button_labels.4bpp.smol");
 
+// In game tileset palettes.
+
 const u16 ALIGNED(4) gTilesetPalettes_General[][16] =
 {
     INCBIN_U16("data/tilesets/primary/general/palettes/00.gbapal"),

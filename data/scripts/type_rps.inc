@@ -35,7 +35,7 @@ TypeRps_EventScript_NoRoom::
 TypeRps_Text_Intro:
 	.string "Let's play FIRE, WATER, GRASS!\n"
 	.string "Same as rock-paper-scissors.\p"
-	.string "Pick your type, then we'll count\l"
+	.string "Pick your type, then we'll count\n"
 	.string "to three and reveal my pick.\p"
 	.string "Beat me and I'll give you a treat!$"
 
