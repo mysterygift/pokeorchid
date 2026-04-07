@@ -50,7 +50,6 @@ static void CB2_GoToClearSaveDataScreen(void);
 static void CB2_GoToResetRtcScreen(void);
 static void CB2_GoToBerryFixScreen(void);
 static void CB2_GoToCopyrightScreen(void);
-static void UpdateLegendaryMarkingColor(u8);
 
 static void SpriteCB_VersionBannerLeft(struct Sprite *sprite);
 static void SpriteCB_VersionBannerRight(struct Sprite *sprite);
@@ -60,8 +59,8 @@ static void SpriteCB_PokemonLogoShine(struct Sprite *sprite);
 // const rom data
 static const u16 sUnusedUnknownPal[] = INCBIN_U16("graphics/title_screen/unused.gbapal");
 
-static const u32 sTitleScreenRayquazaGfx[] = INCBIN_U32("graphics/title_screen/rayquaza.4bpp.smol");
-static const u32 sTitleScreenRayquazaTilemap[] = INCBIN_U32("graphics/title_screen/rayquaza.bin.smolTM");
+static const u32 sTitleScreenRayquazaGfx[] = INCBIN_U32("graphics/title_screen/titlescreen.4bpp.smol");
+static const u32 sTitleScreenRayquazaTilemap[] = INCBIN_U32("graphics/title_screen/titlescreen.bin.smolTM");
 static const u32 sTitleScreenLogoShineGfx[] = INCBIN_U32("graphics/title_screen/logo_shine.4bpp.smol");
 static const u32 sTitleScreenCloudsGfx[] = INCBIN_U32("graphics/title_screen/clouds.4bpp.smol");
 
@@ -561,11 +560,6 @@ static void VBlankCB(void)
 
 void CB2_InitTitleScreen(void)
 {
-    if (IS_FRLG)
-    {
-        CB2_InitTitleScreenFrlg();
-        return;
-    }
     switch (gMain.state)
     {
     default:
@@ -600,8 +594,8 @@ void CB2_InitTitleScreen(void)
         DecompressDataWithHeaderVram(sTitleScreenRayquazaGfx, (void *)(BG_CHAR_ADDR(2)));
         DecompressDataWithHeaderVram(sTitleScreenRayquazaTilemap, (void *)(BG_SCREEN_ADDR(26)));
         // bg1
-        DecompressDataWithHeaderVram(sTitleScreenCloudsGfx, (void *)(BG_CHAR_ADDR(3)));
-        DecompressDataWithHeaderVram(gTitleScreenCloudsTilemap, (void *)(BG_SCREEN_ADDR(27)));
+        // DecompressDataWithHeaderVram(sTitleScreenCloudsGfx, (void *)(BG_CHAR_ADDR(3)));
+        // DecompressDataWithHeaderVram(gTitleScreenCloudsTilemap, (void *)(BG_SCREEN_ADDR(27)));
         ScanlineEffect_Stop();
         ResetTasks();
         ResetSpriteData();
@@ -655,7 +649,7 @@ void CB2_InitTitleScreen(void)
                                     | DISPCNT_OBJ_ON
                                     | DISPCNT_WIN0_ON
                                     | DISPCNT_OBJWIN_ON);
-        m4aSongNumStart(MUS_TITLE);
+        m4aSongNumStart(MUS_RG_HALL_OF_FAME);
         gMain.state = 5;
         break;
     case 5:
@@ -809,14 +803,13 @@ static void Task_TitleScreenPhase3(u8 taskId)
             gBattle_BG1_Y = gTasks[taskId].tBg1Y / 2;
             gBattle_BG1_X = 0;
         }
-        UpdateLegendaryMarkingColor(gTasks[taskId].tCounter);
         if ((gMPlayInfo_BGM.status & 0xFFFF) == 0)
         {
             BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_WHITEALPHA);
             SetMainCallback2(CB2_GoToCopyrightScreen);
         }
     }
-}
+}   
 
 static void CB2_GoToMainMenu(void)
 {
@@ -849,18 +842,4 @@ static void CB2_GoToBerryFixScreen(void)
         m4aMPlayAllStop();
         SetMainCallback2(CB2_InitBerryFixProgram);
     }
-}
-
-static void UpdateLegendaryMarkingColor(u8 frameNum)
-{
-    if ((frameNum % 4) == 0) // Change color every 4th frame
-    {
-        s32 intensity = Cos(frameNum, Q_8_8(0.5)) + Q_8_8(0.5);
-        u32 r = 31 - Q_8_8_TO_INT(intensity * 31);
-        u32 g = 31 - Q_8_8_TO_INT(intensity * 22);
-        u32 b = 12;
-
-        u16 color = RGB(r, g, b);
-        LoadPalette(&color, BG_PLTT_ID(14) + 15, sizeof(color));
-   }
 }
