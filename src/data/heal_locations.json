@@ -95,8 +95,8 @@
     {
       "id": "HEAL_LOCATION_LITTLEROOT_TOWN_MAYS_HOUSE",
       "map": "MAP_LITTLEROOT_TOWN",
-      "x": 6,
-      "y": 32,
+      "x": 11,
+      "y": 8,
       "respawn_map": "MAP_LITTLEROOT_TOWN_MAYS_HOUSE_1F",
       "respawn_npc": "LOCALID_PLAYERS_HOUSE_1F_MOM",
       "respawn_x": 8,
