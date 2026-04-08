@@ -75,6 +75,7 @@ static void CB2_EndMarowakBattle(void);
 static void TryUpdateGymLeaderRematchFromWild(void);
 static void TryUpdateGymLeaderRematchFromTrainer(void);
 static void CB2_GiveStarter(void);
+static void CB2_GiveStarterOverworld(void);
 static void CB2_StartFirstBattle(void);
 static void CB2_EndFirstBattle(void);
 static void SaveChangesToPlayerParty(void);
@@ -956,6 +957,12 @@ void ChooseStarter(void)
     gMain.savedCallback = CB2_GiveStarter;
 }
 
+void ChooseStarterOverworld(void)
+{
+    SetMainCallback2(CB2_ChooseStarter);
+    gMain.savedCallback = CB2_GiveStarterOverworld;
+}
+
 static void CB2_GiveStarter(void)
 {
     u16 starterMon;
@@ -967,6 +974,17 @@ static void CB2_GiveStarter(void)
     PlayBattleBGM();
     SetMainCallback2(CB2_StartFirstBattle);
     BattleTransition_Start(B_TRANSITION_BLUR);
+}
+
+static void CB2_GiveStarterOverworld(void)
+{
+    u16 starterMon;
+
+    *GetVarPointer(VAR_STARTER_MON) = gSpecialVar_Result;
+    starterMon = GetStarterPokemon(gSpecialVar_Result);
+    ScriptGiveMon(starterMon, 5, ITEM_NONE);
+    ResetTasks();
+    SetMainCallback2(CB2_ReturnToFieldContinueScriptPlayMapMusic);
 }
 
 static void CB2_StartFirstBattle(void)
