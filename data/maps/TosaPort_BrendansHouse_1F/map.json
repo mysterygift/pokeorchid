@@ -1,9 +1,9 @@
 {
-  "id": "MAP_LITTLEROOT_TOWN_BRENDANS_HOUSE_1F",
-  "name": "LittlerootTown_BrendansHouse_1F",
-  "layout": "LAYOUT_LITTLEROOT_TOWN_BRENDANS_HOUSE_1F",
+  "id": "MAP_TOSA_PORT_BRENDANS_HOUSE_1F",
+  "name": "TosaPort_BrendansHouse_1F",
+  "layout": "LAYOUT_TOSA_PORT_BRENDANS_HOUSE_1F",
   "music": "MUS_EVOLUTION",
-  "region_map_section": "MAPSEC_LITTLEROOT_TOWN",
+  "region_map_section": "MAPSEC_TOSA_PORT",
   "requires_flash": false,
   "weather": "WEATHER_NONE",
   "map_type": "MAP_TYPE_INDOOR",
@@ -98,21 +98,21 @@
       "x": 7,
       "y": 10,
       "elevation": 0,
-      "dest_map": "MAP_LITTLEROOT_TOWN",
+      "dest_map": "MAP_TOSA_PORT",
       "dest_warp_id": "1"
     },
     {
       "x": 6,
       "y": 10,
       "elevation": 0,
-      "dest_map": "MAP_LITTLEROOT_TOWN",
+      "dest_map": "MAP_TOSA_PORT",
       "dest_warp_id": "1"
     },
     {
       "x": 5,
       "y": 1,
       "elevation": 0,
-      "dest_map": "MAP_LITTLEROOT_TOWN",
+      "dest_map": "MAP_TOSA_PORT",
       "dest_warp_id": "2"
     }
   ],

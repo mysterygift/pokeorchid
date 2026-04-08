@@ -1,9 +1,9 @@
 {
-  "id": "MAP_LITTLEROOT_TOWN_MAYS_HOUSE_1F",
-  "name": "LittlerootTown_MaysHouse_1F",
-  "layout": "LAYOUT_LITTLEROOT_TOWN_MAYS_HOUSE_1F",
+  "id": "MAP_TOSA_PORT_MAYS_HOUSE_1F",
+  "name": "TosaPort_MaysHouse_1F",
+  "layout": "LAYOUT_TOSA_PORT_MAYS_HOUSE_1F",
   "music": "MUS_LITTLEROOT",
-  "region_map_section": "MAPSEC_LITTLEROOT_TOWN",
+  "region_map_section": "MAPSEC_TOSA_PORT",
   "requires_flash": false,
   "weather": "WEATHER_NONE",
   "map_type": "MAP_TYPE_INDOOR",
@@ -26,7 +26,7 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "PlayersHouse_1F_EventScript_Mom",
-      "flag": "FLAG_HIDE_LITTLEROOT_TOWN_MAYS_HOUSE_MOM"
+      "flag": "FLAG_HIDE_TOSA_PORT_MAYS_HOUSE_MOM"
     },
     {
       "graphics_id": "OBJ_EVENT_GFX_VIGOROTH_FACING_AWAY",
@@ -39,7 +39,7 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "PlayersHouse_1F_EventScript_Vigoroth1",
-      "flag": "FLAG_HIDE_LITTLEROOT_TOWN_PLAYERS_HOUSE_VIGOROTH_1"
+      "flag": "FLAG_HIDE_TOSA_PORT_PLAYERS_HOUSE_VIGOROTH_1"
     },
     {
       "graphics_id": "OBJ_EVENT_GFX_VIGOROTH_CARRYING_BOX",
@@ -52,7 +52,7 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "PlayersHouse_1F_EventScript_Vigoroth2",
-      "flag": "FLAG_HIDE_LITTLEROOT_TOWN_PLAYERS_HOUSE_VIGOROTH_2"
+      "flag": "FLAG_HIDE_TOSA_PORT_PLAYERS_HOUSE_VIGOROTH_2"
     },
     {
       "local_id": "LOCALID_RIVALS_HOUSE_1F_MOM",
@@ -66,7 +66,7 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "RivalsHouse_1F_EventScript_RivalMom",
-      "flag": "FLAG_HIDE_LITTLEROOT_TOWN_MAYS_HOUSE_RIVAL_MOM"
+      "flag": "FLAG_HIDE_TOSA_PORT_MAYS_HOUSE_RIVAL_MOM"
     },
     {
       "local_id": "LOCALID_PLAYERS_HOUSE_1F_DAD",
@@ -93,7 +93,7 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "RivalsHouse_1F_EventScript_RivalSibling",
-      "flag": "FLAG_HIDE_LITTLEROOT_TOWN_MAYS_HOUSE_RIVAL_SIBLING"
+      "flag": "FLAG_HIDE_TOSA_PORT_MAYS_HOUSE_RIVAL_SIBLING"
     },
     {
       "local_id": "LOCALID_RIVALS_HOUSE_1F_RIVAL",
@@ -107,7 +107,7 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "0x0",
-      "flag": "FLAG_HIDE_LITTLEROOT_TOWN_MAYS_HOUSE_MAY"
+      "flag": "FLAG_HIDE_TOSA_PORT_MAYS_HOUSE_MAY"
     }
   ],
   "warp_events": [
@@ -115,21 +115,21 @@
       "x": 1,
       "y": 8,
       "elevation": 0,
-      "dest_map": "MAP_LITTLEROOT_TOWN",
+      "dest_map": "MAP_TOSA_PORT",
       "dest_warp_id": "0"
     },
     {
       "x": 2,
       "y": 8,
       "elevation": 0,
-      "dest_map": "MAP_LITTLEROOT_TOWN",
+      "dest_map": "MAP_TOSA_PORT",
       "dest_warp_id": "0"
     },
     {
       "x": 2,
       "y": 2,
       "elevation": 0,
-      "dest_map": "MAP_LITTLEROOT_TOWN_MAYS_HOUSE_2F",
+      "dest_map": "MAP_TOSA_PORT_MAYS_HOUSE_2F",
       "dest_warp_id": "0"
     }
   ],
@@ -141,7 +141,7 @@
       "elevation": 0,
       "var": "VAR_LITTLEROOT_INTRO_STATE",
       "var_value": "4",
-      "script": "LittlerootTown_MaysHouse_1F_EventScript_GoSeeRoom"
+      "script": "TosaPort_MaysHouse_1F_EventScript_GoSeeRoom"
     },
     {
       "type": "trigger",
@@ -150,7 +150,7 @@
       "elevation": 0,
       "var": "VAR_LITTLEROOT_RIVAL_STATE",
       "var_value": "2",
-      "script": "LittlerootTown_MaysHouse_1F_EventScript_MeetRival0"
+      "script": "TosaPort_MaysHouse_1F_EventScript_MeetRival0"
     },
     {
       "type": "trigger",
@@ -159,7 +159,7 @@
       "elevation": 0,
       "var": "VAR_LITTLEROOT_RIVAL_STATE",
       "var_value": "2",
-      "script": "LittlerootTown_MaysHouse_1F_EventScript_MeetRival1"
+      "script": "TosaPort_MaysHouse_1F_EventScript_MeetRival1"
     },
     {
       "type": "trigger",
@@ -168,7 +168,7 @@
       "elevation": 0,
       "var": "VAR_LITTLEROOT_RIVAL_STATE",
       "var_value": "2",
-      "script": "LittlerootTown_MaysHouse_1F_EventScript_MeetRival2"
+      "script": "TosaPort_MaysHouse_1F_EventScript_MeetRival2"
     }
   ],
   "bg_events": []

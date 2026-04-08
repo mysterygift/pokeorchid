@@ -67,7 +67,7 @@ static bool32 IsLastHealLocation(u32 healLocation)
 
 // bool32 IsLastHealLocationPlayerHouse()
 // {
-//     if (IsLastHealLocation(HEAL_LOCATION_LITTLEROOT_TOWN_MAYS_HOUSE)
+//     if (IsLastHealLocation(HEAL_LOCATION_TOSA_PORT_MAYS_HOUSE)
 //         return TRUE;
 
 //     return FALSE;
