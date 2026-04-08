@@ -1,0 +1,34 @@
+raw `
+TelokTown_MapScripts::
+	map_script MAP_SCRIPT_ON_TRANSITION, TelokTown_OnTransition
+	.byte 0
+
+TelokTown_OnTransition:
+	setflag FLAG_VISITED_TELOK_TOWN
+	end
+
+TelokTown_EventScript_TownSign::
+	msgbox TelokTown_Text_TownSign, MSGBOX_SIGN
+	end
+
+TelokTown_EventScript_ExistentialMan::
+	lock
+	faceplayer
+	msgbox TelokTown_Text_SavingMyProgress, MSGBOX_NPC
+	delay 60
+	msgbox TelokTown_Text_WaitWhat, MSGBOX_NPC
+	release
+	end
+
+TelokTown_Text_SavingMyProgress:
+	.string "I want to take a rest, so I'm saving my\n"
+	.string "progress.$"
+
+TelokTown_Text_WaitWhat:
+	.string "Wait, what am I talking about?$"
+
+TelokTown_Text_TownSign:
+	.string "Telok Town\n"
+	.string "“Where new journeys take root.”$"
+
+`

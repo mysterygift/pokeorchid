@@ -1,0 +1,39 @@
+raw `
+TosaPort_ProfessorBirchsLab_MapScripts::
+	map_script MAP_SCRIPT_ON_TRANSITION, TosaPort_ProfessorBirchsLab_OnTransition
+	.byte 0
+
+TosaPort_ProfessorBirchsLab_OnTransition:
+	call Common_EventScript_SetupRivalGfxId
+	end
+
+TosaPort_ProfessorBirchsLab_EventScript_Machine::
+	msgbox TosaPort_ProfessorBirchsLab_Text_SeriousLookingMachine, MSGBOX_SIGN
+	end
+
+TosaPort_ProfessorBirchsLab_EventScript_PC::
+	msgbox TosaPort_ProfessorBirchsLab_Text_PCUsedForResearch, MSGBOX_SIGN
+	end
+
+TosaPort_ProfessorBirchsLab_EventScript_Bookshelf::
+	msgbox TosaPort_ProfessorBirchsLab_Text_CrammedWithBooksOnPokemon, MSGBOX_SIGN
+	end
+
+TosaPort_ProfessorBirchsLab_EventScript_Book::
+	msgbox TosaPort_ProfessorBirchsLab_Text_BookTooHardToRead, MSGBOX_SIGN
+	end
+
+TosaPort_ProfessorBirchsLab_Text_SeriousLookingMachine:
+	.string "It's a serious-looking machine.\n"
+	.string "The PROF must use this for research.$"
+
+TosaPort_ProfessorBirchsLab_Text_PCUsedForResearch:
+	.string "It's a PC used for research.\n"
+	.string "Better not mess around with it.$"
+
+TosaPort_ProfessorBirchsLab_Text_CrammedWithBooksOnPokemon:
+	.string "It's crammed with books on POKéMON.$"
+
+TosaPort_ProfessorBirchsLab_Text_BookTooHardToRead:
+	.string "It's a book that's too hard to read.$"
+`
