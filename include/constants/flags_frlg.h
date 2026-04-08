@@ -1511,7 +1511,7 @@
 #define FLAG_LEGENDARIES_IN_SOOTOPOLIS           0
 
 #define FLAG_HIDE_CONTEST_POKE_BALL          0  // Always set after new game, object it hides is added directly
-#define FLAG_MET_RIVAL_MOM                   0
+#define FLAG_RECEIVED_TOSA_PASS                   0
 #define FLAG_BIRCH_AIDE_MET                  0
 #define FLAG_DECLINED_BIKE                   0
 #define FLAG_RECEIVED_BIKE                   0

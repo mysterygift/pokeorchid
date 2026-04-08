@@ -1436,7 +1436,7 @@
 	.byte SCR_OP_CHECKPLAYERGENDER
 	.endm
 
-	@ Plays the cry of the given species. Mode is any CRY_MODE_* constant.
+	@ Plays the cry of the given species. Mode is any CRY_MODE_* constant (cry mode is cry_mode_normal/encounter)
 	@ You can use waitmoncry to block script execution until the cry finishes.
 	.macro playmoncry species:req, mode:req
 	.byte SCR_OP_PLAYMONCRY

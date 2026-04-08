@@ -24,14 +24,24 @@ TosaPort_EventScript_TownSign::
 	msgbox TosaPort_Text_TownSign, MSGBOX_SIGN
 	end
 
+TosaPort_EventScript_TruckSign::
+	msgbox TosaPort_Text_TruckSign, MSGBOX_SIGN
+	end
+
+TosaPort_EventScript_ColdStorageSign::
+	msgbox TosaPort_Text_ColdStorageSign, MSGBOX_SIGN
+	end
+
 TosaPort_EventScript_GatewaySign::
 	msgbox TosaPort_Text_GatewaySign, MSGBOX_SIGN
 	end
 
 TosaPort_EventScript_StarterGuide::
-	lock
-	faceplayer
+lock
 	goto_if_set FLAG_HIDE_ROUTE_101_BIRCH_STARTERS_BAG, TosaPort_EventScript_StarterGuide_AfterStarter
+	applymovement LOCALID_STARTER_AIDE, Common_Movement_QuestionMark
+	waitmovement 0
+	playSE SE_M_METRONOME
 	msgbox TosaPort_Text_YouMustBePlayer, MSGBOX_NPC
 	delay 48
 	applymovement LOCALID_STARTER_AIDE, Common_Movement_ExclamationMark
@@ -50,6 +60,8 @@ TosaPort_EventScript_StarterGuide::
 	goto_if_eq VAR_RESULT, 1, TosaPort_EventScript_GiveNickname
 	setflag FLAG_HIDE_ROUTE_101_BIRCH_STARTERS_BAG
 	msgbox TosaPort_Text_TakeTosaPass, MSGBOX_DEFAULT
+	msgbox TosaPort_Text_StarterGuideTelokHint
+	setvar VAR_TOSA_PORT_STATE 1
 	release
 	end
 
@@ -60,10 +72,13 @@ TosaPort_EventScript_GiveNickname::
 	setflag FLAG_HIDE_ROUTE_101_BIRCH_STARTERS_BAG
 	msgbox TosaPort_Text_TakeTosaPass, MSGBOX_DEFAULT
 	msgbox TosaPort_Text_StarterGuideTelokHint
+	setvar VAR_TOSA_PORT_STATE 1
 	release
 	end
 
 TosaPort_EventScript_StarterGuide_AfterStarter::
+	lock
+	faceplayer
 	msgbox TosaPort_Text_StarterGuideTelokHint, MSGBOX_DEFAULT
 	release
 	end
@@ -104,5 +119,184 @@ TosaPort_Text_TownSign:
 
 TosaPort_Text_GatewaySign:
 	.string "Tosa Reserve Gateway\n"
-	.string "Trainer passes strictly required $"
+	.string "Trainer passes strictly required$"
+
+TosaPort_Text_TruckSign:
+	.string "Machamp Moving Co.\n"
+	.string "No Load too Lumbersome!$"
+
+TosaPort_Text_ColdStorageSign:
+	.string "Tosa Port Cold Storage$"
+
 `
+
+script TosaPort_ScrubbingSailor {
+	lock
+	faceplayer
+	msgbox("Gotta keep this jetty looking ship-\n"
+	"shape!")
+	release
+	end
+}
+
+script TosaPort_ShuntingSailor {
+	lock
+	faceplayer
+	msgbox("It's a good thing I have my Vigoroth\n"
+	"with me!")
+	release
+	end
+}
+
+script TosaPort_VigorothCry {
+	lock
+	playmoncry(SPECIES_VIGOROTH, CRY_MODE_NORMAL)
+	msgbox("Vigoroth: Urraw!")
+	waitmoncry
+	release
+	end
+}
+
+script TosaPort_ChefStall {
+	lock
+	faceplayer
+	if(!flag(FLAG_CHEF_STALL_MET)) {
+		msgbox("Bonjour!\p"
+	"I have travelled many miles from my\n"
+	"home in Kalos...mais alors I have grown\l"
+	"tired.\p"
+	"I decided that it was time to share my\n"
+	"love for la cuisine du monde avec the\l"
+	"people!\p"
+	"Have a look at my goods, see they are\n"
+	"the most fresh, non?")
+	pokemart(ChefStallGoods)
+	msgbox("See you again, mon ami!")
+	release
+	end
+	}
+	msgbox("Good to see you mon ami!\n"
+	"What can I get for you?")
+	pokemart(ChefStallGoods)
+	msgbox("Always a pleasure, mon ami!")
+	release
+	end
+}
+
+mart ChefStallGoods{
+	ITEM_LAVA_COOKIE
+	ITEM_PEWTER_CRUNCHIES
+	ITEM_OLD_GATEAU
+	ITEM_BIG_MALASADA
+	ITEM_SHALOUR_SABLE
+}
+
+script TosaPort_PSPKid {
+	lock
+	faceplayer
+	msgbox("Ugh, Dad's making me watch his stall.\n"
+	"At least he let me bring my PSP.")
+	release
+	end
+}
+
+script TosaPort_RepelGuy {
+	lock
+	faceplayer
+	msgbox("I read in \qoPok\emon Garden\qc that\n"
+	"spraying repel on your flowers can keep\l"
+	"bug Pok\emon at bay.")
+	release
+	end
+}
+
+script TosaPort_BreakTrucker {
+	lock
+	faceplayer
+	msgbox("Buzz off, I'm on my break!")
+	release
+	end
+}
+
+script TosaPort_LoadingTrucker {
+	lock
+	faceplayer
+	msgbox("I wish my Pok\emon was strong enough to\n"
+	"load this truck...")
+	release
+	end
+}
+
+script TosaPort_OldMan {
+	lock
+	msgbox("Fu-fu-fu...I met my wife at this very\n"
+	"spot 10 years ago.")
+	release
+	end
+}
+
+script TosaPort_OldWoman {
+	lock
+	msgbox("Ha-ha-ha...we were so reckless back\n"
+	"then...life is too short...")
+	release
+	end
+}
+
+script TosaPort_Skitty {
+	lock
+	faceplayer
+	playmoncry(SPECIES_SKITTY, CRY_MODE_NORMAL)
+	msgbox("Skitty: Meooow!")
+	waitmoncry
+	release
+	end
+}
+
+script TosaPort_Fisherman {
+	lock
+	faceplayer
+	msgbox("I came all this way from Pasira City to\n"
+	"fish in the Reserve.")
+	release
+	end
+}
+
+script TosaPort_Tuber {
+	lock
+	faceplayer
+	msgbox("Awww...\n"
+	"I was hoping to swim while visiting\l"
+	"Daddy, but the current here is too\l"
+	"strong!")
+	release
+	end
+}
+
+script TosaPort_ColdStorageGuard {
+	lock
+	faceplayer
+	msgbox("Sorry pal, but the site's currently\n"
+	"closed.")
+	release
+	end
+}
+
+script TosaPort_Martin {
+	lock
+	faceplayer
+	msgbox("Welcome to Martin's Mart!\n"
+	"Trainer Supplies and Sundries.")
+	pokemart(MartinsMartGoods)
+	msgbox("Come back soon!")
+	release
+	end
+}
+
+mart MartinsMartGoods {
+	ITEM_POTION
+	ITEM_POKE_BALL
+	ITEM_ANTIDOTE
+	ITEM_PARALYZE_HEAL
+	ITEM_REPEL
+}
