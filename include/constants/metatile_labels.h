@@ -947,7 +947,7 @@
 // gTileset_Slateport
 #define METATILE_Slateport_Door             0x2DC
 #define METATILE_Slateport_Door_BattleTent  0x393
-#define METATILE_Slateport_RoughWater       0x376
+#define METATILE_Slateport_RoughWater       0x347
 
 // gTileset_Sootopolis
 #define METATILE_Sootopolis_Door             0x21E
