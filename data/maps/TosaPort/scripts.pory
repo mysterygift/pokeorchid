@@ -41,6 +41,7 @@ lock
 	goto_if_set FLAG_HIDE_ROUTE_101_BIRCH_STARTERS_BAG, TosaPort_EventScript_StarterGuide_AfterStarter
 	applymovement LOCALID_STARTER_AIDE, Common_Movement_QuestionMark
 	waitmovement 0
+	delay 24
 	playSE SE_M_METRONOME
 	msgbox TosaPort_Text_YouMustBePlayer, MSGBOX_NPC
 	delay 48
@@ -53,8 +54,8 @@ lock
 	special ChooseStarterOverworld
 	waitstate
 	bufferleadmonspeciesname STR_VAR_2
-	playfanfare MUS_OBTAIN_TMHM
 	msgbox TosaPort_Text_ReceivedPokemon, MSGBOX_AUTOCLOSE
+	playfanfare MUS_OBTAIN_TMHM
 	waitfanfare
 	msgbox TosaPort_Text_Nickname, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, 1, TosaPort_EventScript_GiveNickname
@@ -97,7 +98,7 @@ TosaPort_Text_GivePokemon:
 	.string "You peer inside the bag.$"
 
 TosaPort_Text_ReceivedPokemon:
-	.string "You receieved a {STR_VAR_2}!$"
+	.string "You received a {STR_VAR_2}!$"
 
 TosaPort_Text_Nickname:
 	.string "Would you like to give {STR_VAR_2} a\n"
@@ -170,6 +171,7 @@ script TosaPort_ChefStall {
 	"people!\p"
 	"Have a look at my goods, see they are\n"
 	"the most fresh, non?")
+	setflag FLAG_CHEF_STALL_MET
 	pokemart(ChefStallGoods)
 	msgbox("See you again, mon ami!")
 	release
