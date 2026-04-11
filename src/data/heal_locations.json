@@ -4,21 +4,13 @@
       "id": "HEAL_LOCATION_TOSA_PORT_BRENDANS_HOUSE_2F",
       "map": "MAP_TOSA_PORT_BRENDANS_HOUSE_2F",
       "x": 4,
-      "y": 2,
-      "respawn_map": "MAP_TOSA_PORT_BRENDANS_HOUSE_1F",
-      "respawn_npc": "0",
-      "respawn_x": 2,
-      "respawn_y": 7
+      "y": 2
     },
     {
       "id": "HEAL_LOCATION_TOSA_PORT_MAYS_HOUSE_2F",
       "map": "MAP_TOSA_PORT_MAYS_HOUSE_2F",
       "x": 4,
-      "y": 2,
-      "respawn_map": "MAP_TOSA_PORT_MAYS_HOUSE_1F",
-      "respawn_npc": "0",
-      "respawn_x": 8,
-      "respawn_y": 7
+      "y": 2
     },
     {
       "id": "HEAL_LOCATION_PETALBURG_CITY",

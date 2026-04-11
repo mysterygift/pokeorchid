@@ -51,7 +51,7 @@
 
 #else
 
-#define FLAG_UNUSED_0x020    0x20 // Unused Flag
+#define FLAG_HIDE_TOSA_GATEWAY_RIVAL         0x20 // Hide Rival in Tosa Gateway.
 #define FLAG_UNUSED_0x021    0x21 // Unused Flag
 #define FLAG_UNUSED_0x022    0x22 // Unused Flag
 #define FLAG_UNUSED_0x023    0x23 // Unused Flag
@@ -106,9 +106,9 @@
 #define FLAG_RESCUED_BIRCH                       0x52
 #define FLAG_LEGENDARIES_IN_SOOTOPOLIS           0x53
 
+// Tosa Port
 #define FLAG_CHEF_STALL_MET                  0x54  // Skips first time dialogue with chef stall.
-#define FLAG_UNUSED_0x055                    0x55  // Unused Flag
-
+#define FLAG_HIDE_PASS_AIDE                  0x55  // Toggles visibility of aide who gives you the Tosa Pass.
 #define FLAG_HIDE_CONTEST_POKE_BALL          0x56  // Always set after new game, object it hides is added directly
 #define FLAG_RECEIVED_TOSA_PASS              0x57 // Set after receiving Tosa Pass from Palm's aid in Tosa Gateway.
 #define FLAG_BIRCH_AIDE_MET                  0x58

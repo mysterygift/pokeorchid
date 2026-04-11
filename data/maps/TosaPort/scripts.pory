@@ -36,16 +36,58 @@ TosaPort_EventScript_GatewaySign::
 	msgbox TosaPort_Text_GatewaySign, MSGBOX_SIGN
 	end
 
-TosaPort_EventScript_StarterGuide::
-	lock
-	faceplayer
+TosaPort_EventScript_StarterGuideTop::
+	lockall
 	goto_if_set FLAG_HIDE_ROUTE_101_BIRCH_STARTERS_BAG, TosaPort_EventScript_StarterGuide_AfterStarter
+	applymovement LOCALID_STARTER_AIDE, Common_Movement_FacePlayer
+	waitmovement 0
 	applymovement LOCALID_STARTER_AIDE, Common_Movement_QuestionMark
 	waitmovement 0
 	playSE SE_M_METRONOME
 	delay 24
 	msgbox TosaPort_Text_YouMustBePlayer, MSGBOX_NPC
-	delay 48
+	applymovement LOCALID_STARTER_AIDE, Common_Movement_WalkLeft
+	waitmovement 0
+	applymovement LOCALID_STARTER_AIDE, Common_Movement_ExclamationMark
+	waitmovement 0
+	playse SE_PIN
+	msgbox TosaPort_Text_GivePokemon, MSGBOX_NPC
+	fadescreen FADE_TO_BLACK
+	setflag FLAG_SYS_POKEMON_GET
+	special ChooseStarterOverworld
+	waitstate
+	lockall
+	bufferleadmonspeciesname STR_VAR_2
+	playfanfare MUS_OBTAIN_TMHM
+	message TosaPort_Text_ReceivedPokemon
+	waitmessage
+	waitfanfare
+	closemessage
+	msgbox TosaPort_Text_Nickname, MSGBOX_YESNO
+	call_if_eq VAR_RESULT, 1, TosaPort_EventScript_GiveNickname
+	setflag FLAG_HIDE_ROUTE_101_BIRCH_STARTERS_BAG
+	msgbox TosaPort_Text_StarterGuideTelokHint
+	applymovement LOCALID_STARTER_AIDE, Common_Movement_WalkRight
+	waitmovement 0
+	setvar VAR_TOSA_PORT_STATE 1
+	setflag FLAG_HIDE_PASS_AIDE
+	releaseall
+	end
+
+	TosaPort_EventScript_StarterGuideBottom::
+	lockall
+	goto_if_set FLAG_HIDE_ROUTE_101_BIRCH_STARTERS_BAG, TosaPort_EventScript_StarterGuide_AfterStarter
+	applymovement LOCALID_STARTER_AIDE, Common_Movement_FacePlayer
+	waitmovement 0
+	applymovement LOCALID_STARTER_AIDE, Common_Movement_QuestionMark
+	waitmovement 0
+	playSE SE_M_METRONOME
+	delay 24
+	msgbox TosaPort_Text_YouMustBePlayer, MSGBOX_NPC
+	applymovement LOCALID_STARTER_AIDE, Common_Movement_WalkDown
+	waitmovement 0
+	applymovement LOCALID_STARTER_AIDE, Common_Movement_WalkLeft
+	waitmovement 0
 	applymovement LOCALID_STARTER_AIDE, Common_Movement_ExclamationMark
 	waitmovement 0
 	playse SE_PIN
@@ -54,25 +96,30 @@ TosaPort_EventScript_StarterGuide::
 	setflag FLAG_SYS_POKEMON_GET
 	special ChooseStarterOverworld
 	waitstate
-	fadescreen FADE_FROM_BLACK
+	lockall
 	bufferleadmonspeciesname STR_VAR_2
 	playfanfare MUS_OBTAIN_TMHM
-	msgbox TosaPort_Text_ReceivedPokemon, MSGBOX_AUTOCLOSE
+	message TosaPort_Text_ReceivedPokemon
+	waitmessage
 	waitfanfare
+	closemessage
 	msgbox TosaPort_Text_Nickname, MSGBOX_YESNO
 	call_if_eq VAR_RESULT, 1, TosaPort_EventScript_GiveNickname
 	setflag FLAG_HIDE_ROUTE_101_BIRCH_STARTERS_BAG
-	msgbox TosaPort_Text_TakeTosaPass, MSGBOX_DEFAULT
-	msgbox TosaPort_Text_StarterGuideTelokHint
+	msgbox TosaPort_Text_StarterGuideTelokHint, MSGBOX_NPC
+	applymovement LOCALID_STARTER_AIDE, Common_Movement_WalkRight
+	waitmovement 0
+	applymovement LOCALID_STARTER_AIDE, Common_Movement_WalkUp
+	waitmovement 0
 	setvar VAR_TOSA_PORT_STATE 1
-	release
+	setflag FLAG_HIDE_PASS_AIDE
+	releaseall
 	end
 
 TosaPort_EventScript_GiveNickname::
 	fadescreen FADE_TO_BLACK
 	special ChangePokemonNickname
 	waitstate
-	fadescreen FADE_FROM_BLACK
 	return
 
 TosaPort_EventScript_StarterGuide_AfterStarter::
@@ -102,11 +149,6 @@ TosaPort_Text_Nickname:
 	.string "Would you like to give {STR_VAR_2} a\n"
 	.string "nickname?$"
 
-TosaPort_Text_TakeTosaPass:
-	.string "If you're going to reach Professsor Palm,\n"
-	.string "you'll need this Tosa Pass.\p"
-	.string "(Placeholder: TOSA PASS received.)$"
-
 TosaPort_Text_StarterGuideTelokHint:
 	.string "The road to TELOK TOWN runs through\n"
 	.string "the Tosa nature reserve to the north.\p"
@@ -128,6 +170,39 @@ TosaPort_Text_ColdStorageSign:
 	.string "Tosa Port Cold Storage$"
 
 `
+
+script TosaPort_PassAide {
+	lockall
+	msgbox("WAIT! {PLAYER}!", MSGBOX_AUTOCLOSE)
+	clearflag(FLAG_HIDE_PASS_AIDE)
+	addobject(LOCALID_PASS_AIDE)
+	showobjectat(LOCALID_PASS_AIDE, MAP_TOSA_PORT)
+	applymovement(LOCALID_PLAYER, moves(emote_question_mark face_down))
+	playSE(SE_M_METRONOME)
+	applymovement(LOCALID_PASS_AIDE, moves(
+		walk_fast_up * 5
+	))
+	waitmovement(0)
+	msgbox(format("I...I need to give you this as well."))
+	giveitem(ITEM_TOSA_PASS)
+	msgbox(format("Without a Tosa Pass, you won't be allowed onto the reserve. Normally you could take the underground..."))
+	applymovement(LOCALID_PASS_AIDE, moves(face_right))
+	waitmovement(0)
+	delay(48)
+	applymovement(LOCALID_PASS_AIDE, moves(face_player))
+	waitmovement(0)
+	msgbox(format("One more thing, if you haven't already I recommend you check out the markets here in the port. There's all sorts of supplies a trainer might need."))
+	msgbox(format("Anyway, that's all from me. You better get going, I wouldn't want to keep the Professor waiting!"), MSGBOX_NPC)
+	waitmessage
+	applymovement(LOCALID_PASS_AIDE, moves(walk_fast_down * 5))
+	waitmovement(0)
+	hideobjectat(LOCALID_PASS_AIDE, MAP_TOSA_PORT)
+	setflag(FLAG_RECEIVED_TOSA_PASS)
+	setflag(FLAG_HIDE_PASS_AIDE)
+	setvar(VAR_TOSA_PORT_STATE, 2)
+	releaseall
+	end
+}
 
 script TosaPort_ScrubbingSailor {
 	lock

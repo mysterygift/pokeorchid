@@ -917,7 +917,7 @@ enum __attribute__((packed)) Item
     ITEM_CARD_KEY = 750,
     ITEM_LIFT_KEY = 751,
     ITEM_SILPH_SCOPE = 752,
-    ITEM_TRI_PASS = 753,
+    ITEM_TOSA_PASS = 753, // Repurposed from TRI_PASS, given to trainer outside Tosa Gateway.
     ITEM_RAINBOW_PASS = 754,
     ITEM_TEA = 755,
     ITEM_RUBY = 756,

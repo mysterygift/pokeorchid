@@ -14575,15 +14575,15 @@ const struct ItemInfo gItemsInfo[] =
         .iconPalette = gItemIconPalette_SilphScope,
     },
 
-    [ITEM_TRI_PASS] =
+    [ITEM_TOSA_PASS] =
     {
-        .name = ITEM_NAME("Tri-Pass"),
-        .pluralName = ITEM_PLURAL_NAME("Tri-Passes"),
+        .name = ITEM_NAME("Tosa Pass"),
+        .pluralName = ITEM_PLURAL_NAME("Tosa Passes"),
         .price = 0,
         .description = COMPOUND_STRING(
-            "A pass for ferries\n"
-            "between One, Two,\n"
-            "and Three Island."),
+            "A pass required to\n"
+            "access the Southern\n"
+            "Tosa Reserve."),
         .importance = 1,
         .pocket = POCKET_KEY_ITEMS,
         .type = ITEM_USE_BAG_MENU,
