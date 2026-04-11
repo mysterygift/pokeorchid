@@ -37,12 +37,13 @@ TosaPort_EventScript_GatewaySign::
 	end
 
 TosaPort_EventScript_StarterGuide::
-lock
+	lock
+	faceplayer
 	goto_if_set FLAG_HIDE_ROUTE_101_BIRCH_STARTERS_BAG, TosaPort_EventScript_StarterGuide_AfterStarter
 	applymovement LOCALID_STARTER_AIDE, Common_Movement_QuestionMark
 	waitmovement 0
-	delay 24
 	playSE SE_M_METRONOME
+	delay 24
 	msgbox TosaPort_Text_YouMustBePlayer, MSGBOX_NPC
 	delay 48
 	applymovement LOCALID_STARTER_AIDE, Common_Movement_ExclamationMark
@@ -53,12 +54,13 @@ lock
 	setflag FLAG_SYS_POKEMON_GET
 	special ChooseStarterOverworld
 	waitstate
+	fadescreen FADE_FROM_BLACK
 	bufferleadmonspeciesname STR_VAR_2
-	msgbox TosaPort_Text_ReceivedPokemon, MSGBOX_AUTOCLOSE
 	playfanfare MUS_OBTAIN_TMHM
+	msgbox TosaPort_Text_ReceivedPokemon, MSGBOX_AUTOCLOSE
 	waitfanfare
 	msgbox TosaPort_Text_Nickname, MSGBOX_YESNO
-	goto_if_eq VAR_RESULT, 1, TosaPort_EventScript_GiveNickname
+	call_if_eq VAR_RESULT, 1, TosaPort_EventScript_GiveNickname
 	setflag FLAG_HIDE_ROUTE_101_BIRCH_STARTERS_BAG
 	msgbox TosaPort_Text_TakeTosaPass, MSGBOX_DEFAULT
 	msgbox TosaPort_Text_StarterGuideTelokHint
@@ -70,12 +72,8 @@ TosaPort_EventScript_GiveNickname::
 	fadescreen FADE_TO_BLACK
 	special ChangePokemonNickname
 	waitstate
-	setflag FLAG_HIDE_ROUTE_101_BIRCH_STARTERS_BAG
-	msgbox TosaPort_Text_TakeTosaPass, MSGBOX_DEFAULT
-	msgbox TosaPort_Text_StarterGuideTelokHint
-	setvar VAR_TOSA_PORT_STATE 1
-	release
-	end
+	fadescreen FADE_FROM_BLACK
+	return
 
 TosaPort_EventScript_StarterGuide_AfterStarter::
 	lock
@@ -171,7 +169,7 @@ script TosaPort_ChefStall {
 	"people!\p"
 	"Have a look at my goods, see they are\n"
 	"the most fresh, non?")
-	setflag FLAG_CHEF_STALL_MET
+	setflag(FLAG_CHEF_STALL_MET)
 	pokemart(ChefStallGoods)
 	msgbox("See you again, mon ami!")
 	release
@@ -259,7 +257,7 @@ script TosaPort_Fisherman {
 	lock
 	faceplayer
 	msgbox("I came all this way from Pasira City to\n"
-	"fish in the Reserve.")
+	"fish in the reserve.")
 	release
 	end
 }

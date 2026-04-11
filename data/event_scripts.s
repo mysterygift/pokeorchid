@@ -661,17 +661,17 @@ EventScript_AfterWhiteOutHealMsg::
 	msgbox gText_MonsHealed
 	return
 
-EventScript_AfterWhiteOutMomHeal::
-	lockall
-	textcolor NPC_TEXT_COLOR_FEMALE
-	applymovement LOCALID_PLAYERS_HOUSE_1F_MOM, Common_Movement_WalkInPlaceFasterDown
-	waitmovement 0
-	msgbox gText_HadQuiteAnExperienceTakeRest
-	call Common_EventScript_OutOfCenterPartyHeal
-	msgbox gText_MomExplainHPGetPotions
-	fadedefaultbgm
-	releaseall
-	end
+@ EventScript_AfterWhiteOutMomHeal::
+@	lockall
+@	textcolor NPC_TEXT_COLOR_FEMALE
+@	applymovement LOCALID_PLAYERS_HOUSE_1F_MOM, Common_Movement_WalkInPlaceFasterDown
+@	waitmovement 0
+@	msgbox gText_HadQuiteAnExperienceTakeRest
+@	call Common_EventScript_OutOfCenterPartyHeal
+@	msgbox gText_MomExplainHPGetPotions
+@	fadedefaultbgm
+@	releaseall
+@	end
 
 EventScript_ResetMrBriney::
 	goto_if_eq VAR_BRINEY_LOCATION, 1, EventScript_MoveMrBrineyToHouse
@@ -829,7 +829,7 @@ Common_EventScript_OutOfCenterPartyHeal::
 
 EventScript_RegionMap::
 	lockall
-	msgbox Common_Text_LookCloserAtMap, MSGBOX_DEFAULT
+	@ msgbox Common_Text_LookCloserAtMap, MSGBOX_DEFAULT
 	fadescreen FADE_TO_BLACK
 	special FieldShowRegionMap
 	waitstate

@@ -36,7 +36,7 @@ enum {
     MENU_ITEMSTORAGE,
     MENU_MAILBOX,
     MENU_DECORATION,
-    MENU_TURNOFF
+    // MENU_TURNOFF
 };
 
 // Item storage menu options
@@ -101,7 +101,7 @@ static void Mailbox_MailOptionsProcessInput(u8);
 static void PlayerPC_ItemStorage(u8);
 static void PlayerPC_Mailbox(u8);
 static void PlayerPC_Decoration(u8);
-static void PlayerPC_TurnOff(u8);
+// static void PlayerPC_TurnOff(u8);
 
 static void Mailbox_DoMailMoveToBag(u8);
 static void Mailbox_DoMailRead(u8);
@@ -191,7 +191,7 @@ static const struct MenuAction sPlayerPCMenuActions[] =
     [MENU_ITEMSTORAGE] = { COMPOUND_STRING("ITEM STORAGE"), {PlayerPC_ItemStorage} },
     [MENU_MAILBOX]     = { sText_Mailbox,                   {PlayerPC_Mailbox} },
     [MENU_DECORATION]  = { COMPOUND_STRING("DECORATION"),   {PlayerPC_Decoration} },
-    [MENU_TURNOFF]     = { COMPOUND_STRING("TURN OFF"),     {PlayerPC_TurnOff} }
+    // [MENU_TURNOFF]     = { COMPOUND_STRING("TURN OFF"),     {PlayerPC_TurnOff} }
 };
 
 static const u8 sBedroomPC_OptionOrder[] =
@@ -199,7 +199,7 @@ static const u8 sBedroomPC_OptionOrder[] =
     MENU_ITEMSTORAGE,
     MENU_MAILBOX,
     MENU_DECORATION,
-    MENU_TURNOFF
+    // MENU_TURNOFF
 };
 #define NUM_BEDROOM_PC_OPTIONS ARRAY_COUNT(sBedroomPC_OptionOrder)
 
@@ -207,7 +207,7 @@ static const u8 sPlayerPC_OptionOrder[] =
 {
     MENU_ITEMSTORAGE,
     MENU_MAILBOX,
-    MENU_TURNOFF
+    // MENU_TURNOFF
 };
 #define NUM_PLAYER_PC_OPTIONS ARRAY_COUNT(sPlayerPC_OptionOrder)
 
@@ -423,14 +423,14 @@ static void PlayerPCProcessMenuInput(u8 taskId)
     {
     case MENU_NOTHING_CHOSEN:
         break;
-    case MENU_B_PRESSED:
-        PlaySE(SE_SELECT);
-        ClearStdWindowAndFrameToTransparent(tWindowId, FALSE);
-        ClearWindowTilemap(tWindowId);
-        RemoveWindow(tWindowId);
-        ScheduleBgCopyTilemapToVram(0);
-        gTasks[taskId].func = PlayerPC_TurnOff;
-        break;
+    // case MENU_B_PRESSED:
+    //     PlaySE(SE_SELECT);
+    //     ClearStdWindowAndFrameToTransparent(tWindowId, FALSE);
+    //     ClearWindowTilemap(tWindowId);
+    //     RemoveWindow(tWindowId);
+    //     ScheduleBgCopyTilemapToVram(0);
+    //     // gTasks[taskId].func = PlayerPC_TurnOff;
+    //     break;
     default:
         ClearStdWindowAndFrameToTransparent(tWindowId, FALSE);
         ClearWindowTilemap(tWindowId);
@@ -487,23 +487,23 @@ static void PlayerPC_Decoration(u8 taskId)
     DoPlayerRoomDecorationMenu(taskId);
 }
 
-static void PlayerPC_TurnOff(u8 taskId)
-{
-    if (sTopMenuNumOptions == NUM_BEDROOM_PC_OPTIONS) // Flimsy way to determine if Bedroom PC is in use
-    {
-        if (gMapHeader.mapLayoutId == LAYOUT_PALLET_TOWN_PLAYERS_HOUSE_2F_FRLG)
-            ScriptContext_SetupScript(EventScript_PalletTown_PlayersHouse_2F_ShutDownPC);
-        else if (gSaveBlock2Ptr->playerGender == MALE)
-            ScriptContext_SetupScript(TosaPort_BrendansHouse_2F_EventScript_TurnOffPlayerPC);
-        else
-            ScriptContext_SetupScript(TosaPort_MaysHouse_2F_EventScript_TurnOffPlayerPC);
-    }
-    else
-    {
-        ScriptContext_Enable();
-    }
-    DestroyTask(taskId);
-}
+// static void PlayerPC_TurnOff(u8 taskId)
+// {
+//     if (sTopMenuNumOptions == NUM_BEDROOM_PC_OPTIONS) // Flimsy way to determine if Bedroom PC is in use
+//     {
+//         if (gMapHeader.mapLayoutId == LAYOUT_PALLET_TOWN_PLAYERS_HOUSE_2F_FRLG)
+//             ScriptContext_SetupScript(EventScript_PalletTown_PlayersHouse_2F_ShutDownPC);
+//         else if (gSaveBlock2Ptr->playerGender == MALE)
+//             ScriptContext_SetupScript(TosaPort_BrendansHouse_2F_EventScript_TurnOffPlayerPC);
+//         else
+//             ScriptContext_SetupScript(TosaPort_MaysHouse_2F_EventScript_TurnOffPlayerPC);
+//     }
+//     else
+//     {
+//         ScriptContext_Enable();
+//     }
+//     DestroyTask(taskId);
+// }
 
 static void InitItemStorageMenu(u8 taskId, u8 var)
 {
