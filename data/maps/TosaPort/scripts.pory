@@ -38,7 +38,7 @@ TosaPort_EventScript_GatewaySign::
 
 TosaPort_EventScript_StarterGuideTop::
 	lockall
-	goto_if_set FLAG_HIDE_ROUTE_101_BIRCH_STARTERS_BAG, TosaPort_EventScript_StarterGuide_AfterStarter
+	goto_if_set FLAG_HIDE_SOUTH_TOSA_RESERVE_BIRCH_STARTERS_BAG, TosaPort_EventScript_StarterGuide_AfterStarter
 	applymovement LOCALID_STARTER_AIDE, Common_Movement_FacePlayer
 	waitmovement 0
 	applymovement LOCALID_STARTER_AIDE, Common_Movement_QuestionMark
@@ -65,7 +65,7 @@ TosaPort_EventScript_StarterGuideTop::
 	closemessage
 	msgbox TosaPort_Text_Nickname, MSGBOX_YESNO
 	call_if_eq VAR_RESULT, 1, TosaPort_EventScript_GiveNickname
-	setflag FLAG_HIDE_ROUTE_101_BIRCH_STARTERS_BAG
+	setflag FLAG_HIDE_SOUTH_TOSA_RESERVE_BIRCH_STARTERS_BAG
 	msgbox TosaPort_Text_StarterGuideTelokHint
 	applymovement LOCALID_STARTER_AIDE, Common_Movement_WalkRight
 	waitmovement 0
@@ -76,7 +76,7 @@ TosaPort_EventScript_StarterGuideTop::
 
 	TosaPort_EventScript_StarterGuideBottom::
 	lockall
-	goto_if_set FLAG_HIDE_ROUTE_101_BIRCH_STARTERS_BAG, TosaPort_EventScript_StarterGuide_AfterStarter
+	goto_if_set FLAG_HIDE_SOUTH_TOSA_RESERVE_BIRCH_STARTERS_BAG, TosaPort_EventScript_StarterGuide_AfterStarter
 	applymovement LOCALID_STARTER_AIDE, Common_Movement_FacePlayer
 	waitmovement 0
 	applymovement LOCALID_STARTER_AIDE, Common_Movement_QuestionMark
@@ -105,7 +105,7 @@ TosaPort_EventScript_StarterGuideTop::
 	closemessage
 	msgbox TosaPort_Text_Nickname, MSGBOX_YESNO
 	call_if_eq VAR_RESULT, 1, TosaPort_EventScript_GiveNickname
-	setflag FLAG_HIDE_ROUTE_101_BIRCH_STARTERS_BAG
+	setflag FLAG_HIDE_SOUTH_TOSA_RESERVE_BIRCH_STARTERS_BAG
 	msgbox TosaPort_Text_StarterGuideTelokHint, MSGBOX_NPC
 	applymovement LOCALID_STARTER_AIDE, Common_Movement_WalkRight
 	waitmovement 0

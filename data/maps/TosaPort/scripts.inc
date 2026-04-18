@@ -79,7 +79,7 @@ TosaPort_EventScript_StarterGuideTop::
 # 40 "data/maps/TosaPort/scripts.pory"
 	lockall
 # 41 "data/maps/TosaPort/scripts.pory"
-	goto_if_set FLAG_HIDE_ROUTE_101_BIRCH_STARTERS_BAG, TosaPort_EventScript_StarterGuide_AfterStarter
+	goto_if_set FLAG_HIDE_SOUTH_TOSA_RESERVE_BIRCH_STARTERS_BAG, TosaPort_EventScript_StarterGuide_AfterStarter
 # 42 "data/maps/TosaPort/scripts.pory"
 	applymovement LOCALID_STARTER_AIDE, Common_Movement_FacePlayer
 # 43 "data/maps/TosaPort/scripts.pory"
@@ -133,7 +133,7 @@ TosaPort_EventScript_StarterGuideTop::
 # 67 "data/maps/TosaPort/scripts.pory"
 	call_if_eq VAR_RESULT, 1, TosaPort_EventScript_GiveNickname
 # 68 "data/maps/TosaPort/scripts.pory"
-	setflag FLAG_HIDE_ROUTE_101_BIRCH_STARTERS_BAG
+	setflag FLAG_HIDE_SOUTH_TOSA_RESERVE_BIRCH_STARTERS_BAG
 # 69 "data/maps/TosaPort/scripts.pory"
 	msgbox TosaPort_Text_StarterGuideTelokHint
 # 70 "data/maps/TosaPort/scripts.pory"
@@ -155,7 +155,7 @@ TosaPort_EventScript_StarterGuideTop::
 # 78 "data/maps/TosaPort/scripts.pory"
 	lockall
 # 79 "data/maps/TosaPort/scripts.pory"
-	goto_if_set FLAG_HIDE_ROUTE_101_BIRCH_STARTERS_BAG, TosaPort_EventScript_StarterGuide_AfterStarter
+	goto_if_set FLAG_HIDE_SOUTH_TOSA_RESERVE_BIRCH_STARTERS_BAG, TosaPort_EventScript_StarterGuide_AfterStarter
 # 80 "data/maps/TosaPort/scripts.pory"
 	applymovement LOCALID_STARTER_AIDE, Common_Movement_FacePlayer
 # 81 "data/maps/TosaPort/scripts.pory"
@@ -213,7 +213,7 @@ TosaPort_EventScript_StarterGuideTop::
 # 107 "data/maps/TosaPort/scripts.pory"
 	call_if_eq VAR_RESULT, 1, TosaPort_EventScript_GiveNickname
 # 108 "data/maps/TosaPort/scripts.pory"
-	setflag FLAG_HIDE_ROUTE_101_BIRCH_STARTERS_BAG
+	setflag FLAG_HIDE_SOUTH_TOSA_RESERVE_BIRCH_STARTERS_BAG
 # 109 "data/maps/TosaPort/scripts.pory"
 	msgbox TosaPort_Text_StarterGuideTelokHint, MSGBOX_NPC
 # 110 "data/maps/TosaPort/scripts.pory"

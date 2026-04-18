@@ -28,8 +28,8 @@ Great attitude bestie! It's very simple- all you need is to find your [`wild_enc
 To get started, we'll use Route 101 as an example:
 ```json
 {
-  "map": "MAP_ROUTE101",
-  "base_label": "gRoute101",
+  "map": "MAP_SOUTHTOSARESERVE",
+  "base_label": "gSouthTosaReserve",
   "land_mons": {
     "encounter_rate": 20,
     "mons": [
@@ -127,11 +127,11 @@ For the sake of simplicity, I'll show you how to add another encounter group her
 - have some rock smash encounters to up the spook factor
 - only occur at night
 
-With all of these things in mind, let's craft an encounter! We'll start off by copying the one we have, called `gRoute101`.
+With all of these things in mind, let's craft an encounter! We'll start off by copying the one we have, called `gSouthTosaReserve`.
 ```json
 {
-  "map": "MAP_ROUTE101",
-  "base_label": "gRoute101",
+  "map": "MAP_SOUTHTOSARESERVE",
+  "base_label": "gSouthTosaReserve",
   "land_mons": {
     "encounter_rate": 20,
     "mons": [
@@ -199,8 +199,8 @@ With all of these things in mind, let's craft an encounter! We'll start off by c
   }
 },
 {
-  "map": "MAP_ROUTE101",
-  "base_label": "gRoute101_Night",
+  "map": "MAP_SOUTHTOSARESERVE",
+  "base_label": "gSouthTosaReserve_Night",
   "land_mons": {
     "encounter_rate": 20,
     "mons": [
@@ -268,12 +268,12 @@ With all of these things in mind, let's craft an encounter! We'll start off by c
   }
 },
 ```
-Okay, we have it duplicated. We leave the value for "map": the same as the original so the game knows that both of these encounters are for Route 101. You can see I changed the name of the copy to `gRoute101_Night`; that's one bullet point down! If we enable `OW_TIME_BASED_ENCOUNTERS` in [`overworld.h`](../../include/config/overworld.h), the game will recognize this encounter group goes in the `Night` slot and will switch which group is used to generate the encounters when the in-game clock changes to `TIME_NIGHT`. Next, let's add Spiky Eared Pichu and our two new encounter tables (`fishing_mons` and `rock_smash_mons`).
+Okay, we have it duplicated. We leave the value for "map": the same as the original so the game knows that both of these encounters are for Route 101. You can see I changed the name of the copy to `gSouthTosaReserve_Night`; that's one bullet point down! If we enable `OW_TIME_BASED_ENCOUNTERS` in [`overworld.h`](../../include/config/overworld.h), the game will recognize this encounter group goes in the `Night` slot and will switch which group is used to generate the encounters when the in-game clock changes to `TIME_NIGHT`. Next, let's add Spiky Eared Pichu and our two new encounter tables (`fishing_mons` and `rock_smash_mons`).
 
 ```json
 {
-  "map": "MAP_ROUTE101",
-  "base_label": "gRoute101_Night",
+  "map": "MAP_SOUTHTOSARESERVE",
+  "base_label": "gSouthTosaReserve_Night",
   "land_mons": {
     "encounter_rate": 20,
     "mons": [
@@ -392,13 +392,13 @@ The script is at [`migration_scripts/add_time_based_encounters.py`](../../migrat
 1. Checks to make sure you're running it from the [root folder](../../) of your expansion project (specifically, wherever the project's [`Makefile`](../../Makefile) is)
 2. Makes a backup of your [`wild_encounters.json`](../../src/data/wild_encounters.json) file called `wild_encounters.json.bak`
 3. Runs through `wild_encounters.json` and adds dummy encounter groups for each time denomination to each group
-    - ie, `gRoute101` becomes `gRoute101_Morning`, `gRoute101_Day`, `gRoute101_Evening`, and `gRoute101_Night`
+    - ie, `gSouthTosaReserve` becomes `gSouthTosaReserve_Morning`, `gSouthTosaReserve_Day`, `gSouthTosaReserve_Evening`, and `gSouthTosaReserve_Night`
 
 This script works kind of like a "template" feature- when you open it up to edit either in Porymap or a text editor, you will see the encounter groups, but they won't be filled out with encounters. This lets you add Pokémon with your own encounter rates however you want.
 
 ### That's *still* a lot of editing.
 You're *still* so right bestie! Luckily for you, there's an optional argument you can add when you run the script: `--copy`.
-This duplicates the encounter group's encounters as well as their labels/map group values. When you open [`wild_encounters.json`](../../src/data/wild_encounters.json) for editing either in Porymap or a text editor, you'll notice that each group (`gRoute101_Morning`, `gRoute101_Day`, `gRoute101_Evening`, and `gRoute101_Night`) now all have the same encounters as `gRoute101` did. If you only want to add a couple of Pokémon here and there for each time of day, this is probably the easier option.
+This duplicates the encounter group's encounters as well as their labels/map group values. When you open [`wild_encounters.json`](../../src/data/wild_encounters.json) for editing either in Porymap or a text editor, you'll notice that each group (`gSouthTosaReserve_Morning`, `gSouthTosaReserve_Day`, `gSouthTosaReserve_Evening`, and `gSouthTosaReserve_Night`) now all have the same encounters as `gSouthTosaReserve` did. If you only want to add a couple of Pokémon here and there for each time of day, this is probably the easier option.
 
 
 > **NOTE**: the `--copy` option will use up at least an additional 9kb of ROM space. Obviously that's not much even for a GBA ROM, but it's something to keep in mind.
@@ -438,8 +438,8 @@ python3 migration_scripts/add_time_based_encounters.py
 ```json
 "encounters": [
   {
-    "map": "MAP_ROUTE101",
-    "base_label": "gRoute101_Morning",
+    "map": "MAP_SOUTHTOSARESERVE",
+    "base_label": "gSouthTosaReserve_Morning",
     "land_mons": {
       "encounter_rate": 20,
       "mons": [
@@ -507,16 +507,16 @@ python3 migration_scripts/add_time_based_encounters.py
     }
   },
   {
-    "map": "MAP_ROUTE101",
-    "base_label": "gRoute101_Day"
+    "map": "MAP_SOUTHTOSARESERVE",
+    "base_label": "gSouthTosaReserve_Day"
   },
   {
-    "map": "MAP_ROUTE101",
-    "base_label": "gRoute101_Evening"
+    "map": "MAP_SOUTHTOSARESERVE",
+    "base_label": "gSouthTosaReserve_Evening"
   },
   {
-    "map": "MAP_ROUTE101",
-    "base_label": "gRoute101_Night"
+    "map": "MAP_SOUTHTOSARESERVE",
+    "base_label": "gSouthTosaReserve_Night"
   },
 ]
 ```
@@ -533,8 +533,8 @@ python3 migration_scripts/add_time_based_encounters.py --copy
 ```json
 "encounters": [
   {
-    "map": "MAP_ROUTE101",
-    "base_label": "gRoute101_Morning",
+    "map": "MAP_SOUTHTOSARESERVE",
+    "base_label": "gSouthTosaReserve_Morning",
     "land_mons": {
       "encounter_rate": 20,
       "mons": [
@@ -602,8 +602,8 @@ python3 migration_scripts/add_time_based_encounters.py --copy
     }
   },
   {
-    "map": "MAP_ROUTE101",
-    "base_label": "gRoute101_Day",
+    "map": "MAP_SOUTHTOSARESERVE",
+    "base_label": "gSouthTosaReserve_Day",
     "land_mons": {
       "encounter_rate": 20,
       "mons": [
@@ -671,8 +671,8 @@ python3 migration_scripts/add_time_based_encounters.py --copy
     }
   },
   {
-    "map": "MAP_ROUTE101",
-    "base_label": "gRoute101_Evening",
+    "map": "MAP_SOUTHTOSARESERVE",
+    "base_label": "gSouthTosaReserve_Evening",
     "land_mons": {
       "encounter_rate": 20,
       "mons": [
@@ -740,8 +740,8 @@ python3 migration_scripts/add_time_based_encounters.py --copy
     }
   },
   {
-    "map": "MAP_ROUTE101",
-    "base_label": "gRoute101_Night",
+    "map": "MAP_SOUTHTOSARESERVE",
+    "base_label": "gSouthTosaReserve_Night",
     "land_mons": {
       "encounter_rate": 20,
       "mons": [
@@ -810,4 +810,4 @@ python3 migration_scripts/add_time_based_encounters.py --copy
   },
 ]
 ```
-As you can see, the group `gRoute101` and all its encounters were copied into groups that correspond with the four vanilla times of day (Morning/Day/Evening/Night).
+As you can see, the group `gSouthTosaReserve` and all its encounters were copied into groups that correspond with the four vanilla times of day (Morning/Day/Evening/Night).

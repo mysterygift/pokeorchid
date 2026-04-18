@@ -14,7 +14,7 @@ The trees support random yields and properly use plural case on plural yields.
 #define APRICORN_TREE_NONE 0
 
 -#define APRICORN_TREE_COUNT 0
-+#define APRICORN_TREE_ROUTE101_RED_TREE 1
++#define APRICORN_TREE_SOUTHTOSARESERVE_RED_TREE 1
 +
 +#define APRICORN_TREE_COUNT 32
 ```
@@ -31,7 +31,7 @@ const struct ApricornTree gApricornTrees[APRICORN_TREE_COUNT] =
         .apricornType = APRICORN_RED,
     },
 
-+   [APRICORN_TREE_ROUTE101_RED_TREE] =
++   [APRICORN_TREE_SOUTHTOSARESERVE_RED_TREE] =
 +   {
 +       .minimum = 1,
 +       .maximum = 1,

@@ -1,5 +1,5 @@
-voice_group route101
-	voice_keysplit_all voicegroup_route101_drumset
+voice_group southtosareserve
+	voice_keysplit_all voicegroup_southtosareserve_drumset
 	voice_square_1 60, 0, 0, 2, 0, 0, 15, 0
 	voice_square_1 60, 0, 0, 2, 0, 0, 15, 0
 	voice_square_1 60, 0, 0, 2, 0, 0, 15, 0

@@ -754,7 +754,7 @@
 #define FLAG_UNUSED_0x2BB  0x2BB // Unused Flag
 
 // Event Flags
-#define FLAG_HIDE_ROUTE_101_BIRCH_STARTERS_BAG                      0x2BC
+#define FLAG_HIDE_SOUTH_TOSA_RESERVE_BIRCH_STARTERS_BAG                      0x2BC
 #define FLAG_HIDE_APPRENTICE                                        0x2BD
 #define FLAG_HIDE_POKEMON_CENTER_2F_MYSTERY_GIFT_MAN                0x2BE
 #define FLAG_HIDE_BATTLE_TOWER_MULTI_BATTLE_PARTNER_1               0x2C7
@@ -766,7 +766,7 @@
 #define FLAG_HIDE_SAFARI_ZONE_SOUTH_CONSTRUCTION_WORKERS            0x2CD
 #define FLAG_HIDE_MEW                                               0x2CE
 #define FLAG_HIDE_ROUTE_104_RIVAL                                   0x2CF
-#define FLAG_HIDE_ROUTE_101_BIRCH_ZIGZAGOON_BATTLE                  0x2D0
+#define FLAG_HIDE_SOUTH_TOSA_RESERVE_BIRCH_ZIGZAGOON_BATTLE                  0x2D0
 #define FLAG_HIDE_TOSA_PORT_BIRCHS_LAB_BIRCH                  0x2D1
 #define FLAG_HIDE_TOSA_PORT_MAYS_HOUSE_RIVAL_BEDROOM          0x2D2
 #define FLAG_HIDE_ROUTE_103_RIVAL                                   0x2D3
@@ -798,7 +798,7 @@
 #define FLAG_HIDE_SAFARI_ZONE_SOUTH_EAST_EXPANSION                  0x2EB
 #define FLAG_HIDE_LILYCOVE_HARBOR_EVENT_TICKET_TAKER                0x2EC
 #define FLAG_HIDE_SLATEPORT_CITY_SCOTT                              0x2ED
-#define FLAG_HIDE_ROUTE_101_ZIGZAGOON                               0x2EE
+#define FLAG_HIDE_SOUTH_TOSA_RESERVE_ZIGZAGOON                               0x2EE
 #define FLAG_HIDE_VICTORY_ROAD_EXIT_WALLY                           0x2EF
 #define FLAG_HIDE_TOSA_PORT_MOM_OUTSIDE                       0x2F0
 #define FLAG_HIDE_MOSSDEEP_CITY_SPACE_CENTER_1F_STEVEN              0x2F1
@@ -945,7 +945,7 @@
 #define FLAG_HIDE_ROUTE_116_WANDAS_BOYFRIEND                        0x37E
 #define FLAG_HIDE_LILYCOVE_CONTEST_HALL_CONTEST_ATTENDANT_2         0x37F
 #define FLAG_HIDE_TOSA_PORT_BIRCHS_LAB_UNKNOWN_0x380          0x380
-#define FLAG_HIDE_ROUTE_101_BIRCH                                   0x381
+#define FLAG_HIDE_SOUTH_TOSA_RESERVE_BIRCH                                   0x381
 #define FLAG_HIDE_ROUTE_103_BIRCH                                   0x382
 #define FLAG_HIDE_TRICK_HOUSE_END_MAN                               0x383
 #define FLAG_HIDE_ROUTE_110_TEAM_AQUA                               0x384
@@ -1039,7 +1039,7 @@
 #define FLAG_HIDE_ROUTE_120_KECLEON_5                               0x3DC
 #define FLAG_HIDE_ROUTE_119_KECLEON_1                               0x3DD
 #define FLAG_HIDE_ROUTE_119_KECLEON_2                               0x3DE
-#define FLAG_HIDE_ROUTE_101_BOY                                     0x3DF
+#define FLAG_HIDE_SOUTH_TOSA_RESERVE_BOY                                     0x3DF
 #define FLAG_HIDE_WEATHER_INSTITUTE_2F_AQUA_GRUNT_M                 0x3E0
 #define FLAG_HIDE_LILYCOVE_POKEMON_CENTER_CONTEST_LADY_MON          0x3E1
 #define FLAG_HIDE_MT_CHIMNEY_LAVA_COOKIE_LADY                       0x3E2

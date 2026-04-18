@@ -15,7 +15,7 @@
 .include "sound/voicegroups/keysplits/french_horn.inc"
 
 .include "sound/voicegroups/route110.inc"
-.include "sound/voicegroups/route101.inc"
+.include "sound/voicegroups/southtosareserve.inc"
 .include "sound/voicegroups/fanfare.inc"
 .include "sound/voicegroups/gym.inc"
 .include "sound/voicegroups/route120.inc"
@@ -26,7 +26,7 @@
 .include "sound/voicegroups/oldale.inc"
 .include "sound/voicegroups/lilycove_museum.inc"
 .include "sound/voicegroups/route122.inc"
-.include "sound/voicegroups/drumsets/route101.inc"
+.include "sound/voicegroups/drumsets/southtosareserve.inc"
 .include "sound/voicegroups/oceanic_museum.inc"
 .include "sound/voicegroups/victory_gym_leader.inc"
 .include "sound/voicegroups/victory_wild.inc"

@@ -178,14 +178,14 @@
       "layout_version": "emerald"
     },
     {
-      "id": "LAYOUT_ROUTE101",
-      "name": "Route101_Layout",
+      "id": "LAYOUT_SOUTHTOSARESERVE",
+      "name": "SouthTosaReserve_Layout",
       "width": 80,
       "height": 50,
       "primary_tileset": "gTileset_General",
       "secondary_tileset": "gTileset_Slateport",
-      "border_filepath": "data/layouts/Route101/border.bin",
-      "blockdata_filepath": "data/layouts/Route101/map.bin",
+      "border_filepath": "data/layouts/SouthTosaReserve/border.bin",
+      "blockdata_filepath": "data/layouts/SouthTosaReserve/map.bin",
       "layout_version": "emerald"
     },
     {

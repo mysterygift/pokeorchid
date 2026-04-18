@@ -141,7 +141,7 @@ gStdScripts_End::
 	.include "data/maps/FallarborTown/scripts.inc"
 	.include "data/maps/VerdanturfTown/scripts.inc"
 	.include "data/maps/PacifidlogTown/scripts.inc"
-	.include "data/maps/Route101/scripts.inc"
+	.include "data/maps/SouthTosaReserve/scripts.inc"
 	.include "data/maps/Route102/scripts.inc"
 	.include "data/maps/Route103/scripts.inc"
 	.include "data/maps/Route104/scripts.inc"

@@ -365,7 +365,7 @@ gSongTable::
 	song mus_c_comm_center, MUSIC_PLAYER_BGM, 0
 	song mus_gsc_pewter, MUSIC_PLAYER_BGM, 0
 	song mus_c_vs_legend_beast, MUSIC_PLAYER_BGM, 0
-	song mus_route101, MUSIC_PLAYER_BGM, 0
+	song mus_southtosareserve, MUSIC_PLAYER_BGM, 0
 	song mus_route110, MUSIC_PLAYER_BGM, 0
 	song mus_route120, MUSIC_PLAYER_BGM, 0
 	song mus_petalburg, MUSIC_PLAYER_BGM, 0
