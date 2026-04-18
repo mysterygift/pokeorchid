@@ -4079,7 +4079,7 @@ static void DebugAction_DestroyFollowerNPC(u8 taskId)
     X(MUS_C_COMM_CENTER)            \
     X(MUS_GSC_PEWTER)               \
     X(MUS_C_VS_LEGEND_BEAST)        \
-    X(MUS_SOUTHTOSARESERVE)                 \
+    X(MUS_SOUTHTOSARESERVE)         \
     X(MUS_ROUTE110)                 \
     X(MUS_ROUTE120)                 \
     X(MUS_PETALBURG)                \
@@ -4278,7 +4278,7 @@ static void DebugAction_DestroyFollowerNPC(u8 taskId)
     X(MUS_RG_ENCOUNTER_DEOXYS)      \
     X(MUS_RG_TRAINER_TOWER)         \
     X(MUS_RG_SLOW_PALLET)           \
-    X(MUS_RG_TEACHY_TV_MENU)
+    X(MUS_RG_TEACHY_TV_MENU)        
 
 #define SOUND_LIST_SE               \
     X(SE_USE_ITEM)                  \

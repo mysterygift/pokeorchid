@@ -2,7 +2,7 @@
   "id": "MAP_TOSA_PORT",
   "name": "TosaPort",
   "layout": "LAYOUT_TOSA_PORT",
-  "music": "MUS_SOOTOPOLIS",
+  "music": "MUS_TOSA_PORT",
   "region_map_section": "MAPSEC_TOSA_PORT",
   "requires_flash": false,
   "weather": "WEATHER_SUNNY",

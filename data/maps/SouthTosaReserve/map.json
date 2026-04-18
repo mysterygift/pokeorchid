@@ -2,7 +2,7 @@
   "id": "MAP_SOUTHTOSARESERVE",
   "name": "SouthTosaReserve",
   "layout": "LAYOUT_SOUTHTOSARESERVE",
-  "music": "MUS_ROUTE120",
+  "music": "MUS_SOUTHTOSARESERVE",
   "region_map_section": "MAPSEC_SOUTH_TOSA_RESERVE",
   "requires_flash": false,
   "weather": "WEATHER_SUNNY",
