@@ -585,6 +585,7 @@ enum BattleCoordTypes GetBattlerCoordsIndex(enum BattlerId battler)
 #define ORCHID_BOX_H         32
 #define ORCHID_TEXT_RIGHT    (ORCHID_BOX_W - 5)   // Lv right edge (battle_ext.hb_B)
 #define ORCHID_TAB_TEXT_Y    (-2)                 // tab text cell top
+#define ORCHID_HP_FONT       FONT_SMALL_NARROWER  // player HP numbers on the tab
 
 static void SpriteCB_OrchidStatusIcon(struct Sprite *sprite);
 
@@ -833,8 +834,9 @@ static void OrchidDrawTab(u8 healthboxSpriteId)
             ptr = ConvertIntToDecimalStringN(text, right->hOrchid_CurrHp, STR_CONV_MODE_LEFT_ALIGN, 4);
             *ptr++ = CHAR_SLASH;
             ConvertIntToDecimalStringN(ptr, right->hOrchid_MaxHp, STR_CONV_MODE_RIGHT_ALIGN, right->hOrchid_MaxHp >= 1000 ? 4 : 3);
-            x = ORCHID_TEXT_RIGHT - lvWidth - 7 - GetStringWidth(FONT_SMALL, text, 0);
-            OrchidBoxPrint(tileNum, x, ORCHID_TAB_TEXT_Y, text, FONT_SMALL, OHB_COL_BRASS_LIGHT, OHB_COL_FRAME_DARK);
+            // 4px digits so "999/999" + "Lv100" stay inside the tab (FONT_SMALL overflowed its slanted end)
+            x = ORCHID_TEXT_RIGHT - lvWidth - 7 - GetStringWidth(ORCHID_HP_FONT, text, 0);
+            OrchidBoxPrint(tileNum, x, ORCHID_TAB_TEXT_Y, text, ORCHID_HP_FONT, OHB_COL_BRASS_LIGHT, OHB_COL_FRAME_DARK);
         }
     }
     else if (OrchidShowCaughtBall(battler))
