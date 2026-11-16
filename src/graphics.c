@@ -1756,9 +1756,9 @@ const u16 gSatchelPocketIcons_Pal[] = INCGFX_U16("graphics/bag/pocket_icons.png"
 const u32 gOrchidStatusIcons_Gfx[] = INCGFX_U32("graphics/interface/orchid_status_icons.png", ".4bpp.smol");
 const u16 gOrchidStatusIcons_Pal[] = INCGFX_U16("graphics/interface/orchid_status_icons.png", ".gbapal");
 // Orchid UI: party (dev_scripts/orchid_ui/export_party.py)
-const u8 gOrchidPartySlots_Gfx[] = INCGFX_U8("graphics/party_menu/orchid_slots.png", ".4bpp");
-const u8 gOrchidPartyButtons_Gfx[] = INCGFX_U8("graphics/party_menu/orchid_buttons.png", ".4bpp");
-const u8 gOrchidPartyGrid_Gfx[] = INCGFX_U8("graphics/party_menu/orchid_grid.png", ".4bpp");
+const u32 gOrchidPartySlots_Gfx[] = INCGFX_U32("graphics/party_menu/orchid_slots.png", ".4bpp");
+const u32 gOrchidPartyButtons_Gfx[] = INCGFX_U32("graphics/party_menu/orchid_buttons.png", ".4bpp");
+const u32 gOrchidPartyGrid_Gfx[] = INCGFX_U32("graphics/party_menu/orchid_grid.png", ".4bpp");
 const u8 gSatchelRing_Gfx[] = INCGFX_U8("graphics/bag/satchel_ring.png", ".4bpp");
 const u8 gSatchelThumb_Gfx[] = INCGFX_U8("graphics/bag/satchel_thumb.png", ".4bpp");
 const u8 gSatchelArrow_Gfx[] = INCGFX_U8("graphics/bag/satchel_arrow.png", ".4bpp");
