@@ -104,8 +104,29 @@ def open_gif():
     save_gif(frames, "dex_open.gif")
 
 
+def cry_gif():
+    """CRY page at 60 fps (every GBA frame, duration 17 ms): idle trace, A at frame 20 plays the
+    cry (vanilla waveform window + needle logic driven by the real cry samples), then settles."""
+    sc = M.Scope()
+    pcm = M.cry_pcm(M.info(M.ENTRIES[0])["folder"])
+    frames, start = [], 20
+    total = start + len(pcm) // 224 + 70
+    for f in range(total):
+        t = f - start
+        playing = t >= 0
+        snap = M.pcm_snapshot(pcm, t) if playing and t * 224 < len(pcm) else None
+        sc.frame(snap, playing=playing and snap is not None)
+        frames.append(M.render_cry(entry_index=0, scope=sc, grid_scroll=f // 4))
+    fr = [im.convert("RGB").resize((M.W * 2, M.H * 2), Image.NEAREST) for im in frames]
+    fr[0].save(os.path.join(OUT, "cry_anim.gif"), save_all=True, append_images=fr[1:], duration=17, loop=0,
+               optimize=False)
+    print("cry_anim.gif", len(fr), "frames")
+
+
 if __name__ == "__main__":
-    which = sys.argv[2:] or ["scroll", "open"]
+    which = sys.argv[2:] or ["scroll", "open", "cry"]
+    if "cry" in which:
+        cry_gif()
     if "scroll" in which:
         scroll_gif()
     if "open" in which:
