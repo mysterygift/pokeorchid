@@ -12,7 +12,9 @@
 #include "sprite.h"
 #include "window.h"
 #include "util.h"
+#include "trig.h"
 #include "constants/items.h"
+#include "data/item_menu_satchel.h"
 
 enum {
     TAG_BAG_GFX = 100,
@@ -20,18 +22,21 @@ enum {
     TAG_ITEM_ICON,
     TAG_ITEM_ICON_ALT,
 };
+// Satchel bag sprites. The pocket-icon palette is shared by the ring and the scrollbar thumb.
+#define TAG_SATCHEL_POCKET_ICONS 120
+#define TAG_SATCHEL_RING         121
+#define TAG_SATCHEL_THUMB        122
+#define TAG_SATCHEL_ARROW        123
 #define TAG_BERRY_CHECK_CIRCLE_GFX 10000
 #define TAG_BERRY_PIC_PAL 30020
 
 // this file's functions
 static void SpriteCB_BagVisualSwitchingPockets(struct Sprite *sprite);
 static void SpriteCB_ShakeBagSprite(struct Sprite *sprite);
-static void SpriteCB_SwitchPocketRotatingBallInit(struct Sprite *sprite);
-static void SpriteCB_SwitchPocketRotatingBallContinue(struct Sprite *sprite);
+static void SpriteCB_SatchelRing(struct Sprite *sprite);
+static void SpriteCB_SatchelPocketArrow(struct Sprite *sprite);
 
 // static const rom data
-static const u16 sRotatingBall_Pal[] = INCGFX_U16("graphics/bag/rotating_ball.png", ".gbapal");
-static const u8 sRotatingBall_Gfx[] = INCGFX_U8("graphics/bag/rotating_ball.png", ".4bpp");
 static const u8 sCherryUnused[] = INCGFX_U8("graphics/unused/cherry.png", ".4bpp");
 static const u16 sCherryUnused_Pal[] = INCGFX_U16("graphics/unused/cherry.png", ".gbapal");
 
@@ -58,31 +63,32 @@ static const union AnimCmd sSpriteAnim_Bag_Closed[] =
     ANIMCMD_END
 };
 
+// Satchel sheet: 6 frames of 64x64 (64 tiles each), closed first, then the pockets in pocket order.
 static const union AnimCmd sSpriteAnim_Bag_Items[] =
 {
     ANIMCMD_FRAME(64, 4),
     ANIMCMD_END
 };
 
-static const union AnimCmd sSpriteAnim_Bag_KeyItems[] =
+static const union AnimCmd sSpriteAnim_Bag_Pokeballs[] =
 {
     ANIMCMD_FRAME(128, 4),
     ANIMCMD_END
 };
 
-static const union AnimCmd sSpriteAnim_Bag_Pokeballs[] =
+static const union AnimCmd sSpriteAnim_Bag_TMsHMs[] =
 {
     ANIMCMD_FRAME(192, 4),
     ANIMCMD_END
 };
 
-static const union AnimCmd sSpriteAnim_Bag_TMsHMs[] =
+static const union AnimCmd sSpriteAnim_Bag_Berries[] =
 {
     ANIMCMD_FRAME(256, 4),
     ANIMCMD_END
 };
 
-static const union AnimCmd sSpriteAnim_Bag_Berries[] =
+static const union AnimCmd sSpriteAnim_Bag_KeyItems[] =
 {
     ANIMCMD_FRAME(320, 4),
     ANIMCMD_END
@@ -124,19 +130,25 @@ static const union AffineAnimCmd *const sBagAffineAnimCmds[] =
     [ANIM_BAG_SHAKE]  = sSpriteAffineAnim_BagShake
 };
 
+// The bag sprite is now the Orchid satchel (64x384, 6 frames).
 const struct CompressedSpriteSheet gBagMaleSpriteSheet =
 {
-    gBagMaleTiles, 0x3000, TAG_BAG_GFX
+    gSatchelMale_Gfx, 0x3000, TAG_BAG_GFX
 };
 
 const struct CompressedSpriteSheet gBagFemaleSpriteSheet =
 {
-    gBagFemaleTiles, 0x3000, TAG_BAG_GFX
+    gSatchelFemale_Gfx, 0x3000, TAG_BAG_GFX
 };
 
-const struct SpritePalette gBagPaletteTable =
+const struct SpritePalette gBagMalePaletteTable =
 {
-    gBagPalette, TAG_BAG_GFX
+    gSatchelMale_Pal, TAG_BAG_GFX
+};
+
+const struct SpritePalette gBagFemalePaletteTable =
+{
+    gSatchelFemale_Pal, TAG_BAG_GFX
 };
 
 static const struct SpriteTemplate sBagSpriteTemplate =
@@ -148,74 +160,121 @@ static const struct SpriteTemplate sBagSpriteTemplate =
     .affineAnims = sBagAffineAnimCmds,
 };
 
-static const struct OamData sRotatingBallOamData =
+// Satchel pocket buttons: 32x32, frames 0-4 normal, 5-9 selected (pocket order).
+static const struct OamData sSatchelOamData_32x32 =
 {
-    .y = 0,
     .affineMode = ST_OAM_AFFINE_OFF,
     .objMode = ST_OAM_OBJ_NORMAL,
-    .mosaic = FALSE,
     .bpp = ST_OAM_4BPP,
-    .shape = SPRITE_SHAPE(16x16),
-    .x = 0,
-    .matrixNum = 4,
-    .size = SPRITE_SIZE(16x16),
-    .tileNum = 0,
-    .priority = 2,
-    .paletteNum = 0,
-    .affineParam = 0
+    .shape = SPRITE_SHAPE(32x32),
+    .size = SPRITE_SIZE(32x32),
+    .priority = 1,
 };
 
-static const union AnimCmd sSpriteAffineAnim_RotatingBallStationary[] =
+static const struct OamData sSatchelOamData_8x16 =
 {
-    ANIMCMD_FRAME(0, 0),
-    ANIMCMD_END
+    .affineMode = ST_OAM_AFFINE_OFF,
+    .objMode = ST_OAM_OBJ_NORMAL,
+    .bpp = ST_OAM_4BPP,
+    .shape = SPRITE_SHAPE(8x16),
+    .size = SPRITE_SIZE(8x16),
+    .priority = 1,
 };
 
-static const union AnimCmd *const sRotatingBallSpriteAnimTable[] =
+#define POCKET_BUTTON_FRAME(n) static const union AnimCmd sSpriteAnim_PocketButton##n[] = { ANIMCMD_FRAME((n) * 16, 0), ANIMCMD_END }
+POCKET_BUTTON_FRAME(0);
+POCKET_BUTTON_FRAME(1);
+POCKET_BUTTON_FRAME(2);
+POCKET_BUTTON_FRAME(3);
+POCKET_BUTTON_FRAME(4);
+POCKET_BUTTON_FRAME(5);
+POCKET_BUTTON_FRAME(6);
+POCKET_BUTTON_FRAME(7);
+POCKET_BUTTON_FRAME(8);
+POCKET_BUTTON_FRAME(9);
+#undef POCKET_BUTTON_FRAME
+
+// Anim k = pocket k normal, anim k + POCKETS_COUNT = pocket k selected
+static const union AnimCmd *const sSpriteAnimTable_PocketButton[] =
 {
-    sSpriteAffineAnim_RotatingBallStationary
+    sSpriteAnim_PocketButton0, sSpriteAnim_PocketButton1, sSpriteAnim_PocketButton2,
+    sSpriteAnim_PocketButton3, sSpriteAnim_PocketButton4, sSpriteAnim_PocketButton5,
+    sSpriteAnim_PocketButton6, sSpriteAnim_PocketButton7, sSpriteAnim_PocketButton8,
+    sSpriteAnim_PocketButton9,
 };
 
-static const union AffineAnimCmd sSpriteAffineAnim_RotatingBallRotation1[] =
+static const struct CompressedSpriteSheet sSpriteSheet_SatchelPocketIcons =
 {
-    AFFINEANIMCMD_FRAME(0, 0, 8, 16),
-    AFFINEANIMCMD_END
+    gSatchelPocketIcons_Gfx, 32 * 320 / 2, TAG_SATCHEL_POCKET_ICONS
 };
 
-static const union AffineAnimCmd sSpriteAffineAnim_RotatingBallRotation2[] =
+static const struct SpritePalette sSpritePal_SatchelPocketIcons =
 {
-    AFFINEANIMCMD_FRAME(0, 0, 248, 16),
-    AFFINEANIMCMD_END
+    gSatchelPocketIcons_Pal, TAG_SATCHEL_POCKET_ICONS
 };
 
-static const union AffineAnimCmd *const sRotatingBallAnimCmds[] =
+static const struct SpriteSheet sSpriteSheet_SatchelRing =
 {
-    sSpriteAffineAnim_RotatingBallRotation1,
+    gSatchelRing_Gfx, 32 * 32 / 2, TAG_SATCHEL_RING
 };
 
-static const union AffineAnimCmd *const sRotatingBallAnimCmds_FullRotation[] =
+static const struct SpriteSheet sSpriteSheet_SatchelThumb =
 {
-    sSpriteAffineAnim_RotatingBallRotation2,
+    gSatchelThumb_Gfx, 8 * 16 / 2, TAG_SATCHEL_THUMB
 };
 
-static const struct SpriteSheet sRotatingBallTable =
+static const struct SpriteSheet sSpriteSheet_SatchelArrow =
 {
-    sRotatingBall_Gfx, sizeof(sRotatingBall_Gfx), TAG_ROTATING_BALL_GFX
+    gSatchelArrow_Gfx, 8 * 16 / 2, TAG_SATCHEL_ARROW
 };
 
-static const struct SpritePalette sRotatingBallPaletteTable =
+static const struct SpritePalette sSpritePal_SatchelArrow =
 {
-    sRotatingBall_Pal, TAG_ROTATING_BALL_GFX
+    gSatchelArrow_Pal, TAG_SATCHEL_ARROW
 };
 
-static const struct SpriteTemplate sRotatingBallSpriteTemplate =
+static const struct SpriteTemplate sSpriteTemplate_SatchelPocketButton =
 {
-    .tileTag = TAG_ROTATING_BALL_GFX,
-    .paletteTag = TAG_ROTATING_BALL_GFX,
-    .oam = &sRotatingBallOamData,
-    .anims = sRotatingBallSpriteAnimTable,
-    .affineAnims = sRotatingBallAnimCmds,
-    .callback = SpriteCB_SwitchPocketRotatingBallInit,
+    .tileTag = TAG_SATCHEL_POCKET_ICONS,
+    .paletteTag = TAG_SATCHEL_POCKET_ICONS,
+    .oam = &sSatchelOamData_32x32,
+    .anims = sSpriteAnimTable_PocketButton,
+    .images = NULL,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallbackDummy,
+};
+
+static const struct SpriteTemplate sSpriteTemplate_SatchelRing =
+{
+    .tileTag = TAG_SATCHEL_RING,
+    .paletteTag = TAG_SATCHEL_POCKET_ICONS,
+    .oam = &sSatchelOamData_32x32,
+    .anims = gDummySpriteAnimTable,
+    .images = NULL,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCB_SatchelRing,
+};
+
+static const struct SpriteTemplate sSpriteTemplate_SatchelThumb =
+{
+    .tileTag = TAG_SATCHEL_THUMB,
+    .paletteTag = TAG_SATCHEL_POCKET_ICONS,
+    .oam = &sSatchelOamData_8x16,
+    .anims = gDummySpriteAnimTable,
+    .images = NULL,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallbackDummy,
+};
+
+static const struct SpriteTemplate sSpriteTemplate_SatchelArrow =
+{
+    .tileTag = TAG_SATCHEL_ARROW,
+    .paletteTag = TAG_SATCHEL_ARROW,
+    .oam = &sSatchelOamData_8x16,
+    .anims = gDummySpriteAnimTable,
+    .images = NULL,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCB_SatchelPocketArrow,
 };
 
 static const struct OamData sBerryPicOamData =
@@ -370,9 +429,22 @@ void RemoveBagSprite(u8 id)
 
 void AddBagVisualSprite(u8 bagPocketId)
 {
+    u32 i;
     u8 *spriteId = &gBagMenu->spriteIds[ITEMMENUSPRITE_BAG];
-    *spriteId = CreateSprite(&sBagSpriteTemplate, 68, 66, 0);
+
+    // The satchel sits in the middle of the pocket wheel; the pocket buttons are drawn over it.
+    *spriteId = CreateSprite(&sBagSpriteTemplate, SATCHEL_WHEEL_X, SATCHEL_WHEEL_Y, 2);
     SetBagVisualPocketId(bagPocketId, FALSE);
+
+    for (i = 0; i < POCKETS_COUNT; i++)
+    {
+        u8 buttonId = CreateSprite(&sSpriteTemplate_SatchelPocketButton, sSatchelButtonPos[i][0], sSatchelButtonPos[i][1], 1);
+        if (buttonId == MAX_SPRITES)
+            buttonId = SPRITE_NONE;
+        else
+            StartSpriteAnim(&gSprites[buttonId], i == bagPocketId ? i + POCKETS_COUNT : i);
+        gBagMenu->spriteIds[ITEMMENUSPRITE_POCKET_BUTTON + i] = buttonId;
+    }
 }
 
 #define sPocketId data[0]
@@ -402,7 +474,9 @@ static void SpriteCB_BagVisualSwitchingPockets(struct Sprite *sprite)
     else
     {
         StartSpriteAnim(sprite, sprite->sPocketId);
-        sprite->callback = SpriteCallbackDummy;
+        // A pocket switch also shakes the satchel (see ShakeBagSprite). Hand over to the
+        // shake callback, which resets the affine anim once the shake ends (or right away).
+        sprite->callback = SpriteCB_ShakeBagSprite;
     }
 }
 
@@ -414,7 +488,9 @@ void ShakeBagSprite(void)
     if (sprite->affineAnimEnded)
     {
         StartSpriteAffineAnim(sprite, ANIM_BAG_SHAKE);
-        sprite->callback = SpriteCB_ShakeBagSprite;
+        // Don't interrupt the pocket-switch rise; it hands over to SpriteCB_ShakeBagSprite when done.
+        if (sprite->callback != SpriteCB_BagVisualSwitchingPockets)
+            sprite->callback = SpriteCB_ShakeBagSprite;
     }
 }
 
@@ -428,43 +504,232 @@ static void SpriteCB_ShakeBagSprite(struct Sprite *sprite)
     }
 }
 
+// The satchel bag has no rotating ball; the travelling ring (StartSatchelPocketRing) replaces it.
 void AddSwitchPocketRotatingBallSprite(s16 rotationDirection)
 {
-    u8 *spriteId = &gBagMenu->spriteIds[ITEMMENUSPRITE_BALL];
-    LoadSpriteSheet(&sRotatingBallTable);
-    LoadSpritePalette(&sRotatingBallPaletteTable);
-    *spriteId = CreateSprite(&sRotatingBallSpriteTemplate, 16, 16, 0);
-    gSprites[*spriteId].data[0] = rotationDirection;
 }
 
-static void UpdateSwitchPocketRotatingBallCoords(struct Sprite *sprite)
+// Loads the satchel UI sprite sheets/palettes (pocket buttons, ring, scrollbar thumb, pocket arrows).
+// Everything is freed by ResetSpriteData/FreeAllSpritePalettes when the bag closes.
+void LoadSatchelSpriteGfx(void)
 {
-    sprite->centerToCornerVecX = sprite->data[1] - ((sprite->data[3] + 1) & 1);
-    sprite->centerToCornerVecY = sprite->data[1] - ((sprite->data[3] + 1) & 1);
+    LoadCompressedSpriteSheet(&sSpriteSheet_SatchelPocketIcons);
+    LoadSpritePalette(&sSpritePal_SatchelPocketIcons);
+    LoadSpriteSheet(&sSpriteSheet_SatchelRing);
+    LoadSpriteSheet(&sSpriteSheet_SatchelThumb);
+    LoadSpriteSheet(&sSpriteSheet_SatchelArrow);
+    LoadSpritePalette(&sSpritePal_SatchelArrow);
 }
 
-static void SpriteCB_SwitchPocketRotatingBallInit(struct Sprite *sprite)
+// --- Travelling selection ring -------------------------------------------------------------
+
+#define sRingAngle  data[0] // Current angle in degrees (0-359, 0 = +x, clockwise on screen)
+#define sRingFrom   data[1]
+#define sRingDelta  data[2]
+#define sRingTimer  data[3]
+#define sRingPocket data[4]
+
+#define SATCHEL_RING_FRAMES 12
+
+// Rounded RADIUS * trig / 4096 (Sin2/Cos2 return 4096 = 1.0)
+static s32 SatchelRingOffset(s32 trig)
 {
-    sprite->oam.affineMode = ST_OAM_AFFINE_NORMAL;
-    if (sprite->data[0] == -1)
-        sprite->affineAnims = sRotatingBallAnimCmds;
+    s32 v = SATCHEL_BUTTON_RADIUS * trig;
+    return (v >= 0) ? (v + 2048) / 4096 : (v - 2048) / 4096;
+}
+
+static void SetSatchelRingAngle(struct Sprite *sprite, s32 angle)
+{
+    angle %= 360;
+    if (angle < 0)
+        angle += 360;
+    sprite->sRingAngle = angle;
+    sprite->x = SATCHEL_WHEEL_X + SatchelRingOffset(Cos2(angle));
+    sprite->y = SATCHEL_WHEEL_Y + SatchelRingOffset(Sin2(angle));
+}
+
+static void SetSatchelPocketButtonSelected(u8 pocket, bool8 selected)
+{
+    u8 spriteId = gBagMenu->spriteIds[ITEMMENUSPRITE_POCKET_BUTTON + pocket];
+    if (spriteId != SPRITE_NONE)
+        StartSpriteAnim(&gSprites[spriteId], selected ? pocket + POCKETS_COUNT : pocket);
+}
+
+static void SpriteCB_SatchelRing(struct Sprite *sprite)
+{
+    s32 t;
+
+    if (sprite->sRingTimer < SATCHEL_RING_FRAMES)
+        sprite->sRingTimer++;
+    t = sprite->sRingTimer;
+
+    // Ease-out: from + delta * t * (24 - t) / 144
+    SetSatchelRingAngle(sprite, sprite->sRingFrom + sprite->sRingDelta * t * (2 * SATCHEL_RING_FRAMES - t) / (SATCHEL_RING_FRAMES * SATCHEL_RING_FRAMES));
+
+    if (t >= SATCHEL_RING_FRAMES)
+    {
+        // Arrived: the button's own selected frame takes over from the ring
+        SetSatchelPocketButtonSelected(sprite->sRingPocket, TRUE);
+        gBagMenu->spriteIds[ITEMMENUSPRITE_POCKET_RING] = SPRITE_NONE;
+        DestroySprite(sprite);
+    }
+}
+
+// Sends the gold ring along the wheel from fromPocket's button (or from wherever the ring
+// currently is, if it is still travelling) to toPocket's, going the way of the press
+// (direction > 0 = R / right = clockwise = increasing angle).
+void StartSatchelPocketRing(u8 fromPocket, u8 toPocket, s16 direction)
+{
+    u8 *ringId = &gBagMenu->spriteIds[ITEMMENUSPRITE_POCKET_RING];
+    struct Sprite *ring;
+    s32 from, delta;
+    u32 i;
+
+    for (i = 0; i < POCKETS_COUNT; i++)
+        SetSatchelPocketButtonSelected(i, FALSE);
+
+    if (*ringId == SPRITE_NONE)
+    {
+        u8 spriteId = CreateSprite(&sSpriteTemplate_SatchelRing, sSatchelButtonPos[fromPocket][0], sSatchelButtonPos[fromPocket][1], 0);
+        if (spriteId == MAX_SPRITES)
+        {
+            // No sprite slot: just jump straight to the new pocket
+            SetSatchelPocketButtonSelected(toPocket, TRUE);
+            return;
+        }
+        *ringId = spriteId;
+        from = sSatchelButtonAngle[fromPocket];
+    }
     else
-        sprite->affineAnims = sRotatingBallAnimCmds_FullRotation;
+    {
+        from = gSprites[*ringId].sRingAngle;
+    }
 
-    InitSpriteAffineAnim(sprite);
-    sprite->data[1] = sprite->centerToCornerVecX;
-    sprite->data[1] = sprite->centerToCornerVecY;
-    UpdateSwitchPocketRotatingBallCoords(sprite);
-    sprite->callback = SpriteCB_SwitchPocketRotatingBallContinue;
+    // Shortest step in the direction of the press. This also covers IsVictoryCatch()
+    // skipping the Poke Ball pocket (the ring then simply travels two buttons).
+    if (direction > 0)
+        delta = ((sSatchelButtonAngle[toPocket] - from) % 360 + 360) % 360;
+    else
+        delta = -(((from - sSatchelButtonAngle[toPocket]) % 360 + 360) % 360);
+
+    ring = &gSprites[*ringId];
+    ring->sRingFrom = from;
+    ring->sRingDelta = delta;
+    ring->sRingTimer = 0;
+    ring->sRingPocket = toPocket;
+    SetSatchelRingAngle(ring, from);
 }
 
-static void SpriteCB_SwitchPocketRotatingBallContinue(struct Sprite *sprite)
+#undef sRingAngle
+#undef sRingFrom
+#undef sRingDelta
+#undef sRingTimer
+#undef sRingPocket
+
+// --- Scrollbar thumb ------------------------------------------------------------------------
+
+static void SetSatchelScrollThumbPos(struct Sprite *sprite, u16 scroll, u16 maxScroll)
 {
-    sprite->data[3]++;
-    UpdateSwitchPocketRotatingBallCoords(sprite);
-    if (sprite->data[3] == 16)
-        RemoveBagSprite(ITEMMENUSPRITE_BALL);
+    if (scroll > maxScroll)
+        scroll = maxScroll;
+    // SATCHEL_TRACK_TOP is the thumb's top edge; the sprite is positioned by its centre (8x16)
+    sprite->y = SATCHEL_TRACK_TOP + (SATCHEL_TRACK_SPAN * scroll) / maxScroll + 8;
 }
+
+// Only shown when the pocket scrolls (maxScroll = numItemStacks - numShownItems > 0)
+void CreateSatchelScrollThumb(u16 scroll, u16 maxScroll)
+{
+    u8 *spriteId = &gBagMenu->spriteIds[ITEMMENUSPRITE_SCROLL_THUMB];
+
+    if (*spriteId != SPRITE_NONE || maxScroll == 0)
+        return;
+    *spriteId = CreateSprite(&sSpriteTemplate_SatchelThumb, SATCHEL_TRACK_X, SATCHEL_TRACK_TOP + 8, 0);
+    if (*spriteId == MAX_SPRITES)
+        *spriteId = SPRITE_NONE;
+    else
+        SetSatchelScrollThumbPos(&gSprites[*spriteId], scroll, maxScroll);
+}
+
+void UpdateSatchelScrollThumb(u16 scroll, u16 maxScroll)
+{
+    u8 spriteId = gBagMenu->spriteIds[ITEMMENUSPRITE_SCROLL_THUMB];
+
+    if (spriteId != SPRITE_NONE && maxScroll != 0)
+        SetSatchelScrollThumbPos(&gSprites[spriteId], scroll, maxScroll);
+}
+
+void DestroySatchelScrollThumb(void)
+{
+    u8 *spriteId = &gBagMenu->spriteIds[ITEMMENUSPRITE_SCROLL_THUMB];
+
+    if (*spriteId != SPRITE_NONE)
+    {
+        DestroySprite(&gSprites[*spriteId]);
+        *spriteId = SPRITE_NONE;
+    }
+}
+
+// --- Pocket switch arrows -------------------------------------------------------------------
+
+#define sArrowDir   data[0] // -1 = left, 1 = right
+#define sArrowTimer data[1]
+
+// Gentle Gen 3 style bounce: x2 goes 0 -> 2 -> 0 (outwards) over 32 frames
+static void SpriteCB_SatchelPocketArrow(struct Sprite *sprite)
+{
+    u8 phase = (sprite->sArrowTimer++) & 31;
+    s16 offset = (phase < 16 ? phase : 31 - phase) * 3 / 16; // 0..2
+
+    sprite->x2 = sprite->sArrowDir * offset;
+}
+
+void CreateSatchelPocketArrows(void)
+{
+    u8 *leftId = &gBagMenu->spriteIds[ITEMMENUSPRITE_POCKET_ARROW_LEFT];
+    u8 *rightId = &gBagMenu->spriteIds[ITEMMENUSPRITE_POCKET_ARROW_RIGHT];
+
+    if (*leftId == SPRITE_NONE)
+    {
+        *leftId = CreateSprite(&sSpriteTemplate_SatchelArrow, SATCHEL_ARROW_LEFT_X, SATCHEL_ARROW_Y, 0);
+        if (*leftId == MAX_SPRITES)
+            *leftId = SPRITE_NONE;
+        else
+            gSprites[*leftId].sArrowDir = -1;
+    }
+    if (*rightId == SPRITE_NONE)
+    {
+        *rightId = CreateSprite(&sSpriteTemplate_SatchelArrow, SATCHEL_ARROW_RIGHT_X, SATCHEL_ARROW_Y, 0);
+        if (*rightId == MAX_SPRITES)
+        {
+            *rightId = SPRITE_NONE;
+        }
+        else
+        {
+            // The art points left; the right arrow is the same tiles flipped
+            // (sprite->hFlip is XORed into the OAM flip bits by the anim code)
+            gSprites[*rightId].hFlip = TRUE;
+            gSprites[*rightId].oam.matrixNum |= ST_OAM_HFLIP;
+            gSprites[*rightId].sArrowDir = 1;
+        }
+    }
+}
+
+void DestroySatchelPocketArrows(void)
+{
+    u32 i;
+
+    for (i = ITEMMENUSPRITE_POCKET_ARROW_LEFT; i <= ITEMMENUSPRITE_POCKET_ARROW_RIGHT; i++)
+    {
+        if (gBagMenu->spriteIds[i] != SPRITE_NONE)
+        {
+            DestroySprite(&gSprites[gBagMenu->spriteIds[i]]);
+            gBagMenu->spriteIds[i] = SPRITE_NONE;
+        }
+    }
+}
+
+#undef sArrowDir
+#undef sArrowTimer
 
 void AddBagItemIconSprite(enum Item itemId, u8 id)
 {
@@ -480,8 +745,9 @@ void AddBagItemIconSprite(enum Item itemId, u8 id)
         if (iconSpriteId != MAX_SPRITES)
         {
             *spriteId = iconSpriteId;
-            gSprites[iconSpriteId].x2 = 24;
-            gSprites[iconSpriteId].y2 = 88;
+            // Centred in the satchel screen's icon well
+            gSprites[iconSpriteId].x2 = SATCHEL_ICON_X;
+            gSprites[iconSpriteId].y2 = SATCHEL_ICON_Y;
         }
     }
 }
@@ -518,7 +784,7 @@ void SetItemMenuSwapLineInvisibility(bool8 invisible)
 
 void UpdateItemMenuSwapLinePos(u8 y)
 {
-    UpdateSwapLineSpritesPos(&gBagMenu->spriteIds[ITEMMENUSPRITE_SWAP_LINE], ITEMMENU_SWAP_LINE_LENGTH | SWAP_LINE_HAS_MARGIN, 120, (y + 1) * 16);
+    UpdateSwapLineSpritesPos(&gBagMenu->spriteIds[ITEMMENUSPRITE_SWAP_LINE], ITEMMENU_SWAP_LINE_LENGTH | SWAP_LINE_HAS_MARGIN, 104, (y + 1) * 16); // List window starts at x = 104
 }
 
 static void ArrangeBerryGfx(void *src, void *dest)

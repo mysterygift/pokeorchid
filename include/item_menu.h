@@ -54,7 +54,13 @@ enum {
     ITEMMENUSPRITE_ITEM,
     ITEMMENUSPRITE_ITEM_ALT, // Need two when selecting new item
     ITEMMENUSPRITE_SWAP_LINE,
-    ITEMMENUSPRITE_COUNT = ITEMMENUSPRITE_SWAP_LINE + ITEMMENU_SWAP_LINE_LENGTH,
+    // Satchel bag sprites (see item_menu_icons.c)
+    ITEMMENUSPRITE_POCKET_BUTTON = ITEMMENUSPRITE_SWAP_LINE + ITEMMENU_SWAP_LINE_LENGTH, // One per pocket
+    ITEMMENUSPRITE_POCKET_RING = ITEMMENUSPRITE_POCKET_BUTTON + POCKETS_COUNT, // Travelling selection ring
+    ITEMMENUSPRITE_SCROLL_THUMB,
+    ITEMMENUSPRITE_POCKET_ARROW_LEFT,
+    ITEMMENUSPRITE_POCKET_ARROW_RIGHT,
+    ITEMMENUSPRITE_COUNT,
 };
 
 struct BagPosition
@@ -89,7 +95,8 @@ struct BagMenu
     u8 numItemStacks[POCKETS_COUNT];
     u8 numShownItems[POCKETS_COUNT];
     s16 graphicsLoadState;
-    u8 unused2[14];
+    u8 gridScrollTimer; // Satchel bag: frame counter for the BG3 grid scroll
+    u8 unused2[13];
     u8 ALIGNED(4) pocketNameBuffer[32][32];
     u8 unused3[4];
 };

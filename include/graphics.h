@@ -1788,6 +1788,25 @@ extern const u16 gBagScreenFemale_Pal[];
 extern const u16 gBagScreenMale_Pal[];
 extern const u8 gBagMenuHMIcon_Gfx[];
 
+// Orchid "satchel" bag graphics
+extern const u32 gSatchelScreen_Gfx[];
+extern const u32 gSatchelScreen_Tilemap[];
+extern const u16 gSatchelScreenMale_Pal[];
+extern const u16 gSatchelScreenFemale_Pal[];
+extern const u32 gSatchelMale_Gfx[];
+extern const u32 gSatchelFemale_Gfx[];
+extern const u16 gSatchelMale_Pal[];
+extern const u16 gSatchelFemale_Pal[];
+extern const u32 gSatchelPocketIcons_Gfx[];
+extern const u16 gSatchelPocketIcons_Pal[];
+extern const u8 gSatchelRing_Gfx[];
+extern const u8 gSatchelThumb_Gfx[];
+extern const u8 gSatchelArrow_Gfx[];
+extern const u16 gSatchelArrow_Pal[];
+extern const u8 gSatchelHMIcon_Gfx[];
+extern const u8 gTextWindowFrameOrchid_Gfx[];
+extern const u16 gTextWindowFrameOrchid_Pal[];
+
 // item menu icons graphics
 extern const u32 gBagMaleTiles[];
 extern const u32 gBagFemaleTiles[];

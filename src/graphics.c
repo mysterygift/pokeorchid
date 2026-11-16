@@ -1740,6 +1740,25 @@ const u16 gBagScreenFemale_Pal[] = INCGFX_U16("graphics/bag/menu_female.pal", ".
 const u32 gBagScreen_Gfx[] = INCGFX_U32("graphics/bag/menu.png", ".4bpp.smol", "-num_tiles 53 -Wnum_tiles");
 const u32 gBagScreen_GfxTileMap[] = INCGFX_U32("graphics/bag/menu.bin", ".smolTM");
 
+// Orchid "satchel" bag (see dev_scripts/orchid_ui). The old bag assets above stay for the Battle Pyramid bag.
+const u32 gSatchelScreen_Gfx[] = INCGFX_U32("graphics/bag/satchel_screen.png", ".4bpp.smol");
+const u32 gSatchelScreen_Tilemap[] = INCGFX_U32("graphics/bag/satchel_screen.bin", ".smolTM");
+const u16 gSatchelScreenMale_Pal[] = INCGFX_U16("graphics/bag/satchel_screen_male.pal", ".gbapal");
+const u16 gSatchelScreenFemale_Pal[] = INCGFX_U16("graphics/bag/satchel_screen_female.pal", ".gbapal");
+const u32 gSatchelMale_Gfx[] = INCGFX_U32("graphics/bag/satchel_male.png", ".4bpp.smol");
+const u32 gSatchelFemale_Gfx[] = INCGFX_U32("graphics/bag/satchel_female.png", ".4bpp.smol");
+const u16 gSatchelMale_Pal[] = INCGFX_U16("graphics/bag/satchel_male.png", ".gbapal");
+const u16 gSatchelFemale_Pal[] = INCGFX_U16("graphics/bag/satchel_female.png", ".gbapal");
+const u32 gSatchelPocketIcons_Gfx[] = INCGFX_U32("graphics/bag/pocket_icons.png", ".4bpp.smol");
+const u16 gSatchelPocketIcons_Pal[] = INCGFX_U16("graphics/bag/pocket_icons.png", ".gbapal");
+const u8 gSatchelRing_Gfx[] = INCGFX_U8("graphics/bag/satchel_ring.png", ".4bpp");
+const u8 gSatchelThumb_Gfx[] = INCGFX_U8("graphics/bag/satchel_thumb.png", ".4bpp");
+const u8 gSatchelArrow_Gfx[] = INCGFX_U8("graphics/bag/satchel_arrow.png", ".4bpp");
+const u16 gSatchelArrow_Pal[] = INCGFX_U16("graphics/bag/satchel_arrow.png", ".gbapal");
+const u8 gSatchelHMIcon_Gfx[] = INCGFX_U8("graphics/bag/satchel_hm.png", ".4bpp");
+const u8 gTextWindowFrameOrchid_Gfx[] = INCGFX_U8("graphics/text_window/orchid.png", ".4bpp");
+const u16 gTextWindowFrameOrchid_Pal[] = INCGFX_U16("graphics/text_window/orchid.png", ".gbapal");
+
 const u32 gBattlePyramidBag_Gfx[]          = INCGFX_U32("graphics/bag/bag_pyramid.png", ".4bpp.smol");
 const u16 gBattlePyramidBag_Pal[]          = INCGFX_U16("graphics/bag/bag_pyramid.pal", ".gbapal"); // female palette is first and male is second.
 const u32 gBattlePyramidBagTilemap[]       = INCGFX_U32("graphics/bag/menu_pyramid.bin", ".smolTM");
