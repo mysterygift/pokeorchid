@@ -70,7 +70,7 @@
 #define OHB_NAME_MAX_SMALL 50  // names wider than this in FONT_SMALL use FONT_NARROW
 
 // Caught ball stamp (battle_ext.CAUGHT), 7x7, healthbox palette indices, 0 = skip
-static const u8 sOrchidCaughtBall[7][7] = {
+UNUSED static const u8 sOrchidCaughtBall[7][7] = {
     {0, 0, 1, 1, 1, 0, 0},
     {0, 1, 14, 14, 14, 1, 0},
     {1, 14, 14, 14, 14, 14, 1},
@@ -79,5 +79,83 @@ static const u8 sOrchidCaughtBall[7][7] = {
     {0, 1, 3, 3, 3, 1, 0},
     {0, 0, 1, 1, 1, 0, 0},
 };
+
+// ---- BG0 tray (pages: 0 message, 1 action menu, 2 move select)
+#define ORCHID_TRAY_NUM_TILES 99
+#define ORCHID_TRAY_BG_PAL    0   // BG palette of the tray / message / action / YES-NO
+#define ORCHID_MOVES_BG_PAL   6   // BG palette of the move pills (tray + PP colours), loaded on demand
+#define ORCHID_COL_INK        1
+#define ORCHID_COL_WHITE      3
+#define ORCHID_COL_PANEL      4
+#define ORCHID_COL_SHADE      5
+#define ORCHID_COL_PANEL_DARK 6
+#define ORCHID_COL_SELECT     12
+#define ORCHID_COL_PP_YELLOW  7
+#define ORCHID_COL_PP_ORANGE  8
+#define ORCHID_COL_PP_RED     9
+
+#define ORCHID_ACTION_WIN_X 16
+#define ORCHID_ACTION_WIN_Y 14   // tile row within the page
+#define ORCHID_ACTION_WIN_W 14
+#define ORCHID_ACTION_WIN_H 6
+#define ORCHID_PROMPT_WIN_X 2
+#define ORCHID_PROMPT_WIN_Y 15   // tile row within the page
+#define ORCHID_PROMPT_WIN_W 13
+#define ORCHID_PROMPT_WIN_H 4
+#define ORCHID_YESNO_WIN_X 25
+#define ORCHID_YESNO_WIN_Y 15   // tile row within the page
+#define ORCHID_YESNO_WIN_W 4
+#define ORCHID_YESNO_WIN_H 4
+#define ORCHID_DOCK_WIN_X 23
+#define ORCHID_DOCK_WIN_Y 14   // tile row within the page
+#define ORCHID_DOCK_WIN_W 7
+#define ORCHID_DOCK_WIN_H 6
+
+// action labels (window px): FIGHT centred in the round button, side labels after the icon field
+#define ORCHID_FIGHT_LABEL_CX 24   // centre x; label x = CX - width / 2 (+1 like the mockup)
+#define ORCHID_FIGHT_LABEL_Y  27
+#define ORCHID_SIDE_LABEL_X   68
+UNUSED static const u8 sOrchidSideLabelY[3] = {1, 16, 31};
+// icon fields (OBJ centres, screen)
+#define ORCHID_FIGHT_ICON_X 152
+#define ORCHID_FIGHT_ICON_Y 133
+#define ORCHID_SIDE_ICON_X  185
+UNUSED static const u8 sOrchidSideIconY[3] = {122, 137, 152};
+
+// move pills: window rects (tiles, page row) and pill origin inside the window (px)
+UNUSED static const u8 sOrchidMoveWin[4][4] = {{0, 14, 15, 3}, {15, 14, 15, 3}, {0, 17, 15, 3}, {15, 17, 15, 3}};
+UNUSED static const u8 sOrchidMovePillOrigin[4][2] = {{3, 2}, {1, 2}, {3, 1}, {1, 1}};
+UNUSED static const u8 sOrchidMovePillScreen[4][2] = {{3, 114}, {121, 114}, {3, 137}, {121, 137}};
+#define ORCHID_MOVE_W 116
+#define ORCHID_MOVE_H 22
+#define ORCHID_MOVE_NAME_DX 38
+#define ORCHID_MOVE_NAME_DY (-1)
+#define ORCHID_MOVE_NAME_MAX 74  // wider names use FONT_NARROW
+#define ORCHID_MOVE_ICON_DX 3   // type icon top-left in the pill
+#define ORCHID_MOVE_ICON_DY 3
+
+// YES/NO text (window px)
+#define ORCHID_YESNO_TEXT_X 8
+#define ORCHID_YESNO_MSG_WIDTH 160  // message wrap width while the YES/NO is docked
+
+// YES/NO dock: BG0 page-0 tilemap cells (ORCHID_DOCK_WIN rect), docked / undocked
+UNUSED static const u16 sOrchidDockTiles[] = {
+    0x003, 0x050, 0x051, 0x051, 0x051, 0x051, 0x052,
+    0x008, 0x053, 0x006, 0x006, 0x006, 0x006, 0x054,
+    0x00C, 0x055, 0x006, 0x006, 0x006, 0x006, 0x056,
+    0x00E, 0x053, 0x006, 0x006, 0x006, 0x006, 0x054,
+    0x031, 0x055, 0x006, 0x006, 0x006, 0x006, 0x056,
+    0x037, 0x057, 0x058, 0x059, 0x058, 0x059, 0x05A,
+};
+UNUSED static const u16 sOrchidDockBaseTiles[] = {
+    0x002, 0x002, 0x002, 0x002, 0x002, 0x002, 0x003,
+    0x006, 0x006, 0x006, 0x006, 0x006, 0x007, 0x008,
+    0x006, 0x006, 0x006, 0x006, 0x006, 0x00B, 0x00C,
+    0x006, 0x006, 0x006, 0x006, 0x006, 0x00B, 0x00E,
+    0x006, 0x006, 0x006, 0x006, 0x006, 0xC05, 0x031,
+    0x035, 0x034, 0x035, 0x034, 0x035, 0x036, 0x037,
+};
+// std frame 3x3 (TL T TR / L C R / BL B BR) for HandleBattleWindow on BG0
+UNUSED static const u16 sOrchidFrameTiles[9] = {0x05B, 0x05C, 0x05D, 0x05E, 0x006, 0x05F, 0x060, 0x061, 0x062};
 
 #endif // GUARD_DATA_BATTLE_ORCHID_UI_H

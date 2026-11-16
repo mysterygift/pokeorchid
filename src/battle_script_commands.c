@@ -1,4 +1,7 @@
 #include "global.h"
+#include "graphics.h"
+#include "window.h"
+#include "data/battle_orchid_ui.h"
 #include "battle.h"
 #include "battle_hold_effects.h"
 #include "battle_message.h"
@@ -8496,70 +8499,63 @@ static void Cmd_displaydexinfo(void)
     }
 }
 
+// Orchid UI: the YES/NO docks into the tray's right end (narrow message panel + std frame);
+// any other BG0 window gets the Orchid std frame. BG1 (level-up box) keeps the vanilla frame.
 void HandleBattleWindow(u8 xStart, u8 yStart, u8 xEnd, u8 yEnd, u8 flags)
 {
     s32 destY, destX, bgId;
     u16 var = 0;
 
+    if (!(flags & WINDOW_BG1) && xStart == 24 && yStart == 14)
+    {
+        CopyToBgTilemapBufferRect_ChangePalette(0, (flags & WINDOW_CLEAR) ? sOrchidDockBaseTiles : sOrchidDockTiles,
+                                                ORCHID_DOCK_WIN_X, ORCHID_DOCK_WIN_Y, ORCHID_DOCK_WIN_W, ORCHID_DOCK_WIN_H,
+                                                ORCHID_TRAY_BG_PAL);
+        if (flags & WINDOW_CLEAR)
+            PutWindowTilemap(B_WIN_MSG); // the message window's own cells under the dock
+        CopyBgTilemapBufferToVram(0);
+        return;
+    }
+
     for (destY = yStart; destY <= yEnd; destY++)
     {
         for (destX = xStart; destX <= xEnd; destX++)
         {
-            if (destY == yStart)
-            {
-                if (destX == xStart)
-                    var = 0x1022;
-                else if (destX == xEnd)
-                    var = 0x1024;
-                else
-                    var = 0x1023;
-            }
-            else if (destY == yEnd)
-            {
-                if (destX == xStart)
-                    var = 0x1028;
-                else if (destX == xEnd)
-                    var = 0x102A;
-                else
-                    var = 0x1029;
-            }
+            u32 row = (destY == yStart) ? 0 : (destY == yEnd) ? 2 : 1;
+            u32 col = (destX == xStart) ? 0 : (destX == xEnd) ? 2 : 1;
+
+            bgId = (flags & WINDOW_BG1) ? 1 : 0;
+            if (bgId == 1)
+                var = 0x1000 | (0x22 + row * 3 + col); // vanilla user frame tiles, pal 1
             else
-            {
-                if (destX == xStart)
-                    var = 0x1025;
-                else if (destX == xEnd)
-                    var = 0x1027;
-                else
-                    var = 0x1026;
-            }
+                var = sOrchidFrameTiles[row * 3 + col];
 
             if (flags & WINDOW_CLEAR)
                 var = 0;
 
-            bgId = (flags & WINDOW_BG1) ? 1 : 0;
-            CopyToBgTilemapBufferRect_ChangePalette(bgId, &var, destX, destY, 1, 1, 0x11);
+            CopyToBgTilemapBufferRect_ChangePalette(bgId, &var, destX, destY, 1, 1, bgId == 1 ? 0x11 : ORCHID_TRAY_BG_PAL);
         }
     }
 }
 
+// Orchid UI: the gold pill marks the choice (no arrow); the window is redrawn from its panel art.
 void BattleCreateYesNoCursorAt(u8 cursorPosition)
 {
-    u16 src[2];
-    src[0] = 1;
-    src[1] = 2;
+    static const u8 sYes[] = _("YES");
+    static const u8 sNo[] = _("NO");
+    static const u8 sColors[3] = {0, ORCHID_COL_INK, ORCHID_COL_SHADE};
+    u32 size = ORCHID_YESNO_WIN_W * ORCHID_YESNO_WIN_H * TILE_SIZE_4BPP;
 
-    CopyToBgTilemapBufferRect_ChangePalette(0, src, 0x19, 9 + (2 * cursorPosition), 1, 2, 0x11);
-    CopyBgTilemapBufferToVram(0);
+    CopyToWindowPixelBuffer(B_WIN_YESNO, (const u8 *)gOrchidYesNoPanels_Gfx + cursorPosition * size, size, 0);
+    AddTextPrinterParameterized4(B_WIN_YESNO, FONT_NORMAL, ORCHID_YESNO_TEXT_X, 0, 0, 0, sColors, TEXT_SKIP_DRAW, sYes);
+    AddTextPrinterParameterized4(B_WIN_YESNO, FONT_NORMAL, ORCHID_YESNO_TEXT_X, 16, 0, 0, sColors, TEXT_SKIP_DRAW, sNo);
+    PutWindowTilemap(B_WIN_YESNO);
+    CopyWindowToVram(B_WIN_YESNO, COPYWIN_FULL);
 }
 
 void BattleDestroyYesNoCursorAt(u8 cursorPosition)
 {
-    u16 src[2];
-    src[0] = 0x1016;
-    src[1] = 0x1016;
-
-    CopyToBgTilemapBufferRect_ChangePalette(0, src, 0x19, 9 + (2 * cursorPosition), 1, 2, 0x11);
-    CopyBgTilemapBufferToVram(0);
+    // nothing to erase: BattleCreateYesNoCursorAt redraws the whole YES/NO window
 }
 
 static void Cmd_trygivecaughtmonnick(void)

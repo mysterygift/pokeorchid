@@ -64,6 +64,10 @@ enum
 #define TAG_ORCHID_HEALTHBAR_PAL        0xD741
 #define TAG_ORCHID_STATUS_TILE          0xD742
 #define TAG_ORCHID_STATUS_PAL           0xD743
+#define TAG_ORCHID_ACTION_TILE          0xD744
+#define TAG_ORCHID_ACTION_PAL           0xD745
+#define TAG_ORCHID_TYPE_TILE            0xD746
+#define TAG_ORCHID_TYPE_PAL_0           0xD747 // + 0..2 (gMoveTypes_Pal rows)
 
 #define TAG_GIMMICK_TRIGGER_TILE        0xD777
 #define TAG_MEGA_INDICATOR_TILE         0xD778

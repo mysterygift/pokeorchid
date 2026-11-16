@@ -1935,7 +1935,7 @@ void CB2_InitEndLinkBattle(void)
         gBattle_BG3_Y = 0;
 
         InitBattleBgsVideo();
-        LoadPalette(gBattleTextboxPalette, BG_PLTT_ID(0), 2 * PLTT_SIZE_4BPP);
+        LoadPalette(gOrchidBattleTray_Pal, BG_PLTT_ID(0), PLTT_SIZE_4BPP); // Orchid UI tray
         LoadBattleMenuWindowGfx();
         ResetSpriteData();
         ResetTasks();
