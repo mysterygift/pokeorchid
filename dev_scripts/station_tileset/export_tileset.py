@@ -19,9 +19,11 @@ Row structure (map rows of the test station; the train sprite, OBJ priority 2, c
     row 3   wall base + far ballast                  COVERED, top layer empty   <- train body
     row 4   TRACK: ballast, sleepers, two rails      COVERED, top layer empty   <- train body
     row 5   platform edge stones + tactile strip     NORMAL  (boarding row)
-    row 6+  paving, offset bricks: A on even rows, B on odd rows; exit mat (south arrow warp)
+    row 6+  paving, offset bricks: A on even rows, B on odd rows; exit mat (south arrow warp);
+            escalators at x 0-1 (up rows 6-8, down rows 9-11)
 
-Nothing in this tileset uses the top layer, so BG1 can never draw over the train.
+Nothing in rows 0-5 uses the top layer, so BG1 can never draw over the train (only the copied
+escalator art uses it, as in the Pokemon Center).
 
 Two wall themes share every tile and differ only by palette: "Tosa" teal tiles (pal 6) and
 "Telok" brick (pal 9). No lettering / station-name tiles (by request: too much space).
@@ -31,7 +33,12 @@ Palettes (secondary slots 6-12; the rest are written as unused black files):
     7  track                gravel, sleepers, rails (also the far ballast under the wall base)
     8  platform             edge stones, tactile strip, paving, exit mat
     9  shell, Telok brick   same index layout as 6
-    10-12 unused
+    10 escalator art        Pokemon Center palette 8, copied (index 15 recoloured to paving)
+    11-12 unused
+
+Escalators: the Pokemon Center escalator metatiles (0x280-0x291, 0x298-0x2AD) are copied to the
+same ids so src/fldeff_escalator.c animates them unchanged; ids 0x21A-0x27F and the PC's
+non-escalator ids in between are Void filler. See add_escalators().
 """
 import os
 import struct
@@ -388,7 +395,113 @@ def build():
         metatiles.append(bottom + [0, 0, 0, 0])     # top layer: all transparent
         attrs.append((behaviour & 0xFF) | (layer << 12))
         labels.append(label)
+    add_escalators(bank, metatiles, attrs, labels)
     return bank, metatiles, attrs, labels
+
+
+# ------------------------------------------------------------------ escalators (Pokemon Center)
+# src/fldeff_escalator.c animates escalators by swapping metatiles with the HARD-CODED ids
+# METATILE_PokemonCenter_Escalator1F_* / Escalator2F_*. So the escalator metatiles are copied
+# from gTileset_PokemonCenter to the SAME ids here (same behaviours + layer types) and the stock
+# code animates them unchanged. The escalator art (PC palette 8) is copied verbatim into slot 10;
+# the PC checker floor under it (PC palette 6) is swapped for this tileset's paving, so these
+# metatiles assume the rows the test layout puts them on (paving A on even rows, B on odd):
+PC_DIR = os.path.join(ROOT, "data", "tilesets", "secondary", "pokemon_center")
+PC_ART_PAL, ESC_PAL = 8, 10
+PC_FLOOR_TILES = {0x210, 0x211, 0x220, 0x221, 0x223, 0x231, 0x241}   # PC floor / wall strip
+PC_FLOOR_SHADOW_TILES = {0x249, 0x24A}                              # same + grey top line
+ESCALATOR_ROWS = {  # metatile id -> paving parity (0 = A / even row, 1 = B / odd row), label
+    0x280: (0, "Escalator1F_Tile0_Frame0"), 0x281: (0, "Escalator1F_Tile1_Frame0"),
+    0x282: (0, "Escalator1F_Tile0_Frame1"), 0x283: (0, "Escalator1F_Tile1_Frame1"),
+    0x284: (0, "Escalator1F_Tile0_Frame2"), 0x285: (0, "Escalator1F_Tile1_Frame2"),
+    0x288: (1, "Escalator1F_Tile2_Frame0"), 0x289: (1, "Escalator1F_Tile3_Frame0"),
+    0x28A: (1, "Escalator1F_Tile2_Frame1"), 0x28B: (1, "Escalator1F_Tile3_Frame1"),
+    0x28C: (1, "Escalator1F_Tile2_Frame2"), 0x28D: (1, "Escalator1F_Tile3_Frame2"),
+    0x290: (0, "Escalator1F_BottomLeft"), 0x291: (0, "Escalator1F_BottomRight"),
+    0x298: (1, "Escalator2F_TopLeft"), 0x299: (1, "Escalator2F_TopRight"),
+    0x2A0: (0, "Escalator2F_Tile0_Frame0"), 0x2A1: (0, "Escalator2F_Tile1_Frame0"),
+    0x2A2: (0, "Escalator2F_Tile0_Frame1"), 0x2A3: (0, "Escalator2F_Tile1_Frame1"),
+    0x2A4: (0, "Escalator2F_Tile0_Frame2"), 0x2A5: (0, "Escalator2F_Tile1_Frame2"),
+    0x2A8: (1, "Escalator2F_Tile2_Frame0"), 0x2A9: (1, "Escalator2F_BottomRight"),
+    0x2AA: (1, "Escalator2F_Tile2_Frame1"), 0x2AB: (1, "Escalator2F_BottomRight_Frame1"),
+    0x2AC: (1, "Escalator2F_Tile2_Frame2"), 0x2AD: (1, "Escalator2F_BottomRight_Frame2"),
+}
+# Map rows the test layout uses: 1F (up) rows 6-8, 2F (down) rows 9-11, both at x 0-1.
+ESC_UP_TOP, ESC_DOWN_TOP = 6, 9
+
+
+def floor_pal(v):
+    """PC .pal colours are 8-bit scaled; gbagfx keeps the top 5 bits, so floor to 8."""
+    return tuple(c // 8 * 8 for c in v)
+
+
+def load_pc():
+    im = Image.open(os.path.join(PC_DIR, "tiles.png"))
+    px = im.load()
+    tiles = []
+    for ty in range(im.size[1] // 8):
+        for tx in range(16):
+            tiles.append(tuple(tuple(px[tx * 8 + x, ty * 8 + y] & 15 for x in range(8))
+                               for y in range(8)))
+    data = open(os.path.join(PC_DIR, "metatiles.bin"), "rb").read()
+    mets = [struct.unpack_from("<8H", data, i) for i in range(0, len(data), 16)]
+    a = open(os.path.join(PC_DIR, "metatile_attributes.bin"), "rb").read()
+    attrs = struct.unpack(f"<{len(a) // 2}H", a)
+    pal = [floor_pal(c) for c in load_jasc(os.path.join(PC_DIR, "palettes", f"{PC_ART_PAL:02d}.pal"))]
+    return tiles, mets, attrs, pal
+
+
+def paving_quadrant(odd, q, shadow=False):
+    b = draw_paving(odd)
+    if shadow and q < 2:           # PC 0x249/0x24A: grey line along the quadrant's top edge
+        b.rect(0, 0, 15, 0, STONE[2])
+    elif shadow:
+        b.rect(0, 8, 15, 8, STONE[2])
+    return quadrant_to_tile(b, q & 1, q >> 1, "tosa")
+
+
+def add_escalators(bank, metatiles, attrs, labels):
+    pc_tiles, pc_mets, pc_attrs, pc_pal = load_pc()
+    # PC art index 15 is the PC floor cream, used only on the 2 px of floor the bottom-layer
+    # step tiles carry at their edge: recolour it to this tileset's paving.
+    pc_pal[15] = PAVE[0]
+    PALETTES[ESC_PAL] = pc_pal
+    void_m, void_a = metatiles[0], attrs[0]
+    last = max(ESCALATOR_ROWS)
+    while SECONDARY_METATILE_BASE + len(metatiles) <= last:
+        mid_ = SECONDARY_METATILE_BASE + len(metatiles)
+        if mid_ not in ESCALATOR_ROWS:
+            metatiles.append(list(void_m))
+            attrs.append(void_a)
+            labels.append(None)                       # filler so the escalator ids line up
+            continue
+        odd, label = ESCALATOR_ROWS[mid_]
+        src = pc_mets[mid_ - SECONDARY_METATILE_BASE]
+        out = []
+        for k, e in enumerate(src):
+            t, oh, ov, pal = e & 0x3FF, (e >> 10) & 1, (e >> 11) & 1, e >> 12
+            if t < SECONDARY_TILE_BASE:
+                if t != 0:
+                    raise ValueError(f"{mid_:03X}: primary tile ref {e:04x}")
+                out.append(0)
+                continue
+            if k < 4 and t in PC_FLOOR_TILES | PC_FLOOR_SHADOW_TILES:
+                slot, tile = paving_quadrant(odd, k, t in PC_FLOOR_SHADOW_TILES)
+                idx, hf, vf = bank.add(tile)
+                out.append((SECONDARY_TILE_BASE + idx) | (hf << 10) | (vf << 11) | (slot << 12))
+                continue
+            tile = pc_tiles[t - SECONDARY_TILE_BASE]
+            if not any(any(r) for r in tile):
+                out.append(0)                         # blank art tile (some carry palette 0)
+                continue
+            if pal != PC_ART_PAL:
+                raise ValueError(f"{mid_:03X}: unexpected PC palette in {e:04x}")
+            idx, hf, vf = bank.add(tile)
+            out.append((SECONDARY_TILE_BASE + idx) | ((hf ^ oh) << 10) | ((vf ^ ov) << 11)
+                       | (ESC_PAL << 12))
+        metatiles.append(out)
+        attrs.append(pc_attrs[mid_ - SECONDARY_METATILE_BASE])
+        labels.append(label)
 
 
 def write_pal(path, cols):
@@ -428,8 +541,16 @@ def mid(labels, name):
     return SECONDARY_METATILE_BASE + labels.index(name)
 
 
+# Block entries copied from data/layouts/PokemonCenter_1F|2F/map.bin (rows 5-7, x 0-1):
+# metatile | collision << 10 | elevation << 12. The middle-right tile carries the warp (elev 4).
+ESC_UP = [[0x3280, 0x3281], [0x3688, 0x4289], [0x3290, 0x3291]]
+ESC_DOWN = [[0x3298, 0x3299], [0x06A0, 0x42A1], [0x32A8, 0x32A9]]
+
+
 def paint_test_layout(labels, brick=False):
-    """LAYOUT_TRAIN_TEST_STATION, 20x12. Track row 4, boarding row 5, exit mat at (9,11)."""
+    """LAYOUT_TRAIN_TEST_STATION, 20x12. Track row 4, boarding row 5. Up escalator (1F style)
+    at x 0-1 rows 6-8, warp tile (1,7); down escalator (2F style) at x 0-1 rows 9-11,
+    warp tile (1,10)."""
     W, H = 20, 12
     s = "_Brick" if brick else ""
     posters, pillars = (2, 17), (6, 13)
@@ -453,8 +574,16 @@ def paint_test_layout(labels, brick=False):
                 name, walk = "Track", False
             elif y == 5:
                 name, walk = "PlatformEdge", True
-            elif (x, y) == (9, 11):
-                name, walk = "ExitMat", True
+            elif x < 2 and ESC_UP_TOP <= y < ESC_UP_TOP + 3:
+                grid.append(ESC_UP[y - ESC_UP_TOP][x])
+                continue
+            elif x < 2 and ESC_DOWN_TOP <= y < ESC_DOWN_TOP + 3:
+                grid.append(ESC_DOWN[y - ESC_DOWN_TOP][x])
+                continue
+            elif x == 2 and y in (ESC_UP_TOP + 1, ESC_DOWN_TOP + 1):
+                # beside the escalator tile: elevation 0 so the player can step 3 -> 0 -> 4
+                grid.append(mid(labels, "Paving_A" if y % 2 == 0 else "Paving_B"))
+                continue
             else:
                 name, walk = ("Paving_A" if y % 2 == 0 else "Paving_B"), True
             m = mid(labels, name)
@@ -473,22 +602,28 @@ def sheet(metatiles, labels, scale=3):
     tiles_im = Image.open(os.path.join(TS_DIR, "tiles.png"))
     tp = tiles_im.load()
     cols = 4
-    cell_w, cell_h = 16 * scale + 150, 16 * scale + 8
-    rows = (len(metatiles) + cols - 1) // cols
+    cell_w, cell_h = 16 * scale + 190, 16 * scale + 8
+    shown = [n for n, lab in enumerate(labels) if lab is not None]
+    rows = (len(shown) + cols - 1) // cols
     im = Image.new("RGB", (cols * cell_w, rows * cell_h), (24, 24, 32))
     dr = ImageDraw.Draw(im)
-    for n, m in enumerate(metatiles):
+    for slot_n, n in enumerate(shown):
+        m = metatiles[n]
         blk = Image.new("RGB", (16, 16))
         bp = blk.load()
-        for q in range(4):
-            e = m[q]
+        for k in range(8):
+            e, q = m[k], k & 3
             t, hf, vf, pal = (e & 0x3FF) - SECONDARY_TILE_BASE, (e >> 10) & 1, (e >> 11) & 1, e >> 12
+            if t < 0:
+                continue                                  # tile 0 of the primary: transparent
             for y in range(8):
                 for x in range(8):
                     sx, sy = (7 - x if hf else x), (7 - y if vf else y)
                     ci = tp[(t % 16) * 8 + sx, (t // 16) * 8 + sy]
+                    if k >= 4 and ci == 0:
+                        continue
                     bp[(q & 1) * 8 + x, (q >> 1) * 8 + y] = PALETTES[pal][ci]
-        x, y = (n % cols) * cell_w, (n // cols) * cell_h
+        x, y = (slot_n % cols) * cell_w, (slot_n // cols) * cell_h
         im.paste(blk.resize((16 * scale, 16 * scale), Image.NEAREST), (x + 4, y + 4))
         dr.text((x + 16 * scale + 10, y + 12), f"{SECONDARY_METATILE_BASE + n:03X} {labels[n]}",
                 fill=(230, 230, 230))
@@ -542,6 +677,28 @@ def station_mock(door_x=9, track_y=4, door_open=False):
     return im
 
 
+def escalator_frames(RL, w=5):
+    """Left end of the test layout (x 0..w-1, rows 5-11) in each of the 3 escalator frames,
+    swapping ids the way src/fldeff_escalator.c does (frame n = base id + 2n)."""
+    import json
+    L = json.load(open(os.path.join(ROOT, "data", "layouts", "layouts.json")))["layouts"]
+    lay = next(l for l in L if l.get("id") == "LAYOUT_TRAIN_TEST_STATION")
+    ts = RL.Tilesets(lay["primary_tileset"], lay["secondary_tileset"])
+    W = lay["width"]
+    blocks = struct.unpack(f"<{W * lay['height']}H", open(os.path.join(LAYOUT_DIR, "map.bin"), "rb").read())
+    animated = {0x280, 0x281, 0x288, 0x289, 0x2A0, 0x2A1, 0x2A8, 0x2A9}
+    rows = range(5, lay["height"])
+    out = Image.new("RGB", (3 * (w * 16 + 4), len(rows) * 16), (24, 24, 32))
+    for f in range(3):
+        for j, y in enumerate(rows):
+            for x in range(w):
+                m = blocks[y * W + x] & 0x3FF
+                if m in animated:
+                    m += 2 * f
+                out.paste(ts.metatile(m), (f * (w * 16 + 4) + x * 16, j * 16))
+    return up(out)
+
+
 def up(im, k=3):
     return im.resize((im.width * k, im.height * k), Image.NEAREST)
 
@@ -567,6 +724,7 @@ def main(argv):
         RL.render_layout("LAYOUT_TRAIN_TEST_STATION", p, collision=True)
         up(Image.open(p)).save(os.path.join(OUT, "test_layout_collision_3x.png"))
         os.remove(p)
+        escalator_frames(RL).save(os.path.join(OUT, "escalator_frames_3x.png"))
         mock = station_mock()
         up(mock).save(os.path.join(OUT, "station_with_train_3x.png"))
         # in-game camera with the player on (9,5): player tile at screen (112, 64)
@@ -575,7 +733,9 @@ def main(argv):
         up(station_mock(door_open=True)).save(os.path.join(OUT, "station_with_train_open_3x.png"))
     if "--labels" in argv:
         for i, lab in enumerate(labels):
-            print(f"#define METATILE_UrbanInterior_{lab:<22} 0x{SECONDARY_METATILE_BASE + i:03X}")
+            if lab is None:
+                continue
+            print(f"#define METATILE_UrbanInterior_{lab:<30} 0x{SECONDARY_METATILE_BASE + i:03X}")
     return 0
 
 
