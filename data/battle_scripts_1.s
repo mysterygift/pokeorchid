@@ -4453,6 +4453,19 @@ BattleScript_FogEnded_Ret::
 	call BattleScript_ActivateWeatherAbilities
 	return
 
+BattleScript_ThickSmogEnded_Ret::
+	printstring STRINGID_THICKSMOGCLEARED
+	waitmessage B_WAIT_TIME_LONG
+	call BattleScript_ActivateWeatherAbilities
+	return
+
+BattleScript_ThickSmogPoison::
+	statusanimation BS_EFFECT_BATTLER
+	printstring STRINGID_PKMNPOISONEDBYSMOG
+	waitmessage B_WAIT_TIME_LONG
+	call BattleScript_UpdateEffectStatusIconRet
+	end2
+
 BattleScript_IceBodyHeal::
 	call BattleScript_AbilityPopUp
 	playanimation BS_ATTACKER, B_ANIM_SIMPLE_HEAL

@@ -7016,6 +7016,8 @@ static void RemoveAllWeather(void)
         gBattleCommunication[MULTISTRING_CHOOSER] = B_MSG_WEATHER_END_SNOW;
     else if (gBattleWeather & B_WEATHER_FOG)
         gBattleCommunication[MULTISTRING_CHOOSER] = B_MSG_WEATHER_END_FOG;
+    else if (gBattleWeather & B_WEATHER_THICK_SMOG)
+        gBattleCommunication[MULTISTRING_CHOOSER] = B_MSG_WEATHER_END_THICK_SMOG;
     else
         gBattleCommunication[MULTISTRING_CHOOSER] = B_MSG_WEATHER_END_COUNT;  // failsafe
 
@@ -7123,6 +7125,15 @@ static bool32 TryDefogClear(enum BattlerId battlerAtk, bool32 clear)
             {
                 gBattleWeather &= ~B_WEATHER_FOG;
                 BattleScriptCall(BattleScript_FogEnded_Ret);
+            }
+            return TRUE;
+        }
+        if (gBattleWeather & B_WEATHER_THICK_SMOG)
+        {
+            if (clear)
+            {
+                gBattleWeather &= ~B_WEATHER_THICK_SMOG;
+                BattleScriptCall(BattleScript_ThickSmogEnded_Ret);
             }
             return TRUE;
         }

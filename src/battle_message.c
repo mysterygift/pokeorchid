@@ -837,6 +837,11 @@ const u8 *const gBattleStringsTable[STRINGID_COUNT] =
     [STRINGID_FOGCREPTUP]                           = COMPOUND_STRING("Fog crept up as thick as soup!"),
     [STRINGID_FOGISDEEP]                            = COMPOUND_STRING("The fog is deep…"),
     [STRINGID_FOGLIFTED]                            = COMPOUND_STRING("The fog lifted."),
+    [STRINGID_THICKSMOGROLLEDIN]                    = COMPOUND_STRING("A thick, toxic smog rolled in!"),
+    [STRINGID_THICKSMOGHANGS]                       = COMPOUND_STRING("A thick, toxic smog hangs in the air!"),
+    [STRINGID_THICKSMOGLINGERS]                     = COMPOUND_STRING("The toxic smog lingers…"),
+    [STRINGID_THICKSMOGCLEARED]                     = COMPOUND_STRING("The smog cleared."),
+    [STRINGID_PKMNPOISONEDBYSMOG]                   = COMPOUND_STRING("{B_EFF_NAME_WITH_PREFIX} was poisoned by the smog!"),
     [STRINGID_PKMNMADESHELLGLEAM]                   = COMPOUND_STRING("{B_DEF_NAME_WITH_PREFIX} made its shell gleam! It's distorting type matchups!"),
     [STRINGID_FICKLEBEAMDOUBLED]                    = COMPOUND_STRING("{B_ATK_NAME_WITH_PREFIX} is going all out for this attack!"),
     [STRINGID_COMMANDERACTIVATES]                   = COMPOUND_STRING("{B_SCR_NAME_WITH_PREFIX} was swallowed by Dondozo and became Dondozo's commander!"),
@@ -1007,6 +1012,7 @@ const u16 gMoveWeatherChangeStringIds[] =
     [B_MSG_STARTED_HAIL]      = STRINGID_STARTEDHAIL,
     [B_MSG_STARTED_SNOW]      = STRINGID_STARTEDSNOW,
     [B_MSG_STARTED_FOG]       = STRINGID_FOGCREPTUP, // Unused, can use for custom moves that set fog
+    [B_MSG_STARTED_THICK_SMOG] = STRINGID_THICKSMOGROLLEDIN, // Unused, can use for custom moves that set thick smog
 };
 
 const u16 gAbilityWeatherChangeStringId[] =
@@ -1030,6 +1036,7 @@ const u16 gWeatherEndsStringIds[B_MSG_WEATHER_END_COUNT] =
     [B_MSG_WEATHER_END_SNOW]         = STRINGID_SNOWSTOPPED,
     [B_MSG_WEATHER_END_FOG]          = STRINGID_FOGLIFTED,
     [B_MSG_WEATHER_END_STRONG_WINDS] = STRINGID_STRONGWINDSDISSIPATED,
+    [B_MSG_WEATHER_END_THICK_SMOG]   = STRINGID_THICKSMOGCLEARED,
 };
 
 const u16 gWeatherTurnStringIds[] =
@@ -1042,6 +1049,7 @@ const u16 gWeatherTurnStringIds[] =
     [B_MSG_WEATHER_TURN_SNOW]         = STRINGID_SNOWCONTINUES,
     [B_MSG_WEATHER_TURN_FOG]          = STRINGID_FOGISDEEP,
     [B_MSG_WEATHER_TURN_STRONG_WINDS] = STRINGID_MYSTERIOUSAIRCURRENTBLOWSON,
+    [B_MSG_WEATHER_TURN_THICK_SMOG]   = STRINGID_THICKSMOGLINGERS,
 };
 
 const u16 gSandStormHailDmgStringIds[] =
@@ -1271,7 +1279,8 @@ const u16 gWeatherStartsStringIds[] =
     [WEATHER_DROUGHT]            = STRINGID_SUNLIGHTISHARSH,
     [WEATHER_DOWNPOUR]           = STRINGID_ITISRAINING,
     [WEATHER_UNDERWATER_BUBBLES] = STRINGID_ITISRAINING,
-    [WEATHER_ABNORMAL]           = STRINGID_ITISRAINING
+    [WEATHER_ABNORMAL]           = STRINGID_ITISRAINING,
+    [WEATHER_THICK_SMOG]         = STRINGID_THICKSMOGHANGS,
 };
 
 const u16 gTerrainStartsStringIds[] =

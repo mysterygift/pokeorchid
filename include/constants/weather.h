@@ -17,10 +17,14 @@
 #define WEATHER_DOWNPOUR                13
 #define WEATHER_UNDERWATER_BUBBLES      14
 #define WEATHER_ABNORMAL                15  // The alternating weather during Groudon/Kyogre conflict
+#define WEATHER_THICK_SMOG              16  // Looks like WEATHER_FOG_HORIZONTAL; in battle, may poison Pokémon each turn
 #define WEATHER_ROUTE119_CYCLE          20
 #define WEATHER_ROUTE123_CYCLE          21
 #define WEATHER_FOG                     22  // Aggregate of WEATHER_FOG_HORIZONTAL and WEATHER_FOG_DIAGONAL
 #define WEATHER_COUNT                   23
+
+// Weathers that use the horizontal fog visuals (Mt. Pyre style)
+#define IS_HORIZONTAL_FOG_WEATHER(weather) ((weather) == WEATHER_FOG_HORIZONTAL || (weather) == WEATHER_THICK_SMOG)
 
 // These are used in maps' coord_weather_event entries.
 // They are not a one-to-one mapping with the engine's
@@ -36,6 +40,7 @@
 #define COORD_EVENT_WEATHER_SANDSTORM           9
 #define COORD_EVENT_WEATHER_SHADE               10
 #define COORD_EVENT_WEATHER_DROUGHT             11
+#define COORD_EVENT_WEATHER_THICK_SMOG          12
 #define COORD_EVENT_WEATHER_ROUTE119_CYCLE      20
 #define COORD_EVENT_WEATHER_ROUTE123_CYCLE      21
 

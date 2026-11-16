@@ -141,6 +141,7 @@ static const struct WeatherCallbacks sWeatherFuncs[] =
     [WEATHER_DROUGHT]            = {Drought_InitVars,       Drought_Main,       Drought_InitAll,       Drought_Finish},
     [WEATHER_DOWNPOUR]           = {Downpour_InitVars,      Thunderstorm_Main,  Downpour_InitAll,      Thunderstorm_Finish},
     [WEATHER_UNDERWATER_BUBBLES] = {Bubbles_InitVars,       Bubbles_Main,       Bubbles_InitAll,       Bubbles_Finish},
+    [WEATHER_THICK_SMOG]         = {FogHorizontal_InitVars, FogHorizontal_Main, FogHorizontal_InitAll, FogHorizontal_Finish},
 };
 
 void (*const gWeatherPalStateFuncs[])(void) =
@@ -379,6 +380,7 @@ static void FadeInScreenWithWeather(void)
         }
         break;
     case WEATHER_FOG_HORIZONTAL:
+    case WEATHER_THICK_SMOG:
         if (FadeInScreen_FogHorizontal() == FALSE)
         {
             gWeatherPtr->colorMapIndex = 0;
@@ -767,6 +769,7 @@ void FadeSelectedPals(u8 mode, s8 delay, u32 selectedPalettes)
     case WEATHER_RAIN_THUNDERSTORM:
     case WEATHER_DOWNPOUR:
     case WEATHER_FOG_HORIZONTAL:
+    case WEATHER_THICK_SMOG:
     case WEATHER_SHADE:
     case WEATHER_DROUGHT:
         useWeatherPal = TRUE;
@@ -856,7 +859,7 @@ void UpdateSpritePaletteWithWeather(u8 spritePaletteIndex, bool8 allowFog)
     case WEATHER_PAL_STATE_SCREEN_FADING_IN:
         if (gWeatherPtr->fadeInFirstFrame)
         {
-            if (gWeatherPtr->currWeather == WEATHER_FOG_HORIZONTAL)
+            if (IS_HORIZONTAL_FOG_WEATHER(gWeatherPtr->currWeather))
                 MarkFogSpritePalToLighten(paletteIndex);
             paletteIndex = PLTT_ID(paletteIndex);
             for (i = 0; i < 16; i++)
@@ -871,7 +874,7 @@ void UpdateSpritePaletteWithWeather(u8 spritePaletteIndex, bool8 allowFog)
     // WEATHER_PAL_STATE_CHANGING_WEATHER
     // WEATHER_PAL_STATE_CHANGING_IDLE
     default:
-        if (gWeatherPtr->currWeather != WEATHER_FOG_HORIZONTAL)
+        if (!IS_HORIZONTAL_FOG_WEATHER(gWeatherPtr->currWeather))
         {
             if (gWeatherPtr->colorMapIndex)
                 ApplyColorMap(paletteIndex, 1, gWeatherPtr->colorMapIndex);
@@ -1088,6 +1091,9 @@ static void UNUSED SetFieldWeather(u8 weather)
     case COORD_EVENT_WEATHER_SHADE:
         SetWeather(WEATHER_SHADE);
         break;
+    case COORD_EVENT_WEATHER_THICK_SMOG:
+        SetWeather(WEATHER_THICK_SMOG);
+        break;
     }
 }
 
@@ -1186,7 +1192,7 @@ void ResetPreservedPalettesInWeather(void)
 
 bool32 IsWeatherAlphaBlend(void)
 {
-    return (gWeatherPtr->currWeather == WEATHER_FOG_HORIZONTAL
+    return (IS_HORIZONTAL_FOG_WEATHER(gWeatherPtr->currWeather)
          || gWeatherPtr->currWeather == WEATHER_FOG_DIAGONAL
          || gWeatherPtr->currWeather == WEATHER_UNDERWATER_BUBBLES
          || gWeatherPtr->currWeather == WEATHER_UNDERWATER);
@@ -1209,6 +1215,7 @@ static const u8 sWeatherNames[WEATHER_COUNT][24] = {
     [WEATHER_DOWNPOUR]           = _("DOWNPOUR"),
     [WEATHER_UNDERWATER_BUBBLES] = _("UNDERWATER BUBBLES"),
     [WEATHER_ABNORMAL]           = _("ABNORMAL(NOT WORKING)"),
+    [WEATHER_THICK_SMOG]         = _("THICK SMOG"),
     [WEATHER_ROUTE119_CYCLE]     = _("ROUTE119 CYCLE"),
     [WEATHER_ROUTE123_CYCLE]     = _("ROUTE123 CYCLE"),
     [WEATHER_FOG]                = _("FOG"),

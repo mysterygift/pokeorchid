@@ -2230,7 +2230,7 @@ static u32 LoadDynamicFollowerPalette(u32 species, bool32 shiny, bool32 female)
         paletteNum = IndexOfSpritePaletteTag(species); // Tag is always present
     }
 
-    if (gWeatherPtr->currWeather != WEATHER_FOG_HORIZONTAL) // don't want to weather blend in fog
+    if (!IS_HORIZONTAL_FOG_WEATHER(gWeatherPtr->currWeather)) // don't want to weather blend in fog
         UpdateSpritePaletteWithWeather(paletteNum, FALSE);
     return paletteNum;
 }
@@ -2293,7 +2293,7 @@ static void RefreshFollowerGraphics(struct ObjectEvent *objEvent)
     else if (i != 0xFF)
     {
         UpdateSpritePalette(&sObjectEventSpritePalettes[i], sprite);
-        if (gWeatherPtr->currWeather != WEATHER_FOG_HORIZONTAL) // don't want to weather blend in fog
+        if (!IS_HORIZONTAL_FOG_WEATHER(gWeatherPtr->currWeather)) // don't want to weather blend in fog
             UpdateSpritePaletteWithWeather(sprite->oam.paletteNum, FALSE);
     }
 }

@@ -118,6 +118,24 @@ static bool32 HandleEndTurnWeatherDamage(enum BattlerId battler)
     case BATTLE_WEATHER_FOG:
     case BATTLE_WEATHER_STRONG_WINDS:
         break;
+    case BATTLE_WEATHER_THICK_SMOG:
+        // Same shielding as sandstorm/hail damage, then the normal poison immunities
+        // (Poison/Steel types, Immunity, Pastel Veil, Safeguard, Misty Terrain, existing status, etc.)
+        if (ability != ABILITY_OVERCOAT
+         && gBattleMons[battler].volatiles.semiInvulnerable != STATE_UNDERGROUND
+         && gBattleMons[battler].volatiles.semiInvulnerable != STATE_UNDERWATER
+         && GetBattlerHoldEffect(battler) != HOLD_EFFECT_SAFETY_GOGGLES
+         && CanBePoisoned(battler, battler, ABILITY_NONE, ability)
+         && RandomPercentage(RNG_THICK_SMOG, B_THICK_SMOG_POISON_CHANCE))
+        {
+            gBattleMons[battler].status1 = STATUS1_POISON;
+            BtlController_EmitSetMonData(battler, B_COMM_TO_CONTROLLER, REQUEST_STATUS_BATTLE, 0, 4, &gBattleMons[battler].status1);
+            MarkBattlerForControllerExec(battler);
+            gEffectBattler = battler;
+            BattleScriptExecute(BattleScript_ThickSmogPoison);
+            effect = TRUE;
+        }
+        break;
     case BATTLE_WEATHER_RAIN:
     case BATTLE_WEATHER_RAIN_PRIMAL:
     case BATTLE_WEATHER_RAIN_DOWNPOUR:
