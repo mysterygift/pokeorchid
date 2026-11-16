@@ -2555,6 +2555,10 @@ enum PokemonCry
 #if P_FAMILY_PECHARUNT
     CRY_PECHARUNT,
 #endif //P_FAMILY_PECHARUNT
+    // Orchid
+    CRY_PINGUIN,
+    CRY_IYEPURE,
+    CRY_TORPESQUID,
     CRY_COUNT,
 };
 

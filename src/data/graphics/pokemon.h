@@ -27506,3 +27506,32 @@ const u32 gObjectEventPic_Substitute[] = INCBIN_COMP("graphics/pokemon/question_
     const u32 gMonFrontPic_Egg[] = INCBIN_U32("graphics/pokemon/egg/anim_front.4bpp.smol");
     const u16 gMonPalette_Egg[] = INCBIN_U16("graphics/pokemon/egg/normal.gbapal");
     const u8 gMonIcon_Egg[] = INCBIN_U8("graphics/pokemon/egg/icon.4bpp");
+
+// Orchid custom species
+    const u32 gMonFrontPic_Pinguin[] = INCBIN_U32("graphics/pokemon/pinguin/front.4bpp.smol");
+    const u32 gMonBackPic_Pinguin[] = INCBIN_U32("graphics/pokemon/pinguin/back.4bpp.smol");
+    const u16 gMonPalette_Pinguin[] = INCBIN_U16("graphics/pokemon/pinguin/normal.gbapal");
+    const u16 gMonShinyPalette_Pinguin[] = INCBIN_U16("graphics/pokemon/pinguin/shiny.gbapal");
+    const u8 gMonIcon_Pinguin[] = INCBIN_U8("graphics/pokemon/pinguin/icon.4bpp");
+#if P_FOOTPRINTS
+    const u8 gMonFootprint_Pinguin[] = INCBIN_U8("graphics/pokemon/pinguin/footprint.1bpp");
+#endif //P_FOOTPRINTS
+
+    const u32 gMonFrontPic_Iyepure[] = INCBIN_U32("graphics/pokemon/iyepure/front.4bpp.smol");
+    const u32 gMonBackPic_Iyepure[] = INCBIN_U32("graphics/pokemon/iyepure/back.4bpp.smol");
+    const u16 gMonPalette_Iyepure[] = INCBIN_U16("graphics/pokemon/iyepure/normal.gbapal");
+    const u16 gMonShinyPalette_Iyepure[] = INCBIN_U16("graphics/pokemon/iyepure/shiny.gbapal");
+    const u8 gMonIcon_Iyepure[] = INCBIN_U8("graphics/pokemon/iyepure/icon.4bpp");
+#if P_FOOTPRINTS
+    const u8 gMonFootprint_Iyepure[] = INCBIN_U8("graphics/pokemon/iyepure/footprint.1bpp");
+#endif //P_FOOTPRINTS
+
+    const u32 gMonFrontPic_Torpesquid[] = INCBIN_U32("graphics/pokemon/torpesquid/front.4bpp.smol");
+    const u32 gMonBackPic_Torpesquid[] = INCBIN_U32("graphics/pokemon/torpesquid/back.4bpp.smol");
+    const u16 gMonPalette_Torpesquid[] = INCBIN_U16("graphics/pokemon/torpesquid/normal.gbapal");
+    const u16 gMonShinyPalette_Torpesquid[] = INCBIN_U16("graphics/pokemon/torpesquid/shiny.gbapal");
+    const u8 gMonIcon_Torpesquid[] = INCBIN_U8("graphics/pokemon/torpesquid/icon.4bpp");
+#if P_FOOTPRINTS
+    const u8 gMonFootprint_Torpesquid[] = INCBIN_U8("graphics/pokemon/torpesquid/footprint.1bpp");
+#endif //P_FOOTPRINTS
+

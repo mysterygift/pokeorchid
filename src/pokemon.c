@@ -629,6 +629,10 @@ static const enum NationalDexOrder sHoennToNationalOrder[HOENN_DEX_COUNT - 1] =
     HOENN_TO_NATIONAL(RAYQUAZA),
     HOENN_TO_NATIONAL(JIRACHI),
     HOENN_TO_NATIONAL(DEOXYS),
+    // Orchid
+    HOENN_TO_NATIONAL(PINGUIN),
+    HOENN_TO_NATIONAL(IYEPURE),
+    HOENN_TO_NATIONAL(TORPESQUID),
 };
 
 const struct SpindaSpot gSpindaSpotGraphics[] =
@@ -978,6 +982,7 @@ const struct NatureInfo gNaturesInfo[NUM_NATURES] =
 
 #include "data/pokemon/teachable_learnsets.h"
 #include "data/pokemon/egg_moves.h"
+#include "data/pokemon/orchid_learnsets.h"
 #include "data/pokemon/form_species_tables.h"
 #include "data/pokemon/form_change_tables.h"
 #include "data/pokemon/form_change_table_pointers.h"

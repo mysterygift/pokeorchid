@@ -1688,7 +1688,12 @@
 #define SPECIES_TATSUGIRI_STRETCHY_MEGA                 1571
 #define SPECIES_GLIMMORA_MEGA                           1572
 
-#define SPECIES_EGG                                     (SPECIES_GLIMMORA_MEGA + 1)
+// Orchid custom species
+#define SPECIES_PINGUIN                                 1573
+#define SPECIES_IYEPURE                                 1574
+#define SPECIES_TORPESQUID                              1575
+
+#define SPECIES_EGG                                     (SPECIES_TORPESQUID + 1)
 
 #define NUM_SPECIES SPECIES_EGG
 
