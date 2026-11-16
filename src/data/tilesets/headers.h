@@ -261,6 +261,17 @@ const struct Tileset gTileset_PokemonSchool =
     .callback = NULL,
 };
 
+const struct Tileset gTileset_UrbanInterior =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_UrbanInterior,
+    .palettes = gTilesetPalettes_UrbanInterior,
+    .metatiles = gMetatiles_UrbanInterior,
+    .metatileAttributes = gMetatileAttributes_UrbanInterior,
+    .callback = NULL,
+};
+
 const struct Tileset gTileset_PokemonFanClub =
 {
     .isCompressed = TRUE,

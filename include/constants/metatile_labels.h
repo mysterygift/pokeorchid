@@ -1016,6 +1016,34 @@
 #define METATILE_Underwater_FloorShadow  0x228
 #define METATILE_Underwater_RockWall     0x21E
 
+// gTileset_UrbanInterior
+#define METATILE_UrbanInterior_Void                   0x200
+#define METATILE_UrbanInterior_Ceiling_Beam           0x201
+#define METATILE_UrbanInterior_Ceiling                0x202
+#define METATILE_UrbanInterior_Canopy_Beam            0x203
+#define METATILE_UrbanInterior_Canopy                 0x204
+#define METATILE_UrbanInterior_Wall                   0x205
+#define METATILE_UrbanInterior_Wall_Poster            0x206
+#define METATILE_UrbanInterior_WallBase               0x207
+#define METATILE_UrbanInterior_Pillar_Canopy          0x208
+#define METATILE_UrbanInterior_Pillar_Wall            0x209
+#define METATILE_UrbanInterior_Pillar_Base            0x20A
+#define METATILE_UrbanInterior_Track                  0x20B
+#define METATILE_UrbanInterior_PlatformEdge           0x20C
+#define METATILE_UrbanInterior_Paving_A               0x20D
+#define METATILE_UrbanInterior_Paving_B               0x20E
+#define METATILE_UrbanInterior_ExitMat                0x20F
+#define METATILE_UrbanInterior_Ceiling_Beam_Brick     0x210
+#define METATILE_UrbanInterior_Ceiling_Brick          0x211
+#define METATILE_UrbanInterior_Canopy_Beam_Brick      0x212
+#define METATILE_UrbanInterior_Canopy_Brick           0x213
+#define METATILE_UrbanInterior_Wall_Brick             0x214
+#define METATILE_UrbanInterior_Wall_Poster_Brick      0x215
+#define METATILE_UrbanInterior_WallBase_Brick         0x216
+#define METATILE_UrbanInterior_Pillar_Canopy_Brick    0x217
+#define METATILE_UrbanInterior_Pillar_Wall_Brick      0x218
+#define METATILE_UrbanInterior_Pillar_Base_Brick      0x219
+
 // gTileset_VermilionCity
 #define METATILE_VermilionCity_Door        0x29E
 #define METATILE_VermilionCity_SSAnneWarp  0x2E1
