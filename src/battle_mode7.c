@@ -19,6 +19,7 @@
 #include "test_runner.h"
 #include "trig.h"
 #include "constants/battle.h"
+#include "constants/rgb.h"
 
 #if B_MODE7_BATTLE_FLOOR
 
@@ -146,6 +147,7 @@ struct Mode7State
 };
 
 static EWRAM_DATA struct Mode7State *sMode7 = NULL;
+
 
 static const struct Mode7Camera sRestCamera =
 {
@@ -660,9 +662,22 @@ void BattleMode7_SuspendForMoveBg(void)
     SuspendInternal(FALSE);
 }
 
+static u16 GetClassicDispcnt(struct Mode7State *m)
+{
+    u16 dispcnt = GetGpuReg(REG_OFFSET_DISPCNT) & ~(M7_DISPCNT_MODE_MASK | DISPCNT_BG2_ON | DISPCNT_BG3_ON);
+    return dispcnt | (m->savedDispcnt & (DISPCNT_BG2_ON | DISPCNT_BG3_ON));
+}
+
+// Leaving the floor must never display half-loaded VRAM: charblock 2 and
+// screenblock 26 hold the 8bpp floor, which reads as garbage on a text BG3.
+// So both BG layers are hidden at once (the backdrop briefly takes the floor's
+// ground colour), the classic or move background is loaded, and BG3 is only
+// shown again from the VBlank after loading has finished. (Staging the
+// classic background in RAM instead would run the battle heap out of memory.)
 static void SuspendInternal(bool32 restoreClassicGfx)
 {
     struct Mode7State *m = sMode7;
+    const struct BattleEnvironment *env;
     u16 dispcnt;
 
     if (m == NULL)
@@ -675,28 +690,46 @@ static void SuspendInternal(bool32 restoreClassicGfx)
     }
 
     RemoveSpriteDeltas(m);
-    if (gScanlineEffect.state == 0)
-        DmaStop(0);
-
-    // Back to the classic flat environment on BG3. Write the registers
-    // immediately as well as through the buffer to avoid a frame of garbage.
-    dispcnt = GetGpuReg(REG_OFFSET_DISPCNT) & ~(M7_DISPCNT_MODE_MASK | DISPCNT_BG2_ON | DISPCNT_BG3_ON);
-    dispcnt |= m->savedDispcnt & (DISPCNT_BG2_ON | DISPCNT_BG3_ON);
-    SetGpuReg(REG_OFFSET_DISPCNT, dispcnt);
-    SetGpuReg(REG_OFFSET_BG2CNT, m->savedBg2cnt);
-    REG_DISPCNT = dispcnt;
-    REG_BG2CNT = m->savedBg2cnt;
-    if (restoreClassicGfx)
-    {
-        // Orchid floors share the environment palette; only reload if it differs,
-        // so an in-progress palette fade isn't undone.
-        if (m->floor->palette != gBattleEnvironmentInfo[m->environment].palette)
-            LoadPalette(gBattleEnvironmentInfo[m->environment].palette, BG_PLTT_ID(2), 3 * PLTT_SIZE_4BPP);
-        DecompressDataWithHeaderVram(gBattleEnvironmentInfo[m->environment].background.tileset, (void *)BG_CHAR_ADDR(2));
-        DecompressDataWithHeaderVram(gBattleEnvironmentInfo[m->environment].background.tilemap, (void *)M7_MAP_ADDR);
-    }
     m->suspended = TRUE;
     m->pendingResume = FALSE;
+    dispcnt = GetClassicDispcnt(m);
+    env = &gBattleEnvironmentInfo[m->environment];
+
+    if (gScanlineEffect.state == 0)
+        DmaStop(0);
+    // Hide both layers now and in the register buffer (a VBlank may land mid-load).
+    REG_DISPCNT = dispcnt & ~(DISPCNT_BG2_ON | DISPCNT_BG3_ON);
+    SetGpuReg(REG_OFFSET_DISPCNT, dispcnt & ~(DISPCNT_BG2_ON | DISPCNT_BG3_ON));
+    SetGpuReg(REG_OFFSET_BG2CNT, m->savedBg2cnt);
+    {
+        // Placeholder for the frame(s) while BG3 loads: the floor's ground colour
+        // when the classic floor comes straight back, black before a move
+        // background (those cut to black and fade the new background in).
+        u16 placeholder = restoreClassicGfx ? m->floor->palette[1] : RGB_BLACK;
+        *(vu16 *)BG_PLTT = placeholder;
+        gPlttBufferFaded[0] = placeholder;
+    }
+
+    if (restoreClassicGfx)
+    {
+        if (m->floor->palette != env->palette)
+            LoadPalette(env->palette, BG_PLTT_ID(2), 3 * PLTT_SIZE_4BPP);
+        DecompressDataWithHeaderVram(env->background.tileset, (void *)BG_CHAR_ADDR(2));
+        DecompressDataWithHeaderVram(env->background.tilemap, (void *)M7_MAP_ADDR);
+        BattleMode7_FinishBgLoad();
+    }
+    // otherwise LoadMoveBg loads the move background and calls BattleMode7_FinishBgLoad
+}
+
+// The background for BG3 is fully in VRAM: show it from the next VBlank.
+void BattleMode7_FinishBgLoad(void)
+{
+    struct Mode7State *m = sMode7;
+
+    if (m == NULL || !m->suspended)
+        return;
+    gPlttBufferFaded[0] = gPlttBufferUnfaded[0];
+    SetGpuReg(REG_OFFSET_DISPCNT, GetClassicDispcnt(m));
 }
 
 void BattleMode7_Update(void)
@@ -795,6 +828,7 @@ void BattleMode7_Update(void) {}
 void BattleMode7_VBlank(void) {}
 void BattleMode7_Suspend(void) {}
 void BattleMode7_SuspendForMoveBg(void) {}
+void BattleMode7_FinishBgLoad(void) {}
 bool32 BattleMode7_IsActive(void) { return FALSE; }
 
 #endif // B_MODE7_BATTLE_FLOOR

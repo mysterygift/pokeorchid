@@ -1736,7 +1736,8 @@ static void Task_FadeToBg(u8 taskId)
 {
     if (gTasks[taskId].tState == 0)
     {
-        BeginHardwarePaletteFade(0xE8, 0, 0, 16, 0);
+        // Orchid: with the Mode 7 floor on BG2, fade it too (0xE8 only covers BG3 + backdrop)
+        BeginHardwarePaletteFade(BattleMode7_IsActive() ? (0xE8 | BLDCNT_TGT1_BG2) : 0xE8, 0, 0, 16, 0);
         gTasks[taskId].tState++;
         return;
     }
@@ -1786,6 +1787,7 @@ void LoadMoveBg(u16 bgId)
         DecompressDataWithHeaderVram(gBattleAnimBackgroundTable[bgId].tilemap, (void *)BG_SCREEN_ADDR(26));
         DecompressDataWithHeaderVram(gBattleAnimBackgroundTable[bgId].image, (void *)BG_CHAR_ADDR(2));
         LoadPalette(gBattleAnimBackgroundTable[bgId].palette, BG_PLTT_ID(2), PLTT_SIZE_4BPP);
+        BattleMode7_FinishBgLoad(); // Orchid: BG3 reappears only once it is fully loaded
     }
 }
 

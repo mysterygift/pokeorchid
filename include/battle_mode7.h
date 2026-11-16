@@ -26,6 +26,7 @@ void BattleMode7_Update(void);
 void BattleMode7_VBlank(void);
 void BattleMode7_Suspend(void);
 void BattleMode7_SuspendForMoveBg(void);
+void BattleMode7_FinishBgLoad(void);
 bool32 BattleMode7_IsActive(void);
 
 #endif // GUARD_BATTLE_MODE7_H
