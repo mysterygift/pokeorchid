@@ -378,7 +378,7 @@ static void OrchidDrawActionMenu(u8 cursor)
 }
 
 // FIGHT (0) is the big button; BAG (1) / POKéMON (2) / RUN (3) form the right column.
-static u32 OrchidActionCursorMove(u32 cursor)
+u32 OrchidActionCursorMove(u32 cursor)
 {
     if (JOY_NEW(DPAD_LEFT))
         return 0;
