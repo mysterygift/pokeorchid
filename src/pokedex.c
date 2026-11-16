@@ -1482,12 +1482,17 @@ static const struct SpriteTemplate sODexThumbTemplate =
     .callback = SpriteCallbackDummy,
 };
 
+// A real one-frame anim (not gDummySpriteAnimTable, whose ANIM_END never applies flips), so
+// sprite->hFlip takes effect when the anim starts: the right chevron is the hflipped left one
+static const union AnimCmd sODexAnim_Arrow[] = {ANIMCMD_FRAME(0, 0), ANIMCMD_END};
+static const union AnimCmd *const sODexAnims_Arrow[] = {sODexAnim_Arrow};
+
 static const struct SpriteTemplate sODexArrowTemplate =
 {
     .tileTag = TAG_ODEX_ARROW,
     .paletteTag = TAG_ODEX_ARROW,
     .oam = &sODexOam_8x16,
-    .anims = gDummySpriteAnimTable,
+    .anims = sODexAnims_Arrow,
     .images = NULL,
     .affineAnims = gDummySpriteAffineAnimTable,
     .callback = SpriteCallbackDummy,
@@ -1537,6 +1542,12 @@ static void ODex_FillGridMap(u8 bg)
 // Stops the grid and hands BG1 back to the vanilla CRY / SIZE screens (select bar, priority 0)
 static void ODex_ReleaseGrid(void)
 {
+    // The select bar tilemap only covers the top rows: clear the rest of the grid map first
+    if (GetBgTilemapBuffer(1) != NULL)
+    {
+        memset(GetBgTilemapBuffer(1), 0, BG_SCREEN_SIZE);
+        CopyBgTilemapBufferToVram(1);
+    }
     sODexGridBg = 0;
     SetBgAttribute(1, BG_ATTR_PRIORITY, 0);
     SetGpuReg(REG_OFFSET_BG1HOFS, 0);
@@ -1856,16 +1867,34 @@ static void ODex_RedrawList(void)
     ODex_HighlightRow(sPokedexView->selectedPokemon);
 }
 
+static void ODex_ShowListTypes(void)
+{
+    struct PokedexListItem *item = &sPokedexView->pokedexList[sPokedexView->selectedPokemon];
+
+    if (item->seen)
+        ODex_ShowTypes(NationalPokedexNumToSpeciesForm(item->dexNum), ODEX_DAIS_X, 0, ODEX_TYPES_Y);
+    else
+        ODex_HideTypeIcons();
+}
+
 static void ODex_ShowListSelection(bool32 slide)
 {
     struct PokedexListItem *item = &sPokedexView->pokedexList[sPokedexView->selectedPokemon];
-    enum Species species = NationalPokedexNumToSpeciesForm(item->dexNum);
 
     ODex_ShowPic(item->dexNum, item->seen, ODEX_DAIS_X, ODEX_DAIS_STAGE_Y, slide);
-    if (item->seen)
-        ODex_ShowTypes(species, ODEX_DAIS_X, 0, ODEX_TYPES_Y);
+    ODex_ShowListTypes();
+}
+
+// While the page darkens / brightens only the pic and the grid are lit (anim_dex.py)
+static void ODex_SetListUiVisible(bool32 visible)
+{
+    if (visible)
+        ODex_ShowListTypes();
     else
         ODex_HideTypeIcons();
+    ODex_SetArrowsVisible(visible);
+    if (sPokedexView->odexThumbSpriteId != SPRITE_NONE)
+        gSprites[sPokedexView->odexThumbSpriteId].invisible = !visible;
 }
 
 static void ODex_PrintListHeader(void)
@@ -1955,24 +1984,11 @@ static bool8 ODex_LoadListPage(u8 page)
         gMain.state = 1;
         break;
     case 1:
-        // Rebuild the sprites in one frame so the carried pic never blinks
-        ODex_DestroyPic();
-        ResetSpriteData();
-        FreeAllSpritePalettes();
-        gReservedSpritePaletteCount = 8;
-        sPokedexView->odexTypeSpriteIds[0] = sPokedexView->odexTypeSpriteIds[1] = SPRITE_NONE;
-        sPokedexView->odexArrowSpriteIds[0] = sPokedexView->odexArrowSpriteIds[1] = SPRITE_NONE;
-        sPokedexView->odexThumbSpriteId = SPRITE_NONE;
-        ODex_LoadSpriteGfx();
-        ODex_CreateTypeIcons();
-        if (ODex_CanSwitchMode())
-            ODex_CreateArrows(ODEX_HDR_ARROW_L_X, ODEX_HDR_ARROW_R_X, ODEX_HDR_ARROW_Y);
-        if (sPokedexView->pokemonListCount > ODEX_LIST_ROWS)
-            sPokedexView->odexThumbSpriteId = CreateSprite(&sODexThumbTemplate, ODEX_THUMB_X, ODEX_THUMB_TOP + 8, 0);
+        // The heavy part (text) first, while the carried pic is still up
         if (sPokedexView->selectedPokemon >= sPokedexView->pokemonListCount)
             sPokedexView->selectedPokemon = sPokedexView->pokemonListCount ? sPokedexView->pokemonListCount - 1 : 0;
         sPokedexView->odexTop = ODex_TopFor(sPokedexView->selectedPokemon, sPokedexView->isSearchResults ? 0 : sODexLastTop);
-        ODex_ShowListSelection(FALSE);
+        sPokedexView->odexThumbSpriteId = SPRITE_NONE;
         ODex_PrintListHeader();
         ODex_RedrawList();
         CopyBgTilemapBufferToVram(0);
@@ -1980,6 +1996,26 @@ static bool8 ODex_LoadListPage(u8 page)
         gMain.state++;
         break;
     case 2:
+        // Rebuild the sprites in one short frame so the carried pic never blinks
+        ODex_DestroyPic();
+        ResetSpriteData();
+        FreeAllSpritePalettes();
+        gReservedSpritePaletteCount = 8;
+        sPokedexView->odexTypeSpriteIds[0] = sPokedexView->odexTypeSpriteIds[1] = SPRITE_NONE;
+        sPokedexView->odexArrowSpriteIds[0] = sPokedexView->odexArrowSpriteIds[1] = SPRITE_NONE;
+        ODex_LoadSpriteGfx();
+        ODex_CreateTypeIcons();
+        if (ODex_CanSwitchMode())
+            ODex_CreateArrows(ODEX_HDR_ARROW_L_X, ODEX_HDR_ARROW_R_X, ODEX_HDR_ARROW_Y);
+        if (sPokedexView->pokemonListCount > ODEX_LIST_ROWS)
+            sPokedexView->odexThumbSpriteId = CreateSprite(&sODexThumbTemplate, ODEX_THUMB_X, ODEX_THUMB_TOP + 8, 0);
+        ODex_SetListScroll(sPokedexView->odexScrollPx);
+        ODex_ShowListSelection(FALSE);
+        if (sPokedexView->odexFromEntry)
+            ODex_SetListUiVisible(FALSE);
+        gMain.state++;
+        break;
+    case 3:
         SetGpuReg(REG_OFFSET_DISPCNT, DISPCNT_MODE_0 | DISPCNT_OBJ_1D_MAP | DISPCNT_OBJ_ON);
         ShowBg(0);
         ShowBg(1);
@@ -1992,7 +2028,7 @@ static bool8 ODex_LoadListPage(u8 page)
             BeginNormalPaletteFade(PALETTES_ALL, 0, 16, 0, RGB_BLACK);
         gMain.state++;
         break;
-    case 3:
+    case 4:
         ODex_UpdatePicSlide();
         if (sPokedexView->odexTimer)
         {
@@ -2003,6 +2039,8 @@ static bool8 ODex_LoadListPage(u8 page)
         if (!gPaletteFade.active)
         {
             SetGpuReg(REG_OFFSET_BLDCNT, 0);
+            if (sPokedexView->odexFromEntry)
+                ODex_SetListUiVisible(TRUE);
             sPokedexView->odexFromEntry = FALSE;
             gMain.state = 0;
             return TRUE;
@@ -2230,10 +2268,7 @@ static void Task_ODexOpenEntry(u8 taskId)
     if (t == ODEX_FLASH_FRAMES)
     {
         LoadPalette(&gOrchidDexScreen_Pal[16 + ODEX_C_SELECT], BG_PLTT_ID(ODEX_PAL_SELECTED) + ODEX_C_SELECT, PLTT_SIZEOF(1));
-        ODex_HideTypeIcons();
-        ODex_SetArrowsVisible(FALSE);
-        if (sPokedexView->odexThumbSpriteId != SPRITE_NONE)
-            gSprites[sPokedexView->odexThumbSpriteId].invisible = TRUE;
+        ODex_SetListUiVisible(FALSE);
         SetGpuReg(REG_OFFSET_BLDCNT, ODEX_BLD_TARGETS);
     }
     t = t - ODEX_FLASH_FRAMES + 1;
@@ -2663,6 +2698,7 @@ static void Task_ODexLoadSearch(u8 taskId)
         InitWindows(sODexSearch_WindowTemplates);
         DeactivateAllTextPrinters();
         PutWindowTilemap(0);
+        CopyBgTilemapBufferToVram(2);
         DecompressAndLoadBgGfxUsingHeap(3, gOrchidDexEntry_Gfx, ODEX_ENTRY_NUM_TILES * TILE_SIZE_4BPP, 0, 0);
         ODex_FillGridMap(1);
         LoadPalette(gOrchidDexScreen_Pal, BG_PLTT_ID(0), 3 * PLTT_SIZE_4BPP);
