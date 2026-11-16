@@ -1,6 +1,7 @@
 #include "global.h"
 #include "battle.h"
 #include "battle_anim.h"
+#include "battle_mode7.h"
 #include "battle_anim_scripts.h"
 #include "battle_controllers.h"
 #include "battle_environment.h"
@@ -1247,6 +1248,9 @@ void MoveBattlerSpriteToBG(enum BattlerId battler, bool8 toBG_2, bool8 setSprite
     struct BattleAnimBgData animBg;
     u8 battlerSpriteId;
 
+    if (toBG_2)
+        BattleMode7_Suspend();
+
     if (!toBG_2)
     {
         enum BattlerPosition battlerPosition;
@@ -1765,6 +1769,7 @@ static void Task_FadeToBg(u8 taskId)
 
 void LoadMoveBg(u16 bgId)
 {
+    BattleMode7_Suspend();
     if (IsContest())
     {
         void *decompressionBuffer = malloc_and_decompress(gBattleAnimBackgroundTable[bgId].tilemap, NULL);

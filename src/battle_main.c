@@ -9,6 +9,7 @@
 #include "battle_hold_effects.h"
 #include "battle_interface.h"
 #include "battle_main.h"
+#include "battle_mode7.h"
 #include "battle_message.h"
 #include "battle_pyramid.h"
 #include "battle_scripts.h"
@@ -1734,6 +1735,7 @@ void BattleMainCB2(void)
     RunTextPrinters();
     UpdatePaletteFade();
     RunTasks();
+    BattleMode7_Update();
 
     if (JOY_HELD(B_BUTTON) && gBattleTypeFlags & BATTLE_TYPE_RECORDED && RecordedBattle_CanStopPlayback())
     {
@@ -1809,6 +1811,7 @@ void VBlankCB_Battle(void)
     ProcessSpriteCopyRequests();
     TransferPlttBuffer();
     ScanlineEffect_InitHBlankDmaTransfer();
+    BattleMode7_VBlank();
 }
 
 void SpriteCB_VsLetterDummy(struct Sprite *sprite)
@@ -3784,6 +3787,11 @@ enum
     STATE_WAIT_SET_BEFORE_ACTION,
     STATE_SELECTION_SCRIPT_MAY_RUN
 };
+
+bool32 IsBattleInActionSelection(void)
+{
+    return gBattleMainFunc == HandleTurnActionSelectionState;
+}
 
 static void HandleTurnActionSelectionState(void)
 {

@@ -1,5 +1,6 @@
 #include "global.h"
 #include "battle.h"
+#include "battle_mode7.h"
 #include "battle_anim.h"
 #include "battle_controllers.h"
 #include "malloc.h"
@@ -70,6 +71,7 @@ void AllocateBattleResources(void)
 
 void FreeBattleResources(void)
 {
+    BattleMode7_End();
     if (gBattleTypeFlags & BATTLE_TYPE_TRAINER_TOWER && gMapHeader.regionMapSectionId == MAPSEC_TRAINER_TOWER_2)
         FreeTrainerTowerBattleStruct();
     else if (gBattleTypeFlags & BATTLE_TYPE_TRAINER_HILL)

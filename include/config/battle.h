@@ -346,6 +346,9 @@
 #define B_CAMOUFLAGE_TYPES          GEN_LATEST // Camouflage changes the user to different types depending on the terrain and generation. See sTerrainToType.
 #define B_NEW_TERRAIN_BACKGROUNDS   FALSE      // If set to TRUE, uses new terrain backgrounds for Electric, Misty, Grassy and Psychic Terrain.
 
+// Orchid
+#define B_MODE7_BATTLE_FLOOR        TRUE       // If set to TRUE, the battle environment is drawn as a perspective (Mode 7) floor with a moving camera. See src/battle_mode7.c.
+
 // Interface settings
 #define B_FAST_INTRO_PKMN_TEXT              TRUE       // If set to TRUE, battle intro text prints at the same time as the animation of Pokémon, as opposing to waiting for the animation to end.
 #define B_FAST_INTRO_NO_SLIDE               FALSE      // If set to TRUE, the slide animation that happens at the beginning of battles is skipped.
