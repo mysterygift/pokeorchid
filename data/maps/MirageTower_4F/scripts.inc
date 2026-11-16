@@ -107,52 +107,50 @@ MirageTower_4F_EventScript_CollapseMirageTower::
 # 54 "data/maps/MirageTower_4F/scripts.pory"
 	special DoMirageTowerCeilingCrumble
 # 55 "data/maps/MirageTower_4F/scripts.pory"
-	waitstate
-# 56 "data/maps/MirageTower_4F/scripts.pory"
 	setvar VAR_MIRAGE_TOWER_STATE, 1
-# 57 "data/maps/MirageTower_4F/scripts.pory"
+# 56 "data/maps/MirageTower_4F/scripts.pory"
 	clearflag FLAG_LANDMARK_MIRAGE_TOWER
-# 58 "data/maps/MirageTower_4F/scripts.pory"
+# 57 "data/maps/MirageTower_4F/scripts.pory"
 	warp MAP_ROUTE111, 19, 59
-# 59 "data/maps/MirageTower_4F/scripts.pory"
+# 58 "data/maps/MirageTower_4F/scripts.pory"
 	waitstate
-# 60 "data/maps/MirageTower_4F/scripts.pory"
+# 59 "data/maps/MirageTower_4F/scripts.pory"
 	release
-# 61 "data/maps/MirageTower_4F/scripts.pory"
+# 60 "data/maps/MirageTower_4F/scripts.pory"
 	end
+# 61 "data/maps/MirageTower_4F/scripts.pory"
+
 # 62 "data/maps/MirageTower_4F/scripts.pory"
-
-# 63 "data/maps/MirageTower_4F/scripts.pory"
 MirageTower_4F_Text_TakeRootFossil:
-# 64 "data/maps/MirageTower_4F/scripts.pory"
+# 63 "data/maps/MirageTower_4F/scripts.pory"
 	.string "You found the ROOT FOSSIL.\p"
+# 64 "data/maps/MirageTower_4F/scripts.pory"
+	.string "If this FOSSIL is taken, the ground\n"
 # 65 "data/maps/MirageTower_4F/scripts.pory"
-	.string "If this FOSSIL is taken, the ground\n"
+	.string "around it will likely crumble away…\p"
 # 66 "data/maps/MirageTower_4F/scripts.pory"
-	.string "around it will likely crumble away…\p"
-# 67 "data/maps/MirageTower_4F/scripts.pory"
 	.string "Take the ROOT FOSSIL anyway?$"
+# 67 "data/maps/MirageTower_4F/scripts.pory"
+
 # 68 "data/maps/MirageTower_4F/scripts.pory"
-
-# 69 "data/maps/MirageTower_4F/scripts.pory"
 MirageTower_4F_Text_LeftRootFossilAlone:
-# 70 "data/maps/MirageTower_4F/scripts.pory"
+# 69 "data/maps/MirageTower_4F/scripts.pory"
 	.string "{PLAYER} left the ROOT FOSSIL alone.$"
+# 70 "data/maps/MirageTower_4F/scripts.pory"
+
 # 71 "data/maps/MirageTower_4F/scripts.pory"
-
-# 72 "data/maps/MirageTower_4F/scripts.pory"
 MirageTower_4F_Text_TakeClawFossil:
-# 73 "data/maps/MirageTower_4F/scripts.pory"
+# 72 "data/maps/MirageTower_4F/scripts.pory"
 	.string "You found the CLAW FOSSIL.\p"
-# 74 "data/maps/MirageTower_4F/scripts.pory"
+# 73 "data/maps/MirageTower_4F/scripts.pory"
 	.string "If this FOSSIL is taken, the ground\n"
-# 75 "data/maps/MirageTower_4F/scripts.pory"
+# 74 "data/maps/MirageTower_4F/scripts.pory"
 	.string "around it will likely crumble away…\p"
-# 76 "data/maps/MirageTower_4F/scripts.pory"
+# 75 "data/maps/MirageTower_4F/scripts.pory"
 	.string "Take the CLAW FOSSIL anyway?$"
-# 77 "data/maps/MirageTower_4F/scripts.pory"
+# 76 "data/maps/MirageTower_4F/scripts.pory"
 
-# 78 "data/maps/MirageTower_4F/scripts.pory"
+# 77 "data/maps/MirageTower_4F/scripts.pory"
 MirageTower_4F_Text_LeaveClawFossilAlone:
-# 79 "data/maps/MirageTower_4F/scripts.pory"
+# 78 "data/maps/MirageTower_4F/scripts.pory"
 	.string "{PLAYER} left the CLAW FOSSIL alone.$"

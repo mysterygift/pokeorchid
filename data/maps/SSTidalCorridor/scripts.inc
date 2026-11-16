@@ -305,119 +305,119 @@ SSTidalCorridor_EventScript_LookThroughPorthole::
 # 153 "data/maps/SSTidalCorridor/scripts.pory"
 	special LookThroughPorthole
 # 154 "data/maps/SSTidalCorridor/scripts.pory"
-	waitstate
+	end
 # 155 "data/maps/SSTidalCorridor/scripts.pory"
-	end
+
 # 156 "data/maps/SSTidalCorridor/scripts.pory"
-
-# 157 "data/maps/SSTidalCorridor/scripts.pory"
 SSTidalCorridor_EventScript_Sailor::
-# 158 "data/maps/SSTidalCorridor/scripts.pory"
+# 157 "data/maps/SSTidalCorridor/scripts.pory"
 	lock
-# 159 "data/maps/SSTidalCorridor/scripts.pory"
+# 158 "data/maps/SSTidalCorridor/scripts.pory"
 	faceplayer
-# 160 "data/maps/SSTidalCorridor/scripts.pory"
+# 159 "data/maps/SSTidalCorridor/scripts.pory"
 	goto_if_set FLAG_DEFEATED_SS_TIDAL_TRAINERS, SSTidalCorridor_EventScript_EnjoyYourCruise
-# 161 "data/maps/SSTidalCorridor/scripts.pory"
+# 160 "data/maps/SSTidalCorridor/scripts.pory"
 	call SSTidalCorridor_EventScript_CheckIfTrainersDefeated
-# 162 "data/maps/SSTidalCorridor/scripts.pory"
+# 161 "data/maps/SSTidalCorridor/scripts.pory"
 	msgbox SSTidalCorridor_Text_VisitOtherCabins, MSGBOX_DEFAULT
+# 162 "data/maps/SSTidalCorridor/scripts.pory"
+	release
 # 163 "data/maps/SSTidalCorridor/scripts.pory"
-	release
+	end
 # 164 "data/maps/SSTidalCorridor/scripts.pory"
-	end
+
 # 165 "data/maps/SSTidalCorridor/scripts.pory"
-
-# 166 "data/maps/SSTidalCorridor/scripts.pory"
 SSTidalCorridor_EventScript_EnjoyYourCruise::
-# 167 "data/maps/SSTidalCorridor/scripts.pory"
+# 166 "data/maps/SSTidalCorridor/scripts.pory"
 	msgbox SSTidalCorridor_Text_EnjoyYourCruise, MSGBOX_DEFAULT
-# 168 "data/maps/SSTidalCorridor/scripts.pory"
+# 167 "data/maps/SSTidalCorridor/scripts.pory"
 	release
+# 168 "data/maps/SSTidalCorridor/scripts.pory"
+	end
 # 169 "data/maps/SSTidalCorridor/scripts.pory"
-	end
+
 # 170 "data/maps/SSTidalCorridor/scripts.pory"
-
-# 171 "data/maps/SSTidalCorridor/scripts.pory"
 SSTidalCorridor_EventScript_CheckIfTrainersDefeated::
-# 172 "data/maps/SSTidalCorridor/scripts.pory"
+# 171 "data/maps/SSTidalCorridor/scripts.pory"
 	goto_if_not_defeated TRAINER_PHILLIP, SSTidalCorridor_EventScript_TrainerNotDefeated
-# 173 "data/maps/SSTidalCorridor/scripts.pory"
+# 172 "data/maps/SSTidalCorridor/scripts.pory"
 	goto_if_not_defeated TRAINER_LEONARD, SSTidalCorridor_EventScript_TrainerNotDefeated
-# 174 "data/maps/SSTidalCorridor/scripts.pory"
+# 173 "data/maps/SSTidalCorridor/scripts.pory"
 	goto_if_not_defeated TRAINER_COLTON, SSTidalCorridor_EventScript_TrainerNotDefeated
-# 175 "data/maps/SSTidalCorridor/scripts.pory"
+# 174 "data/maps/SSTidalCorridor/scripts.pory"
 	goto_if_not_defeated TRAINER_MICAH, SSTidalCorridor_EventScript_TrainerNotDefeated
-# 176 "data/maps/SSTidalCorridor/scripts.pory"
+# 175 "data/maps/SSTidalCorridor/scripts.pory"
 	goto_if_not_defeated TRAINER_THOMAS, SSTidalCorridor_EventScript_TrainerNotDefeated
-# 177 "data/maps/SSTidalCorridor/scripts.pory"
+# 176 "data/maps/SSTidalCorridor/scripts.pory"
 	goto_if_not_defeated TRAINER_LEA_AND_JED, SSTidalCorridor_EventScript_TrainerNotDefeated
-# 178 "data/maps/SSTidalCorridor/scripts.pory"
+# 177 "data/maps/SSTidalCorridor/scripts.pory"
 	goto_if_not_defeated TRAINER_GARRET, SSTidalCorridor_EventScript_TrainerNotDefeated
-# 179 "data/maps/SSTidalCorridor/scripts.pory"
+# 178 "data/maps/SSTidalCorridor/scripts.pory"
 	goto_if_not_defeated TRAINER_NAOMI, SSTidalCorridor_EventScript_TrainerNotDefeated
-# 180 "data/maps/SSTidalCorridor/scripts.pory"
+# 179 "data/maps/SSTidalCorridor/scripts.pory"
 	setflag FLAG_DEFEATED_SS_TIDAL_TRAINERS
-# 181 "data/maps/SSTidalCorridor/scripts.pory"
+# 180 "data/maps/SSTidalCorridor/scripts.pory"
 	goto SSTidalCorridor_EventScript_EnjoyYourCruise
+# 181 "data/maps/SSTidalCorridor/scripts.pory"
+	return
 # 182 "data/maps/SSTidalCorridor/scripts.pory"
-	return
+
 # 183 "data/maps/SSTidalCorridor/scripts.pory"
-
-# 184 "data/maps/SSTidalCorridor/scripts.pory"
 SSTidalCorridor_EventScript_TrainerNotDefeated::
-# 185 "data/maps/SSTidalCorridor/scripts.pory"
+# 184 "data/maps/SSTidalCorridor/scripts.pory"
 	return
+# 185 "data/maps/SSTidalCorridor/scripts.pory"
+
 # 186 "data/maps/SSTidalCorridor/scripts.pory"
-
-# 187 "data/maps/SSTidalCorridor/scripts.pory"
 SSTidalCorridor_EventScript_ScottScene::
-# 188 "data/maps/SSTidalCorridor/scripts.pory"
+# 187 "data/maps/SSTidalCorridor/scripts.pory"
 	lockall
-# 189 "data/maps/SSTidalCorridor/scripts.pory"
+# 188 "data/maps/SSTidalCorridor/scripts.pory"
 	applymovement LOCALID_SS_TIDAL_SCOTT, SSTidalCorridor_Movement_ScottApproachPlayer
+# 189 "data/maps/SSTidalCorridor/scripts.pory"
+	waitmovement 0
 # 190 "data/maps/SSTidalCorridor/scripts.pory"
-	waitmovement 0
-# 191 "data/maps/SSTidalCorridor/scripts.pory"
 	applymovement LOCALID_PLAYER, Common_Movement_WalkInPlaceFasterRight
+# 191 "data/maps/SSTidalCorridor/scripts.pory"
+	waitmovement 0
 # 192 "data/maps/SSTidalCorridor/scripts.pory"
-	waitmovement 0
-# 193 "data/maps/SSTidalCorridor/scripts.pory"
 	msgbox SSTidalCorridor_Text_ScottBattleFrontierInvite, MSGBOX_DEFAULT
-# 194 "data/maps/SSTidalCorridor/scripts.pory"
+# 193 "data/maps/SSTidalCorridor/scripts.pory"
 	closemessage
-# 195 "data/maps/SSTidalCorridor/scripts.pory"
+# 194 "data/maps/SSTidalCorridor/scripts.pory"
 	applymovement LOCALID_PLAYER, SSTidalCorridor_Movement_PlayerWatchScottExit
-# 196 "data/maps/SSTidalCorridor/scripts.pory"
+# 195 "data/maps/SSTidalCorridor/scripts.pory"
 	applymovement LOCALID_SS_TIDAL_EXIT_SAILOR, SSTidalCorridor_Movement_SailorMoveForScott
-# 197 "data/maps/SSTidalCorridor/scripts.pory"
+# 196 "data/maps/SSTidalCorridor/scripts.pory"
 	applymovement LOCALID_SS_TIDAL_SCOTT, SSTidalCorridor_Movement_ScottExit
+# 197 "data/maps/SSTidalCorridor/scripts.pory"
+	waitmovement 0
 # 198 "data/maps/SSTidalCorridor/scripts.pory"
-	waitmovement 0
-# 199 "data/maps/SSTidalCorridor/scripts.pory"
 	playse SE_EXIT
-# 200 "data/maps/SSTidalCorridor/scripts.pory"
+# 199 "data/maps/SSTidalCorridor/scripts.pory"
 	waitse
-# 201 "data/maps/SSTidalCorridor/scripts.pory"
+# 200 "data/maps/SSTidalCorridor/scripts.pory"
 	removeobject LOCALID_SS_TIDAL_SCOTT
-# 202 "data/maps/SSTidalCorridor/scripts.pory"
+# 201 "data/maps/SSTidalCorridor/scripts.pory"
 	applymovement LOCALID_SS_TIDAL_EXIT_SAILOR, SSTidalCorridor_Movement_SailorReturn
-# 203 "data/maps/SSTidalCorridor/scripts.pory"
+# 202 "data/maps/SSTidalCorridor/scripts.pory"
 	waitmovement 0
-# 204 "data/maps/SSTidalCorridor/scripts.pory"
+# 203 "data/maps/SSTidalCorridor/scripts.pory"
 	delay 30
-# 205 "data/maps/SSTidalCorridor/scripts.pory"
+# 204 "data/maps/SSTidalCorridor/scripts.pory"
 	setflag FLAG_MET_SCOTT_ON_SS_TIDAL
-# 206 "data/maps/SSTidalCorridor/scripts.pory"
+# 205 "data/maps/SSTidalCorridor/scripts.pory"
 	setvar VAR_SS_TIDAL_SCOTT_STATE, 1
-# 207 "data/maps/SSTidalCorridor/scripts.pory"
+# 206 "data/maps/SSTidalCorridor/scripts.pory"
 	releaseall
-# 208 "data/maps/SSTidalCorridor/scripts.pory"
+# 207 "data/maps/SSTidalCorridor/scripts.pory"
 	end
-# 209 "data/maps/SSTidalCorridor/scripts.pory"
+# 208 "data/maps/SSTidalCorridor/scripts.pory"
 
-# 210 "data/maps/SSTidalCorridor/scripts.pory"
+# 209 "data/maps/SSTidalCorridor/scripts.pory"
 SSTidalCorridor_Movement_ScottApproachPlayer:
+# 210 "data/maps/SSTidalCorridor/scripts.pory"
+	walk_left
 # 211 "data/maps/SSTidalCorridor/scripts.pory"
 	walk_left
 # 212 "data/maps/SSTidalCorridor/scripts.pory"
@@ -431,15 +431,15 @@ SSTidalCorridor_Movement_ScottApproachPlayer:
 # 216 "data/maps/SSTidalCorridor/scripts.pory"
 	walk_left
 # 217 "data/maps/SSTidalCorridor/scripts.pory"
-	walk_left
-# 218 "data/maps/SSTidalCorridor/scripts.pory"
 	step_end
-# 219 "data/maps/SSTidalCorridor/scripts.pory"
+# 218 "data/maps/SSTidalCorridor/scripts.pory"
 
-# 220 "data/maps/SSTidalCorridor/scripts.pory"
+# 219 "data/maps/SSTidalCorridor/scripts.pory"
 SSTidalCorridor_Movement_ScottExit:
-# 221 "data/maps/SSTidalCorridor/scripts.pory"
+# 220 "data/maps/SSTidalCorridor/scripts.pory"
 	walk_in_place_faster_down
+# 221 "data/maps/SSTidalCorridor/scripts.pory"
+	delay_16
 # 222 "data/maps/SSTidalCorridor/scripts.pory"
 	delay_16
 # 223 "data/maps/SSTidalCorridor/scripts.pory"
@@ -447,17 +447,17 @@ SSTidalCorridor_Movement_ScottExit:
 # 224 "data/maps/SSTidalCorridor/scripts.pory"
 	delay_16
 # 225 "data/maps/SSTidalCorridor/scripts.pory"
-	delay_16
-# 226 "data/maps/SSTidalCorridor/scripts.pory"
 	walk_down
-# 227 "data/maps/SSTidalCorridor/scripts.pory"
+# 226 "data/maps/SSTidalCorridor/scripts.pory"
 	walk_left
-# 228 "data/maps/SSTidalCorridor/scripts.pory"
+# 227 "data/maps/SSTidalCorridor/scripts.pory"
 	step_end
-# 229 "data/maps/SSTidalCorridor/scripts.pory"
+# 228 "data/maps/SSTidalCorridor/scripts.pory"
 
-# 230 "data/maps/SSTidalCorridor/scripts.pory"
+# 229 "data/maps/SSTidalCorridor/scripts.pory"
 SSTidalCorridor_Movement_PlayerWatchScottExit:
+# 230 "data/maps/SSTidalCorridor/scripts.pory"
+	delay_16
 # 231 "data/maps/SSTidalCorridor/scripts.pory"
 	delay_16
 # 232 "data/maps/SSTidalCorridor/scripts.pory"
@@ -465,212 +465,210 @@ SSTidalCorridor_Movement_PlayerWatchScottExit:
 # 233 "data/maps/SSTidalCorridor/scripts.pory"
 	delay_16
 # 234 "data/maps/SSTidalCorridor/scripts.pory"
-	delay_16
-# 235 "data/maps/SSTidalCorridor/scripts.pory"
 	delay_8
-# 236 "data/maps/SSTidalCorridor/scripts.pory"
+# 235 "data/maps/SSTidalCorridor/scripts.pory"
 	walk_in_place_faster_down
-# 237 "data/maps/SSTidalCorridor/scripts.pory"
+# 236 "data/maps/SSTidalCorridor/scripts.pory"
 	step_end
-# 238 "data/maps/SSTidalCorridor/scripts.pory"
+# 237 "data/maps/SSTidalCorridor/scripts.pory"
 
-# 239 "data/maps/SSTidalCorridor/scripts.pory"
+# 238 "data/maps/SSTidalCorridor/scripts.pory"
 SSTidalCorridor_Movement_SailorMoveForScott:
-# 240 "data/maps/SSTidalCorridor/scripts.pory"
+# 239 "data/maps/SSTidalCorridor/scripts.pory"
 	delay_16
+# 240 "data/maps/SSTidalCorridor/scripts.pory"
+	walk_right
 # 241 "data/maps/SSTidalCorridor/scripts.pory"
 	walk_right
 # 242 "data/maps/SSTidalCorridor/scripts.pory"
-	walk_right
-# 243 "data/maps/SSTidalCorridor/scripts.pory"
 	walk_in_place_faster_up
-# 244 "data/maps/SSTidalCorridor/scripts.pory"
+# 243 "data/maps/SSTidalCorridor/scripts.pory"
 	delay_16
-# 245 "data/maps/SSTidalCorridor/scripts.pory"
+# 244 "data/maps/SSTidalCorridor/scripts.pory"
 	walk_in_place_faster_left
-# 246 "data/maps/SSTidalCorridor/scripts.pory"
+# 245 "data/maps/SSTidalCorridor/scripts.pory"
 	step_end
-# 247 "data/maps/SSTidalCorridor/scripts.pory"
+# 246 "data/maps/SSTidalCorridor/scripts.pory"
 
-# 248 "data/maps/SSTidalCorridor/scripts.pory"
+# 247 "data/maps/SSTidalCorridor/scripts.pory"
 SSTidalCorridor_Movement_SailorReturn:
+# 248 "data/maps/SSTidalCorridor/scripts.pory"
+	walk_left
 # 249 "data/maps/SSTidalCorridor/scripts.pory"
 	walk_left
 # 250 "data/maps/SSTidalCorridor/scripts.pory"
-	walk_left
-# 251 "data/maps/SSTidalCorridor/scripts.pory"
 	walk_in_place_faster_up
-# 252 "data/maps/SSTidalCorridor/scripts.pory"
+# 251 "data/maps/SSTidalCorridor/scripts.pory"
 	step_end
+# 252 "data/maps/SSTidalCorridor/scripts.pory"
+
 # 253 "data/maps/SSTidalCorridor/scripts.pory"
-
-# 254 "data/maps/SSTidalCorridor/scripts.pory"
 SSTidalCorridor_Text_ScottBattleFrontierInvite:
-# 255 "data/maps/SSTidalCorridor/scripts.pory"
+# 254 "data/maps/SSTidalCorridor/scripts.pory"
 	.string "SCOTT: Well, hi, hi!\n"
-# 256 "data/maps/SSTidalCorridor/scripts.pory"
+# 255 "data/maps/SSTidalCorridor/scripts.pory"
 	.string "{PLAYER}{KUN}, {PLAYER}{KUN}!\p"
-# 257 "data/maps/SSTidalCorridor/scripts.pory"
+# 256 "data/maps/SSTidalCorridor/scripts.pory"
 	.string "Something's come up, so I have to\n"
-# 258 "data/maps/SSTidalCorridor/scripts.pory"
+# 257 "data/maps/SSTidalCorridor/scripts.pory"
 	.string "disembark, but am I glad to see you!\p"
-# 259 "data/maps/SSTidalCorridor/scripts.pory"
+# 258 "data/maps/SSTidalCorridor/scripts.pory"
 	.string "Congratulations, LEAGUE CHAMPION!\p"
-# 260 "data/maps/SSTidalCorridor/scripts.pory"
+# 259 "data/maps/SSTidalCorridor/scripts.pory"
 	.string "There's a place I'd like to invite\n"
-# 261 "data/maps/SSTidalCorridor/scripts.pory"
+# 260 "data/maps/SSTidalCorridor/scripts.pory"
 	.string "someone like you.\p"
-# 262 "data/maps/SSTidalCorridor/scripts.pory"
+# 261 "data/maps/SSTidalCorridor/scripts.pory"
 	.string "It's the…\n"
-# 263 "data/maps/SSTidalCorridor/scripts.pory"
+# 262 "data/maps/SSTidalCorridor/scripts.pory"
 	.string "BATTLE FRONTIER!\p"
-# 264 "data/maps/SSTidalCorridor/scripts.pory"
+# 263 "data/maps/SSTidalCorridor/scripts.pory"
 	.string "What's the place like?\n"
-# 265 "data/maps/SSTidalCorridor/scripts.pory"
+# 264 "data/maps/SSTidalCorridor/scripts.pory"
 	.string "You'll understand when you see it!\p"
-# 266 "data/maps/SSTidalCorridor/scripts.pory"
+# 265 "data/maps/SSTidalCorridor/scripts.pory"
 	.string "I've spoken with the ship's CAPTAIN\n"
-# 267 "data/maps/SSTidalCorridor/scripts.pory"
+# 266 "data/maps/SSTidalCorridor/scripts.pory"
 	.string "about this.\p"
-# 268 "data/maps/SSTidalCorridor/scripts.pory"
+# 267 "data/maps/SSTidalCorridor/scripts.pory"
 	.string "The next time you take a ferry,\n"
-# 269 "data/maps/SSTidalCorridor/scripts.pory"
+# 268 "data/maps/SSTidalCorridor/scripts.pory"
 	.string "you should be able to sail to\l"
-# 270 "data/maps/SSTidalCorridor/scripts.pory"
+# 269 "data/maps/SSTidalCorridor/scripts.pory"
 	.string "the BATTLE FRONTIER.\p"
-# 271 "data/maps/SSTidalCorridor/scripts.pory"
+# 270 "data/maps/SSTidalCorridor/scripts.pory"
 	.string "Okay, {PLAYER}{KUN}, I'll be waiting for you\n"
-# 272 "data/maps/SSTidalCorridor/scripts.pory"
+# 271 "data/maps/SSTidalCorridor/scripts.pory"
 	.string "at the BATTLE FRONTIER!$"
+# 272 "data/maps/SSTidalCorridor/scripts.pory"
+
 # 273 "data/maps/SSTidalCorridor/scripts.pory"
-
-# 274 "data/maps/SSTidalCorridor/scripts.pory"
 SSTidal_Text_FastCurrentsHopeYouEnjoyVoyage:
-# 275 "data/maps/SSTidalCorridor/scripts.pory"
+# 274 "data/maps/SSTidalCorridor/scripts.pory"
 	.string "This ferry is built to plow through\n"
-# 276 "data/maps/SSTidalCorridor/scripts.pory"
+# 275 "data/maps/SSTidalCorridor/scripts.pory"
 	.string "fast-running currents.\p"
-# 277 "data/maps/SSTidalCorridor/scripts.pory"
+# 276 "data/maps/SSTidalCorridor/scripts.pory"
 	.string "We hope you enjoy your voyage with us.\n"
-# 278 "data/maps/SSTidalCorridor/scripts.pory"
+# 277 "data/maps/SSTidalCorridor/scripts.pory"
 	.string "Feel free to explore the ship.$"
+# 278 "data/maps/SSTidalCorridor/scripts.pory"
+
 # 279 "data/maps/SSTidalCorridor/scripts.pory"
-
-# 280 "data/maps/SSTidalCorridor/scripts.pory"
 SSTidal_Text_HopeYouEnjoyVoyage:
-# 281 "data/maps/SSTidalCorridor/scripts.pory"
+# 280 "data/maps/SSTidalCorridor/scripts.pory"
 	.string "We hope you enjoy your voyage on\n"
-# 282 "data/maps/SSTidalCorridor/scripts.pory"
+# 281 "data/maps/SSTidalCorridor/scripts.pory"
 	.string "our ferry.$"
+# 282 "data/maps/SSTidalCorridor/scripts.pory"
+
 # 283 "data/maps/SSTidalCorridor/scripts.pory"
-
-# 284 "data/maps/SSTidalCorridor/scripts.pory"
 SSTidal_Text_MadeLandInSlateport:
-# 285 "data/maps/SSTidalCorridor/scripts.pory"
+# 284 "data/maps/SSTidalCorridor/scripts.pory"
 	.string "We have made land in SLATEPORT CITY.\n"
+# 285 "data/maps/SSTidalCorridor/scripts.pory"
+	.string "Thank you for sailing with us.$"
 # 286 "data/maps/SSTidalCorridor/scripts.pory"
-	.string "Thank you for sailing with us.$"
+
 # 287 "data/maps/SSTidalCorridor/scripts.pory"
-
-# 288 "data/maps/SSTidalCorridor/scripts.pory"
 SSTidal_Text_MadeLandInLilycove:
-# 289 "data/maps/SSTidalCorridor/scripts.pory"
+# 288 "data/maps/SSTidalCorridor/scripts.pory"
 	.string "We have made land in LILYCOVE CITY.\n"
-# 290 "data/maps/SSTidalCorridor/scripts.pory"
+# 289 "data/maps/SSTidalCorridor/scripts.pory"
 	.string "Thank you for sailing with us.$"
+# 290 "data/maps/SSTidalCorridor/scripts.pory"
+
 # 291 "data/maps/SSTidalCorridor/scripts.pory"
-
-# 292 "data/maps/SSTidalCorridor/scripts.pory"
 SSTidalCorridor_Text_CanRestInCabin2:
-# 293 "data/maps/SSTidalCorridor/scripts.pory"
+# 292 "data/maps/SSTidalCorridor/scripts.pory"
 	.string "It'll be some time before we make land,\n"
-# 294 "data/maps/SSTidalCorridor/scripts.pory"
+# 293 "data/maps/SSTidalCorridor/scripts.pory"
 	.string "I reckon.\p"
-# 295 "data/maps/SSTidalCorridor/scripts.pory"
+# 294 "data/maps/SSTidalCorridor/scripts.pory"
 	.string "You can rest up in your cabin if you'd\n"
-# 296 "data/maps/SSTidalCorridor/scripts.pory"
+# 295 "data/maps/SSTidalCorridor/scripts.pory"
 	.string "like. Your cabin's No. 2.\p"
-# 297 "data/maps/SSTidalCorridor/scripts.pory"
+# 296 "data/maps/SSTidalCorridor/scripts.pory"
 	.string "The bed in there is soft and plushy.\n"
-# 298 "data/maps/SSTidalCorridor/scripts.pory"
+# 297 "data/maps/SSTidalCorridor/scripts.pory"
 	.string "I can attest to how comfy it is!$"
+# 298 "data/maps/SSTidalCorridor/scripts.pory"
+
 # 299 "data/maps/SSTidalCorridor/scripts.pory"
-
-# 300 "data/maps/SSTidalCorridor/scripts.pory"
 SSTidalCorridor_Text_WeveArrived:
-# 301 "data/maps/SSTidalCorridor/scripts.pory"
+# 300 "data/maps/SSTidalCorridor/scripts.pory"
 	.string "We've arrived!$"
+# 301 "data/maps/SSTidalCorridor/scripts.pory"
+
 # 302 "data/maps/SSTidalCorridor/scripts.pory"
-
-# 303 "data/maps/SSTidalCorridor/scripts.pory"
 SSTidalCorridor_Text_VisitOtherCabins:
-# 304 "data/maps/SSTidalCorridor/scripts.pory"
+# 303 "data/maps/SSTidalCorridor/scripts.pory"
 	.string "Go visit other cabins.\n"
-# 305 "data/maps/SSTidalCorridor/scripts.pory"
+# 304 "data/maps/SSTidalCorridor/scripts.pory"
 	.string "TRAINERS bored of the boat trip will\l"
-# 306 "data/maps/SSTidalCorridor/scripts.pory"
+# 305 "data/maps/SSTidalCorridor/scripts.pory"
 	.string "be itching to battle.$"
+# 306 "data/maps/SSTidalCorridor/scripts.pory"
+
 # 307 "data/maps/SSTidalCorridor/scripts.pory"
-
-# 308 "data/maps/SSTidalCorridor/scripts.pory"
 SSTidalCorridor_Text_EnjoyYourCruise:
-# 309 "data/maps/SSTidalCorridor/scripts.pory"
+# 308 "data/maps/SSTidalCorridor/scripts.pory"
 	.string "Enjoy your cruise!$"
+# 309 "data/maps/SSTidalCorridor/scripts.pory"
+
 # 310 "data/maps/SSTidalCorridor/scripts.pory"
-
-# 311 "data/maps/SSTidalCorridor/scripts.pory"
 SSTidalCorridor_Text_HorizonSpreadsBeyondPorthole:
-# 312 "data/maps/SSTidalCorridor/scripts.pory"
+# 311 "data/maps/SSTidalCorridor/scripts.pory"
 	.string "The horizon spreads beyond\n"
-# 313 "data/maps/SSTidalCorridor/scripts.pory"
+# 312 "data/maps/SSTidalCorridor/scripts.pory"
 	.string "the porthole.$"
+# 313 "data/maps/SSTidalCorridor/scripts.pory"
+
 # 314 "data/maps/SSTidalCorridor/scripts.pory"
-
-# 315 "data/maps/SSTidalCorridor/scripts.pory"
 SSTidalCorridor_Text_BrineyWelcomeAboard:
-# 316 "data/maps/SSTidalCorridor/scripts.pory"
+# 315 "data/maps/SSTidalCorridor/scripts.pory"
 	.string "MR. BRINEY: Welcome aboard, {PLAYER}{KUN}!\p"
-# 317 "data/maps/SSTidalCorridor/scripts.pory"
+# 316 "data/maps/SSTidalCorridor/scripts.pory"
 	.string "They made me honorary captain of\n"
-# 318 "data/maps/SSTidalCorridor/scripts.pory"
+# 317 "data/maps/SSTidalCorridor/scripts.pory"
 	.string "the S.S. TIDAL!\p"
-# 319 "data/maps/SSTidalCorridor/scripts.pory"
+# 318 "data/maps/SSTidalCorridor/scripts.pory"
 	.string "You can call me CAPTAIN BRINEY now!\p"
-# 320 "data/maps/SSTidalCorridor/scripts.pory"
+# 319 "data/maps/SSTidalCorridor/scripts.pory"
 	.string "You know, I retired once before,\n"
-# 321 "data/maps/SSTidalCorridor/scripts.pory"
+# 320 "data/maps/SSTidalCorridor/scripts.pory"
 	.string "but when I saw this majestic ship…\p"
-# 322 "data/maps/SSTidalCorridor/scripts.pory"
+# 321 "data/maps/SSTidalCorridor/scripts.pory"
 	.string "Let me just say, it stirred my sleeping\n"
-# 323 "data/maps/SSTidalCorridor/scripts.pory"
+# 322 "data/maps/SSTidalCorridor/scripts.pory"
 	.string "soul as a sailor!$"
+# 323 "data/maps/SSTidalCorridor/scripts.pory"
+
 # 324 "data/maps/SSTidalCorridor/scripts.pory"
-
-# 325 "data/maps/SSTidalCorridor/scripts.pory"
 SSTidalCorridor_Text_Peeko:
-# 326 "data/maps/SSTidalCorridor/scripts.pory"
+# 325 "data/maps/SSTidalCorridor/scripts.pory"
 	.string "PEEKO: Pihyo pihyohyo…$"
+# 326 "data/maps/SSTidalCorridor/scripts.pory"
+
 # 327 "data/maps/SSTidalCorridor/scripts.pory"
-
-# 328 "data/maps/SSTidalCorridor/scripts.pory"
 SSTidalCorridor_Text_Cabin1:
-# 329 "data/maps/SSTidalCorridor/scripts.pory"
+# 328 "data/maps/SSTidalCorridor/scripts.pory"
 	.string "Cabin 1$"
+# 329 "data/maps/SSTidalCorridor/scripts.pory"
+
 # 330 "data/maps/SSTidalCorridor/scripts.pory"
-
-# 331 "data/maps/SSTidalCorridor/scripts.pory"
 SSTidalCorridor_Text_Cabin2:
-# 332 "data/maps/SSTidalCorridor/scripts.pory"
+# 331 "data/maps/SSTidalCorridor/scripts.pory"
 	.string "Cabin 2$"
+# 332 "data/maps/SSTidalCorridor/scripts.pory"
+
 # 333 "data/maps/SSTidalCorridor/scripts.pory"
-
-# 334 "data/maps/SSTidalCorridor/scripts.pory"
 SSTidalCorridor_Text_Cabin3:
-# 335 "data/maps/SSTidalCorridor/scripts.pory"
+# 334 "data/maps/SSTidalCorridor/scripts.pory"
 	.string "Cabin 3$"
-# 336 "data/maps/SSTidalCorridor/scripts.pory"
+# 335 "data/maps/SSTidalCorridor/scripts.pory"
 
-# 337 "data/maps/SSTidalCorridor/scripts.pory"
+# 336 "data/maps/SSTidalCorridor/scripts.pory"
 SSTidalCorridor_Text_Cabin4:
-# 338 "data/maps/SSTidalCorridor/scripts.pory"
+# 337 "data/maps/SSTidalCorridor/scripts.pory"
 	.string "Cabin 4$"

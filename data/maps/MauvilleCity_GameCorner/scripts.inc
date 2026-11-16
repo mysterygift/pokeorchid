@@ -47,7 +47,7 @@ MauvilleCity_GameCorner_EventScript_CoinsClerk::
 # 24 "data/maps/MauvilleCity_GameCorner/scripts.pory"
 	showmoneybox 0, 0
 # 25 "data/maps/MauvilleCity_GameCorner/scripts.pory"
-	showcoinsbox 1, 6
+	showcoinsbox 0, 5
 # 26 "data/maps/MauvilleCity_GameCorner/scripts.pory"
 	goto MauvilleCity_GameCorner_EventScript_ChooseCoinsDefault50
 # 27 "data/maps/MauvilleCity_GameCorner/scripts.pory"
@@ -103,7 +103,7 @@ MauvilleCity_GameCorner_EventScript_Buy50Coins::
 # 52 "data/maps/MauvilleCity_GameCorner/scripts.pory"
 	updatemoneybox
 # 53 "data/maps/MauvilleCity_GameCorner/scripts.pory"
-	updatecoinsbox 1, 6
+	updatecoinsbox
 # 54 "data/maps/MauvilleCity_GameCorner/scripts.pory"
 	playse SE_SHOP
 # 55 "data/maps/MauvilleCity_GameCorner/scripts.pory"
@@ -111,7 +111,7 @@ MauvilleCity_GameCorner_EventScript_Buy50Coins::
 # 56 "data/maps/MauvilleCity_GameCorner/scripts.pory"
 	hidemoneybox
 # 57 "data/maps/MauvilleCity_GameCorner/scripts.pory"
-	hidecoinsbox 0, 5
+	hidecoinsbox
 # 58 "data/maps/MauvilleCity_GameCorner/scripts.pory"
 	release
 # 59 "data/maps/MauvilleCity_GameCorner/scripts.pory"
@@ -135,7 +135,7 @@ MauvilleCity_GameCorner_EventScript_Buy500Coins::
 # 68 "data/maps/MauvilleCity_GameCorner/scripts.pory"
 	updatemoneybox
 # 69 "data/maps/MauvilleCity_GameCorner/scripts.pory"
-	updatecoinsbox 1, 6
+	updatecoinsbox
 # 70 "data/maps/MauvilleCity_GameCorner/scripts.pory"
 	playse SE_SHOP
 # 71 "data/maps/MauvilleCity_GameCorner/scripts.pory"
@@ -143,7 +143,7 @@ MauvilleCity_GameCorner_EventScript_Buy500Coins::
 # 72 "data/maps/MauvilleCity_GameCorner/scripts.pory"
 	hidemoneybox
 # 73 "data/maps/MauvilleCity_GameCorner/scripts.pory"
-	hidecoinsbox 0, 5
+	hidecoinsbox
 # 74 "data/maps/MauvilleCity_GameCorner/scripts.pory"
 	release
 # 75 "data/maps/MauvilleCity_GameCorner/scripts.pory"
@@ -167,7 +167,7 @@ MauvilleCity_GameCorner_EventScript_NotEnoughMoney::
 # 84 "data/maps/MauvilleCity_GameCorner/scripts.pory"
 	hidemoneybox
 # 85 "data/maps/MauvilleCity_GameCorner/scripts.pory"
-	hidecoinsbox 0, 5
+	hidecoinsbox
 # 86 "data/maps/MauvilleCity_GameCorner/scripts.pory"
 	release
 # 87 "data/maps/MauvilleCity_GameCorner/scripts.pory"
@@ -181,7 +181,7 @@ MauvilleCity_GameCorner_EventScript_CancelBuyCoins::
 # 91 "data/maps/MauvilleCity_GameCorner/scripts.pory"
 	hidemoneybox
 # 92 "data/maps/MauvilleCity_GameCorner/scripts.pory"
-	hidecoinsbox 0, 5
+	hidecoinsbox
 # 93 "data/maps/MauvilleCity_GameCorner/scripts.pory"
 	release
 # 94 "data/maps/MauvilleCity_GameCorner/scripts.pory"
@@ -195,7 +195,7 @@ MauvilleCity_GameCorner_EventScript_NoRoomForCoins::
 # 98 "data/maps/MauvilleCity_GameCorner/scripts.pory"
 	hidemoneybox
 # 99 "data/maps/MauvilleCity_GameCorner/scripts.pory"
-	hidecoinsbox 0, 5
+	hidecoinsbox
 # 100 "data/maps/MauvilleCity_GameCorner/scripts.pory"
 	release
 # 101 "data/maps/MauvilleCity_GameCorner/scripts.pory"
@@ -229,7 +229,7 @@ MauvilleCity_GameCorner_EventScript_ChooseDollPrizeMessage::
 # 115 "data/maps/MauvilleCity_GameCorner/scripts.pory"
 	setvar VAR_TEMP_1, 0
 # 116 "data/maps/MauvilleCity_GameCorner/scripts.pory"
-	showcoinsbox 1, 1
+	showcoinsbox 0, 0
 # 117 "data/maps/MauvilleCity_GameCorner/scripts.pory"
 	goto MauvilleCity_GameCorner_EventScript_ChooseDollPrize
 # 118 "data/maps/MauvilleCity_GameCorner/scripts.pory"
@@ -329,7 +329,7 @@ MauvilleCity_GameCorner_EventScript_BuyTreeckoDoll::
 # 165 "data/maps/MauvilleCity_GameCorner/scripts.pory"
 	adddecoration DECOR_TREECKO_DOLL
 # 166 "data/maps/MauvilleCity_GameCorner/scripts.pory"
-	updatecoinsbox 1, 1
+	updatecoinsbox
 # 167 "data/maps/MauvilleCity_GameCorner/scripts.pory"
 	playse SE_SHOP
 # 168 "data/maps/MauvilleCity_GameCorner/scripts.pory"
@@ -357,7 +357,7 @@ MauvilleCity_GameCorner_EventScript_BuyTorchicDoll::
 # 179 "data/maps/MauvilleCity_GameCorner/scripts.pory"
 	adddecoration DECOR_TORCHIC_DOLL
 # 180 "data/maps/MauvilleCity_GameCorner/scripts.pory"
-	updatecoinsbox 1, 1
+	updatecoinsbox
 # 181 "data/maps/MauvilleCity_GameCorner/scripts.pory"
 	playse SE_SHOP
 # 182 "data/maps/MauvilleCity_GameCorner/scripts.pory"
@@ -385,7 +385,7 @@ MauvilleCity_GameCorner_EventScript_BuyMudkipDoll::
 # 193 "data/maps/MauvilleCity_GameCorner/scripts.pory"
 	adddecoration DECOR_MUDKIP_DOLL
 # 194 "data/maps/MauvilleCity_GameCorner/scripts.pory"
-	updatecoinsbox 1, 1
+	updatecoinsbox
 # 195 "data/maps/MauvilleCity_GameCorner/scripts.pory"
 	playse SE_SHOP
 # 196 "data/maps/MauvilleCity_GameCorner/scripts.pory"
@@ -421,7 +421,7 @@ MauvilleCity_GameCorner_EventScript_CancelDollSelect::
 # 211 "data/maps/MauvilleCity_GameCorner/scripts.pory"
 	msgbox MauvilleCity_GameCorner_Text_OhIsThatSo, MSGBOX_DEFAULT
 # 212 "data/maps/MauvilleCity_GameCorner/scripts.pory"
-	hidecoinsbox 0, 0
+	hidecoinsbox
 # 213 "data/maps/MauvilleCity_GameCorner/scripts.pory"
 	release
 # 214 "data/maps/MauvilleCity_GameCorner/scripts.pory"
@@ -455,7 +455,7 @@ MauvilleCity_GameCorner_EventScript_ChooseTMPrizeMessage::
 # 228 "data/maps/MauvilleCity_GameCorner/scripts.pory"
 	setvar VAR_TEMP_1, 0
 # 229 "data/maps/MauvilleCity_GameCorner/scripts.pory"
-	showcoinsbox 1, 1
+	showcoinsbox 0, 0
 # 230 "data/maps/MauvilleCity_GameCorner/scripts.pory"
 	goto MauvilleCity_GameCorner_EventScript_ChooseTMPrize
 # 231 "data/maps/MauvilleCity_GameCorner/scripts.pory"
@@ -593,7 +593,7 @@ MauvilleCity_GameCorner_EventScript_BuyTMDoubleTeam::
 # 297 "data/maps/MauvilleCity_GameCorner/scripts.pory"
 	additem ITEM_TM_DOUBLE_TEAM
 # 298 "data/maps/MauvilleCity_GameCorner/scripts.pory"
-	updatecoinsbox 1, 1
+	updatecoinsbox
 # 299 "data/maps/MauvilleCity_GameCorner/scripts.pory"
 	playse SE_SHOP
 # 300 "data/maps/MauvilleCity_GameCorner/scripts.pory"
@@ -619,7 +619,7 @@ MauvilleCity_GameCorner_EventScript_BuyTMPsychic::
 # 310 "data/maps/MauvilleCity_GameCorner/scripts.pory"
 	additem ITEM_TM_PSYCHIC
 # 311 "data/maps/MauvilleCity_GameCorner/scripts.pory"
-	updatecoinsbox 1, 1
+	updatecoinsbox
 # 312 "data/maps/MauvilleCity_GameCorner/scripts.pory"
 	playse SE_SHOP
 # 313 "data/maps/MauvilleCity_GameCorner/scripts.pory"
@@ -645,7 +645,7 @@ MauvilleCity_GameCorner_EventScript_BuyTMFlamethrower::
 # 323 "data/maps/MauvilleCity_GameCorner/scripts.pory"
 	additem ITEM_TM_FLAMETHROWER
 # 324 "data/maps/MauvilleCity_GameCorner/scripts.pory"
-	updatecoinsbox 1, 1
+	updatecoinsbox
 # 325 "data/maps/MauvilleCity_GameCorner/scripts.pory"
 	playse SE_SHOP
 # 326 "data/maps/MauvilleCity_GameCorner/scripts.pory"
@@ -671,7 +671,7 @@ MauvilleCity_GameCorner_EventScript_BuyTMThunderbolt::
 # 336 "data/maps/MauvilleCity_GameCorner/scripts.pory"
 	additem ITEM_TM_THUNDERBOLT
 # 337 "data/maps/MauvilleCity_GameCorner/scripts.pory"
-	updatecoinsbox 1, 1
+	updatecoinsbox
 # 338 "data/maps/MauvilleCity_GameCorner/scripts.pory"
 	playse SE_SHOP
 # 339 "data/maps/MauvilleCity_GameCorner/scripts.pory"
@@ -697,7 +697,7 @@ MauvilleCity_GameCorner_EventScript_BuyTMIceBeam::
 # 349 "data/maps/MauvilleCity_GameCorner/scripts.pory"
 	additem ITEM_TM_ICE_BEAM
 # 350 "data/maps/MauvilleCity_GameCorner/scripts.pory"
-	updatecoinsbox 1, 1
+	updatecoinsbox
 # 351 "data/maps/MauvilleCity_GameCorner/scripts.pory"
 	playse SE_SHOP
 # 352 "data/maps/MauvilleCity_GameCorner/scripts.pory"
@@ -733,7 +733,7 @@ MauvilleCity_GameCorner_EventScript_CancelTMSelect::
 # 367 "data/maps/MauvilleCity_GameCorner/scripts.pory"
 	msgbox MauvilleCity_GameCorner_Text_OhIsThatSo, MSGBOX_DEFAULT
 # 368 "data/maps/MauvilleCity_GameCorner/scripts.pory"
-	hidecoinsbox 0, 0
+	hidecoinsbox
 # 369 "data/maps/MauvilleCity_GameCorner/scripts.pory"
 	release
 # 370 "data/maps/MauvilleCity_GameCorner/scripts.pory"

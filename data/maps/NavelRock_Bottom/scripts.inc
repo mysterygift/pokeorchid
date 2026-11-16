@@ -113,42 +113,40 @@ NavelRock_Bottom_EventScript_Lugia::
 # 57 "data/maps/NavelRock_Bottom/scripts.pory"
 	special BattleSetup_StartLegendaryBattle
 # 58 "data/maps/NavelRock_Bottom/scripts.pory"
-	waitstate
-# 59 "data/maps/NavelRock_Bottom/scripts.pory"
 	clearflag FLAG_SYS_CTRL_OBJ_DELETE
-# 60 "data/maps/NavelRock_Bottom/scripts.pory"
+# 59 "data/maps/NavelRock_Bottom/scripts.pory"
 	specialvar VAR_RESULT, GetBattleOutcome
-# 61 "data/maps/NavelRock_Bottom/scripts.pory"
+# 60 "data/maps/NavelRock_Bottom/scripts.pory"
 	goto_if_eq VAR_RESULT, B_OUTCOME_WON, NavelRock_Bottom_EventScript_DefeatedLugia
-# 62 "data/maps/NavelRock_Bottom/scripts.pory"
+# 61 "data/maps/NavelRock_Bottom/scripts.pory"
 	goto_if_eq VAR_RESULT, B_OUTCOME_RAN, NavelRock_Bottom_EventScript_RanFromLugia
-# 63 "data/maps/NavelRock_Bottom/scripts.pory"
+# 62 "data/maps/NavelRock_Bottom/scripts.pory"
 	goto_if_eq VAR_RESULT, B_OUTCOME_PLAYER_TELEPORTED, NavelRock_Bottom_EventScript_RanFromLugia
-# 64 "data/maps/NavelRock_Bottom/scripts.pory"
+# 63 "data/maps/NavelRock_Bottom/scripts.pory"
 	setflag FLAG_CAUGHT_LUGIA
-# 65 "data/maps/NavelRock_Bottom/scripts.pory"
+# 64 "data/maps/NavelRock_Bottom/scripts.pory"
 	release
+# 65 "data/maps/NavelRock_Bottom/scripts.pory"
+	end
 # 66 "data/maps/NavelRock_Bottom/scripts.pory"
-	end
+
 # 67 "data/maps/NavelRock_Bottom/scripts.pory"
-
-# 68 "data/maps/NavelRock_Bottom/scripts.pory"
 NavelRock_Bottom_EventScript_DefeatedLugia::
-# 69 "data/maps/NavelRock_Bottom/scripts.pory"
+# 68 "data/maps/NavelRock_Bottom/scripts.pory"
 	setflag FLAG_DEFEATED_LUGIA
+# 69 "data/maps/NavelRock_Bottom/scripts.pory"
+	setvar VAR_0x8004, SPECIES_LUGIA
 # 70 "data/maps/NavelRock_Bottom/scripts.pory"
-	setvar VAR_0x8004, SPECIES_LUGIA
+	goto Common_EventScript_LegendaryFlewAway
 # 71 "data/maps/NavelRock_Bottom/scripts.pory"
-	goto Common_EventScript_LegendaryFlewAway
-# 72 "data/maps/NavelRock_Bottom/scripts.pory"
 	end
-# 73 "data/maps/NavelRock_Bottom/scripts.pory"
+# 72 "data/maps/NavelRock_Bottom/scripts.pory"
 
-# 74 "data/maps/NavelRock_Bottom/scripts.pory"
+# 73 "data/maps/NavelRock_Bottom/scripts.pory"
 NavelRock_Bottom_EventScript_RanFromLugia::
-# 75 "data/maps/NavelRock_Bottom/scripts.pory"
+# 74 "data/maps/NavelRock_Bottom/scripts.pory"
 	setvar VAR_0x8004, SPECIES_LUGIA
-# 76 "data/maps/NavelRock_Bottom/scripts.pory"
+# 75 "data/maps/NavelRock_Bottom/scripts.pory"
 	goto Common_EventScript_LegendaryFlewAway
-# 77 "data/maps/NavelRock_Bottom/scripts.pory"
+# 76 "data/maps/NavelRock_Bottom/scripts.pory"
 	end

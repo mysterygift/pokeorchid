@@ -133,40 +133,38 @@ DesertRuins_EventScript_Regirock::
 # 67 "data/maps/DesertRuins/scripts.pory"
 	special StartRegiBattle
 # 68 "data/maps/DesertRuins/scripts.pory"
-	waitstate
-# 69 "data/maps/DesertRuins/scripts.pory"
 	clearflag FLAG_SYS_CTRL_OBJ_DELETE
-# 70 "data/maps/DesertRuins/scripts.pory"
+# 69 "data/maps/DesertRuins/scripts.pory"
 	specialvar VAR_RESULT, GetBattleOutcome
-# 71 "data/maps/DesertRuins/scripts.pory"
+# 70 "data/maps/DesertRuins/scripts.pory"
 	goto_if_eq VAR_RESULT, B_OUTCOME_WON, DesertRuins_EventScript_DefeatedRegirock
-# 72 "data/maps/DesertRuins/scripts.pory"
+# 71 "data/maps/DesertRuins/scripts.pory"
 	goto_if_eq VAR_RESULT, B_OUTCOME_RAN, DesertRuins_EventScript_RanFromRegirock
-# 73 "data/maps/DesertRuins/scripts.pory"
+# 72 "data/maps/DesertRuins/scripts.pory"
 	goto_if_eq VAR_RESULT, B_OUTCOME_PLAYER_TELEPORTED, DesertRuins_EventScript_RanFromRegirock
+# 73 "data/maps/DesertRuins/scripts.pory"
+	setflag FLAG_DEFEATED_REGIROCK
 # 74 "data/maps/DesertRuins/scripts.pory"
-	setflag FLAG_DEFEATED_REGIROCK
-# 75 "data/maps/DesertRuins/scripts.pory"
 	release
+# 75 "data/maps/DesertRuins/scripts.pory"
+	end
 # 76 "data/maps/DesertRuins/scripts.pory"
-	end
+
 # 77 "data/maps/DesertRuins/scripts.pory"
-
-# 78 "data/maps/DesertRuins/scripts.pory"
 DesertRuins_EventScript_DefeatedRegirock::
-# 79 "data/maps/DesertRuins/scripts.pory"
+# 78 "data/maps/DesertRuins/scripts.pory"
 	setflag FLAG_DEFEATED_REGIROCK
-# 80 "data/maps/DesertRuins/scripts.pory"
+# 79 "data/maps/DesertRuins/scripts.pory"
 	goto Common_EventScript_RemoveStaticPokemon
-# 81 "data/maps/DesertRuins/scripts.pory"
+# 80 "data/maps/DesertRuins/scripts.pory"
 	end
-# 82 "data/maps/DesertRuins/scripts.pory"
+# 81 "data/maps/DesertRuins/scripts.pory"
 
-# 83 "data/maps/DesertRuins/scripts.pory"
+# 82 "data/maps/DesertRuins/scripts.pory"
 DesertRuins_EventScript_RanFromRegirock::
-# 84 "data/maps/DesertRuins/scripts.pory"
+# 83 "data/maps/DesertRuins/scripts.pory"
 	setvar VAR_0x8004, SPECIES_REGIROCK
-# 85 "data/maps/DesertRuins/scripts.pory"
+# 84 "data/maps/DesertRuins/scripts.pory"
 	goto Common_EventScript_LegendaryFlewAway
-# 86 "data/maps/DesertRuins/scripts.pory"
+# 85 "data/maps/DesertRuins/scripts.pory"
 	end

@@ -119,7 +119,6 @@ TosaPort_EventScript_StarterGuideTop::
 TosaPort_EventScript_GiveNickname::
 	fadescreen FADE_TO_BLACK
 	special ChangePokemonNickname
-	waitstate
 	return
 
 TosaPort_EventScript_StarterGuide_AfterStarter::

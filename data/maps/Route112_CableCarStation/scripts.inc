@@ -99,94 +99,92 @@ Route112_CableCarStation_EventScript_RideCableCar::
 # 50 "data/maps/Route112_CableCarStation/scripts.pory"
 	special CableCar
 # 51 "data/maps/Route112_CableCarStation/scripts.pory"
-	waitstate
+	release
 # 52 "data/maps/Route112_CableCarStation/scripts.pory"
-	release
+	end
 # 53 "data/maps/Route112_CableCarStation/scripts.pory"
-	end
+
 # 54 "data/maps/Route112_CableCarStation/scripts.pory"
-
-# 55 "data/maps/Route112_CableCarStation/scripts.pory"
 Route112_CableCarStation_EventScript_DeclineRide::
-# 56 "data/maps/Route112_CableCarStation/scripts.pory"
+# 55 "data/maps/Route112_CableCarStation/scripts.pory"
 	msgbox Route112_CableCarStation_Text_RideAnotherTime, MSGBOX_DEFAULT
-# 57 "data/maps/Route112_CableCarStation/scripts.pory"
+# 56 "data/maps/Route112_CableCarStation/scripts.pory"
 	release
-# 58 "data/maps/Route112_CableCarStation/scripts.pory"
+# 57 "data/maps/Route112_CableCarStation/scripts.pory"
 	end
-# 59 "data/maps/Route112_CableCarStation/scripts.pory"
+# 58 "data/maps/Route112_CableCarStation/scripts.pory"
 
-# 60 "data/maps/Route112_CableCarStation/scripts.pory"
+# 59 "data/maps/Route112_CableCarStation/scripts.pory"
 Route112_CableCarStation_Movement_LeadPlayerToCableCar:
+# 60 "data/maps/Route112_CableCarStation/scripts.pory"
+	walk_up
 # 61 "data/maps/Route112_CableCarStation/scripts.pory"
 	walk_up
 # 62 "data/maps/Route112_CableCarStation/scripts.pory"
-	walk_up
-# 63 "data/maps/Route112_CableCarStation/scripts.pory"
 	walk_right
-# 64 "data/maps/Route112_CableCarStation/scripts.pory"
+# 63 "data/maps/Route112_CableCarStation/scripts.pory"
 	walk_in_place_faster_left
-# 65 "data/maps/Route112_CableCarStation/scripts.pory"
+# 64 "data/maps/Route112_CableCarStation/scripts.pory"
 	step_end
-# 66 "data/maps/Route112_CableCarStation/scripts.pory"
+# 65 "data/maps/Route112_CableCarStation/scripts.pory"
 
-# 67 "data/maps/Route112_CableCarStation/scripts.pory"
+# 66 "data/maps/Route112_CableCarStation/scripts.pory"
 Route112_CableCarStation_Movement_FollowPlayerOutFromCableCar:
-# 68 "data/maps/Route112_CableCarStation/scripts.pory"
+# 67 "data/maps/Route112_CableCarStation/scripts.pory"
 	delay_16
-# 69 "data/maps/Route112_CableCarStation/scripts.pory"
+# 68 "data/maps/Route112_CableCarStation/scripts.pory"
 	walk_left
+# 69 "data/maps/Route112_CableCarStation/scripts.pory"
+	walk_down
 # 70 "data/maps/Route112_CableCarStation/scripts.pory"
 	walk_down
 # 71 "data/maps/Route112_CableCarStation/scripts.pory"
-	walk_down
-# 72 "data/maps/Route112_CableCarStation/scripts.pory"
 	step_end
-# 73 "data/maps/Route112_CableCarStation/scripts.pory"
+# 72 "data/maps/Route112_CableCarStation/scripts.pory"
 
-# 74 "data/maps/Route112_CableCarStation/scripts.pory"
+# 73 "data/maps/Route112_CableCarStation/scripts.pory"
 Route112_CableCarStation_Movement_BoardCableCar:
+# 74 "data/maps/Route112_CableCarStation/scripts.pory"
+	walk_up
 # 75 "data/maps/Route112_CableCarStation/scripts.pory"
 	walk_up
 # 76 "data/maps/Route112_CableCarStation/scripts.pory"
 	walk_up
 # 77 "data/maps/Route112_CableCarStation/scripts.pory"
-	walk_up
-# 78 "data/maps/Route112_CableCarStation/scripts.pory"
 	delay_16
-# 79 "data/maps/Route112_CableCarStation/scripts.pory"
+# 78 "data/maps/Route112_CableCarStation/scripts.pory"
 	step_end
-# 80 "data/maps/Route112_CableCarStation/scripts.pory"
+# 79 "data/maps/Route112_CableCarStation/scripts.pory"
 
-# 81 "data/maps/Route112_CableCarStation/scripts.pory"
+# 80 "data/maps/Route112_CableCarStation/scripts.pory"
 Route112_CableCarStation_Movement_ExitCableCar:
+# 81 "data/maps/Route112_CableCarStation/scripts.pory"
+	walk_down
 # 82 "data/maps/Route112_CableCarStation/scripts.pory"
 	walk_down
 # 83 "data/maps/Route112_CableCarStation/scripts.pory"
 	walk_down
 # 84 "data/maps/Route112_CableCarStation/scripts.pory"
-	walk_down
-# 85 "data/maps/Route112_CableCarStation/scripts.pory"
 	delay_16
-# 86 "data/maps/Route112_CableCarStation/scripts.pory"
+# 85 "data/maps/Route112_CableCarStation/scripts.pory"
 	step_end
+# 86 "data/maps/Route112_CableCarStation/scripts.pory"
+
 # 87 "data/maps/Route112_CableCarStation/scripts.pory"
-
-# 88 "data/maps/Route112_CableCarStation/scripts.pory"
 Route112_CableCarStation_Text_CableCarReadyGetOn:
-# 89 "data/maps/Route112_CableCarStation/scripts.pory"
+# 88 "data/maps/Route112_CableCarStation/scripts.pory"
 	.string "The CABLE CAR is ready to go up.\n"
-# 90 "data/maps/Route112_CableCarStation/scripts.pory"
+# 89 "data/maps/Route112_CableCarStation/scripts.pory"
 	.string "Would you like to be on it?$"
+# 90 "data/maps/Route112_CableCarStation/scripts.pory"
+
 # 91 "data/maps/Route112_CableCarStation/scripts.pory"
-
-# 92 "data/maps/Route112_CableCarStation/scripts.pory"
 Route112_CableCarStation_Text_StepThisWay:
-# 93 "data/maps/Route112_CableCarStation/scripts.pory"
+# 92 "data/maps/Route112_CableCarStation/scripts.pory"
 	.string "Please step this way.$"
-# 94 "data/maps/Route112_CableCarStation/scripts.pory"
+# 93 "data/maps/Route112_CableCarStation/scripts.pory"
 
-# 95 "data/maps/Route112_CableCarStation/scripts.pory"
+# 94 "data/maps/Route112_CableCarStation/scripts.pory"
 Route112_CableCarStation_Text_RideAnotherTime:
-# 96 "data/maps/Route112_CableCarStation/scripts.pory"
+# 95 "data/maps/Route112_CableCarStation/scripts.pory"
 	.string "Please ride with us another time.$"

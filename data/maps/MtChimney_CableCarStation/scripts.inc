@@ -97,94 +97,92 @@ MtChimney_CableCarStation_EventScript_RideCableCar::
 # 49 "data/maps/MtChimney_CableCarStation/scripts.pory"
 	special CableCar
 # 50 "data/maps/MtChimney_CableCarStation/scripts.pory"
-	waitstate
+	release
 # 51 "data/maps/MtChimney_CableCarStation/scripts.pory"
-	release
+	end
 # 52 "data/maps/MtChimney_CableCarStation/scripts.pory"
-	end
+
 # 53 "data/maps/MtChimney_CableCarStation/scripts.pory"
-
-# 54 "data/maps/MtChimney_CableCarStation/scripts.pory"
 MtChimney_CableCarStation_EventScript_DeclineRide::
-# 55 "data/maps/MtChimney_CableCarStation/scripts.pory"
+# 54 "data/maps/MtChimney_CableCarStation/scripts.pory"
 	msgbox MtChimney_CableCarStation_Text_RideAnotherTime, MSGBOX_DEFAULT
-# 56 "data/maps/MtChimney_CableCarStation/scripts.pory"
+# 55 "data/maps/MtChimney_CableCarStation/scripts.pory"
 	release
-# 57 "data/maps/MtChimney_CableCarStation/scripts.pory"
+# 56 "data/maps/MtChimney_CableCarStation/scripts.pory"
 	end
-# 58 "data/maps/MtChimney_CableCarStation/scripts.pory"
+# 57 "data/maps/MtChimney_CableCarStation/scripts.pory"
 
-# 59 "data/maps/MtChimney_CableCarStation/scripts.pory"
+# 58 "data/maps/MtChimney_CableCarStation/scripts.pory"
 MtChimney_CableCarStation_Movement_LeadPlayerToCableCar:
+# 59 "data/maps/MtChimney_CableCarStation/scripts.pory"
+	walk_up
 # 60 "data/maps/MtChimney_CableCarStation/scripts.pory"
 	walk_up
 # 61 "data/maps/MtChimney_CableCarStation/scripts.pory"
-	walk_up
-# 62 "data/maps/MtChimney_CableCarStation/scripts.pory"
 	walk_left
-# 63 "data/maps/MtChimney_CableCarStation/scripts.pory"
+# 62 "data/maps/MtChimney_CableCarStation/scripts.pory"
 	walk_in_place_faster_right
-# 64 "data/maps/MtChimney_CableCarStation/scripts.pory"
+# 63 "data/maps/MtChimney_CableCarStation/scripts.pory"
 	step_end
-# 65 "data/maps/MtChimney_CableCarStation/scripts.pory"
+# 64 "data/maps/MtChimney_CableCarStation/scripts.pory"
 
-# 66 "data/maps/MtChimney_CableCarStation/scripts.pory"
+# 65 "data/maps/MtChimney_CableCarStation/scripts.pory"
 MtChimney_CableCarStation_Movement_FollowPlayerOutFromCableCar:
-# 67 "data/maps/MtChimney_CableCarStation/scripts.pory"
+# 66 "data/maps/MtChimney_CableCarStation/scripts.pory"
 	delay_16
-# 68 "data/maps/MtChimney_CableCarStation/scripts.pory"
+# 67 "data/maps/MtChimney_CableCarStation/scripts.pory"
 	walk_right
+# 68 "data/maps/MtChimney_CableCarStation/scripts.pory"
+	walk_down
 # 69 "data/maps/MtChimney_CableCarStation/scripts.pory"
 	walk_down
 # 70 "data/maps/MtChimney_CableCarStation/scripts.pory"
-	walk_down
-# 71 "data/maps/MtChimney_CableCarStation/scripts.pory"
 	step_end
-# 72 "data/maps/MtChimney_CableCarStation/scripts.pory"
+# 71 "data/maps/MtChimney_CableCarStation/scripts.pory"
 
-# 73 "data/maps/MtChimney_CableCarStation/scripts.pory"
+# 72 "data/maps/MtChimney_CableCarStation/scripts.pory"
 MtChimney_CableCarStation_Movement_BoardCableCar:
+# 73 "data/maps/MtChimney_CableCarStation/scripts.pory"
+	walk_up
 # 74 "data/maps/MtChimney_CableCarStation/scripts.pory"
 	walk_up
 # 75 "data/maps/MtChimney_CableCarStation/scripts.pory"
 	walk_up
 # 76 "data/maps/MtChimney_CableCarStation/scripts.pory"
-	walk_up
-# 77 "data/maps/MtChimney_CableCarStation/scripts.pory"
 	delay_16
-# 78 "data/maps/MtChimney_CableCarStation/scripts.pory"
+# 77 "data/maps/MtChimney_CableCarStation/scripts.pory"
 	step_end
-# 79 "data/maps/MtChimney_CableCarStation/scripts.pory"
+# 78 "data/maps/MtChimney_CableCarStation/scripts.pory"
 
-# 80 "data/maps/MtChimney_CableCarStation/scripts.pory"
+# 79 "data/maps/MtChimney_CableCarStation/scripts.pory"
 MtChimney_CableCarStation_Movement_ExitCableCar:
+# 80 "data/maps/MtChimney_CableCarStation/scripts.pory"
+	walk_down
 # 81 "data/maps/MtChimney_CableCarStation/scripts.pory"
 	walk_down
 # 82 "data/maps/MtChimney_CableCarStation/scripts.pory"
 	walk_down
 # 83 "data/maps/MtChimney_CableCarStation/scripts.pory"
-	walk_down
-# 84 "data/maps/MtChimney_CableCarStation/scripts.pory"
 	delay_16
-# 85 "data/maps/MtChimney_CableCarStation/scripts.pory"
+# 84 "data/maps/MtChimney_CableCarStation/scripts.pory"
 	step_end
+# 85 "data/maps/MtChimney_CableCarStation/scripts.pory"
+
 # 86 "data/maps/MtChimney_CableCarStation/scripts.pory"
-
-# 87 "data/maps/MtChimney_CableCarStation/scripts.pory"
 MtChimney_CableCarStation_Text_CableCarReadyGetOn:
-# 88 "data/maps/MtChimney_CableCarStation/scripts.pory"
+# 87 "data/maps/MtChimney_CableCarStation/scripts.pory"
 	.string "The CABLE CAR is ready to go down.\n"
-# 89 "data/maps/MtChimney_CableCarStation/scripts.pory"
+# 88 "data/maps/MtChimney_CableCarStation/scripts.pory"
 	.string "Would you like to be on it?$"
+# 89 "data/maps/MtChimney_CableCarStation/scripts.pory"
+
 # 90 "data/maps/MtChimney_CableCarStation/scripts.pory"
-
-# 91 "data/maps/MtChimney_CableCarStation/scripts.pory"
 MtChimney_CableCarStation_Text_StepThisWay:
-# 92 "data/maps/MtChimney_CableCarStation/scripts.pory"
+# 91 "data/maps/MtChimney_CableCarStation/scripts.pory"
 	.string "Please step this way.$"
-# 93 "data/maps/MtChimney_CableCarStation/scripts.pory"
+# 92 "data/maps/MtChimney_CableCarStation/scripts.pory"
 
-# 94 "data/maps/MtChimney_CableCarStation/scripts.pory"
+# 93 "data/maps/MtChimney_CableCarStation/scripts.pory"
 MtChimney_CableCarStation_Text_RideAnotherTime:
-# 95 "data/maps/MtChimney_CableCarStation/scripts.pory"
+# 94 "data/maps/MtChimney_CableCarStation/scripts.pory"
 	.string "Please ride with us another time.$"

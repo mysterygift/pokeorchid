@@ -133,40 +133,38 @@ AncientTomb_EventScript_Registeel::
 # 67 "data/maps/AncientTomb/scripts.pory"
 	special StartRegiBattle
 # 68 "data/maps/AncientTomb/scripts.pory"
-	waitstate
-# 69 "data/maps/AncientTomb/scripts.pory"
 	clearflag FLAG_SYS_CTRL_OBJ_DELETE
-# 70 "data/maps/AncientTomb/scripts.pory"
+# 69 "data/maps/AncientTomb/scripts.pory"
 	specialvar VAR_RESULT, GetBattleOutcome
-# 71 "data/maps/AncientTomb/scripts.pory"
+# 70 "data/maps/AncientTomb/scripts.pory"
 	goto_if_eq VAR_RESULT, B_OUTCOME_WON, AncientTomb_EventScript_DefeatedRegisteel
-# 72 "data/maps/AncientTomb/scripts.pory"
+# 71 "data/maps/AncientTomb/scripts.pory"
 	goto_if_eq VAR_RESULT, B_OUTCOME_RAN, AncientTomb_EventScript_RanFromRegisteel
-# 73 "data/maps/AncientTomb/scripts.pory"
+# 72 "data/maps/AncientTomb/scripts.pory"
 	goto_if_eq VAR_RESULT, B_OUTCOME_PLAYER_TELEPORTED, AncientTomb_EventScript_RanFromRegisteel
+# 73 "data/maps/AncientTomb/scripts.pory"
+	setflag FLAG_DEFEATED_REGISTEEL
 # 74 "data/maps/AncientTomb/scripts.pory"
-	setflag FLAG_DEFEATED_REGISTEEL
-# 75 "data/maps/AncientTomb/scripts.pory"
 	release
+# 75 "data/maps/AncientTomb/scripts.pory"
+	end
 # 76 "data/maps/AncientTomb/scripts.pory"
-	end
+
 # 77 "data/maps/AncientTomb/scripts.pory"
-
-# 78 "data/maps/AncientTomb/scripts.pory"
 AncientTomb_EventScript_DefeatedRegisteel::
-# 79 "data/maps/AncientTomb/scripts.pory"
+# 78 "data/maps/AncientTomb/scripts.pory"
 	setflag FLAG_DEFEATED_REGISTEEL
-# 80 "data/maps/AncientTomb/scripts.pory"
+# 79 "data/maps/AncientTomb/scripts.pory"
 	goto Common_EventScript_RemoveStaticPokemon
-# 81 "data/maps/AncientTomb/scripts.pory"
+# 80 "data/maps/AncientTomb/scripts.pory"
 	end
-# 82 "data/maps/AncientTomb/scripts.pory"
+# 81 "data/maps/AncientTomb/scripts.pory"
 
-# 83 "data/maps/AncientTomb/scripts.pory"
+# 82 "data/maps/AncientTomb/scripts.pory"
 AncientTomb_EventScript_RanFromRegisteel::
-# 84 "data/maps/AncientTomb/scripts.pory"
+# 83 "data/maps/AncientTomb/scripts.pory"
 	setvar VAR_0x8004, SPECIES_REGISTEEL
-# 85 "data/maps/AncientTomb/scripts.pory"
+# 84 "data/maps/AncientTomb/scripts.pory"
 	goto Common_EventScript_LegendaryFlewAway
-# 86 "data/maps/AncientTomb/scripts.pory"
+# 85 "data/maps/AncientTomb/scripts.pory"
 	end

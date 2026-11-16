@@ -265,112 +265,110 @@ FarawayIsland_Interior_EventScript_Mew::
 # 133 "data/maps/FarawayIsland_Interior/scripts.pory"
 	special BattleSetup_StartLegendaryBattle
 # 134 "data/maps/FarawayIsland_Interior/scripts.pory"
-	waitstate
-# 135 "data/maps/FarawayIsland_Interior/scripts.pory"
 	clearflag FLAG_SYS_CTRL_OBJ_DELETE
-# 136 "data/maps/FarawayIsland_Interior/scripts.pory"
+# 135 "data/maps/FarawayIsland_Interior/scripts.pory"
 	specialvar VAR_RESULT, GetBattleOutcome
-# 137 "data/maps/FarawayIsland_Interior/scripts.pory"
+# 136 "data/maps/FarawayIsland_Interior/scripts.pory"
 	goto_if_eq VAR_RESULT, B_OUTCOME_WON, FarawayIsland_Interior_EventScript_MewDefeated
-# 138 "data/maps/FarawayIsland_Interior/scripts.pory"
+# 137 "data/maps/FarawayIsland_Interior/scripts.pory"
 	goto_if_eq VAR_RESULT, B_OUTCOME_RAN, FarawayIsland_Interior_EventScript_PlayerOrMewRan
-# 139 "data/maps/FarawayIsland_Interior/scripts.pory"
+# 138 "data/maps/FarawayIsland_Interior/scripts.pory"
 	goto_if_eq VAR_RESULT, B_OUTCOME_PLAYER_TELEPORTED, FarawayIsland_Interior_EventScript_PlayerOrMewRan
-# 140 "data/maps/FarawayIsland_Interior/scripts.pory"
+# 139 "data/maps/FarawayIsland_Interior/scripts.pory"
 	goto_if_eq VAR_RESULT, B_OUTCOME_MON_TELEPORTED, FarawayIsland_Interior_EventScript_PlayerOrMewRan
-# 141 "data/maps/FarawayIsland_Interior/scripts.pory"
+# 140 "data/maps/FarawayIsland_Interior/scripts.pory"
 	setflag FLAG_CAUGHT_MEW
-# 142 "data/maps/FarawayIsland_Interior/scripts.pory"
+# 141 "data/maps/FarawayIsland_Interior/scripts.pory"
 	release
+# 142 "data/maps/FarawayIsland_Interior/scripts.pory"
+	end
 # 143 "data/maps/FarawayIsland_Interior/scripts.pory"
-	end
+
 # 144 "data/maps/FarawayIsland_Interior/scripts.pory"
-
-# 145 "data/maps/FarawayIsland_Interior/scripts.pory"
 FarawayIsland_Interior_EventScript_MewDefeated::
-# 146 "data/maps/FarawayIsland_Interior/scripts.pory"
+# 145 "data/maps/FarawayIsland_Interior/scripts.pory"
 	setflag FLAG_DEFEATED_MEW
+# 146 "data/maps/FarawayIsland_Interior/scripts.pory"
+	setvar VAR_0x8004, SPECIES_MEW
 # 147 "data/maps/FarawayIsland_Interior/scripts.pory"
-	setvar VAR_0x8004, SPECIES_MEW
+	goto Common_EventScript_LegendaryFlewAway
 # 148 "data/maps/FarawayIsland_Interior/scripts.pory"
-	goto Common_EventScript_LegendaryFlewAway
+	end
 # 149 "data/maps/FarawayIsland_Interior/scripts.pory"
-	end
+
 # 150 "data/maps/FarawayIsland_Interior/scripts.pory"
-
-# 151 "data/maps/FarawayIsland_Interior/scripts.pory"
 FarawayIsland_Interior_EventScript_PlayerOrMewRan::
-# 152 "data/maps/FarawayIsland_Interior/scripts.pory"
+# 151 "data/maps/FarawayIsland_Interior/scripts.pory"
 	setvar VAR_0x8004, SPECIES_MEW
-# 153 "data/maps/FarawayIsland_Interior/scripts.pory"
+# 152 "data/maps/FarawayIsland_Interior/scripts.pory"
 	goto Common_EventScript_LegendaryFlewAway
+# 153 "data/maps/FarawayIsland_Interior/scripts.pory"
+	end
 # 154 "data/maps/FarawayIsland_Interior/scripts.pory"
-	end
+
 # 155 "data/maps/FarawayIsland_Interior/scripts.pory"
-
-# 156 "data/maps/FarawayIsland_Interior/scripts.pory"
 FarawayIsland_Interior_EventScript_FoundMewNorth::
-# 157 "data/maps/FarawayIsland_Interior/scripts.pory"
+# 156 "data/maps/FarawayIsland_Interior/scripts.pory"
 	applymovement LOCALID_FARAWAY_ISLAND_MEW, FarawayIsland_Interior_Movement_MewFloatUpNorth
+# 157 "data/maps/FarawayIsland_Interior/scripts.pory"
+	waitmovement 0
 # 158 "data/maps/FarawayIsland_Interior/scripts.pory"
-	waitmovement 0
+	return
 # 159 "data/maps/FarawayIsland_Interior/scripts.pory"
-	return
+
 # 160 "data/maps/FarawayIsland_Interior/scripts.pory"
-
-# 161 "data/maps/FarawayIsland_Interior/scripts.pory"
 FarawayIsland_Interior_EventScript_FoundMewSouth::
-# 162 "data/maps/FarawayIsland_Interior/scripts.pory"
+# 161 "data/maps/FarawayIsland_Interior/scripts.pory"
 	applymovement LOCALID_FARAWAY_ISLAND_MEW, FarawayIsland_Interior_Movement_MewFloatUpSouth
+# 162 "data/maps/FarawayIsland_Interior/scripts.pory"
+	waitmovement 0
 # 163 "data/maps/FarawayIsland_Interior/scripts.pory"
-	waitmovement 0
+	return
 # 164 "data/maps/FarawayIsland_Interior/scripts.pory"
-	return
+
 # 165 "data/maps/FarawayIsland_Interior/scripts.pory"
-
-# 166 "data/maps/FarawayIsland_Interior/scripts.pory"
 FarawayIsland_Interior_EventScript_FoundMewWest::
-# 167 "data/maps/FarawayIsland_Interior/scripts.pory"
+# 166 "data/maps/FarawayIsland_Interior/scripts.pory"
 	applymovement LOCALID_FARAWAY_ISLAND_MEW, FarawayIsland_Interior_Movement_MewFloatUpWest
+# 167 "data/maps/FarawayIsland_Interior/scripts.pory"
+	waitmovement 0
 # 168 "data/maps/FarawayIsland_Interior/scripts.pory"
-	waitmovement 0
+	return
 # 169 "data/maps/FarawayIsland_Interior/scripts.pory"
-	return
+
 # 170 "data/maps/FarawayIsland_Interior/scripts.pory"
-
-# 171 "data/maps/FarawayIsland_Interior/scripts.pory"
 FarawayIsland_Interior_EventScript_FoundMewEast::
-# 172 "data/maps/FarawayIsland_Interior/scripts.pory"
+# 171 "data/maps/FarawayIsland_Interior/scripts.pory"
 	applymovement LOCALID_FARAWAY_ISLAND_MEW, FarawayIsland_Interior_Movement_MewFloatUpEast
-# 173 "data/maps/FarawayIsland_Interior/scripts.pory"
+# 172 "data/maps/FarawayIsland_Interior/scripts.pory"
 	waitmovement 0
-# 174 "data/maps/FarawayIsland_Interior/scripts.pory"
+# 173 "data/maps/FarawayIsland_Interior/scripts.pory"
 	return
+# 174 "data/maps/FarawayIsland_Interior/scripts.pory"
+
 # 175 "data/maps/FarawayIsland_Interior/scripts.pory"
-
-# 176 "data/maps/FarawayIsland_Interior/scripts.pory"
 FarawayIsland_Interior_EventScript_HideMewWhenGrassCut::
-# 177 "data/maps/FarawayIsland_Interior/scripts.pory"
+# 176 "data/maps/FarawayIsland_Interior/scripts.pory"
 	lockall
-# 178 "data/maps/FarawayIsland_Interior/scripts.pory"
+# 177 "data/maps/FarawayIsland_Interior/scripts.pory"
 	fadescreenswapbuffers FADE_TO_BLACK
-# 179 "data/maps/FarawayIsland_Interior/scripts.pory"
+# 178 "data/maps/FarawayIsland_Interior/scripts.pory"
 	setflag FLAG_HIDE_MEW
-# 180 "data/maps/FarawayIsland_Interior/scripts.pory"
+# 179 "data/maps/FarawayIsland_Interior/scripts.pory"
 	removeobject LOCALID_FARAWAY_ISLAND_MEW
-# 181 "data/maps/FarawayIsland_Interior/scripts.pory"
+# 180 "data/maps/FarawayIsland_Interior/scripts.pory"
 	fadescreenswapbuffers FADE_FROM_BLACK
-# 182 "data/maps/FarawayIsland_Interior/scripts.pory"
+# 181 "data/maps/FarawayIsland_Interior/scripts.pory"
 	msgbox FarawayIsland_Interior_Text_TheFeelingOfBeingWatchedFaded, MSGBOX_DEFAULT
-# 183 "data/maps/FarawayIsland_Interior/scripts.pory"
+# 182 "data/maps/FarawayIsland_Interior/scripts.pory"
 	closemessage
-# 184 "data/maps/FarawayIsland_Interior/scripts.pory"
+# 183 "data/maps/FarawayIsland_Interior/scripts.pory"
 	releaseall
-# 185 "data/maps/FarawayIsland_Interior/scripts.pory"
+# 184 "data/maps/FarawayIsland_Interior/scripts.pory"
 	end
-# 186 "data/maps/FarawayIsland_Interior/scripts.pory"
+# 185 "data/maps/FarawayIsland_Interior/scripts.pory"
 
-# 187 "data/maps/FarawayIsland_Interior/scripts.pory"
+# 186 "data/maps/FarawayIsland_Interior/scripts.pory"
 FarawayIsland_Interior_Text_TheFeelingOfBeingWatchedFaded:
-# 188 "data/maps/FarawayIsland_Interior/scripts.pory"
+# 187 "data/maps/FarawayIsland_Interior/scripts.pory"
 	.string "The feeling of being watched faded…$"

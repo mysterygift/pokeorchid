@@ -257,7 +257,7 @@ BattleFrontier_BattleTowerMultiPartnerRoom_EventScript_MoveToElevatorWest:
 # 129 "data/maps/BattleFrontier_BattleTowerMultiPartnerRoom/scripts.pory"
 	applymovement LOCALID_TOWER_PARTNER_ROOM_ATTENDANT, BattleFrontier_BattleTowerMultiPartnerRoom_Movement_AttendantEnterElevator
 # 130 "data/maps/BattleFrontier_BattleTowerMultiPartnerRoom/scripts.pory"
-	applymovement LOCALID_PLAYER, BattleFrontier_BattleTowerMultiPartnerRoom_Movement_PlayerEneterElevatorWest
+	applymovement LOCALID_PLAYER, BattleFrontier_BattleTowerMultiPartnerRoom_Movement_PlayerEnterElevatorWest
 # 131 "data/maps/BattleFrontier_BattleTowerMultiPartnerRoom/scripts.pory"
 	waitmovement 0
 # 132 "data/maps/BattleFrontier_BattleTowerMultiPartnerRoom/scripts.pory"
@@ -293,7 +293,7 @@ BattleFrontier_BattleTowerMultiPartnerRoom_Movement_PlayerEnterElevatorEast:
 # 147 "data/maps/BattleFrontier_BattleTowerMultiPartnerRoom/scripts.pory"
 @ Functionally unused
 # 148 "data/maps/BattleFrontier_BattleTowerMultiPartnerRoom/scripts.pory"
-BattleFrontier_BattleTowerMultiPartnerRoom_Movement_PlayerEneterElevatorWest:
+BattleFrontier_BattleTowerMultiPartnerRoom_Movement_PlayerEnterElevatorWest:
 # 149 "data/maps/BattleFrontier_BattleTowerMultiPartnerRoom/scripts.pory"
 	walk_left
 # 150 "data/maps/BattleFrontier_BattleTowerMultiPartnerRoom/scripts.pory"

@@ -279,175 +279,175 @@ BattleFrontier_BattleArenaLobby_EventScript_TryEnterChallenge::
 # 140 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	special ChoosePartyForBattleFrontier
 # 141 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-	waitstate
-# 142 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	goto_if_eq VAR_RESULT, 0, BattleFrontier_BattleArenaLobby_EventScript_LoadPartyAndCancelChallenge
-# 143 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 142 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	msgbox BattleFrontier_BattleArenaLobby_Text_OkayToSave, MSGBOX_YESNO
+# 143 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+	switch VAR_RESULT
 # 144 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-	switch VAR_RESULT
-# 145 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	case NO, BattleFrontier_BattleArenaLobby_EventScript_LoadPartyAndCancelChallenge
-# 146 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 145 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	case YES, BattleFrontier_BattleArenaLobby_EventScript_SaveBeforeChallenge
-# 147 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 146 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	case MULTI_B_PRESSED, BattleFrontier_BattleArenaLobby_EventScript_LoadPartyAndCancelChallenge
+# 147 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+
 # 148 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-
-# 149 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 BattleFrontier_BattleArenaLobby_EventScript_SaveBeforeChallenge::
+# 149 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+	setvar VAR_TEMP_CHALLENGE_STATUS, 0
 # 150 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-	setvar VAR_TEMP_CHALLENGE_STATUS, 0
-# 151 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	frontier_set FRONTIER_DATA_SELECTED_MON_ORDER
-# 152 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 151 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	arena_init
-# 153 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 152 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	arena_set ARENA_DATA_WIN_STREAK_ACTIVE, TRUE
-# 154 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 153 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	frontier_set FRONTIER_DATA_CHALLENGE_STATUS, CHALLENGE_STATUS_SAVING
-# 155 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 154 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	frontier_set FRONTIER_DATA_PAUSED, FALSE
+# 155 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+	special LoadPlayerParty
 # 156 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-	special LoadPlayerParty
+	closemessage
 # 157 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-	closemessage
-# 158 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	delay 2
-# 159 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 158 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	call Common_EventScript_SaveGame
-# 160 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 159 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	setvar VAR_TEMP_CHALLENGE_STATUS, 255
-# 161 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 160 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	goto_if_eq VAR_RESULT, 0, BattleFrontier_BattleArenaLobby_EventScript_CancelChallengeSaveFailed
-# 162 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 161 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 BattleFrontier_BattleArenaLobby_EventScript_EnterChallenge::
-# 163 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 162 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	special SavePlayerParty
-# 164 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 163 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	frontier_setpartyorder FRONTIER_PARTY_SIZE
-# 165 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 164 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	msgbox BattleFrontier_BattleArenaLobby_Text_GuideYouToArena, MSGBOX_DEFAULT
-# 166 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 165 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	closemessage
-# 167 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 166 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	frontier_get FRONTIER_DATA_LVL_MODE
-# 168 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 167 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	call_if_eq VAR_RESULT, FRONTIER_LVL_50, BattleFrontier_BattleArenaLobby_EventScript_WalkToDoorLv50
-# 169 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 168 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	call_if_eq VAR_RESULT, FRONTIER_LVL_OPEN, BattleFrontier_BattleArenaLobby_EventScript_WalkToDoorLvOpen
-# 170 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 169 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	warp MAP_BATTLE_FRONTIER_BATTLE_ARENA_CORRIDOR, 9, 13
-# 171 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 170 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	setvar VAR_TEMP_CHALLENGE_STATUS, 0
-# 172 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 171 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	waitstate
+# 172 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+	end
 # 173 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-	end
+
 # 174 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-
-# 175 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 BattleFrontier_BattleArenaLobby_EventScript_ExplainChallenge::
-# 176 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 175 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	msgbox BattleFrontier_BattleArenaLobby_Text_ExplainChallenge, MSGBOX_DEFAULT
-# 177 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 176 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	goto BattleFrontier_BattleArenaLobby_EventScript_AskTakeChallenge
+# 177 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+
 # 178 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-
-# 179 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 BattleFrontier_BattleArenaLobby_EventScript_NotEnoughValidMons::
-# 180 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 179 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	switch VAR_RESULT
-# 181 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 180 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	case FRONTIER_LVL_50, BattleFrontier_BattleArenaLobby_EventScript_NotEnoughValidMonsLv50
-# 182 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 181 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	case FRONTIER_LVL_OPEN, BattleFrontier_BattleArenaLobby_EventScript_NotEnoughValidMonsLvOpen
+# 182 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+
 # 183 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-
-# 184 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 BattleFrontier_BattleArenaLobby_EventScript_NotEnoughValidMonsLv50::
-# 185 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 184 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	msgbox BattleFrontier_BattleArenaLobby_Text_NotEnoughValidMonsLv50, MSGBOX_DEFAULT
+# 185 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+	call BattleFrontier_ShowCaughtBannedSpecies
 # 186 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-	call BattleFrontier_ShowCaughtBannedSpecies
+	msgbox BattleFrontier_BattleArenaLobby_Text_NotEnoughValidMonsEnd, MSGBOX_DEFAULT
 # 187 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-	msgbox BattleFrontier_BattleArenaLobby_Text_NotEnoughValidMonsEnd, MSGBOX_DEFAULT
+	goto BattleFrontier_BattleArenaLobby_EventScript_EndCancelChallenge
 # 188 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-	goto BattleFrontier_BattleArenaLobby_EventScript_EndCancelChallenge
+
 # 189 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-
-# 190 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 BattleFrontier_BattleArenaLobby_EventScript_NotEnoughValidMonsLvOpen::
-# 191 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 190 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	msgbox BattleFrontier_BattleArenaLobby_Text_NotEnoughValidMonsLvOpen, MSGBOX_DEFAULT
-# 192 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 191 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	call BattleFrontier_ShowCaughtBannedSpecies
-# 193 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 192 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	msgbox BattleFrontier_BattleArenaLobby_Text_NotEnoughValidMonsEnd, MSGBOX_DEFAULT
-# 194 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 193 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	goto BattleFrontier_BattleArenaLobby_EventScript_EndCancelChallenge
+# 194 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+
 # 195 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-
-# 196 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 BattleFrontier_BattleArenaLobby_EventScript_CancelChallengeSaveFailed::
-# 197 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 196 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	frontier_set FRONTIER_DATA_CHALLENGE_STATUS, 0
-# 198 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 197 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	goto BattleFrontier_BattleArenaLobby_EventScript_CancelChallenge
+# 198 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+
 # 199 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-
-# 200 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 BattleFrontier_BattleArenaLobby_EventScript_LoadPartyAndCancelChallenge::
-# 201 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 200 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	special LoadPlayerParty
-# 202 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 201 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	callnative UpdateFollowingPokemon
-# 203 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 202 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 BattleFrontier_BattleArenaLobby_EventScript_CancelChallenge::
-# 204 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 203 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	msgbox BattleFrontier_BattleArenaLobby_Text_AwaitAnotherChallenge, MSGBOX_DEFAULT
-# 205 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 204 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 BattleFrontier_BattleArenaLobby_EventScript_EndCancelChallenge::
-# 206 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 205 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	release
-# 207 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 206 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	end
+# 207 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+
 # 208 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-
-# 209 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 BattleFrontier_BattleArenaLobby_EventScript_WalkToDoorLv50::
-# 210 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 209 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	applymovement LOCALID_ARENA_ATTENDANT, BattleFrontier_BattleArenaLobby_Movement_AttendantWalkToLeftDoor
-# 211 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 210 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	applymovement LOCALID_PLAYER, BattleFrontier_BattleArenaLobby_Movement_PlayerWalkToLeftDoor
+# 211 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+	waitmovement 0
 # 212 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-	waitmovement 0
-# 213 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	opendoor 2, 2
+# 213 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+	waitdooranim
 # 214 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-	waitdooranim
-# 215 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	applymovement LOCALID_ARENA_ATTENDANT, BattleFrontier_BattleArenaLobby_Movement_AttendantEnterDoor
-# 216 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 215 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	applymovement LOCALID_PLAYER, BattleFrontier_BattleArenaLobby_Movement_PlayerEnterDoor
-# 217 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 216 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	waitmovement 0
-# 218 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 217 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	closedoor 2, 2
-# 219 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 218 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	waitdooranim
-# 220 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 219 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	return
-# 221 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 220 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 
-# 222 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 221 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 BattleFrontier_BattleArenaLobby_Movement_AttendantWalkToLeftDoor:
+# 222 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+	walk_up
 # 223 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	walk_up
 # 224 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	walk_up
 # 225 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-	walk_up
+	walk_left
 # 226 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	walk_left
 # 227 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
@@ -457,25 +457,25 @@ BattleFrontier_BattleArenaLobby_Movement_AttendantWalkToLeftDoor:
 # 229 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	walk_left
 # 230 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-	walk_left
+	walk_up
 # 231 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-	walk_up
+	step_end
 # 232 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-	step_end
+
 # 233 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-
-# 234 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 BattleFrontier_BattleArenaLobby_Movement_AttendantEnterDoor:
-# 235 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 234 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	walk_up
-# 236 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 235 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	set_invisible
-# 237 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 236 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	step_end
-# 238 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 237 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 
-# 239 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 238 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 BattleFrontier_BattleArenaLobby_Movement_PlayerWalkToLeftDoor:
+# 239 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+	walk_up
 # 240 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	walk_up
 # 241 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
@@ -483,7 +483,7 @@ BattleFrontier_BattleArenaLobby_Movement_PlayerWalkToLeftDoor:
 # 242 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	walk_up
 # 243 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-	walk_up
+	walk_left
 # 244 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	walk_left
 # 245 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
@@ -493,59 +493,59 @@ BattleFrontier_BattleArenaLobby_Movement_PlayerWalkToLeftDoor:
 # 247 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	walk_left
 # 248 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-	walk_left
-# 249 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	walk_in_place_faster_up
-# 250 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 249 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	step_end
-# 251 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 250 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 
-# 252 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 251 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 BattleFrontier_BattleArenaLobby_Movement_PlayerEnterDoor:
+# 252 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+	walk_up
 # 253 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	walk_up
 # 254 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-	walk_up
-# 255 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	set_invisible
-# 256 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 255 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	step_end
+# 256 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+
 # 257 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-
-# 258 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 BattleFrontier_BattleArenaLobby_EventScript_WalkToDoorLvOpen::
-# 259 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 258 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	applymovement LOCALID_ARENA_ATTENDANT, BattleFrontier_BattleArenaLobby_Movement_AttendantWalkToRightDoor
-# 260 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 259 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	applymovement LOCALID_PLAYER, BattleFrontier_BattleArenaLobby_Movement_PlayerWalkToRightDoor
+# 260 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+	waitmovement 0
 # 261 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-	waitmovement 0
-# 262 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	opendoor 11, 2
+# 262 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+	waitdooranim
 # 263 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-	waitdooranim
-# 264 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	applymovement LOCALID_ARENA_ATTENDANT, BattleFrontier_BattleArenaLobby_Movement_AttendantEnterDoor
-# 265 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 264 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	applymovement LOCALID_PLAYER, BattleFrontier_BattleArenaLobby_Movement_PlayerEnterDoor
-# 266 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 265 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	waitmovement 0
-# 267 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 266 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	closedoor 11, 2
-# 268 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 267 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	waitdooranim
-# 269 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 268 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	return
-# 270 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 269 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 
-# 271 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 270 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 BattleFrontier_BattleArenaLobby_Movement_AttendantWalkToRightDoor:
+# 271 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+	walk_up
 # 272 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	walk_up
 # 273 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	walk_up
 # 274 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-	walk_up
+	walk_right
 # 275 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	walk_right
 # 276 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
@@ -553,15 +553,15 @@ BattleFrontier_BattleArenaLobby_Movement_AttendantWalkToRightDoor:
 # 277 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	walk_right
 # 278 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-	walk_right
-# 279 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	walk_up
-# 280 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 279 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	step_end
-# 281 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 280 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 
-# 282 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 281 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 BattleFrontier_BattleArenaLobby_Movement_PlayerWalkToRightDoor:
+# 282 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+	walk_up
 # 283 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	walk_up
 # 284 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
@@ -569,7 +569,7 @@ BattleFrontier_BattleArenaLobby_Movement_PlayerWalkToRightDoor:
 # 285 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	walk_up
 # 286 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-	walk_up
+	walk_right
 # 287 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	walk_right
 # 288 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
@@ -577,588 +577,586 @@ BattleFrontier_BattleArenaLobby_Movement_PlayerWalkToRightDoor:
 # 289 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	walk_right
 # 290 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-	walk_right
-# 291 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	walk_in_place_faster_up
-# 292 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 291 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	step_end
+# 292 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+
 # 293 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-
-# 294 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 BattleFrontier_BattleArenaLobby_EventScript_ShowResults::
+# 294 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+	lockall
 # 295 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-	lockall
-# 296 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	frontier_results FRONTIER_FACILITY_ARENA
-# 297 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 296 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	waitbuttonpress
-# 298 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 297 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	special RemoveRecordsWindow
+# 298 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+	releaseall
 # 299 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-	releaseall
+	end
 # 300 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-	end
+
 # 301 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-
-# 302 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 BattleFrontier_BattleArenaLobby_EventScript_Youngster::
-# 303 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 302 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	msgbox BattleFrontier_BattleArenaLobby_Text_BadIdeaToNotAttack, MSGBOX_NPC
+# 303 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+	end
 # 304 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-	end
+
 # 305 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-
-# 306 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 BattleFrontier_BattleArenaLobby_EventScript_Man::
-# 307 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 306 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	msgbox BattleFrontier_BattleArenaLobby_Text_LandingHitsWorked, MSGBOX_NPC
+# 307 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+	end
 # 308 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-	end
+
 # 309 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-
-# 310 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 BattleFrontier_BattleArenaLobby_EventScript_Camper::
-# 311 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 310 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	msgbox BattleFrontier_BattleArenaLobby_Text_MatchWasDeclaredDraw, MSGBOX_NPC
+# 311 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+	end
 # 312 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-	end
+
 # 313 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-
-# 314 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 BattleFrontier_BattleArenaLobby_EventScript_Woman::
-# 315 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 314 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	msgbox BattleFrontier_BattleArenaLobby_Text_OrderOfMonsImportant, MSGBOX_NPC
+# 315 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+	end
 # 316 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-	end
+
 # 317 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-
-# 318 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 BattleFrontier_BattleArenaLobby_EventScript_RulesBoard::
-# 319 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 318 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	lockall
-# 320 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 319 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	msgbox BattleFrontier_BattleArenaLobby_Text_RulesAreListed, MSGBOX_DEFAULT
+# 320 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+	goto BattleFrontier_BattleArenaLobby_EventScript_ReadRulesBoard
 # 321 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-	goto BattleFrontier_BattleArenaLobby_EventScript_ReadRulesBoard
+	end
 # 322 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-	end
+
 # 323 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-
-# 324 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 BattleFrontier_BattleArenaLobby_EventScript_ReadRulesBoard::
-# 325 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 324 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	message BattleFrontier_BattleArenaLobby_Text_ReadWhichHeading
-# 326 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 325 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	waitmessage
-# 327 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 326 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	multichoice 17, 2, MULTI_BATTLE_ARENA_RULES, FALSE
-# 328 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 327 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	switch VAR_RESULT
-# 329 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 328 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	case 0, BattleFrontier_BattleArenaLobby_EventScript_BattleRules
-# 330 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 329 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	case 1, BattleFrontier_BattleArenaLobby_EventScript_MindRules
-# 331 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 330 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	case 2, BattleFrontier_BattleArenaLobby_EventScript_SkillRules
-# 332 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 331 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	case 3, BattleFrontier_BattleArenaLobby_EventScript_BodyRules
-# 333 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 332 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	case 4, BattleFrontier_BattleArenaLobby_EventScript_ExitRules
-# 334 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 333 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	case MULTI_B_PRESSED, BattleFrontier_BattleArenaLobby_EventScript_ExitRules
+# 334 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+	end
 # 335 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-	end
+
 # 336 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-
-# 337 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 BattleFrontier_BattleArenaLobby_EventScript_BattleRules::
-# 338 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 337 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	msgbox BattleFrontier_BattleArenaLobby_Text_ExplainBattleRules, MSGBOX_DEFAULT
+# 338 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+	goto BattleFrontier_BattleArenaLobby_EventScript_ReadRulesBoard
 # 339 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-	goto BattleFrontier_BattleArenaLobby_EventScript_ReadRulesBoard
+	end
 # 340 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-	end
+
 # 341 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-
-# 342 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 BattleFrontier_BattleArenaLobby_EventScript_MindRules::
-# 343 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 342 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	msgbox BattleFrontier_BattleArenaLobby_Text_ExplainMindRules, MSGBOX_DEFAULT
+# 343 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+	goto BattleFrontier_BattleArenaLobby_EventScript_ReadRulesBoard
 # 344 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-	goto BattleFrontier_BattleArenaLobby_EventScript_ReadRulesBoard
+	end
 # 345 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-	end
+
 # 346 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-
-# 347 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 BattleFrontier_BattleArenaLobby_EventScript_SkillRules::
-# 348 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 347 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	msgbox BattleFrontier_BattleArenaLobby_Text_ExplainSkillRules, MSGBOX_DEFAULT
+# 348 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+	goto BattleFrontier_BattleArenaLobby_EventScript_ReadRulesBoard
 # 349 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-	goto BattleFrontier_BattleArenaLobby_EventScript_ReadRulesBoard
+	end
 # 350 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-	end
+
 # 351 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-
-# 352 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 BattleFrontier_BattleArenaLobby_EventScript_BodyRules::
-# 353 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 352 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	msgbox BattleFrontier_BattleArenaLobby_Text_ExplainBodyRules, MSGBOX_DEFAULT
-# 354 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 353 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	goto BattleFrontier_BattleArenaLobby_EventScript_ReadRulesBoard
+# 354 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+	end
 # 355 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-	end
+
 # 356 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-
-# 357 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 BattleFrontier_BattleArenaLobby_EventScript_ExitRules::
-# 358 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 357 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	releaseall
-# 359 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 358 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	end
+# 359 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+
 # 360 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-
-# 361 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 BattleFrontier_BattleArenaLobby_Text_WelcomeToBattleArena:
-# 362 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 361 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "Where the battling spirit of TRAINERS\n"
-# 363 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 362 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "is put to the test!\p"
-# 364 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 363 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "I welcome you to the BATTLE ARENA!\p"
-# 365 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 364 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "I am your guide to the Set KO Tourney!$"
+# 365 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+
 # 366 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-
-# 367 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 BattleFrontier_BattleArenaLobby_Text_WishToTakeChallenge:
-# 368 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 367 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "Now, do you wish to take\n"
-# 369 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 368 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "the BATTLE ARENA challenge?$"
+# 369 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+
 # 370 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-
-# 371 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 BattleFrontier_BattleArenaLobby_Text_AwaitAnotherChallenge:
+# 371 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+	.string "We await your challenge on\n"
 # 372 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-	.string "We await your challenge on\n"
+	.string "another occasion!$"
 # 373 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-	.string "another occasion!$"
+
 # 374 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-
-# 375 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 BattleFrontier_BattleArenaLobby_Text_ExplainChallenge:
-# 376 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 375 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "In the BATTLE ARENA, we undertake\n"
-# 377 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 376 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "the Set KO Tourney.\p"
-# 378 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 377 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "All participants enter with a team of\n"
-# 379 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 378 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "three POKéMON.\p"
-# 380 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 379 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "The three POKéMON must be lined up in\n"
-# 381 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 380 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "the order in which they are to appear.\p"
-# 382 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 381 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "During battle, the POKéMON will appear\n"
-# 383 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 382 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "one at a time in the preset order.\p"
-# 384 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 383 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "Once a POKéMON enters battle, it must\n"
-# 385 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 384 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "remain out until the match is decided.\p"
-# 386 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 385 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "If a match remains undecided in\n"
+# 386 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+	.string "three turns, it goes to judging.\p"
 # 387 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-	.string "three turns, it goes to judging.\p"
-# 388 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "If you wish to interrupt your challenge,\n"
-# 389 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 388 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "please save the game.\p"
-# 390 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 389 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "If you don't save, you will not be able\n"
-# 391 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 390 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "to continue with your challenge.\p"
-# 392 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 391 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "If you pull off the feat of beating\n"
-# 393 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 392 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "seven TRAINERS in succession,\l"
-# 394 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 393 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "we will present you with Battle Points.$"
+# 394 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+
 # 395 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-
-# 396 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 BattleFrontier_BattleArenaLobby_Text_OkayToSave:
-# 397 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 396 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "Before showing you to the BATTLE\n"
-# 398 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 397 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "ARENA, you must save. Is that okay?$"
+# 398 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+
 # 399 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-
-# 400 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 BattleFrontier_BattleArenaLobby_Text_WhichLevelMode:
-# 401 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 400 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "The BATTLE ARENA offers two levels\n"
-# 402 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 401 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "of challenge, Level 50 and Open Level.\l"
-# 403 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 402 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "Which is your choice?$"
+# 403 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+
 # 404 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-
-# 405 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 BattleFrontier_BattleArenaLobby_Text_SelectThreeMons:
-# 406 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 405 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "Very well, now select your\n"
-# 407 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 406 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "three POKéMON, please.$"
+# 407 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+
 # 408 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-
-# 409 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 BattleFrontier_BattleArenaLobby_Text_NotEnoughValidMonsLvOpen:
+# 409 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+	.string "My dear challenger!\p"
 # 410 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-	.string "My dear challenger!\p"
+	.string "You do not have the three POKéMON\n"
 # 411 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-	.string "You do not have the three POKéMON\n"
+	.string "required for entry.\p"
 # 412 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-	.string "required for entry.\p"
+	.string "To qualify, you must bring three\n"
 # 413 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-	.string "To qualify, you must bring three\n"
+	.string "different kinds of POKéMON.\p"
 # 414 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-	.string "different kinds of POKéMON.\p"
+	.string "They also must not hold the same\n"
 # 415 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-	.string "They also must not hold the same\n"
+	.string "kinds of items.\p"
 # 416 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-	.string "kinds of items.\p"
+	.string "EGGS{STR_VAR_1}.$"
 # 417 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-	.string "EGGS{STR_VAR_1}.$"
+
 # 418 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-
-# 419 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 BattleFrontier_BattleArenaLobby_Text_NotEnoughValidMonsEnd:
-# 420 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 419 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "When you have made your preparations,\n"
-# 421 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 420 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "please do return.$"
+# 421 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+
 # 422 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-
-# 423 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 BattleFrontier_BattleArenaLobby_Text_NotEnoughValidMonsLv50:
+# 423 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+	.string "My dear challenger!\p"
 # 424 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-	.string "My dear challenger!\p"
-# 425 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "You do not have the three POKéMON\n"
-# 426 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 425 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "required for entry.\p"
-# 427 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 426 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "To qualify, you must bring three\n"
-# 428 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 427 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "different kinds of POKéMON.\p"
-# 429 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 428 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "The three different POKéMON\n"
-# 430 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 429 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "must all be Level 50 or lower.\p"
-# 431 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 430 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "They also must not hold the same\n"
-# 432 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 431 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "kinds of items.\p"
-# 433 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 432 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "EGGS{STR_VAR_1}.$"
+# 433 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+
 # 434 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-
-# 435 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 BattleFrontier_BattleArenaLobby_Text_GuideYouToArena:
-# 436 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 435 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "I shall now guide you to\n"
-# 437 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 436 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "the BATTLE ARENA.$"
+# 437 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+
 # 438 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-
-# 439 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 BattleFrontier_BattleArenaLobby_Text_DidntSaveBeforeShuttingDown:
-# 440 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 439 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "My dear challenger!\p"
-# 441 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 440 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "You did not save the game before\n"
-# 442 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 441 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "shutting down, did you?\p"
-# 443 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 442 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "It is unfortunate, but that has\n"
-# 444 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 443 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "resulted in your disqualification\l"
-# 445 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 444 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "from your challenge.\p"
-# 446 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 445 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "You may, of course, start with a fresh\n"
-# 447 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 446 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "challenge.$"
+# 447 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+
 # 448 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-
-# 449 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 BattleFrontier_BattleArenaLobby_Text_CongratsOnSevenWins:
-# 450 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 449 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "We congratulate you for your splendid\n"
-# 451 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 450 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "string of wins over seven TRAINERS!$"
+# 451 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+
 # 452 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-
-# 453 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 BattleFrontier_BattleArenaLobby_Text_RecordAchievement:
-# 454 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 453 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "Your achievement will be recorded.\n"
+# 454 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+	.string "Please wait while I save the game.$"
 # 455 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-	.string "Please wait while I save the game.$"
+
 # 456 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-
+@ Unused
 # 457 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-@ Unused
-# 458 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 BattleFrontier_BattleArenaLobby_Text_PresentYouWithPrize:
-# 459 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 458 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "In commemoration of your 7-win streak,\n"
-# 460 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 459 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "we present you with this prize.$"
+# 460 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+
 # 461 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-
+@ Unused
 # 462 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-@ Unused
-# 463 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 BattleFrontier_BattleArenaLobby_Text_ReceivedPrize:
-# 464 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 463 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "{PLAYER} received the prize\n"
-# 465 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 464 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "{STR_VAR_1}.$"
+# 465 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+
 # 466 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-
-# 467 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 @ Unused
-# 468 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 467 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 BattleFrontier_BattleArenaLobby_Text_BagFullReturnForPrize:
-# 469 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 468 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "Oh?\n"
-# 470 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 469 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "Your BAG seems to be full.\p"
-# 471 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 470 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "I urge you to clear space and\n"
-# 472 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 471 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "return for your prize.$"
+# 472 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+
 # 473 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-
-# 474 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 BattleFrontier_BattleArenaLobby_Text_ThankYouWaitWhileSave:
-# 475 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 474 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "Thank you so much for participating!\p"
-# 476 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 475 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "Please wait while I save the game.$"
+# 476 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+
 # 477 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-
-# 478 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 BattleFrontier_BattleArenaLobby_Text_AwaitAnotherChallenge2:
-# 479 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 478 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "We await your challenge on\n"
-# 480 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 479 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "another occasion!$"
+# 480 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+
 # 481 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-
-# 482 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 BattleFrontier_BattleArenaLobby_Text_LookingForwardToArrivalSaveGame:
-# 483 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 482 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "We have been looking forward to\n"
-# 484 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 483 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "your arrival.\p"
-# 485 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 484 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "Before I show you to the BATTLE\n"
-# 486 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 485 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "ARENA, I must save the game.\l"
-# 487 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 486 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "Please wait.$"
+# 487 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+
 # 488 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-
-# 489 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 BattleFrontier_BattleArenaLobby_Text_RecordLastMatch:
-# 490 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 489 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "Shall I record your last BATTLE ARENA\n"
-# 491 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 490 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "match on your FRONTIER PASS?$"
+# 491 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+
 # 492 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-
-# 493 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 BattleFrontier_BattleArenaLobby_Text_BadIdeaToNotAttack:
-# 494 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 493 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "I lost on the REFEREE's decision…\p"
-# 495 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 494 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "I don't think it was a good idea to only\n"
-# 496 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 495 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "use defensive moves and not attack…$"
+# 496 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+
 # 497 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-
-# 498 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 BattleFrontier_BattleArenaLobby_Text_LandingHitsWorked:
-# 499 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 498 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "I won in judging!\p"
-# 500 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 499 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "Landing hits consistently on\n"
-# 501 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 500 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "the opponent's POKéMON worked!$"
+# 501 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+
 # 502 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-
-# 503 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 BattleFrontier_BattleArenaLobby_Text_MatchWasDeclaredDraw:
-# 504 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 503 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "Our match was declared a draw.\p"
-# 505 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 504 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "When we ran out of time, both my\n"
-# 506 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 505 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "POKéMON and the opponent's had about\l"
-# 507 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 506 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "the same amount of HP left.$"
+# 507 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+
 # 508 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-
-# 509 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 BattleFrontier_BattleArenaLobby_Text_OrderOfMonsImportant:
-# 510 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 509 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "In the BATTLE ARENA, the order of\n"
-# 511 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 510 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "POKéMON is totally important.\p"
-# 512 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 511 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "For example, if your first POKéMON\n"
-# 513 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 512 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "has certain type disadvantages,\l"
-# 514 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 513 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "try making your second POKéMON one\l"
-# 515 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 514 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "with moves that are super effective\l"
-# 516 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 515 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "against the first one.\p"
-# 517 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 516 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "I think that will be a good way of\n"
-# 518 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 517 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "making an effective team.$"
+# 518 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+
 # 519 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-
-# 520 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 BattleFrontier_BattleArenaLobby_Text_RulesAreListed:
-# 521 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 520 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "The Set KO Tourney's rules are listed.$"
+# 521 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+
 # 522 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-
-# 523 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 BattleFrontier_BattleArenaLobby_Text_ReadWhichHeading:
-# 524 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 523 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "Which heading do you want to read?$"
+# 524 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+
 # 525 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-
-# 526 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 BattleFrontier_BattleArenaLobby_Text_ExplainBattleRules:
-# 527 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 526 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "The Set KO Tourney has special rules,\n"
-# 528 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 527 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "unlike standard battles.\p"
-# 529 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 528 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "First, one battle lasts only\n"
-# 530 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 529 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "three turns.\p"
-# 531 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 530 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "If the outcome is not decided after\n"
-# 532 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 531 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "three turns, it goes to judging.\p"
-# 533 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 532 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "The REFEREE will choose the winner\n"
-# 534 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 533 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "based on how the POKéMON battled.\p"
-# 535 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 534 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "Also, a POKéMON cannot be switched out\n"
-# 536 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 535 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "until its battle's outcome is decided.$"
+# 536 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+
 # 537 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-
-# 538 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 BattleFrontier_BattleArenaLobby_Text_ExplainMindRules:
-# 539 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 538 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "The first judging factor is “Mind.”\n"
-# 540 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 539 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "This factor evaluates how aggressive\l"
-# 541 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 540 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "the battlers were.\p"
-# 542 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 541 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "The judging is based on how often\n"
-# 543 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 542 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "the TRAINERS ordered the use of\l"
-# 544 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 543 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "offensive moves.$"
+# 544 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+
 # 545 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-
-# 546 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 BattleFrontier_BattleArenaLobby_Text_ExplainSkillRules:
-# 547 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 546 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "The second judging factor is “Skill.”\n"
-# 548 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 547 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "This factor evaluates how effectively\l"
-# 549 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 548 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "POKéMON moves were used.\p"
-# 550 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 549 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "If a move worked successfully,\n"
-# 551 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 550 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "the Skill rating goes up.\p"
-# 552 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 551 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "If a move failed, the Skill rating\n"
-# 553 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 552 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "is lowered.\p"
-# 554 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 553 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "If it was an offensive move, the Skill\n"
-# 555 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 554 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "rating goes up if the move was “super\l"
-# 556 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 555 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "effective” and goes down if it was\l"
-# 557 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 556 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "“not very effective.”\p"
-# 558 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 557 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "The Skill rating will not go up for\n"
-# 559 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 558 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "moves such as PROTECT and DETECT.\p"
-# 560 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 559 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "If the opponent used PROTECT or\n"
-# 561 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 560 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "DETECT, and your POKéMON failed to\l"
-# 562 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 561 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "hit with a move, its Skill rating will not\l"
-# 563 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 562 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "go down.$"
+# 563 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+
 # 564 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-
-# 565 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 BattleFrontier_BattleArenaLobby_Text_ExplainBodyRules:
-# 566 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 565 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "The third judging factor is “Body.”\n"
-# 567 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 566 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "This factor is based on how much HP\l"
-# 568 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 567 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "remained at the end of a battle.\p"
-# 569 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 568 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "The rating takes into account how much\n"
-# 570 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 569 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "HP a POKéMON had at the start of\l"
-# 571 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 570 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "battle, and what remained at the end.$"
+# 571 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+
 # 572 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
-
-# 573 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 BattleFrontier_BattleArenaLobby_Text_CongratsOnDefeatingTycoon:
-# 574 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 573 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "A victory snatched from the ARENA\n"
-# 575 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 574 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "TYCOON, and a seven-TRAINER sweep!\p"
-# 576 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 575 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "We congratulate you on your most\n"
-# 577 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 576 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "splendid challenge!$"
-# 578 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 577 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 
-# 579 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 578 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 BattleFrontier_BattleArenaLobby_Text_PleaseAcceptBattlePoints:
-# 580 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 579 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "My dear challenger, in recognition of\n"
-# 581 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 580 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "your indefatigable spirit, please\l"
-# 582 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
+# 581 "data/maps/BattleFrontier_BattleArenaLobby/scripts.pory"
 	.string "accept these Battle Point(s).$"

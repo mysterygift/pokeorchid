@@ -3,6 +3,7 @@
   "name": "TosaPort_ProfessorBirchsLab",
   "layout": "LAYOUT_TOSA_PORT_PROFESSOR_BIRCHS_LAB",
   "music": "MUS_BIRCH_LAB",
+  "region": "REGION_HOENN",
   "region_map_section": "MAPSEC_TOSA_PORT",
   "requires_flash": false,
   "weather": "WEATHER_NONE",

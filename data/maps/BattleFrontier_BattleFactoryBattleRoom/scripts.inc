@@ -207,7 +207,7 @@ BattleFrontier_BattleFactoryBattleRoom_EventScript_IncrementBattleNum::
 # 104 "data/maps/BattleFrontier_BattleFactoryBattleRoom/scripts.pory"
 	switch VAR_RESULT
 # 105 "data/maps/BattleFrontier_BattleFactoryBattleRoom/scripts.pory"
-	case 7, BattleFrontier_BattleFactoryBattleRoom_EventScript_WarpToLobbyWon
+	case FRONTIER_STAGES_PER_CHALLENGE, BattleFrontier_BattleFactoryBattleRoom_EventScript_WarpToLobbyWon
 # 106 "data/maps/BattleFrontier_BattleFactoryBattleRoom/scripts.pory"
 	setvar VAR_0x8006, 1
 # 107 "data/maps/BattleFrontier_BattleFactoryBattleRoom/scripts.pory"

@@ -103,177 +103,177 @@ SkyPillar_Top_EventScript_Rayquaza::
 # 52 "data/maps/SkyPillar_Top/scripts.pory"
 	special BattleSetup_StartLegendaryBattle
 # 53 "data/maps/SkyPillar_Top/scripts.pory"
-	waitstate
-# 54 "data/maps/SkyPillar_Top/scripts.pory"
 	clearflag FLAG_SYS_CTRL_OBJ_DELETE
-# 55 "data/maps/SkyPillar_Top/scripts.pory"
+# 54 "data/maps/SkyPillar_Top/scripts.pory"
 	specialvar VAR_RESULT, GetBattleOutcome
-# 56 "data/maps/SkyPillar_Top/scripts.pory"
+# 55 "data/maps/SkyPillar_Top/scripts.pory"
 	goto_if_eq VAR_RESULT, B_OUTCOME_WON, SkyPillar_Top_EventScript_DefeatedRayquaza
-# 57 "data/maps/SkyPillar_Top/scripts.pory"
+# 56 "data/maps/SkyPillar_Top/scripts.pory"
 	goto_if_eq VAR_RESULT, B_OUTCOME_RAN, SkyPillar_Top_EventScript_RanFromRayquaza
-# 58 "data/maps/SkyPillar_Top/scripts.pory"
+# 57 "data/maps/SkyPillar_Top/scripts.pory"
 	goto_if_eq VAR_RESULT, B_OUTCOME_PLAYER_TELEPORTED, SkyPillar_Top_EventScript_RanFromRayquaza
+# 58 "data/maps/SkyPillar_Top/scripts.pory"
+	setflag FLAG_DEFEATED_RAYQUAZA
 # 59 "data/maps/SkyPillar_Top/scripts.pory"
-	setflag FLAG_DEFEATED_RAYQUAZA
+	releaseall
 # 60 "data/maps/SkyPillar_Top/scripts.pory"
-	releaseall
+	end
 # 61 "data/maps/SkyPillar_Top/scripts.pory"
-	end
+
 # 62 "data/maps/SkyPillar_Top/scripts.pory"
-
-# 63 "data/maps/SkyPillar_Top/scripts.pory"
 SkyPillar_Top_EventScript_DefeatedRayquaza::
-# 64 "data/maps/SkyPillar_Top/scripts.pory"
+# 63 "data/maps/SkyPillar_Top/scripts.pory"
 	setflag FLAG_DEFEATED_RAYQUAZA
-# 65 "data/maps/SkyPillar_Top/scripts.pory"
+# 64 "data/maps/SkyPillar_Top/scripts.pory"
 	goto SkyPillar_Top_EventScript_DefeatedRayquaza2
+# 65 "data/maps/SkyPillar_Top/scripts.pory"
+	end
 # 66 "data/maps/SkyPillar_Top/scripts.pory"
-	end
+
 # 67 "data/maps/SkyPillar_Top/scripts.pory"
-
-# 68 "data/maps/SkyPillar_Top/scripts.pory"
 SkyPillar_Top_EventScript_RanFromRayquaza::
-# 69 "data/maps/SkyPillar_Top/scripts.pory"
+# 68 "data/maps/SkyPillar_Top/scripts.pory"
 	setvar VAR_0x8004, SPECIES_RAYQUAZA
-# 70 "data/maps/SkyPillar_Top/scripts.pory"
+# 69 "data/maps/SkyPillar_Top/scripts.pory"
 	goto SkyPillar_Top_EventScript_RanFromRayquaza2
+# 70 "data/maps/SkyPillar_Top/scripts.pory"
+	end
 # 71 "data/maps/SkyPillar_Top/scripts.pory"
-	end
+
 # 72 "data/maps/SkyPillar_Top/scripts.pory"
-
-# 73 "data/maps/SkyPillar_Top/scripts.pory"
 SkyPillar_Top_EventScript_DefeatedRayquaza2::
+# 73 "data/maps/SkyPillar_Top/scripts.pory"
+	fadescreenswapbuffers FADE_TO_BLACK
 # 74 "data/maps/SkyPillar_Top/scripts.pory"
-	fadescreenswapbuffers FADE_TO_BLACK
+	removeobject VAR_LAST_TALKED
 # 75 "data/maps/SkyPillar_Top/scripts.pory"
-	removeobject VAR_LAST_TALKED
+	fadescreenswapbuffers FADE_FROM_BLACK
 # 76 "data/maps/SkyPillar_Top/scripts.pory"
-	fadescreenswapbuffers FADE_FROM_BLACK
+	releaseall
 # 77 "data/maps/SkyPillar_Top/scripts.pory"
-	releaseall
+	end
 # 78 "data/maps/SkyPillar_Top/scripts.pory"
-	end
+
 # 79 "data/maps/SkyPillar_Top/scripts.pory"
-
-# 80 "data/maps/SkyPillar_Top/scripts.pory"
 SkyPillar_Top_EventScript_RanFromRayquaza2::
-# 81 "data/maps/SkyPillar_Top/scripts.pory"
+# 80 "data/maps/SkyPillar_Top/scripts.pory"
 	fadescreenswapbuffers FADE_TO_BLACK
-# 82 "data/maps/SkyPillar_Top/scripts.pory"
+# 81 "data/maps/SkyPillar_Top/scripts.pory"
 	removeobject VAR_LAST_TALKED
-# 83 "data/maps/SkyPillar_Top/scripts.pory"
+# 82 "data/maps/SkyPillar_Top/scripts.pory"
 	fadescreenswapbuffers FADE_FROM_BLACK
-# 84 "data/maps/SkyPillar_Top/scripts.pory"
+# 83 "data/maps/SkyPillar_Top/scripts.pory"
 	bufferspeciesname STR_VAR_1, VAR_0x8004
-# 85 "data/maps/SkyPillar_Top/scripts.pory"
+# 84 "data/maps/SkyPillar_Top/scripts.pory"
 	msgbox gText_LegendaryFlewAway, MSGBOX_DEFAULT
+# 85 "data/maps/SkyPillar_Top/scripts.pory"
+	releaseall
 # 86 "data/maps/SkyPillar_Top/scripts.pory"
-	releaseall
+	end
 # 87 "data/maps/SkyPillar_Top/scripts.pory"
-	end
+
 # 88 "data/maps/SkyPillar_Top/scripts.pory"
-
-# 89 "data/maps/SkyPillar_Top/scripts.pory"
 SkyPillar_Top_EventScript_AwakenRayquaza::
-# 90 "data/maps/SkyPillar_Top/scripts.pory"
+# 89 "data/maps/SkyPillar_Top/scripts.pory"
 	lockall
-# 91 "data/maps/SkyPillar_Top/scripts.pory"
+# 90 "data/maps/SkyPillar_Top/scripts.pory"
 	fadeoutbgm 1
-# 92 "data/maps/SkyPillar_Top/scripts.pory"
+# 91 "data/maps/SkyPillar_Top/scripts.pory"
 	applymovement LOCALID_PLAYER, Common_Movement_FaceUp
+# 92 "data/maps/SkyPillar_Top/scripts.pory"
+	waitmovement 0
 # 93 "data/maps/SkyPillar_Top/scripts.pory"
-	waitmovement 0
+	special SpawnCameraObject
 # 94 "data/maps/SkyPillar_Top/scripts.pory"
-	special SpawnCameraObject
-# 95 "data/maps/SkyPillar_Top/scripts.pory"
 	applymovement LOCALID_CAMERA, SkyPillar_Top_Movement_CameraPanUp
+# 95 "data/maps/SkyPillar_Top/scripts.pory"
+	waitmovement 0
 # 96 "data/maps/SkyPillar_Top/scripts.pory"
-	waitmovement 0
+	special RemoveCameraObject
 # 97 "data/maps/SkyPillar_Top/scripts.pory"
-	special RemoveCameraObject
-# 98 "data/maps/SkyPillar_Top/scripts.pory"
 	applymovement LOCALID_RAYQUAZA_SLEEPING, SkyPillar_Top_Movement_RayquazaStir
+# 98 "data/maps/SkyPillar_Top/scripts.pory"
+	waitmovement 0
 # 99 "data/maps/SkyPillar_Top/scripts.pory"
-	waitmovement 0
+	waitse
 # 100 "data/maps/SkyPillar_Top/scripts.pory"
-	waitse
+	playmoncry SPECIES_RAYQUAZA, CRY_MODE_ENCOUNTER
 # 101 "data/maps/SkyPillar_Top/scripts.pory"
-	playmoncry SPECIES_RAYQUAZA, CRY_MODE_ENCOUNTER
+	setvar VAR_0x8004, 1  @ vertical pan
 # 102 "data/maps/SkyPillar_Top/scripts.pory"
-	setvar VAR_0x8004, 1  @ vertical pan
-# 103 "data/maps/SkyPillar_Top/scripts.pory"
 	setvar VAR_0x8005, 1  @ horizontal pan
+# 103 "data/maps/SkyPillar_Top/scripts.pory"
+	setvar VAR_0x8006, 8  @ num shakes
 # 104 "data/maps/SkyPillar_Top/scripts.pory"
-	setvar VAR_0x8006, 8  @ num shakes
-# 105 "data/maps/SkyPillar_Top/scripts.pory"
 	setvar VAR_0x8007, 3  @ shake delay
+# 105 "data/maps/SkyPillar_Top/scripts.pory"
+	special ShakeCamera
 # 106 "data/maps/SkyPillar_Top/scripts.pory"
-	special ShakeCamera
+	waitstate
 # 107 "data/maps/SkyPillar_Top/scripts.pory"
-	waitstate
-# 108 "data/maps/SkyPillar_Top/scripts.pory"
 	waitse
-# 109 "data/maps/SkyPillar_Top/scripts.pory"
+# 108 "data/maps/SkyPillar_Top/scripts.pory"
 	playmoncry SPECIES_RAYQUAZA, CRY_MODE_ENCOUNTER
-# 110 "data/maps/SkyPillar_Top/scripts.pory"
+# 109 "data/maps/SkyPillar_Top/scripts.pory"
 	setvar VAR_0x8004, 1  @ vertical pan
-# 111 "data/maps/SkyPillar_Top/scripts.pory"
+# 110 "data/maps/SkyPillar_Top/scripts.pory"
 	setvar VAR_0x8005, 2  @ horizontal pan
-# 112 "data/maps/SkyPillar_Top/scripts.pory"
+# 111 "data/maps/SkyPillar_Top/scripts.pory"
 	setvar VAR_0x8006, 8  @ num shakes
-# 113 "data/maps/SkyPillar_Top/scripts.pory"
+# 112 "data/maps/SkyPillar_Top/scripts.pory"
 	setvar VAR_0x8007, 5  @ shake delay
-# 114 "data/maps/SkyPillar_Top/scripts.pory"
+# 113 "data/maps/SkyPillar_Top/scripts.pory"
 	special ShakeCamera
-# 115 "data/maps/SkyPillar_Top/scripts.pory"
+# 114 "data/maps/SkyPillar_Top/scripts.pory"
 	waitstate
-# 116 "data/maps/SkyPillar_Top/scripts.pory"
+# 115 "data/maps/SkyPillar_Top/scripts.pory"
 	waitmoncry
-# 117 "data/maps/SkyPillar_Top/scripts.pory"
+# 116 "data/maps/SkyPillar_Top/scripts.pory"
 	applymovement LOCALID_RAYQUAZA_SLEEPING, SkyPillar_Top_Movement_RayquazaFlyOff
+# 117 "data/maps/SkyPillar_Top/scripts.pory"
+	waitmovement 0
 # 118 "data/maps/SkyPillar_Top/scripts.pory"
-	waitmovement 0
-# 119 "data/maps/SkyPillar_Top/scripts.pory"
 	removeobject LOCALID_RAYQUAZA_SLEEPING
-# 120 "data/maps/SkyPillar_Top/scripts.pory"
+# 119 "data/maps/SkyPillar_Top/scripts.pory"
 	msgbox SkyPillar_Top_Text_RayquazaFlewOff, MSGBOX_DEFAULT
-# 121 "data/maps/SkyPillar_Top/scripts.pory"
+# 120 "data/maps/SkyPillar_Top/scripts.pory"
 	closemessage
-# 122 "data/maps/SkyPillar_Top/scripts.pory"
+# 121 "data/maps/SkyPillar_Top/scripts.pory"
 	delay 20
-# 123 "data/maps/SkyPillar_Top/scripts.pory"
+# 122 "data/maps/SkyPillar_Top/scripts.pory"
 	fadeinbgm 1
-# 124 "data/maps/SkyPillar_Top/scripts.pory"
+# 123 "data/maps/SkyPillar_Top/scripts.pory"
 	special SpawnCameraObject
-# 125 "data/maps/SkyPillar_Top/scripts.pory"
+# 124 "data/maps/SkyPillar_Top/scripts.pory"
 	applymovement LOCALID_CAMERA, SkyPillar_Top_Movement_CameraPanDown
-# 126 "data/maps/SkyPillar_Top/scripts.pory"
+# 125 "data/maps/SkyPillar_Top/scripts.pory"
 	waitmovement 0
-# 127 "data/maps/SkyPillar_Top/scripts.pory"
+# 126 "data/maps/SkyPillar_Top/scripts.pory"
 	special RemoveCameraObject
-# 128 "data/maps/SkyPillar_Top/scripts.pory"
+# 127 "data/maps/SkyPillar_Top/scripts.pory"
 	setvar VAR_SOOTOPOLIS_CITY_STATE, 5
-# 129 "data/maps/SkyPillar_Top/scripts.pory"
+# 128 "data/maps/SkyPillar_Top/scripts.pory"
 	setvar VAR_SKY_PILLAR_STATE, 1
-# 130 "data/maps/SkyPillar_Top/scripts.pory"
+# 129 "data/maps/SkyPillar_Top/scripts.pory"
 	setvar VAR_SKY_PILLAR_RAYQUAZA_CRY_DONE, 1
-# 131 "data/maps/SkyPillar_Top/scripts.pory"
+# 130 "data/maps/SkyPillar_Top/scripts.pory"
 	releaseall
-# 132 "data/maps/SkyPillar_Top/scripts.pory"
+# 131 "data/maps/SkyPillar_Top/scripts.pory"
 	end
-# 133 "data/maps/SkyPillar_Top/scripts.pory"
+# 132 "data/maps/SkyPillar_Top/scripts.pory"
 
-# 134 "data/maps/SkyPillar_Top/scripts.pory"
+# 133 "data/maps/SkyPillar_Top/scripts.pory"
 @ Rayquaza has unusual movement frames
-# 135 "data/maps/SkyPillar_Top/scripts.pory"
+# 134 "data/maps/SkyPillar_Top/scripts.pory"
 @ See comments, or sAnimTable_Rayquaza
-# 136 "data/maps/SkyPillar_Top/scripts.pory"
+# 135 "data/maps/SkyPillar_Top/scripts.pory"
 SkyPillar_Top_Movement_RayquazaStir:
-# 137 "data/maps/SkyPillar_Top/scripts.pory"
+# 136 "data/maps/SkyPillar_Top/scripts.pory"
 	delay_16
-# 138 "data/maps/SkyPillar_Top/scripts.pory"
+# 137 "data/maps/SkyPillar_Top/scripts.pory"
 	walk_in_place_fast_left  @ Coiled, awake
+# 138 "data/maps/SkyPillar_Top/scripts.pory"
+	delay_16
 # 139 "data/maps/SkyPillar_Top/scripts.pory"
 	delay_16
 # 140 "data/maps/SkyPillar_Top/scripts.pory"
@@ -283,13 +283,13 @@ SkyPillar_Top_Movement_RayquazaStir:
 # 142 "data/maps/SkyPillar_Top/scripts.pory"
 	delay_16
 # 143 "data/maps/SkyPillar_Top/scripts.pory"
-	delay_16
-# 144 "data/maps/SkyPillar_Top/scripts.pory"
 	walk_in_place_left  @ Coiled, mouth open
-# 145 "data/maps/SkyPillar_Top/scripts.pory"
+# 144 "data/maps/SkyPillar_Top/scripts.pory"
 	delay_16
-# 146 "data/maps/SkyPillar_Top/scripts.pory"
+# 145 "data/maps/SkyPillar_Top/scripts.pory"
 	walk_in_place_right  @ Normal, awake
+# 146 "data/maps/SkyPillar_Top/scripts.pory"
+	delay_16
 # 147 "data/maps/SkyPillar_Top/scripts.pory"
 	delay_16
 # 148 "data/maps/SkyPillar_Top/scripts.pory"
@@ -301,25 +301,25 @@ SkyPillar_Top_Movement_RayquazaStir:
 # 151 "data/maps/SkyPillar_Top/scripts.pory"
 	delay_16
 # 152 "data/maps/SkyPillar_Top/scripts.pory"
-	delay_16
-# 153 "data/maps/SkyPillar_Top/scripts.pory"
 	step_end
-# 154 "data/maps/SkyPillar_Top/scripts.pory"
+# 153 "data/maps/SkyPillar_Top/scripts.pory"
 
-# 155 "data/maps/SkyPillar_Top/scripts.pory"
+# 154 "data/maps/SkyPillar_Top/scripts.pory"
 SkyPillar_Top_Movement_RayquazaFlyOff:
-# 156 "data/maps/SkyPillar_Top/scripts.pory"
+# 155 "data/maps/SkyPillar_Top/scripts.pory"
 	delay_16
-# 157 "data/maps/SkyPillar_Top/scripts.pory"
+# 156 "data/maps/SkyPillar_Top/scripts.pory"
 	walk_in_place_down  @ Coiled, asleep
+# 157 "data/maps/SkyPillar_Top/scripts.pory"
+	delay_8
 # 158 "data/maps/SkyPillar_Top/scripts.pory"
-	delay_8
-# 159 "data/maps/SkyPillar_Top/scripts.pory"
 	walk_in_place_right  @ Normal, awake
-# 160 "data/maps/SkyPillar_Top/scripts.pory"
+# 159 "data/maps/SkyPillar_Top/scripts.pory"
 	delay_8
-# 161 "data/maps/SkyPillar_Top/scripts.pory"
+# 160 "data/maps/SkyPillar_Top/scripts.pory"
 	walk_faster_up  @ Fly up
+# 161 "data/maps/SkyPillar_Top/scripts.pory"
+	slide_up
 # 162 "data/maps/SkyPillar_Top/scripts.pory"
 	slide_up
 # 163 "data/maps/SkyPillar_Top/scripts.pory"
@@ -331,36 +331,34 @@ SkyPillar_Top_Movement_RayquazaFlyOff:
 # 166 "data/maps/SkyPillar_Top/scripts.pory"
 	slide_up
 # 167 "data/maps/SkyPillar_Top/scripts.pory"
-	slide_up
-# 168 "data/maps/SkyPillar_Top/scripts.pory"
 	step_end
-# 169 "data/maps/SkyPillar_Top/scripts.pory"
+# 168 "data/maps/SkyPillar_Top/scripts.pory"
 
-# 170 "data/maps/SkyPillar_Top/scripts.pory"
+# 169 "data/maps/SkyPillar_Top/scripts.pory"
 SkyPillar_Top_Movement_CameraPanUp:
+# 170 "data/maps/SkyPillar_Top/scripts.pory"
+	walk_slow_up
 # 171 "data/maps/SkyPillar_Top/scripts.pory"
 	walk_slow_up
 # 172 "data/maps/SkyPillar_Top/scripts.pory"
 	walk_slow_up
 # 173 "data/maps/SkyPillar_Top/scripts.pory"
-	walk_slow_up
-# 174 "data/maps/SkyPillar_Top/scripts.pory"
 	step_end
-# 175 "data/maps/SkyPillar_Top/scripts.pory"
+# 174 "data/maps/SkyPillar_Top/scripts.pory"
 
-# 176 "data/maps/SkyPillar_Top/scripts.pory"
+# 175 "data/maps/SkyPillar_Top/scripts.pory"
 SkyPillar_Top_Movement_CameraPanDown:
+# 176 "data/maps/SkyPillar_Top/scripts.pory"
+	walk_slow_down
 # 177 "data/maps/SkyPillar_Top/scripts.pory"
 	walk_slow_down
 # 178 "data/maps/SkyPillar_Top/scripts.pory"
 	walk_slow_down
 # 179 "data/maps/SkyPillar_Top/scripts.pory"
-	walk_slow_down
-# 180 "data/maps/SkyPillar_Top/scripts.pory"
 	step_end
-# 181 "data/maps/SkyPillar_Top/scripts.pory"
+# 180 "data/maps/SkyPillar_Top/scripts.pory"
 
-# 182 "data/maps/SkyPillar_Top/scripts.pory"
+# 181 "data/maps/SkyPillar_Top/scripts.pory"
 SkyPillar_Top_Text_RayquazaFlewOff:
-# 183 "data/maps/SkyPillar_Top/scripts.pory"
+# 182 "data/maps/SkyPillar_Top/scripts.pory"
 	.string "The awakened RAYQUAZA flew off…$"

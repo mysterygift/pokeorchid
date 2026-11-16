@@ -1027,598 +1027,596 @@ LilycoveCity_PokemonTrainerFanClub_EventScript_RateTrainer::
 # 514 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	special ShowScrollableMultichoice
 # 515 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
-	waitstate
+	setvar VAR_0x8004, FANCLUB_MEMBER1
 # 516 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
-	setvar VAR_0x8004, FANCLUB_MEMBER1
-# 517 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	switch VAR_RESULT
-# 518 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 517 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	case 11, LilycoveCity_PokemonTrainerFanClub_EventScript_CancelRateTrainer
-# 519 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 518 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	case MULTI_B_PRESSED, LilycoveCity_PokemonTrainerFanClub_EventScript_CancelRateTrainer
+# 519 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+	setvar VAR_0x8004, FANCLUB_MEMBER1
 # 520 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
-	setvar VAR_0x8004, FANCLUB_MEMBER1
+	special BufferFanClubTrainerName
 # 521 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
-	special BufferFanClubTrainerName
-# 522 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	copyvar VAR_0x8006, VAR_0x800A
-# 523 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 522 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	copyvar VAR_0x8005, VAR_RESULT
-# 524 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 523 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	special PutFanClubSpecialOnTheAir
-# 525 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 524 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	goto LilycoveCity_PokemonTrainerFanClub_EventScript_CompleteInterview
+# 525 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+	end
 # 526 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
-	end
+
 # 527 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
-
-# 528 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 LilycoveCity_PokemonTrainerFanClub_EventScript_CancelRateTrainer::
+# 528 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+	setvar VAR_0x8004, FANCLUB_MEMBER1
 # 529 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
-	setvar VAR_0x8004, FANCLUB_MEMBER1
+	special BufferFanClubTrainerName
 # 530 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
-	special BufferFanClubTrainerName
-# 531 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	msgbox LilycoveCity_PokemonTrainerFanClub_Text_HaveYouForgottenTrainer2, MSGBOX_YESNO
-# 532 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 531 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	goto_if_eq VAR_RESULT, YES, LilycoveCity_PokemonTrainerFanClub_EventScript_ForgetTrainer
-# 533 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 532 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	goto_if_eq VAR_RESULT, NO, LilycoveCity_PokemonTrainerFanClub_EventScript_RateTrainer
+# 533 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+	end
 # 534 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
-	end
+
 # 535 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
-
-# 536 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 LilycoveCity_PokemonTrainerFanClub_EventScript_ForgetTrainer::
+# 536 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+	setvar VAR_0x8004, FANCLUB_MEMBER1
 # 537 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
-	setvar VAR_0x8004, FANCLUB_MEMBER1
+	special BufferFanClubTrainerName
 # 538 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
-	special BufferFanClubTrainerName
-# 539 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	msgbox LilycoveCity_PokemonTrainerFanClub_Text_YouShouldMeetTrainer, MSGBOX_DEFAULT
+# 539 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+	release
 # 540 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
-	release
+	end
 # 541 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
-	end
+
 # 542 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
-
-# 543 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 LilycoveCity_PokemonTrainerFanClub_EventScript_CompleteInterview::
+# 543 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+	setvar VAR_0x8004, FANCLUB_MEMBER1
 # 544 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
-	setvar VAR_0x8004, FANCLUB_MEMBER1
+	special BufferFanClubTrainerName
 # 545 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
-	special BufferFanClubTrainerName
-# 546 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	msgbox LilycoveCity_PokemonTrainerFanClub_Text_ThankYouIllShareThisInfo, MSGBOX_DEFAULT
-# 547 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 546 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	setflag FLAG_FAN_CLUB_STRENGTH_SHARED
+# 547 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+	release
 # 548 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
-	release
+	end
 # 549 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
-	end
+
 # 550 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
-
-# 551 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 LilycoveCity_PokemonTrainerFanClub_EventScript_AlreadyInterviewed::
-# 552 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 551 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	setvar VAR_0x8004, FANCLUB_MEMBER1
-# 553 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 552 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	special BufferFanClubTrainerName
-# 554 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 553 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	msgbox LilycoveCity_PokemonTrainerFanClub_HopeYouCatchTVSpecial, MSGBOX_DEFAULT
-# 555 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 554 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	release
+# 555 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+	end
 # 556 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
-	end
+
 # 557 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
-
-# 558 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 @ Shouldnt be reached
-# 559 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 558 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 LilycoveCity_PokemonTrainerFanClub_EventScript_AlreadyInterviewed2::
-# 560 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 559 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	end
+# 560 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+
 # 561 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
-
-# 562 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 LilycoveCity_PokemonTrainerFanClub_Text_OhWowItsPlayer:
-# 563 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 562 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "Oh, wow!\n"
-# 564 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 563 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "It's {PLAYER}!$"
+# 564 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+
 # 565 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
-
-# 566 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 LilycoveCity_PokemonTrainerFanClub_Text_HeardAboutYouImYourFan:
-# 567 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 566 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "I've heard the news!\n"
-# 568 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 567 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "You're really strong, aren't you?\p"
-# 569 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 568 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "We always argue about who is the\n"
-# 570 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 569 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "strongest of all TRAINERS here.\p"
-# 571 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 570 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "So when I heard about you, I decided\n"
-# 572 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 571 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "to be your fan!\p"
-# 573 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 572 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "I hope you'll keep on battling other\n"
-# 574 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 573 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "tough TRAINERS.\p"
-# 575 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 574 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "That way, we'll be able to see more\n"
-# 576 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 575 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "of your hot, hot battles.\p"
-# 577 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 576 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "That will make the others here see\n"
-# 578 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 577 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "exactly how great you are.\p"
-# 579 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 578 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "Remember, I'm cheering for you,\n"
-# 580 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 579 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "{PLAYER}!$"
+# 580 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+
 # 581 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
-
-# 582 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 LilycoveCity_PokemonTrainerFanClub_Text_YoureOneWeWantToWin:
-# 583 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 582 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "Yo, {PLAYER}!\n"
-# 584 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 583 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "You're the one we want to win!$"
+# 584 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+
 # 585 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
-
-# 586 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 LilycoveCity_PokemonTrainerFanClub_Text_OthersDontKnowYoureTheBest:
-# 587 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 586 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "The others, they don't know that\n"
-# 588 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 587 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "you're the best of the best!\p"
-# 589 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 588 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "Isn't that right, {PLAYER}?\n"
-# 590 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 589 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "Show them you've got guts!$"
+# 590 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+
 # 591 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
-
-# 592 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 LilycoveCity_PokemonTrainerFanClub_Text_TrainersPowerIsOutOfTheOrdinary:
-# 593 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 592 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "I hate to say this, but the TRAINER\n"
-# 594 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 593 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "everybody's talking about is\l"
-# 595 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 594 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "{STR_VAR_1}, no question about it!\p"
-# 596 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 595 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "That TRAINER's power…\n"
-# 597 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 596 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "It's out of the ordinary.$"
+# 597 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+
 # 598 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
-
-# 599 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 LilycoveCity_PokemonTrainerFanClub_Text_TrainerIsBestNoOneWantsToListen:
-# 600 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 599 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "Darn it… I've been telling people\n"
-# 601 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 600 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "that {STR_VAR_1} is the best now…\p"
-# 602 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 601 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "But no one wants to listen…$"
+# 602 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+
 # 603 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
-
-# 604 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 LilycoveCity_PokemonTrainerFanClub_Text_HearingAboutToughNewTrainer:
-# 605 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 604 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "I've been hearing things about\n"
-# 606 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 605 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "a tough new TRAINER.\p"
-# 607 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 606 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "This TRAINER's supposed to be beating\n"
-# 608 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 607 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "GYM LEADERS, even.\p"
-# 609 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 608 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "Do you know anything about this\n"
-# 610 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 609 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "new TRAINER?$"
+# 610 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+
 # 611 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
-
-# 612 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 LilycoveCity_PokemonTrainerFanClub_Text_ImPullingForYou:
-# 613 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 612 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "Oh!\n"
-# 614 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 613 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "{PLAYER}!\p"
-# 615 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 614 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "Go for it!\n"
-# 616 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 615 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "I'm pulling for you!$"
+# 616 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+
 # 617 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
-
-# 618 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 LilycoveCity_PokemonTrainerFanClub_Text_BrawlyNoImYourFan:
-# 619 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 618 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "Sigh…\n"
+# 619 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+	.string "BRAWLY…\p"
 # 620 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
-	.string "BRAWLY…\p"
-# 621 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "Oh, no! Wait!\n"
-# 622 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 621 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "That's not right! No, no, no!\p"
-# 623 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 622 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "I'm your fan through and through!\p"
-# 624 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 623 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "So make me proud!\n"
-# 625 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 624 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "Go for it!$"
+# 625 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+
 # 626 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
-
-# 627 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 LilycoveCity_PokemonTrainerFanClub_Text_ICantHelpLikingBrawly:
-# 628 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 627 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "I can't help it, I can only get to\n"
-# 629 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 628 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "like BRAWLY…$"
+# 629 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+
 # 630 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
-
-# 631 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 LilycoveCity_PokemonTrainerFanClub_Text_NobodyUnderstandsBrawly:
-# 632 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 631 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "Nobody understands the charm of\n"
-# 633 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 632 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "BRAWLY…\p"
-# 634 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 633 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "I don't care!\p"
-# 635 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 634 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "Even if I'm the only one, I'm going\n"
-# 636 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 635 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "to keep cheering for BRAWLY!$"
+# 636 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+
 # 637 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
-
-# 638 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 LilycoveCity_PokemonTrainerFanClub_Text_MyFavoriteTrainerIsBrawly:
-# 639 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 638 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "Whatever anyone says, my favorite\n"
-# 640 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 639 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "TRAINER is DEWFORD's GYM LEADER\l"
-# 641 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 640 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "BRAWLY!$"
+# 641 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+
 # 642 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
-
-# 643 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 LilycoveCity_PokemonTrainerFanClub_Text_YouveSurpassedYourFather:
-# 644 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 643 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "You've surpassed your own father in\n"
-# 645 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 644 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "every regard!\p"
-# 646 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 645 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "I'm telling you, so there's no question\n"
-# 647 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 646 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "about it at all!$"
+# 647 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+
 # 648 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
-
-# 649 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 LilycoveCity_PokemonTrainerFanClub_Text_YourFatherNeverGaveUpSoKeepOnBattling:
-# 650 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 649 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "Even when things turned bleak,\n"
-# 651 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 650 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "your father never gave up.\p"
-# 652 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 651 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "This I know to be true.\p"
-# 653 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 652 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "You never give up even if you lose!\n"
-# 654 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 653 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "So keep on battling!$"
+# 654 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+
 # 655 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
-
-# 656 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 LilycoveCity_PokemonTrainerFanClub_Text_LongWayToGoComparedToNorman:
-# 657 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 656 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "NORMAN battled with more power,\n"
-# 658 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 657 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "charisma, and showmanship than you.\p"
-# 659 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 658 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "Even though people may say that\n"
-# 660 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 659 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "you're strong…\p"
-# 661 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 660 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "You've still got a long way to go\n"
-# 662 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 661 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "compared to your father.$"
+# 662 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+
 # 663 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
-
-# 664 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 LilycoveCity_PokemonTrainerFanClub_Text_YouAndNormanAreDifferent:
-# 665 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 664 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "You're beginning to get the same\n"
-# 666 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 665 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "air of awe NORMAN exudes.\p"
-# 667 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 666 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "But there's something conclusively\n"
-# 668 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 667 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "different between you and NORMAN.\p"
-# 669 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 668 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "I can't tell you what that is.\n"
-# 670 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 669 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "You'll have to find it yourself.$"
+# 670 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+
 # 671 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
-
-# 672 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 LilycoveCity_PokemonTrainerFanClub_Text_WeDiscussStrongestTrainers:
-# 673 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 672 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "Everyone here, we're all huge fans\n"
-# 674 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 673 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "of POKéMON battles.\p"
-# 675 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 674 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "We discuss who we consider to be\n"
-# 676 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 675 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "the strongest of all TRAINERS.\p"
-# 677 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 676 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "If you were to become famous,\n"
-# 678 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 677 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "we might even become your fans!$"
+# 678 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+
 # 679 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
-
-# 680 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 LilycoveCity_PokemonTrainerFanClub_Text_OhWoweeItsPlayer:
-# 681 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 680 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "Oh, woweee! It's {PLAYER}!\n"
-# 682 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 681 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "For real, too!\p"
-# 683 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 682 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "Please, shake my hand, shake my hand!$"
+# 683 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+
 # 684 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
-
-# 685 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 LilycoveCity_PokemonTrainerFanClub_Text_AlwaysCheerForYou:
-# 686 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 685 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "I'll always cheer for you, {PLAYER}!\n"
-# 687 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 686 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "Always, always!\p"
-# 688 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 687 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "I don't want to see you lose ever,\n"
-# 689 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 688 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "{PLAYER}.\p"
-# 690 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 689 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "Because I know you're really,\n"
-# 691 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 690 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "really strong, {PLAYER}!$"
+# 691 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+
 # 692 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
-
-# 693 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 LilycoveCity_PokemonTrainerFanClub_Text_EveryoneThinksTrainerIsCool:
-# 694 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 693 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "{STR_VAR_1} is really cool…\p"
-# 695 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 694 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "Everyone thinks so, right, right?$"
+# 695 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+
 # 696 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
-
-# 697 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 LilycoveCity_PokemonTrainerFanClub_Text_TrainerIsReallyCoolItsJustMe:
-# 698 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 697 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "{STR_VAR_1} really is cool, don't\n"
-# 699 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 698 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "you think so?\p"
-# 700 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 699 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "Even if it's just me, I'm going to keep\n"
-# 701 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 700 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "cheering my favorite TRAINER.$"
+# 701 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+
 # 702 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
-
-# 703 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 LilycoveCity_PokemonTrainerFanClub_Text_WishThereWasTrainerLikeThat:
-# 704 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 703 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "My favorite TRAINER is…\p"
-# 705 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 704 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "Cool…\p"
-# 706 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 705 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "Strong…\p"
-# 707 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 706 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "And really nice…\p"
-# 708 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 707 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "I wish there was a TRAINER like that…$"
+# 708 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+
 # 709 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
-
-# 710 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 LilycoveCity_PokemonTrainerFanClub_Text_WantToBeStrongLikeYou:
-# 711 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 710 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "Whoa! It's {PLAYER}!\n"
-# 712 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 711 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "Wicked!\p"
-# 713 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 712 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "When I grow up, I want to be strong\n"
-# 714 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 713 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "like you, {PLAYER}!$"
+# 714 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+
 # 715 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
-
-# 716 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 LilycoveCity_PokemonTrainerFanClub_Text_OnlyOneWhoCheersForYou:
+# 716 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+	.string "Even if I'm the only one…\p"
 # 717 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
-	.string "Even if I'm the only one…\p"
-# 718 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "You'll always be the only one\n"
-# 719 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 718 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "I cheer for, {PLAYER}!\p"
-# 720 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 719 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "Because I believe in you, {PLAYER}!$"
+# 720 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+
 # 721 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
-
-# 722 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 LilycoveCity_PokemonTrainerFanClub_Text_TrainerIsWickedlyCool:
-# 723 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 722 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "{STR_VAR_1} is so wickedly cool…\n"
-# 724 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 723 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "I want to shake hands with my hero.$"
+# 724 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+
 # 725 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
-
-# 726 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 LilycoveCity_PokemonTrainerFanClub_Text_NeverGoingToStopBeingTrainersFan:
-# 727 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 726 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "Even if I'm the only one…\p"
-# 728 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 727 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "I'm never going to stop being\n"
-# 729 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 728 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "{STR_VAR_1}'s fan!\p"
-# 730 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 729 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "Because I've heard, {STR_VAR_1}\n"
-# 731 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 730 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "never loses!$"
+# 731 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+
 # 732 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
-
-# 733 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 LilycoveCity_PokemonTrainerFanClub_Text_YoureAmazingAfterAll:
-# 734 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 733 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "{PLAYER}!\n"
-# 735 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 734 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "You are amazing after all!\p"
-# 736 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 735 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "Ever since I set eyes on you,\n"
-# 737 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 736 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "I knew that you were great.\p"
-# 738 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 737 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "It looks like my eyes didn't deceive me.$"
+# 738 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+
 # 739 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
-
-# 740 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 LilycoveCity_PokemonTrainerFanClub_Text_ImInYourCorner:
-# 741 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 740 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "Who cares about the others.\n"
-# 742 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 741 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "I'm in your corner!\p"
-# 743 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 742 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "You don't need to worry. Just get\n"
-# 744 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 743 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "out there and battle like always.$"
+# 744 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+
 # 745 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
-
-# 746 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 LilycoveCity_PokemonTrainerFanClub_Text_ThinkTrainerIsNumberOne:
-# 747 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 746 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "You're a pretty decent TRAINER,\n"
-# 748 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 747 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "I think.\p"
-# 749 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 748 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "But I also think that {STR_VAR_1}\n"
-# 750 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 749 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "is number one right now.\p"
-# 751 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 750 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "That's just my opinion.\n"
-# 752 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 751 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "Don't worry about it too much.$"
+# 752 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+
 # 753 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
-
-# 754 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 LilycoveCity_PokemonTrainerFanClub_Text_YoureMaybeStrongerThanTrainer:
-# 755 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 754 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "Wow, you really are strong.\n"
-# 756 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 755 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "Maybe even stronger than {STR_VAR_1}.\p"
-# 757 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 756 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "But {STR_VAR_1} needs me.\p"
-# 758 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 757 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "If I don't cheer for {STR_VAR_1},\n"
-# 759 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 758 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "who will?$"
+# 759 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+
 # 760 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
-
-# 761 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 LilycoveCity_PokemonTrainerFanClub_Text_YouChangedMyMind:
-# 762 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 761 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "You've changed my mind!\n"
-# 763 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 762 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "You are strong, aren't you?\p"
-# 764 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 763 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "I'd like you to tell me how you managed\n"
-# 765 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 764 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "to get so strong!$"
+# 765 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+
 # 766 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
-
-# 767 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 LilycoveCity_PokemonTrainerFanClub_Text_YouBattleAttractivelyInToughSituation:
-# 768 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 767 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "The tougher the situation, the more\n"
-# 769 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 768 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "attractively you battle.\p"
-# 770 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 769 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "I can't wait for your next battle!$"
+# 770 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+
 # 771 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
-
-# 772 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 LilycoveCity_PokemonTrainerFanClub_Text_TrainerIsStandout:
-# 773 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 772 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "Among the recently hot TRAINERS,\n"
-# 774 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 773 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "{STR_VAR_1} is the standout.\p"
-# 775 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 774 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "That toughness, it's simply not normal.\p"
-# 776 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 775 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "You're doing okay, but you're not in\n"
-# 777 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 776 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "the same class as {STR_VAR_1}.$"
+# 777 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+
 # 778 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
-
-# 779 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 LilycoveCity_PokemonTrainerFanClub_Text_NoOneCanKnockYouButTrainerStronger:
-# 780 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 779 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "You are really popular…\p"
-# 781 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 780 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "You're strong, and you're caring to\n"
-# 782 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 781 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "POKéMON. No one can knock you.\p"
-# 783 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 782 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "But, you know, I believe in {STR_VAR_1}.\p"
-# 784 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 783 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "{STR_VAR_1} is definitely stronger!\n"
-# 785 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 784 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "I'm positive!$"
+# 785 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+
 # 786 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
-
-# 787 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 LilycoveCity_PokemonTrainerFanClub_Text_YouImpressive:
-# 788 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 787 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "You…\p"
-# 789 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 788 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "Impressive!$"
+# 789 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+
 # 790 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
-
-# 791 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 LilycoveCity_PokemonTrainerFanClub_Text_OnlyIRecognizeYourTrueWorth:
-# 792 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 791 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "Your true worth, it is fine if only\n"
-# 793 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 792 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "I recognized it.\p"
-# 794 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 793 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "The others I doubt will understand\n"
-# 795 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 794 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "the hidden power that beats within.$"
+# 795 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+
 # 796 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
-
-# 797 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 LilycoveCity_PokemonTrainerFanClub_Text_HaventRealizedPotential:
-# 798 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 797 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "Yes, I see strength in your eyes.\p"
-# 799 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 798 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "But!\p"
-# 800 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 799 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "You still haven't realized your\n"
-# 801 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 800 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "potential.$"
-# 802 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 801 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 
-# 803 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 802 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 LilycoveCity_PokemonTrainerFanClub_Text_YourePowerfulButNotTrueStrength:
-# 804 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 803 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "It is true that you are tremendously\n"
-# 805 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 804 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "powerful.\p"
-# 806 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 805 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "But!\n"
-# 807 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 806 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "I can tell…\p"
-# 808 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 807 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "That strength cannot be considered\n"
-# 809 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 808 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "true strength yet!\p"
-# 810 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 809 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "True strength is…!\n"
-# 811 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 810 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "… …\p"
-# 812 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
+# 811 "data/maps/LilycoveCity_PokemonTrainerFanClub/scripts.pory"
 	.string "Actually, I have no idea, either.$"

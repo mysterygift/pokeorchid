@@ -283,730 +283,728 @@ BattleFrontier_ReceptionGate_EventScript_ChooseFacilityToLearnAbout::
 # 142 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	special ShowScrollableMultichoice
 # 143 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-	waitstate
+	switch VAR_RESULT
 # 144 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-	switch VAR_RESULT
-# 145 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	case 0, BattleFrontier_ReceptionGate_EventScript_BattleTower
-# 146 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 145 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	case 1, BattleFrontier_ReceptionGate_EventScript_BattleDome
-# 147 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 146 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	case 2, BattleFrontier_ReceptionGate_EventScript_BattlePalace
-# 148 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 147 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	case 3, BattleFrontier_ReceptionGate_EventScript_BattleArena
-# 149 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 148 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	case 4, BattleFrontier_ReceptionGate_EventScript_BattleFactory
-# 150 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 149 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	case 5, BattleFrontier_ReceptionGate_EventScript_BattlePike
-# 151 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 150 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	case 6, BattleFrontier_ReceptionGate_EventScript_BattlePyramid
-# 152 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 151 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	case 7, BattleFrontier_ReceptionGate_EventScript_RankingHall
-# 153 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 152 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	case 8, BattleFrontier_ReceptionGate_EventScript_ExchangeCorner
-# 154 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 153 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	case 9, BattleFrontier_ReceptionGate_EventScript_ExitFacilityGuide
-# 155 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 154 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	case MULTI_B_PRESSED, BattleFrontier_ReceptionGate_EventScript_ExitFacilityGuide
+# 155 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+	end
 # 156 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-	end
+
 # 157 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-
-# 158 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 BattleFrontier_ReceptionGate_EventScript_BattleTower::
-# 159 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 158 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	msgbox BattleFrontier_ReceptionGate_Text_BattleTowerInfo, MSGBOX_DEFAULT
+# 159 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+	goto BattleFrontier_ReceptionGate_EventScript_ChooseFacilityToLearnAbout
 # 160 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-	goto BattleFrontier_ReceptionGate_EventScript_ChooseFacilityToLearnAbout
+	end
 # 161 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-	end
+
 # 162 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-
-# 163 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 BattleFrontier_ReceptionGate_EventScript_BattleDome::
-# 164 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 163 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	msgbox BattleFrontier_ReceptionGate_Text_BattleDomeInfo, MSGBOX_DEFAULT
+# 164 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+	goto BattleFrontier_ReceptionGate_EventScript_ChooseFacilityToLearnAbout
 # 165 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-	goto BattleFrontier_ReceptionGate_EventScript_ChooseFacilityToLearnAbout
+	end
 # 166 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-	end
+
 # 167 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-
-# 168 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 BattleFrontier_ReceptionGate_EventScript_BattlePalace::
-# 169 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 168 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	msgbox BattleFrontier_ReceptionGate_Text_BattlePalaceInfo, MSGBOX_DEFAULT
+# 169 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+	goto BattleFrontier_ReceptionGate_EventScript_ChooseFacilityToLearnAbout
 # 170 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-	goto BattleFrontier_ReceptionGate_EventScript_ChooseFacilityToLearnAbout
+	end
 # 171 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-	end
+
 # 172 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-
-# 173 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 BattleFrontier_ReceptionGate_EventScript_BattleArena::
-# 174 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 173 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	msgbox BattleFrontier_ReceptionGate_Text_BattleArenaInfo, MSGBOX_DEFAULT
+# 174 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+	goto BattleFrontier_ReceptionGate_EventScript_ChooseFacilityToLearnAbout
 # 175 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-	goto BattleFrontier_ReceptionGate_EventScript_ChooseFacilityToLearnAbout
+	end
 # 176 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-	end
+
 # 177 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-
-# 178 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 BattleFrontier_ReceptionGate_EventScript_BattleFactory::
-# 179 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 178 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	msgbox BattleFrontier_ReceptionGate_Text_BattleFactoryInfo, MSGBOX_DEFAULT
+# 179 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+	goto BattleFrontier_ReceptionGate_EventScript_ChooseFacilityToLearnAbout
 # 180 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-	goto BattleFrontier_ReceptionGate_EventScript_ChooseFacilityToLearnAbout
+	end
 # 181 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-	end
+
 # 182 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-
-# 183 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 BattleFrontier_ReceptionGate_EventScript_BattlePike::
-# 184 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 183 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	msgbox BattleFrontier_ReceptionGate_Text_BattlePikeInfo, MSGBOX_DEFAULT
+# 184 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+	goto BattleFrontier_ReceptionGate_EventScript_ChooseFacilityToLearnAbout
 # 185 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-	goto BattleFrontier_ReceptionGate_EventScript_ChooseFacilityToLearnAbout
+	end
 # 186 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-	end
+
 # 187 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-
-# 188 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 BattleFrontier_ReceptionGate_EventScript_BattlePyramid::
-# 189 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 188 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	msgbox BattleFrontier_ReceptionGate_Text_BattlePyramidInfo, MSGBOX_DEFAULT
+# 189 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+	goto BattleFrontier_ReceptionGate_EventScript_ChooseFacilityToLearnAbout
 # 190 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-	goto BattleFrontier_ReceptionGate_EventScript_ChooseFacilityToLearnAbout
+	end
 # 191 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-	end
+
 # 192 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-
-# 193 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 BattleFrontier_ReceptionGate_EventScript_RankingHall::
-# 194 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 193 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	msgbox BattleFrontier_ReceptionGate_Text_RankingHallInfo, MSGBOX_DEFAULT
+# 194 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+	goto BattleFrontier_ReceptionGate_EventScript_ChooseFacilityToLearnAbout
 # 195 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-	goto BattleFrontier_ReceptionGate_EventScript_ChooseFacilityToLearnAbout
+	end
 # 196 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-	end
+
 # 197 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-
-# 198 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 BattleFrontier_ReceptionGate_EventScript_ExchangeCorner::
-# 199 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 198 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	msgbox BattleFrontier_ReceptionGate_Text_ExchangeCornerInfo, MSGBOX_DEFAULT
-# 200 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 199 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	goto BattleFrontier_ReceptionGate_EventScript_ChooseFacilityToLearnAbout
+# 200 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+	end
 # 201 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-	end
+
 # 202 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-
-# 203 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 BattleFrontier_ReceptionGate_EventScript_ExitFacilityGuide::
+# 203 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+	msgbox BattleFrontier_ReceptionGate_Text_EnjoyBattleFrontier, MSGBOX_DEFAULT
 # 204 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-	msgbox BattleFrontier_ReceptionGate_Text_EnjoyBattleFrontier, MSGBOX_DEFAULT
+	release
 # 205 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-	release
+	end
 # 206 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-	end
+
 # 207 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-
-# 208 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 BattleFrontier_ReceptionGate_EventScript_RulesGuide::
+# 208 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+	lock
 # 209 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-	lock
+	faceplayer
 # 210 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-	faceplayer
-# 211 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	msgbox BattleFrontier_ReceptionGate_Text_YourGuideToRules, MSGBOX_DEFAULT
+# 211 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+	goto BattleFrontier_ReceptionGate_EventScript_ChooseRuleToLearnAbout
 # 212 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-	goto BattleFrontier_ReceptionGate_EventScript_ChooseRuleToLearnAbout
+	end
 # 213 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-	end
+
 # 214 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-
-# 215 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 BattleFrontier_ReceptionGate_EventScript_ChooseRuleToLearnAbout::
-# 216 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 215 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	message BattleFrontier_ReceptionGate_Text_LearnAboutWhat
+# 216 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+	waitmessage
 # 217 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-	waitmessage
-# 218 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	multichoice 15, 0, MULTI_FRONTIER_RULES, FALSE
+# 218 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+	switch VAR_RESULT
 # 219 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-	switch VAR_RESULT
-# 220 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	case 0, BattleFrontier_ReceptionGate_EventScript_LevelMode
-# 221 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 220 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	case 1, BattleFrontier_ReceptionGate_EventScript_Level50
-# 222 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 221 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	case 2, BattleFrontier_ReceptionGate_EventScript_OpenLevel
-# 223 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 222 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	case 3, BattleFrontier_ReceptionGate_EventScript_MonEntry
-# 224 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 223 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	case 4, BattleFrontier_ReceptionGate_EventScript_HoldItems
-# 225 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 224 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	case 5, BattleFrontier_ReceptionGate_EventScript_ExitRulesGuide
-# 226 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 225 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	case MULTI_B_PRESSED, BattleFrontier_ReceptionGate_EventScript_ExitRulesGuide
+# 226 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+	end
 # 227 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-	end
+
 # 228 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-
-# 229 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 BattleFrontier_ReceptionGate_EventScript_LevelMode::
-# 230 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 229 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	msgbox BattleFrontier_ReceptionGate_Text_LevelModeInfo, MSGBOX_DEFAULT
+# 230 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+	goto BattleFrontier_ReceptionGate_EventScript_ChooseRuleToLearnAbout
 # 231 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-	goto BattleFrontier_ReceptionGate_EventScript_ChooseRuleToLearnAbout
+	end
 # 232 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-	end
+
 # 233 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-
-# 234 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 BattleFrontier_ReceptionGate_EventScript_Level50::
-# 235 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 234 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	msgbox BattleFrontier_ReceptionGate_Text_Level50Info, MSGBOX_DEFAULT
+# 235 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+	goto BattleFrontier_ReceptionGate_EventScript_ChooseRuleToLearnAbout
 # 236 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-	goto BattleFrontier_ReceptionGate_EventScript_ChooseRuleToLearnAbout
+	end
 # 237 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-	end
+
 # 238 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-
-# 239 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 BattleFrontier_ReceptionGate_EventScript_OpenLevel::
-# 240 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 239 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	msgbox BattleFrontier_ReceptionGate_Text_OpenLevelInfo, MSGBOX_DEFAULT
+# 240 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+	goto BattleFrontier_ReceptionGate_EventScript_ChooseRuleToLearnAbout
 # 241 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-	goto BattleFrontier_ReceptionGate_EventScript_ChooseRuleToLearnAbout
+	end
 # 242 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-	end
+
 # 243 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-
-# 244 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 BattleFrontier_ReceptionGate_EventScript_MonEntry::
-# 245 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 244 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	msgbox BattleFrontier_ReceptionGate_Text_MonEntryInfo, MSGBOX_DEFAULT
+# 245 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+	goto BattleFrontier_ReceptionGate_EventScript_ChooseRuleToLearnAbout
 # 246 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-	goto BattleFrontier_ReceptionGate_EventScript_ChooseRuleToLearnAbout
+	end
 # 247 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-	end
+
 # 248 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-
-# 249 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 BattleFrontier_ReceptionGate_EventScript_HoldItems::
-# 250 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 249 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	msgbox BattleFrontier_ReceptionGate_Text_HoldItemsInfo, MSGBOX_DEFAULT
-# 251 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 250 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	goto BattleFrontier_ReceptionGate_EventScript_ChooseRuleToLearnAbout
+# 251 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+	end
 # 252 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-	end
+
 # 253 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-
-# 254 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 BattleFrontier_ReceptionGate_EventScript_ExitRulesGuide::
+# 254 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+	msgbox BattleFrontier_ReceptionGate_Text_EnjoyBattleFrontier, MSGBOX_DEFAULT
 # 255 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-	msgbox BattleFrontier_ReceptionGate_Text_EnjoyBattleFrontier, MSGBOX_DEFAULT
+	release
 # 256 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-	release
+	end
 # 257 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-	end
+
 # 258 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-
-# 259 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 BattleFrontier_ReceptionGate_EventScript_FrontierPassGuide::
-# 260 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 259 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	lock
-# 261 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 260 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	faceplayer
-# 262 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 261 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	msgbox BattleFrontier_ReceptionGate_Text_YourGuideToFrontierPass, MSGBOX_DEFAULT
+# 262 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+	goto BattleFrontier_ReceptionGate_EventScript_ChooseFrontierPassInfoToLearnAbout
 # 263 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-	goto BattleFrontier_ReceptionGate_EventScript_ChooseFrontierPassInfoToLearnAbout
+	end
 # 264 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-	end
+
 # 265 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-
-# 266 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 BattleFrontier_ReceptionGate_EventScript_ChooseFrontierPassInfoToLearnAbout::
-# 267 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 266 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	message BattleFrontier_ReceptionGate_Text_LearnAboutWhich1
-# 268 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 267 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	waitmessage
-# 269 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 268 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	multichoice 16, 4, MULTI_FRONTIER_PASS_INFO, FALSE
-# 270 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 269 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	switch VAR_RESULT
-# 271 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 270 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	case 0, BattleFrontier_ReceptionGate_EventScript_Symbols
-# 272 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 271 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	case 1, BattleFrontier_ReceptionGate_EventScript_RecordBattle
-# 273 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 272 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	case 2, BattleFrontier_ReceptionGate_EventScript_BattlePoints
-# 274 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 273 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	case 3, BattleFrontier_ReceptionGate_EventScript_ExitFrontierPassGuide
-# 275 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 274 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	case MULTI_B_PRESSED, BattleFrontier_ReceptionGate_EventScript_ExitFrontierPassGuide
+# 275 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+	end
 # 276 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-	end
+
 # 277 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-
-# 278 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 BattleFrontier_ReceptionGate_EventScript_Symbols::
-# 279 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 278 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	msgbox BattleFrontier_ReceptionGate_Text_SymbolsInfo, MSGBOX_DEFAULT
+# 279 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+	goto BattleFrontier_ReceptionGate_EventScript_ChooseFrontierPassInfoToLearnAbout
 # 280 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-	goto BattleFrontier_ReceptionGate_EventScript_ChooseFrontierPassInfoToLearnAbout
+	end
 # 281 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-	end
+
 # 282 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-
-# 283 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 BattleFrontier_ReceptionGate_EventScript_RecordBattle::
-# 284 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 283 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	msgbox BattleFrontier_ReceptionGate_Text_RecordedBattleInfo, MSGBOX_DEFAULT
+# 284 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+	goto BattleFrontier_ReceptionGate_EventScript_ChooseFrontierPassInfoToLearnAbout
 # 285 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-	goto BattleFrontier_ReceptionGate_EventScript_ChooseFrontierPassInfoToLearnAbout
+	end
 # 286 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-	end
+
 # 287 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-
-# 288 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 BattleFrontier_ReceptionGate_EventScript_BattlePoints::
-# 289 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 288 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	msgbox BattleFrontier_ReceptionGate_Text_BattlePointsInfo, MSGBOX_DEFAULT
-# 290 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 289 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	goto BattleFrontier_ReceptionGate_EventScript_ChooseFrontierPassInfoToLearnAbout
+# 290 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+	end
 # 291 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-	end
+
 # 292 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-
-# 293 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 BattleFrontier_ReceptionGate_EventScript_ExitFrontierPassGuide::
-# 294 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 293 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	msgbox BattleFrontier_ReceptionGate_Text_EnjoyBattleFrontier, MSGBOX_DEFAULT
-# 295 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 294 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	release
-# 296 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 295 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	end
+# 296 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+
 # 297 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-
-# 298 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 BattleFrontier_ReceptionGate_Text_FirstTimeHereThisWay:
-# 299 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 298 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "Is it your first time here?\n"
-# 300 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 299 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "Please step this way!$"
+# 300 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+
 # 301 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-
-# 302 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 BattleFrontier_ReceptionGate_Text_WelcomeToBattleFrontier:
-# 303 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 302 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "The front lines of POKéMON battling!\n"
-# 304 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 303 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "Welcome to the BATTLE FRONTIER!$"
+# 304 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+
 # 305 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-
-# 306 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 BattleFrontier_ReceptionGate_Text_IssueFrontierPass:
-# 307 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 306 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "For a first-time visitor, we issue\n"
-# 308 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 307 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "the FRONTIER PASS.\p"
-# 309 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 308 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "It's for use at all the facilities\n"
-# 310 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 309 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "in the BATTLE FRONTIER.\p"
-# 311 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 310 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "Here you are!$"
+# 311 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+
 # 312 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-
-# 313 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 BattleFrontier_ReceptionGate_Text_ObtainedFrontierPass:
-# 314 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 313 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "{PLAYER} obtained\n"
-# 315 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 314 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "the FRONTIER PASS.$"
+# 315 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+
 # 316 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-
-# 317 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 BattleFrontier_ReceptionGate_Text_PlacedTrainerCardInFrontierPass:
-# 318 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 317 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "{PLAYER} placed the TRAINER CARD\n"
-# 319 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 318 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "in the FRONTIER PASS.$"
+# 319 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+
 # 320 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-
-# 321 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 BattleFrontier_ReceptionGate_Text_EnjoyBattleFrontier:
-# 322 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 321 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "We hope you enjoy all that the BATTLE\n"
-# 323 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 322 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "FRONTIER has to offer!$"
+# 323 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+
 # 324 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-
-# 325 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 BattleFrontier_ReceptionGate_Text_IfItIsntPlayerYouCame:
-# 326 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 325 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "???: Well, if it isn't {PLAYER}{KUN}!\n"
-# 327 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 326 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "You came out here!$"
+# 327 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+
 # 328 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-
-# 329 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 BattleFrontier_ReceptionGate_Text_OhMrScottGoodDay:
-# 330 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 329 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "GUIDE: Oh! MR. SCOTT, sir!\n"
-# 331 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 330 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "Good day to you, sir!$"
+# 331 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+
 # 332 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-
-# 333 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 BattleFrontier_ReceptionGate_Text_ScottGreatToSeeYouHere:
-# 334 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 333 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "SCOTT: It's great to see you here,\n"
-# 335 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 334 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "it really is!\p"
-# 336 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 335 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "I hope you'll take your time and\n"
-# 337 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 336 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "explore everywhere.\p"
-# 338 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 337 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "Naturally, I hope you'll also experience\n"
-# 339 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 338 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "the pure essence of battling.\p"
-# 340 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 339 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "I also have my quarters here, so feel\n"
-# 341 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 340 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "free to visit if you have time.$"
+# 341 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+
 # 342 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-
-# 343 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 BattleFrontier_ReceptionGate_Text_YourGuideToFacilities:
-# 344 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 343 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "I'm your guide to the various facilities\n"
-# 345 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 344 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "here in the BATTLE FRONTIER.$"
+# 345 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+
 # 346 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-
-# 347 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 BattleFrontier_ReceptionGate_Text_LearnAboutWhich2:
+# 347 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+	.string "Which would you like to learn about?$"
 # 348 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-	.string "Which would you like to learn about?$"
+
 # 349 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-
-# 350 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 BattleFrontier_ReceptionGate_Text_BattleTowerInfo:
-# 351 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 350 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "It is the gigantic tower considered\n"
-# 352 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 351 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "to be the BATTLE FRONTIER's symbol.\p"
-# 353 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 352 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "There are four kinds of BATTLE ROOMS\n"
-# 354 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 353 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "in the tower for SINGLE, DOUBLE, MULTI,\l"
-# 355 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 354 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "and LINK MULTI BATTLES.$"
+# 355 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+
 # 356 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-
-# 357 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 BattleFrontier_ReceptionGate_Text_BattleDomeInfo:
-# 358 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 357 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "The BATTLE DOME is the large building\n"
-# 359 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 358 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "shaped like a huge egg.\p"
-# 360 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 359 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "Events named Battle Tourneys are held\n"
-# 361 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 360 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "in this facility.\p"
-# 362 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 361 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "The Battle Tourneys are offered in\n"
-# 363 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 362 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "two courses--for SINGLE and DOUBLE\l"
+# 363 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+	.string "BATTLES.$"
 # 364 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-	.string "BATTLES.$"
+
 # 365 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-
-# 366 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 BattleFrontier_ReceptionGate_Text_BattlePalaceInfo:
-# 367 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 366 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "The BATTLE PALACE is the red building\n"
-# 368 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 367 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "on the right of the BATTLE FRONTIER.\p"
-# 369 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 368 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "There are two kinds of BATTLE HALLS\n"
-# 370 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 369 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "for SINGLE and DOUBLE BATTLES.$"
+# 370 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+
 # 371 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-
-# 372 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 BattleFrontier_ReceptionGate_Text_BattleArenaInfo:
-# 373 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 372 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "The BATTLE ARENA is the dojo-like\n"
-# 374 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 373 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "building at the center-right of\l"
+# 374 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+	.string "the BATTLE FRONTIER.\p"
 # 375 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-	.string "the BATTLE FRONTIER.\p"
-# 376 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "An event called the Set KO Tourney\n"
-# 377 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 376 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "takes place at the BATTLE ARENA.$"
+# 377 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+
 # 378 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-
-# 379 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 BattleFrontier_ReceptionGate_Text_BattleFactoryInfo:
-# 380 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 379 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "The BATTLE FACTORY is the large\n"
-# 381 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 380 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "building that is the closest to us.\p"
-# 382 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 381 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "An event called the Battle Swap\n"
-# 383 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 382 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "is conducted there.\p"
-# 384 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 383 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "The Battle Swap event is offered in\n"
-# 385 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 384 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "two courses for SINGLE and DOUBLE\l"
-# 386 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 385 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "BATTLES.$"
+# 386 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+
 # 387 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-
-# 388 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 BattleFrontier_ReceptionGate_Text_BattlePikeInfo:
-# 389 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 388 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "The BATTLE PIKE is the building shaped\n"
-# 390 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 389 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "like a POKéMON at the center-left of\l"
+# 390 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+	.string "the BATTLE FRONTIER.\p"
 # 391 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-	.string "the BATTLE FRONTIER.\p"
-# 392 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "An event called the Battle Choice\n"
+# 392 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+	.string "is conducted there.$"
 # 393 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-	.string "is conducted there.$"
+
 # 394 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-
-# 395 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 BattleFrontier_ReceptionGate_Text_BattlePyramidInfo:
-# 396 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 395 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "The BATTLE PYRAMID is the enormous\n"
-# 397 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 396 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "pyramid.\p"
-# 398 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 397 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "An event called the Battle Quest\n"
-# 399 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 398 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "is conducted there.$"
+# 399 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+
 # 400 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-
-# 401 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 BattleFrontier_ReceptionGate_Text_RankingHallInfo:
-# 402 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 401 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "The RANKING HALL is located near\n"
+# 402 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+	.string "the BATTLE TOWER.\p"
 # 403 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-	.string "the BATTLE TOWER.\p"
-# 404 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "There, you may see the most fantastic\n"
-# 405 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 404 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "records left by the TRAINERS that\l"
-# 406 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 405 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "took on the many challenges of\l"
-# 407 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 406 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "the BATTLE FRONTIER.$"
+# 407 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+
 # 408 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-
-# 409 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 BattleFrontier_ReceptionGate_Text_ExchangeCornerInfo:
-# 410 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 409 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "The EXCHANGE SERVICE CORNER is near\n"
-# 411 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 410 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "the BATTLE TOWER.\p"
-# 412 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 411 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "The Battle Points you have earned in\n"
-# 413 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 412 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "the BATTLE FRONTIER may be exchanged\l"
-# 414 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 413 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "for fabulous prizes there.$"
+# 414 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+
 # 415 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-
-# 416 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 BattleFrontier_ReceptionGate_Text_YourGuideToRules:
-# 417 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 416 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "I'm your guide to the basic rules that\n"
-# 418 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 417 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "are common to all the challenges\l"
-# 419 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 418 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "offered by the facilities in the BATTLE\l"
-# 420 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 419 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "FRONTIER.$"
+# 420 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+
 # 421 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-
-# 422 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 BattleFrontier_ReceptionGate_Text_LearnAboutWhat:
-# 423 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 422 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "What would you like to learn about?$"
+# 423 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+
 # 424 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-
-# 425 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 BattleFrontier_ReceptionGate_Text_LevelModeInfo:
-# 426 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 425 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "All the challenges at the BATTLE\n"
-# 427 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 426 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "FRONTIER's facilities come in\l"
-# 428 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 427 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "two courses--Level 50 and Open Level.$"
+# 428 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+
 # 429 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-
-# 430 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 BattleFrontier_ReceptionGate_Text_Level50Info:
-# 431 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 430 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "The Level 50 course is open to POKéMON\n"
-# 432 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 431 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "up to and including Level 50.\p"
-# 433 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 432 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "Please keep in mind, however, that\n"
-# 434 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 433 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "no TRAINER you face will have any\l"
-# 435 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 434 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "POKéMON below Level 50.\p"
-# 436 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 435 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "This course is the entry level for\n"
-# 437 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 436 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "battles at the BATTLE FRONTIER.\p"
-# 438 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 437 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "To begin, we hope you will challenge\n"
-# 439 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 438 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "this course.$"
+# 439 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+
 # 440 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-
-# 441 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 BattleFrontier_ReceptionGate_Text_OpenLevelInfo:
-# 442 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 441 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "The Open Level course places no limit\n"
-# 443 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 442 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "on the levels of POKéMON entering\l"
-# 444 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 443 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "challenges.\p"
-# 445 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 444 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "The levels of your opponents will\n"
-# 446 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 445 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "be adjusted to match the levels of\l"
-# 447 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 446 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "your POKéMON.\p"
-# 448 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 447 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "However, no TRAINER you face will\n"
-# 449 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 448 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "have any POKéMON below Level 60.$"
+# 449 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+
 # 450 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-
-# 451 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 BattleFrontier_ReceptionGate_Text_MonEntryInfo:
-# 452 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 451 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "Virtually any kind of POKéMON may take\n"
-# 453 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 452 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "on the challenges at all facilities.\p"
-# 454 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 453 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "EGGS and certain kinds of POKéMON,\n"
-# 455 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 454 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "however, are not permitted.\p"
-# 456 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 455 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "The numbers of POKéMON required for\n"
-# 457 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 456 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "challenges will depend on the facility.\p"
-# 458 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 457 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "At all facilities, however, two or more\n"
-# 459 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 458 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "of the same kind of POKéMON are not\l"
-# 460 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 459 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "permitted.$"
+# 460 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+
 # 461 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-
-# 462 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 BattleFrontier_ReceptionGate_Text_HoldItemsInfo:
-# 463 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 462 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "When entering a challenge at a BATTLE\n"
-# 464 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 463 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "FRONTIER facility, POKéMON may not\l"
-# 465 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 464 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "be holding the same kind of item.\p"
-# 466 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 465 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "Please make sure that all POKéMON\n"
-# 467 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 466 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "entering a challenge are holding\l"
-# 468 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 467 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "different items.$"
+# 468 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+
 # 469 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-
-# 470 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 BattleFrontier_ReceptionGate_Text_YourGuideToFrontierPass:
-# 471 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 470 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "I'm your guide to the FRONTIER PASS.$"
+# 471 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+
 # 472 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-
-# 473 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 BattleFrontier_ReceptionGate_Text_LearnAboutWhich1:
-# 474 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 473 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "Which would you like to learn about?$"
+# 474 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+
 # 475 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-
-# 476 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 BattleFrontier_ReceptionGate_Text_SymbolsInfo:
-# 477 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 476 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "There are seven facilities at\n"
-# 478 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 477 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "the BATTLE FRONTIER.\p"
-# 479 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 478 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "TRAINERS who gain recognition for\n"
-# 480 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 479 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "their abilities may be rewarded with\l"
-# 481 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 480 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "symbols from each of the facilities.\p"
-# 482 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 481 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "To earn a symbol, TRAINERS may need\n"
-# 483 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 482 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "to defeat other TRAINERS in a row,\l"
-# 484 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 483 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "and may need to win events repeatedly.\p"
-# 485 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 484 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "It's certainly not easy to win symbols.\n"
-# 486 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 485 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "I wish you the best of luck!$"
+# 486 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+
 # 487 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
-
-# 488 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 BattleFrontier_ReceptionGate_Text_RecordedBattleInfo:
-# 489 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 488 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "It is possible to record one battle\n"
-# 490 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 489 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "on your FRONTIER PASS.\p"
-# 491 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 490 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "You may record a battle you had with\n"
-# 492 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 491 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "a friend or friends.\p"
-# 493 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 492 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "Or you may record a battle conducted\n"
-# 494 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 493 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "at the BATTLE FRONTIER excluding\l"
-# 495 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 494 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "matches at the BATTLE PIKE or\l"
-# 496 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 495 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "the BATTLE PYRAMID.\p"
-# 497 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 496 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "You may choose to record your match\n"
-# 498 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 497 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "at the end of a battle.$"
-# 499 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 498 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 
-# 500 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 499 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 BattleFrontier_ReceptionGate_Text_BattlePointsInfo:
-# 501 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 500 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "Battle Points are rewards given to\n"
-# 502 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 501 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "TRAINERS who battled outstandingly\l"
-# 503 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 502 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "at the BATTLE FRONTIER.\p"
-# 504 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 503 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "You may trade in your Battle Points\n"
-# 505 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 504 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "for prizes at the EXCHANGE SERVICE\l"
-# 506 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
+# 505 "data/maps/BattleFrontier_ReceptionGate/scripts.pory"
 	.string "CORNER.$"

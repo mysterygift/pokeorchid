@@ -233,16 +233,14 @@ LilycoveCity_DepartmentStoreElevator_EventScript_MoveElevator::
 # 117 "data/maps/LilycoveCity_DepartmentStoreElevator/scripts.pory"
 	special MoveElevator
 # 118 "data/maps/LilycoveCity_DepartmentStoreElevator/scripts.pory"
-	waitstate
-# 119 "data/maps/LilycoveCity_DepartmentStoreElevator/scripts.pory"
 	setflag FLAG_TEMP_2
-# 120 "data/maps/LilycoveCity_DepartmentStoreElevator/scripts.pory"
+# 119 "data/maps/LilycoveCity_DepartmentStoreElevator/scripts.pory"
 	return
-# 121 "data/maps/LilycoveCity_DepartmentStoreElevator/scripts.pory"
+# 120 "data/maps/LilycoveCity_DepartmentStoreElevator/scripts.pory"
 
-# 122 "data/maps/LilycoveCity_DepartmentStoreElevator/scripts.pory"
+# 121 "data/maps/LilycoveCity_DepartmentStoreElevator/scripts.pory"
 LilycoveCity_DepartmentStoreElevator_EventScript_SetFloor::
-# 123 "data/maps/LilycoveCity_DepartmentStoreElevator/scripts.pory"
+# 122 "data/maps/LilycoveCity_DepartmentStoreElevator/scripts.pory"
 	special SetDeptStoreFloor
-# 124 "data/maps/LilycoveCity_DepartmentStoreElevator/scripts.pory"
+# 123 "data/maps/LilycoveCity_DepartmentStoreElevator/scripts.pory"
 	return

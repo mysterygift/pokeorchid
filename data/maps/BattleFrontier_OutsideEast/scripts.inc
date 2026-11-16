@@ -235,642 +235,640 @@ BattleFrontier_OutsideEast_EventScript_WaterSudowoodo::
 # 118 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	special DoWateringBerryTreeAnim
 # 119 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
-	waitstate
+	waitse
 # 120 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
-	waitse
-# 121 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	playse SE_SUDOWOODO_SHAKE
-# 122 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 121 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	applymovement LOCALID_FRONTIER_SUDOWOODO, BattleFrontier_OutsideEast_Movement_SudowoodoShake
-# 123 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 122 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	waitmovement 0
-# 124 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 123 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	msgbox gText_Sudowoodo_Attacked, MSGBOX_DEFAULT
-# 125 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 124 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	closemessage
-# 126 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 125 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	waitse
-# 127 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 126 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	playmoncry SPECIES_SUDOWOODO, CRY_MODE_ENCOUNTER
-# 128 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 127 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	delay 40
-# 129 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 128 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	waitmoncry
-# 130 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 129 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	setvar VAR_LAST_TALKED, LOCALID_FRONTIER_SUDOWOODO
-# 131 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 130 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	setwildbattle SPECIES_SUDOWOODO, 40
-# 132 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 131 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	setflag FLAG_SYS_CTRL_OBJ_DELETE
-# 133 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 132 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	dowildbattle
-# 134 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 133 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	clearflag FLAG_SYS_CTRL_OBJ_DELETE
-# 135 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 134 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	specialvar VAR_RESULT, GetBattleOutcome
-# 136 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 135 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	goto_if_eq VAR_RESULT, B_OUTCOME_WON, BattleFrontier_OutsideEast_EventScript_DefeatedSudowoodo
-# 137 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 136 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	goto_if_eq VAR_RESULT, B_OUTCOME_RAN, BattleFrontier_OutsideEast_EventScript_DefeatedSudowoodo
-# 138 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 137 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	goto_if_eq VAR_RESULT, B_OUTCOME_PLAYER_TELEPORTED, BattleFrontier_OutsideEast_EventScript_DefeatedSudowoodo
+# 138 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+	setflag FLAG_DEFEATED_SUDOWOODO
 # 139 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
-	setflag FLAG_DEFEATED_SUDOWOODO
+	release
 # 140 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
-	release
+	end
 # 141 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
-	end
+
 # 142 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
-
-# 143 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 BattleFrontier_OutsideEast_EventScript_DefeatedSudowoodo::
-# 144 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 143 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	setflag FLAG_DEFEATED_SUDOWOODO
-# 145 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 144 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	goto Common_EventScript_RemoveStaticPokemon
+# 145 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+	end
 # 146 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
-	end
+
 # 147 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
-
-# 148 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 BattleFrontier_OutsideEast_Movement_SudowoodoShake:
+# 148 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+	face_right
 # 149 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
-	face_right
+	delay_8
 # 150 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
-	delay_8
+	face_down
 # 151 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
-	face_down
+	delay_8
 # 152 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
-	delay_8
+	face_left
 # 153 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
-	face_left
+	delay_8
 # 154 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
-	delay_8
+	face_down
 # 155 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
-	face_down
+	delay_8
 # 156 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
-	delay_8
-# 157 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	face_right
+# 157 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+	delay_8
 # 158 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
-	delay_8
+	face_down
 # 159 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
-	face_down
+	delay_8
 # 160 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
-	delay_8
-# 161 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	face_left
-# 162 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 161 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	delay_8
-# 163 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 162 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	face_down
-# 164 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 163 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	step_end
+# 164 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+
 # 165 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
-
-# 166 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 BattleFrontier_OutsideEast_EventScript_Maniac1::
-# 167 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 166 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	msgbox BattleFrontier_OutsideEast_Text_HeardPrettyGirlAtBattleArena, MSGBOX_NPC
+# 167 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+	end
 # 168 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
-	end
+
 # 169 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
-
-# 170 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 BattleFrontier_OutsideEast_EventScript_Girl::
-# 171 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 170 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	msgbox BattleFrontier_OutsideEast_Text_SometimesImportantOldManInThere, MSGBOX_NPC
+# 171 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+	end
 # 172 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
-	end
+
 # 173 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
-
-# 174 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 BattleFrontier_OutsideEast_EventScript_PsychicM::
-# 175 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 174 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	msgbox BattleFrontier_OutsideEast_Text_LegendOfBattlePyramid, MSGBOX_NPC
+# 175 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+	end
 # 176 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
-	end
+
 # 177 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
-
-# 178 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 BattleFrontier_OutsideEast_EventScript_Man3::
-# 179 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 178 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	msgbox BattleFrontier_OutsideEast_Text_GotWipedOut, MSGBOX_NPC
+# 179 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+	end
 # 180 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
-	end
+
 # 181 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
-
-# 182 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 BattleFrontier_OutsideEast_EventScript_Woman1::
-# 183 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 182 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	msgbox BattleFrontier_OutsideEast_Text_ToughTrainerInBattleTower, MSGBOX_NPC
+# 183 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+	end
 # 184 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
-	end
+
 # 185 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
-
-# 186 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 BattleFrontier_OutsideEast_EventScript_Woman2::
-# 187 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 186 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	msgbox BattleFrontier_OutsideEast_Text_EnoughBattlePointsForDoll, MSGBOX_NPC
+# 187 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+	end
 # 188 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
-	end
+
 # 189 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
-
-# 190 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 BattleFrontier_OutsideEast_EventScript_BlackBelt2::
-# 191 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 190 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	msgbox BattleFrontier_OutsideEast_Text_LikeToHaveNameRecordedHere, MSGBOX_NPC
+# 191 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+	end
 # 192 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
-	end
+
 # 193 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
-
-# 194 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 BattleFrontier_OutsideEast_EventScript_Maniac2::
+# 194 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+	lock
 # 195 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
-	lock
-# 196 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	msgbox BattleFrontier_OutsideEast_Text_CanDoAnythingWithYou, MSGBOX_DEFAULT
+# 196 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+	release
 # 197 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
-	release
+	end
 # 198 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
-	end
+
 # 199 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
-
-# 200 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 BattleFrontier_OutsideEast_EventScript_Woman3::
+# 200 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+	lock
 # 201 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
-	lock
-# 202 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	msgbox BattleFrontier_OutsideEast_Text_PowerOfOurLoveWillOvercome, MSGBOX_DEFAULT
+# 202 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+	release
 # 203 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
-	release
+	end
 # 204 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
-	end
+
 # 205 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
-
-# 206 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 BattleFrontier_OutsideEast_EventScript_RankingHallSign::
-# 207 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 206 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	msgbox BattleFrontier_OutsideEast_Text_RankingHallSign, MSGBOX_SIGN
+# 207 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+	end
 # 208 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
-	end
+
 # 209 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
-
-# 210 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 BattleFrontier_OutsideEast_EventScript_ExchangeCornerSign::
-# 211 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 210 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	msgbox BattleFrontier_OutsideEast_Text_ExchangeCornerSign, MSGBOX_SIGN
+# 211 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+	end
 # 212 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
-	end
+
 # 213 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
-
-# 214 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 BattleFrontier_OutsideEast_EventScript_Gentleman::
-# 215 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 214 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	msgbox BattleFrontier_OutsideEast_Text_FrontierNotExclusivelyForToughTrainers, MSGBOX_NPC
+# 215 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+	end
 # 216 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
-	end
+
 # 217 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
-
-# 218 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 BattleFrontier_OutsideEast_EventScript_OldWoman::
-# 219 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 218 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	lock
-# 220 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 219 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	faceplayer
-# 221 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 220 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	goto_if_set FLAG_DEFEATED_SUDOWOODO, BattleFrontier_OutsideEast_EventScript_OldWomanSudowoodoGone
-# 222 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 221 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	msgbox BattleFrontier_OutsideEast_Text_OddTreeHereSeemsToWiggle, MSGBOX_DEFAULT
+# 222 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+	release
 # 223 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
-	release
+	end
 # 224 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
-	end
+
 # 225 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
-
-# 226 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 BattleFrontier_OutsideEast_EventScript_OldWomanSudowoodoGone::
-# 227 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 226 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	msgbox BattleFrontier_OutsideEast_Text_OnceAnOddTreePastHere, MSGBOX_DEFAULT
-# 228 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 227 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	release
+# 228 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+	end
 # 229 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
-	end
+
 # 230 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
-
-# 231 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 BattleFrontier_OutsideEast_EventScript_Camper::
-# 232 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 231 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	msgbox BattleFrontier_OutsideEast_Text_StickyMonWithLongTail, MSGBOX_NPC
-# 233 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 232 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	end
+# 233 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+
 # 234 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
-
-# 235 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 BattleFrontier_OutsideEast_Text_BattleTowerSign:
-# 236 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 235 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "This is the BATTLE TOWER!\n"
-# 237 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 236 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "Keep the win streak as the toughest\l"
-# 238 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 237 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "TRAINER!$"
+# 238 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+
 # 239 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
-
-# 240 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 BattleFrontier_OutsideEast_Text_BattlePalaceSign:
-# 241 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 240 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "This is the BATTLE PALACE!\n"
-# 242 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 241 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "Keep your eyes on POKéMON battles!$"
+# 242 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+
 # 243 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
-
-# 244 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 BattleFrontier_OutsideEast_Text_BattleArenaSign:
-# 245 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 244 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "This is the BATTLE ARENA!\n"
-# 246 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 245 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "Let the toughest teams gather!$"
+# 246 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+
 # 247 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
-
-# 248 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 BattleFrontier_OutsideEast_Text_BattlePyramidSign:
-# 249 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 248 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "This is the BATTLE PYRAMID!\n"
-# 250 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 249 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "Advance through the Battle Quest!$"
+# 250 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+
 # 251 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
-
-# 252 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 BattleFrontier_OutsideEast_Text_RankingHallSign:
-# 253 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 252 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "BATTLE FRONTIER RANKING HALL\n"
-# 254 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 253 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "Set your sights on new records!$"
+# 254 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+
 # 255 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
-
-# 256 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 BattleFrontier_OutsideEast_Text_ExchangeCornerSign:
-# 257 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 256 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "BATTLE POINT EXCHANGE SERVICE CORNER\n"
-# 258 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 257 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "Exchange your Battle Points!$"
+# 258 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+
 # 259 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
-
-# 260 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 BattleFrontier_OutsideEast_Text_BattleTowerFeelsSpecial:
-# 261 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 260 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "Wow!\n"
-# 262 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 261 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "It's huge!\p"
-# 263 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 262 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "The BATTLE TOWER feels special.\n"
-# 264 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 263 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "It's different from the others.$"
+# 264 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+
 # 265 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
-
-# 266 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 BattleFrontier_OutsideEast_Text_ConquerLeagueAndFrontier:
-# 267 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 266 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "My grand ambition is to conquer both\n"
-# 268 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 267 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "the BATTLE FRONTIER and the POKéMON\l"
-# 269 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 268 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "LEAGUE.\p"
-# 270 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 269 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "And if my dream comes true…\p"
-# 271 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 270 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "I… I'm going to ask MIMI next door\n"
-# 272 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 271 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "if she will be friends with me!$"
+# 272 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+
 # 273 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
-
-# 274 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 BattleFrontier_OutsideEast_Text_PyramidTooHarsh:
-# 275 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 274 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "The BATTLE PYRAMID's too harsh!\n"
-# 276 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 275 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "I just can't make it to the top!\p"
-# 277 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 276 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "Since I'm out of options, maybe I can\n"
-# 278 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 277 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "climb the outside…$"
+# 278 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+
 # 279 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
-
-# 280 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 BattleFrontier_OutsideEast_Text_ThriveInDarkness:
-# 281 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 280 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "I thrive in darkness…\n"
-# 282 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 281 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "Yes… What is worthy of me?\l"
-# 283 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 282 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "None other than the BATTLE PYRAMID…\p"
-# 284 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 283 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "What say you to wandering in darkness\n"
-# 285 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 284 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "and in utter and total desperation?$"
+# 285 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+
 # 286 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
-
-# 287 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 BattleFrontier_OutsideEast_Text_PutTogetherUltimateTeam:
-# 288 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 287 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "I didn't sleep for a week, but then\n"
-# 289 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 288 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "I put together the ultimate team!\p"
-# 290 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 289 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "I can't see myself losing, no joke.\n"
-# 291 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 290 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "We're storming the BATTLE ARENA!$"
+# 291 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+
 # 292 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
-
-# 293 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 BattleFrontier_OutsideEast_Text_DidScottBringYouHere:
-# 294 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 293 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "Did SCOTT bring you here, too?\n"
-# 295 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 294 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "What is it with that guy?\p"
-# 296 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 295 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "It sounds like he really does know\n"
-# 297 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 296 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "how to spot talented TRAINERS, but…\p"
-# 298 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 297 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "I've never seen him battling in person\n"
-# 299 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 298 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "ever.$"
+# 299 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+
 # 300 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
-
-# 301 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 BattleFrontier_OutsideEast_Text_BelieveInYouBuddy:
-# 302 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 301 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "ZIGG!\n"
-# 303 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 302 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "I believe in you, little buddy!\p"
-# 304 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 303 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "I'll make my little ZIGG any favorite\n"
-# 305 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 304 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "tasty treats you like if you win!$"
+# 305 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+
 # 306 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
-
-# 307 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 BattleFrontier_OutsideEast_Text_ZigzagoonLooksVacant:
-# 308 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 307 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "ZIGZAGOON looks vacant…$"
+# 308 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+
 # 309 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
-
-# 310 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 BattleFrontier_OutsideEast_Text_PeopleCallMeBusybody:
-# 311 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 310 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "People call me a busybody,\n"
-# 312 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 311 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "but I can't help it.\p"
-# 313 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 312 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "Your hat's on crooked!\n"
-# 314 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 313 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "Oh, no, trash on the ground!\l"
-# 315 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 314 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "Oops, it's almost dinnertime!\p"
-# 316 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 315 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "I don't know if I can stand to just\n"
-# 317 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 316 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "watch at the BATTLE PALACE…$"
+# 317 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+
 # 318 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
-
-# 319 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 BattleFrontier_OutsideEast_Text_OnceBeatGymLeader:
-# 320 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 319 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "I may not look that impressive now,\n"
-# 321 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 320 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "but I once beat a GYM LEADER.\p"
-# 322 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 321 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "Who knows, maybe I should give it\n"
-# 323 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 322 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "another shot at glory.$"
+# 323 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+
 # 324 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
-
-# 325 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 BattleFrontier_OutsideEast_Text_FastOnBikeAndBattles:
-# 326 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 325 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "I'm fast on my BIKE, and that goes for\n"
-# 327 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 326 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "the way I battle, too.\p"
-# 328 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 327 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "I win matches in the blink of\n"
-# 329 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 328 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "an eye!$"
+# 329 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+
 # 330 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
-
-# 331 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 BattleFrontier_OutsideEast_Text_BetterThanDaddyAtPokemon:
-# 332 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 331 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "I'm better than my daddy\n"
-# 333 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 332 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "at POKéMON.$"
+# 333 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+
 # 334 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
-
-# 335 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 BattleFrontier_OutsideEast_Text_GoRackUpSomeWinsForDaddy:
-# 336 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 335 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "Go on, my baby sweetie!\n"
-# 337 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 336 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "Go rack up some wins for Daddy!\p"
-# 338 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 337 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "You're just like your mother,\n"
-# 339 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 338 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "so you'll be dominating!$"
+# 339 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+
 # 340 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
-
-# 341 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 BattleFrontier_OutsideEast_Text_HeardPrettyGirlAtBattleArena:
-# 342 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 341 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "It wasn't easy getting here,\n"
-# 343 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 342 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "but I'd heard about this knockout\l"
-# 344 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 343 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "pretty girl at the BATTLE ARENA.\p"
-# 345 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 344 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "Instead of her, do you know what\n"
-# 346 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 345 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "I found?\p"
-# 347 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 346 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "A whole teeming mob of sweaty,\n"
-# 348 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 347 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "stinky, and primitive martial artists!$"
+# 348 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+
 # 349 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
-
-# 350 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 BattleFrontier_OutsideEast_Text_SometimesImportantOldManInThere:
-# 351 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 350 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "I sometimes see this really important-\n"
-# 352 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 351 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "looking old man going in there.\p"
-# 353 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 352 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "He has these really awesome POKéMON.\n"
-# 354 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 353 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "He seems really nice, though.$"
+# 354 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+
 # 355 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
-
-# 356 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 BattleFrontier_OutsideEast_Text_LegendOfBattlePyramid:
-# 357 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 356 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "Do you know it?\n"
-# 358 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 357 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "The legend of the BATTLE PYRAMID?\p"
-# 359 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 358 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "When there comes a confident TRAINER\n"
-# 360 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 359 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "reaching for the golden pinnacle,\l"
-# 361 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 360 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "there shall appear a man among men.\p"
-# 362 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 361 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "Don't know that legend?\n"
-# 363 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 362 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "Well, of course not!\l"
-# 364 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 363 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "I just made it up!\p"
-# 365 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 364 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "What's it supposed to mean?\n"
-# 366 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 365 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "That, my friend, I can't say!$"
+# 366 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+
 # 367 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
-
-# 368 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 BattleFrontier_OutsideEast_Text_GotWipedOut:
-# 369 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 368 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "Man! Oh man!\n"
-# 370 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 369 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "I've never lost once before!\p"
-# 371 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 370 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "But I got wiped out with no saving\n"
-# 372 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 371 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "grace at all!\p"
-# 373 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 372 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "And then I'm told I don't have any\n"
-# 374 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 373 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "talent?! Man!$"
+# 374 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+
 # 375 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
-
-# 376 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 BattleFrontier_OutsideEast_Text_ToughTrainerInBattleTower:
-# 377 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 376 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "This guy ran into a horribly tough\n"
-# 378 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 377 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "TRAINER while he was on the BATTLE\l"
-# 379 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 378 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "TOWER challenge.\p"
-# 380 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 379 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "Now look at him…\p"
-# 381 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 380 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "You need to be cautious if you ever\n"
-# 382 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 381 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "decide to go to the BATTLE TOWER.$"
+# 382 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+
 # 383 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
-
-# 384 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 BattleFrontier_OutsideEast_Text_EnoughBattlePointsForDoll:
-# 385 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 384 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "Yes!\n"
-# 386 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 385 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "I've finally got enough Battle Points!\p"
-# 387 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 386 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "I guess I'll trade for another giant\n"
-# 388 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 387 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "plush DOLL!$"
+# 388 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+
 # 389 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
-
-# 390 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 BattleFrontier_OutsideEast_Text_LikeToHaveNameRecordedHere:
-# 391 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 390 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "Oh, yeah, okay!\n"
-# 392 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 391 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "So this is the RANKING HALL!\p"
-# 393 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 392 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "I'd like to go down in history as\n"
-# 394 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 393 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "a super champ and have my name\l"
-# 395 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 394 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "recorded here for posterity.$"
+# 395 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+
 # 396 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
-
-# 397 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 BattleFrontier_OutsideEast_Text_CanDoAnythingWithYou:
-# 398 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 397 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "With you by my side, I can do anything.$"
+# 398 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+
 # 399 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
-
-# 400 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 BattleFrontier_OutsideEast_Text_PowerOfOurLoveWillOvercome:
-# 401 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 400 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "Ooh, darling, you are so wonderful!\p"
-# 402 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 401 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "Ooh, I just can't wait anymore!\p"
-# 403 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 402 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "Let's go to a MULTI BATTLE ROOM\n"
-# 404 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 403 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "right this instant!\p"
-# 405 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 404 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "If we get together in the BATTLE SALON,\n"
-# 406 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 405 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "the power of our love will overcome\l"
-# 407 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 406 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "everyone we meet.\p"
-# 408 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 407 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "Why, before us, darling, everything\n"
-# 409 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 408 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "will topple like dominoes!$"
+# 409 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+
 # 410 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
-
-# 411 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 BattleFrontier_OutsideEast_Text_FrontierNotExclusivelyForToughTrainers:
-# 412 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 411 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "The BATTLE FRONTIER isn't exclusively\n"
-# 413 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 412 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "for tough TRAINERS.\p"
-# 414 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 413 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "Many people with special abilities\n"
-# 415 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 414 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "have been invited, it seems.\p"
-# 416 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 415 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "That man SCOTT…\p"
-# 417 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 416 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "He may have built this place to serve\n"
-# 418 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 417 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "a bigger objective…$"
+# 418 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+
 # 419 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
-
-# 420 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 BattleFrontier_OutsideEast_Text_OddTreeHereSeemsToWiggle:
+# 420 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+	.string "Excuse me, young one.\n"
 # 421 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
-	.string "Excuse me, young one.\n"
-# 422 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "Have you good eyesight?\p"
-# 423 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 422 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "There is an odd tree past here, and to\n"
-# 424 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 423 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "my tired eyes it seems to wiggle.$"
+# 424 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+
 # 425 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
-
-# 426 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 BattleFrontier_OutsideEast_Text_OnceAnOddTreePastHere:
-# 427 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 426 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "Excuse me, young one.\n"
-# 428 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 427 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "Have you a good memory?\p"
-# 429 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 428 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "I have this feeling there once was\n"
-# 430 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 429 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "an odd tree past here.$"
-# 431 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 430 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 
-# 432 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 431 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 BattleFrontier_OutsideEast_Text_StickyMonWithLongTail:
-# 433 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 432 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "I…\n"
-# 434 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 433 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "I saw it!\p"
-# 435 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 434 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "There was a sticky sort of a POKéMON\n"
-# 436 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 435 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "with a long tail up ahead!\p"
-# 437 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 436 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "It was hiding under a boulder, and\n"
-# 438 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
+# 437 "data/maps/BattleFrontier_OutsideEast/scripts.pory"
 	.string "it kept staring at me!$"

@@ -233,224 +233,222 @@ SootopolisCity_MysteryEventsHouse_1F_EventScript_ChooseParty::
 # 117 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
 	special ChooseHalfPartyForBattle
 # 118 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
-	waitstate
+	return
 # 119 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
-	return
+
 # 120 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
-
-# 121 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
 SootopolisCity_MysteryEventsHouse_1F_EventScript_EnterBasementNorth::
+# 121 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
+	applymovement VAR_LAST_TALKED, SootopolisCity_MysteryEventsHouse_1F_Movement_OldManMoveAsideLeft
 # 122 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
-	applymovement VAR_LAST_TALKED, SootopolisCity_MysteryEventsHouse_1F_Movement_OldManMoveAsideLeft
-# 123 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
 	applymovement LOCALID_PLAYER, SootopolisCity_MysteryEventsHouse_1F_Movement_PlayerEnterBasementNorth
+# 123 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
+	waitmovement 0
 # 124 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
-	waitmovement 0
+	return
 # 125 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
-	return
+
 # 126 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
-
-# 127 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
 SootopolisCity_MysteryEventsHouse_1F_EventScript_EnterBasementEast::
-# 128 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
+# 127 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
 	applymovement VAR_LAST_TALKED, SootopolisCity_MysteryEventsHouse_1F_Movement_OldManMoveAsideRight
-# 129 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
+# 128 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
 	applymovement LOCALID_PLAYER, SootopolisCity_MysteryEventsHouse_1F_Movement_PlayerEnterBasementEast
+# 129 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
+	waitmovement 0
 # 130 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
-	waitmovement 0
+	return
 # 131 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
-	return
+
 # 132 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
-
-# 133 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
 SootopolisCity_MysteryEventsHouse_1F_EventScript_EnterBasementWest::
-# 134 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
+# 133 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
 	applymovement VAR_LAST_TALKED, SootopolisCity_MysteryEventsHouse_1F_Movement_OldManMoveAsideLeft
-# 135 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
+# 134 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
 	applymovement LOCALID_PLAYER, SootopolisCity_MysteryEventsHouse_1F_Movement_PlayerEnterBasementWest
-# 136 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
+# 135 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
 	waitmovement 0
-# 137 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
+# 136 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
 	return
-# 138 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
+# 137 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
 
-# 139 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
+# 138 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
 SootopolisCity_MysteryEventsHouse_1F_Movement_PlayerEnterBasementNorth:
-# 140 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
+# 139 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
 	delay_16
+# 140 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
+	walk_up
 # 141 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
 	walk_up
 # 142 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
-	walk_up
+	step_end
 # 143 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
-	step_end
+
 # 144 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
-
-# 145 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
 SootopolisCity_MysteryEventsHouse_1F_Movement_PlayerEnterBasementEast:
+# 145 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
+	delay_16
 # 146 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
-	delay_16
+	walk_right
 # 147 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
-	walk_right
+	walk_up
 # 148 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
-	walk_up
+	step_end
 # 149 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
-	step_end
+
 # 150 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
-
-# 151 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
 SootopolisCity_MysteryEventsHouse_1F_Movement_PlayerEnterBasementWest:
-# 152 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
+# 151 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
 	delay_16
+# 152 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
+	walk_left
 # 153 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
-	walk_left
-# 154 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
 	walk_up
+# 154 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
+	step_end
 # 155 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
-	step_end
+
 # 156 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
-
-# 157 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
 SootopolisCity_MysteryEventsHouse_1F_Movement_OldManMoveAsideLeft:
-# 158 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
+# 157 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
 	walk_left
-# 159 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
+# 158 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
 	walk_in_place_faster_right
+# 159 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
+	step_end
 # 160 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
-	step_end
+
 # 161 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
-
-# 162 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
 SootopolisCity_MysteryEventsHouse_1F_Movement_OldManMoveAsideRight:
-# 163 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
+# 162 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
 	walk_right
-# 164 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
+# 163 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
 	walk_in_place_faster_left
-# 165 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
+# 164 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
 	step_end
+# 165 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
+
 # 166 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
-
-# 167 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
 SootopolisCity_MysteryEventsHouse_1F_Text_OnlyAmusementWatchingBattles:
-# 168 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
+# 167 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
 	.string "When I was young, I traveled the world\n"
-# 169 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
+# 168 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
 	.string "as a POKéMON TRAINER.\p"
-# 170 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
+# 169 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
 	.string "Now that I've become an old buzzard,\n"
-# 171 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
+# 170 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
 	.string "my only amusement is watching young\l"
-# 172 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
+# 171 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
 	.string "TRAINERS battle.$"
+# 172 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
+
 # 173 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
-
-# 174 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
 SootopolisCity_MysteryEventsHouse_1F_Text_DoorAppearsToBeLocked:
-# 175 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
+# 174 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
 	.string "The door appears to be locked.$"
+# 175 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
+
 # 176 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
-
-# 177 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
 SootopolisCity_MysteryEventsHouse_1F_Text_ChallengeVisitingTrainer:
-# 178 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
+# 177 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
 	.string "A TRAINER named {STR_VAR_1}\n"
-# 179 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
+# 178 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
 	.string "is visiting my home.\p"
-# 180 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
+# 179 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
 	.string "Would you like to challenge\n"
-# 181 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
+# 180 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
 	.string "{STR_VAR_1}?$"
+# 181 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
+
 # 182 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
-
-# 183 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
 SootopolisCity_MysteryEventsHouse_1F_Text_YouWontBattle:
-# 184 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
+# 183 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
 	.string "You won't battle? I'm disappointed\n"
-# 185 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
+# 184 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
 	.string "that I can't see you battle…$"
+# 185 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
+
 # 186 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
-
-# 187 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
 SootopolisCity_MysteryEventsHouse_1F_Text_KeepItTo3On3:
-# 188 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
+# 187 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
 	.string "Oh, good, good!\p"
-# 189 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
+# 188 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
 	.string "But my house isn't all that sturdy.\p"
-# 190 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
+# 189 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
 	.string "Could I ask you to keep it down to\n"
-# 191 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
+# 190 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
 	.string "a 3-on-3 match?$"
+# 191 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
+
 # 192 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
-
-# 193 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
 SootopolisCity_MysteryEventsHouse_1F_Text_SaveProgressBeforeBattle:
-# 194 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
+# 193 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
 	.string "Before you two battle, you should\n"
-# 195 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
+# 194 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
 	.string "save your progress.$"
+# 195 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
+
 # 196 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
-
-# 197 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
 SootopolisCity_MysteryEventsHouse_1F_Text_HopeToSeeGoodMatch:
-# 198 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
+# 197 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
 	.string "I hope to see a good match!$"
+# 198 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
+
 # 199 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
-
+@ Unused
 # 200 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
-@ Unused
-# 201 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
 SootopolisCity_MysteryEventsHouse_1F_Text_StrVar1Tie:
+# 201 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
+	.string "{STR_VAR_1}$"
 # 202 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
-	.string "{STR_VAR_1}$"
+
 # 203 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
-
-# 204 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
 SootopolisCity_MysteryEventsHouse_B1F_Text_MatchEndedUpDraw:
-# 205 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
+# 204 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
 	.string "The match ended up a draw.$"
+# 205 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
+
 # 206 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
-
-# 207 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
 SootopolisCity_MysteryEventsHouse_1F_Text_BrilliantStandoff:
-# 208 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
+# 207 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
 	.string "So, it became a standoff.\p"
-# 209 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
+# 208 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
 	.string "It was a brilliant match in which\n"
-# 210 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
+# 209 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
 	.string "neither side conceded a step!$"
+# 210 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
+
 # 211 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
-
+@ Unused
 # 212 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
-@ Unused
-# 213 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
 SootopolisCity_MysteryEventsHouse_1F_Text_StrVar1Won:
+# 213 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
+	.string "{STR_VAR_1}$"
 # 214 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
-	.string "{STR_VAR_1}$"
+
 # 215 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
-
-# 216 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
 SootopolisCity_MysteryEventsHouse_1F_Text_ThatWasSuperlative:
-# 217 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
+# 216 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
 	.string "That was superlative!\p"
-# 218 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
+# 217 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
 	.string "Why, it was like seeing myself in\n"
-# 219 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
+# 218 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
 	.string "my youth again!$"
+# 219 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
+
 # 220 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
-
-# 221 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
 @ Unused
-# 222 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
+# 221 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
 SootopolisCity_MysteryEventsHouse_1F_Text_StrVar1Lost:
-# 223 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
+# 222 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
 	.string "{STR_VAR_1}$"
-# 224 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
+# 223 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
 
-# 225 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
+# 224 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
 SootopolisCity_MysteryEventsHouse_1F_Text_TooBadForYou:
-# 226 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
+# 225 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
 	.string "Ah, too bad for you!\p"
-# 227 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
+# 226 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
 	.string "But it was a good match.\n"
-# 228 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
+# 227 "data/maps/SootopolisCity_MysteryEventsHouse_1F/scripts.pory"
 	.string "I hope you can win next time.$"

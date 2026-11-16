@@ -241,488 +241,486 @@ TosaPort_EventScript_GiveNickname::
 # 121 "data/maps/TosaPort/scripts.pory"
 	special ChangePokemonNickname
 # 122 "data/maps/TosaPort/scripts.pory"
-	waitstate
-# 123 "data/maps/TosaPort/scripts.pory"
 	return
+# 123 "data/maps/TosaPort/scripts.pory"
+
 # 124 "data/maps/TosaPort/scripts.pory"
-
-# 125 "data/maps/TosaPort/scripts.pory"
 TosaPort_EventScript_StarterGuide_AfterStarter::
-# 126 "data/maps/TosaPort/scripts.pory"
+# 125 "data/maps/TosaPort/scripts.pory"
 	lock
-# 127 "data/maps/TosaPort/scripts.pory"
+# 126 "data/maps/TosaPort/scripts.pory"
 	faceplayer
-# 128 "data/maps/TosaPort/scripts.pory"
+# 127 "data/maps/TosaPort/scripts.pory"
 	msgbox TosaPort_Text_StarterGuideTelokHint, MSGBOX_DEFAULT
-# 129 "data/maps/TosaPort/scripts.pory"
+# 128 "data/maps/TosaPort/scripts.pory"
 	release
-# 130 "data/maps/TosaPort/scripts.pory"
+# 129 "data/maps/TosaPort/scripts.pory"
 	end
+# 130 "data/maps/TosaPort/scripts.pory"
+
 # 131 "data/maps/TosaPort/scripts.pory"
-
-# 132 "data/maps/TosaPort/scripts.pory"
 TosaPort_Text_YouMustBePlayer:
-# 133 "data/maps/TosaPort/scripts.pory"
+# 132 "data/maps/TosaPort/scripts.pory"
 	.string "Ah! You must be {PLAYER}.\p"
-# 134 "data/maps/TosaPort/scripts.pory"
+# 133 "data/maps/TosaPort/scripts.pory"
 	.string "Professor Palm sent me to meet you\n"
-# 135 "data/maps/TosaPort/scripts.pory"
+# 134 "data/maps/TosaPort/scripts.pory"
 	.string "once the Seagallop-20 made port.$"
+# 135 "data/maps/TosaPort/scripts.pory"
+
 # 136 "data/maps/TosaPort/scripts.pory"
-
-# 137 "data/maps/TosaPort/scripts.pory"
 TosaPort_Text_GivePokemon:
-# 138 "data/maps/TosaPort/scripts.pory"
+# 137 "data/maps/TosaPort/scripts.pory"
 	.string "I've brought you a little welcome\n"
-# 139 "data/maps/TosaPort/scripts.pory"
+# 138 "data/maps/TosaPort/scripts.pory"
 	.string "present on behalf of the University.\p"
-# 140 "data/maps/TosaPort/scripts.pory"
+# 139 "data/maps/TosaPort/scripts.pory"
 	.string "With the journey being so long from\n"
-# 141 "data/maps/TosaPort/scripts.pory"
+# 140 "data/maps/TosaPort/scripts.pory"
 	.string "Galar, we figured you wouldn't bring\l"
-# 142 "data/maps/TosaPort/scripts.pory"
+# 141 "data/maps/TosaPort/scripts.pory"
 	.string "your partners along.\p"
-# 143 "data/maps/TosaPort/scripts.pory"
+# 142 "data/maps/TosaPort/scripts.pory"
 	.string "You peer inside the bag.$"
+# 143 "data/maps/TosaPort/scripts.pory"
+
 # 144 "data/maps/TosaPort/scripts.pory"
-
-# 145 "data/maps/TosaPort/scripts.pory"
 TosaPort_Text_ReceivedPokemon:
-# 146 "data/maps/TosaPort/scripts.pory"
+# 145 "data/maps/TosaPort/scripts.pory"
 	.string "You received a {STR_VAR_2}!$"
+# 146 "data/maps/TosaPort/scripts.pory"
+
 # 147 "data/maps/TosaPort/scripts.pory"
-
-# 148 "data/maps/TosaPort/scripts.pory"
 TosaPort_Text_Nickname:
-# 149 "data/maps/TosaPort/scripts.pory"
+# 148 "data/maps/TosaPort/scripts.pory"
 	.string "Would you like to give {STR_VAR_2} a\n"
-# 150 "data/maps/TosaPort/scripts.pory"
+# 149 "data/maps/TosaPort/scripts.pory"
 	.string "nickname?$"
+# 150 "data/maps/TosaPort/scripts.pory"
+
 # 151 "data/maps/TosaPort/scripts.pory"
-
-# 152 "data/maps/TosaPort/scripts.pory"
 TosaPort_Text_StarterGuideTelokHint:
-# 153 "data/maps/TosaPort/scripts.pory"
+# 152 "data/maps/TosaPort/scripts.pory"
 	.string "The road to TELOK TOWN runs through\n"
-# 154 "data/maps/TosaPort/scripts.pory"
+# 153 "data/maps/TosaPort/scripts.pory"
 	.string "the Tosa nature reserve to the north.\p"
-# 155 "data/maps/TosaPort/scripts.pory"
+# 154 "data/maps/TosaPort/scripts.pory"
 	.string "You'll find Palm Labs there.$"
+# 155 "data/maps/TosaPort/scripts.pory"
+
 # 156 "data/maps/TosaPort/scripts.pory"
-
-# 157 "data/maps/TosaPort/scripts.pory"
 TosaPort_Text_TownSign:
-# 158 "data/maps/TosaPort/scripts.pory"
+# 157 "data/maps/TosaPort/scripts.pory"
 	.string "Welcome to Tosa!\n"
-# 159 "data/maps/TosaPort/scripts.pory"
+# 158 "data/maps/TosaPort/scripts.pory"
 	.string "- The Tosa Tourism Board$"
+# 159 "data/maps/TosaPort/scripts.pory"
+
 # 160 "data/maps/TosaPort/scripts.pory"
-
-# 161 "data/maps/TosaPort/scripts.pory"
 TosaPort_Text_GatewaySign:
-# 162 "data/maps/TosaPort/scripts.pory"
+# 161 "data/maps/TosaPort/scripts.pory"
 	.string "Tosa Reserve Gateway\n"
-# 163 "data/maps/TosaPort/scripts.pory"
+# 162 "data/maps/TosaPort/scripts.pory"
 	.string "Trainer passes strictly required$"
+# 163 "data/maps/TosaPort/scripts.pory"
+
 # 164 "data/maps/TosaPort/scripts.pory"
-
-# 165 "data/maps/TosaPort/scripts.pory"
 TosaPort_Text_TruckSign:
-# 166 "data/maps/TosaPort/scripts.pory"
+# 165 "data/maps/TosaPort/scripts.pory"
 	.string "Machamp Moving Co.\n"
-# 167 "data/maps/TosaPort/scripts.pory"
+# 166 "data/maps/TosaPort/scripts.pory"
 	.string "No Load too Lumbersome!$"
-# 168 "data/maps/TosaPort/scripts.pory"
+# 167 "data/maps/TosaPort/scripts.pory"
 
-# 169 "data/maps/TosaPort/scripts.pory"
+# 168 "data/maps/TosaPort/scripts.pory"
 TosaPort_Text_ColdStorageSign:
-# 170 "data/maps/TosaPort/scripts.pory"
+# 169 "data/maps/TosaPort/scripts.pory"
 	.string "Tosa Port Cold Storage$"
 
 TosaPort_PassAide::
-# 175 "data/maps/TosaPort/scripts.pory"
+# 174 "data/maps/TosaPort/scripts.pory"
 	lockall
-# 176 "data/maps/TosaPort/scripts.pory"
+# 175 "data/maps/TosaPort/scripts.pory"
 	msgbox TosaPort_PassAide_Text_0, MSGBOX_AUTOCLOSE
-# 177 "data/maps/TosaPort/scripts.pory"
+# 176 "data/maps/TosaPort/scripts.pory"
 	clearflag FLAG_HIDE_PASS_AIDE
-# 178 "data/maps/TosaPort/scripts.pory"
+# 177 "data/maps/TosaPort/scripts.pory"
 	addobject LOCALID_PASS_AIDE
-# 179 "data/maps/TosaPort/scripts.pory"
+# 178 "data/maps/TosaPort/scripts.pory"
 	showobjectat LOCALID_PASS_AIDE, MAP_TOSA_PORT
-# 180 "data/maps/TosaPort/scripts.pory"
+# 179 "data/maps/TosaPort/scripts.pory"
 	applymovement LOCALID_PLAYER, TosaPort_PassAide_Movement_0
-# 181 "data/maps/TosaPort/scripts.pory"
+# 180 "data/maps/TosaPort/scripts.pory"
 	playSE SE_M_METRONOME
-# 182 "data/maps/TosaPort/scripts.pory"
+# 181 "data/maps/TosaPort/scripts.pory"
 	applymovement LOCALID_PASS_AIDE, TosaPort_PassAide_Movement_1
+# 184 "data/maps/TosaPort/scripts.pory"
+	waitmovement 0
 # 185 "data/maps/TosaPort/scripts.pory"
-	waitmovement 0
-# 186 "data/maps/TosaPort/scripts.pory"
 	msgbox TosaPort_PassAide_Text_1
-# 187 "data/maps/TosaPort/scripts.pory"
+# 186 "data/maps/TosaPort/scripts.pory"
 	giveitem ITEM_TOSA_PASS
-# 188 "data/maps/TosaPort/scripts.pory"
+# 187 "data/maps/TosaPort/scripts.pory"
 	msgbox TosaPort_PassAide_Text_2
-# 189 "data/maps/TosaPort/scripts.pory"
+# 188 "data/maps/TosaPort/scripts.pory"
 	applymovement LOCALID_PASS_AIDE, TosaPort_PassAide_Movement_2
+# 189 "data/maps/TosaPort/scripts.pory"
+	waitmovement 0
 # 190 "data/maps/TosaPort/scripts.pory"
-	waitmovement 0
-# 191 "data/maps/TosaPort/scripts.pory"
 	delay 48
-# 192 "data/maps/TosaPort/scripts.pory"
+# 191 "data/maps/TosaPort/scripts.pory"
 	applymovement LOCALID_PASS_AIDE, TosaPort_PassAide_Movement_3
+# 192 "data/maps/TosaPort/scripts.pory"
+	waitmovement 0
 # 193 "data/maps/TosaPort/scripts.pory"
-	waitmovement 0
-# 194 "data/maps/TosaPort/scripts.pory"
 	msgbox TosaPort_PassAide_Text_3
-# 195 "data/maps/TosaPort/scripts.pory"
+# 194 "data/maps/TosaPort/scripts.pory"
 	msgbox TosaPort_PassAide_Text_4, MSGBOX_NPC
-# 196 "data/maps/TosaPort/scripts.pory"
+# 195 "data/maps/TosaPort/scripts.pory"
 	waitmessage
-# 197 "data/maps/TosaPort/scripts.pory"
+# 196 "data/maps/TosaPort/scripts.pory"
 	applymovement LOCALID_PASS_AIDE, TosaPort_PassAide_Movement_4
-# 198 "data/maps/TosaPort/scripts.pory"
+# 197 "data/maps/TosaPort/scripts.pory"
 	waitmovement 0
-# 199 "data/maps/TosaPort/scripts.pory"
+# 198 "data/maps/TosaPort/scripts.pory"
 	hideobjectat LOCALID_PASS_AIDE, MAP_TOSA_PORT
-# 200 "data/maps/TosaPort/scripts.pory"
+# 199 "data/maps/TosaPort/scripts.pory"
 	setflag FLAG_RECEIVED_TOSA_PASS
-# 201 "data/maps/TosaPort/scripts.pory"
+# 200 "data/maps/TosaPort/scripts.pory"
 	setflag FLAG_HIDE_PASS_AIDE
-# 202 "data/maps/TosaPort/scripts.pory"
+# 201 "data/maps/TosaPort/scripts.pory"
 	setvar VAR_TOSA_PORT_STATE, 2
-# 203 "data/maps/TosaPort/scripts.pory"
+# 202 "data/maps/TosaPort/scripts.pory"
 	releaseall
 	end
 
 
 TosaPort_ScrubbingSailor::
-# 208 "data/maps/TosaPort/scripts.pory"
+# 207 "data/maps/TosaPort/scripts.pory"
 	lock
-# 209 "data/maps/TosaPort/scripts.pory"
+# 208 "data/maps/TosaPort/scripts.pory"
 	faceplayer
-# 210 "data/maps/TosaPort/scripts.pory"
+# 209 "data/maps/TosaPort/scripts.pory"
 	msgbox TosaPort_ScrubbingSailor_Text_0
-# 212 "data/maps/TosaPort/scripts.pory"
+# 211 "data/maps/TosaPort/scripts.pory"
 	release
 	end
 
 
 TosaPort_ShuntingSailor::
-# 217 "data/maps/TosaPort/scripts.pory"
+# 216 "data/maps/TosaPort/scripts.pory"
 	lock
-# 218 "data/maps/TosaPort/scripts.pory"
+# 217 "data/maps/TosaPort/scripts.pory"
 	faceplayer
-# 219 "data/maps/TosaPort/scripts.pory"
+# 218 "data/maps/TosaPort/scripts.pory"
 	msgbox TosaPort_ShuntingSailor_Text_0
-# 221 "data/maps/TosaPort/scripts.pory"
+# 220 "data/maps/TosaPort/scripts.pory"
 	release
 	end
 
 
 TosaPort_VigorothCry::
-# 226 "data/maps/TosaPort/scripts.pory"
+# 225 "data/maps/TosaPort/scripts.pory"
 	lock
-# 227 "data/maps/TosaPort/scripts.pory"
+# 226 "data/maps/TosaPort/scripts.pory"
 	playmoncry SPECIES_VIGOROTH, CRY_MODE_NORMAL
-# 228 "data/maps/TosaPort/scripts.pory"
+# 227 "data/maps/TosaPort/scripts.pory"
 	msgbox TosaPort_VigorothCry_Text_0
-# 229 "data/maps/TosaPort/scripts.pory"
+# 228 "data/maps/TosaPort/scripts.pory"
 	waitmoncry
-# 230 "data/maps/TosaPort/scripts.pory"
+# 229 "data/maps/TosaPort/scripts.pory"
 	release
 	end
 
 
 TosaPort_ChefStall::
-# 235 "data/maps/TosaPort/scripts.pory"
+# 234 "data/maps/TosaPort/scripts.pory"
 	lock
-# 236 "data/maps/TosaPort/scripts.pory"
+# 235 "data/maps/TosaPort/scripts.pory"
 	faceplayer
-# 237 "data/maps/TosaPort/scripts.pory"
+# 236 "data/maps/TosaPort/scripts.pory"
 	goto_if_unset FLAG_CHEF_STALL_MET, TosaPort_ChefStall_2
-# 253 "data/maps/TosaPort/scripts.pory"
+# 252 "data/maps/TosaPort/scripts.pory"
 	msgbox TosaPort_ChefStall_Text_2
-# 255 "data/maps/TosaPort/scripts.pory"
+# 254 "data/maps/TosaPort/scripts.pory"
 	pokemart ChefStallGoods
-# 256 "data/maps/TosaPort/scripts.pory"
+# 255 "data/maps/TosaPort/scripts.pory"
 	msgbox TosaPort_ChefStall_Text_3
-# 257 "data/maps/TosaPort/scripts.pory"
+# 256 "data/maps/TosaPort/scripts.pory"
 	release
 	end
 
 TosaPort_ChefStall_2:
-# 238 "data/maps/TosaPort/scripts.pory"
+# 237 "data/maps/TosaPort/scripts.pory"
 	msgbox TosaPort_ChefStall_Text_0
-# 247 "data/maps/TosaPort/scripts.pory"
+# 246 "data/maps/TosaPort/scripts.pory"
 	setflag FLAG_CHEF_STALL_MET
-# 248 "data/maps/TosaPort/scripts.pory"
+# 247 "data/maps/TosaPort/scripts.pory"
 	pokemart ChefStallGoods
-# 249 "data/maps/TosaPort/scripts.pory"
+# 248 "data/maps/TosaPort/scripts.pory"
 	msgbox TosaPort_ChefStall_Text_1
-# 250 "data/maps/TosaPort/scripts.pory"
+# 249 "data/maps/TosaPort/scripts.pory"
 	release
 	end
 
 
 	.align 2
-# 261 "data/maps/TosaPort/scripts.pory"
+# 260 "data/maps/TosaPort/scripts.pory"
 ChefStallGoods:
-# 262 "data/maps/TosaPort/scripts.pory"
+# 261 "data/maps/TosaPort/scripts.pory"
 	.2byte ITEM_LAVA_COOKIE
-# 263 "data/maps/TosaPort/scripts.pory"
+# 262 "data/maps/TosaPort/scripts.pory"
 	.2byte ITEM_PEWTER_CRUNCHIES
-# 264 "data/maps/TosaPort/scripts.pory"
+# 263 "data/maps/TosaPort/scripts.pory"
 	.2byte ITEM_OLD_GATEAU
-# 265 "data/maps/TosaPort/scripts.pory"
+# 264 "data/maps/TosaPort/scripts.pory"
 	.2byte ITEM_BIG_MALASADA
-# 266 "data/maps/TosaPort/scripts.pory"
+# 265 "data/maps/TosaPort/scripts.pory"
 	.2byte ITEM_SHALOUR_SABLE
 	.2byte ITEM_NONE
 
 TosaPort_PSPKid::
-# 270 "data/maps/TosaPort/scripts.pory"
+# 269 "data/maps/TosaPort/scripts.pory"
 	lock
-# 271 "data/maps/TosaPort/scripts.pory"
+# 270 "data/maps/TosaPort/scripts.pory"
 	faceplayer
-# 272 "data/maps/TosaPort/scripts.pory"
+# 271 "data/maps/TosaPort/scripts.pory"
 	msgbox TosaPort_PSPKid_Text_0
-# 274 "data/maps/TosaPort/scripts.pory"
+# 273 "data/maps/TosaPort/scripts.pory"
 	release
 	end
 
 
 TosaPort_RepelGuy::
-# 279 "data/maps/TosaPort/scripts.pory"
+# 278 "data/maps/TosaPort/scripts.pory"
 	lock
-# 280 "data/maps/TosaPort/scripts.pory"
+# 279 "data/maps/TosaPort/scripts.pory"
 	faceplayer
-# 281 "data/maps/TosaPort/scripts.pory"
+# 280 "data/maps/TosaPort/scripts.pory"
 	msgbox TosaPort_RepelGuy_Text_0
-# 284 "data/maps/TosaPort/scripts.pory"
+# 283 "data/maps/TosaPort/scripts.pory"
 	release
 	end
 
 
 TosaPort_BreakTrucker::
-# 289 "data/maps/TosaPort/scripts.pory"
+# 288 "data/maps/TosaPort/scripts.pory"
 	lock
-# 290 "data/maps/TosaPort/scripts.pory"
+# 289 "data/maps/TosaPort/scripts.pory"
 	faceplayer
-# 291 "data/maps/TosaPort/scripts.pory"
+# 290 "data/maps/TosaPort/scripts.pory"
 	msgbox TosaPort_BreakTrucker_Text_0
-# 292 "data/maps/TosaPort/scripts.pory"
+# 291 "data/maps/TosaPort/scripts.pory"
 	release
 	end
 
 
 TosaPort_LoadingTrucker::
-# 297 "data/maps/TosaPort/scripts.pory"
+# 296 "data/maps/TosaPort/scripts.pory"
 	lock
-# 298 "data/maps/TosaPort/scripts.pory"
+# 297 "data/maps/TosaPort/scripts.pory"
 	faceplayer
-# 299 "data/maps/TosaPort/scripts.pory"
+# 298 "data/maps/TosaPort/scripts.pory"
 	msgbox TosaPort_LoadingTrucker_Text_0
-# 301 "data/maps/TosaPort/scripts.pory"
+# 300 "data/maps/TosaPort/scripts.pory"
 	release
 	end
 
 
 TosaPort_OldMan::
-# 306 "data/maps/TosaPort/scripts.pory"
+# 305 "data/maps/TosaPort/scripts.pory"
 	lock
-# 307 "data/maps/TosaPort/scripts.pory"
+# 306 "data/maps/TosaPort/scripts.pory"
 	msgbox TosaPort_OldMan_Text_0
-# 309 "data/maps/TosaPort/scripts.pory"
+# 308 "data/maps/TosaPort/scripts.pory"
 	release
 	end
 
 
 TosaPort_OldWoman::
-# 314 "data/maps/TosaPort/scripts.pory"
+# 313 "data/maps/TosaPort/scripts.pory"
 	lock
-# 315 "data/maps/TosaPort/scripts.pory"
+# 314 "data/maps/TosaPort/scripts.pory"
 	msgbox TosaPort_OldWoman_Text_0
-# 317 "data/maps/TosaPort/scripts.pory"
+# 316 "data/maps/TosaPort/scripts.pory"
 	release
 	end
 
 
 TosaPort_Skitty::
-# 322 "data/maps/TosaPort/scripts.pory"
+# 321 "data/maps/TosaPort/scripts.pory"
 	lock
-# 323 "data/maps/TosaPort/scripts.pory"
+# 322 "data/maps/TosaPort/scripts.pory"
 	faceplayer
-# 324 "data/maps/TosaPort/scripts.pory"
+# 323 "data/maps/TosaPort/scripts.pory"
 	playmoncry SPECIES_SKITTY, CRY_MODE_NORMAL
-# 325 "data/maps/TosaPort/scripts.pory"
+# 324 "data/maps/TosaPort/scripts.pory"
 	msgbox TosaPort_Skitty_Text_0
-# 326 "data/maps/TosaPort/scripts.pory"
+# 325 "data/maps/TosaPort/scripts.pory"
 	waitmoncry
-# 327 "data/maps/TosaPort/scripts.pory"
+# 326 "data/maps/TosaPort/scripts.pory"
 	release
 	end
 
 
 TosaPort_Fisherman::
-# 332 "data/maps/TosaPort/scripts.pory"
+# 331 "data/maps/TosaPort/scripts.pory"
 	lock
-# 333 "data/maps/TosaPort/scripts.pory"
+# 332 "data/maps/TosaPort/scripts.pory"
 	faceplayer
-# 334 "data/maps/TosaPort/scripts.pory"
+# 333 "data/maps/TosaPort/scripts.pory"
 	msgbox TosaPort_Fisherman_Text_0
-# 336 "data/maps/TosaPort/scripts.pory"
+# 335 "data/maps/TosaPort/scripts.pory"
 	release
 	end
 
 
 TosaPort_Tuber::
-# 341 "data/maps/TosaPort/scripts.pory"
+# 340 "data/maps/TosaPort/scripts.pory"
 	lock
-# 342 "data/maps/TosaPort/scripts.pory"
+# 341 "data/maps/TosaPort/scripts.pory"
 	faceplayer
-# 343 "data/maps/TosaPort/scripts.pory"
+# 342 "data/maps/TosaPort/scripts.pory"
 	msgbox TosaPort_Tuber_Text_0
-# 347 "data/maps/TosaPort/scripts.pory"
+# 346 "data/maps/TosaPort/scripts.pory"
 	release
 	end
 
 
 TosaPort_ColdStorageGuard::
-# 352 "data/maps/TosaPort/scripts.pory"
+# 351 "data/maps/TosaPort/scripts.pory"
 	lock
-# 353 "data/maps/TosaPort/scripts.pory"
+# 352 "data/maps/TosaPort/scripts.pory"
 	faceplayer
-# 354 "data/maps/TosaPort/scripts.pory"
+# 353 "data/maps/TosaPort/scripts.pory"
 	msgbox TosaPort_ColdStorageGuard_Text_0
-# 356 "data/maps/TosaPort/scripts.pory"
+# 355 "data/maps/TosaPort/scripts.pory"
 	release
 	end
 
 
 TosaPort_Martin::
-# 361 "data/maps/TosaPort/scripts.pory"
+# 360 "data/maps/TosaPort/scripts.pory"
 	lock
-# 362 "data/maps/TosaPort/scripts.pory"
+# 361 "data/maps/TosaPort/scripts.pory"
 	faceplayer
-# 363 "data/maps/TosaPort/scripts.pory"
+# 362 "data/maps/TosaPort/scripts.pory"
 	msgbox TosaPort_Martin_Text_0
-# 365 "data/maps/TosaPort/scripts.pory"
+# 364 "data/maps/TosaPort/scripts.pory"
 	pokemart MartinsMartGoods
-# 366 "data/maps/TosaPort/scripts.pory"
+# 365 "data/maps/TosaPort/scripts.pory"
 	msgbox TosaPort_Martin_Text_1
-# 367 "data/maps/TosaPort/scripts.pory"
+# 366 "data/maps/TosaPort/scripts.pory"
 	release
 	end
 
 
 	.align 2
-# 371 "data/maps/TosaPort/scripts.pory"
+# 370 "data/maps/TosaPort/scripts.pory"
 MartinsMartGoods:
-# 372 "data/maps/TosaPort/scripts.pory"
+# 371 "data/maps/TosaPort/scripts.pory"
 	.2byte ITEM_POTION
-# 373 "data/maps/TosaPort/scripts.pory"
+# 372 "data/maps/TosaPort/scripts.pory"
 	.2byte ITEM_POKE_BALL
-# 374 "data/maps/TosaPort/scripts.pory"
+# 373 "data/maps/TosaPort/scripts.pory"
 	.2byte ITEM_ANTIDOTE
-# 375 "data/maps/TosaPort/scripts.pory"
+# 374 "data/maps/TosaPort/scripts.pory"
 	.2byte ITEM_PARALYZE_HEAL
-# 376 "data/maps/TosaPort/scripts.pory"
+# 375 "data/maps/TosaPort/scripts.pory"
 	.2byte ITEM_REPEL
 	.2byte ITEM_NONE
 
-# 180 "data/maps/TosaPort/scripts.pory"
+# 179 "data/maps/TosaPort/scripts.pory"
 TosaPort_PassAide_Movement_0:
-# 180 "data/maps/TosaPort/scripts.pory"
+# 179 "data/maps/TosaPort/scripts.pory"
 	emote_question_mark
-# 180 "data/maps/TosaPort/scripts.pory"
+# 179 "data/maps/TosaPort/scripts.pory"
 	face_down
 	step_end
 
-# 182 "data/maps/TosaPort/scripts.pory"
+# 181 "data/maps/TosaPort/scripts.pory"
 TosaPort_PassAide_Movement_1:
-# 183 "data/maps/TosaPort/scripts.pory"
+# 182 "data/maps/TosaPort/scripts.pory"
 	walk_fast_up
-# 183 "data/maps/TosaPort/scripts.pory"
+# 182 "data/maps/TosaPort/scripts.pory"
 	walk_fast_up
-# 183 "data/maps/TosaPort/scripts.pory"
+# 182 "data/maps/TosaPort/scripts.pory"
 	walk_fast_up
-# 183 "data/maps/TosaPort/scripts.pory"
+# 182 "data/maps/TosaPort/scripts.pory"
 	walk_fast_up
-# 183 "data/maps/TosaPort/scripts.pory"
+# 182 "data/maps/TosaPort/scripts.pory"
 	walk_fast_up
 	step_end
 
-# 189 "data/maps/TosaPort/scripts.pory"
+# 188 "data/maps/TosaPort/scripts.pory"
 TosaPort_PassAide_Movement_2:
-# 189 "data/maps/TosaPort/scripts.pory"
+# 188 "data/maps/TosaPort/scripts.pory"
 	face_right
 	step_end
 
-# 192 "data/maps/TosaPort/scripts.pory"
+# 191 "data/maps/TosaPort/scripts.pory"
 TosaPort_PassAide_Movement_3:
-# 192 "data/maps/TosaPort/scripts.pory"
+# 191 "data/maps/TosaPort/scripts.pory"
 	face_player
 	step_end
 
-# 197 "data/maps/TosaPort/scripts.pory"
+# 196 "data/maps/TosaPort/scripts.pory"
 TosaPort_PassAide_Movement_4:
-# 197 "data/maps/TosaPort/scripts.pory"
+# 196 "data/maps/TosaPort/scripts.pory"
 	walk_fast_down
-# 197 "data/maps/TosaPort/scripts.pory"
+# 196 "data/maps/TosaPort/scripts.pory"
 	walk_fast_down
-# 197 "data/maps/TosaPort/scripts.pory"
+# 196 "data/maps/TosaPort/scripts.pory"
 	walk_fast_down
-# 197 "data/maps/TosaPort/scripts.pory"
+# 196 "data/maps/TosaPort/scripts.pory"
 	walk_fast_down
-# 197 "data/maps/TosaPort/scripts.pory"
+# 196 "data/maps/TosaPort/scripts.pory"
 	walk_fast_down
 	step_end
 
 TosaPort_PassAide_Text_0:
-# 176 "data/maps/TosaPort/scripts.pory"
+# 175 "data/maps/TosaPort/scripts.pory"
 	.string "WAIT! {PLAYER}!$"
 
 TosaPort_PassAide_Text_1:
-# 186 "data/maps/TosaPort/scripts.pory"
+# 185 "data/maps/TosaPort/scripts.pory"
 	.string "I...I need to give you this as well.$"
 
 TosaPort_PassAide_Text_2:
-# 188 "data/maps/TosaPort/scripts.pory"
+# 187 "data/maps/TosaPort/scripts.pory"
 	.string "Without a Tosa Pass, you won't be\n"
 	.string "allowed onto the reserve. Normally you\l"
 	.string "could take the underground...$"
 
 TosaPort_PassAide_Text_3:
-# 194 "data/maps/TosaPort/scripts.pory"
+# 193 "data/maps/TosaPort/scripts.pory"
 	.string "One more thing, if you haven't already I\n"
 	.string "recommend you check out the markets\l"
 	.string "here in the port. There's all sorts of\l"
 	.string "supplies a trainer might need.$"
 
 TosaPort_PassAide_Text_4:
-# 195 "data/maps/TosaPort/scripts.pory"
+# 194 "data/maps/TosaPort/scripts.pory"
 	.string "Anyway, that's all from me. You better\n"
 	.string "get going, I wouldn't want to keep the\l"
 	.string "Professor waiting!$"
 
 TosaPort_ScrubbingSailor_Text_0:
-# 210 "data/maps/TosaPort/scripts.pory"
+# 209 "data/maps/TosaPort/scripts.pory"
 	.string "Gotta keep this jetty looking ship-\n"
 	.string "shape!$"
 
 TosaPort_ShuntingSailor_Text_0:
-# 219 "data/maps/TosaPort/scripts.pory"
+# 218 "data/maps/TosaPort/scripts.pory"
 	.string "It's a good thing I have my Vigoroth\n"
 	.string "with me!$"
 
 TosaPort_VigorothCry_Text_0:
-# 228 "data/maps/TosaPort/scripts.pory"
+# 227 "data/maps/TosaPort/scripts.pory"
 	.string "Vigoroth: Urraw!$"
 
 TosaPort_ChefStall_Text_0:
-# 238 "data/maps/TosaPort/scripts.pory"
+# 237 "data/maps/TosaPort/scripts.pory"
 	.string "Bonjour!\p"
 	.string "I have travelled many miles from my\n"
 	.string "home in Kalos...mais alors I have grown\l"
@@ -734,74 +732,74 @@ TosaPort_ChefStall_Text_0:
 	.string "the most fresh, non?$"
 
 TosaPort_ChefStall_Text_1:
-# 249 "data/maps/TosaPort/scripts.pory"
+# 248 "data/maps/TosaPort/scripts.pory"
 	.string "See you again, mon ami!$"
 
 TosaPort_ChefStall_Text_2:
-# 253 "data/maps/TosaPort/scripts.pory"
+# 252 "data/maps/TosaPort/scripts.pory"
 	.string "Good to see you mon ami!\n"
 	.string "What can I get for you?$"
 
 TosaPort_ChefStall_Text_3:
-# 256 "data/maps/TosaPort/scripts.pory"
+# 255 "data/maps/TosaPort/scripts.pory"
 	.string "Always a pleasure, mon ami!$"
 
 TosaPort_PSPKid_Text_0:
-# 272 "data/maps/TosaPort/scripts.pory"
+# 271 "data/maps/TosaPort/scripts.pory"
 	.string "Ugh, Dad's making me watch his stall.\n"
 	.string "At least he let me bring my PSP.$"
 
 TosaPort_RepelGuy_Text_0:
-# 281 "data/maps/TosaPort/scripts.pory"
+# 280 "data/maps/TosaPort/scripts.pory"
 	.string "I read in “Pokémon Garden” that\n"
 	.string "spraying repel on your flowers can keep\l"
 	.string "bug Pokémon at bay.$"
 
 TosaPort_BreakTrucker_Text_0:
-# 291 "data/maps/TosaPort/scripts.pory"
+# 290 "data/maps/TosaPort/scripts.pory"
 	.string "Buzz off, I'm on my break!$"
 
 TosaPort_LoadingTrucker_Text_0:
-# 299 "data/maps/TosaPort/scripts.pory"
+# 298 "data/maps/TosaPort/scripts.pory"
 	.string "I wish my Pokémon was strong enough to\n"
 	.string "load this truck...$"
 
 TosaPort_OldMan_Text_0:
-# 307 "data/maps/TosaPort/scripts.pory"
+# 306 "data/maps/TosaPort/scripts.pory"
 	.string "Fu-fu-fu...I met my wife at this very\n"
 	.string "spot 10 years ago.$"
 
 TosaPort_OldWoman_Text_0:
-# 315 "data/maps/TosaPort/scripts.pory"
+# 314 "data/maps/TosaPort/scripts.pory"
 	.string "Ha-ha-ha...we were so reckless back\n"
 	.string "then...life is too short...$"
 
 TosaPort_Skitty_Text_0:
-# 325 "data/maps/TosaPort/scripts.pory"
+# 324 "data/maps/TosaPort/scripts.pory"
 	.string "Skitty: Meooow!$"
 
 TosaPort_Fisherman_Text_0:
-# 334 "data/maps/TosaPort/scripts.pory"
+# 333 "data/maps/TosaPort/scripts.pory"
 	.string "I came all this way from Pasira City to\n"
 	.string "fish in the reserve.$"
 
 TosaPort_Tuber_Text_0:
-# 343 "data/maps/TosaPort/scripts.pory"
+# 342 "data/maps/TosaPort/scripts.pory"
 	.string "Awww...\n"
 	.string "I was hoping to swim while visiting\l"
 	.string "Daddy, but the current here is too\l"
 	.string "strong!$"
 
 TosaPort_ColdStorageGuard_Text_0:
-# 354 "data/maps/TosaPort/scripts.pory"
+# 353 "data/maps/TosaPort/scripts.pory"
 	.string "Sorry pal, but the site's currently\n"
 	.string "closed.$"
 
 TosaPort_Martin_Text_0:
-# 363 "data/maps/TosaPort/scripts.pory"
+# 362 "data/maps/TosaPort/scripts.pory"
 	.string "Welcome to Martin's Mart!\n"
 	.string "Trainer Supplies and Sundries.$"
 
 TosaPort_Martin_Text_1:
-# 366 "data/maps/TosaPort/scripts.pory"
+# 365 "data/maps/TosaPort/scripts.pory"
 	.string "Come back soon!$"

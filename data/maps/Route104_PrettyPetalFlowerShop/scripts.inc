@@ -169,28 +169,24 @@ Route104_PrettyPetalFlowerShop_EventScript_RandomBerryGirl::
 # 85 "data/maps/Route104_PrettyPetalFlowerShop/scripts.pory"
 	msgbox Route104_PrettyPetalFlowerShop_Text_ImGrowingFlowers, MSGBOX_DEFAULT
 # 86 "data/maps/Route104_PrettyPetalFlowerShop/scripts.pory"
-	random 8
+	giverandomberry BERRY_ID_CHERI, BERRY_ID_PERSIM
 # 87 "data/maps/Route104_PrettyPetalFlowerShop/scripts.pory"
-	addvar VAR_RESULT, FIRST_BERRY_INDEX
-# 88 "data/maps/Route104_PrettyPetalFlowerShop/scripts.pory"
-	giveitem VAR_RESULT
-# 89 "data/maps/Route104_PrettyPetalFlowerShop/scripts.pory"
 	goto_if_eq VAR_RESULT, 0, Common_EventScript_ShowBagIsFull
-# 90 "data/maps/Route104_PrettyPetalFlowerShop/scripts.pory"
+# 88 "data/maps/Route104_PrettyPetalFlowerShop/scripts.pory"
 	setflag FLAG_DAILY_FLOWER_SHOP_RECEIVED_BERRY
+# 89 "data/maps/Route104_PrettyPetalFlowerShop/scripts.pory"
+	msgbox Route104_PrettyPetalFlowerShop_Text_MachineMixesBerries, MSGBOX_DEFAULT
+# 90 "data/maps/Route104_PrettyPetalFlowerShop/scripts.pory"
+	release
 # 91 "data/maps/Route104_PrettyPetalFlowerShop/scripts.pory"
-	msgbox Route104_PrettyPetalFlowerShop_Text_MachineMixesBerries, MSGBOX_DEFAULT
-# 92 "data/maps/Route104_PrettyPetalFlowerShop/scripts.pory"
-	release
-# 93 "data/maps/Route104_PrettyPetalFlowerShop/scripts.pory"
 	end
-# 94 "data/maps/Route104_PrettyPetalFlowerShop/scripts.pory"
+# 92 "data/maps/Route104_PrettyPetalFlowerShop/scripts.pory"
 
-# 95 "data/maps/Route104_PrettyPetalFlowerShop/scripts.pory"
+# 93 "data/maps/Route104_PrettyPetalFlowerShop/scripts.pory"
 Route104_PrettyPetalFlowerShop_EventScript_AlreadyReceivedBerry::
-# 96 "data/maps/Route104_PrettyPetalFlowerShop/scripts.pory"
+# 94 "data/maps/Route104_PrettyPetalFlowerShop/scripts.pory"
 	msgbox Route104_PrettyPetalFlowerShop_Text_MachineMixesBerries, MSGBOX_DEFAULT
-# 97 "data/maps/Route104_PrettyPetalFlowerShop/scripts.pory"
+# 95 "data/maps/Route104_PrettyPetalFlowerShop/scripts.pory"
 	release
-# 98 "data/maps/Route104_PrettyPetalFlowerShop/scripts.pory"
+# 96 "data/maps/Route104_PrettyPetalFlowerShop/scripts.pory"
 	end

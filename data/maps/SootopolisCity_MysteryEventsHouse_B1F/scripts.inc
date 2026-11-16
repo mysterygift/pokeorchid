@@ -47,95 +47,95 @@ SootopolisCity_MysteryEventsHouse_B1F_EventScript_BattleVisitingTrainer::
 # 24 "data/maps/SootopolisCity_MysteryEventsHouse_B1F/scripts.pory"
 	special DoSpecialTrainerBattle
 # 25 "data/maps/SootopolisCity_MysteryEventsHouse_B1F/scripts.pory"
-	waitstate
-# 26 "data/maps/SootopolisCity_MysteryEventsHouse_B1F/scripts.pory"
 	call_if_eq VAR_RESULT, B_OUTCOME_DREW, SootopolisCity_MysteryEventsHouse_B1F_EventScript_BattleTie
-# 27 "data/maps/SootopolisCity_MysteryEventsHouse_B1F/scripts.pory"
+# 26 "data/maps/SootopolisCity_MysteryEventsHouse_B1F/scripts.pory"
 	call_if_eq VAR_RESULT, B_OUTCOME_WON, SootopolisCity_MysteryEventsHouse_B1F_EventScript_BattleWon
-# 28 "data/maps/SootopolisCity_MysteryEventsHouse_B1F/scripts.pory"
+# 27 "data/maps/SootopolisCity_MysteryEventsHouse_B1F/scripts.pory"
 	call_if_eq VAR_RESULT, B_OUTCOME_LOST, SootopolisCity_MysteryEventsHouse_B1F_EventScript_BattleLost
-# 29 "data/maps/SootopolisCity_MysteryEventsHouse_B1F/scripts.pory"
+# 28 "data/maps/SootopolisCity_MysteryEventsHouse_B1F/scripts.pory"
 	closemessage
-# 30 "data/maps/SootopolisCity_MysteryEventsHouse_B1F/scripts.pory"
+# 29 "data/maps/SootopolisCity_MysteryEventsHouse_B1F/scripts.pory"
 	special HealPlayerParty
-# 31 "data/maps/SootopolisCity_MysteryEventsHouse_B1F/scripts.pory"
+# 30 "data/maps/SootopolisCity_MysteryEventsHouse_B1F/scripts.pory"
 	applymovement LOCALID_PLAYER, SootopolisCity_MysteryEventsHouse_B1F_Movement_PlayerExitBasement
-# 32 "data/maps/SootopolisCity_MysteryEventsHouse_B1F/scripts.pory"
+# 31 "data/maps/SootopolisCity_MysteryEventsHouse_B1F/scripts.pory"
 	waitmovement 0
-# 33 "data/maps/SootopolisCity_MysteryEventsHouse_B1F/scripts.pory"
+# 32 "data/maps/SootopolisCity_MysteryEventsHouse_B1F/scripts.pory"
 	special LoadPlayerParty
-# 34 "data/maps/SootopolisCity_MysteryEventsHouse_B1F/scripts.pory"
+# 33 "data/maps/SootopolisCity_MysteryEventsHouse_B1F/scripts.pory"
 	setvar VAR_TEMP_1, 1
-# 35 "data/maps/SootopolisCity_MysteryEventsHouse_B1F/scripts.pory"
+# 34 "data/maps/SootopolisCity_MysteryEventsHouse_B1F/scripts.pory"
 	warp MAP_SOOTOPOLIS_CITY_MYSTERY_EVENTS_HOUSE_1F, 3, 1
-# 36 "data/maps/SootopolisCity_MysteryEventsHouse_B1F/scripts.pory"
+# 35 "data/maps/SootopolisCity_MysteryEventsHouse_B1F/scripts.pory"
 	waitstate
-# 37 "data/maps/SootopolisCity_MysteryEventsHouse_B1F/scripts.pory"
+# 36 "data/maps/SootopolisCity_MysteryEventsHouse_B1F/scripts.pory"
 	releaseall
-# 38 "data/maps/SootopolisCity_MysteryEventsHouse_B1F/scripts.pory"
+# 37 "data/maps/SootopolisCity_MysteryEventsHouse_B1F/scripts.pory"
 	end
+# 38 "data/maps/SootopolisCity_MysteryEventsHouse_B1F/scripts.pory"
+
 # 39 "data/maps/SootopolisCity_MysteryEventsHouse_B1F/scripts.pory"
-
-# 40 "data/maps/SootopolisCity_MysteryEventsHouse_B1F/scripts.pory"
 SootopolisCity_MysteryEventsHouse_B1F_EventScript_BattleTie::
-# 41 "data/maps/SootopolisCity_MysteryEventsHouse_B1F/scripts.pory"
+# 40 "data/maps/SootopolisCity_MysteryEventsHouse_B1F/scripts.pory"
 	setvar VAR_SOOTOPOLIS_MYSTERY_EVENTS_STATE, 3
-# 42 "data/maps/SootopolisCity_MysteryEventsHouse_B1F/scripts.pory"
+# 41 "data/maps/SootopolisCity_MysteryEventsHouse_B1F/scripts.pory"
 	msgbox SootopolisCity_MysteryEventsHouse_B1F_Text_MatchEndedUpDraw, MSGBOX_DEFAULT
+# 42 "data/maps/SootopolisCity_MysteryEventsHouse_B1F/scripts.pory"
+	return
 # 43 "data/maps/SootopolisCity_MysteryEventsHouse_B1F/scripts.pory"
-	return
+
 # 44 "data/maps/SootopolisCity_MysteryEventsHouse_B1F/scripts.pory"
-
-# 45 "data/maps/SootopolisCity_MysteryEventsHouse_B1F/scripts.pory"
 SootopolisCity_MysteryEventsHouse_B1F_EventScript_BattleWon::
-# 46 "data/maps/SootopolisCity_MysteryEventsHouse_B1F/scripts.pory"
+# 45 "data/maps/SootopolisCity_MysteryEventsHouse_B1F/scripts.pory"
 	setvar VAR_SOOTOPOLIS_MYSTERY_EVENTS_STATE, 1
+# 46 "data/maps/SootopolisCity_MysteryEventsHouse_B1F/scripts.pory"
+	special ShowFieldMessageStringVar4
 # 47 "data/maps/SootopolisCity_MysteryEventsHouse_B1F/scripts.pory"
-	special ShowFieldMessageStringVar4
+	waitmessage
 # 48 "data/maps/SootopolisCity_MysteryEventsHouse_B1F/scripts.pory"
-	waitmessage
+	waitbuttonpress
 # 49 "data/maps/SootopolisCity_MysteryEventsHouse_B1F/scripts.pory"
-	waitbuttonpress
+	return
 # 50 "data/maps/SootopolisCity_MysteryEventsHouse_B1F/scripts.pory"
-	return
+
 # 51 "data/maps/SootopolisCity_MysteryEventsHouse_B1F/scripts.pory"
-
-# 52 "data/maps/SootopolisCity_MysteryEventsHouse_B1F/scripts.pory"
 SootopolisCity_MysteryEventsHouse_B1F_EventScript_BattleLost::
-# 53 "data/maps/SootopolisCity_MysteryEventsHouse_B1F/scripts.pory"
+# 52 "data/maps/SootopolisCity_MysteryEventsHouse_B1F/scripts.pory"
 	setvar VAR_SOOTOPOLIS_MYSTERY_EVENTS_STATE, 2
-# 54 "data/maps/SootopolisCity_MysteryEventsHouse_B1F/scripts.pory"
+# 53 "data/maps/SootopolisCity_MysteryEventsHouse_B1F/scripts.pory"
 	special ShowFieldMessageStringVar4
-# 55 "data/maps/SootopolisCity_MysteryEventsHouse_B1F/scripts.pory"
+# 54 "data/maps/SootopolisCity_MysteryEventsHouse_B1F/scripts.pory"
 	waitmessage
-# 56 "data/maps/SootopolisCity_MysteryEventsHouse_B1F/scripts.pory"
+# 55 "data/maps/SootopolisCity_MysteryEventsHouse_B1F/scripts.pory"
 	waitbuttonpress
-# 57 "data/maps/SootopolisCity_MysteryEventsHouse_B1F/scripts.pory"
+# 56 "data/maps/SootopolisCity_MysteryEventsHouse_B1F/scripts.pory"
 	return
-# 58 "data/maps/SootopolisCity_MysteryEventsHouse_B1F/scripts.pory"
+# 57 "data/maps/SootopolisCity_MysteryEventsHouse_B1F/scripts.pory"
 
-# 59 "data/maps/SootopolisCity_MysteryEventsHouse_B1F/scripts.pory"
+# 58 "data/maps/SootopolisCity_MysteryEventsHouse_B1F/scripts.pory"
 SootopolisCity_MysteryEventsHouse_B1F_Movement_PlayerEnterBasement:
+# 59 "data/maps/SootopolisCity_MysteryEventsHouse_B1F/scripts.pory"
+	walk_down
 # 60 "data/maps/SootopolisCity_MysteryEventsHouse_B1F/scripts.pory"
 	walk_down
 # 61 "data/maps/SootopolisCity_MysteryEventsHouse_B1F/scripts.pory"
 	walk_down
 # 62 "data/maps/SootopolisCity_MysteryEventsHouse_B1F/scripts.pory"
-	walk_down
+	walk_right
 # 63 "data/maps/SootopolisCity_MysteryEventsHouse_B1F/scripts.pory"
 	walk_right
 # 64 "data/maps/SootopolisCity_MysteryEventsHouse_B1F/scripts.pory"
-	walk_right
-# 65 "data/maps/SootopolisCity_MysteryEventsHouse_B1F/scripts.pory"
 	step_end
-# 66 "data/maps/SootopolisCity_MysteryEventsHouse_B1F/scripts.pory"
+# 65 "data/maps/SootopolisCity_MysteryEventsHouse_B1F/scripts.pory"
 
-# 67 "data/maps/SootopolisCity_MysteryEventsHouse_B1F/scripts.pory"
+# 66 "data/maps/SootopolisCity_MysteryEventsHouse_B1F/scripts.pory"
 SootopolisCity_MysteryEventsHouse_B1F_Movement_PlayerExitBasement:
+# 67 "data/maps/SootopolisCity_MysteryEventsHouse_B1F/scripts.pory"
+	walk_left
 # 68 "data/maps/SootopolisCity_MysteryEventsHouse_B1F/scripts.pory"
 	walk_left
 # 69 "data/maps/SootopolisCity_MysteryEventsHouse_B1F/scripts.pory"
-	walk_left
+	walk_up
 # 70 "data/maps/SootopolisCity_MysteryEventsHouse_B1F/scripts.pory"
 	walk_up
 # 71 "data/maps/SootopolisCity_MysteryEventsHouse_B1F/scripts.pory"
@@ -143,8 +143,6 @@ SootopolisCity_MysteryEventsHouse_B1F_Movement_PlayerExitBasement:
 # 72 "data/maps/SootopolisCity_MysteryEventsHouse_B1F/scripts.pory"
 	walk_up
 # 73 "data/maps/SootopolisCity_MysteryEventsHouse_B1F/scripts.pory"
-	walk_up
-# 74 "data/maps/SootopolisCity_MysteryEventsHouse_B1F/scripts.pory"
 	delay_8
-# 75 "data/maps/SootopolisCity_MysteryEventsHouse_B1F/scripts.pory"
+# 74 "data/maps/SootopolisCity_MysteryEventsHouse_B1F/scripts.pory"
 	step_end

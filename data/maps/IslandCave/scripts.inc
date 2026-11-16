@@ -199,40 +199,38 @@ IslandCave_EventScript_Regice::
 # 100 "data/maps/IslandCave/scripts.pory"
 	special StartRegiBattle
 # 101 "data/maps/IslandCave/scripts.pory"
-	waitstate
-# 102 "data/maps/IslandCave/scripts.pory"
 	clearflag FLAG_SYS_CTRL_OBJ_DELETE
-# 103 "data/maps/IslandCave/scripts.pory"
+# 102 "data/maps/IslandCave/scripts.pory"
 	specialvar VAR_RESULT, GetBattleOutcome
-# 104 "data/maps/IslandCave/scripts.pory"
+# 103 "data/maps/IslandCave/scripts.pory"
 	goto_if_eq VAR_RESULT, B_OUTCOME_WON, IslandCave_EventScript_DefeatedRegice
-# 105 "data/maps/IslandCave/scripts.pory"
+# 104 "data/maps/IslandCave/scripts.pory"
 	goto_if_eq VAR_RESULT, B_OUTCOME_RAN, IslandCave_EventScript_RanFromRegice
-# 106 "data/maps/IslandCave/scripts.pory"
+# 105 "data/maps/IslandCave/scripts.pory"
 	goto_if_eq VAR_RESULT, B_OUTCOME_PLAYER_TELEPORTED, IslandCave_EventScript_RanFromRegice
+# 106 "data/maps/IslandCave/scripts.pory"
+	setflag FLAG_DEFEATED_REGICE
 # 107 "data/maps/IslandCave/scripts.pory"
-	setflag FLAG_DEFEATED_REGICE
-# 108 "data/maps/IslandCave/scripts.pory"
 	release
+# 108 "data/maps/IslandCave/scripts.pory"
+	end
 # 109 "data/maps/IslandCave/scripts.pory"
-	end
+
 # 110 "data/maps/IslandCave/scripts.pory"
-
-# 111 "data/maps/IslandCave/scripts.pory"
 IslandCave_EventScript_DefeatedRegice::
-# 112 "data/maps/IslandCave/scripts.pory"
+# 111 "data/maps/IslandCave/scripts.pory"
 	setflag FLAG_DEFEATED_REGICE
-# 113 "data/maps/IslandCave/scripts.pory"
+# 112 "data/maps/IslandCave/scripts.pory"
 	goto Common_EventScript_RemoveStaticPokemon
-# 114 "data/maps/IslandCave/scripts.pory"
+# 113 "data/maps/IslandCave/scripts.pory"
 	end
-# 115 "data/maps/IslandCave/scripts.pory"
+# 114 "data/maps/IslandCave/scripts.pory"
 
-# 116 "data/maps/IslandCave/scripts.pory"
+# 115 "data/maps/IslandCave/scripts.pory"
 IslandCave_EventScript_RanFromRegice::
-# 117 "data/maps/IslandCave/scripts.pory"
+# 116 "data/maps/IslandCave/scripts.pory"
 	setvar VAR_0x8004, SPECIES_REGICE
-# 118 "data/maps/IslandCave/scripts.pory"
+# 117 "data/maps/IslandCave/scripts.pory"
 	goto Common_EventScript_LegendaryFlewAway
-# 119 "data/maps/IslandCave/scripts.pory"
+# 118 "data/maps/IslandCave/scripts.pory"
 	end

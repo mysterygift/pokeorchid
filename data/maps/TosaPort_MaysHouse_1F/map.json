@@ -3,6 +3,7 @@
   "name": "TosaPort_MaysHouse_1F",
   "layout": "LAYOUT_TOSA_PORT_MAYS_HOUSE_1F",
   "music": "MUS_LITTLEROOT",
+  "region": "REGION_HOENN",
   "region_map_section": "MAPSEC_TOSA_PORT",
   "requires_flash": false,
   "weather": "WEATHER_NONE",
