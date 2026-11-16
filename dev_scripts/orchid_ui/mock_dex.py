@@ -316,48 +316,80 @@ def area_body(tc, ac, sp):
 
 # ------------------------------------------------------------------ search menu (std-window style)
 SEARCH_ROWS = [("ORDER", "Numerical"), ("NAME", "ABC"), ("TYPE", None), ("MODE", "TOSA")]
+S_X, S_W, S_CAP, S_Y0, S_PITCH = 16, 208, 56, 24, 20
+S_BTN_X, S_BTN_Y, S_BTN_W = (40, 128), 112, 72
+S_TRAY_Y = 136
+# TYPE row: two fixed recessed sockets (always drawn, so the row reads as two fields), centred in
+# the pill's value area (x 73-222). A set slot shows its 32x16 icon centred in the socket; an
+# unset slot shows a quiet "ANY" in INK_SOFT. The sockets fill the row's two tile rows (y 64-79,
+# 2px below the 14px pill) so the gold row swap never touches the NAME / MODE rows.
+SOCKET_W, SOCKET_H, SOCKET_GAP = 36, 16, 12
+SOCKET_Y = S_Y0 + 2 * S_PITCH
 
 
-def render_search(theme="orchid", cursor=0, grid_scroll=0):
+def socket_x(k):
+    x0, x1 = S_X + S_CAP + 1, S_X + S_W - 2
+    total = 2 * SOCKET_W + SOCKET_GAP
+    return (x0 + x1 + 1) // 2 - total // 2 + k * (SOCKET_W + SOCKET_GAP)
+
+
+def search_row_art(cv, i):
+    D.label_pill(cv, S_X, S_Y0 + i * S_PITCH, S_W, S_CAP)
+    if i == 2:
+        for k in range(2):
+            D.well(cv, socket_x(k), SOCKET_Y, SOCKET_W, SOCKET_H)
+
+
+def search_art(cv, cur=None, cursor=-1):
+    """BG art of the search page; the cursor row / button goes on `cur` (gold palette)."""
+    D.header_band(cv, 0, W - 1, round_left=False)
+    for i in range(4):
+        search_row_art(cur if (cur is not None and i == cursor) else cv, i)
+    for k, xx in enumerate(S_BTN_X):
+        c = cur if (cur is not None and cursor == 4 + k) else cv
+        rounded_box(c, xx, S_BTN_Y, S_BTN_W, 18, 4, PANEL, INK, WHITE, PANEL_SHADE)
+    D.tray(cv, S_TRAY_Y)
+
+
+def render_search(theme="orchid", cursor=0, grid_scroll=0, types=("grass", "water"), slot=0):
     pal = D.dex_palette(theme)
     sel = D.selected(pal)
     out = KX.grid_frame(grid_scroll)
     art, cur, txt = sheet(theme), sheet(theme), sheet(theme)
     ac, cc, tc = Canvas(art), Canvas(cur), Canvas(txt)
-    D.header_band(ac, 0, W - 1, round_left=False)
-    x, w, cap = 16, 208, 56
-    y0 = 24
-    for i, (lab, val) in enumerate(SEARCH_ROWS):
-        y = y0 + i * 20
-        D.label_pill(cc if i == cursor else ac, x, y, w, cap)
-    # buttons
-    bx = [(40, "SEARCH"), (128, "CANCEL")]
-    for i, (xx, lab) in enumerate(bx):
-        rounded_box(cc if cursor == 4 + i else ac, xx, 112, 72, 18, 4, PANEL, INK, WHITE, PANEL_SHADE)
-    D.tray(ac, 136)
+    search_art(ac, cc, cursor)
     draw_text(tc, (W - text_width("SEARCH")) // 2, 0, "SEARCH", WHITE, ACCENT_DARK)
     for i, (lab, val) in enumerate(SEARCH_ROWS):
-        y = y0 + i * 20
-        draw_text(tc, x + (cap - text_width(lab)) // 2 + 1, y - 1, lab, WHITE, ACCENT_DARK)
+        y = S_Y0 + i * S_PITCH
+        draw_text(tc, S_X + (S_CAP - text_width(lab)) // 2 + 1, y - 1, lab, WHITE, ACCENT_DARK)
         if val:
-            draw_text(tc, x + cap + (w - cap - text_width(val)) // 2, y - 1, val, INK, PANEL_SHADE)
-    for i, (xx, lab) in enumerate(bx):
-        draw_text(tc, xx + (72 - text_width(lab)) // 2, 113, lab, INK, PANEL_SHADE)
+            draw_text(tc, S_X + S_CAP + (S_W - S_CAP - text_width(val)) // 2, y - 1, val, INK, PANEL_SHADE)
+    for k in range(2):
+        if not types[k]:
+            sx = socket_x(k)
+            draw_text(tc, sx + (SOCKET_W - text_width("ANY", "narrow")) // 2, SOCKET_Y, "ANY", INK_SOFT, None, font="narrow")
+    for i, (xx, lab) in enumerate(zip(S_BTN_X, ("SEARCH", "CANCEL"))):
+        draw_text(tc, xx + (S_BTN_W - text_width(lab)) // 2, S_BTN_Y + 1, lab, INK, PANEL_SHADE)
     hint = ["Pick the order the list is sorted in.", "List POKéMON by their first letter.",
-            "Show POKéMON of up to two types.", "Switch TOSA / NATIONAL listings."][min(cursor, 3)]
-    draw_text(tc, DESC_X, 138, hint, INK, PANEL_SHADE, line_h=DESC_PITCH)
+            "Show POKéMON of up to two types. A: slot", "Switch TOSA / NATIONAL listings."][min(cursor, 3)]
+    draw_text(tc, DESC_X, S_TRAY_Y + 2, hint, INK, PANEL_SHADE, line_h=DESC_PITCH)
     a = KX.sheet_rgba(art, pal)
     a.alpha_composite(KX.sheet_rgba(cur, sel))
     a.alpha_composite(KX.sheet_rgba(txt, pal))
     out.alpha_composite(a)
-    # OBJ: value chevrons on the selected row, type icons in the TYPE row
-    ty = y0 + 2 * 20 - 1
-    out.alpha_composite(KX.type_icon("grass"), (x + cap + 40, ty))
-    out.alpha_composite(KX.type_icon("water"), (x + cap + 80, ty))
+    # OBJ: type icons centred in their sockets, value chevrons on the selected row
+    for k in range(2):
+        if types[k]:
+            out.alpha_composite(KX.type_icon(types[k]), (socket_x(k) + 2, SOCKET_Y))
     if cursor < 4:
-        y = y0 + cursor * 20 + 7
-        D.chevron(out, x + cap + 12, y)
-        D.chevron(out, x + w - 12, y, right=True)
+        y = S_Y0 + cursor * S_PITCH + 7
+        if cursor == 2:     # chevrons flank the socket being edited, 3px clear
+            sx = socket_x(slot)
+            D.chevron(out, sx - 6, y)
+            D.chevron(out, sx + SOCKET_W + 6, y, right=True)
+        else:
+            D.chevron(out, S_X + S_CAP + 12, y)
+            D.chevron(out, S_X + S_W - 12, y, right=True)
     return out
 
 
@@ -463,11 +495,16 @@ if __name__ == "__main__":
     s4 = render_entry(entry_index=idx(1))                             # Treecko INFO
     s5 = render_entry(entry_index=idx(20))                            # Lotad, Water/Grass
     s6 = render_search(cursor=0)
+    # TYPE row sockets: zero / one / two types, cursor on the TYPE row (editing slot 1 / 2)
+    s6t = [render_search(cursor=2, types=(None, None)), render_search(cursor=2, types=("grass", None)),
+           render_search(cursor=2, types=("grass", "water"), slot=1), render_search(cursor=1, types=("grass", None))]
     s7 = render_entry(entry_index=idx(26), tab=1)
     s8 = render_entry(entry_index=idx(21))                            # Lombre, seen only: ????? rule     # Taillow AREA placeholder
     save(s1, os.path.join(out, "main.png"))
     for i, im in enumerate((s1, s2, s3, s4, s5, s6, s7, s8), 1):
         save(im, os.path.join(out, "state_%02d.png" % i))
+    for k, im in enumerate(s6t):
+        save(im, os.path.join(out, "state_06%s.png" % "abcd"[k]))
     parts_sheet().convert("RGB").save(os.path.join(out, "parts.png"))
     # theme A/B
     D.ensure_device_theme()

@@ -4,7 +4,7 @@
 #define GUARD_DATA_POKEDEX_ORCHID_H
 
 #define ODEX_LIST_NUM_TILES      106   // list sheet tiles (blank 0, grid 1-4, art)
-#define ODEX_ENTRY_NUM_TILES     180   // INFO + AREA + SEARCH sheet tiles (blank 0, grid 1-4, art)
+#define ODEX_ENTRY_NUM_TILES     185   // INFO + AREA + SEARCH sheet tiles (blank 0, grid 1-4, art)
 #define ODEX_GRID_TILE_BASE      1    // grid TL, TR, BL, BR in both sheets
 #define ODEX_PAL_NORMAL          0
 #define ODEX_PAL_SELECTED        1
@@ -76,5 +76,9 @@
 #define ODEX_S_BTN_Y             112
 #define ODEX_S_BTN_W             72
 #define ODEX_S_TRAY_Y            136
+#define ODEX_S_SOCKET_X0         106  // TYPE row sockets (BG art), 2nd at + SOCKET_PITCH
+#define ODEX_S_SOCKET_PITCH      48
+#define ODEX_S_SOCKET_Y          64
+#define ODEX_S_SOCKET_W          36
 
 #endif // GUARD_DATA_POKEDEX_ORCHID_H

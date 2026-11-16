@@ -2553,6 +2553,7 @@ static const u8 *const sODexSearchHints[] = {
     [ODEX_SROW_CANCEL] = COMPOUND_STRING("Return to the POKéDEX."),
 };
 static const u8 sODexText_Any[] = _("Any");
+static const u8 sODexText_AnyCaps[] = _("ANY");
 static const u8 sODexText_Search[] = _("SEARCH");
 static const u8 sODexText_Cancel[] = _("CANCEL");
 static const u8 sODexText_Searching[] = _("Searching…");
@@ -2588,6 +2589,13 @@ static void ODex_SearchHighlight(u32 row)
     CopyBgTilemapBufferToVram(3);
 }
 
+// TYPE row: two fixed recessed sockets (BG art) so the row always reads as two fields.
+// A set slot shows its type icon centred in the socket; an unset slot shows "ANY" (INK_SOFT).
+static s32 ODex_SocketX(u32 k)
+{
+    return ODEX_S_SOCKET_X0 + k * ODEX_S_SOCKET_PITCH;
+}
+
 static void ODex_SearchUpdateSprites(u8 taskId)
 {
     s16 *data = gTasks[taskId].data;
@@ -2609,8 +2617,8 @@ static void ODex_SearchUpdateSprites(u8 taskId)
         }
         StartSpriteAnim(sprite, type);
         sprite->oam.paletteNum = gTypesInfo[type].palette;
-        sprite->x = ODEX_S_X + ODEX_S_CAP + 40 * (i + 1) + 16;
-        sprite->y = ODex_SearchRowY(ODEX_SROW_TYPE) - 1 + 8;
+        sprite->x = ODex_SocketX(i) + 2 + 16;
+        sprite->y = ODEX_S_SOCKET_Y + 8;
         sprite->invisible = FALSE;
     }
 
@@ -2624,9 +2632,9 @@ static void ODex_SearchUpdateSprites(u8 taskId)
     rx = ODEX_S_X + ODEX_S_W - 12;
     if (row == ODEX_SROW_TYPE)
     {
-        // chevrons flank the type slot being edited
-        lx = ODEX_S_X + ODEX_S_CAP + 40 * (tSearchSlot + 1) - 6;
-        rx = lx + 32 + 11;
+        // chevrons flank the socket being edited, 3px clear on both sides
+        lx = ODex_SocketX(tSearchSlot) - 6;
+        rx = ODex_SocketX(tSearchSlot) + ODEX_S_SOCKET_W + 6;
     }
     gSprites[tSearchArrowL].x = lx;
     gSprites[tSearchArrowR].x = rx;
@@ -2657,8 +2665,10 @@ static void ODex_SearchPrint(u8 taskId)
             val = tSearchName ? sDexSearchNameOptions[tSearchName].title : sODexText_Any;
             break;
         case ODEX_SROW_TYPE:
-            if (tSearchType1 == 0 && tSearchType2 == 0)
-                val = sODexText_Any;
+            if (tSearchType1 == 0)
+                ODex_PrintCentered(0, FONT_NARROW, sODexText_AnyCaps, ODex_SocketX(0), ODEX_S_SOCKET_W, ODEX_S_SOCKET_Y, sODexText_Faint);
+            if (tSearchType2 == 0)
+                ODex_PrintCentered(0, FONT_NARROW, sODexText_AnyCaps, ODex_SocketX(1), ODEX_S_SOCKET_W, ODEX_S_SOCKET_Y, sODexText_Faint);
             break;
         case ODEX_SROW_MODE:
             val = tSearchMode == DEX_MODE_NATIONAL ? sODexText_National : sODexText_Tosa;
@@ -2817,7 +2827,7 @@ static void Task_ODexSearchInput(u8 taskId)
         {
             tSearchSlot ^= 1;
             PlaySE(SE_SELECT);
-            ODex_SearchUpdateSprites(taskId);
+            ODex_SearchPrint(taskId);
         }
         return;
     }

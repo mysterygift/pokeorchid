@@ -67,19 +67,11 @@ def art(fn):
     return im
 
 
-def search_art(cv):
-    D.header_band(cv, 0, M.W - 1, round_left=False)
-    for i in range(4):
-        D.label_pill(cv, SEARCH_X, SEARCH_Y0 + i * SEARCH_PITCH, SEARCH_W, SEARCH_CAP)
-    for xx in SEARCH_BTN_X:
-        rounded_box(cv, xx, SEARCH_BTN_Y, SEARCH_BTN_W, 18, 4, PANEL, INK, WHITE, PANEL_SHADE)
-    D.tray(cv, SEARCH_TRAY_Y)
-
-
-# search page layout (mock_dex.render_search)
-SEARCH_X, SEARCH_W, SEARCH_CAP, SEARCH_Y0, SEARCH_PITCH = 16, 208, 56, 24, 20
-SEARCH_BTN_X, SEARCH_BTN_Y, SEARCH_BTN_W = (40, 128), 112, 72
-SEARCH_TRAY_Y = 136
+# search page layout and art live in mock_dex (search_art / socket_x)
+SEARCH_X, SEARCH_W, SEARCH_CAP, SEARCH_Y0, SEARCH_PITCH = M.S_X, M.S_W, M.S_CAP, M.S_Y0, M.S_PITCH
+SEARCH_BTN_X, SEARCH_BTN_Y, SEARCH_BTN_W = M.S_BTN_X, M.S_BTN_Y, M.S_BTN_W
+SEARCH_TRAY_Y = M.S_TRAY_Y
+search_art = M.search_art
 
 
 def export():
@@ -212,6 +204,10 @@ def write_header(n_list, n_entry):
     a("#define ODEX_S_BTN_Y             %d" % SEARCH_BTN_Y)
     a("#define ODEX_S_BTN_W             %d" % SEARCH_BTN_W)
     a("#define ODEX_S_TRAY_Y            %d" % SEARCH_TRAY_Y)
+    a("#define ODEX_S_SOCKET_X0         %d  // TYPE row sockets (BG art), 2nd at + SOCKET_PITCH" % M.socket_x(0))
+    a("#define ODEX_S_SOCKET_PITCH      %d" % (M.SOCKET_W + M.SOCKET_GAP))
+    a("#define ODEX_S_SOCKET_Y          %d" % M.SOCKET_Y)
+    a("#define ODEX_S_SOCKET_W          %d" % M.SOCKET_W)
     a("")
     a("#endif // GUARD_DATA_POKEDEX_ORCHID_H")
     with open(P("src", "data", "pokedex_orchid.h"), "w") as f:
