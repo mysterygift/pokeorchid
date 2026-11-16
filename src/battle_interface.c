@@ -370,143 +370,73 @@ static const struct SubspriteTable sHealthBar_SubspriteTables[] =
 /*                      v-- Origin
 [0     ][1     ][2     ][3     ]   128x8
 */
-static const struct Subsprite sStatusSummaryBar_Subsprites_Enter[] =
+// Orchid UI: party lineup (dev_scripts/orchid_ui/export_battle.py). The bar is 3x 32x16 in the
+// healthbox-B language (player art at tile 0, opponent art at tile 24, no flipping); the balls
+// are 16x16 frames: ready / empty / fainted / one per status colour.
+#define LINEUP_SUBSPRITE(n, side) \
+{ \
+    .x = 32 * (n), \
+    .y = 0, \
+    .shape = SPRITE_SHAPE(32x16), \
+    .size = SPRITE_SIZE(32x16), \
+    .tileOffset = 24 * (side) + 8 * (n), \
+    .priority = 1 \
+}
+
+static const struct Subsprite sStatusSummaryBar_Subsprites_Player[] =
 {
-    {
-        .x = 32 * -3,
-        .y = 0,
-        .shape = SPRITE_SHAPE(32x8),
-        .size = SPRITE_SIZE(32x8),
-        .tileOffset = 0,
-        .priority = 1
-    },
-    {
-        .x = 32 * -2,
-        .y = 0,
-        .shape = SPRITE_SHAPE(32x8),
-        .size = SPRITE_SIZE(32x8),
-        .tileOffset = 4,
-        .priority = 1
-    },
-    {
-        .x = 32 * -1,
-        .y = 0,
-        .shape = SPRITE_SHAPE(32x8),
-        .size = SPRITE_SIZE(32x8),
-        .tileOffset = 8,
-        .priority = 1
-    },
-    {
-        .x = 0,
-        .y = 0,
-        .shape = SPRITE_SHAPE(32x8),
-        .size = SPRITE_SIZE(32x8),
-        .tileOffset = 12,
-        .priority = 1
-    }
+    LINEUP_SUBSPRITE(0, 0), LINEUP_SUBSPRITE(1, 0), LINEUP_SUBSPRITE(2, 0),
 };
 
-/*                      v-- Origin
-[0     ][1     ][2     ][3     ][4     ][5     ]   192x8
-                 ^-- uses same tiles --^
-*/
-static const struct Subsprite sStatusSummaryBar_Subsprites_Exit[] =
+static const struct Subsprite sStatusSummaryBar_Subsprites_Opponent[] =
 {
-    {
-        .x = 32 * -3,
-        .y = 0,
-        .shape = SPRITE_SHAPE(32x8),
-        .size = SPRITE_SIZE(32x8),
-        .tileOffset = 0,
-        .priority = 1
-    },
-    {
-        .x = 32 * -2,
-        .y = 0,
-        .shape = SPRITE_SHAPE(32x8),
-        .size = SPRITE_SIZE(32x8),
-        .tileOffset = 4,
-        .priority = 1
-    },
-    {
-        .x = 32 * -1,
-        .y = 0,
-        .shape = SPRITE_SHAPE(32x8),
-        .size = SPRITE_SIZE(32x8),
-        .tileOffset = 8,
-        .priority = 1
-    },
-    {
-        .x = 32 * 0,
-        .y = 0,
-        .shape = SPRITE_SHAPE(32x8),
-        .size = SPRITE_SIZE(32x8),
-        .tileOffset = 8,
-        .priority = 1
-    },
-    {
-        .x = 32 * 1,
-        .y = 0,
-        .shape = SPRITE_SHAPE(32x8),
-        .size = SPRITE_SIZE(32x8),
-        .tileOffset = 8,
-        .priority = 1
-    },
-    {
-        .x = 32 * 2,
-        .y = 0,
-        .shape = SPRITE_SHAPE(32x8),
-        .size = SPRITE_SIZE(32x8),
-        .tileOffset = 12,
-        .priority = 1
-    }
+    LINEUP_SUBSPRITE(0, 1), LINEUP_SUBSPRITE(1, 1), LINEUP_SUBSPRITE(2, 1),
 };
 
-static const struct SubspriteTable sStatusSummaryBar_SubspriteTable_Enter[] =
+static const struct SubspriteTable sStatusSummaryBar_SubspriteTables[] =
 {
-    {ARRAY_COUNT(sStatusSummaryBar_Subsprites_Enter), sStatusSummaryBar_Subsprites_Enter}
+    {ARRAY_COUNT(sStatusSummaryBar_Subsprites_Player), sStatusSummaryBar_Subsprites_Player},
+    {ARRAY_COUNT(sStatusSummaryBar_Subsprites_Opponent), sStatusSummaryBar_Subsprites_Opponent},
 };
 
-static const struct SubspriteTable sStatusSummaryBar_SubspriteTable_Exit[] =
+static const struct SpriteSheet sStatusSummaryBarSpriteSheet =
 {
-    {ARRAY_COUNT(sStatusSummaryBar_Subsprites_Exit), sStatusSummaryBar_Subsprites_Exit}
-};
-
-static const struct CompressedSpriteSheet sStatusSummaryBarSpriteSheet =
-{
-    gBattleInterface_BallStatusBarGfx, 0x200, TAG_STATUS_SUMMARY_BAR_TILE
+    gOrchidLineupBars_Gfx, 48 * TILE_SIZE_4BPP, TAG_STATUS_SUMMARY_BAR_TILE
 };
 
 static const struct SpritePalette sStatusSummaryBarSpritePal =
 {
-    gBattleInterface_BallStatusBarPal, TAG_STATUS_SUMMARY_BAR_PAL
+    gOrchidHealthbox_Pal, TAG_STATUS_SUMMARY_BAR_PAL
 };
 
 static const struct SpritePalette sStatusSummaryBallsSpritePal =
 {
-    gBattleInterface_BallDisplayPal, TAG_STATUS_SUMMARY_BALLS_PAL
+    gOrchidLineupBalls_Pal, TAG_STATUS_SUMMARY_BALLS_PAL
 };
 
 static const struct SpriteSheet sStatusSummaryBallsSpriteSheet =
 {
-    &gHealthboxElementsGfxTable[HEALTHBOX_GFX_STATUS_BALL], 0x80, TAG_STATUS_SUMMARY_BALLS_TILE
+    gOrchidLineupBalls_Gfx, 8 * 4 * TILE_SIZE_4BPP, TAG_STATUS_SUMMARY_BALLS_TILE
+};
+
+static const struct OamData sOamData_StatusSummaryBar =
+{
+    .affineMode = ST_OAM_AFFINE_OFF,
+    .objMode = ST_OAM_OBJ_NORMAL,
+    .bpp = ST_OAM_4BPP,
+    .shape = SPRITE_SHAPE(32x16),
+    .size = SPRITE_SIZE(32x16),
+    .priority = 1,
 };
 
 static const struct OamData sOamData_StatusSummaryBalls =
 {
-    .y = 0,
     .affineMode = ST_OAM_AFFINE_OFF,
     .objMode = ST_OAM_OBJ_NORMAL,
-    .mosaic = FALSE,
     .bpp = ST_OAM_4BPP,
-    .shape = SPRITE_SHAPE(8x8),
-    .x = 0,
-    .matrixNum = 0,
-    .size = SPRITE_SIZE(8x8),
-    .tileNum = 0,
+    .shape = SPRITE_SHAPE(16x16),
+    .size = SPRITE_SIZE(16x16),
     .priority = 1,
-    .paletteNum = 0,
-    .affineParam = 0,
 };
 
 static const struct SpriteTemplate sStatusSummaryBarSpriteTemplates[2] =
@@ -514,13 +444,13 @@ static const struct SpriteTemplate sStatusSummaryBarSpriteTemplates[2] =
     { // Player
         .tileTag = TAG_STATUS_SUMMARY_BAR_TILE,
         .paletteTag = TAG_STATUS_SUMMARY_BAR_PAL,
-        .oam = &sOamData_64x32,
+        .oam = &sOamData_StatusSummaryBar,
         .callback = SpriteCB_StatusSummaryBar_Enter
     },
     { // Opponent
         .tileTag = TAG_STATUS_SUMMARY_BAR_TILE,
         .paletteTag = TAG_STATUS_SUMMARY_BAR_PAL,
-        .oam = &sOamData_64x32,
+        .oam = &sOamData_StatusSummaryBar,
         .callback = SpriteCB_StatusSummaryBar_Enter
     }
 };
@@ -540,6 +470,24 @@ static const struct SpriteTemplate sStatusSummaryBallsSpriteTemplates[2] =
         .callback = SpriteCB_StatusSummaryBalls_Enter
     }
 };
+
+// Ball frame (x4 tiles) for a party slot: status colour dot by primary status.
+static u32 LineupBallStatusTiles(u32 status)
+{
+    u32 frame = ORCHID_BALL_PSN;
+
+    if (status & STATUS1_SLEEP)
+        frame = ORCHID_BALL_SLP;
+    else if (status & STATUS1_PSN_ANY)
+        frame = ORCHID_BALL_PSN;
+    else if (status & STATUS1_BURN)
+        frame = ORCHID_BALL_BRN;
+    else if (status & (STATUS1_FREEZE | STATUS1_FROSTBITE))
+        frame = ORCHID_BALL_FRZ;
+    else if (status & STATUS1_PARALYSIS)
+        frame = ORCHID_BALL_PAR;
+    return frame * 4;
+}
 
 static const u8 sEmptyWhiteText_GrayHighlight[] = __("{COLOR WHITE}{BACKGROUND DARK_GRAY}{ACCENT DARK_GRAY}              ");
 static const u8 sEmptyWhiteText_TransparentHighlight[] = __("{COLOR WHITE}{BACKGROUND TRANSPARENT}{ACCENT TRANSPARENT}              ");
@@ -1854,29 +1802,22 @@ u8 CreatePartyStatusSummarySprites(enum BattlerId battler, struct HpAndStatus *p
         bar_data0 = 5;
     }
 
-    LoadCompressedSpriteSheetUsingHeap(&sStatusSummaryBarSpriteSheet);
+    LoadSpriteSheet(&sStatusSummaryBarSpriteSheet);
     LoadSpriteSheet(&sStatusSummaryBallsSpriteSheet);
     LoadSpritePalette(&sStatusSummaryBarSpritePal);
     LoadSpritePalette(&sStatusSummaryBallsSpritePal);
 
+    // Orchid UI: same vertical spots as vanilla (minus ORCHID_LINEUP_VANILLA_DY), bars flush to the screen edge
+    bar_Y += ORCHID_LINEUP_VANILLA_DY;
+    bar_X = isOpponent ? ORCHID_LINEUP_OPP_X : ORCHID_LINEUP_PLR_X;
     summaryBarSpriteId = CreateSprite(&sStatusSummaryBarSpriteTemplates[isOpponent], bar_X, bar_Y, 10);
-    SetSubspriteTables(&gSprites[summaryBarSpriteId], sStatusSummaryBar_SubspriteTable_Enter);
+    SetSubspriteTables(&gSprites[summaryBarSpriteId], &sStatusSummaryBar_SubspriteTables[isOpponent]);
     gSprites[summaryBarSpriteId].x2 = bar_pos2_X;
     gSprites[summaryBarSpriteId].data[0] = bar_data0;
 
-    if (isOpponent)
-    {
-        gSprites[summaryBarSpriteId].x -= 96;
-        gSprites[summaryBarSpriteId].oam.matrixNum = ST_OAM_HFLIP;
-    }
-    else
-    {
-        gSprites[summaryBarSpriteId].x += 96;
-    }
-
     for (i = 0; i < PARTY_SIZE; i++)
     {
-        ballIconSpritesIds[i] = CreateSpriteAtEnd(&sStatusSummaryBallsSpriteTemplates[isOpponent], bar_X, bar_Y - 4, 9);
+        ballIconSpritesIds[i] = CreateSpriteAtEnd(&sStatusSummaryBallsSpriteTemplates[isOpponent], bar_X + 8, bar_Y + ORCHID_LINEUP_SOCKET_DY + 8, 9);
 
         if (!isBattleStart)
             gSprites[ballIconSpritesIds[i]].callback = SpriteCB_StatusSummaryBalls_OnSwitchout;
@@ -1891,13 +1832,13 @@ u8 CreatePartyStatusSummarySprites(enum BattlerId battler, struct HpAndStatus *p
 
         if (!isOpponent)
         {
-            gSprites[ballIconSpritesIds[i]].x += 10 * i + 24;
+            gSprites[ballIconSpritesIds[i]].x += ORCHID_LINEUP_PLR_SOCKET0 + ORCHID_LINEUP_PITCH * i;
             gSprites[ballIconSpritesIds[i]].data[1] = i * 7 + 10;
             gSprites[ballIconSpritesIds[i]].x2 = 120;
         }
         else
         {
-            gSprites[ballIconSpritesIds[i]].x -= 10 * (5 - i) + 24;
+            gSprites[ballIconSpritesIds[i]].x += ORCHID_LINEUP_OPP_SOCKET0 - ORCHID_LINEUP_PITCH * (5 - i);
             gSprites[ballIconSpritesIds[i]].data[1] = (6 - i) * 7 + 10;
             gSprites[ballIconSpritesIds[i]].x2 = -120;
         }
@@ -1914,18 +1855,18 @@ u8 CreatePartyStatusSummarySprites(enum BattlerId battler, struct HpAndStatus *p
                 if (partyInfo[i].hp == HP_EMPTY_SLOT)
                 {
                     // empty slot or an egg
-                    gSprites[ballIconSpritesIds[i]].oam.tileNum += 1;
+                    gSprites[ballIconSpritesIds[i]].oam.tileNum += ORCHID_BALL_EMPTY * 4;
                     gSprites[ballIconSpritesIds[i]].data[7] = 1;
                 }
                 else if (partyInfo[i].hp == 0)
                 {
                     // fainted mon
-                    gSprites[ballIconSpritesIds[i]].oam.tileNum += 3;
+                    gSprites[ballIconSpritesIds[i]].oam.tileNum += ORCHID_BALL_FNT * 4;
                 }
                 else if (partyInfo[i].status != 0)
                 {
                     // mon with major status
-                    gSprites[ballIconSpritesIds[i]].oam.tileNum += 2;
+                    gSprites[ballIconSpritesIds[i]].oam.tileNum += LineupBallStatusTiles(partyInfo[i].status);
                 }
             }
         }
@@ -1936,7 +1877,7 @@ u8 CreatePartyStatusSummarySprites(enum BattlerId battler, struct HpAndStatus *p
                 if (partyInfo[j].hp == HP_EMPTY_SLOT)
                 {
                      // empty slot or an egg
-                    gSprites[ballIconSpritesIds[var]].oam.tileNum += 1;
+                    gSprites[ballIconSpritesIds[var]].oam.tileNum += ORCHID_BALL_EMPTY * 4;
                     gSprites[ballIconSpritesIds[var]].data[7] = 1;
                     var--;
                     continue;
@@ -1944,17 +1885,17 @@ u8 CreatePartyStatusSummarySprites(enum BattlerId battler, struct HpAndStatus *p
                 else if (partyInfo[j].hp == 0)
                 {
                     // fainted mon
-                    gSprites[ballIconSpritesIds[i]].oam.tileNum += 3;
+                    gSprites[ballIconSpritesIds[i]].oam.tileNum += ORCHID_BALL_FNT * 4;
                 }
                 else if (gBattleTypeFlags & BATTLE_TYPE_ARENA && gBattleStruct->arenaLostPlayerMons & (1u << j))
                 {
                     // fainted arena mon
-                    gSprites[ballIconSpritesIds[i]].oam.tileNum += 3;
+                    gSprites[ballIconSpritesIds[i]].oam.tileNum += ORCHID_BALL_FNT * 4;
                 }
                 else if (partyInfo[j].status != 0)
                 {
                     // mon with primary status
-                    gSprites[ballIconSpritesIds[i]].oam.tileNum += 2;
+                    gSprites[ballIconSpritesIds[i]].oam.tileNum += LineupBallStatusTiles(partyInfo[j].status);
                 }
                 i++;
             }
@@ -1969,18 +1910,18 @@ u8 CreatePartyStatusSummarySprites(enum BattlerId battler, struct HpAndStatus *p
                 if (partyInfo[i].hp == HP_EMPTY_SLOT)
                 {
                     // empty slot or an egg
-                    gSprites[ballIconSpritesIds[var]].oam.tileNum += 1;
+                    gSprites[ballIconSpritesIds[var]].oam.tileNum += ORCHID_BALL_EMPTY * 4;
                     gSprites[ballIconSpritesIds[var]].data[7] = 1;
                 }
                 else if (partyInfo[i].hp == 0)
                 {
                     // fainted mon
-                    gSprites[ballIconSpritesIds[var]].oam.tileNum += 3;
+                    gSprites[ballIconSpritesIds[var]].oam.tileNum += ORCHID_BALL_FNT * 4;
                 }
                 else if (partyInfo[i].status != 0)
                 {
                     // mon with primary status
-                    gSprites[ballIconSpritesIds[var]].oam.tileNum += 2;
+                    gSprites[ballIconSpritesIds[var]].oam.tileNum += LineupBallStatusTiles(partyInfo[i].status);
                 }
                 var--;
             }
@@ -1992,7 +1933,7 @@ u8 CreatePartyStatusSummarySprites(enum BattlerId battler, struct HpAndStatus *p
                 if (partyInfo[j].hp == HP_EMPTY_SLOT)
                 {
                     // empty slot or an egg
-                    gSprites[ballIconSpritesIds[i]].oam.tileNum += 1;
+                    gSprites[ballIconSpritesIds[i]].oam.tileNum += ORCHID_BALL_EMPTY * 4;
                     gSprites[ballIconSpritesIds[i]].data[7] = 1;
                     i++;
                     continue;
@@ -2000,17 +1941,17 @@ u8 CreatePartyStatusSummarySprites(enum BattlerId battler, struct HpAndStatus *p
                 else if (partyInfo[j].hp == 0)
                 {
                      // fainted mon
-                    gSprites[ballIconSpritesIds[PARTY_SIZE - 1 - var]].oam.tileNum += 3;
+                    gSprites[ballIconSpritesIds[PARTY_SIZE - 1 - var]].oam.tileNum += ORCHID_BALL_FNT * 4;
                 }
                 else if (gBattleTypeFlags & BATTLE_TYPE_ARENA && gBattleStruct->arenaLostOpponentMons & (1u << j))
                 {
                      // fainted arena mon
-                    gSprites[ballIconSpritesIds[PARTY_SIZE - 1 - var]].oam.tileNum += 3;
+                    gSprites[ballIconSpritesIds[PARTY_SIZE - 1 - var]].oam.tileNum += ORCHID_BALL_FNT * 4;
                 }
                 else if (partyInfo[j].status != 0)
                 {
                      // mon with primary status
-                    gSprites[ballIconSpritesIds[PARTY_SIZE - 1 - var]].oam.tileNum += 2;
+                    gSprites[ballIconSpritesIds[PARTY_SIZE - 1 - var]].oam.tileNum += LineupBallStatusTiles(partyInfo[j].status);
                 }
                 var++;
             }
@@ -2083,7 +2024,6 @@ void Task_HidePartyStatusSummary(u8 taskId)
         gSprites[summaryBarSpriteId].data[0] /= 2;
         gSprites[summaryBarSpriteId].data[1] = 0;
         gSprites[summaryBarSpriteId].callback = SpriteCB_StatusSummaryBar_Exit;
-        SetSubspriteTables(&gSprites[summaryBarSpriteId], sStatusSummaryBar_SubspriteTable_Exit);
         gTasks[taskId].func = Task_HidePartyStatusSummary_BattleStart_1;
     }
     else

@@ -158,4 +158,23 @@ UNUSED static const u16 sOrchidDockBaseTiles[] = {
 // std frame 3x3 (TL T TR / L C R / BL B BR) for HandleBattleWindow on BG0
 UNUSED static const u16 sOrchidFrameTiles[9] = {0x05B, 0x05C, 0x05D, 0x05E, 0x006, 0x05F, 0x060, 0x061, 0x062};
 
+// ---- party lineup (trainer battles): bar = 3x 32x16 OBJ, balls = 16x16 OBJ (socket top-left)
+#define ORCHID_LINEUP_PLR_X       148   // bar sprite left / top (singles)
+#define ORCHID_LINEUP_PLR_Y       84
+#define ORCHID_LINEUP_OPP_X       -4
+#define ORCHID_LINEUP_OPP_Y       28
+#define ORCHID_LINEUP_PLR_SOCKET0 16   // socket k=0 (nearest the centre) x from the bar left
+#define ORCHID_LINEUP_OPP_SOCKET0 69
+#define ORCHID_LINEUP_PITCH       12   // socket step towards the screen edge
+#define ORCHID_LINEUP_SOCKET_DY   3
+#define ORCHID_LINEUP_VANILLA_DY  -12   // bar top = vanilla bar_Y + this
+#define ORCHID_BALL_OK     0
+#define ORCHID_BALL_EMPTY  1
+#define ORCHID_BALL_FNT    2
+#define ORCHID_BALL_PSN    3
+#define ORCHID_BALL_PAR    4
+#define ORCHID_BALL_SLP    5
+#define ORCHID_BALL_FRZ    6
+#define ORCHID_BALL_BRN    7
+
 #endif // GUARD_DATA_BATTLE_ORCHID_UI_H
