@@ -1799,6 +1799,8 @@ extern const u16 gSatchelMale_Pal[];
 extern const u16 gSatchelFemale_Pal[];
 extern const u32 gSatchelPocketIcons_Gfx[];
 extern const u16 gSatchelPocketIcons_Pal[];
+extern const u32 gOrchidStatusIcons_Gfx[];
+extern const u16 gOrchidStatusIcons_Pal[];
 extern const u8 gSatchelRing_Gfx[];
 extern const u8 gSatchelThumb_Gfx[];
 extern const u8 gSatchelArrow_Gfx[];

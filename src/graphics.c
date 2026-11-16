@@ -1751,6 +1751,10 @@ const u16 gSatchelMale_Pal[] = INCGFX_U16("graphics/bag/satchel_male.png", ".gba
 const u16 gSatchelFemale_Pal[] = INCGFX_U16("graphics/bag/satchel_female.png", ".gbapal");
 const u32 gSatchelPocketIcons_Gfx[] = INCGFX_U32("graphics/bag/pocket_icons.png", ".4bpp.smol");
 const u16 gSatchelPocketIcons_Pal[] = INCGFX_U16("graphics/bag/pocket_icons.png", ".gbapal");
+
+// Orchid UI kit: shared status pictograms (dev_scripts/orchid_ui/export_status.py)
+const u32 gOrchidStatusIcons_Gfx[] = INCGFX_U32("graphics/interface/orchid_status_icons.png", ".4bpp.smol");
+const u16 gOrchidStatusIcons_Pal[] = INCGFX_U16("graphics/interface/orchid_status_icons.png", ".gbapal");
 const u8 gSatchelRing_Gfx[] = INCGFX_U8("graphics/bag/satchel_ring.png", ".4bpp");
 const u8 gSatchelThumb_Gfx[] = INCGFX_U8("graphics/bag/satchel_thumb.png", ".4bpp");
 const u8 gSatchelArrow_Gfx[] = INCGFX_U8("graphics/bag/satchel_arrow.png", ".4bpp");
