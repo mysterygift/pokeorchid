@@ -16,6 +16,7 @@ bool8 LoadCryWaveformWindow(struct CryScreenWindow *window, u8 windowId);
 void UpdateCryWaveformWindow(u8 windowId);
 void CryScreenPlayButton(enum Species species);
 bool8 LoadCryMeter(struct CryScreenWindow *window, u8 windowId);
+bool8 LoadCryMeterNeedle(s16 pivotX, s16 pivotY);
 void FreeCryScreen(void);
 
 #endif

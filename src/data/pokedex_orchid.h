@@ -4,7 +4,7 @@
 #define GUARD_DATA_POKEDEX_ORCHID_H
 
 #define ODEX_LIST_NUM_TILES      106   // list sheet tiles (blank 0, grid 1-4, art)
-#define ODEX_ENTRY_NUM_TILES     185   // INFO + AREA + SEARCH sheet tiles (blank 0, grid 1-4, art)
+#define ODEX_ENTRY_NUM_TILES     254   // INFO + AREA + SEARCH sheet tiles (blank 0, grid 1-4, art)
 #define ODEX_GRID_TILE_BASE      1    // grid TL, TR, BL, BR in both sheets
 #define ODEX_PAL_NORMAL          0
 #define ODEX_PAL_SELECTED        1
@@ -76,6 +76,15 @@
 #define ODEX_S_BTN_Y             112
 #define ODEX_S_BTN_W             72
 #define ODEX_S_TRAY_Y            136
+
+// ---- CRY / SIZE
+#define ODEX_DIAL_X              164  // needle pivot
+#define ODEX_DIAL_Y              88
+#define ODEX_SCOPE_TILE_ROW      14  // waveform window (BG0) tile row
+#define ODEX_SCOPE_VOFS          2  // BG0VOFS so the window top lands at y 110
+#define ODEX_SCOPE_START         29  // vanilla playStartPos: samples are drawn at x = 8 * this
+#define ODEX_SIZE_HT_X           85
+#define ODEX_SIZE_HT_Y           124
 #define ODEX_S_SOCKET_X0         106  // TYPE row sockets (BG art), 2nd at + SOCKET_PITCH
 #define ODEX_S_SOCKET_PITCH      48
 #define ODEX_S_SOCKET_Y          64

@@ -766,7 +766,7 @@ static const struct WindowTemplate sInfoScreen_WindowTemplates[] =
     {
         .bg = 0,
         .tilemapLeft = 0,
-        .tilemapTop = 12,
+        .tilemapTop = ODEX_SCOPE_TILE_ROW, // Orchid: behind the CRY page's scope well (BG0VOFS 2)
         .width = 32,
         .height = 7,
         .paletteNum = 8,
@@ -1424,6 +1424,10 @@ static const u8 sODexText_AreaUnknown[] = _("Its habitat is unknown.");
 static const u8 sODexText_AndMore[] = _("…and other places.");
 static const u8 sODexText_MapTitle[] = _("TOSA");
 static const u8 sODexText_MapNone[] = _("No region map yet");
+static const u8 sODexText_CryHint[] = _("Press A to play the cry.");
+static const u8 sODexText_SizeLabel[] = _("Size comparison to {STR_VAR_1}");
+// SIZE silhouettes: the Pokémon in INK (as the unseen silhouette), the trainer in ACCENT_DARK
+static const u16 sODexTrainerSilhouette_Pal[16] = {[0 ... 15] = RGB(12, 6, 16)};
 static const u8 *const sODexTabNames[ODEX_TAB_COUNT] = {
     COMPOUND_STRING("INFO"), COMPOUND_STRING("AREA"), COMPOUND_STRING("CRY"), COMPOUND_STRING("SIZE"),
 };
@@ -1537,23 +1541,6 @@ static void ODex_FillGridMap(u8 bg)
     CopyBgTilemapBufferToVram(bg);
     sODexGridBg = bg + 1;
     ODex_UpdateGrid();
-}
-
-// Stops the grid and hands BG1 back to the vanilla CRY / SIZE screens (select bar, priority 0)
-static void ODex_ReleaseGrid(void)
-{
-    // The select bar tilemap only covers the top rows: clear the rest of the grid map first
-    if (GetBgTilemapBuffer(1) != NULL)
-    {
-        memset(GetBgTilemapBuffer(1), 0, BG_SCREEN_SIZE);
-        CopyBgTilemapBufferToVram(1);
-    }
-    sODexGridBg = 0;
-    SetBgAttribute(1, BG_ATTR_PRIORITY, 0);
-    SetGpuReg(REG_OFFSET_BG1HOFS, 0);
-    SetGpuReg(REG_OFFSET_BG1VOFS, 0);
-    SetGpuReg(REG_OFFSET_BLDCNT, 0);
-    SetGpuReg(REG_OFFSET_BLDY, 0);
 }
 
 // Patches the palette bits of a block of tilemap cells (selected = gold palette swap)
@@ -2298,9 +2285,13 @@ static void Task_ODexOpenEntry(u8 taskId)
 // ---------------------------------------------------------------- entry page (INFO / AREA)
 
 // Gold tab = palette 1 on the tab's 6x2 cells (BG3 art)
+static const u32 *const sODexTabTilemaps[ODEX_TAB_COUNT] = {
+    gOrchidDexInfo_Tilemap, gOrchidDexArea_Tilemap, gOrchidDexCry_Tilemap, gOrchidDexSize_Tilemap,
+};
+
 static void ODex_DrawEntryArt(u8 tab)
 {
-    CopyToBgTilemapBuffer(3, tab == ODEX_TAB_AREA ? gOrchidDexArea_Tilemap : gOrchidDexInfo_Tilemap, 0, 0);
+    CopyToBgTilemapBuffer(3, sODexTabTilemaps[tab], 0, 0);
     ODex_SetCellPalette(3, (ODEX_TAB_X0 + tab * ODEX_TAB_PITCH) / 8, 0, ODEX_TAB_W / 8 + 1, 2, ODEX_PAL_SELECTED);
     CopyBgTilemapBufferToVram(3);
 }
@@ -2460,6 +2451,29 @@ static void ODex_PrintAreaTab(enum Species species)
     }
 }
 
+// SIZE: "Size comparison to <player>" and the HT pill in the tray
+static void ODex_PrintSizeTab(enum Species species)
+{
+    u8 str[32];
+    u8 *alloced;
+
+    StringCopy(gStringVar1, gSaveBlock2Ptr->playerName);
+    StringExpandPlaceholders(str, sODexText_SizeLabel);
+    ODex_PrintCentered(WIN_INFO, FONT_NORMAL, str, 0, DISPLAY_WIDTH, ODEX_DESC_Y, sODexText_Ink);
+    ODex_PrintCentered(WIN_INFO, FONT_NORMAL, sText_HTHeight, ODEX_SIZE_HT_X + 1, ODEX_HW_CAP, ODEX_SIZE_HT_Y - 1, sODexText_Label);
+    if (UNITS == UNITS_IMPERIAL)
+    {
+        alloced = ConvertMonHeightToString(GetSpeciesHeight(species));
+        ODex_PrintRight(WIN_INFO, FONT_NARROW, alloced, ODEX_SIZE_HT_X + ODEX_HW_W - 7, ODEX_SIZE_HT_Y - 1, sODexText_Ink);
+        Free(alloced);
+    }
+    else
+    {
+        ODex_FormatMeasure(str, GetSpeciesHeight(species), COMPOUND_STRING("m"));
+        ODex_PrintRight(WIN_INFO, FONT_NARROW, str, ODEX_SIZE_HT_X + ODEX_HW_W - 7, ODEX_SIZE_HT_Y - 1, sODexText_Ink);
+    }
+}
+
 static void ODex_PrintEntry(u8 tab)
 {
     struct PokedexListItem *item = sPokedexListItem;
@@ -2473,16 +2487,30 @@ static void ODex_PrintEntry(u8 tab)
         x = ODEX_TAB_X0 + i * ODEX_TAB_PITCH;
         ODex_PrintCentered(WIN_INFO, FONT_NORMAL, sODexTabNames[i], x, ODEX_TAB_W, 0, i == tab ? sODexText_TabOn : sODexText_InkSoft);
     }
+    if (tab == ODEX_TAB_SIZE)
+    {
+        ODex_PrintSizeTab(species);
+        CopyWindowToVram(WIN_INFO, COPYWIN_GFX);
+        return;
+    }
     ODex_FormatNumber(str, item->dexNum);
     ODex_PrintCentered(WIN_INFO, FONT_NORMAL, str, ODEX_E_X + 1, ODEX_E_NUM_CAP, ODEX_E_NAME_Y - 1, sODexText_Label);
     ODex_Print(WIN_INFO, FONT_NORMAL, GetSpeciesName(species), ODEX_E_X + ODEX_E_NUM_CAP + 6, ODEX_E_NAME_Y - 1, sODexText_Ink);
     if (item->owned)
         BlitBitmapToWindow(WIN_INFO, gOrchidDexBall_Gfx, ODEX_E_X + ODEX_E_W - 15, ODEX_E_NAME_Y + 3, 8, 8);
 
-    if (tab == ODEX_TAB_AREA)
-        ODex_PrintAreaTab(species);
-    else
+    switch (tab)
+    {
+    case ODEX_TAB_INFO:
         ODex_PrintInfoTab(species, item->owned);
+        break;
+    case ODEX_TAB_AREA:
+        ODex_PrintAreaTab(species);
+        break;
+    case ODEX_TAB_CRY:
+        ODex_Print(WIN_INFO, FONT_NORMAL, sODexText_CryHint, ODEX_DESC_X, ODEX_DESC_Y, sODexText_Ink);
+        break;
+    }
     CopyWindowToVram(WIN_INFO, COPYWIN_GFX);
 }
 
@@ -4158,14 +4186,13 @@ void Task_HandleInfoScreenInput(u8 taskId)
     }
 }
 
-// To the vanilla CRY / SIZE screens: drop the Orchid sprites and hand BG1 back
+// To the CRY / SIZE tabs (own loaders below): drop the entry page's sprites
 void Task_SwitchScreensFromInfoScreen(u8 taskId)
 {
     if (!gPaletteFade.active)
     {
         ODex_DestroyUiSprites();
         ODex_DestroyPic();
-        ODex_ReleaseGrid();
         switch (sPokedexView->screenSwitchState)
         {
         case 2:
@@ -4319,6 +4346,28 @@ static void Task_SwitchScreensFromAreaScreen(u8 taskId)
     }
 }
 
+// Shared start of the Orchid CRY / SIZE tabs: same frame as INFO (BG1 grid, BG2 WIN_INFO text,
+// BG3 art with the tab gold); palette-faded in like the vanilla pages.
+static void ODex_LoadTabFrame(u8 tab)
+{
+    ResetOtherVideoRegisters(0);
+    SetBgAttribute(1, BG_ATTR_PRIORITY, 3);
+    SetGpuReg(REG_OFFSET_BLDCNT, 0);
+    SetGpuReg(REG_OFFSET_BLDY, 0);
+    sPokedexView->odexTab = tab;
+    sPokedexView->odexTypeSpriteIds[0] = sPokedexView->odexTypeSpriteIds[1] = SPRITE_NONE;
+    sPokedexView->odexArrowSpriteIds[0] = sPokedexView->odexArrowSpriteIds[1] = SPRITE_NONE;
+    sPokedexView->odexPicSpriteId = SPRITE_NONE;
+    DecompressAndLoadBgGfxUsingHeap(3, gOrchidDexEntry_Gfx, ODEX_ENTRY_NUM_TILES * TILE_SIZE_4BPP, 0, 0);
+    ODex_FillGridMap(1);
+    LoadPalette(gOrchidDexScreen_Pal, BG_PLTT_ID(0), 3 * PLTT_SIZE_4BPP);
+    ODex_DrawEntryArt(tab);
+    FillWindowPixelBuffer(WIN_INFO, PIXEL_FILL(0));
+    PutWindowTilemap(WIN_INFO);
+}
+
+// Orchid CRY tab: VU dial (BG3 art) + kit needle OBJ; the vanilla waveform window (BG0) shows
+// through the scope well's hole in the art, recoloured by the scope palette (BG palette 8).
 void Task_LoadCryScreen(u8 taskId)
 {
     if (TryLoadCryScreen_HGSS(taskId))
@@ -4334,83 +4383,57 @@ void Task_LoadCryScreen(u8 taskId)
             sPokedexView->currentPage = PAGE_CRY;
             gPokedexVBlankCB = gMain.vblankCallback;
             SetVBlankCallback(NULL);
-            ResetOtherVideoRegisters(DISPCNT_BG1_ON);
             sPokedexView->selectedScreen = CRY_SCREEN;
             gMain.state = 1;
         }
         break;
     case 1:
-        DecompressAndLoadBgGfxUsingHeap(3, &gPokedexMenu_Gfx, 0x2000, 0, 0);
-        CopyToBgTilemapBuffer(3, &gPokedexCryScreen_Tilemap, 0, 0);
-        FillWindowPixelBuffer(WIN_INFO, PIXEL_FILL(0));
-        PutWindowTilemap(WIN_INFO);
-        PutWindowTilemap(WIN_VU_METER);
+        ODex_LoadTabFrame(ODEX_TAB_CRY);
+        memset(GetBgTilemapBuffer(0), 0, BG_SCREEN_SIZE);
         PutWindowTilemap(WIN_CRY_WAVE);
         gMain.state++;
         break;
     case 2:
-        LoadScreenSelectBarSubmenu(0xD);
-        HighlightSubmenuScreenSelectBarItem(1, 0xD);
-        LoadPokedexBgPalette(sPokedexView->isSearchResults);
+        ODex_PrintEntry(ODEX_TAB_CRY);
         gMain.state++;
         break;
     case 3:
         ResetPaletteFade();
-        gMain.state++;
-        break;
-    case 4:
-        PrintInfoScreenText(gText_CryOf, 82, 33);
-        PrintCryScreenSpeciesName(0, sPokedexListItem->dexNum, 82, 49);
-        gMain.state++;
-        break;
-    case 5:
-        gTasks[taskId].tMonSpriteId = CreateMonSpriteFromNationalDexNumber(sPokedexListItem->dexNum, MON_PAGE_X, MON_PAGE_Y, 0);
-        gSprites[gTasks[taskId].tMonSpriteId].oam.priority = 0;
+        ODex_ShowPic(sPokedexListItem->dexNum, TRUE, ODEX_E_DAIS_X, ODEX_E_DAIS_STAGE_Y, FALSE);
+        gTasks[taskId].data[4] = sPokedexView->odexPicSpriteId; // tMonSpriteId
+        ODex_LoadSpriteGfx();
+        ODex_CreateArrows(ODEX_TAB_ARROW_L_X, ODEX_TAB_ARROW_R_X, ODEX_TAB_ARROW_Y);
         gDexCryScreenState = 0;
         gMain.state++;
         break;
-    case 6:
+    case 4:
         {
-            struct CryScreenWindow waveformWindow;
+            struct CryScreenWindow waveformWindow = {0};
 
-            waveformWindow.unk0 = 0x4020;
-            waveformWindow.unk2 = 31;
             waveformWindow.paletteNo = 8;
-            waveformWindow.yPos = 30;
-            waveformWindow.xPos = 12;
-            if (LoadCryWaveformWindow(&waveformWindow, 2))
+            waveformWindow.yPos = ODEX_SCOPE_START;
+            if (LoadCryWaveformWindow(&waveformWindow, WIN_CRY_WAVE))
             {
                 gMain.state++;
                 gDexCryScreenState = 0;
             }
         }
         break;
-    case 7:
-        {
-            struct CryScreenWindow cryMeter;
-
-            cryMeter.paletteNo = 9;
-            cryMeter.xPos = 18;
-            cryMeter.yPos = 3;
-            if (LoadCryMeter(&cryMeter, 3))
-                gMain.state++;
-            CopyWindowToVram(WIN_VU_METER, COPYWIN_GFX);
-            CopyWindowToVram(WIN_INFO, COPYWIN_FULL);
-            CopyBgTilemapBufferToVram(0);
-            CopyBgTilemapBufferToVram(1);
-            CopyBgTilemapBufferToVram(2);
-            CopyBgTilemapBufferToVram(3);
-        }
+    case 5:
+        if (LoadCryMeterNeedle(ODEX_DIAL_X, ODEX_DIAL_Y))
+            gMain.state++;
         break;
-    case 8:
-        BeginNormalPaletteFade(PALETTES_ALL & ~(0x14), 0, 0x10, 0, RGB_BLACK);
+    case 6:
+        CopyWindowToVram(WIN_INFO, COPYWIN_FULL);
+        CopyBgTilemapBufferToVram(0);
+        CopyBgTilemapBufferToVram(2);
+        BeginNormalPaletteFade(PALETTES_ALL, 0, 16, 0, RGB_BLACK);
         SetVBlankCallback(gPokedexVBlankCB);
         gMain.state++;
         break;
-    case 9:
-        SetGpuReg(REG_OFFSET_BLDCNT, 0);
-        SetGpuReg(REG_OFFSET_BLDALPHA, 0);
-        SetGpuReg(REG_OFFSET_BLDY, 0);
+    case 7:
+        // The waveform window sits on tile row 14 and is nudged up 2px onto the scope hole
+        ChangeBgY(0, ODEX_SCOPE_VOFS << 8, BG_COORD_SET);
         SetGpuReg(REG_OFFSET_DISPCNT, DISPCNT_OBJ_1D_MAP | DISPCNT_OBJ_ON);
         ShowBg(0);
         ShowBg(1);
@@ -4418,7 +4441,7 @@ void Task_LoadCryScreen(u8 taskId)
         ShowBg(3);
         gMain.state++;
         break;
-    case 10:
+    case 8:
         sPokedexView->screenSwitchState = 0;
         gMain.state = 0;
         gTasks[taskId].func = Task_HandleCryScreenInput;
@@ -4487,7 +4510,9 @@ static void Task_SwitchScreensFromCryScreen(u8 taskId)
     if (!gPaletteFade.active)
     {
         FreeCryScreen();
-        FreeAndDestroyMonPicSprite(gTasks[taskId].tMonSpriteId);
+        ODex_DestroyPic();
+        ODex_DestroyUiSprites();
+        ChangeBgY(0, 0, BG_COORD_SET);
 
         if (TrySwitchScreensFromCryScreen_HGSS(taskId))
             return;
@@ -4525,6 +4550,7 @@ static void LoadPlayArrowPalette(bool8 cryPlaying)
     LoadPalette(&color, BG_PLTT_ID(5) + 13, PLTT_SIZEOF(1));
 }
 
+// Orchid SIZE tab: stage panel (BG3 art) with vanilla's affine silhouettes standing on its floor
 void Task_LoadSizeScreen(u8 taskId)
 {
     if (TryLoadSizeScreen_HGSS(taskId))
@@ -4541,73 +4567,48 @@ void Task_LoadSizeScreen(u8 taskId)
             sPokedexView->currentPage = PAGE_SIZE;
             gPokedexVBlankCB = gMain.vblankCallback;
             SetVBlankCallback(NULL);
-            ResetOtherVideoRegisters(DISPCNT_BG1_ON);
             sPokedexView->selectedScreen = SIZE_SCREEN;
             gMain.state = 1;
         }
         break;
     case 1:
-        DecompressAndLoadBgGfxUsingHeap(3, gPokedexMenu_Gfx, 0x2000, 0, 0);
-        CopyToBgTilemapBuffer(3, gPokedexSizeScreen_Tilemap, 0, 0);
-        FillWindowPixelBuffer(WIN_INFO, PIXEL_FILL(0));
-        PutWindowTilemap(WIN_INFO);
+        ODex_LoadTabFrame(ODEX_TAB_SIZE);
         gMain.state++;
         break;
     case 2:
-        LoadScreenSelectBarSubmenu(0xD);
-        HighlightSubmenuScreenSelectBarItem(2, 0xD);
-        LoadPokedexBgPalette(sPokedexView->isSearchResults);
+        ODex_PrintEntry(ODEX_TAB_SIZE);
+        ResetPaletteFade();
+        ODex_LoadSpriteGfx();
+        ODex_CreateArrows(ODEX_TAB_ARROW_L_X, ODEX_TAB_ARROW_R_X, ODEX_TAB_ARROW_Y);
         gMain.state++;
         break;
     case 3:
-        {
-            u8 string[64];
-
-            StringCopy(string, gText_SizeComparedTo);
-            StringAppend(string, gSaveBlock2Ptr->playerName);
-            PrintInfoScreenText(string, GetStringCenterAlignXOffset(FONT_NORMAL, string, DISPLAY_WIDTH), 121);
-            gMain.state++;
-        }
-        break;
-    case 4:
-        ResetPaletteFade();
-        gMain.state++;
-        break;
-    case 5:
         spriteId = CreateSizeScreenTrainerPic(PlayerGenderToFrontTrainerPicId(gSaveBlock2Ptr->playerGender), 152, 56, 0);
         gSprites[spriteId].oam.affineMode = ST_OAM_AFFINE_NORMAL;
         gSprites[spriteId].oam.matrixNum = 1;
         gSprites[spriteId].oam.priority = 0;
         gSprites[spriteId].y2 = GetTrainerOffsetFromNationalDexNumber(sPokedexListItem->dexNum);
         SetOamMatrix(1, GetTrainerScaleFromNationalDexNumber(sPokedexListItem->dexNum), 0, 0, GetTrainerScaleFromNationalDexNumber(sPokedexListItem->dexNum));
-        LoadSpriteSilhouettePalette(spriteId);
-        gTasks[taskId].tTrainerSpriteId = spriteId;
+        LoadPalette(sODexTrainerSilhouette_Pal, OBJ_PLTT_ID(gSprites[spriteId].oam.paletteNum), PLTT_SIZE_4BPP);
+        gTasks[taskId].data[5] = spriteId; // tTrainerSpriteId
         gMain.state++;
         break;
-    case 6:
+    case 4:
         spriteId = CreateMonSpriteFromNationalDexNumber(sPokedexListItem->dexNum, 88, 56, 1);
         gSprites[spriteId].oam.affineMode = ST_OAM_AFFINE_NORMAL;
         gSprites[spriteId].oam.matrixNum = 2;
         gSprites[spriteId].oam.priority = 0;
         gSprites[spriteId].y2 = GetPokemonOffsetFromNationalDexNumber(sPokedexListItem->dexNum);
         SetOamMatrix(2, GetPokemonScaleFromNationalDexNumber(sPokedexListItem->dexNum), 0, 0, GetPokemonScaleFromNationalDexNumber(sPokedexListItem->dexNum));
-        LoadSpriteSilhouettePalette(spriteId);
-        gTasks[taskId].tMonSpriteId = spriteId;
+        LoadPalette(sODexSilhouette_Pal, OBJ_PLTT_ID(gSprites[spriteId].oam.paletteNum), PLTT_SIZE_4BPP);
+        gTasks[taskId].data[4] = spriteId; // tMonSpriteId
         CopyWindowToVram(WIN_INFO, COPYWIN_FULL);
-        CopyBgTilemapBufferToVram(1);
         CopyBgTilemapBufferToVram(2);
-        CopyBgTilemapBufferToVram(3);
         gMain.state++;
         break;
-    case 7:
-        BeginNormalPaletteFade(PALETTES_ALL & ~(0x14), 0, 0x10, 0, RGB_BLACK);
+    case 5:
+        BeginNormalPaletteFade(PALETTES_ALL, 0, 16, 0, RGB_BLACK);
         SetVBlankCallback(gPokedexVBlankCB);
-        gMain.state++;
-        break;
-    case 8:
-        SetGpuReg(REG_OFFSET_BLDCNT, 0);
-        SetGpuReg(REG_OFFSET_BLDALPHA, 0);
-        SetGpuReg(REG_OFFSET_BLDY, 0);
         SetGpuReg(REG_OFFSET_DISPCNT, DISPCNT_OBJ_1D_MAP | DISPCNT_OBJ_ON);
         HideBg(0);
         ShowBg(1);
@@ -4615,7 +4616,7 @@ void Task_LoadSizeScreen(u8 taskId)
         ShowBg(3);
         gMain.state++;
         break;
-    case 9:
+    case 6:
         if (!gPaletteFade.active)
         {
             sPokedexView->screenSwitchState = 0;
@@ -4651,6 +4652,7 @@ static void Task_SwitchScreensFromSizeScreen(u8 taskId)
     {
         FreeAndDestroyMonPicSprite(gTasks[taskId].tMonSpriteId);
         FreeAndDestroyTrainerPicSprite(gTasks[taskId].tTrainerSpriteId);
+        ODex_DestroyUiSprites();
         switch (sPokedexView->screenSwitchState)
         {
         default:
