@@ -639,3 +639,8 @@ gSpecials::
 	def_special UpdateTrainerCardPhotoIcons
 	def_special StickerManGetBragFlags
 	def_special CheckAddCoins
+	def_special TrainStation_SetAccess
+	def_special TrainStation_CountDestinations
+	def_special TrainStation_BufferName
+	def_special TrainTravel_Depart
+	def_special TrainStation_OpenMap

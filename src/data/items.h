@@ -14780,15 +14780,15 @@ const struct ItemInfo gItemsInfo[] =
         .iconPalette = gItemIconPalette_TriPass,
     },
 
-    [ITEM_RAINBOW_PASS] =
+    [ITEM_RAIL_CARD] =
     {
-        .name = ITEM_NAME("Rainbow Pass"),
-        .pluralName = ITEM_PLURAL_NAME("Rainbow Passes"),
+        .name = ITEM_NAME("Rail Card"),
+        .pluralName = ITEM_PLURAL_NAME("Rail Cards"),
         .price = 0,
         .description = COMPOUND_STRING(
-            "For ferries serving\n"
-            "Vermilion and the\n"
-            "Sevii Islands."),
+            "Lets you ride Tosa\n"
+            "Rail trains between\n"
+            "stations for free."),
         .importance = 1,
         .pocket = POCKET_KEY_ITEMS,
         .type = ITEM_USE_BAG_MENU,

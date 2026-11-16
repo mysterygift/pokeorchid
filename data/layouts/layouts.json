@@ -9323,6 +9323,17 @@
       "border_height": 2,
       "border_width": 2,
       "layout_version": "frlg"
+    },
+    {
+      "id": "LAYOUT_TRAIN_TEST_STATION",
+      "name": "TrainTestStation_Layout",
+      "width": 20,
+      "height": 12,
+      "primary_tileset": "gTileset_Building",
+      "secondary_tileset": "gTileset_UrbanInterior",
+      "border_filepath": "data/layouts/TrainTestStation/border.bin",
+      "blockdata_filepath": "data/layouts/TrainTestStation/map.bin",
+      "layout_version": "emerald"
     }
   ]
 }

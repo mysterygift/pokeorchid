@@ -484,6 +484,28 @@ const u16 gTilesetPalettes_PokemonSchool[][16] =
     INCGFX_U16("data/tilesets/secondary/pokemon_school/palettes/15.pal", ".gbapal"),
 };
 
+const u32 gTilesetTiles_UrbanInterior[] = INCGFX_U32("data/tilesets/secondary/urban_interior/tiles.png", ".4bpp.fastSmol");
+
+const u16 gTilesetPalettes_UrbanInterior[][16] =
+{
+    INCGFX_U16("data/tilesets/secondary/urban_interior/palettes/00.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/urban_interior/palettes/01.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/urban_interior/palettes/02.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/urban_interior/palettes/03.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/urban_interior/palettes/04.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/urban_interior/palettes/05.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/urban_interior/palettes/06.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/urban_interior/palettes/07.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/urban_interior/palettes/08.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/urban_interior/palettes/09.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/urban_interior/palettes/10.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/urban_interior/palettes/11.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/urban_interior/palettes/12.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/urban_interior/palettes/13.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/urban_interior/palettes/14.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/urban_interior/palettes/15.pal", ".gbapal"),
+};
+
 const u32 gTilesetTiles_PokemonFanClub[] = INCGFX_U32("data/tilesets/secondary/pokemon_fan_club/tiles.png", ".4bpp.fastSmol", "-num_tiles 319 -Wnum_tiles");
 
 const u16 gTilesetPalettes_PokemonFanClub[][16] =
