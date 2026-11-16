@@ -21,7 +21,9 @@ static void EndDefogTask(u8 taskId);
 
 bool32 SetUpFieldMove_Defog(void)
 {
-    if (gWeather.currWeather != WEATHER_FOG_HORIZONTAL && gWeather.currWeather != WEATHER_FOG_DIAGONAL)
+    if (gWeather.currWeather != WEATHER_FOG_HORIZONTAL
+     && gWeather.currWeather != WEATHER_FOG_DIAGONAL
+     && gWeather.currWeather != WEATHER_THICK_SMOG)
         return FALSE;
 
     gFieldCallback2 = FieldCallback_PrepareFadeInFromMenu;

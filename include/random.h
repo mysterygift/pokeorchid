@@ -166,6 +166,7 @@ enum RandomTag
     RNG_STATIC,
     RNG_STENCH,
     RNG_TOXIC_CHAIN,
+    RNG_THICK_SMOG,
     RNG_QUICK_DRAW,
     RNG_QUICK_CLAW,
     RNG_TRACE,

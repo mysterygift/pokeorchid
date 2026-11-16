@@ -282,6 +282,18 @@ const struct BattleWeatherInfo gBattleWeatherInfo[BATTLE_WEATHER_COUNT] = {
         .animation = B_ANIM_STRONG_WINDS,
         .type = BATTLE_WEATHER_STRONG_WINDS,
     },
+
+    [BATTLE_WEATHER_THICK_SMOG] =
+    {
+        .flag = B_WEATHER_THICK_SMOG,
+        .rock = HOLD_EFFECT_NONE,
+        .abilityStartMessage = B_MSG_STARTED_DRIZZLE, // Placeholder
+        .moveStartMessage = B_MSG_STARTED_THICK_SMOG,
+        .endMessage = B_MSG_WEATHER_END_THICK_SMOG,
+        .continuesMessage = B_MSG_WEATHER_TURN_THICK_SMOG,
+        .animation = B_ANIM_FOG_CONTINUES,
+        .type = BATTLE_WEATHER_THICK_SMOG,
+    },
 };
 
 enum BattleWeather GetBattleWeather(u32 weather)
@@ -2911,7 +2923,8 @@ bool32 TryFieldEffects(enum FieldEffectCases caseId)
         }
         break;
     case FIELD_EFFECT_OVERWORLD_WEATHER:
-        if (!(gBattleTypeFlags & BATTLE_TYPE_RECORDED))
+        // Test battles are played back as recorded battles; let them see overworld weather so it can be tested.
+        if (!(gBattleTypeFlags & BATTLE_TYPE_RECORDED) || gTestRunnerEnabled)
         {
             switch (GetCurrentWeather())
             {
@@ -2962,6 +2975,14 @@ bool32 TryFieldEffects(enum FieldEffectCases caseId)
                 if (B_OVERWORLD_FOG == GEN_4 && !(gBattleWeather & B_WEATHER_FOG))
                 {
                     gBattleWeather = B_WEATHER_FOG;
+                    gBattleScripting.animArg1 = B_ANIM_FOG_CONTINUES;
+                    effect = TRUE;
+                }
+                break;
+            case WEATHER_THICK_SMOG:
+                if (!(gBattleWeather & B_WEATHER_THICK_SMOG))
+                {
+                    gBattleWeather = B_WEATHER_THICK_SMOG;
                     gBattleScripting.animArg1 = B_ANIM_FOG_CONTINUES;
                     effect = TRUE;
                 }
