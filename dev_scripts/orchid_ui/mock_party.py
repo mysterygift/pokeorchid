@@ -22,7 +22,7 @@ TAILLOW = dict(species="taillow", pal=2, name="Taillow", sex="f", lv=12, hp=29, 
 RALTS = dict(species="ralts", pal=1, name="Ralts", sex="f", lv=10, hp=24, maxhp=29)
 ZIGZAGOON = dict(species="zigzagoon", pal=2, name="Zigzagoon", sex="m", lv=9, hp=5, maxhp=31)
 POOCHYENA = dict(species="poochyena", pal=2, name="Poochyena", sex="m", lv=8, hp=0, maxhp=27, status="fnt")
-WINGULL = dict(species="wingull", pal=0, name="Wingull", sex="f", lv=11, hp=30, maxhp=31, item="mail")
+WINGULL = dict(species="wingull", pal=0, name="Wingull", sex="f", lv=11, hp=30, maxhp=31, item="mail", status="slp")
 PARTY5 = [GROVYLE, TAILLOW, RALTS, ZIGZAGOON, POOCHYENA, None]
 PARTY6 = [GROVYLE, TAILLOW, RALTS, ZIGZAGOON, POOCHYENA, WINGULL]
 CANCEL = 6
@@ -198,7 +198,7 @@ def parts_sheet(out_path):
                 xx = (x0 + 80 + pad) * k + ci * 22
                 d.rectangle((xx, (y0 + 44) * k, xx + 20, (y0 + 44) * k + 20), fill=c)
     d.text((pad * k, 8), "Party slot parts (4x): one set of tiles per slot shape, states are palette swaps "
-           "(LoadPartyBoxPalette). Palette strip = slot palette 0..15 (11 gender, 14/15 HP ramp).", fill=(230, 230, 240))
+           "(LoadPartyBoxPalette). Palette strip = slot palette 0..15 (11/12 name colour by gender, 14/15 HP ramp).", fill=(230, 230, 240))
     sheet.save(out_path)
 
 
@@ -208,7 +208,7 @@ def render_bw(theme="male", party=PARTY6, cursor=0, t=0):
     out = KX.grid_frame(0)
     P.composite_sheet(out, P.cancel_sheet(theme), P.slot_palette(theme, "selected") if cursor == CANCEL else palette(theme), (192, 136))
     BW = dict(disc=(16, 19.5, 13.0), slab=(9, 3, 110, 35),
-              name=(32, 2), lv=(32, 12), sex_x=60, status=(82, 6),
+              name=(32, 2), lv=(32, 12), status=(97, 5),
               hp_tag=(32, 27), bar=(44, 28, 48), hpnum_r=114, hpnum_y=16,
               icon=(16, 15), hold=(24, 27))
     old = P.WIDE

@@ -9,6 +9,9 @@ one GIF frame every 2 GBA frames -> duration 33 ms).
                    colour steps at 24 / 9 bar pixels; crit message; the drain heals Grovyle
                    1 bar pixel per frame (max HP >= 48), then the drain message prints.
   exp_levelup.gif  EXP strip fills 1 px/frame, the player box flashes, Lv 18 -> 19.
+  lineup.gif       trainer-battle party lineups: bars slide in (5 px/frame, 20 f), balls zip in one by
+                   one (vanilla delays 10/17 + 7 f per ball, accelerating), message prints, then bars
+                   and balls drift toward the centre while alpha-fading out (32 f), as vanilla.
 
 usage: anim_battle.py OUT_DIR
 """
@@ -93,7 +96,7 @@ def hp_drain(out):
 # ------------------------------------------------------------------ EXP + level up
 def exp_levelup(out):
     P = M.default_player()
-    strip = 236 - (M.PLR_BOX[0] + M.CAP_PLR_W + 4) - 1          # EXP strip pixels
+    strip = M.exp_strip_px()                                   # EXP strip pixels
     m1, m2 = "Grovyle gained 64 Exp. Points!", "Grovyle grew to Lv. 19!"
     px0 = int(round(strip * P.exp))
     t_fill = 30
@@ -126,9 +129,64 @@ def exp_levelup(out):
     save(frames, os.path.join(out, "exp_levelup.gif"))
 
 
+# ------------------------------------------------------------------ trainer-battle lineup
+def _ball_track(delay, start, n, exit_dir=None):
+    """Vanilla SpriteCB_StatusSummaryBalls_Enter/_Exit: after `delay` frames the ball moves with
+    accelerating speed (data3 += 56, step = data3 >> 4). Returns per-frame x offsets."""
+    xs, x2, d3 = [], start, 0
+    for f in range(n):
+        if f >= delay:
+            v = d3 + 56
+            d3 = v & 0xFFF0
+            step = v >> 4
+            if exit_dir is None:
+                x2 = min(0, x2 + step) if start < 0 else max(0, x2 - step)
+            else:
+                x2 += step * exit_dir
+        xs.append(x2)
+    return xs
+
+
+def lineup(out):
+    msg = "You are challenged by Youngster Calvin!"
+    ENTER, EXIT = 0, 210            # bars enter at once (with SE_BALL_TRAY_ENTER); exit after the message
+    END = EXIT + 48
+    sides = {"opp": (M.LINEUP_OPP, -100, 5, 17, -120), "plr": (M.LINEUP_PLR, 100, -5, 10, 120)}
+    tracks = {}
+    for side, (slots, b0, bv, d0, s0) in sides.items():
+        enter = [_ball_track(d0 + 7 * k, s0, EXIT) for k in range(6)]
+        ex_dir = 1 if side == "opp" else -1          # vanilla: both drift toward the screen centre
+        leave = [_ball_track(7 * k, 0, END - EXIT, ex_dir) for k in range(6)]
+        tracks[side] = (enter, leave)
+    frames = []
+    for f in range(0, END, 2):
+        lus = {}
+        alpha = 1.0
+        if f >= EXIT:
+            t = f - EXIT
+            alpha = max(0.0, (16 - (t + 1) // 2) / 16)        # BLDALPHA 16 -> 0, one step / 2 frames
+        for side, (slots, b0, bv, d0, s0) in sides.items():
+            enter, leave = tracks[side]
+            if f < EXIT:
+                bar_dx = b0 + bv * min(f - ENTER, abs(b0 // bv)) if f < 20 else 0
+                bdx = [enter[k][f] for k in range(6)]
+            else:
+                t = f - EXIT
+                bar_dx = 2 * t * (1 if side == "opp" else -1)
+                bdx = [leave[k][t] for k in range(6)]
+            bdx = [None if abs(v) > 130 else v for v in bdx]
+            lus[side] = (slots, dict(bar_dx=bar_dx, ball_dx=bdx, alpha=alpha))
+        text, n = printed(msg, 24, f)
+        key = ("lu", f)
+        frames.append(frame(key, lambda: M.render("msg", msg=msg, chars=n if f >= 24 else 0,
+                                                  intro=True, lineups=lus if alpha > 0 else None)))
+    save(frames, os.path.join(out, "lineup.gif"))
+
+
 if __name__ == "__main__":
     OUT = sys.argv[1]
     os.makedirs(OUT, exist_ok=True)
     action_menu(OUT)
     hp_drain(OUT)
     exp_levelup(OUT)
+    lineup(OUT)

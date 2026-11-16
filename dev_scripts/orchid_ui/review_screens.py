@@ -75,9 +75,23 @@ def area_section(key, name, n, qstart):
     return out, [(name, t, d) for t, d in qs]
 
 
-CROSS_QUESTIONS = [
-    ("All screens", "One status-tag look everywhere",
-     "Battle draws its own Orchid tags (ink outline, white letters, Gen 3 colours; battle state 5), while the party uses the real Gen 3 status_icons.png (battle state 5b shows those in battle). The summary screen will need the same tags, so pick one look for all screens. I recommend the Orchid tags: they follow the kit's ink-outline rule and stay readable on gold. Party would switch to them."),
+CROSS_QUESTIONS = []
+
+CHANGES = [
+    "New: the trainer-battle Poké Ball lineup, redesigned to match healthbox B. A dark bar with brass trim and six sockets slides in for each side, at the vanilla positions and timing. Each socket shows a healthy ball, a ball with a status dot, a greyed fainted ball, or an empty socket. See battle states 9 and 10 and the lineup animation.",
+    "Gender is now shown by the name's colour: blue for male, red for female, the default ink for genderless. The ♂/♀ icon is gone from the battle healthboxes and the party rows.",
+    "The battle message box's purple end-caps are replaced by small brass rivets.",
+    "An empty status socket on a healthbox is now a plain recess (no gem), so it reads as empty and is fully covered when a status icon appears.",
+]
+
+DECISIONS = [
+    "Round 4: the battle tray grid stays static; the party's smaller rows keep the 42px HP bar.",
+    "Round 3: healthbox direction B; status pictograms centred on their tags; toxic = skull.",
+    "Round 2: picture buttons for FIGHT / BAG / POKéMON / RUN; black grid tray in battle; no purple end-caps on healthboxes; status pictograms shared by every screen; TOSA instead of HOENN.",
+    "Both healthboxes use the Orchid theme (no gender tint).",
+    "PP sits in a dark notch on the move pill; messages use the expansion's wording; YES/NO docks at the tray's right end; the B / BACK tab stays.",
+    "Party: Gen 3 lead + 5 layout; the slot being moved uses the accent colour; fainted stays greyed rose; the prompt is widened to fit the name; no per-slot Poké Ball sprites.",
+    "Pokédex: Orchid theme; unseen = ink silhouette; free cursor with a 2-row margin; list ends at the last seen entry; Gen 3 '?????' until caught; darken transition into the entry page.",
 ]
 
 
@@ -140,6 +154,7 @@ figcaption span {{ color: var(--muted); }}
 ol.q {{ margin: 0; padding-left: 26px; display: grid; gap: 12px; max-width: 80ch; }}
 ol.q li::marker {{ color: var(--accent); font-weight: 600; }}
 .qa {{ display: inline-block; font-family: var(--display); font-size: 10px; padding: 1px 8px; margin-right: 8px; border-radius: 999px; border: 1px solid var(--line); color: var(--muted); vertical-align: 2px; }}
+.changes {{ margin: 0; padding-left: 20px; display: grid; gap: 6px; max-width: 80ch; }}
 .next {{ list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; max-width: 80ch; }}
 .next li {{ border-left: 3px solid var(--line); padding-left: 12px; }}
 .next b {{ display: block; font-family: var(--display); font-weight: 400; font-size: 13px; }}
@@ -150,15 +165,21 @@ code {{ font-size: 13px; }}
 </style>
 <main>
   <header style="display:grid;gap:12px">
-    <span class="tag">Design review · round 1</span>
+    <span class="tag">Design review · round 5</span>
     <h1>Orchid Battle, Party &amp; Dex</h1>
     <p class="lede">The next three screens built from the approved Orchid UI kit: Black/White structure drawn with Gen 3 pixel rules. Every plate is rendered at the GBA's 240×160 with the game's own fonts, real ROM sprites and real tile and palette limits, then scaled 3×. These are mockups only; nothing is implemented yet.</p>
     <nav class="toc">{toc}</nav>
   </header>
+  <section>
+    <h2>Changes since round 4</h2>
+    <ul class="changes">{"".join("<li>%s</li>" % E(c) for c in CHANGES)}</ul>
+    <h3>Settled so far</h3>
+    <ul class="changes">{"".join("<li>%s</li>" % E(c) for c in DECISIONS)}</ul>
+  </section>
   {"".join(sections)}
   <section id="questions">
     <h2>Open questions</h2>
-    <p class="hint">Answer by number. Each one names my recommendation.</p>
+    <p class="hint">Answer by number. Each one names my recommendation. {"" if questions else ""}</p>
     <ol class="q">{qhtml}</ol>
   </section>
   <section>

@@ -1,17 +1,18 @@
 """
-Orchid battle UI — pixel-accurate mockups ("Gen 5 layout, Gen 3 pixels").
+Orchid battle UI — pixel-accurate mockups ("Gen 5 layout, Gen 3 pixels"), round 2.
 
 Everything sits where vanilla puts it, so the Mode 7 floor (mode 1, BG2 affine)
 on the engine branch keeps working:
-  * BG0  bottom tray y 112..159 (vanilla textbox area) — message box, action menu,
-         move select, YES/NO. BG palettes 0 (tray, kit roles) and 5 (menu windows:
-         kit roles + Gen 3 PP warning colours). Rows 10..15 are never touched.
-  * OBJ  healthboxes at the vanilla singles spots, HP/EXP bars, the four colour beads
-         of the action menu, Gen 3 type icons in move select.
-  * scene: vanilla battle environment + battlers (BG3 + sprites on vanilla; the
-         Mode 7 floor on the engine branch).
+  * BG0  bottom tray y 112..159 (vanilla textbox area): BW near-black grid (static
+         tiles), message box, action menu, move select, YES/NO. BG palettes 0 (tray +
+         panels, kit roles + grid colours) and 5 (menu windows: kit roles + PP colours).
+         Rows 10..15 are never touched.
+  * OBJ  healthboxes (round 3: three layered directions, battle_ext.hb_A/B/C) at the vanilla singles spots, HP/EXP bars,
+         status icons (status_icons.py), action-button icon fields, Gen 3 type icons.
+  * scene: vanilla battle environment + battlers (the Mode 7 floor on the engine branch).
 
-usage: mock_battle.py OUT_DIR      (writes main.png, state_XX.png, parts.png, notes.json)
+usage: mock_battle.py OUT_DIR      (writes main.png, state_XX.png, parts.png,
+                                    status_icons.png, notes.json)
 """
 import json
 import os
@@ -21,7 +22,9 @@ from kit import *
 import kit_ext as K
 import windows as Wn
 from gamefont import draw_text, text_width
+from backdrop import GRID_PAL, grid_index, GRID_BASE, GRID_MINOR, GRID_MAJOR
 import battle_ext as BX
+import status_icons as SI
 
 W, H = 240, 160
 THEME = "orchid"
@@ -60,11 +63,12 @@ def default_enemy():
 
 
 # ================================================================== palettes
-UI_PAL = palette(THEME)                         # BG pal 0: tray + message panels (kit roles)
+# BG pal 0: kit roles; SPARE_A / SPARE_B = BW grid base / major line (minor line = INK).
+GRID_BG, GRID_LINE = SPARE_A, SPARE_B
+UI_PAL = palette(THEME, spare_a=GRID_PAL[GRID_BASE], spare_b=GRID_PAL[GRID_MAJOR])
+_GRID_MAP = {GRID_BASE: GRID_BG, GRID_MINOR: INK, GRID_MAJOR: GRID_LINE}
 
-# PP warning colours = graphics/battle_interface/text_pp.pal. Gen 3 swaps one fg/shadow
-# pair per selected move; we show all four PP counters at once, so the three warning
-# foregrounds get their own slots in the menu palette (BG pal 5).
+# BG pal 5 (menu windows): kit roles; PP warning colours from text_pp.pal in the free slots.
 PP_FG = {3: (248, 248, 248), 0: (216, 200, 0), 1: (248, 128, 0), 2: (232, 24, 0)}
 PP_YELLOW, PP_ORANGE, PP_RED = ACCENT_PALE, SPARE_A, SPARE_B
 MENU_PAL = palette(THEME, spare_a=PP_FG[1], spare_b=PP_FG[2])
@@ -89,51 +93,29 @@ def pp_state(pp, maxpp):
     return 0
 
 
-# Healthbox OBJ palette (one, shared by all boxes). 12..15 = per-battler status colour,
-# exactly like vanilla UpdateStatusIconInHealthbox (index 12 + battler).
-HB_MALE, HB_FEMALE = ACCENT_PALE, SELECT_DARK
-HB_STATUS0 = 12
-
-
-def healthbox_pal(status_cols=(None,) * 4, theme=THEME, flash=0.0):
-    p = palette(theme)
-    p[HB_MALE] = snap(K.MALE_BLUE)
-    p[HB_FEMALE] = snap(K.FEMALE_RED)
-    for i, c in enumerate(status_cols):
-        p[HB_STATUS0 + i] = snap(c) if c else p[PANEL]
-    if flash:
-        p = [snap(tuple(int(v + (248 - v) * flash) for v in c)) for c in p]
-    return p
-
-
-# sStatusIconColors (battle_interface.c), RGB5 -> RGB8
-STATUS_COL = {"PSN": (192, 96, 192), "PAR": (184, 184, 24), "SLP": (160, 160, 136),
-              "FRZ": (136, 176, 224), "BRN": (224, 112, 80)}
-STATUS_ROW = {"PSN": 0, "PAR": 1, "SLP": 2, "FRZ": 3, "BRN": 4}
-
-# Healthbar OBJ palette (HP/EXP fills + HP tag) — separate, like vanilla TAG_HEALTHBAR_PAL.
+# OBJ healthbar palette (HP/EXP fills + HP tag) — separate, like vanilla TAG_HEALTHBAR_PAL.
 HB_I = {"ink": 1, "trough": 2, "trough_hi": 3, "g1": 4, "g2": 5, "y1": 6, "y2": 7,
-        "r1": 8, "r2": 9, "e1": 10, "e2": 11, "tag": 12, "tag_txt": 13, "white": 14, "tag_hi": 15}
+        "r1": 8, "r2": 9, "e1": 10, "e2": 11, "tag": 12, "white": 13}
 HBAR_PAL = [snap(c) for c in [
-    (0, 0, 0), (40, 40, 64), (80, 72, 96), (112, 104, 128),
+    (0, 0, 0), (40, 40, 64), (144, 144, 152), (120, 120, 136),
     K.HP_GREEN[0], K.HP_GREEN[1], K.HP_YELLOW[0], K.HP_YELLOW[1],
     K.HP_RED[0], K.HP_RED[1], K.EXP_BLUE[0], K.EXP_BLUE[1],
-    (96, 48, 128), (248, 176, 120), (248, 248, 248), (152, 88, 184)]]
+    (96, 48, 128), (248, 248, 248), (0, 0, 0), (0, 0, 0)]]
 
-# Action-menu bead OBJ palette: BW colour coding as Gen 3 3-step ramps (light, face, dark).
-BEAD_RAMPS = {
-    "red": ((248, 160, 136), (232, 80, 64), (168, 40, 48)),
-    "yellow": ((248, 232, 136), (240, 184, 40), (184, 120, 16)),
-    "green": ((168, 232, 128), (88, 184, 72), (40, 120, 56)),
-    "blue": ((152, 200, 248), (72, 136, 224), (40, 80, 160)),
+# OBJ action-button palette: BW colour coding as Gen 3 3-step ramps (light, face, dark).
+BTN_RAMPS = {
+    "red": ((248, 160, 136), (224, 80, 64), (152, 32, 48)),
+    "yellow": ((248, 224, 120), (224, 168, 32), (152, 96, 16)),
+    "green": ((160, 224, 120), (80, 168, 72), (32, 104, 56)),
+    "blue": ((152, 192, 248), (72, 128, 216), (40, 72, 152)),
 }
-BEAD_ORDER = ["red", "yellow", "green", "blue"]
-BEAD_PAL = [snap(c) for c in [(0, 0, 0), (40, 40, 64), (248, 248, 248)]
-            + [c for k in BEAD_ORDER for c in BEAD_RAMPS[k]] + [(0, 0, 0)]]
+BTN_ORDER = ["red", "yellow", "green", "blue"]
+BTN_PAL = [snap(c) for c in [(0, 0, 0), (40, 40, 64), (248, 248, 248)]
+           + [c for k in BTN_ORDER for c in BTN_RAMPS[k]] + [(0, 0, 0)]]
 
 
-def bead_idx(colour, step):   # step 0 light, 1 face, 2 dark
-    return 3 + BEAD_ORDER.index(colour) * 3 + step
+def btn_idx(colour, step):   # step 0 light, 1 face, 2 dark
+    return 3 + BTN_ORDER.index(colour) * 3 + step
 
 
 # ================================================================== helpers
@@ -174,14 +156,6 @@ B_GLYPH = ["XXX.",
            "XXX.",
            "X..X",
            "XXX."]
-CAUGHT = ["..III..",
-          ".IRRRI.",
-          "IRRRRRI",
-          "IIIWIII",
-          "IWWWWWI",
-          ".IWWWI.",
-          "..III.."]
-
 
 # ================================================================== BG0 tray
 TRAY = BX.TRAY_Y                 # 112: vanilla textbox area, tile rows 14..19
@@ -190,46 +164,62 @@ MSG_X, MSG_Y, MSG_W = 16, 120, 26 * 8      # B_WIN_MSG text rect (tiles 2,15 26x
 
 
 def draw_tray(cv):
-    """Static tray base: orchid band (like the std frame's accent band), ink top edge."""
-    cv.rect(0, TRAY, W - 1, H - 1, ACCENT_DARK)
+    """Static tray: BW near-black grid (same colours as the party/bag BG3 grid), ink top edge
+    with a grid-line highlight under it. Static tiles on BG0 (grid repeats every 2x2 tiles)."""
+    for y in range(TRAY, H):
+        for x in range(W):
+            cv.set(x, y, _GRID_MAP[grid_index(x, y)])
     cv.hline(0, W - 1, TRAY, INK)
-    cv.hline(0, W - 1, TRAY + 1, ACCENT)
+    cv.hline(0, W - 1, TRAY + 1, GRID_LINE)
 
 
 def msg_panel(cv, x0, x1):
-    """Message panel = the approved field dialogue box (white, purple end-caps), in the tray."""
+    """Message panel on the tray: white rounded box; each end carries a quiet column of three
+    2x2 brass rivets (gold ramp of BG pal 0) echoing healthbox B, instead of purple end-caps."""
     h = BOT - TOP + 1
     rounded_box(cv, x0, TOP, x1 - x0 + 1, h, 3, WHITE, INK, WHITE, PANEL_SHADE)
-    rounded_box(cv, x0 + 3, TOP + 4, 6, h - 8, 2, ACCENT, INK, ACCENT_LIGHT, ACCENT_DARK)
-    rounded_box(cv, x1 - 6, TOP + 4, 4, h - 8, 1, ACCENT, INK, ACCENT_LIGHT, ACCENT_DARK)
+    cy = TOP + h // 2
+    for rx in (x0 + 5, x1 - 6):
+        for ry in (cy - 9, cy - 1, cy + 7):
+            cv.set(rx, ry, SELECT_LIGHT)
+            cv.set(rx + 1, ry, SELECT)
+            cv.set(rx, ry + 1, SELECT)
+            cv.set(rx + 1, ry + 1, SELECT_DARK)
     cv.hline(x0 + 11, x1 - 8, BOT - 3, PANEL_SHADE)
 
 
 def draw_back_tab(cv, label="BACK"):
-    """Small tab rising from the tray's top-left corner: B-button hint for sub-menus."""
+    """Small near-black tab rising from the tray's top-left corner: B-button hint."""
     tw = text_width(label, "small")
     x1, y0 = 18 + tw, TRAY - 11
     ins = lambda r: {0: 3, 1: 1, 2: 1}.get(r, 0)
     for y in range(y0, TRAY + 2):
-        cv.hline(0, x1 - ins(y - y0), y, ACCENT_DARK)
+        cv.hline(0, x1 - ins(y - y0), y, GRID_BG)
         cv.set(x1 - ins(y - y0), y, INK)
     cv.hline(0, x1 - ins(0), y0, INK)
-    cv.hline(0, x1 - ins(1) - 1, y0 + 1, ACCENT)
+    cv.hline(0, x1 - ins(1) - 1, y0 + 1, GRID_LINE)
     cv.set(x1 - 2, y0 + 1, INK)
     cv.hline(x1 - 1, x1 + 1, TRAY, INK)
-    cv.set(x1, TRAY + 1, ACCENT)
-    cv.set(x1 + 1, TRAY + 1, ACCENT)
+    cv.set(x1, TRAY + 1, GRID_LINE)
+    cv.set(x1 + 1, TRAY + 1, GRID_LINE)
+    cv.hline(0, x1 - 1, TRAY, GRID_BG)          # open into the tray
+    cv.hline(0, x1 - 1, TRAY + 1, GRID_BG)
     disc(cv, 8, y0 + 6, 5, WHITE, INK, None, PANEL_SHADE)
     stamp(cv, 6, y0 + 4, B_GLYPH, {"X": INK})
     draw_text(cv, 15, y0 - 1, label, WHITE, INK, font="small")
 
 
-# ---------------------------------------------------------------- action menu (BG0 window, pal 5)
-FIGHT_BTN = (130, TOP, 44, 44)                 # x, y, w, h — big round BW-style button
+# ---------------------------------------------------------------- action menu
+# BG0 window (pal 5): button faces + labels, gold face when selected.
+# OBJ (BTN_PAL): the coloured icon fields with white silhouettes — they never change colour.
+FIGHT_BTN = (130, TOP, 44, 44)                 # big round BW-style button
 FIGHT_R = 12
+FIGHT_FIELD = (136, TOP + 3, 32, 22)           # red field, OBJ 32x32
 SIDE_X, SIDE_W = 177, 61
 SIDE_Y = [TOP, TOP + 15, TOP + 30]             # 14px pills, 1px gap
+SIDE_FIELD_W = 16                              # 16x14 field = pill's left end, OBJ 16x16
 BTN_COL = ["red", "yellow", "green", "blue"]
+BTN_ICON = ["fight", "bag", "pokemon", "run"]
 
 
 def side_rect(i):
@@ -241,35 +231,30 @@ def draw_action(cv, cursor):
     sel = cursor == 0
     face, lt, sh = (SELECT, SELECT_LIGHT, SELECT_DARK) if sel else (PANEL, WHITE, PANEL_SHADE)
     BX.big_round_box(cv, x, y, w, h, FIGHT_R, face, INK, lt, sh)
-    draw_text(cv, x + (w - text_width("FIGHT")) // 2 + 1, y + 21, "FIGHT", INK, PANEL_SHADE)
+    draw_text(cv, x + (w - text_width("FIGHT")) // 2 + 1, y + 25, "FIGHT", INK, PANEL_SHADE)
     for i in range(3):
         x, y, w, h = side_rect(i)
         if cursor == i + 1:
             Wn.selection_bar(cv, x, y, w, h)
         else:
             rounded_box(cv, x, y, w, h, 4, PANEL, INK, WHITE, PANEL_SHADE)
-        draw_text(cv, x + 16, y - 1, ACTIONS[i + 1], INK, PANEL_SHADE, font="narrow")
+        draw_text(cv, x + SIDE_FIELD_W + 3, y - 1, ACTIONS[i + 1], INK, PANEL_SHADE, font="narrow")
 
 
-def bead_positions():
-    x, y, w, h = FIGHT_BTN
-    out = [(x + w // 2, y + 13)]
-    for i in range(3):
-        sx, sy, sw, sh = side_rect(i)
-        out.append((sx + 8, sy + 7))
-    return out
+def draw_field(cv, x, y, w, h, colour, icon, r=3):
+    rounded_box(cv, x, y, w, h, r, btn_idx(colour, 1), 1, btn_idx(colour, 0), btn_idx(colour, 2))
+    rows = BX.SILHOUETTES[icon]
+    pw, ph = len(rows[0]) + 1, len(rows) + 1           # + drop shadow
+    BX.silhouette(cv, x + (w - pw + 1) // 2, y + (h - ph + 1) // 2, rows, 2, btn_idx(colour, 2))
 
 
-def draw_bead(cv, cx, cy, colour, r=5.0):
-    disc(cv, cx, cy, r, bead_idx(colour, 1), 1, bead_idx(colour, 0), bead_idx(colour, 2))
-    cv.set(int(cx - r / 2), int(cy - r / 2), 2)
-
-
-def beads_layer(out):
-    im = p_sheet(W, H, BEAD_PAL)
+def button_fields(out):
+    im = p_sheet(W, H, BTN_PAL)
     cv = Canvas(im)
-    for i, ((cx, cy), col) in enumerate(zip(bead_positions(), BTN_COL)):
-        draw_bead(cv, cx, cy, col, 6.5 if i == 0 else 5.0)
+    draw_field(cv, *FIGHT_FIELD, "red", "fight", r=4)
+    for i in range(3):
+        x, y, w, h = side_rect(i)
+        draw_field(cv, x, y, SIDE_FIELD_W, h, BTN_COL[i + 1], BTN_ICON[i + 1])
     comp(out, im)
 
 
@@ -286,8 +271,7 @@ def draw_move_pill(cv, x, y, move, selected):
         rounded_box(cv, x, y, MOVE_W, MOVE_H, 4, PANEL, INK, WHITE, PANEL_SHADE)
     f = "normal" if text_width(name) <= MOVE_W - 42 else "narrow"
     draw_text(cv, x + 38, y - 1, name, INK, PANEL_SHADE, font=f)
-    # PP counter = ink notch sunk into the pill's bottom edge: Gen 3 warning colours
-    # (text_pp.pal) stay legible whether the pill is grey or gold.
+    # PP counter = ink notch in the pill's bottom edge (approved): text_pp.pal warning colours
     num = "%d/%d" % (pp, mx)
     tw = text_width("PP " + num, "small")
     px = x + MOVE_W - 9 - tw
@@ -310,16 +294,9 @@ def type_icons(out, moves):
         out.alpha_composite(K.type_icon(mv[1]), (x + 3, y + 3))
 
 
-# ---------------------------------------------------------------- YES/NO (std frame, pal 5)
-# Lives in the tray's right end (BW puts YES/NO on the bottom screen) instead of vanilla's
-# (26,9) spot, so it never chops the player healthbox. The frame is baked into a tray
-# layout (its 2px margin shows tray, not the scene); the message window narrows to 21 tiles.
+# ---------------------------------------------------------------- YES/NO (approved: docked in the tray)
 YESNO_T = (25, 15, 4, 4)    # text rect in tiles; frame = x 192..239, y 112..159
-YESNO_MSG_W = 21 * 8
-
-
-def draw_yesno_frame(cv):
-    Wn.std_frame(cv, *YESNO_T)
+YESNO_MSG_W = 20 * 8          # text must stop before the panel end-cap at x 183
 
 
 def draw_yesno(cv, cursor):
@@ -332,68 +309,49 @@ def draw_yesno(cv, cursor):
 
 
 # ================================================================== healthboxes (OBJ)
-# Both boxes are flush with the screen edge (BW), inside the vanilla healthbox zones.
-OPP_BOX = (-8, 18, 114, 23)      # x, y, w, h : visible 0..105 x 18..40   (2x 64x32 OBJ)
-PLR_BOX = (130, 79, 118, 32)     # visible 130..239 x 79..110             (2x 64x32 OBJ)
-CAP_OPP_W, CAP_PLR_W = 12, 8
+# Round 3: three layered directions live in battle_ext (hb_A / hb_B / hb_C), all on one
+# healthbox OBJ palette (BX.HB_PAL: dark frame + brass trim + kit panel roles).
+# Bars use the separate healthbar palette; status = status_icons.py (16x16 OBJ).
+HB_VARIANT = "B"              # chosen by the user in round 3
 
 
-def draw_healthbox(cv, mon, side, battler, status_style="orchid"):
-    """Frame + text on the healthbox palette. Returns the HP bar origin."""
-    if side == "opp":
-        x, y, w, h = OPP_BOX
-        rounded_box(cv, x, y, w, h, 4, PANEL, INK, WHITE, PANEL_SHADE)
-        rounded_box(cv, x + w - CAP_OPP_W - 2, y + 2, CAP_OPP_W, h - 4, 3, ACCENT, INK, ACCENT_LIGHT, ACCENT_DARK)
-        tx = 5
-        lv_right = x + w - CAP_OPP_W - 5
-    else:
-        x, y, w, h = PLR_BOX
-        rounded_box(cv, x, y, w, h, 4, PANEL, INK, WHITE, PANEL_SHADE)
-        rounded_box(cv, x + 2, y + 2, CAP_PLR_W, h - 4, 2, ACCENT, INK, ACCENT_LIGHT, ACCENT_DARK)
-        tx = x + CAP_PLR_W + 6
-        lv_right = 235
-    draw_text(cv, tx, y - 1, mon.name, INK, PANEL_SHADE, font="small")
-    gx = tx + text_width(mon.name, "small") + 2
-    if mon.gender == "M":
-        draw_text(cv, gx, y - 1, "♂", HB_MALE, PANEL_SHADE, font="small")
-    elif mon.gender == "F":
-        draw_text(cv, gx, y - 1, "♀", HB_FEMALE, PANEL_SHADE, font="small")
-    lv = "Lv%d" % mon.lv
-    draw_text(cv, lv_right - text_width(lv, "small"), y - 1, lv, INK, PANEL_SHADE, font="small")
-    bar_x, bar_y = tx + 12, y + 12
-    if mon.status:
-        draw_status(cv, bar_x + 53, y + 12, mon.status, battler, status_style)
-    if side == "opp" and mon.caught:
-        stamp(cv, x + w - CAP_OPP_W - 2 + 2, y + 7, CAUGHT, {"I": INK, "R": HB_FEMALE, "W": WHITE})
-    if side == "plr":
-        hp = "%d/%3d" % (mon.hp, mon.maxhp)
-        draw_text(cv, bar_x + 50 - text_width(hp, "small"), y + 15, hp, INK, PANEL_SHADE, font="small")
-    return bar_x, bar_y
+def box_rect(side, variant=None):
+    return BX.hb_rect(variant or HB_VARIANT, side)
 
 
-def draw_status(cv, x, y, status, battler, style="gen3"):
-    """Gen 3 status icon (graphics/battle_interface/status.png), colour in slot 12+battler.
-    style 'gen3' = vanilla knock-out letters; 'orchid' = ink-outlined tag, white letters."""
-    src = Image.open(K.G("battle_interface", "status.png")).load()
-    row = STATUS_ROW[status]
-    col = HB_STATUS0 + battler
-    if style == "gen3":
-        for yy in range(8):
-            for xx in range(20):
-                v = src[xx, row * 8 + yy]
-                if v >= 12:
-                    cv.set(x + xx, y + yy, col)
-                elif v == 2 and not (xx in (0, 19) and yy in (0, 7)):
-                    cv.set(x + xx, y + yy, PANEL)
-                elif v == 3:
-                    cv.set(x + xx, y + yy, PANEL_SHADE)
-        return
-    # Orchid tag: 21x10, ink outline, status-colour face, white letters lifted from status.png
-    rounded_box(cv, x, y - 1, 21, 10, 1, col, INK, col, col, bevel=False)
-    for yy in range(1, 7):
-        for xx in range(2, 18):
-            if src[xx, row * 8 + yy] == 2:
-                cv.set(x + xx + 1, y + yy + 1, WHITE)
+def draw_bars(cv, mon, anchors, hp=None, exp=None):
+    """HP tag (party style) + 48px HP bar (+ EXP strip on the player box), healthbar palette."""
+    hp = mon.hp if hp is None else hp
+    exp = mon.exp if exp is None else exp
+    bar_x, bar_y = anchors["bar"]
+    tx, ty = bar_x - 12, bar_y - 1
+    rounded_box(cv, tx, ty, 11, 7, 1, HB_I["tag"], HB_I["tag"], HB_I["tag"], HB_I["tag"], bevel=False)
+    stamp(cv, tx + 2, ty + 1, HP_GLYPH, {"X": HB_I["white"]})
+    lvl, n = hp_level(hp, mon.maxhp)
+    cv.rect(bar_x, bar_y, bar_x + 49, bar_y + 4, HB_I["ink"])
+    cv.rect(bar_x + 1, bar_y + 1, bar_x + 48, bar_y + 3, HB_I["trough"])
+    cv.hline(bar_x + 1, bar_x + 48, bar_y + 1, HB_I["trough_hi"])
+    if n:
+        cv.rect(bar_x + 1, bar_y + 1, bar_x + n, bar_y + 3, HB_I[lvl + "2"])
+        cv.hline(bar_x + 1, bar_x + n, bar_y + 1, HB_I[lvl + "1"])
+    if anchors.get("exp"):
+        ex0, ex1, ey, style = anchors["exp"]
+        if style == "framed":           # ink-framed strip on the panel
+            cv.rect(ex0, ey, ex1, ey + 3, HB_I["ink"])
+            ey += 1
+            ex0, ex1 = ex0 + 1, ex1 - 1
+        cv.hline(ex0, ex1, ey, HB_I["trough"])
+        cv.hline(ex0, ex1, ey + 1, HB_I["trough_hi"])
+        n = int(round((ex1 - ex0 + 1) * max(0.0, min(1.0, exp))))
+        if n:
+            cv.hline(ex0, ex0 + n - 1, ey, HB_I["e1"])
+            cv.hline(ex0, ex0 + n - 1, ey + 1, HB_I["e2"])
+
+
+def exp_strip_px(variant=None):
+    an = BX.HB_DRAW[variant or HB_VARIANT](Canvas(p_sheet(W, H, BX.HB_PAL)), default_player(), "plr")
+    ex0, ex1, ey, style = an["exp"]
+    return ex1 - ex0 + 1 - (2 if style == "framed" else 0)
 
 
 def hp_level(hp, maxhp, pixels=48):
@@ -402,67 +360,80 @@ def hp_level(hp, maxhp, pixels=48):
     return ("g" if px > 24 else "y" if px > 9 else "r"), px
 
 
-def draw_bars(cv, mon, side, bar_x, bar_y, hp=None, exp=None):
-    """HP tag + 48px HP bar (+ EXP strip on the player box) on the healthbar palette."""
-    hp = mon.hp if hp is None else hp
-    exp = mon.exp if exp is None else exp
-    tx, ty = bar_x - 11, bar_y - 1
-    rounded_box(cv, tx, ty, 12, 7, 1, HB_I["tag"], HB_I["ink"], HB_I["tag_hi"], HB_I["tag"])
-    stamp(cv, tx + 3, ty + 1, HP_GLYPH, {"X": HB_I["tag_txt"]})
-    lvl, n = hp_level(hp, mon.maxhp)
-    cv.rect(bar_x, bar_y, bar_x + 49, bar_y + 4, HB_I["ink"])
-    cv.rect(bar_x + 1, bar_y + 1, bar_x + 48, bar_y + 3, HB_I["trough"])
-    cv.hline(bar_x + 1, bar_x + 48, bar_y + 1, HB_I["trough_hi"])
-    if n:
-        cv.rect(bar_x + 1, bar_y + 1, bar_x + n, bar_y + 3, HB_I[lvl + "2"])
-        cv.hline(bar_x + 1, bar_x + n, bar_y + 1, HB_I[lvl + "1"])
-    if side == "plr":
-        # thin EXP strip sunk into the box's bottom edge (BW), fills left -> right
-        x, y, w, h = PLR_BOX
-        ex0, ex1, ey = x + CAP_PLR_W + 4, 236, y + h - 4
-        cv.rect(ex0, ey, ex1, ey + 3, HB_I["ink"])
-        cv.hline(ex0 + 1, ex1 - 1, ey + 1, HB_I["trough"])
-        cv.hline(ex0 + 1, ex1 - 1, ey + 2, HB_I["trough"])
-        n = int(round((ex1 - ex0 - 1) * max(0.0, min(1.0, exp))))
-        if n:
-            cv.hline(ex0 + 1, ex0 + n, ey + 1, HB_I["e1"])
-            cv.hline(ex0 + 1, ex0 + n, ey + 2, HB_I["e2"])
-
-
-def healthboxes(out, player, enemy, show=("opp", "plr"), hp=None, exp=None, flash=None,
-                status_style="orchid", shake=None):
-    hp, flash, shake = hp or {}, flash or {}, shake or {}
-    stat = [None] * 4
-    if player is not None and player.status:
-        stat[0] = STATUS_COL[player.status]
-    if enemy is not None and enemy.status:
-        stat[1] = STATUS_COL[enemy.status]
-    for side, mon, b in (("opp", enemy, 1), ("plr", player, 0)):
+def healthboxes(out, player, enemy, show=("opp", "plr"), hp=None, exp=None, flash=None, variant=None):
+    hp, flash = hp or {}, flash or {}
+    draw = BX.HB_DRAW[variant or HB_VARIANT]
+    for side, mon in (("opp", enemy), ("plr", player)):
         if side not in show or mon is None:
             continue
-        frame = Image.new("RGBA", (W, H), (0, 0, 0, 0))
-        box = p_sheet(W, H, healthbox_pal(stat, flash=flash.get(side, 0)))
-        bx, by = draw_healthbox(Canvas(box), mon, side, b, status_style)
-        comp(frame, box)
+        box = p_sheet(W, H, BX.hb_pal(flash.get(side, 0)))
+        an = draw(Canvas(box), mon, side)
+        comp(out, box)
         bars = p_sheet(W, H, HBAR_PAL)
-        draw_bars(Canvas(bars), mon, side, bx, by, hp.get(side), exp if side == "plr" else None)
-        comp(frame, bars)
-        out.alpha_composite(frame, (0, shake.get(side, 0)))
+        draw_bars(Canvas(bars), mon, an, hp.get(side), exp if side == "plr" else None)
+        comp(out, bars)
+        status = mon.status or ("fnt" if (hp.get(side, mon.hp) or 0) <= 0 else None)
+        if status:
+            out.alpha_composite(SI.status_icon(status.lower()), an["status"])
 
 
 # ================================================================== render
+# ================================================================== party lineup (trainer battles)
+# Vanilla: CreatePartyStatusSummarySprites — opponent bar at (104, 40) [balls at y 36],
+# player bar at (136, 96) [balls at y 92]; balls ordered from the screen centre outward,
+# empty slots at the screen edge.
+LU_POS = {"opp": (0, 28), "plr": (240 - BX.LU_BAR_W, 84)}
+
+
+def lineup_layer(out, side, slots, bar_dx=0, ball_dx=None, alpha=1.0):
+    """slots: 6 states, k = 0 nearest the screen centre. ball_dx: per-ball x offset (anim)."""
+    x, y = LU_POS[side]
+    frame = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    bar = p_sheet(W, H, BX.HB_PAL)
+    BX.lineup_bar(Canvas(bar), x + bar_dx, y, side)
+    comp(frame, bar)
+    balls = p_sheet(W, H, BX.LINEUP_PAL)
+    bc = Canvas(balls)
+    for k, st in enumerate(slots):
+        if ball_dx is not None and ball_dx[k] is None:
+            continue
+        sx, sy = BX.lineup_socket(x, y, side, k)
+        BX.lineup_ball(bc, sx + (ball_dx[k] if ball_dx else bar_dx), sy, st)
+    comp(frame, balls)
+    if alpha < 1.0:
+        a = frame.getchannel("A").point(lambda v: int(v * alpha))
+        frame.putalpha(a)
+    out.alpha_composite(frame)
+
+
+def intro_scene(env="tall_grass", trainer="youngster", player_back="brendan", trainer_dx=0):
+    """Trainer battle intro: both trainers at the battler spots, no mons / healthboxes yet."""
+    out = BX.environment(env)
+    K.place(out, K.sprite_rgba(K.G("trainers", "front_pics", trainer + ".png")), BX.ENEMY_C[0] + trainer_dx, BX.ENEMY_C[1])
+    back = K.sprite_rgba(K.G("trainers", "back_pics", player_back + ".png"), 0, 64)
+    K.place(out, back, 80, 80)
+    return out
+
+
 def render(mode="action", cursor=0, msg=None, player=None, enemy=None, moves=None, yesno=0,
            show_enemy=True, show_boxes=("opp", "plr"), hp=None, exp=None, env="tall_grass",
-           enemy_visible=True, ball=False, flash=None, status_style="orchid", chars=None):
-    """mode: msg | action | moves | yesno.  chars = number of message characters printed."""
+           enemy_visible=True, ball=False, flash=None, chars=None, variant=None,
+           intro=False, lineups=None):
+    """mode: msg | action | moves | yesno.  chars = number of message characters printed.
+    intro = trainer-battle intro scene (no mons / healthboxes). lineups = {side: (slots, kwargs)}."""
     player = player or default_player()
     enemy = enemy if enemy is not None else default_enemy()
     moves = moves or MOVES
-    out = BX.scene(player.species, enemy.species, env, show_enemy=show_enemy and enemy_visible)
+    if intro:
+        out = intro_scene(env)
+    else:
+        out = BX.scene(player.species, enemy.species, env, show_enemy=show_enemy and enemy_visible)
     if ball:   # caught: closed Poké Ball resting on the enemy spot
-        spr = K.sprite_rgba(K.G("balls", "poke.png"), 0, 16)
-        K.place(out, spr, BX.ENEMY_C[0], BX.ENEMY_C[1] + 30)
-    healthboxes(out, player, enemy if show_enemy else None, show_boxes, hp, exp, flash, status_style)
+        K.place(out, K.sprite_rgba(K.G("balls", "poke.png"), 0, 16), BX.ENEMY_C[0], BX.ENEMY_C[1] + 30)
+    if not intro:
+        healthboxes(out, player, enemy if show_enemy else None, show_boxes, hp, exp, flash, variant)
+    for side, (slots, kw) in (lineups or {}).items():
+        lineup_layer(out, side, slots, **kw)
 
     bg = p_sheet(W, H, UI_PAL)          # BG0 static tilemap art, pal 0
     cv = Canvas(bg)
@@ -470,7 +441,7 @@ def render(mode="action", cursor=0, msg=None, player=None, enemy=None, moves=Non
     if mode in ("msg", "yesno"):
         msg_panel(cv, 2, 237 if mode == "msg" else 189)
         if mode == "yesno":
-            draw_yesno_frame(cv)
+            Wn.std_frame(cv, *YESNO_T)
         lines = wrap(msg or "", MSG_W if mode == "msg" else YESNO_MSG_W)[-2:]
         text = "\n".join(lines)
         if chars is not None:
@@ -478,8 +449,7 @@ def render(mode="action", cursor=0, msg=None, player=None, enemy=None, moves=Non
         draw_text(cv, MSG_X, MSG_Y, text, INK, PANEL_SHADE)
     elif mode == "action":
         msg_panel(cv, 2, 126)
-        prompt = msg or "What will\n%s do?" % player.name
-        draw_text(cv, MSG_X, MSG_Y, prompt, INK, PANEL_SHADE)
+        draw_text(cv, MSG_X, MSG_Y, msg or "What will\n%s do?" % player.name, INK, PANEL_SHADE)
     elif mode == "moves":
         draw_back_tab(cv)
     comp(out, bg)
@@ -494,17 +464,17 @@ def render(mode="action", cursor=0, msg=None, player=None, enemy=None, moves=Non
         draw_yesno(wc, yesno)
     comp(out, win)
     if mode == "action":
-        beads_layer(out)
+        button_fields(out)
     elif mode == "moves":
         type_icons(out, moves)
     return out
 
 
 # ================================================================== sheets
-def healthbox_sheet(status_style="orchid"):
-    """240x208: opponent variants (left, flush like in game) + player variants (right)."""
-    SH = 208
-    out = Image.new("RGBA", (W, SH), BX.environment().getpixel((4, 60)))
+def healthbox_sheet():
+    """266x200: opponent variants (left) + player variants (right) on the battle sky colour."""
+    SW, SH = 266, 200
+    out = Image.new("RGBA", (SW, SH), BX.environment().getpixel((4, 60)))
     zig = default_enemy()
     opp = [
         zig.copy(),                                                    # full, caught ball
@@ -512,32 +482,76 @@ def healthbox_sheet(status_style="orchid"):
         zig.copy(hp=3, status="PAR"),                                  # red + PAR
         Mon("beldum", "Beldum", 12, 30, 30, None, status="SLP"),       # genderless
         Mon("wurmple", "Wurmple", 3, 14, 15, "M", status="BRN"),
-        Mon("poochyena", "Poochyena", 9, 9, 28, "M", status="FRZ"),
-        Mon("zigzagoon", "Zigzagoon", 7, 0, 24, "F"),                  # fainted / empty
+        Mon("poochyena", "Poochyena", 9, 0, 28, "M"),                  # fainted -> FNT icon
     ]
     gro = default_player()
     plr = [
         gro.copy(hp=52, exp=0.94),                                     # full, EXP nearly full
-        gro.copy(hp=24, status="BRN", gender="F", exp=0.30),
-        gro.copy(hp=7, status="PSN", exp=0.62),                        # low (red)
-        Mon("treecko", "Treecko", 9, 31, 31, None, status="SLP", exp=0.05),
-        Mon("treecko", "Treecko", 9, 12, 31, "M", status="FRZ", exp=0.5),
+        gro.copy(hp=24, status="FRZ", gender="F", exp=0.30),
+        gro.copy(hp=7, status="TOX", exp=0.62),                        # low (red), badly poisoned
+        Mon("treecko", "Treecko", 9, 31, 31, None, status="PKRS", exp=0.05),
+        Mon("treecko", "Treecko", 9, 12, 31, "M", status="FRB", exp=0.5),
     ]
+    ox, oy, ow, oh = box_rect("opp")
     for i, m in enumerate(opp):
         f = Image.new("RGBA", (W, H), (0, 0, 0, 0))
-        healthboxes(f, None, m, ("opp",), status_style=status_style)
-        out.alpha_composite(f.crop((0, OPP_BOX[1], 114, OPP_BOX[1] + OPP_BOX[3])), (0, 4 + i * 29))
+        healthboxes(f, None, m, ("opp",))
+        out.alpha_composite(f.crop((0, oy, 132, oy + oh)), (0, 4 + i * 32))
+    px, py, pw, ph = box_rect("plr")
     for i, m in enumerate(plr):
         f = Image.new("RGBA", (W, H), (0, 0, 0, 0))
-        healthboxes(f, m, None, ("plr",), status_style=status_style)
-        out.alpha_composite(f.crop((120, PLR_BOX[1], 240, PLR_BOX[1] + PLR_BOX[3])), (120, 4 + i * 40))
+        healthboxes(f, m, None, ("plr",))
+        out.alpha_composite(f.crop((108, py, 240, py + ph)), (134, 4 + i * 38))
     return out
+
+
+def box_closeup(variant, player=None, enemy=None):
+    """Both healthboxes of a variant on the battle scene, cropped side by side (1x)."""
+    f = BX.environment()
+    healthboxes(f, player or default_player(), enemy or default_enemy(), variant=variant)
+    ox, oy, ow, oh = box_rect("opp", variant)
+    px, py, pw, ph = box_rect("plr", variant)
+    out = Image.new("RGBA", (268, 36), (28, 28, 36, 255))
+    out.alpha_composite(f.crop((0, oy - 2, 132, oy + 34)), (0, 0))
+    out.alpha_composite(f.crop((106, py - 2, 240, py + 34 if py + 34 <= 112 else 112)), (134, 0))
+    return out
+
+
+HB_IDEAS = {
+    "A": "A: brass-trimmed chamfered frame - dark frame, brass trim line, panel plate, ornament end that doubles as the status socket",
+    "B": "B: stepped top tab + inset name pill - Lv / HP numbers on a brass-lettered tab, name on its own pill, pointed end with status socket",
+    "C": "C: meander band + party disc - party-row slab with a brass greek-key band, rivet, and the party dais as a brass-ringed status disc",
+}
+
+
+def variants_sheet():
+    """healthbox_variants.png: per variant a 2x full frame (state 1) + 4x close-up of both boxes."""
+    S2, S4 = 2, 4
+    rows = []
+    for v in "ABC":
+        full = K.upscale(render("action", 0, variant=v, player=default_player().copy(status="PSN")), S2)
+        cu = K.upscale(box_closeup(v, default_player().copy(status="PSN")), S4)
+        cu2 = K.upscale(box_closeup(v, default_player().copy(hp=7, exp=0.9),
+                                    default_enemy().copy(hp=11, caught=False, status="PAR")), S4)
+        rows.append((v, full, cu, cu2))
+    Wd = 16 + 480 + 16 + 268 * S4 + 16
+    Hd = 16 + len(rows) * (24 + 320 + 24)
+    sheet = Image.new("RGBA", (Wd, Hd), (28, 28, 36, 255))
+    d = ImageDraw.Draw(sheet)
+    y = 16
+    for v, full, cu, cu2 in rows:
+        d.text((16, y), HB_IDEAS[v] + ("   [recommended]" if v == HB_VARIANT else ""), fill=(240, 220, 150) if v == HB_VARIANT else (230, 230, 240))
+        sheet.alpha_composite(full, (16, y + 20))
+        sheet.alpha_composite(cu, (16 + 480 + 16, y + 20))
+        sheet.alpha_composite(cu2, (16 + 480 + 16, y + 20 + cu.size[1] + 8))
+        y += 24 + 320 + 24
+    return sheet
 
 
 def parts_sheet():
     """4x sheet of the new pieces with their palettes."""
     S = 4
-    sheet = Image.new("RGBA", (W * S + 2 * 16, 1400), (28, 28, 36, 255))
+    sheet = Image.new("RGBA", (266 * S + 2 * 16, 1500), (28, 28, 36, 255))
     d = ImageDraw.Draw(sheet)
     y = 12
 
@@ -546,25 +560,41 @@ def parts_sheet():
         sheet.alpha_composite(K.upscale(img, S), (x, y + 14))
         return y + 14 + img.size[1] * S + 14
 
-    bgc = (88, 96, 112, 255)
-    f = Image.new("RGBA", (W, H), bgc)
-    healthboxes(f, default_player(), default_enemy())
-    hb = Image.new("RGBA", (W, 36), bgc)
-    hb.alpha_composite(f.crop((0, OPP_BOX[1] - 2, 112, OPP_BOX[1] + 30)), (0, 2))
-    hb.alpha_composite(f.crop((120, PLR_BOX[1] - 2, 240, PLR_BOX[1] + 34)), (120, 0))
-    y = put(hb, 16, y, "Healthboxes (OBJ, 2x 64x32 each): opponent flush-left, caught-ball cap; player flush-right, HP numbers + EXP strip in the bottom edge")
+    sky = BX.environment().getpixel((4, 60))
+    hb = box_closeup(HB_VARIANT, enemy=default_enemy().copy(status="PSN"))
+    y = put(hb, 16, y, "Healthboxes, direction B (OBJ 2x 64x32 each): stepped tab with brass Lv / HP numbers / caught ball, pointed end with status socket (quiet corner studs when empty), name (gender-coloured) on an inset pill, HP bar under it, EXP strip in the bottom edge")
     a0 = render("action", 0).crop((0, TRAY - 2, W, H))
-    y = put(a0, 16, y, "Action menu (BG0 tray pal 0 + menu window pal 5; beads = 4 OBJ 16x16 on 1 palette). FIGHT = big round button")
-    a1 = render("moves", 0).crop((0, TRAY - 12, W, H))
-    y = put(a1, 16, y, "Move select: 2x2 two-line pills, Gen 3 type icon (OBJ 32x16), PP counter notch with Gen 3 warning colours; BACK tab")
+    y = put(a0, 16, y, "Action menu: grid tray (BG0 pal 0) + button faces/labels (window, pal 5) + icon fields (OBJ: FIGHT 32x32, others 16x16, one palette)")
+    a1 = render("action", 2).crop((120, TRAY - 2, W, H))
+    a2 = Image.new("RGBA", (W, a1.size[1]), (28, 28, 36, 255))
+    a2.alpha_composite(a1, (0, 0))
+    big = Image.new("RGBA", (64, 32), (0, 0, 0, 0))
+    bc = p_sheet(64, 32, BTN_PAL)
+    cv = Canvas(bc)
+    draw_field(cv, 0, 0, 32, 22, "red", "fight", r=4)
+    for i in range(3):
+        draw_field(cv, 34 + (i % 2) * 18, (i // 2) * 16, 16, 14, BTN_COL[i + 1], BTN_ICON[i + 1])
+    big.alpha_composite(K.sheet_rgba(bc))
+    a2.alpha_composite(big, (130, 4))
+    y = put(a2, 16, y, "POKéMON selected (gold face, green field stays) + the four icon fields on their own")
+    m1 = render("moves", 0).crop((0, TRAY - 12, W, H))
+    y = put(m1, 16, y, "Move select: two-line pills, Gen 3 type icon (OBJ 32x16), PP notch with text_pp.pal colours; BACK tab on the grid tray")
+    lu = Image.new("RGBA", (W, 28), (88, 96, 112, 255))
+    f = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    lineup_layer(f, "opp", ["ok", "psn", "fnt", "empty", "brn", "par"])
+    lineup_layer(f, "plr", ["ok", "slp", "frz", "tox", "fnt", "empty"])
+    lu.alpha_composite(f.crop((0, LU_POS["opp"][1] - 2, 120, LU_POS["opp"][1] + 18)), (0, 0))
+    lu.alpha_composite(f.crop((120, LU_POS["plr"][1] - 2, 240, LU_POS["plr"][1] + 18)), (120, 8))
+    y = put(lu, 16, y, "Party lineup (trainer battles): bar = 3x 32x16 OBJ on the healthbox palette; balls = 16x16 OBJ each on LINEUP_PAL. States: ready, statused (status-colour dot), fainted (greyed), empty socket")
     d.text((16, y), "Palettes", fill=(230, 230, 240))
     y += 16
-    for label, pal in (("BG 0  tray / message (kit orchid roles)", UI_PAL),
-                       ("BG 5  menu windows (kit roles; 10 = PP yellow, 14 = orange, 15 = red)", MENU_PAL),
-                       ("OBJ  healthbox (10 male, 11 female / ball red, 12-15 status per battler)",
-                        healthbox_pal((STATUS_COL["PSN"], STATUS_COL["PAR"]))),
-                       ("OBJ  healthbar (HP green / yellow / red, EXP blue, HP tag)", HBAR_PAL),
-                       ("OBJ  action beads (red / yellow / green / blue ramps)", BEAD_PAL)):
+    for label, pal in (("BG 0  tray + panels (kit orchid; 14 grid base, 15 grid line, 1 = minor line)", UI_PAL),
+                       ("BG 5  menu windows (kit; 10 PP yellow, 14 PP orange, 15 PP red)", MENU_PAL),
+                       ("OBJ  healthbox (2/7/9 frame dark/mid/light, 11-13 brass, 10 male, 14 female/ball, 8/15 orchid)", BX.HB_PAL),
+                       ("OBJ  healthbar (HP ramps, EXP blue, HP tag)", HBAR_PAL),
+                       ("OBJ  action icon fields (red / yellow / green / blue)", BTN_PAL),
+                       ("OBJ  status icons (status_icons.STATUS_PAL)", SI.STATUS_PAL),
+                       ("OBJ  lineup balls (poke_ball.pal + 5 status dots)", BX.LINEUP_PAL)):
         for i, c in enumerate(pal):
             d.rectangle((16 + i * 30, y, 16 + i * 30 + 26, y + 26), fill=tuple(c), outline=(60, 60, 70))
             d.text((16 + i * 30 + 2, y + 28), str(i), fill=(160, 160, 170))
@@ -578,46 +608,58 @@ def states():
     P, E = default_player(), default_enemy()
     S = []
     S.append(("state_01.png", "Action menu — FIGHT", render("action", 0),
-              "Prompt in the field-style message box on the left; FIGHT is the big round button, "
-              "BAG / POKéMON / RUN are pills. Gold face = selection; colour beads keep BW's red/yellow/green/blue coding."))
+              "Black grid tray. FIGHT = big round button with a red field + fist; BAG / POKéMON / RUN pills open with "
+              "a yellow bag, green ball, blue shoe field. Selection turns the button face gold; the icon fields keep their colour."))
     S.append(("state_02.png", "Action menu — RUN", render("action", 3),
-              "RUN selected: only the pill face turns gold, the blue bead stays, so colour coding never fights the cursor."))
+              "RUN selected: gold pill, blue shoe field unchanged."))
     S.append(("state_03.png", "Move select", render("moves", 0),
-              "2x2 two-line pills: Gen 3 type icon, move name, PP counter notch. Quick Attack 6/30 shows orange (<= 1/4), "
-              "Pursuit 9/20 yellow (<= 1/2) — text_pp.pal colours. BACK tab = B."))
+              "2x2 two-line pills on the black tray: Gen 3 type icon, name, PP notch (Quick Attack 6/30 orange, "
+              "Pursuit 9/20 yellow). B / BACK tab restyled for the grid."))
     S.append(("state_04.png", "Battle message", render("msg", msg="The wild Zigzagoon had its energy drained!"),
-              "Full-width message box (B_WIN_MSG rect, 16px line pitch); two lines clear the bottom hairline. "
-              "Both healthboxes stay visible."))
-    S.append(("state_05.png", "Healthbox variants", healthbox_sheet("orchid"),
-              "Left: opponent — full + caught ball, yellow + PSN (not caught), red + PAR, genderless + SLP, BRN, FRZ, fainted. "
-              "Right: player — EXP nearly full, female + BRN, red + PSN, genderless + SLP, FRZ. Orchid status tags: ink outline, "
-              "white letters lifted from status.png, vanilla status colours."))
-    S.append(("state_05b.png", "Healthbox variants — real Gen 3 status icons", healthbox_sheet("gen3"),
-              "Same sheet with the untouched Gen 3 status.png icons (knock-out letters in the box face colour)."))
+              "Full-width message box on the tray (B_WIN_MSG rect, 16px pitch); both healthboxes (direction B) visible."))
+    S.append(("state_05.png", "Healthbox variants", healthbox_sheet(),
+              "Direction B. Left: opponent — full + caught ball (on the tab, before Lv; empty status socket = plain recess), yellow + PSN (not caught), red + PAR, genderless + SLP, "
+              "BRN, fainted (FNT icon). Right: player — EXP nearly full, female + FRZ, red + TOX, genderless + PKRS, FRB."))
     S.append(("state_06.png", "YES/NO — nickname",
               render("yesno", msg="Would you like to give Zigzagoon a nickname?", show_enemy=False, ball=True),
-              "Approved std frame + gold pill on YES, docked in the tray's right end (BW puts YES/NO on the bottom screen) "
-              "instead of vanilla's spot over the player box; the message window narrows to 21 tiles. Expansion's real string; "
-              "the caught ball rests on the enemy spot."))
+              "Std frame + gold pill docked in the tray's right end; message narrows to 20 tiles. The caught ball rests on the enemy spot."))
     pooch = Mon("poochyena", "Poochyena", 9, 28, 28, "M")
     S.append(("state_07.png", "Switch prompt",
               render("yesno", msg="Youngster Calvin is about to send out Poochyena. Will you switch your Pokémon?",
                      enemy=pooch, show_enemy=False),
-              "Trainer battle, the foe's last mon fainted (no enemy box). Expansion string, auto-wrapped; this is the last "
-              "page. YES/NO in the same std frame."))
+              "Trainer battle, foe's mon fainted (no enemy box); last page of the auto-wrapped expansion string."))
     S.append(("state_08.png", "Low HP", render("action", 0, player=P.copy(hp=7, status="PSN"), enemy=E.copy(hp=11)),
-              "Player at 7/52: red bar + PSN tag; foe at about half (yellow)."))
+              "Player at 7/52: red bar + poison icon; foe at about half (yellow)."))
+    S.append(("state_09.png", "Trainer battle intro — party lineups",
+              render("msg", msg="You are challenged by Youngster Calvin!", intro=True,
+                     lineups={"opp": (LINEUP_OPP, {}), "plr": (LINEUP_PLR, {})}),
+              "Both lineup bars at the vanilla spots (foe top-left, player above the tray), healthbox-B frame with brass "
+              "trim and six sockets. Foe: 4 ready, 1 fainted (greyed), 1 empty socket. Player: 5 balls, one poisoned "
+              "(purple dot), 1 empty. Expansion string."))
+    S.append(("state_10.png", "Foe about to send out — lineup",
+              render("msg", msg="Youngster Calvin is about to send out\nPoochyena.", show_enemy=False,
+                     lineups={"opp": (LINEUP_OPP_MID, {})}),
+              "Mid-battle: the foe's mon fainted, so its healthbox is gone and only the foe's lineup slides in (vanilla "
+              "skipPlayer case). First page of the switch-prompt string; state 7 is the page after it."))
     return S
+
+
+LINEUP_OPP = ["ok", "ok", "ok", "fnt", "ok", "empty"]        # k = 0 nearest the screen centre
+LINEUP_PLR = ["ok", "psn", "ok", "ok", "ok", "empty"]
+LINEUP_OPP_MID = ["fnt", "ok", "ok", "fnt", "ok", "empty"]
 
 
 def budget_lines():
     lines = []
-    for mode, label in (("msg", "message"), ("action", "action menu"), ("moves", "move select")):
+    for mode, label in (("msg", "message"), ("action", "action menu"), ("moves", "move select"), ("yesno", "YES/NO")):
         bg = p_sheet(W, H, UI_PAL)
         cv = Canvas(bg)
         draw_tray(cv)
         if mode == "msg":
             msg_panel(cv, 2, 237)
+        elif mode == "yesno":
+            msg_panel(cv, 2, 189)
+            Wn.std_frame(cv, *YESNO_T)
         elif mode == "action":
             msg_panel(cv, 2, 126)
             draw_action(cv, -1)
@@ -625,53 +667,78 @@ def budget_lines():
             draw_back_tab(cv)
             draw_moves(cv, [("", "normal", 1, 1)] * 4, -1)
         tiles, _ = to_tiles(bg.crop((0, 96, W, H)))
-        lines.append("BG0 %s layout, tray + panels + unselected buttons (no text): %d unique 4bpp tiles incl. blank" % (label, len(tiles)))
+        lines.append("BG0 %s layout (tray + panels + unselected buttons, no text): %d unique 4bpp tiles incl. blank" % (label, len(tiles)))
+    tray = p_sheet(W, H, UI_PAL)
+    draw_tray(Canvas(tray))
+    tiles, _ = to_tiles(tray.crop((0, 112, W, H)))
     lines += [
-        "BG layers: BG0 = all battle UI (tray + windows), BG1 free (vanilla level-up box), BG2/BG3 untouched (Mode 7 floor / environment).",
-        "BG palettes: 0 (tray, kit orchid) + 5 (menu windows + PP colours, vanilla's window slot). Rows 10-15 untouched; vanilla's 2nd textbox palette (1) is freed.",
-        "OBJ palettes: battlers 0-3 (vanilla) + healthbox 1 + healthbar 1 + beads 1 (action menu only) + type icons 3 (move select only; gMoveTypes_Pal as in the summary screen, this moveset uses 2). Peak 9 of 16.",
-        "OBJ tiles: opponent box 2x 64x32 = 64, player box 2x 64x32 = 64 (vanilla player = 2x 64x64 = 128), beads 4x 16x16 = 16, type icons 4x 32x16 = 32.",
-        "Layouts: like vanilla's 32x64 BG0 map (msg / action / moves screens switched by BG0 VOFS), plus a YES/NO variant (std frame baked into the tray's right 6x6 tiles).",
-        "Selection: re-blit the selected button's tiles in the gold variant (same tiles, SELECT colours) — custom cursor routine from DESIGN.md; FIGHT has its own round gold variant (~36 tiles). Text = vanilla text windows (prompt, 4 move names, PP).",
+        "Grid tray alone: %d unique tiles (2x2-tile repeat + the top edge). Static, recommended: the grid lives on BG0 with the panels, "
+        "so it can't scroll by BG offset; it could fake the scroll by re-uploading/cycling 4 grid tile frames (1px / 4 frames) "
+        "but that costs a VBlank copy for a barely visible effect under the windows." % len(tiles),
+        "BG layers: BG0 = all battle UI; BG1 free (vanilla level-up box); BG2/BG3 untouched (Mode 7 floor / environment).",
+        "BG palettes: 0 (tray/panels, kit orchid + 2 grid colours) + 5 (menu windows + PP colours). Rows 10-15 untouched; vanilla's pal 1 is freed.",
+        "Healthbox OBJ palette (direction B; shared layout with A/C): 1 ink, 2/7/9 frame dark/mid/light, 3-6 kit panel roles, 8/15 orchid accent, 10 male, 11-13 brass ramp, 14 female + ball red — full 16.",
+        "OBJ palettes: battlers 0-3 (vanilla) + healthbox 1 + healthbar 1 + status icons 1 (status_icons.STATUS_PAL, shared with the party menu) "
+        "+ action icon fields 1 (action menu only) + type icons 3 (move select only, gMoveTypes_Pal; this moveset needs 2). Peak 10 of 16.",
+        "OBJ tiles: direction B = 128x31 (opp) / 128x32 (player), 2x 64x32 each = 64 tiles per box (vanilla player = 128), status icon 16x16 = 4 per battler, "
+        "FIGHT field 32x32 = 16 + 3 side fields 16x16 = 12 (28 total, action menu only), type icons 4x 32x16 = 32 (move select only).",
+        "Selection: re-blit the selected button's tiles in its gold variant (custom cursor routine, DESIGN.md); icon-field OBJs are untouched.",
+        "Party lineup (trainer battles, per side, same counts as vanilla's bar + 6 balls): bar 3x 32x16 = 24 tiles on the healthbox palette (no extra palette), 6 balls 16x16 = 24 tiles (vanilla 8x8; ours are 9x9 + status dot). Ball palette LINEUP_PAL: poke_ball.pal ramp + 5 status-dot colours = 1 OBJ palette shared by both sides. Shown only when healthboxes are hidden, so the peak stays 10 of 16 (battlers 4, healthbox/bar 1, healthbar 1, status icons 1, lineup balls 1, trainer pics use battler slots).",
     ]
     return lines
 
 
 def notes(states_list, gifs):
     return {
-        "title": "Battle UI — Orchid (Gen 5 layout, Gen 3 pixels)",
+        "title": "Battle UI — Orchid (Gen 5 layout, Gen 3 pixels) — round 2",
         "main": {"file": "main.png", "zones": [
-            ["Opponent healthbox", "OBJ 2x 64x32 in the vanilla top-left zone, flush to the screen edge like BW: name + gender + Lv, HP tag + 48px bar, status after the bar, caught ball in the orchid end-cap."],
-            ["Player healthbox", "OBJ 2x 64x32, flush right just above the tray: name / gender / Lv, HP bar, HP numbers under the bar end, thin EXP strip sunk into the bottom edge."],
-            ["Tray", "BG0 static tiles, y 112..159 (vanilla textbox area): orchid band like the std frame's accent; every panel sits inside it."],
-            ["Prompt box", "The approved field dialogue box (white, purple end-caps), vanilla prompt text origin, 16px line pitch."],
-            ["FIGHT", "Big round BW-style button (44x44); face turns gold when selected; red bead OBJ on top."],
-            ["BAG / POKéMON / RUN", "14px pills, 1px gaps, yellow / green / blue beads. D-pad: left/right = FIGHT <-> column, up/down inside the column."],
-            ["Scene", "Vanilla tall-grass environment + battlers at sBattlerCoords; on the engine branch this is the Mode 7 floor. The UI never uses BG2/BG3 or BG palette rows 10-15."]]},
+            ["Opponent healthbox", "Direction B (chosen), OBJ 2x 64x32 (x 4..131, y 14..44): dark frame with a brass top trim; a stepped tab carries Lv and the caught ball in brass; the pointed left end is the status socket (plain recess when healthy); the name sits on an inset pill, coloured by gender (blue / rose / ink); HP tag + 48px bar under it."],
+            ["Player healthbox", "Same shape (x 110..237, y 79..110); the tab carries HP numbers + Lv, and the EXP strip is set into the bottom edge."],
+            ["Tray", "BG0, y 112..159: static BW near-black grid (party/bag colours) with an ink top edge; every panel sits on it."],
+            ["Prompt box", "White message box with a quiet column of brass rivets at each end (no purple end-caps), vanilla prompt text origin."],
+            ["FIGHT", "Big round button: red field with a white fist silhouette (OBJ 32x32) above the FIGHT label; face turns gold when selected."],
+            ["BAG / POKéMON / RUN", "Pills whose left end is a coloured field (yellow bag, green Poké Ball, blue running shoe; OBJ 16x16). D-pad: left/right FIGHT <-> column, up/down in the column."],
+            ["Scene", "Vanilla tall-grass environment + battlers at sBattlerCoords; on the engine branch this is the Mode 7 floor."]]},
         "states": [{"file": f, "title": t, "desc": d} for f, t, _, d in states_list],
         "gifs": gifs,
-        "extras": [{"file": "parts.png", "title": "Parts + palettes (4x)",
-                    "desc": "Healthboxes, action tray, move tray and every palette the battle UI adds."}],
+        "extras": [
+            {"file": "parts.png", "title": "Parts + palettes (4x)",
+             "desc": "Healthboxes, action tray (normal + POKéMON selected), the four icon fields, move tray and every palette the battle UI adds."},
+            {"file": "status_icons.png", "title": "Status icons (status_icons.py, 4x)",
+             "desc": "Shared pictogram tags for battle + party: psn, tox (skull), par, slp, brn, frz, frb, fnt, pkrs. 16x16 tag; the white pictogram is centred exactly on the 12x12 coloured face (margins printed under each icon, all >= 2px); one 16-colour OBJ palette for all."},
+            {"file": "healthbox_variants.png", "title": "Healthbox directions A / B / C",
+             "desc": "Three layered healthbox designs, each as a 2x full action-menu frame plus 4x close-ups (default data + low HP / status). A = brass-trimmed chamfered frame, B = stepped tab + inset name pill (chosen), C = meander band + party disc. Frozen as shown in round 3."}],
+        "decisions": [
+            "Healthbox direction B (stepped top tab + inset name pill) chosen by the user in round 3; healthbox_variants.png keeps the A / B / C comparison as it was shown.",
+            "Gender = name colour, no ♂/♀ glyph: male names NAME_MALE fg (40,80,184) / shadow (168,192,232), female NAME_FEMALE fg (184,48,72) / shadow (232,176,184), genderless INK / PANEL_SHADE (battle_ext constants, shared with the party screen).",
+            "Message box: purple end-caps replaced by a quiet column of three 2x2 brass rivets at each end.",
+            "Empty status socket: plain recess with four faint corner studs (no orchid gem); a status icon covers it completely.",
+            "Tray grid stays static.",
+        ],
         "budget": budget_lines(),
         "kit_additions": [
-            "battle_ext.big_round_box / round_mask / mask_box: Gen 3 shading for any corner radius (FIGHT button); could fold into kit.rounded_box for r > 4.",
-            "battle_ext.environment() + scene(): composites graphics/battle_environment/<env> + battlers for mockups (stand-in for the Mode 7 floor).",
-            "Menu palette (BG 5): kit roles with ACCENT_PALE / SPARE_A / SPARE_B = text_pp.pal yellow / orange / red.",
-            "Healthbox OBJ palette: kit roles, ACCENT_PALE = male blue, SELECT_DARK = female / ball red, 12-15 = per-battler status colour (vanilla convention).",
-            "Healthbar OBJ palette: Gen 3 HP ramps + EXP blue + HP tag (orchid face, Gen 3 peach letters).",
-            "Bead OBJ palette: four Gen 3 ramps (red / yellow / green / blue) + ink + white — reusable for any BW colour-coded button.",
-            "draw_move_pill (two-line pill + PP notch) and draw_back_tab (B hint tab) as reusable pieces.",
+            "status_icons.py (new, shared): status_icon(kind) / status_index(kind) / margins(kind) / STATUS_PAL / status_sheet().",
+            "battle_ext healthbox kit: HB_PAL (frame dark/mid/light + brass ramp on kit role slots), chamfer_mask, rivet, CAUGHT, ORCHID emblem, MEANDER band, hb_A / hb_B / hb_C.",
+            "battle_ext.SILHOUETTES + silhouette(): white-with-shadow pictograms for the action buttons (fist, bag, Poké Ball, shoe).",
+            "battle_ext.big_round_box / round_mask / mask_box: Gen 3 shading for any corner radius (FIGHT button).",
+            "Tray grid on BG0: GRID_PAL base/major in BG pal 0's spare slots, minor line = INK.",
+            "Icon-field OBJ palette: four Gen 3 ramps (red / yellow / green / blue) + ink + white — reusable for any BW colour-coded button.",
+            "draw_move_pill (two-line pill + PP notch) and draw_back_tab as reusable pieces.",
         ],
-        "questions": [
-            ["Gender tint on the player box?", "Battle is shared, so both boxes use the Orchid end-cap. Option: tint only the player box's end-cap + HP tag by player gender (4 colours, no layout change). Recommend keeping Orchid on both for consistency with the shared-window rule."],
-            ["Status tag style", "A: Orchid tags — ink outline + white letters, same letter shapes and colours as status.png (state_05, used in every state). B: real Gen 3 status.png icons with knock-out letters (state_05b). Recommend A: matches the kit's ink-outline rule and reads better on the light box."],
-            ["FIGHT button shape", "Big rounded square (r=12, current) vs full circle vs a wide pill like the others. Recommend the rounded square: reads as BW's big FIGHT button and fits FIGHT + bead."],
-            ["PP colours", "Gen 3's yellow/orange PP text is unreadable on the gold pill, so PP sits in an ink notch (white / yellow / orange / red). Alternative: plain text on the pill with darker warning colours. Recommend the notch."],
-            ["Message wording", "Mockups use the expansion's real strings ('Would you like to give Zigzagoon a nickname?', '…is about to send out Poochyena. Will you switch your Pokémon?'), auto-wrapped to the 26-tile window. Keep, or restore Gen 3 wording?"],
-            ["YES/NO position", "Vanilla opens YES/NO at tiles (26,9), on top of the player healthbox. The mockup docks the std frame in the tray's right end instead (message narrows to 21 tiles, longer prompts paginate sooner). Recommend docked; the vanilla spot is a one-line change if you prefer it."],
-            ["BACK tab", "Move select shows a small B/BACK tab rising 11px above the tray's top-left (over the platform, not the mon). Keep it, or drop it for a cleaner scene?"],
-        ],
+        "questions": [],
     }
+
+
+GIFS = [
+    {"file": "action_menu.gif", "title": "Action menu cursor",
+     "desc": "Gold face steps FIGHT -> BAG -> POKéMON -> RUN -> FIGHT (instant moves, 24 frames apart; icon fields stay coloured), then A opens move select, the cursor walks the moves and B returns."},
+    {"file": "hp_drain.gif", "title": "Hit + HP drain",
+     "desc": "'Grovyle used Absorb!' prints at MID speed (4 frames/char), Zigzagoon blinks, its bar drains 1 HP/frame (max HP < 48, Gen 3 rule) and turns yellow / red at 24 / 9 px; 'A critical hit!', then the drain refills Grovyle's bar 1 px/frame."},
+    {"file": "exp_levelup.gif", "title": "EXP + level up",
+     "desc": "EXP strip fills 1px/frame, the player box flashes white (8 frames), Lv18 -> Lv19 and max HP 52 -> 55, EXP restarts from 0."},
+    {"file": "lineup.gif", "title": "Trainer-battle party lineups",
+     "desc": "Vanilla timing: both bars slide in at 5 px/frame (20 frames); balls zip in one by one from the screen edge, nearest-the-centre first (delays 10 / 17 + 7 frames per ball, accelerating); the challenge message prints; then balls and bars drift toward the centre (2 px/frame) while alpha-fading out over 32 frames."},
+]
 
 
 if __name__ == "__main__":
@@ -682,13 +749,11 @@ if __name__ == "__main__":
         K.upscale(im, 3).save(os.path.join(OUT, f))
     K.upscale(S[0][2], 3).save(os.path.join(OUT, "main.png"))
     parts_sheet().save(os.path.join(OUT, "parts.png"))
-    gifs = [
-        {"file": "action_menu.gif", "title": "Action menu cursor",
-         "desc": "Gold pill steps FIGHT -> BAG -> POKéMON -> RUN -> FIGHT (instant moves, 24 frames apart), then A opens move select and the cursor walks the four moves."},
-        {"file": "hp_drain.gif", "title": "Hit + HP drain",
-         "desc": "'Grovyle used Absorb!' prints at MID speed (4 frames/char), Zigzagoon blinks, its bar drains 1 HP/frame (max HP < 48, Gen 3 rule) and turns yellow / red at 24 / 9 px; 'A critical hit!', then the drain refills Grovyle's bar 1 px/frame."},
-        {"file": "exp_levelup.gif", "title": "EXP + level up",
-         "desc": "EXP strip fills 1px/frame, the player box flashes white for 8 frames at the top, Lv18 -> Lv19 and max HP 52 -> 55, EXP restarts from 0."},
-    ]
-    json.dump(notes(S, gifs), open(os.path.join(OUT, "notes.json"), "w"), indent=1, ensure_ascii=False)
+    SI.status_sheet().save(os.path.join(OUT, "status_icons.png"))
+    # healthbox_variants.png is the frozen round-3 comparison (A/B/C); regenerate only on request:
+    # variants_sheet().save(os.path.join(OUT, "healthbox_variants.png"))
+    old = os.path.join(OUT, "state_05b.png")
+    if os.path.exists(old):
+        os.remove(old)
+    json.dump(notes(S, GIFS), open(os.path.join(OUT, "notes.json"), "w"), indent=1, ensure_ascii=False)
     print("ok")

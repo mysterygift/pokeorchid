@@ -2,7 +2,7 @@
 Animated previews of the Orchid Pokédex. Timeline in GBA frames (60 fps); one GIF
 frame every 2 GBA frames (duration 33 ms), saved at 2x.
 
-dex_scroll.gif — D-pad down held/tapped through the Hoenn list:
+dex_scroll.gif — D-pad down held/tapped through the TOSA list:
   * a press every 12 frames; the gold cursor pill moves down a row instantly;
   * once the cursor is 2 rows from the bottom the list scrolls instead
     (BG2VOFS += 2px/frame, 8 frames per row) and the cursor stays put;

@@ -53,7 +53,8 @@ E_TRAY_Y = 100
 DESC_X, DESC_Y, DESC_PITCH = 7, E_TRAY_Y + 2, 14
 
 # ------------------------------------------------------------------ sample save data
-# Hoenn dex (real order + data from the ROM source). c = caught, s = seen, else unseen.
+# TOSA dex stand-in: the ROM's current regional (Hoenn-order) list + real species data.
+# c = caught, s = seen, else unseen.
 STATUS = ("c c . s . . s . . c s c c . c s . c s c s . c . . c s c s c . "
           "s c . . c s . . c . s . . s c . . c . s . . . c . . s").split()
 LIST_LEN = len(STATUS)                 # vanilla: the list ends at the last seen entry
@@ -151,7 +152,7 @@ def render_list(theme="orchid", cursor=0, top=None, scroll_px=None, grid_scroll=
     compose(ui, art, pal)
     txt = sheet(theme)
     tc = Canvas(txt)
-    title = "HOENN"
+    title = "TOSA"
     draw_text(tc, TITLE_CX - text_width(title) // 2, 0, title, WHITE, ACCENT_DARK)
     for (x, y), lab, n in zip(COUNT_PILLS, ("SEEN", "OWN"), (SEEN, OWN)):
         draw_text(tc, x + (COUNT_CAP - text_width(lab)) // 2 + 1, y - 1, lab, WHITE, ACCENT_DARK)
@@ -267,7 +268,7 @@ def render_entry(theme="orchid", entry_index=0, tab=0, grid_scroll=0, fade=0.0, 
                       line, INK_SOFT, None, font="narrow")
         (body or area_body)(tc, ac, sp)
     else:
-        info_text(tc, sp, body)
+        info_text(tc, sp, body, e["caught"])
     compose(ui, txt, pal)
     if fade:
         ui = darken(ui, fade)
@@ -286,10 +287,12 @@ def render_entry(theme="orchid", entry_index=0, tab=0, grid_scroll=0, fade=0.0, 
     return out
 
 
-def info_text(tc, sp, body=None):
-    cat = sp["category"] + " POKéMON"
+def info_text(tc, sp, body=None, caught=True):
+    """Gen 3 rule: seen-but-not-caught shows ????? category, unknown HT/WT, no description."""
+    cat = (sp["category"] if caught else "?????") + " POKéMON"
     draw_text(tc, E_X + (E_W - text_width(cat, "narrow")) // 2, E_CAT_Y - 1, cat, INK, PANEL_SHADE, font="narrow")
-    for k, (lab, val) in enumerate((("HT", D.fmt_height(sp["height"])), ("WT", D.fmt_weight(sp["weight"])))):
+    ht, wt = (D.fmt_height(sp["height"]), D.fmt_weight(sp["weight"])) if caught else ("???.? m", "???.? kg")
+    for k, (lab, val) in enumerate((("HT", ht), ("WT", wt))):
         x = E_X + k * (E_W - 70)
         draw_text(tc, x + (HW_CAP - text_width(lab)) // 2 + 1, E_HW_Y - 1, lab, WHITE, ACCENT_DARK)
         draw_text(tc, x + 70 - 7 - text_width(val, "narrow"), E_HW_Y - 1, val, INK, PANEL_SHADE, font="narrow")
@@ -301,7 +304,7 @@ def info_text(tc, sp, body=None):
                 tc.set(fx + (fw - 16) // 2 + xx, fy + (fh - 16) // 2 + yy, INK)
     if body:
         body(tc, None, sp)
-    else:
+    elif caught:
         draw_text(tc, DESC_X, DESC_Y, sp["desc"], INK, PANEL_SHADE, line_h=DESC_PITCH)
 
 
@@ -312,7 +315,7 @@ def area_body(tc, ac, sp):
 
 
 # ------------------------------------------------------------------ search menu (std-window style)
-SEARCH_ROWS = [("ORDER", "Numerical"), ("NAME", "ABC"), ("TYPE", None), ("MODE", "HOENN")]
+SEARCH_ROWS = [("ORDER", "Numerical"), ("NAME", "ABC"), ("TYPE", None), ("MODE", "TOSA")]
 
 
 def render_search(theme="orchid", cursor=0, grid_scroll=0):
@@ -341,7 +344,7 @@ def render_search(theme="orchid", cursor=0, grid_scroll=0):
     for i, (xx, lab) in enumerate(bx):
         draw_text(tc, xx + (72 - text_width(lab)) // 2, 113, lab, INK, PANEL_SHADE)
     hint = ["Pick the order the list is sorted in.", "List POKéMON by their first letter.",
-            "Show POKéMON of up to two types.", "Switch HOENN / NATIONAL listings."][min(cursor, 3)]
+            "Show POKéMON of up to two types.", "Switch TOSA / NATIONAL listings."][min(cursor, 3)]
     draw_text(tc, DESC_X, 138, hint, INK, PANEL_SHADE, line_h=DESC_PITCH)
     a = KX.sheet_rgba(art, pal)
     a.alpha_composite(KX.sheet_rgba(cur, sel))
@@ -460,9 +463,10 @@ if __name__ == "__main__":
     s4 = render_entry(entry_index=idx(1))                             # Treecko INFO
     s5 = render_entry(entry_index=idx(20))                            # Lotad, Water/Grass
     s6 = render_search(cursor=0)
-    s7 = render_entry(entry_index=idx(26), tab=1)     # Taillow AREA placeholder
+    s7 = render_entry(entry_index=idx(26), tab=1)
+    s8 = render_entry(entry_index=idx(21))                            # Lombre, seen only: ????? rule     # Taillow AREA placeholder
     save(s1, os.path.join(out, "main.png"))
-    for i, im in enumerate((s1, s2, s3, s4, s5, s6, s7), 1):
+    for i, im in enumerate((s1, s2, s3, s4, s5, s6, s7, s8), 1):
         save(im, os.path.join(out, "state_%02d.png" % i))
     parts_sheet().convert("RGB").save(os.path.join(out, "parts.png"))
     # theme A/B

@@ -10,7 +10,9 @@ Maps onto src/party_menu.c (PARTY_LAYOUT_SINGLE):
 
 Slot palette (one per window, swapped by LoadPartyBoxPalette) keeps the kit role layout
 with three per-slot overrides:
-    11 GENDER    gender glyph colour (blue / red)  (SELECT_DARK slot is free in a slot palette)
+    11 NAME_FG   name colour by gender (battle_ext NAME_MALE / NAME_FEMALE; genderless = INK)
+    12 NAME_SH   name shadow (genderless = PANEL_SHADE of the current state)
+                 (the SELECT ramp slots are free in a slot palette: gold is swapped into PANEL roles)
     14 HP_LIGHT  HP bar light row  (Gen 3 ramp, swapped green/yellow/red like sHPBar*PalIds)
     15 HP_DARK   HP bar body
 States are pure palette swaps of the same tiles: normal / selected (gold) / moving (accent) /
@@ -22,7 +24,8 @@ from kit import *
 import kit_ext as KX
 from gamefont import draw_text, text_width, _font
 
-GENDER, HP_LIGHT, HP_DARK = SELECT_DARK, SPARE_A, SPARE_B
+NAME_FG, NAME_SH, HP_LIGHT, HP_DARK = SELECT_DARK, SELECT, SPARE_A, SPARE_B
+from battle_ext import NAME_MALE, NAME_FEMALE
 
 W, H = 240, 160
 # ---------------------------------------------------------------- window geometry (tiles)
@@ -46,12 +49,12 @@ def slot_px(i):
 # ---------------------------------------------------------------- slot geometry (window-relative px)
 # wide slot 144x24: accent disc (icon dais) at the left end, slab behind it
 WIDE = dict(disc=(12, 11.5, 11.0), slab=(10, 1, 132, 22),
-            name=(27, 0), lv=(27, 9), sex_x=49, status=(58, 13),
-            hp_tag=(83, 3), bar=(95, 4, 40), hpnum_r=139, hpnum_y=9,
+            name=(27, 0), lv=(27, 9), status=(75, 5),
+            hp_tag=(93, 13), bar=(93, 4, 42), hpnum_r=139, hpnum_y=9,
             icon=(12, 7), hold=(20, 16), desc=(88, 0))
 # lead slot 80x56: bigger disc top-left, name block right of it, HP row along the bottom
 LEAD = dict(disc=(16, 19.5, 13.0), slab=(1, 5, 78, 50),
-            name=(31, 5), lv=(31, 15), sex_x=54, status=(31, 28),
+            name=(31, 5), lv=(31, 15), status=(60, 18),
             hp_tag=(6, 38), bar=(19, 39, 48), hpnum_r=74, hpnum_y=40,
             icon=(16, 15), hold=(22, 29), desc=(8, 38))
 
@@ -65,7 +68,6 @@ def slot_palette(theme="male", state="normal", gender=None, hp=1.0):
     """16 RGB for one slot window. state: normal|selected|moving|moving_sel|fainted|fainted_sel|empty."""
     base = palette(theme)
     p = list(base)
-    p[GENDER] = KX.MALE_BLUE if gender == "m" else KX.FEMALE_RED if gender == "f" else base[INK_SOFT]
     lt, dk = KX.hp_ramp(hp)
     p[HP_LIGHT], p[HP_DARK] = lt, dk
     if state.startswith("fainted"):
@@ -77,6 +79,10 @@ def slot_palette(theme="male", state="normal", gender=None, hp=1.0):
         p[PANEL], p[WHITE], p[PANEL_SHADE] = base[ACCENT_LIGHT], base[ACCENT_PALE], base[ACCENT]
     if state in ("moving", "moving_sel"):
         p[INK] = base[ACCENT_DARK]           # outline turns accent: reads as "picked up"
+    name = NAME_MALE if gender == "m" else NAME_FEMALE if gender == "f" else (p[INK], p[PANEL_SHADE])
+    p[NAME_FG], p[NAME_SH] = name
+    if state == "moving" and gender:
+        p[NAME_SH] = base[ACCENT_PALE]       # gendered shadow vanishes on the accent face: lift it
     return [snap(c) for c in p]
 
 
@@ -149,11 +155,9 @@ def draw_slot(cv, mon, lead=False, mode="hp"):
     rounded_box(cv, sx, sy, sw, sh, 4, PANEL, INK, WHITE, PANEL_SHADE)
     _dais(cv, g)
     nx, ny = g["name"]
-    draw_text(cv, nx, ny, mon["name"], INK, PANEL_SHADE, font="small")
+    draw_text(cv, nx, ny, mon["name"], NAME_FG, NAME_SH, font="small")
     lx, ly = g["lv"]
-    draw_lv(cv, lx, ly, mon["lv"])
-    if mon.get("sex"):
-        draw_code(cv, g["sex_x"], ly, 0xB5 if mon["sex"] == "m" else 0xB6, GENDER, PANEL_SHADE)
+    draw_lv(cv, lx, ly, mon["lv"])          # no gender glyph: the name colour carries gender
     if mode == "hp":
         hp_tag(cv, *g["hp_tag"])
         bx, by, bw = g["bar"]
@@ -197,18 +201,16 @@ G = KX.G
 
 
 def mon_icon(species, frame=0, pal_index=0):
-    """P_GBA_STYLE_SPECIES_ICONS is FALSE in this repo -> icon.png + the non-GBA iconPalIndex."""
-    png = G("pokemon", species, "icon.png")
-    pal = KX.load_jasc(G("pokemon", "icon_palettes", "pal%d.pal" % pal_index))
-    return KX.sprite_rgba(png, frame, 32, pal)
+    """Modern icon.png + non-GBA iconPalIndex (kit_ext.mon_icon now does the same)."""
+    return KX.mon_icon(species, frame, pal_index)
 
 
-STATUS_ROW = {"psn": 0, "par": 1, "slp": 2, "frz": 3, "brn": 4, "pkrs": 5, "fnt": 6, "frb": 7}
+import status_icons as SI
 
 
 def status_icon(kind):
-    """32x8 OBJ from graphics/interface/status_icons.png (embedded palette)."""
-    return KX.sprite_rgba(G("interface", "status_icons.png"), STATUS_ROW[kind], 8)
+    """Shared Orchid pictogram tag (status_icons.py): 16x16 OBJ cell, 16x14 tag, one shared STATUS_PAL."""
+    return SI.status_icon(kind)
 
 
 def hold_icon(mail=False):

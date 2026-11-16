@@ -2,7 +2,8 @@
 Pokédex helpers for the Orchid UI mockups (PROPOSED kit additions live here
 until the user approves them).
 
-  * Real dex data parsed from the ROM source: Hoenn dex order
+  * Real dex data parsed from the ROM source: regional dex order (the ROM's
+    Hoenn list, shown as the TOSA dex until Orchid's own order exists)
     (include/constants/pokedex.h), species name / category / height / weight /
     description / types (src/data/pokemon/species_info/gen_*_families.h),
     footprints (graphics/pokemon/<species>/footprint.png, 1bpp 16x16).
@@ -274,9 +275,5 @@ def track(cv, x0, y0, x1, y1):
 
 
 def mon_pic(folder):
-    """kit_ext.mon_front with a fallback for Gen 4+ species that only ship front.png."""
-    d = G("pokemon", folder)
-    if any(os.path.exists(os.path.join(d, f)) for f in ("anim_front_gba.png", "anim_front.png")):
-        return KX.mon_front(folder)
-    pal = os.path.join(d, "normal.pal")
-    return KX.sprite_rgba(os.path.join(d, "front.png"), 0, 64, KX.load_jasc(pal) if os.path.exists(pal) else None)
+    """Front pic; kit_ext.mon_front now handles front.png-only species itself."""
+    return KX.mon_front(folder)
