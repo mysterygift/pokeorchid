@@ -2859,3 +2859,19 @@
 	getbraillestringwidth \text
 	call EventScript_BrailleCursorWaitButton
 	.endm
+
+	@ Tosa Rail: opens the station picker and, if the player confirms, runs the whole train journey
+	@ (board -> depart -> warp -> arrive). Use from a locked NPC/sign script standing on the platform,
+	@ south of the track. Returns only if the player cancels.
+	.macro usetrain
+	call Common_EventScript_UseTrain
+	.endm
+
+	@ Tosa Rail: change a station's accessibility. mode = TRAIN_ACCESS_OPEN (usable even if never
+	@ visited), TRAIN_ACCESS_CLOSED (greyed out even if visited) or TRAIN_ACCESS_LOCKED (back to the
+	@ default: usable once visited). Clobbers VAR_0x8004 and VAR_0x8005.
+	.macro settrainstation station:req, mode:req
+	setvar VAR_0x8004, \station
+	setvar VAR_0x8005, \mode
+	special TrainStation_SetAccess
+	.endm

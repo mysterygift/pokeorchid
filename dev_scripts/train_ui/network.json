@@ -1,0 +1,17 @@
+{
+  "_comment": "Tosa Rail station-map network. Source of truth for export_station_map.py. Coordinates are canvas pixels; every node and waypoint must sit on a cell centre (8k+4) and every run must be 0/45/90 degrees. label = [anchor, dx, dy]: anchor c = centred on the node, l = text ends left of the node, r = text starts right of the node; dy is from the node centre to the label's text cell (small font). bgPalette: the BG palette slot of the line's tube colour (0 orchid/purple, 1 sea/teal, 2 forest/green).",
+  "canvas": [512, 256],
+  "lines": [
+    {"key": "coast", "name": "COAST", "bgPalette": 1},
+    {"key": "ridge", "name": "RIDGE", "bgPalette": 0}
+  ],
+  "stations": [
+    {"id": "TRAIN_STATION_TEST_WEST",  "name": "WEST TEST",  "x": 36,  "y": 196, "label": ["c", 0, 6]},
+    {"id": "TRAIN_STATION_TEST_EAST",  "name": "EAST TEST",  "x": 476, "y": 196, "label": ["c", 0, 6]},
+    {"id": "TRAIN_STATION_TEST_NORTH", "name": "NORTH TEST", "x": 252, "y": 44,  "label": ["c", 0, 6]}
+  ],
+  "edges": [
+    {"a": "TRAIN_STATION_TEST_WEST", "b": "TRAIN_STATION_TEST_EAST",  "line": "coast", "via": []},
+    {"a": "TRAIN_STATION_TEST_WEST", "b": "TRAIN_STATION_TEST_NORTH", "line": "ridge", "via": [[36, 76], [68, 44]]}
+  ]
+}
