@@ -197,6 +197,7 @@ void RunTextPrinters(void);
 bool32 IsTextPrinterActiveOnWindow(u32 windowId);
 bool32 IsTextPrinterActiveOnSprite(u32 spriteId);
 void GenerateFontHalfRowLookupTable(union TextColor color);
+void DecodeGlyphForFont(u32 fontId, u16 glyphId);
 union TextColor SaveTextColors(void);
 void RestoreTextColors(union TextColor color);
 void DecompressGlyphTile(const void *src_, void *dest_);

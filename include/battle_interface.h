@@ -59,6 +59,12 @@ enum
 
 #define TAG_SHADOW_TILE                 0xD759
 
+// Orchid UI: battle (singles healthboxes, status icons, party lineup, action icons)
+#define TAG_ORCHID_HEALTHBOX_PAL        0xD740
+#define TAG_ORCHID_HEALTHBAR_PAL        0xD741
+#define TAG_ORCHID_STATUS_TILE          0xD742
+#define TAG_ORCHID_STATUS_PAL           0xD743
+
 #define TAG_GIMMICK_TRIGGER_TILE        0xD777
 #define TAG_MEGA_INDICATOR_TILE         0xD778
 #define TAG_ALPHA_INDICATOR_TILE        0xD779
@@ -143,5 +149,8 @@ void TryAddPokeballIconToHealthbox(u8 healthboxSpriteId, bool8 noStatus);
 void UpdateNickInHealthbox(u8 healthboxSpriteId, struct Pokemon *mon);
 void CreateItemPopUp(enum BattlerId battlerId);
 void FreeAbilityPopUpGfx(void);
+bool32 IsOrchidHealthboxBattler(enum BattlerId battler);
+bool32 IsOrchidHealthbox(u8 healthboxSpriteId);
+void LoadOrchidHealthboxGfx(void);
 
 #endif // GUARD_BATTLE_INTERFACE_H

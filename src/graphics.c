@@ -1755,6 +1755,13 @@ const u16 gSatchelPocketIcons_Pal[] = INCGFX_U16("graphics/bag/pocket_icons.png"
 // Orchid UI kit: shared status pictograms (dev_scripts/orchid_ui/export_status.py)
 const u32 gOrchidStatusIcons_Gfx[] = INCGFX_U32("graphics/interface/orchid_status_icons.png", ".4bpp.smol");
 const u16 gOrchidStatusIcons_Pal[] = INCGFX_U16("graphics/interface/orchid_status_icons.png", ".gbapal");
+// Orchid UI: battle (dev_scripts/orchid_ui/export_battle.py)
+const u32 gOrchidHealthboxPlayer_Gfx[] = INCGFX_U32("graphics/battle_interface/orchid_healthbox_player.png", ".4bpp", "-mwidth 8 -mheight 4");
+const u32 gOrchidHealthboxOpponent_Gfx[] = INCGFX_U32("graphics/battle_interface/orchid_healthbox_opponent.png", ".4bpp", "-mwidth 8 -mheight 4");
+const u16 gOrchidHealthbox_Pal[] = INCGFX_U16("graphics/battle_interface/orchid_healthbox_player.png", ".gbapal");
+const u32 gOrchidHealthbarPlayer_Gfx[] = INCGFX_U32("graphics/battle_interface/orchid_healthbar_player.png", ".4bpp");
+const u32 gOrchidHealthbarOpponent_Gfx[] = INCGFX_U32("graphics/battle_interface/orchid_healthbar_opponent.png", ".4bpp");
+const u16 gOrchidHealthbar_Pal[] = INCGFX_U16("graphics/battle_interface/orchid_healthbar_player.png", ".gbapal");
 const u8 gSatchelRing_Gfx[] = INCGFX_U8("graphics/bag/satchel_ring.png", ".4bpp");
 const u8 gSatchelThumb_Gfx[] = INCGFX_U8("graphics/bag/satchel_thumb.png", ".4bpp");
 const u8 gSatchelArrow_Gfx[] = INCGFX_U8("graphics/bag/satchel_arrow.png", ".4bpp");
