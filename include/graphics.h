@@ -1801,6 +1801,18 @@ extern const u32 gSatchelPocketIcons_Gfx[];
 extern const u16 gSatchelPocketIcons_Pal[];
 extern const u32 gOrchidStatusIcons_Gfx[];
 extern const u16 gOrchidStatusIcons_Pal[];
+
+// Orchid UI: dex
+extern const u32 gOrchidDexList_Gfx[];
+extern const u32 gOrchidDexList_Tilemap[];
+extern const u32 gOrchidDexEntry_Gfx[];
+extern const u32 gOrchidDexInfo_Tilemap[];
+extern const u32 gOrchidDexArea_Tilemap[];
+extern const u32 gOrchidDexSearch_Tilemap[];
+extern const u16 gOrchidDexScreen_Pal[];
+extern const u8 gOrchidDexRow_Gfx[];
+extern const u8 gOrchidDexBall_Gfx[];
+extern const u8 gOrchidDexThumb_Gfx[];
 extern const u8 gSatchelRing_Gfx[];
 extern const u8 gSatchelThumb_Gfx[];
 extern const u8 gSatchelArrow_Gfx[];

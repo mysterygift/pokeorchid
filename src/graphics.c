@@ -1755,6 +1755,18 @@ const u16 gSatchelPocketIcons_Pal[] = INCGFX_U16("graphics/bag/pocket_icons.png"
 // Orchid UI kit: shared status pictograms (dev_scripts/orchid_ui/export_status.py)
 const u32 gOrchidStatusIcons_Gfx[] = INCGFX_U32("graphics/interface/orchid_status_icons.png", ".4bpp.smol");
 const u16 gOrchidStatusIcons_Pal[] = INCGFX_U16("graphics/interface/orchid_status_icons.png", ".gbapal");
+
+// Orchid UI: dex
+const u32 gOrchidDexList_Gfx[] = INCGFX_U32("graphics/pokedex/orchid/list.png", ".4bpp.smol");
+const u32 gOrchidDexList_Tilemap[] = INCGFX_U32("graphics/pokedex/orchid/list.bin", ".smolTM");
+const u32 gOrchidDexEntry_Gfx[] = INCGFX_U32("graphics/pokedex/orchid/entry.png", ".4bpp.smol");
+const u32 gOrchidDexInfo_Tilemap[] = INCGFX_U32("graphics/pokedex/orchid/info.bin", ".smolTM");
+const u32 gOrchidDexArea_Tilemap[] = INCGFX_U32("graphics/pokedex/orchid/area.bin", ".smolTM");
+const u32 gOrchidDexSearch_Tilemap[] = INCGFX_U32("graphics/pokedex/orchid/search.bin", ".smolTM");
+const u16 gOrchidDexScreen_Pal[] = INCGFX_U16("graphics/pokedex/orchid/screen.pal", ".gbapal");
+const u8 gOrchidDexRow_Gfx[] = INCGFX_U8("graphics/pokedex/orchid/row.png", ".4bpp");
+const u8 gOrchidDexBall_Gfx[] = INCGFX_U8("graphics/pokedex/orchid/ball.png", ".4bpp");
+const u8 gOrchidDexThumb_Gfx[] = INCGFX_U8("graphics/pokedex/orchid/thumb.png", ".4bpp");
 const u8 gSatchelRing_Gfx[] = INCGFX_U8("graphics/bag/satchel_ring.png", ".4bpp");
 const u8 gSatchelThumb_Gfx[] = INCGFX_U8("graphics/bag/satchel_thumb.png", ".4bpp");
 const u8 gSatchelArrow_Gfx[] = INCGFX_U8("graphics/bag/satchel_arrow.png", ".4bpp");

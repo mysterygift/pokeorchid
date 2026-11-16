@@ -3,8 +3,9 @@
 #ifndef GUARD_DATA_POKEDEX_ORCHID_H
 #define GUARD_DATA_POKEDEX_ORCHID_H
 
-#define ODEX_LIST_NUM_TILES      102   // list art tiles (incl. blank 0); grid tiles follow
-#define ODEX_ENTRY_NUM_TILES     176   // INFO + AREA + SEARCH art tiles; grid tiles follow
+#define ODEX_LIST_NUM_TILES      106   // list sheet tiles (blank 0, grid 1-4, art)
+#define ODEX_ENTRY_NUM_TILES     180   // INFO + AREA + SEARCH sheet tiles (blank 0, grid 1-4, art)
+#define ODEX_GRID_TILE_BASE      1    // grid TL, TR, BL, BR in both sheets
 #define ODEX_PAL_NORMAL          0
 #define ODEX_PAL_SELECTED        1
 #define ODEX_PAL_GRID            2

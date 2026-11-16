@@ -3,9 +3,9 @@ Export the Orchid Pokédex screens to game assets (re-uses mock_dex.py / dex_ext
 so the ROM art is the mockup art pixel for pixel).
 
 Writes (all under the repo root):
-  graphics/pokedex/orchid/list.png        list screen BG1 art + 4 grid tiles (kit palette indices)
+  graphics/pokedex/orchid/list.png        list screen art (tiles 1-4 = grid) (kit palette indices)
   graphics/pokedex/orchid/list.bin        BG1 tilemap, 32x32
-  graphics/pokedex/orchid/entry.png       shared tile sheet: INFO, AREA and SEARCH art + 4 grid tiles
+  graphics/pokedex/orchid/entry.png       shared tile sheet: INFO, AREA and SEARCH art (tiles 1-4 = grid)
   graphics/pokedex/orchid/info.bin        INFO tab tilemap
   graphics/pokedex/orchid/area.bin        AREA tab tilemap
   graphics/pokedex/orchid/search.bin      search page tilemap
@@ -50,6 +50,9 @@ def grid_tiles():
     return out
 
 
+BASE = [tuple([0] * 64)] + grid_tiles()
+
+
 def cells(tm):
     """30x20 tilemap list -> 32x32 cell list."""
     c = [None] * (32 * 32)
@@ -87,10 +90,10 @@ def export():
     write_jasc(os.path.join(OUT, "screen.pal"), pals)
 
     # ---- list screen
+    # Tiles 1-4 are the grid in BOTH sheets, so the grid (BG1, map 13) survives the list <-> entry swap.
     lst = art(M.draw_list_art)
-    tiles, tm = to_tiles(lst)
+    tiles, tm = to_tiles(lst, base=BASE)
     n_list = len(tiles)
-    tiles += grid_tiles()
     save_indexed(tiles_to_image(tiles, lst), os.path.join(OUT, "list.png"), pal)
     write_tilemap(os.path.join(OUT, "list.bin"), cells(tm))
     assert len(tiles) < 256
@@ -99,11 +102,10 @@ def export():
     info = art(lambda cv: M.draw_entry_art(cv, 0))
     area = art(lambda cv: M.draw_entry_art(cv, 1))
     srch = art(search_art)
-    tiles, tm_info = to_tiles(info)
+    tiles, tm_info = to_tiles(info, base=BASE)
     tiles, tm_area = to_tiles(area, base=tiles)
     tiles, tm_search = to_tiles(srch, base=tiles)
     n_entry = len(tiles)
-    tiles += grid_tiles()
     save_indexed(tiles_to_image(tiles, info), os.path.join(OUT, "entry.png"), pal)
     write_tilemap(os.path.join(OUT, "info.bin"), cells(tm_info))
     write_tilemap(os.path.join(OUT, "area.bin"), cells(tm_area))
@@ -134,8 +136,9 @@ def write_header(n_list, n_entry):
     a("#ifndef GUARD_DATA_POKEDEX_ORCHID_H")
     a("#define GUARD_DATA_POKEDEX_ORCHID_H")
     a("")
-    a("#define ODEX_LIST_NUM_TILES      %d   // list art tiles (incl. blank 0); grid tiles follow" % n_list)
-    a("#define ODEX_ENTRY_NUM_TILES     %d   // INFO + AREA + SEARCH art tiles; grid tiles follow" % n_entry)
+    a("#define ODEX_LIST_NUM_TILES      %d   // list sheet tiles (blank 0, grid 1-4, art)" % n_list)
+    a("#define ODEX_ENTRY_NUM_TILES     %d   // INFO + AREA + SEARCH sheet tiles (blank 0, grid 1-4, art)" % n_entry)
+    a("#define ODEX_GRID_TILE_BASE      1    // grid TL, TR, BL, BR in both sheets")
     a("#define ODEX_PAL_NORMAL          0")
     a("#define ODEX_PAL_SELECTED        1")
     a("#define ODEX_PAL_GRID            2")
