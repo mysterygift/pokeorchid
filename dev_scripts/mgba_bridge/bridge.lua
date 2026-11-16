@@ -60,10 +60,22 @@ local function startCommand(id, line)
 	if cmd == "frame" then reply(id, "ok " .. emu:currentFrame()) return nil end
 	if cmd == "reset" then emu:reset() reply(id, "ok") return nil end
 	if cmd == "loadrom" then
-		-- reload a rebuilt ROM without the GUI: loadrom <path>
+		-- loadrom <rom.gba> [save.sav]: load a rebuilt ROM plus a save, then reset.
+		-- The save defaults to the ROM path with .sav and is loaded as a temporary
+		-- copy, so in-game saving never writes back to the file.
 		if not args[2] then reply(id, "err missing path") return nil end
 		local okL, res = pcall(function() return emu:loadFile(args[2]) end)
-		if okL and res ~= false then emu:reset() reply(id, "ok") else reply(id, "err " .. tostring(res)) end
+		if not okL or res == false then reply(id, "err loadFile " .. tostring(res)) return nil end
+		local sav = args[3] or args[2]:gsub("%.gba$", ".sav")
+		local savMsg = "no save"
+		local okF, f = pcall(function() return io.open(sav, "rb") end)
+		if okF and f then
+			f:close()
+			local okS, r2 = pcall(function() return emu:loadSaveFile(sav, true) end)
+			savMsg = (okS and r2 ~= false) and ("save " .. sav) or ("save failed " .. tostring(r2))
+		end
+		emu:reset()
+		reply(id, "ok " .. savMsg)
 		return nil
 	end
 
