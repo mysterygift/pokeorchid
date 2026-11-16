@@ -27684,3 +27684,32 @@ const u32 gObjectEventPic_Substitute[] = INCGFX_COMP("graphics/pokemon/question_
     const u32 gMonFrontPic_Egg[] = INCGFX_U32("graphics/pokemon/egg/anim_front.png", ".4bpp.smol");
     const u16 gMonPalette_Egg[] = INCGFX_U16("graphics/pokemon/egg/normal.pal", ".gbapal");
     const u8 gMonIcon_Egg[] = INCGFX_U8("graphics/pokemon/egg/icon.png", ".4bpp");
+
+// Orchid custom species
+    const u32 gMonFrontPic_Pinguin[] = INCGFX_U32("graphics/pokemon/pinguin/front.png", ".4bpp.smol");
+    const u32 gMonBackPic_Pinguin[] = INCGFX_U32("graphics/pokemon/pinguin/back.png", ".4bpp.smol");
+    const u16 gMonPalette_Pinguin[] = INCGFX_U16("graphics/pokemon/pinguin/normal.pal", ".gbapal");
+    const u16 gMonShinyPalette_Pinguin[] = INCGFX_U16("graphics/pokemon/pinguin/shiny.pal", ".gbapal");
+    const u8 gMonIcon_Pinguin[] = INCGFX_U8("graphics/pokemon/pinguin/icon.png", ".4bpp");
+#if P_FOOTPRINTS
+    const u8 gMonFootprint_Pinguin[] = INCGFX_U8("graphics/pokemon/pinguin/footprint.png", ".1bpp");
+#endif //P_FOOTPRINTS
+
+    const u32 gMonFrontPic_Iyepure[] = INCGFX_U32("graphics/pokemon/iyepure/front.png", ".4bpp.smol");
+    const u32 gMonBackPic_Iyepure[] = INCGFX_U32("graphics/pokemon/iyepure/back.png", ".4bpp.smol");
+    const u16 gMonPalette_Iyepure[] = INCGFX_U16("graphics/pokemon/iyepure/normal.pal", ".gbapal");
+    const u16 gMonShinyPalette_Iyepure[] = INCGFX_U16("graphics/pokemon/iyepure/shiny.pal", ".gbapal");
+    const u8 gMonIcon_Iyepure[] = INCGFX_U8("graphics/pokemon/iyepure/icon.png", ".4bpp");
+#if P_FOOTPRINTS
+    const u8 gMonFootprint_Iyepure[] = INCGFX_U8("graphics/pokemon/iyepure/footprint.png", ".1bpp");
+#endif //P_FOOTPRINTS
+
+    const u32 gMonFrontPic_Torpesquid[] = INCGFX_U32("graphics/pokemon/torpesquid/front.png", ".4bpp.smol");
+    const u32 gMonBackPic_Torpesquid[] = INCGFX_U32("graphics/pokemon/torpesquid/back.png", ".4bpp.smol");
+    const u16 gMonPalette_Torpesquid[] = INCGFX_U16("graphics/pokemon/torpesquid/normal.pal", ".gbapal");
+    const u16 gMonShinyPalette_Torpesquid[] = INCGFX_U16("graphics/pokemon/torpesquid/shiny.pal", ".gbapal");
+    const u8 gMonIcon_Torpesquid[] = INCGFX_U8("graphics/pokemon/torpesquid/icon.png", ".4bpp");
+#if P_FOOTPRINTS
+    const u8 gMonFootprint_Torpesquid[] = INCGFX_U8("graphics/pokemon/torpesquid/footprint.png", ".1bpp");
+#endif //P_FOOTPRINTS
+

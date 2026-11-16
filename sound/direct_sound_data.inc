@@ -8738,6 +8738,25 @@ Cry_Pecharunt::
 	.incbin "sound/direct_sound_samples/cries/pecharunt.bin"
 .endif
 .endif @ P_FAMILY_PECHARUNT
+
+@ Orchid custom cries
+	.align 2
+Cry_Pinguin::
+.if TESTING == FALSE
+	.incbin "sound/direct_sound_samples/cries/pinguin.bin"
+.endif
+
+	.align 2
+Cry_Iyepure::
+.if TESTING == FALSE
+	.incbin "sound/direct_sound_samples/cries/iyepure.bin"
+.endif
+
+	.align 2
+Cry_Torpesquid::
+.if TESTING == FALSE
+	.incbin "sound/direct_sound_samples/cries/torpesquid.bin"
+.endif
 .endif @ P_CRIES_ENABLED
 
 .if TESTING == TRUE
