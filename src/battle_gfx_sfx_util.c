@@ -713,8 +713,17 @@ bool8 BattleLoadAllHealthBoxesGfx(u8 state)
 {
     if (state == 1)
     {
-        LoadSpritePalette(&sSpritePalettes_HealthBoxHealthBar[0]);
-        LoadSpritePalette(&sSpritePalettes_HealthBoxHealthBar[1]);
+        u32 i;
+        bool32 anyVanillaBox = FALSE;
+
+        for (i = 0; i < gBattlersCount; i++)
+        {
+            if (!IsOrchidHealthboxBattler(i))
+                anyVanillaBox = TRUE;
+        }
+        LoadSpritePalette(&sSpritePalettes_HealthBoxHealthBar[0]); // also the enemy shadow palette
+        if (anyVanillaBox) // Orchid UI: singles boxes bring their own bar palette, save the slot
+            LoadSpritePalette(&sSpritePalettes_HealthBoxHealthBar[1]);
         LoadOrchidHealthboxGfx();
         CategoryIcons_LoadSpritesGfx();
     }

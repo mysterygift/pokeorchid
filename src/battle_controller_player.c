@@ -437,8 +437,13 @@ static void OrchidSetTypeIcons(enum BattlerId battler)
             u32 row = gTypesInfo[type].palette - 13;
             struct SpritePalette pal = {gMoveTypes_Pal + row * 16, TAG_ORCHID_TYPE_PAL_0 + row};
 
+            u32 paletteNum = LoadSpritePalette(&pal);
+
             CpuCopy32(types + type * 8 * TILE_SIZE_4BPP, (void *)(OBJ_VRAM0 + (base + i * 8) * TILE_SIZE_4BPP), 8 * TILE_SIZE_4BPP);
-            sprite->oam.paletteNum = LoadSpritePalette(&pal);
+            if (paletteNum == 0xFF) // no free OBJ palette: leave the icon out rather than show garbage
+                CpuFill32(0, (void *)(OBJ_VRAM0 + (base + i * 8) * TILE_SIZE_4BPP), 8 * TILE_SIZE_4BPP);
+            else
+                sprite->oam.paletteNum = paletteNum;
         }
     }
     Free(types);
@@ -512,7 +517,7 @@ static void OrchidDrawMovePill(enum BattlerId battler, u32 slot, bool32 selected
                 default: break;
                 }
                 if (mark != NULL)
-                    AddTextPrinterParameterized4(win, FONT_NORMAL, nx0 - 2 - GetStringWidth(FONT_NORMAL, mark, 0), oy + 6,
+                    AddTextPrinterParameterized4(win, FONT_NORMAL, nx0 - 3 - GetStringWidth(FONT_NORMAL, mark, 0), oy + 8,
                                                  0, 0, sOrchidTextColors, TEXT_SKIP_DRAW, mark);
             }
         }
