@@ -572,7 +572,7 @@ static void CB2_InitBattleInternal(void)
     LoadBattleTextboxAndBackground();
     ResetSpriteData();
     ResetTasks();
-    if (B_FAST_INTRO_NO_SLIDE == FALSE && !gTestRunnerHeadless)
+    if (B_FAST_INTRO_NO_SLIDE == FALSE && !gTestRunnerHeadless && !IsBattleIntroMode7())
         DrawBattleEntryBackground();
     FreeAllSpritePalettes();
     gReservedSpritePaletteCount = MAX_BATTLERS_COUNT;
@@ -1730,12 +1730,12 @@ static void CB2_HandleStartMultiBattle(void)
 
 void BattleMainCB2(void)
 {
+    BattleMode7_Update(); // before BuildOamBuffer: sprites and floor use the same camera frame
     AnimateSprites();
     BuildOamBuffer();
     RunTextPrinters();
     UpdatePaletteFade();
     RunTasks();
-    BattleMode7_Update();
 
     if (JOY_HELD(B_BUTTON) && gBattleTypeFlags & BATTLE_TYPE_RECORDED && RecordedBattle_CanStopPlayback())
     {
@@ -2377,6 +2377,8 @@ void SpriteCB_WildMon(struct Sprite *sprite)
 {
     sprite->callback = SpriteCB_MoveWildMonToRight;
     StartSpriteAnimIfDifferent(sprite, 0);
+    if (IsBattleIntroMode7())
+        sprite->x2 = 0; // waits on its platform as a silhouette while the camera flies in
     if (B_FAST_INTRO_NO_SLIDE == FALSE && !gTestRunnerHeadless)
     {
         if (WILD_DOUBLE_BATTLE)
@@ -2390,7 +2392,7 @@ static void SpriteCB_MoveWildMonToRight(struct Sprite *sprite)
 {
     if ((gIntroSlideFlags & 1) == 0)
     {
-        if (B_FAST_INTRO_NO_SLIDE == FALSE && !gTestRunnerHeadless)
+        if (B_FAST_INTRO_NO_SLIDE == FALSE && !gTestRunnerHeadless && !IsBattleIntroMode7())
             sprite->x2 += 2;
         else
             sprite->x2 = 0;

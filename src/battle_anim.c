@@ -338,6 +338,8 @@ void LaunchBattleAnimation(u32 animType, u32 animId)
 {
     s32 i;
 
+    BattleMode7_ClearFocus(); // Orchid: back to the wide shot for the animation
+
     if (gTestRunnerEnabled)
     {
         TestRunner_Battle_RecordAnimation(animType, animId);
@@ -1769,7 +1771,7 @@ static void Task_FadeToBg(u8 taskId)
 
 void LoadMoveBg(u16 bgId)
 {
-    BattleMode7_Suspend();
+    BattleMode7_SuspendForMoveBg();
     if (IsContest())
     {
         void *decompressionBuffer = malloc_and_decompress(gBattleAnimBackgroundTable[bgId].tilemap, NULL);

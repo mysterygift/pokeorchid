@@ -14,10 +14,18 @@
 #define MODE7_OPPONENT_PLATFORM_V  259
 
 void BattleMode7_Start(void);
+void BattleMode7_StartIntro(void);
+bool32 BattleMode7_IntroDone(void);
+void BattleMode7_FocusOn(u32 battler);
+void BattleMode7_FocusFor(u32 battler, u32 frames);
+void BattleMode7_FocusAfterAnim(u32 battler, u32 frames);
+void BattleMode7_ClearFocus(void);
+bool32 IsBattleIntroMode7(void);
 void BattleMode7_End(void);
 void BattleMode7_Update(void);
 void BattleMode7_VBlank(void);
 void BattleMode7_Suspend(void);
+void BattleMode7_SuspendForMoveBg(void);
 bool32 BattleMode7_IsActive(void);
 
 #endif // GUARD_BATTLE_MODE7_H

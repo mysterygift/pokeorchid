@@ -103,40 +103,31 @@ def _put(px, x, y, c):
 
 
 def _platform(px, cx, cy, r, rng):
+    """Solid-band shading only: single-pixel speckle and checker dithers
+    shimmer when Mode 7 resamples the floor during camera motion."""
     for y in range(cy - r - 12, cy + r + 13):
         for x in range(cx - r - 12, cx + r + 13):
             dx, dy = x - cx, y - cy
             d = math.hypot(dx, dy)
-            if d >= r + 11:
-                continue
-            checker = (x + y) % 2 == 0
             if d >= r - 1:
-                # shadow fades out with distance instead of ending in a hard ring
-                fade = (d - (r - 1)) / 12.0
-                if rng.random() > fade * fade * 1.4 and (checker or rng.random() > fade):
+                wobble = 1.5 * math.sin(math.atan2(dy, dx) * 5)
+                if d < r + 5 + wobble:
                     _put(px, x, y, SHADOW)
-            elif d >= r - 4:
-                # broken-up rim: grass blades drawn later fill the gaps
-                n = rng.random()
-                _put(px, x, y, RIM if n < 0.72 else BEVEL if n < 0.9 else FILL)
+                continue
+            if d >= r - 4:
+                _put(px, x, y, RIM)
             elif d >= r - 6:
-                _put(px, x, y, BEVEL if rng.random() < 0.8 else FILL_LIGHT)
+                _put(px, x, y, BEVEL)
             else:
-                # light from the top-left: round highlight, crescent shade lower-right
                 hl = math.hypot(dx + r * 0.18, dy + r * 0.18)
                 sh = math.hypot(dx + r * 0.22, dy + r * 0.22)
                 c = FILL
-                if hl < r * 0.48 or (hl < r * 0.54 and checker):
+                if hl < r * 0.5:
                     c = FILL_LIGHT
-                if sh > r * 1.04 or (sh > r * 0.98 and checker):
+                if sh > r * 1.0:
                     c = SHADE
                 if d > r - 9 and sh > r * 0.98:
                     c = EDGE_SHADE
-                # tile-aligned speckle so interior tiles stay shared
-                if x % 8 == 2 and y % 8 == 3:
-                    c = DOT
-                elif x % 8 == 6 and y % 8 == 7 and c != SHADE:
-                    c = DOT_LIGHT
                 _put(px, x, y, c)
 
 
@@ -205,7 +196,7 @@ def grass(env_dir, out_png):
     px = [[GROUND] * SIZE for _ in range(SIZE)]
 
     # very sparse ground flecks, a perspective cue for the moving camera
-    flecks = [[(3, 4), (4, 4)], [(2, 5), (3, 4), (4, 5)]]
+    flecks = [[(3, 4), (4, 4), (3, 5), (4, 5)], [(2, 3), (3, 3), (2, 4), (3, 4)]]  # 2x2: stable under Mode 7
     for ty in range(SIZE // 8):
         for tx in range(1, SIZE // 8):
             centre = (tx * 8 + 4, ty * 8 + 4)

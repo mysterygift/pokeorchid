@@ -1,5 +1,6 @@
 #include "global.h"
 #include "battle.h"
+#include "battle_mode7.h"
 #include "battle_hold_effects.h"
 #include "battle_message.h"
 #include "battle_anim.h"
@@ -1034,6 +1035,7 @@ static void Cmd_printattackstring(void)
         return;
 
     PrepareStringBattle(STRINGID_USEDMOVE, gBattlerAttacker);
+    BattleMode7_FocusOn(gBattlerAttacker); // Orchid: camera closes in on the attacker
     gBattleCommunication[MSG_DISPLAY] = MSG_DISPLAY_CONTINUE;
     if (gBattleMoveEffects[GetMoveEffect(gCurrentMove)].twoTurnEffect
      && !gBattleMons[gBattlerAttacker].volatiles.multipleTurns)
@@ -3061,6 +3063,8 @@ static void PlayAnimation(enum BattlerId battler, u8 animId, const u16 *argPtr, 
     {
         BtlController_EmitBattleAnimation(battler, B_COMM_TO_CONTROLLER, animId, *argPtr);
         MarkBattlerForControllerExec(battler);
+        if (animId == B_ANIM_STATS_CHANGE)
+            BattleMode7_FocusAfterAnim(battler, 60); // Orchid: then look at whose stats changed
         gBattlescriptCurrInstr = nextInstr;
     }
     else if (gHitMarker & (HITMARKER_NO_ANIMATIONS | HITMARKER_DISABLE_ANIMATION) && animId != B_ANIM_RESTORE_BG)
@@ -4003,6 +4007,7 @@ static void Cmd_hitanimation(void)
         {
             BtlController_EmitHitAnimation(battler, B_COMM_TO_CONTROLLER);
             MarkBattlerForControllerExec(battler);
+            BattleMode7_FocusFor(battler, 50); // Orchid: camera pushes in on the battler that was hit
         }
     }
 

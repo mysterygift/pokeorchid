@@ -7,6 +7,7 @@ u16 ChooseMoveAndTargetInBattlePalace(enum BattlerId battler);
 void SpriteCB_WaitForBattlerBallReleaseAnim(struct Sprite *sprite);
 void SpriteCB_TrainerSlideIn(struct Sprite *sprite);
 void SpriteCB_TrainerSpawn(struct Sprite *sprite);
+void SpriteCB_TrainerMode7Intro(struct Sprite *sprite);
 void InitAndLaunchChosenStatusAnimation(enum BattlerId battler, bool32 isVolatile, u32 status);
 bool8 TryHandleLaunchBattleTableAnimation(u8 activeBattlerId, u8 attacker, u8 target, u8 tableId, u16 argument);
 void InitAndLaunchSpecialAnimation(enum BattlerId activeBattlerId, enum BattlerId attacker, enum BattlerId target, u8 tableId);

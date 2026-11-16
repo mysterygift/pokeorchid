@@ -82,8 +82,8 @@ const struct BattleEnvironment gBattleEnvironmentInfo[BATTLE_ENVIRONMENT_COUNT] 
         .camouflageType = TYPE_GRASS,
         .camouflageBlend = RGB(12, 24, 2),
         .entry = ENVIRONMENT_ENTRY(TallGrass),
-        .background = ENVIRONMENT_BACKGROUND(TallGrass),
-        .palette = gBattleEnvironmentPalette_TallGrass,
+        .background = ENVIRONMENT_BACKGROUND(OrchidGrass),
+        .palette = gBattleEnvironmentPalette_OrchidGrass,
         .battleIntroSlide = BattleIntroSlide1,
     },
 
@@ -116,8 +116,8 @@ const struct BattleEnvironment gBattleEnvironmentInfo[BATTLE_ENVIRONMENT_COUNT] 
         .camouflageType = TYPE_GROUND,
         .camouflageBlend = RGB(30, 24, 11),
         .entry = ENVIRONMENT_ENTRY(Sand),
-        .background = ENVIRONMENT_BACKGROUND(Sand),
-        .palette = gBattleEnvironmentPalette_Sand,
+        .background = ENVIRONMENT_BACKGROUND(OrchidBeach),
+        .palette = gBattleEnvironmentPalette_OrchidBeach,
         .battleIntroSlide = BattleIntroSlide2,
     },
 
@@ -226,8 +226,8 @@ const struct BattleEnvironment gBattleEnvironmentInfo[BATTLE_ENVIRONMENT_COUNT] 
         .camouflageType = PLAIN_CAMOUFLAGE_TYPE,
         .camouflageBlend = PLAIN_CAMOUFLAGE_BLEND,
         .entry = ENVIRONMENT_ENTRY(Building),
-        .background = ENVIRONMENT_BACKGROUND(Building),
-        .palette = gBattleEnvironmentPalette_Plain,
+        .background = ENVIRONMENT_BACKGROUND(OrchidVoidDeck),
+        .palette = gBattleEnvironmentPalette_OrchidVoidDeck,
         .battleIntroSlide = PLAIN_BATTLE_INTRO_SLIDE,
     },
 

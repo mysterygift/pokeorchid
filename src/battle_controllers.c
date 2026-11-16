@@ -1,5 +1,6 @@
 #include "global.h"
 #include "battle.h"
+#include "battle_mode7.h"
 #include "battle_ai_main.h"
 #include "battle_ai_util.h"
 #include "battle_anim.h"
@@ -2506,9 +2507,22 @@ void BtlController_HandleDrawTrainerPic(enum BattlerId battler, enum TrainerPicI
         gSprites[gBattleStruct->trainerSlideSpriteIds[battler]].sSpeedX = -2;
     }
     if (B_FAST_INTRO_NO_SLIDE || gTestRunnerHeadless)
+    {
         gSprites[gBattleStruct->trainerSlideSpriteIds[battler]].callback = SpriteCB_TrainerSpawn;
+    }
+    else if (IsBattleIntroMode7())
+    {
+        // Orchid: the camera flies in instead; trainers wait on their platforms.
+        gSprites[gBattleStruct->trainerSlideSpriteIds[battler]].x2 = 0;
+        if (IsOnPlayerSide(battler))
+            gSprites[gBattleStruct->trainerSlideSpriteIds[battler]].callback = SpriteCB_TrainerSpawn;
+        else
+            gSprites[gBattleStruct->trainerSlideSpriteIds[battler]].callback = SpriteCB_TrainerMode7Intro;
+    }
     else
+    {
         gSprites[gBattleStruct->trainerSlideSpriteIds[battler]].callback = SpriteCB_TrainerSlideIn;
+    }
 
     gBattlerControllerFuncs[battler] = Controller_WaitForTrainerPic;
 }

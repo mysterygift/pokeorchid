@@ -9,6 +9,13 @@ or the Start Debug Battle action is selected.
 The debug menu will start a battle against DEBUG_TRAINER_AI when the
 Start Debug Battle action is selected.
 
+Orchid: this is a showcase battle for the Mode 7 battle camera. Between them
+the parties cover physical and special attacks from both sides, status moves
+(burn, paralysis, sleep, poison), stat changes, weather, a screen-shake move
+(Earthquake), a scanline-effect move (Surf, which uses the flat-background
+fallback), and an opponent at a lower level so faints and forced switches
+happen within a few turns.
+
 */
 
 === DEBUG_TRAINER_PLAYER ===
@@ -18,25 +25,32 @@ Pic: Brendan
 Gender: Male
 Music: Male
 
-Buffie (Wobbuffet)
-Brave Nature
-Level: 100
+Blaziken
+Adamant Nature
+Level: 50
 IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-EVs: 252 Def / 252 SpD / 6 Spe
-- Brutal Swing
-- Water Gun
-- Bubble
-- Sleep Talk
+- Close Combat
+- Flamethrower
+- Will-O-Wisp
+- Swords Dance
 
-Wynaut
-Brave Nature
-Level: 100
+Gardevoir
+Modest Nature
+Level: 50
 IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-EVs: 252 Def / 252 SpD / 6 Spe
-- Brutal Swing
-- Fly
-- Bubble
-- Sleep Talk
+- Psychic
+- Thunder Wave
+- Hypnosis
+- Calm Mind
+
+Swampert
+Adamant Nature
+Level: 50
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+- Earthquake
+- Surf
+- Toxic
+- Protect
 
 === DEBUG_TRAINER_AI ===
 Name: Debugger
@@ -47,16 +61,34 @@ Pic: Steven
 Gender: Male
 Music: Male
 
-Buffie (Wobbuffet)
-Brave Nature
-Level: 100
-IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-EVs: 252 Def / 252 SpD / 6 Spe
-- Sleep Talk
+Linoone
+Jolly Nature
+Level: 38
+- Slash
+- Headbutt
+- Growl
+- Quick Attack
 
-Wynaut
-Brave Nature
-Level: 100
-IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-EVs: 252 Def / 252 SpD / 6 Spe
-- Sleep Talk
+Breloom
+Adamant Nature
+Level: 38
+- Spore
+- Mach Punch
+- Seed Bomb
+- Headbutt
+
+Manectric
+Timid Nature
+Level: 38
+- Thunderbolt
+- Thunder Wave
+- Quick Attack
+- Bite
+
+Ludicolo
+Modest Nature
+Level: 38
+- Rain Dance
+- Surf
+- Giga Drain
+- Fake Out

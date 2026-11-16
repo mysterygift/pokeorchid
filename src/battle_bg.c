@@ -1360,7 +1360,7 @@ bool8 LoadChosenBattleElement(u8 caseId)
 
 void DrawTerrainTypeBattleBackground(void)
 {
-    BattleMode7_Suspend();
+    BattleMode7_SuspendForMoveBg();
     if (gFieldTimers.terrain != B_TERRAIN_NONE)
         LoadMoveBg(gBattleTerrainInfo[gFieldTimers.terrain].battleBackground);
     else
