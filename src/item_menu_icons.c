@@ -745,9 +745,11 @@ void AddBagItemIconSprite(enum Item itemId, u8 id)
         if (iconSpriteId != MAX_SPRITES)
         {
             *spriteId = iconSpriteId;
-            // Centred in the satchel screen's icon well
-            gSprites[iconSpriteId].x2 = SATCHEL_ICON_X;
-            gSprites[iconSpriteId].y2 = SATCHEL_ICON_Y;
+            // Centred in the satchel screen's icon well. Item icons are 24x24 art in the
+            // top-left of a 32x32 sprite, so shift by half the difference (4px) to centre
+            // the visible icon rather than the sprite box.
+            gSprites[iconSpriteId].x2 = SATCHEL_ICON_X + (32 - 24) / 2;
+            gSprites[iconSpriteId].y2 = SATCHEL_ICON_Y + (32 - 24) / 2;
         }
     }
 }
