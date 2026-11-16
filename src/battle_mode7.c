@@ -111,6 +111,7 @@ struct Mode7Floor
     const u32 *tiles;
     const u8 *map;
     const u16 *palette;         // 3 palettes loaded to BG palette rows 2-4
+    const u16 *paletteNight;    // same rows at night (NULL: no night variant)
 };
 
 struct Mode7State
@@ -187,9 +188,28 @@ static const struct Mode7Floor *GetFloor(u32 environment)
         return &sFloor_OrchidVoidDeck;
     case BATTLE_ENVIRONMENT_LONG_GRASS:
         return &sFloor_TallGrass;
+    case BATTLE_ENVIRONMENT_CAVE:
+        return &sFloor_OrchidCave;
+    case BATTLE_ENVIRONMENT_POND:
+        return &sFloor_OrchidLake;
+    case BATTLE_ENVIRONMENT_RUINS:
+        return &sFloor_OrchidRuins;
+    case BATTLE_ENVIRONMENT_OFFICE:
+        return &sFloor_OrchidOffice;
+    case BATTLE_ENVIRONMENT_MALL:
+        return &sFloor_OrchidMall;
+    case BATTLE_ENVIRONMENT_JUNGLE:
+        return &sFloor_OrchidJungle;
     default:
         return NULL;
     }
+}
+
+static const u16 *GetFloorPalette(const struct Mode7Floor *floor)
+{
+    if (floor->paletteNight != NULL && IsBattleNight())
+        return floor->paletteNight;
+    return floor->palette;
 }
 
 static bool32 BattleTypeAllowsMode7(void)
@@ -529,7 +549,7 @@ static void BeginResume(struct Mode7State *m)
 {
     m->savedDispcnt = GetGpuReg(REG_OFFSET_DISPCNT);
     m->savedBg2cnt = GetGpuReg(REG_OFFSET_BG2CNT);
-    LoadPalette(m->floor->palette, BG_PLTT_ID(2), 3 * PLTT_SIZE_4BPP);
+    LoadPalette(GetFloorPalette(m->floor), BG_PLTT_ID(2), 3 * PLTT_SIZE_4BPP);
     ComputeLines(m->lines[0], &m->cam);
     m->buffer = 0;
     m->ready = FALSE;
@@ -705,15 +725,15 @@ static void SuspendInternal(bool32 restoreClassicGfx)
         // Placeholder for the frame(s) while BG3 loads: the floor's ground colour
         // when the classic floor comes straight back, black before a move
         // background (those cut to black and fade the new background in).
-        u16 placeholder = restoreClassicGfx ? m->floor->palette[1] : RGB_BLACK;
+        u16 placeholder = restoreClassicGfx ? GetFloorPalette(m->floor)[1] : RGB_BLACK;
         *(vu16 *)BG_PLTT = placeholder;
         gPlttBufferFaded[0] = placeholder;
     }
 
     if (restoreClassicGfx)
     {
-        if (m->floor->palette != env->palette)
-            LoadPalette(env->palette, BG_PLTT_ID(2), 3 * PLTT_SIZE_4BPP);
+        if (GetFloorPalette(m->floor) != GetBattleEnvironmentPalette(m->environment))
+            LoadPalette(GetBattleEnvironmentPalette(m->environment), BG_PLTT_ID(2), 3 * PLTT_SIZE_4BPP);
         DecompressDataWithHeaderVram(env->background.tileset, (void *)BG_CHAR_ADDR(2));
         DecompressDataWithHeaderVram(env->background.tilemap, (void *)M7_MAP_ADDR);
         BattleMode7_FinishBgLoad();

@@ -9,6 +9,7 @@
 #include "battle_environment.h"
 #include "bg.h"
 #include "data.h"
+#include "debug.h"
 #include "decompress.h"
 #include "gpu_regs.h"
 #include "graphics.h"
@@ -17,6 +18,7 @@
 #include "menu.h"
 #include "overworld.h"
 #include "palette.h"
+#include "rtc.h"
 #include "sound.h"
 #include "sprite.h"
 #include "task.h"
@@ -871,6 +873,36 @@ static u8 GetBattleEnvironmentByMapScene(u8 mapBattleScene)
     return BATTLE_ENVIRONMENT_PLAIN;
 }
 
+EWRAM_DATA u8 gDebugBattleEnvironment = 0;
+EWRAM_DATA u8 gDebugBattleTime = DEBUG_BATTLE_TIME_AUTO;
+
+// Orchid location scenes (MAP_BATTLE_SCENE_CAVE etc.) choose the environment
+// for every battle on the map. Returns BATTLE_ENVIRONMENT_COUNT for others.
+u32 GetBattleEnvironmentForMapScene(u32 mapBattleScene)
+{
+    if (mapBattleScene < MAP_BATTLE_SCENE_CAVE)
+        return BATTLE_ENVIRONMENT_COUNT;
+    return GetBattleEnvironmentByMapScene(mapBattleScene);
+}
+
+// Orchid: battle floors switch to their night palettes at night. The clock
+// isn't advanced during a battle, so this stays fixed for the whole battle.
+bool32 IsBattleNight(void)
+{
+    if (gIsDebugBattle && gDebugBattleTime != DEBUG_BATTLE_TIME_AUTO)
+        return gDebugBattleTime == DEBUG_BATTLE_TIME_NIGHT;
+    return GetTimeOfDay() == TIME_NIGHT;
+}
+
+const u16 *GetBattleEnvironmentPalette(u32 environment)
+{
+    if (environment >= NELEMS(gBattleEnvironmentInfo))
+        environment = BATTLE_ENVIRONMENT_PLAIN;
+    if (gBattleEnvironmentInfo[environment].paletteNight != NULL && IsBattleNight())
+        return gBattleEnvironmentInfo[environment].paletteNight;
+    return gBattleEnvironmentInfo[environment].palette;
+}
+
 // Loads the initial battle environment.
 static void LoadBattleEnvironmentGfx(u16 environment)
 {
@@ -879,7 +911,7 @@ static void LoadBattleEnvironmentGfx(u16 environment)
     // Copy to bg3
     DecompressDataWithHeaderVram(gBattleEnvironmentInfo[environment].background.tileset, (void *)(BG_CHAR_ADDR(2)));
     DecompressDataWithHeaderVram(gBattleEnvironmentInfo[environment].background.tilemap, (void *)(BG_SCREEN_ADDR(26)));
-    LoadPalette(gBattleEnvironmentInfo[environment].palette, BG_PLTT_ID(2), 3 * PLTT_SIZE_4BPP);
+    LoadPalette(GetBattleEnvironmentPalette(environment), BG_PLTT_ID(2), 3 * PLTT_SIZE_4BPP);
 }
 
 // Loads the entry associated with the battle environment.
@@ -903,6 +935,8 @@ u8 GetBattleEnvironmentOverride(void)
     {
         return gBattleEnvironment;
     }
+    else if (gIsDebugBattle && gDebugBattleEnvironment != 0)
+        return gDebugBattleEnvironment - 1;
     else if (gBattleTypeFlags & (BATTLE_TYPE_FRONTIER | BATTLE_TYPE_LINK | BATTLE_TYPE_RECORDED_LINK | BATTLE_TYPE_EREADER_TRAINER))
         return BATTLE_ENVIRONMENT_FRONTIER;
     else if (gBattleTypeFlags & BATTLE_TYPE_LEGENDARY)
@@ -1345,7 +1379,7 @@ bool8 LoadChosenBattleElement(u8 caseId)
         DecompressDataWithHeaderVram(gBattleEnvironmentInfo[GetBattleEnvironmentOverride()].background.tilemap, (void *)(BG_SCREEN_ADDR(26)));
         break;
     case 5:
-        LoadPalette(gBattleEnvironmentInfo[GetBattleEnvironmentOverride()].palette, BG_PLTT_ID(2), 3 * PLTT_SIZE_4BPP);
+        LoadPalette(GetBattleEnvironmentPalette(GetBattleEnvironmentOverride()), BG_PLTT_ID(2), 3 * PLTT_SIZE_4BPP);
         break;
     case 6:
         LoadBattleMenuWindowGfx();

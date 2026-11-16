@@ -26,6 +26,15 @@ enum MapBattleScene
     MAP_BATTLE_SCENE_GLACIA,
     MAP_BATTLE_SCENE_DRAKE,
     MAP_BATTLE_SCENE_FRONTIER,
+    // Orchid locations: every battle on the map uses this place's floor
+    // (Porymap: Header tab > Battle scene).
+    MAP_BATTLE_SCENE_CAVE,
+    MAP_BATTLE_SCENE_RUINS,
+    MAP_BATTLE_SCENE_OFFICE,
+    MAP_BATTLE_SCENE_BEACH,
+    MAP_BATTLE_SCENE_JUNGLE,
+    MAP_BATTLE_SCENE_MALL,
+    MAP_BATTLE_SCENE_LAKE,
 };
 
 #define MAP_BATTLE_SCENE_INDOOR_1 MAP_BATTLE_SCENE_NORMAL

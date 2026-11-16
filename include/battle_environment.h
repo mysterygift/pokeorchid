@@ -16,6 +16,7 @@ struct BattleEnvironment
     struct BattleBackgroundEntry entry;
     struct BattleBackground background;
     const void *palette;
+    const void *paletteNight; // Orchid: used at night when set (same tiles, night colours)
     TaskFunc battleIntroSlide;
 };
 

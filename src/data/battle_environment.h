@@ -84,6 +84,7 @@ const struct BattleEnvironment gBattleEnvironmentInfo[BATTLE_ENVIRONMENT_COUNT] 
         .entry = ENVIRONMENT_ENTRY(TallGrass),
         .background = ENVIRONMENT_BACKGROUND(OrchidGrass),
         .palette = gBattleEnvironmentPalette_OrchidGrass,
+        .paletteNight = gBattleEnvironmentPaletteNight_OrchidGrass,
         .battleIntroSlide = BattleIntroSlide1,
     },
 
@@ -118,6 +119,7 @@ const struct BattleEnvironment gBattleEnvironmentInfo[BATTLE_ENVIRONMENT_COUNT] 
         .entry = ENVIRONMENT_ENTRY(Sand),
         .background = ENVIRONMENT_BACKGROUND(OrchidBeach),
         .palette = gBattleEnvironmentPalette_OrchidBeach,
+        .paletteNight = gBattleEnvironmentPaletteNight_OrchidBeach,
         .battleIntroSlide = BattleIntroSlide2,
     },
 
@@ -158,8 +160,9 @@ const struct BattleEnvironment gBattleEnvironmentInfo[BATTLE_ENVIRONMENT_COUNT] 
         .camouflageType = TYPE_WATER,
         .camouflageBlend = RGB(11, 22, 31),
         .entry = ENVIRONMENT_ENTRY(PondWater),
-        .background = ENVIRONMENT_BACKGROUND(PondWater),
-        .palette = gBattleEnvironmentPalette_PondWater,
+        .background = ENVIRONMENT_BACKGROUND(OrchidLake),
+        .palette = gBattleEnvironmentPalette_OrchidLake,
+        .paletteNight = gBattleEnvironmentPaletteNight_OrchidLake,
         .battleIntroSlide = BattleIntroSlide1,
     },
 
@@ -198,8 +201,9 @@ const struct BattleEnvironment gBattleEnvironmentInfo[BATTLE_ENVIRONMENT_COUNT] 
         .camouflageType = CAVE_CAMOUFLAGE_TYPE,
         .camouflageBlend = CAVE_CAMOUFLAGE_BLEND,
         .entry = ENVIRONMENT_ENTRY(Cave),
-        .background = ENVIRONMENT_BACKGROUND(Cave),
-        .palette = gBattleEnvironmentPalette_Cave,
+        .background = ENVIRONMENT_BACKGROUND(OrchidCave),
+        .palette = gBattleEnvironmentPalette_OrchidCave,
+        .paletteNight = gBattleEnvironmentPaletteNight_OrchidCave,
         .battleIntroSlide = CAVE_BATTLE_INTRO_SLIDE,
     },
 
@@ -228,6 +232,7 @@ const struct BattleEnvironment gBattleEnvironmentInfo[BATTLE_ENVIRONMENT_COUNT] 
         .entry = ENVIRONMENT_ENTRY(Building),
         .background = ENVIRONMENT_BACKGROUND(OrchidVoidDeck),
         .palette = gBattleEnvironmentPalette_OrchidVoidDeck,
+        .paletteNight = gBattleEnvironmentPaletteNight_OrchidVoidDeck,
         .battleIntroSlide = PLAIN_BATTLE_INTRO_SLIDE,
     },
 
@@ -528,6 +533,73 @@ const struct BattleEnvironment gBattleEnvironmentInfo[BATTLE_ENVIRONMENT_COUNT] 
         .camouflageType = TYPE_PSYCHIC,
         .camouflageBlend = DEFAULT_CAMOUFLAGE_BLEND,
     },
+
+    // Orchid locations. Floors: tools/orchid/battle_envs.py
+    [BATTLE_ENVIRONMENT_RUINS] =
+    {
+        .name = _("Ruins"),
+        .naturePower = CAVE_NATURE_POWER,
+        .secretPowerAnimation = CAVE_SECRET_POWER_ANIMATION,
+        .secretPowerEffect = CAVE_SECRET_POWER_EFFECT,
+        .camouflageType = CAVE_CAMOUFLAGE_TYPE,
+        .camouflageBlend = CAVE_CAMOUFLAGE_BLEND,
+        .entry = ENVIRONMENT_ENTRY(Rock),
+        .background = ENVIRONMENT_BACKGROUND(OrchidRuins),
+        .palette = gBattleEnvironmentPalette_OrchidRuins,
+        .paletteNight = gBattleEnvironmentPaletteNight_OrchidRuins,
+        .battleIntroSlide = CAVE_BATTLE_INTRO_SLIDE,
+    },
+
+    [BATTLE_ENVIRONMENT_OFFICE] =
+    {
+        .name = _("Office"),
+        .naturePower = BUILDING_NATURE_POWER,
+        .secretPowerAnimation = BUILDING_SECRET_POWER_ANIMATION,
+        .secretPowerEffect = BUILDING_SECRET_POWER_EFFECT,
+        .camouflageType = BUILDING_CAMOUFLAGE_TYPE,
+        .camouflageBlend = BUILDING_CAMOUFLAGE_BLEND,
+        .entry = ENVIRONMENT_ENTRY(Building),
+        .background = ENVIRONMENT_BACKGROUND(OrchidOffice),
+        .palette = gBattleEnvironmentPalette_OrchidOffice,
+        .paletteNight = gBattleEnvironmentPaletteNight_OrchidOffice,
+        .battleIntroSlide = BUILDING_BATTLE_INTRO_SLIDE,
+    },
+
+    [BATTLE_ENVIRONMENT_MALL] =
+    {
+        .name = _("Mall"),
+        .naturePower = BUILDING_NATURE_POWER,
+        .secretPowerAnimation = BUILDING_SECRET_POWER_ANIMATION,
+        .secretPowerEffect = BUILDING_SECRET_POWER_EFFECT,
+        .camouflageType = BUILDING_CAMOUFLAGE_TYPE,
+        .camouflageBlend = BUILDING_CAMOUFLAGE_BLEND,
+        .entry = ENVIRONMENT_ENTRY(Building),
+        .background = ENVIRONMENT_BACKGROUND(OrchidMall),
+        .palette = gBattleEnvironmentPalette_OrchidMall,
+        .paletteNight = gBattleEnvironmentPaletteNight_OrchidMall,
+        .battleIntroSlide = BUILDING_BATTLE_INTRO_SLIDE,
+    },
+
+    [BATTLE_ENVIRONMENT_JUNGLE] =
+    {
+        .name = _("Jungle"),
+    #if B_NATURE_POWER_MOVES >= GEN_6
+        .naturePower = MOVE_ENERGY_BALL,
+    #elif B_NATURE_POWER_MOVES >= GEN_4
+        .naturePower = MOVE_SEED_BOMB,
+    #else
+        .naturePower = MOVE_RAZOR_LEAF,
+    #endif
+        .secretPowerAnimation = B_SECRET_POWER_ANIMATION >= GEN_4 ? gBattleAnimMove_NeedleArm : gBattleAnimMove_MagicalLeaf,
+        .secretPowerEffect = MOVE_EFFECT_SLEEP,
+        .camouflageType = TYPE_GRASS,
+        .camouflageBlend = RGB(0, 15, 2),
+        .entry = ENVIRONMENT_ENTRY(LongGrass),
+        .background = ENVIRONMENT_BACKGROUND(OrchidJungle),
+        .palette = gBattleEnvironmentPalette_OrchidJungle,
+        .paletteNight = gBattleEnvironmentPaletteNight_OrchidJungle,
+        .battleIntroSlide = BattleIntroSlide1,
+    },
 };
 
 static const struct {
@@ -541,5 +613,13 @@ static const struct {
     {MAP_BATTLE_SCENE_PHOEBE,   BATTLE_ENVIRONMENT_PHOEBE},
     {MAP_BATTLE_SCENE_GLACIA,   BATTLE_ENVIRONMENT_GLACIA},
     {MAP_BATTLE_SCENE_DRAKE,    BATTLE_ENVIRONMENT_DRAKE},
-    {MAP_BATTLE_SCENE_FRONTIER, BATTLE_ENVIRONMENT_FRONTIER}
+    {MAP_BATTLE_SCENE_FRONTIER, BATTLE_ENVIRONMENT_FRONTIER},
+    // Orchid locations
+    {MAP_BATTLE_SCENE_CAVE,     BATTLE_ENVIRONMENT_CAVE},
+    {MAP_BATTLE_SCENE_RUINS,    BATTLE_ENVIRONMENT_RUINS},
+    {MAP_BATTLE_SCENE_OFFICE,   BATTLE_ENVIRONMENT_OFFICE},
+    {MAP_BATTLE_SCENE_BEACH,    BATTLE_ENVIRONMENT_SAND},
+    {MAP_BATTLE_SCENE_JUNGLE,   BATTLE_ENVIRONMENT_JUNGLE},
+    {MAP_BATTLE_SCENE_MALL,     BATTLE_ENVIRONMENT_MALL},
+    {MAP_BATTLE_SCENE_LAKE,     BATTLE_ENVIRONMENT_POND},
 };

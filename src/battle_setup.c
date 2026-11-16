@@ -6,6 +6,7 @@
 #include "battle_pike.h"
 #include "battle_pyramid.h"
 #include "battle_setup.h"
+#include "battle_bg.h"
 #include "battle_special.h"
 #include "battle_partner.h"
 #include "battle_tower.h"
@@ -767,6 +768,11 @@ enum BattleEnvironments BattleSetup_GetEnvironmentId(void)
         PlayerGetDestCoords(&x, &y);
 
     tileBehavior = MapGridGetMetatileBehaviorAt(x, y);
+
+    // Orchid: a location battle scene (cave, ruins, office, beach, jungle, mall,
+    // lake) sets the environment for every battle on the map.
+    if (GetBattleEnvironmentForMapScene(GetCurrentMapBattleScene()) != BATTLE_ENVIRONMENT_COUNT)
+        return GetBattleEnvironmentForMapScene(GetCurrentMapBattleScene());
 
     if (MetatileBehavior_IsTallGrass(tileBehavior))
         return BATTLE_ENVIRONMENT_GRASS;

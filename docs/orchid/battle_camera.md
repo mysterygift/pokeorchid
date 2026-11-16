@@ -73,22 +73,60 @@ framing. Changing it means regenerating every floor.
 
 ## Environments
 
-| Environment | Floor |
+| Environment | Floor | At night |
+|---|---|---|
+| Grass | South Tosa Reserve: lalang meadow, stream, orchids (`orchid_grass`) | moonlit |
+| Sand | East Coast beach: sea, foam line (`orchid_beach`) | foam catches the moon |
+| Plain | HDB void deck: driveway, kerb, drain, puddles (`orchid_void_deck`) | fluorescent-lit tiles |
+| Cave | limestone cave: darkness at the back, stalagmites, crystals, a patch of light from the roof (`orchid_cave`) | moonbeam; moss and crystals glow |
+| Ruins | temple ruins: flagstones, steps to a laterite terrace, a fallen column; carved daises (`orchid_ruins`) | dais rims and glyphs glow |
+| Office | CBD office: carpet tiles, desk banks, window light, walkway; round rugs (`orchid_office`) | monitors glow, desk lamps pool light |
+| Mall | atrium: marble, shopfronts, granite band with brass, planters, spotlights; inlaid medallions (`orchid_mall`) | neon shop signs, spotlight pools |
+| Jungle | rainforest: boardwalk, buttress roots, ferns, leaf litter, sun dapples; mossy clearings (`orchid_jungle`) | moonlight dapples, fireflies |
+| Pond | Tosa Reservoir: reeds and lamp posts on the far bank, lily pads, glitter; pale shallows (`orchid_lake`) | moon path, lamp reflections |
+| Long Grass | tall-grass test floor (`tall_grass/mode7_*`) | — |
+| others | classic flat background | — |
+
+### Choosing a floor for a map
+
+Underground maps already use the cave floor, and surfing on a pond uses the
+lake. For everything else, set the map's **battle scene** (Porymap: Header tab
+> Battle scene, or `"battle_scene"` in `map.json`):
+
+| Battle scene | Environment |
 |---|---|
-| Grass | South Tosa Reserve: lalang meadow, stream, orchids (`orchid_grass`) |
-| Sand | East Coast beach: sea, foam line (`orchid_beach`) |
-| Plain | HDB void deck: driveway, kerb, drain, puddles (`orchid_void_deck`) |
-| Long Grass | tall-grass test floor (`tall_grass/mode7_*`) |
-| others | classic flat background |
+| `MAP_BATTLE_SCENE_CAVE` | Cave |
+| `MAP_BATTLE_SCENE_RUINS` | Ruins |
+| `MAP_BATTLE_SCENE_OFFICE` | Office |
+| `MAP_BATTLE_SCENE_BEACH` | Sand (beach) |
+| `MAP_BATTLE_SCENE_JUNGLE` | Jungle |
+| `MAP_BATTLE_SCENE_MALL` | Mall |
+| `MAP_BATTLE_SCENE_LAKE` | Pond (lake) |
+
+A location scene applies to every battle on the map (wild, trainer, surfing),
+for the graphics and for Secret Power / Nature Power / Camouflage. Gym leader,
+champion, Frontier and legendary battles keep their own backgrounds.
+
+### Night
+
+Each Orchid floor has a second palette, `palette_night.pal`, over the same
+tiles. `IsBattleNight()` (`src/battle_bg.c`) picks it when `GetTimeOfDay()` is
+`TIME_NIGHT` (the RTC clock; evening still uses the day palette). Features meant
+for night use palette slots that are dull or hidden by day (lamps, monitors,
+neon, fireflies, glyphs) and light up in the night palette, so night costs no
+extra tiles. `GetBattleEnvironmentPalette()` is the one place both the floor
+and the flat fallback get their palette from.
 
 ### Adding or editing a floor
 
 1. Add a theme to `tools/orchid/battle_envs.py`, then run
    `python3 tools/orchid/battle_envs.py all`. This writes, per environment,
    `mode7_floor.png` (512x512 source art), the runtime `mode7_tiles.bin` /
-   `mode7_map.bin`, a classic `tiles.png` / `map.bin` / `palette.pal`
-   rendered from the floor through the rest camera, and regenerates
-   `src/data/battle_mode7_floors.h`.
+   `mode7_map.bin`, a classic `tiles.png` / `map.bin` / `palette.pal` /
+   `palette_night.pal` rendered from the floor through the rest camera, and
+   regenerates `src/data/battle_mode7_floors.h`. A theme returns its day
+   palette and a night palette (`night_of()` grades the day palette and takes
+   per-slot glow overrides).
 2. Map the environment to its floor in `GetFloor` (`src/battle_mode7.c`),
    and point its `gBattleEnvironmentInfo` entry at the new background and
    palette (`src/data/battle_environment.h`, `src/data/graphics/battle_environment.h`).
@@ -104,6 +142,13 @@ Rules the generator enforces or assumes:
   moves. Use solid bands and 2x2 marks. Draw upright detail (grass) about
   3x tall in texture space so it survives the perspective squash.
 - Column 0 stays plain ground; the haze samples texel (4, 8).
+- The tile budget is tight: the two platforms alone cost ~150-200 tiles.
+  Background patterns must repeat in step with the platform offset
+  (112, -192) so both platforms sit on the same pattern (e.g. stones 56 wide,
+  32 or 48 tall), and scenery should be stamps at 8-aligned origins on plain
+  ground (`blob`, `fill_rect`, `decals_on_plain`). Only about 23 screen rows of
+  the far floor (v 40-146) and the strip left of the opponent (u 124-250,
+  v 146-272) are visible at rest; put each place's landmarks there.
 
 Hand-painted floors: edit `mode7_floor.png`, then
 `python3 tools/orchid/mode7_floor.py convert <png> <dir>`.
@@ -116,6 +161,10 @@ changes by comparing play-time frames against emulator frames (60 fps =
 equal).
 
 ## Testing
+
+Debug menu (R + Start) → Party → **Debug Battle: Day…** / **Debug Battle:
+Night…** runs the showcase battle on any floor (map default, grass, beach,
+void deck, cave, ruins, office, mall, jungle, lake) with the time forced.
 
 Debug menu (R + Start) → Party → Start Debug Battle runs a showcase:
 Blaziken, Gardevoir and Swampert vs a Lv 38 smart-AI team. It covers

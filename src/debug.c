@@ -1,6 +1,7 @@
 #include "global.h"
 #include "battle.h"
 #include "battle_setup.h"
+#include "battle_bg.h"
 #include "berry.h"
 #include "clock.h"
 #include "coins.h"
@@ -314,6 +315,7 @@ static void DebugAction_Party_ClearPokerus(u8 taskId);
 static void DebugAction_Party_ClearParty(u8 taskId);
 static void DebugAction_Party_SetParty(u8 taskId);
 static void DebugAction_Party_BattleSingle(u8 taskId);
+static void DebugAction_Party_BattleFloor(u8 taskId, void *params);
 
 static void DebugAction_Trainers_SwitchDoublesFlag(u8 taskId);
 static void DebugAction_Trainers_SetRematch(u8 taskId);
@@ -632,6 +634,40 @@ static const struct DebugMenuOption sDebugMenu_Actions_EditPokemon[] =
     { NULL }
 };
 
+// Orchid: preview a battle floor by day or night (the showcase battle).
+#define DEBUG_BATTLE_FLOOR(text, envPlusOne, time) \
+    { COMPOUND_STRING(text), DebugAction_Party_BattleFloor, (const void *)((envPlusOne) | ((time) << 8)) }
+
+static const struct DebugMenuOption sDebugMenu_Actions_BattleFloorDay[] =
+{
+    DEBUG_BATTLE_FLOOR("Map default", 0, DEBUG_BATTLE_TIME_DAY),
+    DEBUG_BATTLE_FLOOR("Grass", BATTLE_ENVIRONMENT_GRASS + 1, DEBUG_BATTLE_TIME_DAY),
+    DEBUG_BATTLE_FLOOR("Beach", BATTLE_ENVIRONMENT_SAND + 1, DEBUG_BATTLE_TIME_DAY),
+    DEBUG_BATTLE_FLOOR("Void deck", BATTLE_ENVIRONMENT_PLAIN + 1, DEBUG_BATTLE_TIME_DAY),
+    DEBUG_BATTLE_FLOOR("Cave", BATTLE_ENVIRONMENT_CAVE + 1, DEBUG_BATTLE_TIME_DAY),
+    DEBUG_BATTLE_FLOOR("Ruins", BATTLE_ENVIRONMENT_RUINS + 1, DEBUG_BATTLE_TIME_DAY),
+    DEBUG_BATTLE_FLOOR("Office", BATTLE_ENVIRONMENT_OFFICE + 1, DEBUG_BATTLE_TIME_DAY),
+    DEBUG_BATTLE_FLOOR("Mall", BATTLE_ENVIRONMENT_MALL + 1, DEBUG_BATTLE_TIME_DAY),
+    DEBUG_BATTLE_FLOOR("Jungle", BATTLE_ENVIRONMENT_JUNGLE + 1, DEBUG_BATTLE_TIME_DAY),
+    DEBUG_BATTLE_FLOOR("Lake", BATTLE_ENVIRONMENT_POND + 1, DEBUG_BATTLE_TIME_DAY),
+    { NULL }
+};
+
+static const struct DebugMenuOption sDebugMenu_Actions_BattleFloorNight[] =
+{
+    DEBUG_BATTLE_FLOOR("Map default", 0, DEBUG_BATTLE_TIME_NIGHT),
+    DEBUG_BATTLE_FLOOR("Grass", BATTLE_ENVIRONMENT_GRASS + 1, DEBUG_BATTLE_TIME_NIGHT),
+    DEBUG_BATTLE_FLOOR("Beach", BATTLE_ENVIRONMENT_SAND + 1, DEBUG_BATTLE_TIME_NIGHT),
+    DEBUG_BATTLE_FLOOR("Void deck", BATTLE_ENVIRONMENT_PLAIN + 1, DEBUG_BATTLE_TIME_NIGHT),
+    DEBUG_BATTLE_FLOOR("Cave", BATTLE_ENVIRONMENT_CAVE + 1, DEBUG_BATTLE_TIME_NIGHT),
+    DEBUG_BATTLE_FLOOR("Ruins", BATTLE_ENVIRONMENT_RUINS + 1, DEBUG_BATTLE_TIME_NIGHT),
+    DEBUG_BATTLE_FLOOR("Office", BATTLE_ENVIRONMENT_OFFICE + 1, DEBUG_BATTLE_TIME_NIGHT),
+    DEBUG_BATTLE_FLOOR("Mall", BATTLE_ENVIRONMENT_MALL + 1, DEBUG_BATTLE_TIME_NIGHT),
+    DEBUG_BATTLE_FLOOR("Jungle", BATTLE_ENVIRONMENT_JUNGLE + 1, DEBUG_BATTLE_TIME_NIGHT),
+    DEBUG_BATTLE_FLOOR("Lake", BATTLE_ENVIRONMENT_POND + 1, DEBUG_BATTLE_TIME_NIGHT),
+    { NULL }
+};
+
 static const struct DebugMenuOption sDebugMenu_Actions_Party[] =
 {
     { COMPOUND_STRING("Move Relearner"),     DebugAction_ExecuteScript, Common_EventScript_MoveRelearner },
@@ -645,6 +681,8 @@ static const struct DebugMenuOption sDebugMenu_Actions_Party[] =
     { COMPOUND_STRING("Clear Party"),        DebugAction_Party_ClearParty },
     { COMPOUND_STRING("Set Party"),          DebugAction_Party_SetParty },
     { COMPOUND_STRING("Start Debug Battle"), DebugAction_Party_BattleSingle },
+    { COMPOUND_STRING("Debug Battle: Day…"),   DebugAction_OpenSubMenu, sDebugMenu_Actions_BattleFloorDay },
+    { COMPOUND_STRING("Debug Battle: Night…"), DebugAction_OpenSubMenu, sDebugMenu_Actions_BattleFloorNight },
     { NULL }
 };
 
@@ -4834,10 +4872,23 @@ static void DebugAction_Party_BattleSingle(u8 taskId)
         gBattleTypeFlags |= BATTLE_TYPE_DOUBLE;
     gDebugAIFlags = sDebugTrainers[DIFFICULTY_NORMAL][DEBUG_TRAINER_AI].aiFlags;
     gIsDebugBattle = TRUE;
+    gDebugBattleEnvironment = 0;
+    gDebugBattleTime = DEBUG_BATTLE_TIME_AUTO;
     gBattleEnvironment = BattleSetup_GetEnvironmentId();
     CalculateEnemyPartyCount();
     BattleSetup_StartTrainerBattle_Debug();
     Debug_DestroyMenu_Full(taskId);
+}
+
+static void DebugAction_Party_BattleFloor(u8 taskId, void *params)
+{
+    u32 p = (u32)params;
+
+    DebugAction_Party_BattleSingle(taskId);
+    gDebugBattleEnvironment = p & 0xFF;
+    gDebugBattleTime = p >> 8;
+    if (gDebugBattleEnvironment != 0)
+        gBattleEnvironment = gDebugBattleEnvironment - 1;
 }
 
 void CheckEWRAMCounters(struct ScriptContext *ctx)
