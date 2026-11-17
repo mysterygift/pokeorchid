@@ -1422,8 +1422,6 @@ static const u8 sODexText_UnkWeight[] = _("???.? kg");
 static const u8 sODexText_LivesIn[] = _("{STR_VAR_1} lives in:");
 static const u8 sODexText_AreaUnknown[] = _("Its habitat is unknown.");
 static const u8 sODexText_AndMore[] = _("…and other places.");
-static const u8 sODexText_MapTitle[] = _("TOSA");
-static const u8 sODexText_MapNone[] = _("No region map yet");
 static const u8 sODexText_CryHint[] = _("Press A to play the cry.");
 static const u8 sODexText_SizeLabel[] = _("Size comparison to {STR_VAR_1}");
 // SIZE silhouettes: the Pokémon in INK (as the unseen silhouette), the trainer in ACCENT_DARK
@@ -1673,10 +1671,13 @@ static void ODex_SetArrowsVisible(bool32 visible)
     }
 }
 
+static void ODex_DestroyAreaGlows(void);
+
 static void ODex_DestroyUiSprites(void)
 {
     u32 i;
 
+    ODex_DestroyAreaGlows();
     for (i = 0; i < 2; i++)
     {
         if (sPokedexView->odexTypeSpriteIds[i] != SPRITE_NONE)
@@ -1990,6 +1991,7 @@ static bool8 ODex_LoadListPage(u8 page)
         gReservedSpritePaletteCount = 8;
         sPokedexView->odexTypeSpriteIds[0] = sPokedexView->odexTypeSpriteIds[1] = SPRITE_NONE;
         sPokedexView->odexArrowSpriteIds[0] = sPokedexView->odexArrowSpriteIds[1] = SPRITE_NONE;
+        memset(sPokedexView->odexGlowSpriteIds, SPRITE_NONE, sizeof(sPokedexView->odexGlowSpriteIds));
         ODex_LoadSpriteGfx();
         ODex_CreateTypeIcons();
         if (ODex_CanSwitchMode())
@@ -2377,21 +2379,14 @@ static bool32 ODex_ListHasSpecies(const struct WildPokemonInfo *info, u32 count,
 
 #define ODEX_AREA_LINES 3
 
-static void ODex_PrintAreaTab(enum Species species)
+#define ODEX_MAX_HABITATS 8
+
+// Map sections whose wild encounter tables hold the species (first method found per section)
+static u32 ODex_FindHabitats(enum Species species, mapsec_u16_t *found, u8 *method, u32 max)
 {
-    mapsec_u16_t found[ODEX_AREA_LINES + 1];
-    u8 method[ODEX_AREA_LINES + 1];
     u32 numFound = 0, i, j, t, m;
-    u8 str[64];
-    u8 *end;
 
-    // the region map would go on BG2; Tosa has no map art yet, so the well says so
-    ODex_PrintCentered(WIN_INFO, FONT_NORMAL, sODexText_MapTitle, ODEX_AREA_X0, ODEX_AREA_X1 - ODEX_AREA_X0 + 1,
-                       (ODEX_AREA_Y0 + ODEX_AREA_Y1) / 2 - 16, sODexText_Faint);
-    ODex_PrintCentered(WIN_INFO, FONT_NARROW, sODexText_MapNone, ODEX_AREA_X0, ODEX_AREA_X1 - ODEX_AREA_X0 + 1,
-                       (ODEX_AREA_Y0 + ODEX_AREA_Y1) / 2 - 2, sODexText_Faint);
-
-    for (i = 0; gWildMonHeaders[i].mapGroup != MAP_GROUP(MAP_UNDEFINED) && numFound <= ODEX_AREA_LINES; i++)
+    for (i = 0; gWildMonHeaders[i].mapGroup != MAP_GROUP(MAP_UNDEFINED) && numFound < max; i++)
     {
         mapsec_u16_t mapsec = Overworld_GetMapHeaderByGroupAndId(gWildMonHeaders[i].mapGroup, gWildMonHeaders[i].mapNum)->regionMapSectionId;
 
@@ -2424,7 +2419,18 @@ static void ODex_PrintAreaTab(enum Species species)
             break;
         }
     }
+    return numFound;
+}
 
+static void ODex_PrintAreaTab(enum Species species)
+{
+    mapsec_u16_t found[ODEX_AREA_LINES + 1];
+    u8 method[ODEX_AREA_LINES + 1];
+    u32 numFound, j;
+    u8 str[64];
+    u8 *end;
+
+    numFound = ODex_FindHabitats(species, found, method, ODEX_AREA_LINES + 1);
     StringCopy(gStringVar1, GetSpeciesName(species));
     if (numFound == 0)
     {
@@ -2449,6 +2455,140 @@ static void ODex_PrintAreaTab(enum Species species)
         ODex_Print(WIN_INFO, GetFontIdToFit(str, FONT_NORMAL, 0, DISPLAY_WIDTH - 2 * ODEX_DESC_X), str,
                    ODEX_DESC_X, ODEX_DESC_Y + (j + 1) * ODEX_DESC_PITCH, sODexText_Ink);
     }
+}
+
+// ---- AREA map: the Tosa region map (dex copy, 8bpp) on BG0, clipped to the well by WIN0 and
+// panned to the habitats; habitat cells blink under small glow sprites.
+#define ODEX_AREA_MAP_TILE_OFFSET 128   // 8bpp tiles at charblock 0 + 0x2000 (after the 4bpp art)
+#define ODEX_MAPCELL_X(cx) (8 + (cx) * 8)
+#define ODEX_MAPCELL_Y(cy) (16 + (cy) * 8)
+#define TAG_ODEX_GLOW 0x5DE2
+
+static const u32 sODexGlow_Gfx[8] = {
+    0x11111111, 0x12222221, 0x12000021, 0x12000021, 0x12000021, 0x12000021, 0x12222221, 0x11111111,
+};
+static const u16 sODexGlow_Pal[16] = {0, RGB(31, 15, 6), RGB(31, 29, 12)};
+static const struct SpriteSheet sODexGlowSheet = {sODexGlow_Gfx, sizeof(sODexGlow_Gfx), TAG_ODEX_GLOW};
+static const struct SpritePalette sODexGlowPal = {sODexGlow_Pal, TAG_ODEX_GLOW};
+static const struct OamData sODexOam_8x8 = {.shape = SPRITE_SHAPE(8x8), .size = SPRITE_SIZE(8x8), .priority = 0};
+
+static void SpriteCB_ODexGlow(struct Sprite *sprite)
+{
+    sprite->invisible = (++sprite->data[0] & 16) != 0;
+}
+
+static const struct SpriteTemplate sODexGlowTemplate =
+{
+    .tileTag = TAG_ODEX_GLOW,
+    .paletteTag = TAG_ODEX_GLOW,
+    .oam = &sODexOam_8x8,
+    .anims = gDummySpriteAnimTable,
+    .images = NULL,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCB_ODexGlow,
+};
+
+static void ODex_DestroyAreaGlows(void)
+{
+    u32 i;
+
+    for (i = 0; i < ARRAY_COUNT(sPokedexView->odexGlowSpriteIds); i++)
+    {
+        if (sPokedexView->odexGlowSpriteIds[i] != SPRITE_NONE)
+            DestroySprite(&gSprites[sPokedexView->odexGlowSpriteIds[i]]);
+        sPokedexView->odexGlowSpriteIds[i] = SPRITE_NONE;
+    }
+}
+
+static void ODex_HideAreaMap(void)
+{
+    ODex_DestroyAreaGlows();
+    HideBg(0);
+    ClearGpuRegBits(REG_OFFSET_DISPCNT, DISPCNT_WIN0_ON);
+    // hand BG0 back to the vanilla info template (CRY's waveform window)
+    SetBgAttribute(0, BG_ATTR_CHARBASEINDEX, 2);
+    SetBgAttribute(0, BG_ATTR_PALETTEMODE, 0);
+    SetBgAttribute(0, BG_ATTR_PRIORITY, 3);
+    SetGpuReg(REG_OFFSET_BG0HOFS, 0);
+    SetGpuReg(REG_OFFSET_BG0VOFS, 0);
+}
+
+static void ODex_ShowAreaMap(enum Species species)
+{
+    mapsec_u16_t found[ODEX_MAX_HABITATS];
+    u8 method[ODEX_MAX_HABITATS];
+    u32 num = ODex_FindHabitats(species, found, method, ODEX_MAX_HABITATS);
+    s32 minX = 999, minY = 999, maxX = -1, maxY = -1, sx, sy, cx, cy;
+    s32 wx0 = ODEX_AREA_X0 + 2, wy0 = ODEX_AREA_Y0 + 2, wx1 = ODEX_AREA_X1 - 1, wy1 = ODEX_AREA_Y1 - 1;
+    u16 *map;
+    u32 i, k, glow = 0;
+
+    ODex_DestroyAreaGlows();
+    SetBgAttribute(0, BG_ATTR_CHARBASEINDEX, 0);
+    SetBgAttribute(0, BG_ATTR_PALETTEMODE, 1);
+    SetBgAttribute(0, BG_ATTR_PRIORITY, 2);
+    DecompressAndLoadBgGfxUsingHeap(0, gRegionMapInfos[REGION_MAP_HOENN].dexMapGfx, 0, ODEX_AREA_MAP_TILE_OFFSET, 0);
+    CopyToBgTilemapBuffer(0, gRegionMapInfos[REGION_MAP_HOENN].dexMapTilemap, 0, 0);
+    map = GetBgTilemapBuffer(0);
+    for (i = 0; i < 32 * 32; i++)
+        map[i] += ODEX_AREA_MAP_TILE_OFFSET;
+    CopyBgTilemapBufferToVram(0);
+    LoadPalette(gRegionMapInfos[REGION_MAP_HOENN].dexMapPalette, BG_PLTT_ID(7), gRegionMapInfos[REGION_MAP_HOENN].dexMapPaletteSize);
+
+    // bounds of the habitat cells that are on the Tosa map
+    for (i = 0; i < num; i++)
+    {
+        const struct RegionMapLocation *loc = &gRegionMapEntries[found[i]];
+
+        if (found[i] >= MAPSEC_NONE || loc->width == 0 || loc->height == 0)
+            continue;
+        minX = min(minX, ODEX_MAPCELL_X(loc->x));
+        minY = min(minY, ODEX_MAPCELL_Y(loc->y));
+        maxX = max(maxX, ODEX_MAPCELL_X(loc->x + loc->width));
+        maxY = max(maxY, ODEX_MAPCELL_Y(loc->y + loc->height));
+    }
+    if (maxX < 0)   // nowhere on the map: show Tosa Port's surroundings
+    {
+        minX = maxX = ODEX_MAPCELL_X(gRegionMapEntries[MAPSEC_TOSA_PORT].x) + 4;
+        minY = maxY = ODEX_MAPCELL_Y(gRegionMapEntries[MAPSEC_TOSA_PORT].y) + 4;
+    }
+    // pan so the habitats sit in the middle of the well, kept inside the map's grid area
+    sx = (minX + maxX) / 2 - (wx0 + wx1 + 1) / 2;
+    sy = (minY + maxY) / 2 - (wy0 + wy1 + 1) / 2;
+    sx = max(sx, 0 - wx0);
+    sx = min(sx, DISPLAY_WIDTH - (wx1 + 1));
+    sy = max(sy, 16 - wy0);
+    sy = min(sy, 136 - (wy1 + 1));
+    SetGpuReg(REG_OFFSET_BG0HOFS, sx & 0x1FF);
+    SetGpuReg(REG_OFFSET_BG0VOFS, sy & 0x1FF);
+
+    // glow sprites on every habitat cell that shows in the well
+    if (GetSpriteTileStartByTag(TAG_ODEX_GLOW) == 0xFFFF)
+        LoadSpriteSheet(&sODexGlowSheet);
+    LoadSpritePalette(&sODexGlowPal);
+    for (i = 0; i < num && glow < ARRAY_COUNT(sPokedexView->odexGlowSpriteIds); i++)
+    {
+        const struct RegionMapLocation *loc = &gRegionMapEntries[found[i]];
+
+        if (found[i] >= MAPSEC_NONE || loc->width == 0 || loc->height == 0)
+            continue;
+        for (k = 0; k < (u32)(loc->width * loc->height) && glow < ARRAY_COUNT(sPokedexView->odexGlowSpriteIds); k++)
+        {
+            cx = ODEX_MAPCELL_X(loc->x + k % loc->width) - sx;
+            cy = ODEX_MAPCELL_Y(loc->y + k / loc->width) - sy;
+            if (cx < wx0 || cx + 8 > wx1 + 1 || cy < wy0 || cy + 8 > wy1 + 1)
+                continue;
+            sPokedexView->odexGlowSpriteIds[glow++] = CreateSprite(&sODexGlowTemplate, cx + 4, cy + 4, 1);
+        }
+    }
+
+    // WIN0 = the well: BG0 only shows inside it
+    SetGpuReg(REG_OFFSET_WIN0H, WIN_RANGE(wx0, wx1 + 1));
+    SetGpuReg(REG_OFFSET_WIN0V, WIN_RANGE(wy0, wy1 + 1));
+    SetGpuReg(REG_OFFSET_WININ, WININ_WIN0_ALL);
+    SetGpuReg(REG_OFFSET_WINOUT, WINOUT_WIN01_BG1 | WINOUT_WIN01_BG2 | WINOUT_WIN01_BG3 | WINOUT_WIN01_OBJ | WINOUT_WIN01_CLR);
+    SetGpuRegBits(REG_OFFSET_DISPCNT, DISPCNT_WIN0_ON);
+    ShowBg(0);
 }
 
 // SIZE: "Size comparison to <player>" and the HT pill in the tray
@@ -2532,6 +2672,10 @@ static void ODex_SwitchEntryTab(u8 tab)
     ODex_DrawEntryArt(tab);
     ODex_PrintEntry(tab);
     ODex_ShowEntrySprites(tab);
+    if (tab == ODEX_TAB_AREA)
+        ODex_ShowAreaMap(NationalPokedexNumToSpeciesForm(sPokedexListItem->dexNum));
+    else
+        ODex_HideAreaMap();
     PlaySE(SE_DEX_PAGE);
 }
 
@@ -3044,6 +3188,7 @@ void ResetPokedexView(struct PokedexView *pokedexView)
     pokedexView->odexTypeSpriteIds[0] = pokedexView->odexTypeSpriteIds[1] = SPRITE_NONE;
     pokedexView->odexArrowSpriteIds[0] = pokedexView->odexArrowSpriteIds[1] = SPRITE_NONE;
     pokedexView->odexThumbSpriteId = SPRITE_NONE;
+    memset(pokedexView->odexGlowSpriteIds, SPRITE_NONE, sizeof(pokedexView->odexGlowSpriteIds));
 }
 
 void CB2_OpenPokedex(void)
@@ -4073,6 +4218,8 @@ void Task_LoadInfoScreen(u8 taskId)
         ShowBg(1);
         ShowBg(2);
         ShowBg(3);
+        if (sPokedexView->odexTab == ODEX_TAB_AREA)
+            ODex_ShowAreaMap(NationalPokedexNumToSpeciesForm(sPokedexListItem->dexNum));
         SetVBlankCallback(gPokedexVBlankCB);
         gTasks[taskId].tFadeTimer = ODEX_FADE_FRAMES;
         gMain.state++;
@@ -4191,6 +4338,7 @@ void Task_SwitchScreensFromInfoScreen(u8 taskId)
 {
     if (!gPaletteFade.active)
     {
+        ODex_HideAreaMap();
         ODex_DestroyUiSprites();
         ODex_DestroyPic();
         switch (sPokedexView->screenSwitchState)
@@ -4357,6 +4505,7 @@ static void ODex_LoadTabFrame(u8 tab)
     sPokedexView->odexTab = tab;
     sPokedexView->odexTypeSpriteIds[0] = sPokedexView->odexTypeSpriteIds[1] = SPRITE_NONE;
     sPokedexView->odexArrowSpriteIds[0] = sPokedexView->odexArrowSpriteIds[1] = SPRITE_NONE;
+    memset(sPokedexView->odexGlowSpriteIds, SPRITE_NONE, sizeof(sPokedexView->odexGlowSpriteIds));
     sPokedexView->odexPicSpriteId = SPRITE_NONE;
     DecompressAndLoadBgGfxUsingHeap(3, gOrchidDexEntry_Gfx, ODEX_ENTRY_NUM_TILES * TILE_SIZE_4BPP, 0, 0);
     ODex_FillGridMap(1);
