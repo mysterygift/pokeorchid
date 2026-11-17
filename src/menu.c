@@ -84,6 +84,7 @@ static EWRAM_DATA struct {
     bool8 active;
     u8 windowId;
     u8 count;
+    bool8 yesNoStyle; // rows drawn like the Orchid YES/NO (pill 2 px in, text at 8, PANEL_SHADE shadow)
     const struct MenuAction *items;
 } sOrchidPillMenu = {0};
 static EWRAM_DATA u8 sHofPCTopBarWindowId = 0;
@@ -1153,16 +1154,20 @@ static void OrchidPillMenu_DrawRows(u8 selected)
     u32 row;
     u8 colors[3] = {TEXT_COLOR_TRANSPARENT, TEXT_COLOR_DARK_GRAY, TEXT_COLOR_LIGHT_GRAY};
 
+    u32 inset = sOrchidPillMenu.yesNoStyle ? 2 : 1;
+    u32 textX = sOrchidPillMenu.yesNoStyle ? 8 : 5;
+
     for (row = 0; row < sOrchidPillMenu.count; row++)
     {
         FillWindowPixelRect(windowId, PIXEL_FILL(TEXT_COLOR_WHITE), 0, row * 16, width, 16);
         colors[2] = TEXT_COLOR_LIGHT_GRAY;
         if (row == selected)
         {
-            OrchidDrawRoundedBox(windowId, 1, row * 16 + 1, width - 2, 14, 4, ORCHID_PILL_FACE, TEXT_COLOR_DARK_GRAY, ORCHID_PILL_LIGHT, ORCHID_PILL_SHADE);
-            colors[2] = ORCHID_PILL_SHADE;
+            OrchidDrawRoundedBox(windowId, inset, row * 16 + 1, width - 2 * inset, 14, 4, ORCHID_PILL_FACE, TEXT_COLOR_DARK_GRAY, ORCHID_PILL_LIGHT, ORCHID_PILL_SHADE);
+            if (!sOrchidPillMenu.yesNoStyle)
+                colors[2] = ORCHID_PILL_SHADE;
         }
-        AddTextPrinterParameterized4(windowId, FONT_NORMAL, 5, row * 16, 0, 0, colors, TEXT_SKIP_DRAW, sOrchidPillMenu.items[row].text);
+        AddTextPrinterParameterized4(windowId, FONT_NORMAL, textX, row * 16, 0, 0, colors, TEXT_SKIP_DRAW, sOrchidPillMenu.items[row].text);
     }
     CopyWindowToVram(windowId, COPYWIN_GFX);
 }
@@ -1174,6 +1179,18 @@ u8 InitOrchidPillMenu(u8 windowId, u8 numItems, const struct MenuAction *items, 
     sOrchidPillMenu.windowId = windowId;
     sOrchidPillMenu.count = numItems;
     sOrchidPillMenu.items = items;
+    sOrchidPillMenu.yesNoStyle = FALSE;
+    sOrchidPillMenu.pending = TRUE;
+    return InitMenuInUpperLeftCornerNormal(windowId, numItems, initialCursorPos);
+}
+
+// Same, with the rows drawn exactly like the Orchid YES/NO (mock_mart.render_menu: Poké Mart BUY / SELL / QUIT).
+u8 InitOrchidPillMenuYesNoStyle(u8 windowId, u8 numItems, const struct MenuAction *items, u8 initialCursorPos)
+{
+    sOrchidPillMenu.windowId = windowId;
+    sOrchidPillMenu.count = numItems;
+    sOrchidPillMenu.items = items;
+    sOrchidPillMenu.yesNoStyle = TRUE;
     sOrchidPillMenu.pending = TRUE;
     return InitMenuInUpperLeftCornerNormal(windowId, numItems, initialCursorPos);
 }

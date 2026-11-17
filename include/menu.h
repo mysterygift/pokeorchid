@@ -141,6 +141,7 @@ void LoadOrchidYesNoColors(u8 palSlot, bool32 wholePalette);
 void CreateOrchidYesNoMenu(const struct WindowTemplate *window, u16 frameTile, u8 framePal, u8 initialCursorPos);
 void CreateOrchidFieldYesNoMenu(const struct WindowTemplate *window, u8 initialCursorPos);
 u8 InitOrchidPillMenu(u8 windowId, u8 numItems, const struct MenuAction *items, u8 initialCursorPos);
+u8 InitOrchidPillMenuYesNoStyle(u8 windowId, u8 numItems, const struct MenuAction *items, u8 initialCursorPos);
 u32 GetOrchidPillMenuWidth(const struct MenuAction *items, u32 numItems);
 void PrintMenuActionTextsAtPos(u8 windowId, u8 fontId, u8 left, u8 top, u8 lineHeight, u8 itemCount, const struct MenuAction *menuActions);
 void Menu_LoadStdPal(void);
