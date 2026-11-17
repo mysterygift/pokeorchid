@@ -733,17 +733,23 @@ bool8 BattleLoadAllHealthBoxesGfx(u8 state)
         return FALSE;
     }
 
-    // Orchid UI: singles-layout battlers get the Orchid healthbox (uncompressed, text drawn at runtime)
+    // Orchid UI: every battler gets an Orchid healthbox (singles, compact doubles or the Safari
+    // ball counter); the art is uncompressed because the text is drawn into it at runtime
+    if (!B_HP_PERCENTAGE_DISPLAY)
     {
+        static const u8 sDoublesBoxPositions[] = {B_POSITION_PLAYER_LEFT, B_POSITION_PLAYER_RIGHT, B_POSITION_OPPONENT_LEFT, B_POSITION_OPPONENT_RIGHT};
+        static const u16 sBoxTags[MAX_BATTLERS_COUNT] =
+        {
+            [B_POSITION_PLAYER_LEFT] = TAG_HEALTHBOX_PLAYER1_TILE, [B_POSITION_OPPONENT_LEFT] = TAG_HEALTHBOX_OPPONENT1_TILE,
+            [B_POSITION_PLAYER_RIGHT] = TAG_HEALTHBOX_PLAYER2_TILE, [B_POSITION_OPPONENT_RIGHT] = TAG_HEALTHBOX_OPPONENT2_TILE,
+        };
         enum BattlerId orchidBattler = MAX_BATTLERS_COUNT;
         bool32 orchidBar = FALSE;
 
         if (IsDoubleBattle())
         {
-            if (state == 2)
-                orchidBattler = GetBattlerAtPosition(B_POSITION_PLAYER_LEFT);
-            else if (state == 4)
-                orchidBattler = GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT);
+            if (state >= 2 && state <= 5)
+                orchidBattler = GetBattlerAtPosition(sDoublesBoxPositions[state - 2]);
             else if (state >= 6 && state <= 9)
                 orchidBattler = state - 6, orchidBar = TRUE;
         }
@@ -757,22 +763,23 @@ bool8 BattleLoadAllHealthBoxesGfx(u8 state)
                 orchidBattler = state - 4, orchidBar = TRUE;
         }
 
-        if (orchidBattler < gBattlersCount && IsOrchidHealthboxBattler(orchidBattler))
+        if (orchidBattler < MAX_BATTLERS_COUNT && GetOrchidHealthboxGfx(orchidBattler, orchidBar) != NULL)
         {
             struct SpriteSheet sheet;
-            bool32 isPlayer = IsOnPlayerSide(orchidBattler);
 
+            sheet.data = GetOrchidHealthboxGfx(orchidBattler, orchidBar);
             if (orchidBar)
             {
-                sheet.data = isPlayer ? gOrchidHealthbarPlayer_Gfx : gOrchidHealthbarOpponent_Gfx;
                 sheet.size = 16 * TILE_SIZE_4BPP;
                 sheet.tag = sSpriteSheets_HealthBar[GetBattlerPosition(orchidBattler)].tag;
             }
             else
             {
-                sheet.data = isPlayer ? gOrchidHealthboxPlayer_Gfx : gOrchidHealthboxOpponent_Gfx;
                 sheet.size = 64 * TILE_SIZE_4BPP;
-                sheet.tag = isPlayer ? TAG_HEALTHBOX_PLAYER1_TILE : TAG_HEALTHBOX_OPPONENT1_TILE;
+                if ((gBattleTypeFlags & BATTLE_TYPE_SAFARI) && IsOnPlayerSide(orchidBattler))
+                    sheet.tag = TAG_HEALTHBOX_SAFARI_TILE;
+                else
+                    sheet.tag = sBoxTags[GetBattlerPosition(orchidBattler)];
             }
             LoadSpriteSheet(&sheet);
             return FALSE;
@@ -1342,14 +1349,22 @@ void SpriteCB_SetInvisible(struct Sprite *sprite)
     sprite->invisible = TRUE;
 }
 
+// Player-side battlers never get a shadow, but their (zeroed) shadow ids can point at sprite 0,
+// which is the player's healthbox; only hide sprites that really are shadows.
+void HideShadowSprite(u32 spriteId)
+{
+    if (spriteId < MAX_SPRITES && gSprites[spriteId].template == &gSpriteTemplate_EnemyShadow)
+        gSprites[spriteId].callback = SpriteCB_SetInvisible;
+}
+
 void SetBattlerShadowSpriteCallback(enum BattlerId battler, enum Species species)
 {
     if (B_ENEMY_MON_SHADOW_STYLE >= GEN_4 && P_GBA_STYLE_SPECIES_GFX == FALSE)
     {
         if (IsOnPlayerSide(battler) || gBattleScripting.monCaught)
         {
-            gSprites[gBattleSpritesDataPtr->healthBoxesData[battler].shadowSpriteIdPrimary].callback = SpriteCB_SetInvisible;
-            gSprites[gBattleSpritesDataPtr->healthBoxesData[battler].shadowSpriteIdSecondary].callback = SpriteCB_SetInvisible;
+            HideShadowSprite(gBattleSpritesDataPtr->healthBoxesData[battler].shadowSpriteIdPrimary);
+            HideShadowSprite(gBattleSpritesDataPtr->healthBoxesData[battler].shadowSpriteIdSecondary);
             return;
         }
 
@@ -1367,15 +1382,15 @@ void SetBattlerShadowSpriteCallback(enum BattlerId battler, enum Species species
         }
         else
         {
-            gSprites[gBattleSpritesDataPtr->healthBoxesData[battler].shadowSpriteIdPrimary].callback = SpriteCB_SetInvisible;
-            gSprites[gBattleSpritesDataPtr->healthBoxesData[battler].shadowSpriteIdSecondary].callback = SpriteCB_SetInvisible;
+            HideShadowSprite(gBattleSpritesDataPtr->healthBoxesData[battler].shadowSpriteIdPrimary);
+            HideShadowSprite(gBattleSpritesDataPtr->healthBoxesData[battler].shadowSpriteIdSecondary);
         }
     }
     else
     {
         if (IsOnPlayerSide(battler) || gBattleScripting.monCaught)
         {
-            gSprites[gBattleSpritesDataPtr->healthBoxesData[battler].shadowSpriteIdPrimary].callback = SpriteCB_SetInvisible;
+            HideShadowSprite(gBattleSpritesDataPtr->healthBoxesData[battler].shadowSpriteIdPrimary);
             return;
         }
 
@@ -1388,15 +1403,15 @@ void SetBattlerShadowSpriteCallback(enum BattlerId battler, enum Species species
         if (gSpeciesInfo[SanitizeSpeciesId(species)].enemyMonElevation != 0)
             gSprites[gBattleSpritesDataPtr->healthBoxesData[battler].shadowSpriteIdPrimary].callback = SpriteCB_EnemyShadow;
         else
-            gSprites[gBattleSpritesDataPtr->healthBoxesData[battler].shadowSpriteIdPrimary].callback = SpriteCB_SetInvisible;
+            HideShadowSprite(gBattleSpritesDataPtr->healthBoxesData[battler].shadowSpriteIdPrimary);
     }
 }
 
 void HideBattlerShadowSprite(enum BattlerId battler)
 {
-    gSprites[gBattleSpritesDataPtr->healthBoxesData[battler].shadowSpriteIdPrimary].callback = SpriteCB_SetInvisible;
+    HideShadowSprite(gBattleSpritesDataPtr->healthBoxesData[battler].shadowSpriteIdPrimary);
     if (B_ENEMY_MON_SHADOW_STYLE >= GEN_4 && P_GBA_STYLE_SPECIES_GFX == FALSE)
-        gSprites[gBattleSpritesDataPtr->healthBoxesData[battler].shadowSpriteIdSecondary].callback = SpriteCB_SetInvisible;
+        HideShadowSprite(gBattleSpritesDataPtr->healthBoxesData[battler].shadowSpriteIdSecondary);
 }
 
 // Color the background tiles surrounding the action selection and move windows

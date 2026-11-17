@@ -1329,7 +1329,7 @@ void StartHealthboxSlideIn(enum BattlerId battler)
 
     healthboxSprite->sSpeedX = 5;
     healthboxSprite->sSpeedY = 0;
-    healthboxSprite->x2 = IsOrchidHealthbox(gHealthboxSpriteIds[battler]) ? 130 : 0x73; // Orchid boxes are wider
+    healthboxSprite->x2 = IsOrchidStyleHealthbox(gHealthboxSpriteIds[battler]) ? 130 : 0x73; // Orchid boxes are wider
     healthboxSprite->y2 = 0;
     healthboxSprite->callback = SpriteCB_HealthboxSlideIn;
     if (!IsOnPlayerSide(battler))
