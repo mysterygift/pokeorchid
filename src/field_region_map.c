@@ -1,6 +1,8 @@
 #include "global.h"
 #include "bg.h"
+#include "decompress.h"
 #include "event_data.h"
+#include "graphics.h"
 #include "field_effect.h"
 #include "gpu_regs.h"
 #include "international_string_util.h"
@@ -31,6 +33,7 @@
 enum {
     WIN_MAPSEC_NAME,
     WIN_TITLE,
+    WIN_PROMPT,
 };
 
 enum {
@@ -62,6 +65,15 @@ static const struct BgTemplate sFieldRegionMapBgTemplates[] = {
         .priority = 0,
         .baseTile = 0
     }, {
+        // Orchid frame (header, map rim, tray + name pill): export_region_map.py
+        .bg = 1,
+        .charBaseIndex = 3,
+        .mapBaseIndex = 30,
+        .screenSize = 0,
+        .paletteMode = 0,
+        .priority = 1,
+        .baseTile = 0
+    }, {
         .bg = 2,
         .charBaseIndex = 2,
         .mapBaseIndex = 28,
@@ -72,28 +84,17 @@ static const struct BgTemplate sFieldRegionMapBgTemplates[] = {
     }
 };
 
+// Orchid: transparent text windows on the frame (palette 1 = the kit palette of the frame)
 static const struct WindowTemplate sFieldRegionMapWindowTemplates[] =
 {
-    [WIN_MAPSEC_NAME] = {
-        .bg = 0,
-        .tilemapLeft = 17,
-        .tilemapTop = 17,
-        .width = 12,
-        .height = 2,
-        .paletteNum = 15,
-        .baseBlock = 1
-    },
-    [WIN_TITLE] = {
-        .bg = 0,
-        .tilemapLeft = 22,
-        .tilemapTop = 1,
-        .width = 7,
-        .height = 2,
-        .paletteNum = 15,
-        .baseBlock = 25
-    },
+    [WIN_MAPSEC_NAME] = {.bg = 0, .tilemapLeft = 1, .tilemapTop = 17, .width = 15, .height = 3, .paletteNum = 1, .baseBlock = 1},
+    [WIN_TITLE] = {.bg = 0, .tilemapLeft = 0, .tilemapTop = 0, .width = 30, .height = 2, .paletteNum = 1, .baseBlock = 46},
+    [WIN_PROMPT] = {.bg = 0, .tilemapLeft = 16, .tilemapTop = 17, .width = 14, .height = 3, .paletteNum = 1, .baseBlock = 106},
     DUMMY_WIN_TEMPLATE
 };
+
+static const u8 sOrchidMapText_Ink[3] = {TEXT_COLOR_TRANSPARENT, 1, 5};    // INK on PANEL_SHADE
+static const u8 sOrchidMapText_Label[3] = {TEXT_COLOR_TRANSPARENT, 3, 7};  // WHITE on ACCENT_DARK
 
 void FieldInitRegionMap(MainCallback callback)
 {
@@ -121,7 +122,9 @@ static void MCB2_InitRegionMapRegisters(void)
     InitBgsFromTemplates(1, sFieldRegionMapBgTemplates, ARRAY_COUNT(sFieldRegionMapBgTemplates));
     InitWindows(sFieldRegionMapWindowTemplates);
     DeactivateAllTextPrinters();
-    LoadUserWindowBorderGfx(0, 0x27, BG_PLTT_ID(13));
+    DecompressDataWithHeaderVram(gOrchidRegionMapFrame_Gfx, (void *)BG_CHAR_ADDR(3));
+    DecompressDataWithHeaderVram(gOrchidRegionMapFrame_Tilemap, (void *)BG_SCREEN_ADDR(30));
+    LoadPalette(gOrchidDexScreen_Pal, BG_PLTT_ID(1), PLTT_SIZE_4BPP);
     ClearScheduledBgCopiesToVram();
     SetMainCallback2(MCB2_FieldUpdateRegionMap);
     SetVBlankCallback(VBCB_FieldUpdateRegionMap);
@@ -154,18 +157,19 @@ static void FieldUpdateRegionMap(void)
         sFieldRegionMapHandler->state++;
         break;
     case 1:
-        DrawStdFrameWithCustomTileAndPalette(WIN_TITLE, FALSE, 0x27, 0xd);
-        FillWindowPixelBuffer(WIN_TITLE, PIXEL_FILL(1));
+        PutWindowTilemap(WIN_TITLE);
+        PutWindowTilemap(WIN_MAPSEC_NAME);
+        PutWindowTilemap(WIN_PROMPT);
         PrintTitleWindowText();
-        ScheduleBgCopyTilemapToVram(0);
-        DrawStdFrameWithCustomTileAndPalette(WIN_MAPSEC_NAME, FALSE, 0x27, 0xd);
         PrintRegionMapSecName();
+        ScheduleBgCopyTilemapToVram(0);
         BeginNormalPaletteFade(PALETTES_ALL, 0, 16, 0, RGB_BLACK);
         sFieldRegionMapHandler->state++;
         break;
     case 2:
         SetGpuRegBits(REG_OFFSET_DISPCNT, DISPCNT_OBJ_1D_MAP | DISPCNT_OBJ_ON);
         ShowBg(0);
+        ShowBg(1);
         ShowBg(2);
         sFieldRegionMapHandler->state++;
         break;
@@ -213,44 +217,33 @@ static void FieldUpdateRegionMap(void)
     }
 }
 
+// Orchid: the name sits in the tray's pill (sized for the longest Tosa name, narrow font beyond)
 static void PrintRegionMapSecName(void)
 {
+    const u8 *name = sFieldRegionMapHandler->regionMap.mapSecName;
+
+    FillWindowPixelBuffer(WIN_MAPSEC_NAME, PIXEL_FILL(0));
     if (sFieldRegionMapHandler->regionMap.mapSecType != MAPSECTYPE_NONE)
-    {
-        FillWindowPixelBuffer(WIN_MAPSEC_NAME, PIXEL_FILL(1));
-        AddTextPrinterParameterized(WIN_MAPSEC_NAME, FONT_NORMAL, sFieldRegionMapHandler->regionMap.mapSecName, 0, 1, 0, NULL);
-        ScheduleBgCopyTilemapToVram(WIN_MAPSEC_NAME);
-    }
-    else
-    {
-        FillWindowPixelBuffer(WIN_MAPSEC_NAME, PIXEL_FILL(1));
-        CopyWindowToVram(WIN_MAPSEC_NAME, COPYWIN_FULL);
-    }
+        AddTextPrinterParameterized4(WIN_MAPSEC_NAME, GetFontIdToFit(name, FONT_NORMAL, 0, 104), 4, 3, 0, 0,
+                                     sOrchidMapText_Ink, TEXT_SKIP_DRAW, name);
+    CopyWindowToVram(WIN_MAPSEC_NAME, COPYWIN_GFX);
 }
 
+// Orchid: "TOSA" in the header; the R FLY prompt (when allowed) at the tray's right
 static void PrintTitleWindowText(void)
 {
     static const u8 FlyPromptText[] = _("{R_BUTTON} FLY");
-    const u8 *region;
-    static const u8 sText_Tosa[] = _("TOSA"); // Orchid: the Town Map shows the Tosa region
-    if (IS_FRLG)
-        region = gText_Kanto;
-    else
-        region = sText_Tosa;
-    u32 hoennOffset = GetStringCenterAlignXOffset(FONT_NORMAL, region, 0x38);
-    u32 flyOffset = GetStringCenterAlignXOffset(FONT_NORMAL, FlyPromptText, 0x38);
+    static const u8 sText_Tosa[] = _("TOSA");
+    const u8 *region = IS_FRLG ? gText_Kanto : sText_Tosa;
 
-    FillWindowPixelBuffer(WIN_TITLE, PIXEL_FILL(1));
+    FillWindowPixelBuffer(WIN_TITLE, PIXEL_FILL(0));
+    AddTextPrinterParameterized4(WIN_TITLE, FONT_NORMAL, GetStringCenterAlignXOffset(FONT_NORMAL, region, DISPLAY_WIDTH), 0, 0, 0,
+                                 sOrchidMapText_Label, TEXT_SKIP_DRAW, region);
+    CopyWindowToVram(WIN_TITLE, COPYWIN_GFX);
 
+    FillWindowPixelBuffer(WIN_PROMPT, PIXEL_FILL(0));
     if (sFieldRegionMapHandler->regionMap.mapSecType == MAPSECTYPE_CITY_CANFLY
         && FlagGet(OW_FLAG_POKE_RIDER) && Overworld_MapTypeAllowsTeleportAndFly(gMapHeader.mapType) == TRUE)
-    {
-        AddTextPrinterParameterized(WIN_TITLE, FONT_NORMAL, FlyPromptText, flyOffset, 1, 0, NULL);
-        ScheduleBgCopyTilemapToVram(WIN_TITLE);
-    }
-    else
-    {
-        AddTextPrinterParameterized(WIN_TITLE, FONT_NORMAL, region, hoennOffset, 1, 0, NULL);
-        CopyWindowToVram(WIN_TITLE, COPYWIN_FULL);
-    }
+        AddTextPrinterParameterized4(WIN_PROMPT, FONT_NORMAL, 4, 3, 0, 0, sOrchidMapText_Ink, TEXT_SKIP_DRAW, FlyPromptText);
+    CopyWindowToVram(WIN_PROMPT, COPYWIN_GFX);
 }

@@ -14,6 +14,7 @@ Writes:
   src/data/region_map/region_map_sections.json               Tosa cells, placeholders, Hoenn off-grid
   dev_scripts/orchid_ui/ref/tosa_places.md                   placeholder table for renaming
   graphics/pokenav/region_map/brendan_icon.png, may_icon.png  map heads cut from the player OW sprites
+  graphics/pokenav/region_map/orchid_frame.png / .bin        Orchid frame (header, map rim, tray + name pill)
 
 What the format forces (everything else is the user's pixels):
   * only tile rows 2-16 (y 16-135 = the cursor grid) are kept; rows 0-1 and 17-19 (under the
@@ -288,6 +289,42 @@ def player_heads():
         out.save(P("graphics", "pokenav", "region_map", gender + "_icon.png"), transparency=0)
 
 
+# ---- Orchid frame for the Town Map / Fly map (BG1, palette slot 1, charbase 3 tiles)
+FRAME_PAL_SLOT = 1
+NAME_PILL = (6, 140, 116, 14)         # fits "South Tosa Reserve" (101 px, FONT_NORMAL) + 6 px margins
+
+
+def frame_art():
+    import sys
+    sys.path.insert(0, HERE)
+    from kit import new_sheet, Canvas, rounded_box, to_tiles, write_tilemap, TRANSPARENT, INK, \
+        ACCENT, ACCENT_DARK, ACCENT_LIGHT, PANEL, WHITE, PANEL_SHADE
+    import dex_ext as D
+    im = new_sheet(W, H, "orchid", spare_a=D.BALL_RED)
+    cv = Canvas(im)
+    D.header_band(cv, 0, W - 1, round_left=False)
+    rounded_box(cv, 2, 17, 236, 118, 4, TRANSPARENT, INK, ACCENT_DARK, ACCENT_LIGHT)
+    for y in range(16, 136):
+        for x in (0, 1, 238, 239):
+            cv.set(x, y, ACCENT)
+    D.tray(cv, 136)
+    x, y, w, h = NAME_PILL
+    rounded_box(cv, x, y, w, h, 4, PANEL, INK, WHITE, PANEL_SHADE)
+    tiles, tm = to_tiles(im)
+    assert len(tiles) <= 256, len(tiles)
+    from kit import tiles_to_image
+    sheet = tiles_to_image(tiles, im)
+    pal = D.dex_palette("orchid")
+    flat = [c for rgb in pal for c in rgb]
+    sheet.putpalette(flat + [0] * (768 - len(flat)))
+    sheet.save(P("graphics", "pokenav", "region_map", "orchid_frame.png"), transparency=0)
+    cells = [None] * (32 * 32)
+    for i, item in enumerate(tm):
+        cells[(i // 30) * 32 + i % 30] = item
+    write_tilemap(P("graphics", "pokenav", "region_map", "orchid_frame.bin"), cells, pal_num=FRAME_PAL_SLOT)
+    return len(tiles)
+
+
 def export():
     sq = squares()
     reserve = route_cells_between(sq[TOSA_PORT], sq[TELOK])
@@ -312,6 +349,7 @@ def export():
             tmap += struct.pack("<H", t)
     open(P("graphics", "pokedex", "region_map.bin"), "wb").write(bytes(tmap))
     player_heads()
+    print("frame tiles", frame_art())
     secs = update_sections(sq, reserve)
     write_layout(secs)
     write_places_md(sq, reserve)
