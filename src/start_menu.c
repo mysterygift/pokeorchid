@@ -52,6 +52,7 @@
 #include "wild_encounter.h"
 #include "constants/battle_frontier.h"
 #include "constants/items.h"
+#include "constants/orchid_ui.h"
 #include "constants/rgb.h"
 #include "constants/songs.h"
 
@@ -84,6 +85,15 @@ enum
 #define TAG_OSM_BALL         0x6E23
 #define TAG_OSM_SPARKLES     0x6E24
 #define TAG_OSM_SAFARI_ICON  0x6E25
+#define TAG_OSM_BANNER       0x6E26 // start menu v2: banner body
+#define TAG_OSM_TAB          0x6E27 // gold tab with the option name (drawn at runtime)
+#define TAG_OSM_PILL         0x6E28 // location pill (drawn at runtime)
+#define TAG_OSM_OBJ_PAL      0x6E29 // start_obj.pal: banner, tab, pill
+
+// Start menu v2: the tab and the location pill are drawn into an off-screen window, then copied to OBJ tiles.
+#define OSM2_CANVAS_W        16 // tiles
+#define OSM2_CANVAS_H        4
+#define OSM2_TAB_SPRITE_X    (DISPLAY_WIDTH - OSM2_CANVAS_W * 8) // screen x of the canvas' left edge
 
 // Which info chip shows beside the start menu (top-left)
 enum
@@ -141,8 +151,16 @@ EWRAM_DATA static u8 sSaveInfoWindowId = 0;
 EWRAM_DATA static u8 sOrchidChip = ORCHID_CHIP_NONE;
 EWRAM_DATA static u8 sOrchidChipWindowId = 0;
 EWRAM_DATA static u8 sOrchidSafariIconSpriteId = 0;
-EWRAM_DATA static bool8 sOrchidIconsShown = FALSE;
+EWRAM_DATA static bool8 sOrchidIconsShown = FALSE; // start menu sprites (banner, tab, icons, pill) exist
 EWRAM_DATA static u8 sOrchidIconSpriteIds[ARRAY_COUNT(sCurrentStartMenuActions)] = {0};
+EWRAM_DATA static u8 sOrchidBannerSpriteIds[3] = {0};
+EWRAM_DATA static u8 sOrchidBannerCount = 0;
+EWRAM_DATA static u8 sOrchidTabSpriteIds[2] = {0};
+EWRAM_DATA static u8 sOrchidPillSpriteIds[2] = {0};
+EWRAM_DATA static bool8 sOrchidPillShown = FALSE;
+EWRAM_DATA static s16 sOrchidBannerY = 0;
+EWRAM_DATA static u8 sOrchidSlideTaskId = 0;
+EWRAM_DATA static bool8 sOrchidSlideIn = FALSE; // slide in on the next open (a fresh START press)
 EWRAM_DATA static bool8 sOrchidBallShown = FALSE;
 EWRAM_DATA static u8 sOrchidBallSpriteId = 0;
 EWRAM_DATA static u8 sOrchidSparkleSpriteIds[3] = {0};
@@ -170,6 +188,7 @@ static bool8 BattlePyramidRetireStartCallback(void);
 static bool8 BattlePyramidRetireReturnCallback(void);
 static bool8 BattlePyramidRetireCallback(void);
 static bool8 HandleStartMenuInput(void);
+static bool8 HandleStartMenuClose(void);
 
 // Save dialog callbacks
 static u8 SaveConfirmSaveCallback(void);
@@ -204,16 +223,6 @@ static const struct WindowTemplate sWindowTemplate_SafariBalls = {
     .tilemapTop = 1,
     .width = 11,
     .height = 4,
-    .paletteNum = ORCHID_YESNO_FIELD_PAL,
-    .baseBlock = 0x8
-};
-
-static const struct WindowTemplate sWindowTemplate_LocationChip = {
-    .bg = 0,
-    .tilemapLeft = 1,
-    .tilemapTop = 1,
-    .width = 10,
-    .height = 2,
     .paletteNum = ORCHID_YESNO_FIELD_PAL,
     .baseBlock = 0x8
 };
@@ -558,69 +567,302 @@ static void BuildMultiPartnerRoomStartMenu(void)
     AddStartMenuAction(MENU_ACTION_EXIT);
 }
 
-// ---------------------------------------------------------------- Orchid start menu
-// Rows (mock_system.start_menu): white window in the player's FRAME, gold pill on the selected row, the
-// PLAYER row in the gender name colour. Icons are OBJ: resting ones muted, the selected one lifted 1 px.
-static void OrchidStartMenu_DrawRows(u8 selected)
+// ---------------------------------------------------------------- Orchid start menu v2
+// mock_start_v2.py, variant B: a slim ink banner flush with the right edge holds the icons (resting ones
+// muted); the selected row is a gold tab poking out to the left with the option's name (the PLAYER row in the
+// gender name colour). The banner slides in from the right as the location pill slides in from the left.
+// Everything is OBJ, so the slide moves banner, tab, icons and pill together (sprite x2). The tab and the
+// pill hold text: they are drawn into an off-screen window and its tiles are copied into their OBJ tiles.
+enum
 {
-    u8 windowId = GetStartMenuWindowId();
-    u32 width = GetWindowAttribute(windowId, WINDOW_WIDTH) * 8;
+    SLIDE_NONE,
+    SLIDE_OPEN,
+    SLIDE_CLOSE,
+};
+
+#define tSlideMode  data[0]
+#define tSlideFrame data[1]
+
+static const struct OamData sOam_OrchidBanner = {.shape = SPRITE_SHAPE(32x64), .size = SPRITE_SIZE(32x64), .priority = 0};
+static const struct OamData sOam_OrchidTab = {.shape = SPRITE_SHAPE(64x32), .size = SPRITE_SIZE(64x32), .priority = 0};
+static const union AnimCmd sAnim_OrchidPiece0[] = {ANIMCMD_FRAME(0, 0), ANIMCMD_END};
+static const union AnimCmd sAnim_OrchidBanner1[] = {ANIMCMD_FRAME(32, 0), ANIMCMD_END};
+static const union AnimCmd sAnim_OrchidBanner2[] = {ANIMCMD_FRAME(64, 0), ANIMCMD_END};
+static const union AnimCmd *const sAnims_OrchidBanner[] = {sAnim_OrchidPiece0, sAnim_OrchidBanner1, sAnim_OrchidBanner2};
+static const union AnimCmd *const sAnims_OrchidTab[] = {sAnim_OrchidPiece0, sAnim_OrchidBanner1};    // tiles 0 / 32
+
+static const struct SpriteTemplate sSpriteTemplate_OrchidBanner =
+{
+    .tileTag = TAG_OSM_BANNER, .paletteTag = TAG_OSM_OBJ_PAL, .oam = &sOam_OrchidBanner, .anims = sAnims_OrchidBanner,
+    .images = NULL, .affineAnims = gDummySpriteAffineAnimTable, .callback = SpriteCallbackDummy,
+};
+static const struct SpriteTemplate sSpriteTemplate_OrchidTab =
+{
+    .tileTag = TAG_OSM_TAB, .paletteTag = TAG_OSM_OBJ_PAL, .oam = &sOam_OrchidTab, .anims = sAnims_OrchidTab,
+    .images = NULL, .affineAnims = gDummySpriteAffineAnimTable, .callback = SpriteCallbackDummy,
+};
+static const struct SpriteTemplate sSpriteTemplate_OrchidPill =
+{
+    .tileTag = TAG_OSM_PILL, .paletteTag = TAG_OSM_OBJ_PAL, .oam = &sOam_OrchidTab, .anims = sAnims_OrchidTab,
+    .images = NULL, .affineAnims = gDummySpriteAffineAnimTable, .callback = SpriteCallbackDummy,
+};
+
+static const struct WindowTemplate sOrchidCanvasTemplate =
+{
+    .bg = 0, .tilemapLeft = 0, .tilemapTop = 0, .width = OSM2_CANVAS_W, .height = OSM2_CANVAS_H,
+    .paletteNum = 0, .baseBlock = 0x8, // never put on the tilemap or copied to VRAM
+};
+
+static const u8 sOrchidTabColors[3] = {TEXT_COLOR_TRANSPARENT, OSM2_INK, OSM2_SELECT_DARK};
+static const u8 sOrchidTabNameColors[3] = {TEXT_COLOR_TRANSPARENT, OSM2_SPARE_A, OSM2_SPARE_B};
+static const u8 sOrchidPillColors[3] = {TEXT_COLOR_TRANSPARENT, OSM2_INK, OSM2_PANEL_SHADE};
+
+static s32 OrchidStartMenu_BannerX(void)
+{
+    return OSM2_X0;
+}
+
+// Copy a block of canvas tiles (cols col0.., rows 0..rows-1) to a sprite's tiles, in 1D OBJ order.
+static void OrchidCanvasToObj(u8 canvas, u16 tileTag, u32 tileOffset, u32 col0, u32 cols, u32 rows)
+{
+    u8 *src = gWindows[canvas].tileData;
+    u8 *dst = (u8 *)(OBJ_VRAM0) + (GetSpriteTileStartByTag(tileTag) + tileOffset) * TILE_SIZE_4BPP;
+    u32 r, c;
+
+    for (r = 0; r < rows; r++)
+    {
+        for (c = 0; c < cols; c++)
+            CpuCopy32(src + (r * OSM2_CANVAS_W + col0 + c) * TILE_SIZE_4BPP, dst + (r * cols + c) * TILE_SIZE_4BPP, TILE_SIZE_4BPP);
+    }
+}
+
+static bool32 OrchidStartMenu_IsNameRow(u32 row)
+{
+    u8 (*func)(void) = sStartMenuItems[sCurrentStartMenuActions[row]].func.u8_void;
+
+    return func == StartMenuPlayerNameCallback || func == StartMenuLinkModePlayerNameCallback;
+}
+
+// Selected row: the gold tab (mock_start_v2.draw_tab) with the option's name, icons muted except the selected
+// one, which moves 4 px left and 1 px up.
+static void OrchidStartMenu_Select(void)
+{
+    u8 canvas;
+    s32 x0 = OrchidStartMenu_BannerX();
+    s32 ty = sOrchidBannerY + 3 + sStartMenuCursorPos * OSM2_PITCH;
+    s32 labelW, tx;
+    u8 normalPal, mutedPal;
     u32 i;
 
-    FillWindowPixelBuffer(windowId, PIXEL_FILL(OSM_WHITE));
-    OrchidDrawRoundedBox(windowId, 2, selected * 16 + 1, width - 4, 14, 4, ORCHID_PILL_FACE, OSM_INK, ORCHID_PILL_LIGHT, ORCHID_PILL_SHADE);
+    if (!sOrchidIconsShown)
+        return;
+
+    StringExpandPlaceholders(gStringVar4, sStartMenuItems[sCurrentStartMenuActions[sStartMenuCursorPos]].text);
+    labelW = GetStringWidth(FONT_NORMAL, gStringVar4, 0);
+    tx = x0 - (labelW + 10) - 4;
+    canvas = AddWindow(&sOrchidCanvasTemplate);
+    if (canvas != WINDOW_NONE)
+    {
+        FillWindowPixelBuffer(canvas, PIXEL_FILL(0));
+        OrchidDrawRoundedBox(canvas, tx - OSM2_TAB_SPRITE_X, 0, (x0 + OSM2_TAB_TAIL) - tx, OSM2_TAB_H, 4,
+                             OSM2_SELECT, OSM2_INK, OSM2_SELECT_LIGHT, OSM2_SELECT_DARK);
+        AddTextPrinterParameterized4(canvas, FONT_NORMAL, tx - OSM2_TAB_SPRITE_X + OSM2_TAB_TEXT_DX, 1, 0, 0,
+                                     OrchidStartMenu_IsNameRow(sStartMenuCursorPos) ? sOrchidTabNameColors : sOrchidTabColors,
+                                     TEXT_SKIP_DRAW, gStringVar4);
+        OrchidCanvasToObj(canvas, TAG_OSM_TAB, 0, 0, 8, 4);
+        OrchidCanvasToObj(canvas, TAG_OSM_TAB, 32, 8, 8, 4);
+        RemoveWindow(canvas);
+    }
+    for (i = 0; i < 2; i++)
+        gSprites[sOrchidTabSpriteIds[i]].y = ty + 16;
+
+    normalPal = IndexOfSpritePaletteTag(TAG_OSM_ICON_PAL);
+    mutedPal = IndexOfSpritePaletteTag(TAG_OSM_ICON_MUTED);
     for (i = 0; i < sNumStartMenuActions; i++)
     {
-        const struct MenuAction *action = &sStartMenuItems[sCurrentStartMenuActions[i]];
-        bool32 isName = (action->func.u8_void == StartMenuPlayerNameCallback
-                      || action->func.u8_void == StartMenuLinkModePlayerNameCallback);
+        struct Sprite *sprite = &gSprites[sOrchidIconSpriteIds[i]];
+        bool32 sel = (i == sStartMenuCursorPos);
 
-        StringExpandPlaceholders(gStringVar4, action->text);
-        AddTextPrinterParameterized4(windowId, FONT_NORMAL, OSM_MENU_TEXT_X, i * 16, 0, 0,
-                                     isName ? sOrchidNameColors : sOrchidTextColors, TEXT_SKIP_DRAW, gStringVar4);
+        sprite->oam.paletteNum = (sel || mutedPal == 0xFF) ? normalPal : mutedPal;
+        sprite->x = x0 + OSM2_ICON_DX - (sel ? 4 : 0) + 8;
+        sprite->y = sOrchidBannerY + OSM2_ICON_DY + i * OSM2_PITCH - (sel ? OSM_ICON_LIFT : 0) + 8;
     }
-    CopyWindowToVram(windowId, COPYWIN_GFX);
+}
 
-    if (sOrchidIconsShown)
+// Location pill straight on the field (mock_start_v2.chip_bare): a label pill with the map pin.
+static void OrchidStartMenu_CreatePill(void)
+{
+    struct SpriteSheet sheet;
+    u8 canvas = AddWindow(&sOrchidCanvasTemplate);
+    u32 i;
+
+    if (canvas == WINDOW_NONE)
+        return;
+    GetMapNameGeneric(gStringVar4, gMapHeader.regionMapSectionId);
+    FillWindowPixelBuffer(canvas, PIXEL_FILL(0));
+    OrchidDrawRoundedBox(canvas, 0, OSM2_PILL_Y - 8, GetStringWidth(FONT_NORMAL, gStringVar4, 0) + OSM2_PILL_PAD, 14, 4,
+                         OSM2_PANEL, OSM2_INK, OSM2_WHITE, OSM2_PANEL_SHADE);
+    BlitBitmapRectToWindow(canvas, gOrchidPillCap_Gfx, 0, 0, 24, 16, 0, 0, 17, 16);
+    AddTextPrinterParameterized4(canvas, FONT_NORMAL, OSM2_PILL_TEXT_DX, 0, 0, 0, sOrchidPillColors, TEXT_SKIP_DRAW, gStringVar4);
+    sheet.data = gWindows[canvas].tileData;
+    sheet.size = 64 * TILE_SIZE_4BPP; // 2 x 64x32 OBJs (the pill uses the top 16 px)
+    sheet.tag = TAG_OSM_PILL;
+    LoadSpriteSheet(&sheet);
+    OrchidCanvasToObj(canvas, TAG_OSM_PILL, 0, 0, 8, 4);
+    OrchidCanvasToObj(canvas, TAG_OSM_PILL, 32, 8, 8, 4);
+    RemoveWindow(canvas);
+    for (i = 0; i < 2; i++)
     {
-        u8 normalPal = IndexOfSpritePaletteTag(TAG_OSM_ICON_PAL);
-        u8 mutedPal = IndexOfSpritePaletteTag(TAG_OSM_ICON_MUTED);
-
-        for (i = 0; i < sNumStartMenuActions; i++)
-        {
-            struct Sprite *sprite = &gSprites[sOrchidIconSpriteIds[i]];
-
-            sprite->oam.paletteNum = (i == selected || mutedPal == 0xFF) ? normalPal : mutedPal;
-            sprite->y = OSM_ICON_Y0 + i * 16 + 8 - (i == selected ? OSM_ICON_LIFT : 0);
-        }
+        sOrchidPillSpriteIds[i] = CreateSprite(&sSpriteTemplate_OrchidPill, OSM2_PILL_X + 64 * i + 32, 8 + 16, 2);
+        if (sOrchidPillSpriteIds[i] != MAX_SPRITES)
+            StartSpriteAnim(&gSprites[sOrchidPillSpriteIds[i]], i);
     }
+    sOrchidPillShown = TRUE;
+}
+
+static void OrchidStartMenu_DestroyPill(void)
+{
+    u32 i;
+
+    if (!sOrchidPillShown)
+        return;
+    for (i = 0; i < 2; i++)
+    {
+        if (sOrchidPillSpriteIds[i] != MAX_SPRITES)
+            DestroySprite(&gSprites[sOrchidPillSpriteIds[i]]);
+    }
+    FreeSpriteTilesByTag(TAG_OSM_PILL);
+    sOrchidPillShown = FALSE;
+}
+
+static void OrchidStartMenu_SetSlide(s32 bannerDx, s32 pillDx)
+{
+    u32 i;
+
+    if (!sOrchidIconsShown)
+        return;
+    for (i = 0; i < sOrchidBannerCount; i++)
+        gSprites[sOrchidBannerSpriteIds[i]].x2 = bannerDx;
+    for (i = 0; i < 2; i++)
+        gSprites[sOrchidTabSpriteIds[i]].x2 = bannerDx;
+    for (i = 0; i < sNumStartMenuActions; i++)
+        gSprites[sOrchidIconSpriteIds[i]].x2 = bannerDx;
+    if (sOrchidPillShown)
+    {
+        for (i = 0; i < 2; i++)
+            gSprites[sOrchidPillSpriteIds[i]].x2 = -pillDx;
+    }
+}
+
+static void Task_OrchidStartMenuSlide(u8 taskId)
+{
+    s16 *data = gTasks[taskId].data;
+
+    if (tSlideMode == SLIDE_OPEN)
+    {
+        OrchidStartMenu_SetSlide(sOrchidSlideOpen[tSlideFrame][0], sOrchidSlideOpen[tSlideFrame][1]);
+        if (tSlideFrame < OSM2_OPEN_FRAMES)
+            tSlideFrame++;
+        else
+            tSlideMode = SLIDE_NONE;
+    }
+    else if (tSlideMode == SLIDE_CLOSE)
+    {
+        OrchidStartMenu_SetSlide(sOrchidSlideClose[tSlideFrame][0], sOrchidSlideClose[tSlideFrame][1]);
+        if (tSlideFrame < OSM2_CLOSE_FRAMES)
+            tSlideFrame++;
+    }
+}
+
+static void OrchidStartMenu_StartClose(void)
+{
+    if (!sOrchidIconsShown)
+        return;
+    gTasks[sOrchidSlideTaskId].tSlideMode = SLIDE_CLOSE;
+    gTasks[sOrchidSlideTaskId].tSlideFrame = 0;
+}
+
+static bool32 OrchidStartMenu_CloseDone(void)
+{
+    struct Task *task = &gTasks[sOrchidSlideTaskId];
+
+    return !sOrchidIconsShown || (task->tSlideMode == SLIDE_CLOSE && task->tSlideFrame >= OSM2_CLOSE_FRAMES);
 }
 
 static void OrchidStartMenu_CreateIcons(void)
 {
-    struct SpriteSheet sheet = {gOrchidStartMenuIcons_Gfx, ICON_COUNT * 4 * TILE_SIZE_4BPP, TAG_OSM_ICONS};
+    struct SpriteSheet icons = {gOrchidStartMenuIcons_Gfx, ICON_COUNT * 4 * TILE_SIZE_4BPP, TAG_OSM_ICONS};
     struct SpritePalette pal = {gOrchidStartMenuIcons_Pal, TAG_OSM_ICON_PAL};
     struct SpritePalette muted = {gOrchidStartMenuIconsMuted_Pal, TAG_OSM_ICON_MUTED};
-    u32 i;
+    struct SpritePalette objPal = {gOrchidStartObj_Pal, TAG_OSM_OBJ_PAL};
+    struct SpriteSheet banner, tab;
+    u16 nameColors[2];
+    u32 n = sNumStartMenuActions, i, objPalSlot, h;
+    s32 x0 = OrchidStartMenu_BannerX();
 
-    if (sOrchidIconsShown)
+    if (sOrchidIconsShown || n == 0)
         return;
-    LoadSpriteSheet(&sheet);
-    if (LoadSpritePalette(&pal) == 0xFF)
+    if (n > OSM2_MAX_ENTRIES)
+        n = OSM2_MAX_ENTRIES;
+    if (LoadSpritePalette(&objPal) == 0xFF || LoadSpritePalette(&pal) == 0xFF)
     {
-        FreeSpriteTilesByTag(TAG_OSM_ICONS);
-        return; // no free OBJ palette: the menu still works, without icons
+        FreeSpritePaletteByTag(TAG_OSM_OBJ_PAL);
+        return; // no free OBJ palette: the menu still works, without its art
     }
     LoadSpritePalette(&muted);
-    for (i = 0; i < sNumStartMenuActions; i++)
+    // the gold tab prints the player's name in the gender name colour (SPARE_A / SPARE_B)
+    objPalSlot = IndexOfSpritePaletteTag(TAG_OSM_OBJ_PAL);
+    nameColors[0] = (gSaveBlock2Ptr->playerGender == MALE) ? ORCHID_NAME_MALE_FG : ORCHID_NAME_FEMALE_FG;
+    nameColors[1] = (gSaveBlock2Ptr->playerGender == MALE) ? ORCHID_NAME_MALE_SHADOW : ORCHID_NAME_FEMALE_SHADOW;
+    LoadPalette(nameColors, OBJ_PLTT_ID(objPalSlot) + OSM2_SPARE_A, sizeof(nameColors));
+
+    // banner body for n entries, centred vertically
+    h = n * OSM2_PITCH + 6;
+    sOrchidBannerY = ((s32)DISPLAY_HEIGHT - (s32)h) / 2;
+    sOrchidBannerCount = sOrchidBannerLayout[n - 1][1];
+    banner.data = gOrchidStartBanner_Gfx + sOrchidBannerLayout[n - 1][0] * TILE_SIZE_4BPP;
+    banner.size = sOrchidBannerCount * 32 * TILE_SIZE_4BPP;
+    banner.tag = TAG_OSM_BANNER;
+    LoadSpriteSheet(&banner);
+    for (i = 0; i < sOrchidBannerCount; i++)
     {
-        u8 spriteId = CreateSprite(&sSpriteTemplate_OrchidIcon, OSM_ICON_X + 8, OSM_ICON_Y0 + i * 16 + 8, 0);
+        sOrchidBannerSpriteIds[i] = CreateSprite(&sSpriteTemplate_OrchidBanner, x0 + 16, sOrchidBannerY + 64 * i + 32, 3);
+        StartSpriteAnim(&gSprites[sOrchidBannerSpriteIds[i]], i);
+    }
+
+    // gold tab: 2 x 64x32 OBJs over the right 128 px, tiles filled by OrchidStartMenu_Select
+    tab.data = gOrchidStartBanner_Gfx; // placeholder contents, overwritten before it shows
+    tab.size = 64 * TILE_SIZE_4BPP;
+    tab.tag = TAG_OSM_TAB;
+    LoadSpriteSheet(&tab);
+    for (i = 0; i < 2; i++)
+    {
+        sOrchidTabSpriteIds[i] = CreateSprite(&sSpriteTemplate_OrchidTab, OSM2_TAB_SPRITE_X + 64 * i + 32, 0, 2);
+        StartSpriteAnim(&gSprites[sOrchidTabSpriteIds[i]], i);
+    }
+
+    LoadSpriteSheet(&icons);
+    for (i = 0; i < n; i++)
+    {
+        u8 spriteId = CreateSprite(&sSpriteTemplate_OrchidIcon, x0 + OSM2_ICON_DX + 8, 0, 1);
 
         sOrchidIconSpriteIds[i] = spriteId;
         if (spriteId != MAX_SPRITES)
             StartSpriteAnim(&gSprites[spriteId], sOrchidStartMenuIcons[sCurrentStartMenuActions[i]]);
     }
     sOrchidIconsShown = TRUE;
+
+    if (sOrchidChip == ORCHID_CHIP_LOCATION)
+        OrchidStartMenu_CreatePill();
+
+    sOrchidSlideTaskId = CreateTask(Task_OrchidStartMenuSlide, 0x50);
+    if (sOrchidSlideIn)
+    {
+        gTasks[sOrchidSlideTaskId].tSlideMode = SLIDE_OPEN;
+        OrchidStartMenu_SetSlide(sOrchidSlideOpen[0][0], sOrchidSlideOpen[0][1]);
+    }
+    sOrchidSlideIn = FALSE;
+    OrchidStartMenu_Select();
 }
 
 static void OrchidStartMenu_DestroyIcons(void)
@@ -629,16 +871,28 @@ static void OrchidStartMenu_DestroyIcons(void)
 
     if (!sOrchidIconsShown)
         return;
-    for (i = 0; i < sNumStartMenuActions; i++)
+    for (i = 0; i < sNumStartMenuActions && i < OSM2_MAX_ENTRIES; i++)
     {
         if (sOrchidIconSpriteIds[i] != MAX_SPRITES)
             DestroySprite(&gSprites[sOrchidIconSpriteIds[i]]);
     }
+    for (i = 0; i < sOrchidBannerCount; i++)
+        DestroySprite(&gSprites[sOrchidBannerSpriteIds[i]]);
+    for (i = 0; i < 2; i++)
+        DestroySprite(&gSprites[sOrchidTabSpriteIds[i]]);
+    OrchidStartMenu_DestroyPill();
+    DestroyTask(sOrchidSlideTaskId);
     FreeSpriteTilesByTag(TAG_OSM_ICONS);
+    FreeSpriteTilesByTag(TAG_OSM_BANNER);
+    FreeSpriteTilesByTag(TAG_OSM_TAB);
     FreeSpritePaletteByTag(TAG_OSM_ICON_PAL);
     FreeSpritePaletteByTag(TAG_OSM_ICON_MUTED);
+    FreeSpritePaletteByTag(TAG_OSM_OBJ_PAL);
     sOrchidIconsShown = FALSE;
 }
+
+#undef tSlideMode
+#undef tSlideFrame
 
 static u8 OrchidStartMenu_AddChipWindow(const struct WindowTemplate *template, u8 chip)
 {
@@ -646,17 +900,6 @@ static u8 OrchidStartMenu_AddChipWindow(const struct WindowTemplate *template, u
     sOrchidChipWindowId = AddWindow(template);
     DrawStdWindowFrame(sOrchidChipWindowId, FALSE);
     return sOrchidChipWindowId;
-}
-
-// Location chip (mock_system.chip_location): a label pill with the map pin and the map name.
-static void ShowLocationChip(void)
-{
-    u8 windowId = OrchidStartMenu_AddChipWindow(&sWindowTemplate_LocationChip, ORCHID_CHIP_LOCATION);
-
-    BlitBitmapRectToWindow(windowId, gOrchidStartChips_Gfx, 0, OSM_CHIP_LOC_Y, OSM_CHIP_SHEET_W, 128, 0, 0, 80, 16);
-    GetMapNameGeneric(gStringVar4, gMapHeader.regionMapSectionId);
-    AddTextPrinterParameterized4(windowId, FONT_NORMAL, OSM_LOC_TEXT_X, 0, 0, 0, sOrchidTextColors, TEXT_SKIP_DRAW, gStringVar4);
-    CopyWindowToVram(windowId, COPYWIN_GFX);
 }
 
 static void ShowSafariBallsWindow(void)
@@ -743,9 +986,12 @@ static void RemoveExtraStartMenuWindows(void)
         FreeSpritePaletteByTag(TAG_OSM_SAFARI_ICON);
         DestroySprite(&gSprites[sOrchidSafariIconSpriteId]);
     }
-    ClearStdWindowAndFrameToTransparent(sOrchidChipWindowId, FALSE);
-    CopyWindowToVram(sOrchidChipWindowId, COPYWIN_GFX);
-    RemoveWindow(sOrchidChipWindowId);
+    if (sOrchidChip != ORCHID_CHIP_LOCATION) // the location pill is OBJ (gone with the icons)
+    {
+        ClearStdWindowAndFrameToTransparent(sOrchidChipWindowId, FALSE);
+        CopyWindowToVram(sOrchidChipWindowId, COPYWIN_GFX);
+        RemoveWindow(sOrchidChipWindowId);
+    }
     sOrchidChip = ORCHID_CHIP_NONE;
 }
 
@@ -765,7 +1011,6 @@ static bool32 InitStartMenuStep(void)
     case 2:
         LoadMessageBoxAndBorderGfx();
         LoadOrchidFieldWindowPalette();
-        DrawStdWindowFrame(AddStartMenuWindow(sNumStartMenuActions), FALSE);
         sInitStartMenuData[1] = 0;
         sInitStartMenuData[0]++;
         break;
@@ -777,18 +1022,18 @@ static bool32 InitStartMenuStep(void)
             else if (CurrentBattlePyramidLocation() != PYRAMID_LOCATION_NONE)
                 ShowPyramidFloorWindow();
             else
-                ShowLocationChip();
+                sOrchidChip = ORCHID_CHIP_LOCATION; // the pill is OBJ, made with the banner
         }
         sInitStartMenuData[0]++;
         break;
     case 4:
-        // Orchid: the rows are drawn by OrchidStartMenu_DrawRows (with the cursor)
         sInitStartMenuData[0]++;
         break;
     case 5:
+        // Orchid start menu v2: no window, the banner / tab / icons are OBJ
+        if (sStartMenuCursorPos >= sNumStartMenuActions)
+            sStartMenuCursorPos = 0;
         OrchidStartMenu_CreateIcons();
-        sStartMenuCursorPos = InitOrchidCustomMenu(GetStartMenuWindowId(), sNumStartMenuActions, sStartMenuCursorPos, OrchidStartMenu_DrawRows);
-        CopyWindowToVram(GetStartMenuWindowId(), COPYWIN_FULL);
         return TRUE;
     }
 
@@ -836,7 +1081,9 @@ static void OrchidStartMenu_ResetState(void)
 {
     sOrchidChip = ORCHID_CHIP_NONE;
     sOrchidIconsShown = FALSE;
+    sOrchidPillShown = FALSE;
     sOrchidBallShown = FALSE;
+    sOrchidSlideIn = FALSE;
 }
 
 void ShowReturnToFieldStartMenu(void)
@@ -870,6 +1117,7 @@ void Task_ShowStartMenu(u8 taskId)
 void ShowStartMenu(void)
 {
     OrchidStartMenu_ResetState();
+    sOrchidSlideIn = TRUE;
     if (!IsOverworldLinkActive())
     {
         FreezeObjectEvents();
@@ -885,13 +1133,15 @@ static bool8 HandleStartMenuInput(void)
     if (JOY_NEW(DPAD_UP))
     {
         PlaySE(SE_SELECT);
-        sStartMenuCursorPos = Menu_MoveCursor(-1);
+        sStartMenuCursorPos = (sStartMenuCursorPos == 0) ? sNumStartMenuActions - 1 : sStartMenuCursorPos - 1;
+        OrchidStartMenu_Select();
     }
 
     if (JOY_NEW(DPAD_DOWN))
     {
         PlaySE(SE_SELECT);
-        sStartMenuCursorPos = Menu_MoveCursor(1);
+        sStartMenuCursorPos = (sStartMenuCursorPos + 1 >= sNumStartMenuActions) ? 0 : sStartMenuCursorPos + 1;
+        OrchidStartMenu_Select();
     }
 
     if (JOY_NEW(A_BUTTON))
@@ -922,9 +1172,10 @@ static bool8 HandleStartMenuInput(void)
 
     if (JOY_NEW(START_BUTTON | B_BUTTON))
     {
-        RemoveExtraStartMenuWindows();
-        HideStartMenu();
-        return TRUE;
+        PlaySE(SE_SELECT);
+        OrchidStartMenu_StartClose();
+        gMenuCallback = HandleStartMenuClose;
+        return FALSE;
     }
 
     return FALSE;
@@ -1038,11 +1289,21 @@ static bool8 StartMenuOptionCallback(void)
     return FALSE;
 }
 
+// Orchid: EXIT slides the menu out like START / B (A already played the select sound)
 static bool8 StartMenuExitCallback(void)
 {
-    RemoveExtraStartMenuWindows();
-    HideStartMenu(); // Hide start menu
+    OrchidStartMenu_StartClose();
+    gMenuCallback = HandleStartMenuClose;
+    return FALSE;
+}
 
+// Orchid: the banner and the pill slide out (8 frames), then the menu closes as vanilla's START / B
+static bool8 HandleStartMenuClose(void)
+{
+    if (!OrchidStartMenu_CloseDone())
+        return FALSE;
+    RemoveExtraStartMenuWindows();
+    HideStartMenuWindow();
     return TRUE;
 }
 
@@ -1073,8 +1334,6 @@ static void HideStartMenuDebug(void)
 {
     OrchidStartMenu_DestroyIcons();
     PlaySE(SE_SELECT);
-    ClearStdWindowAndFrame(GetStartMenuWindowId(), TRUE);
-    RemoveStartMenuWindow();
 }
 
 static bool8 StartMenuLinkModePlayerNameCallback(void)
@@ -1296,8 +1555,7 @@ static bool8 SaveErrorTimer(void)
 static u8 SaveConfirmSaveCallback(void)
 {
     RemoveExtraStartMenuWindows(); // Orchid: the info chip sits where the save card goes; icons go with the menu
-    ClearStdWindowAndFrame(GetStartMenuWindowId(), FALSE);
-    RemoveStartMenuWindow();
+    OrchidStartMenu_DestroyIcons();
     ShowSaveInfoWindow();
 
     if (CurrentBattlePyramidLocation() != PYRAMID_LOCATION_NONE)
@@ -1664,8 +1922,7 @@ static void InitBattlePyramidRetire(void)
 static u8 BattlePyramidConfirmRetireCallback(void)
 {
     OrchidStartMenu_DestroyIcons();
-    ClearStdWindowAndFrame(GetStartMenuWindowId(), FALSE);
-    RemoveStartMenuWindow();
+    OrchidStartMenu_DestroyIcons();
     ShowSaveMessage(gText_BattlePyramidConfirmRetire, BattlePyramidRetireYesNoCallback);
 
     return SAVE_IN_PROGRESS;
@@ -1898,8 +2155,6 @@ void SaveForBattleTowerLink(void)
 static void HideStartMenuWindow(void)
 {
     OrchidStartMenu_DestroyIcons();
-    ClearStdWindowAndFrame(GetStartMenuWindowId(), TRUE);
-    RemoveStartMenuWindow();
     ScriptUnfreezeObjectEvents();
     UnlockPlayerFieldControls();
 }
