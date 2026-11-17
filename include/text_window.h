@@ -1,7 +1,7 @@
 #ifndef GUARD_TEXT_WINDOW_H
 #define GUARD_TEXT_WINDOW_H
 
-#define WINDOW_FRAMES_COUNT 20
+#define WINDOW_FRAMES_COUNT 8 // Orchid kit frames (vanilla had 20; older saves map safely, see text_window.c)
 
 struct TilesPal
 {
