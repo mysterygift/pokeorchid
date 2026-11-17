@@ -157,6 +157,21 @@ void CreateYesNoMenuWithCallbacks(u8 taskId, const struct WindowTemplate *templa
     gTasks[taskId].func = Task_CallYesOrNoCallback;
 }
 
+// Orchid YES/NO (gold pill) with callbacks; see CreateOrchidYesNoMenu for the palette contract.
+void CreateOrchidYesNoMenuWithCallbacks(u8 taskId, const struct WindowTemplate *template, u16 frameTile, u8 framePal, const struct YesNoFuncTable *yesNo)
+{
+    CreateOrchidYesNoMenu(template, frameTile, framePal, 0);
+    sYesNo = *yesNo;
+    gTasks[taskId].func = Task_CallYesOrNoCallback;
+}
+
+void CreateOrchidFieldYesNoMenuWithCallbacks(u8 taskId, const struct WindowTemplate *template, const struct YesNoFuncTable *yesNo)
+{
+    CreateOrchidFieldYesNoMenu(template, 0);
+    sYesNo = *yesNo;
+    gTasks[taskId].func = Task_CallYesOrNoCallback;
+}
+
 static void Task_CallYesOrNoCallback(u8 taskId)
 {
     switch (Menu_ProcessInputNoWrapClearOnChoose())

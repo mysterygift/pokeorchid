@@ -11,6 +11,7 @@ Writes (all under the repo root):
   graphics/pokedex/orchid/search.bin      search page tilemap
   graphics/pokedex/orchid/cry.bin         CRY tab tilemap (VU dial, scope well with an open hole)
   graphics/pokedex/orchid/size.bin        SIZE tab tilemap (stage panel, HT pill)
+  graphics/pokedex/orchid/registered.bin  post-catch page tilemap (INFO body, header with the NEW pill)
   graphics/pokedex/orchid/scope_bg.png    8x8 scope tile + palette 8 (trace ramp 8-15), used by pokedex_cry_screen.c
   graphics/pokedex/orchid/needle.png      64x64 affine VU needle OBJ (kit colours)
   graphics/pokedex/orchid/screen.pal      48 colours: pal 0 kit (+ ball red), pal 1 gold selected, pal 2 grid
@@ -103,6 +104,7 @@ def export():
     tiles, tm_search = to_tiles(srch, base=tiles)
     tiles, tm_cry = to_tiles(art(M.draw_cry_art), base=tiles)
     tiles, tm_size = to_tiles(art(M.draw_size_art), base=tiles)
+    tiles, tm_reg = to_tiles(art(M.draw_registered_art), base=tiles)
     n_entry = len(tiles)
     save_indexed(tiles_to_image(tiles, info), os.path.join(OUT, "entry.png"), pal)
     write_tilemap(os.path.join(OUT, "info.bin"), cells(tm_info))
@@ -110,6 +112,7 @@ def export():
     write_tilemap(os.path.join(OUT, "search.bin"), cells(tm_search))
     write_tilemap(os.path.join(OUT, "cry.bin"), cells(tm_cry))
     write_tilemap(os.path.join(OUT, "size.bin"), cells(tm_size))
+    write_tilemap(os.path.join(OUT, "registered.bin"), cells(tm_reg))
 
     # ---- CRY: scope background tile (BG palette 8, trace ramp 8-15) and the needle OBJ
     D.scope_tile().save(os.path.join(OUT, "scope_bg.png"), transparency=0)
@@ -225,6 +228,8 @@ def write_header(n_list, n_entry):
     a("#define ODEX_SCOPE_START         %d  // vanilla playStartPos: samples are drawn at x = 8 * this" % M.SCOPE_START)
     a("#define ODEX_SIZE_HT_X           %d" % M.SIZE_HT[0])
     a("#define ODEX_SIZE_HT_Y           %d" % M.SIZE_HT[1])
+    a("#define ODEX_REG_NEW_X           %d  // post-catch NEW pill (gold, pal 1 cells)" % M.REG_NEW[0])
+    a("#define ODEX_REG_NEW_W           %d" % M.REG_NEW[2])
     a("#define ODEX_S_SOCKET_X0         %d  // TYPE row sockets (BG art), 2nd at + SOCKET_PITCH" % M.socket_x(0))
     a("#define ODEX_S_SOCKET_PITCH      %d" % (M.SOCKET_W + M.SOCKET_GAP))
     a("#define ODEX_S_SOCKET_Y          %d" % M.SOCKET_Y)

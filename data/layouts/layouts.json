@@ -106,7 +106,7 @@
       "width": 38,
       "height": 40,
       "primary_tileset": "gTileset_General",
-      "secondary_tileset": "gTileset_Slateport",
+      "secondary_tileset": "gTileset_TosaPort",
       "border_filepath": "data/layouts/TosaPort/border.bin",
       "blockdata_filepath": "data/layouts/TosaPort/map.bin",
       "layout_version": "emerald"
@@ -9344,6 +9344,28 @@
       "secondary_tileset": "gTileset_HawkerCentre",
       "border_filepath": "data/layouts/HawkerCentre/border.bin",
       "blockdata_filepath": "data/layouts/HawkerCentre/map.bin",
+      "layout_version": "emerald"
+    },
+    {
+      "id": "LAYOUT_COLD_STORAGE_TEST",
+      "name": "ColdStorageTest_Layout",
+      "width": 22,
+      "height": 40,
+      "primary_tileset": "gTileset_Building",
+      "secondary_tileset": "gTileset_ColdStorage",
+      "border_filepath": "data/layouts/ColdStorageTest/border.bin",
+      "blockdata_filepath": "data/layouts/ColdStorageTest/map.bin",
+      "layout_version": "emerald"
+    },
+    {
+      "id": "LAYOUT_COLD_STORAGE_TEST_OUTSIDE",
+      "name": "ColdStorageTestOutside_Layout",
+      "width": 16,
+      "height": 12,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_Slateport",
+      "border_filepath": "data/layouts/ColdStorageTestOutside/border.bin",
+      "blockdata_filepath": "data/layouts/ColdStorageTestOutside/map.bin",
       "layout_version": "emerald"
     }
   ]

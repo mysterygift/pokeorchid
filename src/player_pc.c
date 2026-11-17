@@ -1418,7 +1418,7 @@ static void ItemStorage_DoItemToss(u8 taskId)
         WrapFontIdToFit(gStringVar1, end, FONT_NORMAL, WindowWidthPx(ITEMPC_WIN_MESSAGE) - 6);
         ConvertIntToDecimalStringN(gStringVar2, tQuantity, STR_CONV_MODE_LEFT_ALIGN, 3);
         ItemStorage_PrintMessage(gText_ConfirmTossItems);
-        CreateYesNoMenuWithCallbacks(taskId, &sWindowTemplates_ItemStorage[ITEMPC_WIN_YESNO], 1, 0, 1, 0x214, 0xE, &ItemTossYesNoFuncs);
+        CreateOrchidFieldYesNoMenuWithCallbacks(taskId, &sWindowTemplates_ItemStorage[ITEMPC_WIN_YESNO], &ItemTossYesNoFuncs);
     }
     else
     {

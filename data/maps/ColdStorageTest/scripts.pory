@@ -1,0 +1,329 @@
+// Cold Storage test map (interior). Layout, events and the setmetatile lists below come from
+// dev_scripts/cold_storage_tileset/test_map.py; its --solve option proves the map can be cleared
+// from every reachable state.
+//
+// Puzzles: an ice field to slide across, the Storage Key in an icy pocket of the container maze,
+// a coolant console that thaws the centre aisle of the second ice field, and the locked gate.
+// After the multi battle the leader, admin and all four grunts are hidden, and the solver also
+// proves the player can slide back out to the exit.
+// The trainers are placeholders (Team Aqua assets: the FRLG Rocket ones are not compiled into an
+// Emerald-mode build) until Orchid's own villains exist.
+
+mapscripts ColdStorageTest_MapScripts {
+    // Haru stays put after the multi battle; once the player has left and comes back he is gone.
+    MAP_SCRIPT_ON_TRANSITION {
+        if (var(VAR_COLD_STORAGE_STATE) == 1) {
+            setflag(FLAG_HIDE_COLD_STORAGE_HARU)
+        }
+    }
+    MAP_SCRIPT_ON_LOAD {
+        if (flag(FLAG_COLD_STORAGE_GATE_OPEN)) {
+            call(ColdStorageTest_EventScript_SetGateOpen)
+        }
+        if (flag(FLAG_COLD_STORAGE_THAWED)) {
+            call(ColdStorageTest_EventScript_SetThawed)
+        }
+    }
+}
+
+// ---------------------------------------------------------------- test team
+
+script ColdStorageTest_EventScript_TestAide {
+    lock
+    faceplayer
+    msgbox(format("I'm here for testing. I can swap your party for a Lv. 30 team that suits this place.\pYour current party would be released. Swap?"), MSGBOX_YESNO)
+    if (var(VAR_RESULT) == YES) {
+        call(ColdStorageTest_EventScript_GiveTestTeam)
+        playfanfare(MUS_OBTAIN_ITEM)
+        msgbox(format("{PLAYER} received the test team!\pServine, Pignite, Dewott, Luxio, Staravia and Kirlia."))
+        waitfanfare
+    }
+    special(HealPlayerParty)
+    msgbox(format("Your Pok\emon are fully healed.\pTalk to me again whenever you want them patched up."))
+    release
+    end
+}
+
+raw `
+ColdStorageTest_EventScript_GiveTestTeam::
+	callnative ZeroPlayerPartyMons
+	givemon SPECIES_SERVINE, 30, ITEM_MIRACLE_SEED, move1=MOVE_MAGICAL_LEAF, move2=MOVE_MEGA_DRAIN, move3=MOVE_LEECH_SEED, move4=MOVE_SLAM
+	givemon SPECIES_PIGNITE, 30, ITEM_CHARCOAL, move1=MOVE_ARM_THRUST, move2=MOVE_FLAME_CHARGE, move3=MOVE_EMBER, move4=MOVE_TAKE_DOWN
+	givemon SPECIES_DEWOTT, 30, ITEM_MYSTIC_WATER, move1=MOVE_RAZOR_SHELL, move2=MOVE_WATER_PULSE, move3=MOVE_AERIAL_ACE, move4=MOVE_FURY_CUTTER
+	givemon SPECIES_LUXIO, 30, ITEM_MAGNET, move1=MOVE_SPARK, move2=MOVE_BITE, move3=MOVE_THUNDER_SHOCK, move4=MOVE_CHARGE
+	givemon SPECIES_STARAVIA, 30, ITEM_SHARP_BEAK, move1=MOVE_WING_ATTACK, move2=MOVE_AERIAL_ACE, move3=MOVE_QUICK_ATTACK, move4=MOVE_ENDEAVOR
+	givemon SPECIES_KIRLIA, 30, ITEM_TWISTED_SPOON, move1=MOVE_PSYBEAM, move2=MOVE_DRAINING_KISS, move3=MOVE_HYPNOSIS, move4=MOVE_LIFE_DEW
+	@ met at Lv. 5, so the team obeys even on a save with no badges
+	callnative Script_SetPartyMetLevel, requests_effects=1
+	.byte 5
+	setflag FLAG_SYS_POKEMON_GET
+	return
+`
+
+// ---------------------------------------------------------------- items
+
+script ColdStorageTest_EventScript_ItemStorageKey {
+    finditem(ITEM_STORAGE_KEY)
+    end
+}
+
+script ColdStorageTest_EventScript_ItemNeverMeltIce {
+    finditem(ITEM_NEVER_MELT_ICE)
+    end
+}
+
+script ColdStorageTest_EventScript_ItemSuperPotion {
+    finditem(ITEM_SUPER_POTION)
+    end
+}
+
+// ---------------------------------------------------------------- gate
+
+script ColdStorageTest_EventScript_Gate {
+    lockall
+    if (flag(FLAG_COLD_STORAGE_GATE_OPEN)) {
+        releaseall
+        end
+    }
+    checkitem(ITEM_STORAGE_KEY)
+    if (var(VAR_RESULT) == FALSE) {
+        msgbox(format("A heavy security gate. It's locked.\pThe key must be somewhere in the warehouse."))
+        releaseall
+        end
+    }
+    msgbox(format("{PLAYER} used the Storage Key."))
+    closemessage
+    playse(SE_UNLOCK)
+    call(ColdStorageTest_EventScript_SetGateOpen)
+    special(DrawWholeMapView)
+    setflag(FLAG_COLD_STORAGE_GATE_OPEN)
+    waitse
+    msgbox(format("The gate rattled open!"))
+    releaseall
+    end
+}
+
+script ColdStorageTest_EventScript_SetGateOpen {
+    setmetatile(10, 8, METATILE_ColdStorage_Floor_Hazard, FALSE)
+    return
+}
+
+// ---------------------------------------------------------------- coolant console
+
+script ColdStorageTest_EventScript_Console {
+    lockall
+    if (flag(FLAG_COLD_STORAGE_THAWED)) {
+        msgbox(format("COOLANT LINE B: OFF\pThe centre aisle has thawed out. Switch the coolant back on?"), MSGBOX_YESNO)
+        if (var(VAR_RESULT) == YES) {
+            closemessage
+            playse(SE_SWITCH)
+            waitse
+            call(ColdStorageTest_EventScript_SetFrozen)
+            special(DrawWholeMapView)
+            clearflag(FLAG_COLD_STORAGE_THAWED)
+            playse(SE_ICE_CRACK)
+            waitse
+            msgbox(format("The centre aisle froze over again."))
+        }
+    } else {
+        msgbox(format("COOLANT LINE B: ON\pIt feeds the centre aisle. Switch the coolant off?"), MSGBOX_YESNO)
+        if (var(VAR_RESULT) == YES) {
+            closemessage
+            playse(SE_SWITCH)
+            waitse
+            call(ColdStorageTest_EventScript_SetThawed)
+            special(DrawWholeMapView)
+            setflag(FLAG_COLD_STORAGE_THAWED)
+            playse(SE_ICE_BREAK)
+            waitse
+            msgbox(format("The ice in the centre aisle melted into puddles!"))
+        }
+    }
+    releaseall
+    end
+}
+
+script ColdStorageTest_EventScript_SetThawed {
+    setmetatile(10, 10, METATILE_ColdStorage_Wet_ShadeW, FALSE)
+    setmetatile(10, 11, METATILE_ColdStorage_Wet_ShadeW, FALSE)
+    setmetatile(8, 12, METATILE_ColdStorage_Wet_ShadeN, FALSE)
+    setmetatile(9, 12, METATILE_ColdStorage_Wet_ShadeN, FALSE)
+    setmetatile(10, 12, METATILE_ColdStorage_Wet, FALSE)
+    setmetatile(11, 12, METATILE_ColdStorage_Wet_ShadeN, FALSE)
+    setmetatile(12, 12, METATILE_ColdStorage_Wet_ShadeN, FALSE)
+    setmetatile(13, 12, METATILE_ColdStorage_Wet_ShadeN, FALSE)
+    setmetatile(14, 12, METATILE_ColdStorage_Wet_ShadeN, FALSE)
+    setmetatile(15, 12, METATILE_ColdStorage_Wet_ShadeN, FALSE)
+    setmetatile(16, 11, METATILE_ColdStorage_Console_Off, TRUE)
+    return
+}
+
+script ColdStorageTest_EventScript_SetFrozen {
+    setmetatile(10, 10, METATILE_ColdStorage_Ice_ShadeW, FALSE)
+    setmetatile(10, 11, METATILE_ColdStorage_Ice_ShadeW, FALSE)
+    setmetatile(8, 12, METATILE_ColdStorage_Ice_ShadeN, FALSE)
+    setmetatile(9, 12, METATILE_ColdStorage_Ice_ShadeN, FALSE)
+    setmetatile(10, 12, METATILE_ColdStorage_Ice, FALSE)
+    setmetatile(11, 12, METATILE_ColdStorage_Ice_ShadeN, FALSE)
+    setmetatile(12, 12, METATILE_ColdStorage_Ice_ShadeN, FALSE)
+    setmetatile(13, 12, METATILE_ColdStorage_Ice_ShadeN, FALSE)
+    setmetatile(14, 12, METATILE_ColdStorage_Ice_ShadeN, FALSE)
+    setmetatile(15, 12, METATILE_ColdStorage_Ice_ShadeN, FALSE)
+    setmetatile(16, 11, METATILE_ColdStorage_Console_On, TRUE)
+    return
+}
+
+// ---------------------------------------------------------------- grunts
+
+script ColdStorageTest_EventScript_Grunt1 {
+    trainerbattle_single(TRAINER_COLD_STORAGE_GRUNT_1, ColdStorageTest_Text_Grunt1Intro, ColdStorageTest_Text_Grunt1Defeat)
+    msgbox(format("The boss is at the back, behind the gate. Not that a kid could get it open."), MSGBOX_AUTOCLOSE)
+    end
+}
+
+script ColdStorageTest_EventScript_Grunt2 {
+    trainerbattle_single(TRAINER_COLD_STORAGE_GRUNT_2, ColdStorageTest_Text_Grunt2Intro, ColdStorageTest_Text_Grunt2Defeat)
+    msgbox(format("The next hall is one big sheet of ice. Somebody left the coolant running full blast."), MSGBOX_AUTOCLOSE)
+    end
+}
+
+script ColdStorageTest_EventScript_Grunt3 {
+    trainerbattle_single(TRAINER_COLD_STORAGE_GRUNT_3, ColdStorageTest_Text_Grunt3Intro, ColdStorageTest_Text_Grunt3Defeat)
+    msgbox(format("I dropped the Storage Key somewhere on the ice between the containers. Good luck reaching it."), MSGBOX_AUTOCLOSE)
+    end
+}
+
+script ColdStorageTest_EventScript_Grunt4 {
+    trainerbattle_single(TRAINER_COLD_STORAGE_GRUNT_4, ColdStorageTest_Text_Grunt4Intro, ColdStorageTest_Text_Grunt4Defeat)
+    msgbox(format("That console runs the coolant for the centre aisle. Don't touch it! …Ugh, why did I say that."), MSGBOX_AUTOCLOSE)
+    end
+}
+
+text ColdStorageTest_Text_Grunt1Intro {
+    format("Hey! This warehouse is closed for… stocktaking. Scram!")
+}
+
+text ColdStorageTest_Text_Grunt1Defeat {
+    format("Brr… My Pok\emon are too cold to fight.")
+}
+
+text ColdStorageTest_Text_Grunt2Intro {
+    format("You slid all the way in here? Then I'll send you sliding right back out!")
+}
+
+text ColdStorageTest_Text_Grunt2Defeat {
+    format("I slipped up…")
+}
+
+text ColdStorageTest_Text_Grunt3Intro {
+    format("Nothing to see in this corner! Certainly nothing I lost!")
+}
+
+text ColdStorageTest_Text_Grunt3Defeat {
+    format("Frozen solid…")
+}
+
+text ColdStorageTest_Text_Grunt4Intro {
+    format("Halt! Nobody goes near the coolant console!")
+}
+
+text ColdStorageTest_Text_Grunt4Defeat {
+    format("You've put me on ice…")
+}
+
+// ---------------------------------------------------------------- Haru + the multi battle
+
+script ColdStorageTest_EventScript_BossTrigger {
+    lockall
+    playse(SE_PIN)
+    applymovement(LOCALID_COLD_STORAGE_HARU, moves(face_down, emote_exclamation_mark, delay_16 * 3))
+    waitmovement(0)
+    msgbox(format("Haru: {PLAYER}! You found a way in too!\pThese two are packing Pok\emon into freezer containers to ship them out of Tosa. I can't stop them alone!"))
+    closemessage
+    applymovement(LOCALID_PLAYER, moves(walk_up * 2))
+    applymovement(LOCALID_COLD_STORAGE_HARU, moves(delay_16 * 2, face_up))
+    waitmovement(0)
+    msgbox(format("Shelly: Boss, another brat got past the gate."))
+    msgbox(format("Archie: …Two children. How tiresome.\pThis cargo leaves on tonight's tide. Stand aside, or be put on ice with it."))
+    msgbox(format("Haru: Two of them, two of us. Battle with me, {PLAYER}!"))
+    closemessage
+    goto(ColdStorageTest_EventScript_ChoosePartyForMultiBattle)
+}
+
+raw `
+ColdStorageTest_EventScript_ChoosePartyForMultiBattle::
+	special SavePlayerParty
+	fadescreen FADE_TO_BLACK
+	special ChooseHalfPartyForBattle
+	goto_if_ne VAR_RESULT, 0, ColdStorageTest_EventScript_DoMultiBattle
+	special LoadPlayerParty
+	msgbox ColdStorageTest_Text_HaruNoBackingOut, MSGBOX_DEFAULT
+	closemessage
+	goto ColdStorageTest_EventScript_ChoosePartyForMultiBattle
+
+ColdStorageTest_EventScript_DoMultiBattle::
+	multi_2_vs_2 TRAINER_COLD_STORAGE_LEADER, ColdStorageTest_Text_LeaderDefeat, TRAINER_COLD_STORAGE_ADMIN, ColdStorageTest_Text_AdminDefeat, PARTNER_HARU
+	switch VAR_RESULT
+	case 1, ColdStorageTest_EventScript_WonMultiBattle
+	fadescreen FADE_TO_BLACK
+	special SetCB2WhiteOut
+	waitstate
+	end
+`
+
+script ColdStorageTest_EventScript_WonMultiBattle {
+    msgbox(format("Archie: …Hmph. A cold reception indeed.\pKeep the cargo, children. There are other ports."))
+    closemessage
+    fadescreen(FADE_TO_BLACK)
+    removeobject(LOCALID_COLD_STORAGE_LEADER)
+    removeobject(LOCALID_COLD_STORAGE_ADMIN)
+    setflag(FLAG_HIDE_COLD_STORAGE_VILLAINS)
+    // the grunts clear out with them (removeobject only matters for one that is on screen)
+    removeobject(LOCALID_COLD_STORAGE_GRUNT_1)
+    removeobject(LOCALID_COLD_STORAGE_GRUNT_2)
+    removeobject(LOCALID_COLD_STORAGE_GRUNT_3)
+    removeobject(LOCALID_COLD_STORAGE_GRUNT_4)
+    setflag(FLAG_HIDE_COLD_STORAGE_GRUNTS)
+    setvar(VAR_COLD_STORAGE_STATE, 1)
+    fadescreen(FADE_FROM_BLACK)
+    applymovement(LOCALID_COLD_STORAGE_HARU, moves(face_left))
+    waitmovement(0)
+    msgbox(format("Haru: We did it! We make a pretty good team, {PLAYER}.\pI'll get these containers open. Let's warm everybody up."))
+    special(HealPlayerParty)
+    releaseall
+    end
+}
+
+script ColdStorageTest_EventScript_Haru {
+    lock
+    faceplayer
+    if (var(VAR_COLD_STORAGE_STATE) == 0) {
+        msgbox(format("Haru: Careful, {PLAYER}! They're right there!"))
+    } else {
+        msgbox(format("Haru: I'll look after the Pok\emon here. Thanks for the help, {PLAYER}!"))
+    }
+    release
+    end
+}
+
+script ColdStorageTest_EventScript_Leader {
+    msgbox(format("Archie: …"), MSGBOX_NPC)
+    end
+}
+
+script ColdStorageTest_EventScript_Admin {
+    msgbox(format("Shelly: Hands off the cargo!"), MSGBOX_NPC)
+    end
+}
+
+text ColdStorageTest_Text_HaruNoBackingOut {
+    format("Haru: We can't back out now, {PLAYER}! Pick your Pok\emon!")
+}
+
+text ColdStorageTest_Text_LeaderDefeat {
+    format("…So the ice cracks.")
+}
+
+text ColdStorageTest_Text_AdminDefeat {
+    format("B-boss! These kids are tougher than they look!")
+}

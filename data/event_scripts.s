@@ -198,6 +198,8 @@ gStdScripts_End::
 	.include "data/maps/TrainTestEast/scripts.inc"
 	.include "data/maps/TrainTestNorth/scripts.inc"
 	.include "data/maps/HawkerCentreTest/scripts.inc"
+	.include "data/maps/ColdStorageTest/scripts.inc"
+	.include "data/maps/ColdStorageTestOutside/scripts.inc"
 	.include "data/maps/TelokTown_House2/scripts.inc"
 	.include "data/maps/TelokTown_PokemonCenter_1F/scripts.inc"
 	.include "data/maps/TelokTown_PokemonCenter_2F/scripts.inc"

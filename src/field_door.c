@@ -142,6 +142,7 @@ static const u8 sDoorAnimTiles_BattleFrontierSliding[] = INCGFX_U8("graphics/doo
 static const u16 sDoorNullPalette45[16] = {};
 static const u8 sDoorAnimTiles_BattleDomePreBattleRoom[] = INCGFX_U8("graphics/door_anims/battle_dome_pre_battle_room.png", ".4bpp");
 static const u16 sDoorNullPalette46[16] = {};
+static const u8 sDoorAnimTiles_ColdStorage[] = INCGFX_U8("graphics/door_anims/cold_storage.png", ".4bpp");
 static const u8 sDoorAnimTiles_BattleTentInterior[] = INCGFX_U8("graphics/door_anims/battle_tent_interior.png", ".4bpp");
 static const u16 sDoorNullPalette47[16] = {};
 static const u8 sDoorAnimTiles_TrainerHillLobbyElevator[] = INCGFX_U8("graphics/door_anims/trainer_hill_lobby_elevator.png", ".4bpp");
@@ -303,6 +304,7 @@ static const u8 sDoorAnimPalettes_BattleArenaLobby[] = {7, 7, 7, 7, 7, 7, 7, 7};
 static const u8 sDoorAnimPalettes_BattleDomeLobby[] = {7, 7, 7, 7, 7, 7, 7, 7};
 static const u8 sDoorAnimPalettes_BattlePalaceLobby[] = {7, 7, 7, 7, 7, 7, 7, 7};
 static const u8 sDoorAnimPalettes_BattleTent[] = {1, 1, 1, 1, 1, 1, 1, 1};
+static const u8 sDoorAnimPalettes_ColdStorage[] = {12, 12, 12, 12, 12, 12, 12, 12};
 static const u8 sDoorAnimPalettes_BattleDomeCorridor[] = {7, 7, 7, 7, 7, 7, 7, 7};
 static const u8 sDoorAnimPalettes_BattleTowerMultiCorridor[] = {7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7};
 static const u8 sDoorAnimPalettes_Unused[] = {1, 1, 1, 1, 1, 1, 1, 1};
@@ -686,6 +688,39 @@ static const struct DoorGraphics sDoorAnimGraphicsTable[] =
         .size = DOOR_SIZE_1x2,
         .tiles = sDoorAnimTiles_BattleTent,
         .palettes = sDoorAnimPalettes_BattleTent
+    },
+    {
+        .metatileNum = METATILE_Slateport_ColdStorage_Door,
+        .tileset = &gTileset_Slateport,
+        .sound = DOOR_SOUND_SLIDING,
+        .size = DOOR_SIZE_1x2,
+        .tiles = sDoorAnimTiles_ColdStorage,
+        .palettes = sDoorAnimPalettes_ColdStorage
+    },
+    // Tosa Port uses a copy of Slateport (gTileset_TosaPort) with the same metatile IDs
+    {
+        .metatileNum = METATILE_Slateport_Door,
+        .tileset = &gTileset_TosaPort,
+        .sound = DOOR_SOUND_NORMAL,
+        .size = DOOR_SIZE_1x2,
+        .tiles = sDoorAnimTiles_Slateport,
+        .palettes = sDoorAnimPalettes_Slateport
+    },
+    {
+        .metatileNum = METATILE_Slateport_Door_BattleTent,
+        .tileset = &gTileset_TosaPort,
+        .sound = DOOR_SOUND_SLIDING,
+        .size = DOOR_SIZE_1x2,
+        .tiles = sDoorAnimTiles_BattleTent,
+        .palettes = sDoorAnimPalettes_BattleTent
+    },
+    {
+        .metatileNum = METATILE_Slateport_ColdStorage_Door,
+        .tileset = &gTileset_TosaPort,
+        .sound = DOOR_SOUND_SLIDING,
+        .size = DOOR_SIZE_1x2,
+        .tiles = sDoorAnimTiles_ColdStorage,
+        .palettes = sDoorAnimPalettes_ColdStorage
     },
     {
         .metatileNum = METATILE_Mauville_Door_BattleTent,

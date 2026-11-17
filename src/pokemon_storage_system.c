@@ -44,8 +44,11 @@
 #include "constants/rgb.h"
 #include "constants/songs.h"
 #include "constants/pokemon_icon.h"
+#include "constants/orchid_ui.h"
 #include "chooseboxmon.h"
 #include "party_menu.h"
+#include "data/pokemon_storage_orchid.h"
+#include "battle_main.h"
 
 /*
     NOTE: This file is large. Some general groups of functions have
@@ -228,6 +231,7 @@ enum {
     CURSOR_ANIM_STILL,
     CURSOR_ANIM_OPEN,
     CURSOR_ANIM_FIST,
+    CURSOR_ANIM_FLASH, // Orchid: the ring flashes when a Pokémon is picked up or put down
 };
 
 // Special box ids for the choose box menu
@@ -250,6 +254,11 @@ enum {
     PALTAG_ITEM_ICON_1, // Used implicitly in CreateItemIconSprites
     PALTAG_ITEM_ICON_2, // Used implicitly in CreateItemIconSprites
     PALTAG_MARKING_MENU,
+    PALTAG_MARKING_MENU_2, // Used implicitly by the markings menu (basePaletteTag + 1)
+    PALTAG_DISC_ITEM,      // Orchid: held item icon in the info panel's disc
+    PALTAG_TYPE_0,         // Orchid: type icon palettes (gMoveTypes_Pal rows)
+    PALTAG_TYPE_1,
+    PALTAG_TYPE_2,
 };
 
 enum {
@@ -271,6 +280,9 @@ enum {
     GFXTAG_15, // Unused
     GFXTAG_MARKING_COMBO,
     GFXTAG_17, // Unused
+    GFXTAG_HOLD_TAG,   // Orchid: MOVE ITEMS hold tags
+    GFXTAG_TYPE_ICONS, // Orchid: two 32x16 type icons in the info panel
+    GFXTAG_DISC_ITEM,  // Orchid: held item icon in the info panel's disc
     GFXTAG_MON_ICON,
 };
 
@@ -356,7 +368,25 @@ enum {
     WIN_DISPLAY_INFO,
     WIN_MESSAGE,
     WIN_ITEM_DESC,
+    WIN_TITLE,     // Orchid: box name + count on the title tab (BG1)
+    WIN_PSLOT_0,   // Orchid: Lv + HP bar of each party slot (BG1), 6 windows
 };
+
+// Orchid BG palette slots (see dev_scripts/orchid_ui/export_pc.py)
+#define OPC_BG_UI         0
+#define OPC_BG_UI_GOLD    1
+#define OPC_BG_SLOT       2   // 2..7: party slot G / Y / R, then their gold copies; the colour picker and
+                              // the multi-move icon layer borrow them while the party panel is hidden
+#define OPC_BG_BOX        8   // 8, 9: current / incoming box colour
+#define OPC_BG_GRID       10
+#define OPC_BG_TITLE      11
+#define OPC_BG_TITLE_GOLD 12
+#define OPC_BG_WINDOW     14  // Orchid window palette (frames, messages, menus, YES/NO)
+#define OPC_BG_TEXTWIN    15  // vanilla text window palette (MOVE ITEMS item info)
+#define OPC_FRAME_TILE    2   // BG0 tiles 2-10: Orchid std frame (tiles 0-1 stay blank: they are 8bpp tile 0 of the multi-move layer)
+#define OPC_SWATCH_TILE   11  // BG0 tiles 11-19: colour picker swatches (below the multi-move window's tiles from 20)
+#define OPC_BG1_WIN_BASE  OPC_BG1_ART_TILES
+#define OPC_ICON_CLIP_X   92  // sliding box icons hide once they would cross x 80 (the BG2 clip)
 
 struct Wallpaper
 {
@@ -379,6 +409,7 @@ struct StorageMenu
 
 struct ChooseBoxMenu
 {
+    u8 windowId; // Orchid: the popup is a BG0 window
     struct Sprite *menuSprite;
     struct Sprite *menuSideSprites[4];
     struct Sprite *arrowSprites[2];
@@ -535,6 +566,28 @@ struct PokemonStorageSystemData
     u8 ALIGNED(4) itemIconBuffer[0x800];
     u8 wallpaperBgTilemapBuffer[0x1000];
     u8 displayMenuTilemapBuffer[0x800];
+    // Orchid UI
+    u8 displayMonGender;
+    s8 opcLift;          // px the held Pokémon floats above its slot (0..OPC_LIFT)
+    u8 opcLiftTimer;
+    u8 opcBobTimer;
+    u8 opcFrame;
+    u8 opcGoldOwner;     // OPC_OWN_* drawn gold
+    u8 opcPartySel;      // party slot drawn gold (6 = CANCEL, 0xFF = none)
+    u8 opcPartySlide;    // party panel offset in tiles (OPC_PANEL_SLIDE = hidden)
+    u8 opcFilled;        // party slots holding a Pokémon (bit k)
+    u8 opcSlotHp[PARTY_SIZE];
+    u8 opcTitleBox;
+    bool8 opcTitleDirty;
+    bool8 opcTagsDirty;
+    bool8 opcRingHidden; // forced off (box slide, popups)
+    u8 opcColourSel;
+    u8 opcColourWindow;
+    u8 opcTypeSprites[2];
+    u8 opcItemSprite;
+    enum Item opcItemShown;
+    u8 opcTagSprites[IN_BOX_COUNT + PARTY_SIZE];
+    u8 *opcTypeSheet;
 };
 
 static u32 sItemIconGfxBuffer[98];
@@ -607,7 +660,6 @@ static void ChooseBoxMenu_DestroySprites(void);
 static void ChooseBoxMenu_MoveLeft(void);
 static void ChooseBoxMenu_MoveRight(void);
 static void ChooseBoxMenu_PrintInfo(void);
-static void SpriteCB_ChooseBoxArrow(struct Sprite *);
 
 // Options menus
 static void InitMenu(void);
@@ -760,7 +812,6 @@ static bool8 MonPlaceChange_CursorUp(void);
 static void TrySetCursorFistAnim(void);
 static bool8 IsCursorOnCloseBox(void);
 static bool8 IsCursorOnBoxTitle(void);
-static bool8 IsCursorInBox(void);
 
 // Scroll arrows
 static void CreateBoxScrollArrows(void);
@@ -774,20 +825,10 @@ static struct Sprite *CreateChooseBoxArrows(u16, u16, u8, u8, u8);
 static void InitBoxTitle(u8);
 static void CreateIncomingBoxTitle(u8, s8);
 static void CycleBoxTitleSprites(void);
-static void SpriteCB_IncomingBoxTitle(struct Sprite *);
-static void SpriteCB_OutgoingBoxTitle(struct Sprite *);
-static void CycleBoxTitleColor(void);
-static s16 GetBoxTitleBaseX(const u8 *);
 
 // Wallpaper
-static void SetWallpaperForCurrentBox(u8);
-static bool8 DoWallpaperGfxChange(void);
 static void LoadWallpaperGfx(u8, s8);
 static bool32 WaitForWallpaperGfxLoad(void);
-static void DrawWallpaper(const void *, s8, u8);
-static void TrimOldWallpaper(void *);
-static void AddWallpaperSetsMenu(void);
-static void AddWallpapersMenu(u8);
 static u8 GetBoxWallpaper(u8);
 static void SetBoxWallpaper(u8, u8);
 
@@ -836,27 +877,34 @@ static bool8 DoShowPartyMenu(void);
 static bool8 HidePartyMenu(void);
 static bool8 IsDisplayMosaicActive(void);
 static void ShowYesNoWindow(s8);
-static void UpdateCloseBoxButtonTilemap(bool8);
 static void PrintMessage(u8 id);
 static void LoadDisplayMonGfx(enum Species species, u32 pid, bool32 isEgg);
 static void SpriteCB_DisplayMonMosaic(struct Sprite *);
-static void SetPartySlotTilemap(u8, bool8);
 
 // Tilemap utility
-static void TilemapUtil_SetRect(u8, u16, u16, u16, u16);
-static void TilemapUtil_Move(u8, u8, s8);
-static void TilemapUtil_SetMap(u8, u8, const void *, u16, u16);
-static void TilemapUtil_SetPos(u8, u16, u16);
-static void TilemapUtil_Init(u8);
-static void TilemapUtil_Free(void);
-static void TilemapUtil_Update(u8);
-static void TilemapUtil_DrawPrev(u8);
-static void TilemapUtil_Draw(u8);
 
 // Form changing
 void SetMonFormPSS(struct BoxPokemon *boxMon, enum FormChanges method);
 void SetMonFormPSS_ItemHold(struct BoxPokemon *boxMon);
 void UpdateSpeciesSpritePSS(struct BoxPokemon *boxmon);
+
+// Orchid UI (SECTION: Misc)
+static void OrchidPC_SetBoxClip(bool32 on);
+static void OrchidPC_UpdateRing(void);
+static void OrchidPC_ContentsChanged(void);
+static void OrchidPC_ColourPickerOpen(void);
+static void OrchidPC_ColourPickerMove(s8 delta);
+static void OrchidPC_ColourPickerClose(void);
+static void OrchidPC_DestroyHoldTags(void);
+static void OrchidPC_LoadSlotPalettes(void);
+static void OrchidPC_LoadBoxColour(u8 colour, u8 bgPal);
+static u8 OrchidPC_GetBoxColour(u8 boxId);
+static void OrchidPC_ClearBoxSlotsExcept(s32 keepCol0, bool32 keep);
+static void OrchidPC_DrawBoxSlots(u32 col0, u8 bgPal);
+static void OrchidPC_PartyIconPos(u8 partyId, s16 *x, s16 *y);
+static bool32 OrchidPC_IsRingArea(u8 area, u8 pos);
+static void OrchidPC_SetSelection(u8 area, u8 pos);
+static void OrchidPC_PrintTitle(u8 boxId);
 
 static const u8 gText_JustOnePkmn[] = _("There is just one POKéMON with you.");
 static const u8 gText_PartyFull[] = _("Your party is full!");
@@ -953,17 +1001,19 @@ static const u32 sWaveform_Gfx[]             = INCGFX_U32("graphics/pokemon_stor
 static const u16 sUnused_Pal[]               = INCGFX_U16("graphics/pokemon_storage/unused.pal", ".gbapal");
 static const u16 sTextWindows_Pal[]          = INCGFX_U16("graphics/pokemon_storage/text_windows.pal", ".gbapal");
 
+// Orchid: the info / title / party slot windows are on BG1 over the screen art; their tiles start as a
+// copy of the art under them (OrchidPC_FillWindowFromArt), so text and art share tiles.
 static const struct WindowTemplate sWindowTemplates[] =
 {
-    // The panel below the currently displayed Pokémon
+    // The info panel below the currently displayed Pokémon (name, Lv, markings, item)
     [WIN_DISPLAY_INFO] = {
         .bg = 1,
-        .tilemapLeft = 0,
-        .tilemapTop = 11,
-        .width = 9,
-        .height = 7,
-        .paletteNum = 3,
-        .baseBlock = 0xC0,
+        .tilemapLeft = OPC_INFO_WIN_LEFT,
+        .tilemapTop = OPC_INFO_WIN_TOP,
+        .width = OPC_INFO_WIN_W,
+        .height = OPC_INFO_WIN_H,
+        .paletteNum = OPC_BG_UI,
+        .baseBlock = OPC_BG1_WIN_BASE,
     },
     [WIN_MESSAGE] = {
         .bg = 0,
@@ -971,7 +1021,7 @@ static const struct WindowTemplate sWindowTemplates[] =
         .tilemapTop = 17,
         .width = 18,
         .height = 2,
-        .paletteNum = 15,
+        .paletteNum = OPC_BG_WINDOW,
         .baseBlock = 0x14,
     },
     [WIN_ITEM_DESC] = {
@@ -980,8 +1030,71 @@ static const struct WindowTemplate sWindowTemplates[] =
         .tilemapTop = 13,
         .width = 21,
         .height = 7,
-        .paletteNum = 15,
+        .paletteNum = OPC_BG_TEXTWIN,
         .baseBlock = 0x14,
+    },
+    [WIN_TITLE] = {
+        .bg = 1,
+        .tilemapLeft = OPC_TITLE_WIN_LEFT,
+        .tilemapTop = OPC_TITLE_WIN_TOP,
+        .width = OPC_TITLE_WIN_W,
+        .height = OPC_TITLE_WIN_H,
+        .paletteNum = OPC_BG_TITLE,
+        .baseBlock = OPC_BG1_WIN_BASE + OPC_INFO_WIN_W * OPC_INFO_WIN_H,
+    },
+    [WIN_PSLOT_0 + 0] = {
+        .bg = 1,
+        .tilemapLeft = 13,
+        .tilemapTop = 5,
+        .width = OPC_SLOT_WIN_W,
+        .height = OPC_SLOT_WIN_H,
+        .paletteNum = OPC_BG_SLOT,
+        .baseBlock = OPC_BG1_WIN_BASE + OPC_INFO_WIN_W * OPC_INFO_WIN_H + OPC_TITLE_WIN_W * OPC_TITLE_WIN_H + 0 * OPC_SLOT_WIN_W * OPC_SLOT_WIN_H,
+    },
+    [WIN_PSLOT_0 + 1] = {
+        .bg = 1,
+        .tilemapLeft = 19,
+        .tilemapTop = 5,
+        .width = OPC_SLOT_WIN_W,
+        .height = OPC_SLOT_WIN_H,
+        .paletteNum = OPC_BG_SLOT,
+        .baseBlock = OPC_BG1_WIN_BASE + OPC_INFO_WIN_W * OPC_INFO_WIN_H + OPC_TITLE_WIN_W * OPC_TITLE_WIN_H + 1 * OPC_SLOT_WIN_W * OPC_SLOT_WIN_H,
+    },
+    [WIN_PSLOT_0 + 2] = {
+        .bg = 1,
+        .tilemapLeft = 13,
+        .tilemapTop = 9,
+        .width = OPC_SLOT_WIN_W,
+        .height = OPC_SLOT_WIN_H,
+        .paletteNum = OPC_BG_SLOT,
+        .baseBlock = OPC_BG1_WIN_BASE + OPC_INFO_WIN_W * OPC_INFO_WIN_H + OPC_TITLE_WIN_W * OPC_TITLE_WIN_H + 2 * OPC_SLOT_WIN_W * OPC_SLOT_WIN_H,
+    },
+    [WIN_PSLOT_0 + 3] = {
+        .bg = 1,
+        .tilemapLeft = 19,
+        .tilemapTop = 9,
+        .width = OPC_SLOT_WIN_W,
+        .height = OPC_SLOT_WIN_H,
+        .paletteNum = OPC_BG_SLOT,
+        .baseBlock = OPC_BG1_WIN_BASE + OPC_INFO_WIN_W * OPC_INFO_WIN_H + OPC_TITLE_WIN_W * OPC_TITLE_WIN_H + 3 * OPC_SLOT_WIN_W * OPC_SLOT_WIN_H,
+    },
+    [WIN_PSLOT_0 + 4] = {
+        .bg = 1,
+        .tilemapLeft = 13,
+        .tilemapTop = 13,
+        .width = OPC_SLOT_WIN_W,
+        .height = OPC_SLOT_WIN_H,
+        .paletteNum = OPC_BG_SLOT,
+        .baseBlock = OPC_BG1_WIN_BASE + OPC_INFO_WIN_W * OPC_INFO_WIN_H + OPC_TITLE_WIN_W * OPC_TITLE_WIN_H + 4 * OPC_SLOT_WIN_W * OPC_SLOT_WIN_H,
+    },
+    [WIN_PSLOT_0 + 5] = {
+        .bg = 1,
+        .tilemapLeft = 19,
+        .tilemapTop = 13,
+        .width = OPC_SLOT_WIN_W,
+        .height = OPC_SLOT_WIN_H,
+        .paletteNum = OPC_BG_SLOT,
+        .baseBlock = OPC_BG1_WIN_BASE + OPC_INFO_WIN_W * OPC_INFO_WIN_H + OPC_TITLE_WIN_W * OPC_TITLE_WIN_H + 5 * OPC_SLOT_WIN_W * OPC_SLOT_WIN_H,
     },
     DUMMY_WIN_TEMPLATE
 };
@@ -999,16 +1112,16 @@ static const struct BgTemplate sBgTemplates[] =
     },
     {
         .bg = 1,
-        .charBaseIndex = 1,
+        .charBaseIndex = 2, // Orchid: BG0 popups may use charblocks 0-1 (the multi-move layer does)
         .mapBaseIndex = 30,
         .screenSize = 0,
         .paletteMode = 0,
         .priority = 1,
-        .baseTile = 0x100
+        .baseTile = 0
     },
     {
         .bg = 2,
-        .charBaseIndex = 2,
+        .charBaseIndex = 3, // Orchid: shares charblock 3 with BG3 (slot cell + grid, 14 tiles)
         .mapBaseIndex = 27,
         .screenSize = 1,
         .paletteMode = 0,
@@ -1026,9 +1139,10 @@ static const struct BgTemplate sBgTemplates[] =
     },
 };
 
+// Orchid: PALTAG_MISC_2 is the UI OBJ palette (ring, shadow, chevrons, hold tags)
 static const struct SpritePalette sWaveformSpritePalette =
 {
-    sWaveform_Pal, PALTAG_MISC_2
+    gOrchidPcObj_Pal, PALTAG_MISC_2
 };
 
 static const struct SpriteSheet sSpriteSheet_Waveform =
@@ -1051,7 +1165,7 @@ static const struct StorageMessage sMessages[] =
     [MSG_EXIT_BOX]             = {COMPOUND_STRING("Exit from the BOX?"),         MSG_VAR_NONE},
     [MSG_WHAT_YOU_DO]          = {COMPOUND_STRING("What do you want to do?"),    MSG_VAR_NONE},
     [MSG_PICK_A_THEME]         = {COMPOUND_STRING("Please pick a theme."),       MSG_VAR_NONE},
-    [MSG_PICK_A_WALLPAPER]     = {COMPOUND_STRING("Pick the wallpaper."),        MSG_VAR_NONE},
+    [MSG_PICK_A_WALLPAPER]     = {COMPOUND_STRING("Pick the box colour."),       MSG_VAR_NONE},
     [MSG_IS_SELECTED]          = {gText_PkmnIsSelected,                          MSG_VAR_MON_NAME_1},
     [MSG_JUMP_TO_WHICH_BOX]    = {COMPOUND_STRING("Jump to which BOX?"),         MSG_VAR_NONE},
     [MSG_DEPOSIT_IN_WHICH_BOX] = {COMPOUND_STRING("Deposit in which BOX?"),      MSG_VAR_NONE},
@@ -1088,7 +1202,7 @@ static const struct WindowTemplate sYesNoWindowTemplate =
     .tilemapTop = 11,
     .width = 5,
     .height = 4,
-    .paletteNum = 15,
+    .paletteNum = OPC_BG_WINDOW,
     .baseBlock = 0x5C,
 };
 
@@ -1104,7 +1218,7 @@ static const struct OamData sOamData_DisplayMon =
     .matrixNum = 0,
     .size = SPRITE_SIZE(64x64),
     .tileNum = 0,
-    .priority = 0,
+    .priority = 1, // Orchid: under the BG0 popups
     .paletteNum = 0,
     .affineParam = 0
 };
@@ -1218,7 +1332,8 @@ static const union AffineAnimCmd *const sAffineAnims_ReleaseMon[] =
 
 static const u16 sUnusedColor = RGB(26, 29, 8);
 
-static const struct SpriteSheet sSpriteSheet_Arrow = {sArrow_Gfx, sizeof(sArrow_Gfx), GFXTAG_ARROW};
+// Orchid: small red Gen 3 chevrons (8x16: normal, lit), from ui_obj.png
+static const struct SpriteSheet sSpriteSheet_Arrow = {gOrchidPcObj_Gfx + OPC_OBJ_CHEVRON * TILE_SIZE_4BPP, 4 * TILE_SIZE_4BPP, GFXTAG_ARROW};
 
 static const struct OamData sOamData_BoxTitle =
 {
@@ -1268,14 +1383,29 @@ static const union AnimCmd sAnim_Arrow_Left[] =
 
 static const union AnimCmd sAnim_Arrow_Right[] =
 {
+    ANIMCMD_FRAME(0, 5, .hFlip = TRUE),
+    ANIMCMD_END
+};
+
+static const union AnimCmd sAnim_Arrow_LeftLit[] =
+{
     ANIMCMD_FRAME(2, 5),
     ANIMCMD_END
 };
 
+static const union AnimCmd sAnim_Arrow_RightLit[] =
+{
+    ANIMCMD_FRAME(2, 5, .hFlip = TRUE),
+    ANIMCMD_END
+};
+
+// 0 left, 1 right, 2 left lit, 3 right lit
 static const union AnimCmd *const sAnims_Arrow[] =
 {
     sAnim_Arrow_Left,
-    sAnim_Arrow_Right
+    sAnim_Arrow_Right,
+    sAnim_Arrow_LeftLit,
+    sAnim_Arrow_RightLit,
 };
 
 static const struct SpriteTemplate sSpriteTemplate_Arrow =
@@ -1647,16 +1777,21 @@ static void FieldTask_ReturnToPcMenu(void)
 #undef tNextOption
 #undef tWindowId
 
+// Orchid (mock_pc.render_field_menu): the vanilla window at tile (1, 1) in the Orchid frame, sized to the
+// longest option, a gold pill on the selected row. Frame + window palette in the field's free slots
+// (ORCHID_YESNO_FIELD_TILE / _PAL, as the field YES/NO).
 static void CreateMainMenu(u8 whichMenu, s16 *windowIdPtr)
 {
     s16 windowId;
     struct WindowTemplate template = sWindowTemplate_MainMenu;
-    template.width = GetMaxWidthInMenuTable((void *)sMainMenuTexts, OPTIONS_COUNT);
+    template.width = GetOrchidPillMenuWidth((void *)sMainMenuTexts, OPTIONS_COUNT);
+    template.paletteNum = ORCHID_YESNO_FIELD_PAL;
     windowId = AddWindow(&template);
 
-    DrawStdWindowFrame(windowId, FALSE);
-    PrintMenuTable(windowId, OPTIONS_COUNT, (void *)sMainMenuTexts);
-    InitMenuInUpperLeftCornerNormal(windowId, OPTIONS_COUNT, whichMenu);
+    LoadOrchidYesNoFrame(template.bg, ORCHID_YESNO_FIELD_TILE);
+    LoadOrchidYesNoColors(ORCHID_YESNO_FIELD_PAL, TRUE);
+    DrawStdFrameWithCustomTileAndPalette(windowId, FALSE, ORCHID_YESNO_FIELD_TILE, ORCHID_YESNO_FIELD_PAL);
+    InitOrchidPillMenu(windowId, OPTIONS_COUNT, (void *)sMainMenuTexts, whichMenu);
     *windowIdPtr = windowId;
 }
 
@@ -1714,8 +1849,9 @@ void ResetPokemonStorageSystem(void)
         ConvertIntToDecimalStringN(dest, boxId + 1, STR_CONV_MODE_LEFT_ALIGN, 2);
     }
 
+    // Orchid: the wallpaper byte holds the box colour (0 = Orchid purple)
     for (boxId = 0; boxId < TOTAL_BOXES_COUNT; boxId++)
-        SetBoxWallpaper(boxId, boxId % (MAX_DEFAULT_WALLPAPER + 1));
+        SetBoxWallpaper(boxId, 0);
 
     ResetWaldaWallpaper();
 }
@@ -1730,38 +1866,21 @@ void ResetPokemonStorageSystem(void)
 //------------------------------------------------------------------------------
 
 
+// Orchid: the jump / deposit popup is a BG0 window over the box (mock_pc.jump_popup): the box name on an
+// accent pill between red chevrons, a 6x5 occupancy map of the box and its count.
+static void LightChevron(struct Sprite *sprite);
+
 static void LoadChooseBoxMenuGfx(struct ChooseBoxMenu *menu, u16 tileTag, u16 palTag, u8 subpriority, bool32 loadPal)
 {
-    // Because loadPal is always false, the below palette is never used.
-    // The Choose Box menu instead uses the palette indicated by palTag, which is always PALTAG_MISC_1 (sHandCursor_Pal)
-    struct SpritePalette palette =
-    {
-        sChooseBoxMenu_Pal, palTag
-    };
-    struct SpriteSheet sheets[] =
-    {
-        {sChooseBoxMenuCenter_Gfx, 0x800, tileTag},
-        {sChooseBoxMenuSides_Gfx,  0x180, tileTag + 1},
-        {}
-    };
-
-    if (loadPal) // Always false
-        LoadSpritePalette(&palette);
-
-    LoadSpriteSheets(sheets);
     sChooseBoxMenu = menu;
     menu->tileTag = tileTag;
     menu->paletteTag = palTag;
     menu->subpriority = subpriority;
-    menu->loadedPalette = loadPal;
+    menu->loadedPalette = FALSE;
 }
 
 static void FreeChooseBoxMenu(void)
 {
-    if (sChooseBoxMenu->loadedPalette)
-        FreeSpritePaletteByTag(sChooseBoxMenu->paletteTag);
-    FreeSpriteTilesByTag(sChooseBoxMenu->tileTag);
-    FreeSpriteTilesByTag(sChooseBoxMenu->tileTag + 1);
 }
 
 static void CreateChooseBoxMenuSprites(u8 curBox)
@@ -1790,11 +1909,13 @@ static u8 HandleChooseBoxMenuInput(void)
     if (JOY_NEW(DPAD_LEFT))
     {
         PlaySE(SE_SELECT);
+        LightChevron(sChooseBoxMenu->arrowSprites[0]);
         ChooseBoxMenu_MoveLeft();
     }
     else if (JOY_NEW(DPAD_RIGHT))
     {
         PlaySE(SE_SELECT);
+        LightChevron(sChooseBoxMenu->arrowSprites[1]);
         ChooseBoxMenu_MoveRight();
     }
     return BOXID_NONE_CHOSEN;
@@ -1802,78 +1923,43 @@ static u8 HandleChooseBoxMenuInput(void)
 
 static void ChooseBoxMenu_CreateSprites(u8 curBox)
 {
-    u16 i;
-    u8 spriteId;
-    struct SpriteTemplate template;
-    struct OamData oamData = {};
-    oamData.size = SPRITE_SIZE(64x64);
-    oamData.paletteNum = 1;
-    template = (struct SpriteTemplate){
-        0, 0, &oamData, gDummySpriteAnimTable, NULL, gDummySpriteAffineAnimTable, SpriteCallbackDummy
+    static const struct WindowTemplate sTemplate = {
+        .bg = 0,
+        .tilemapLeft = OPC_JUMP_WIN_LEFT,
+        .tilemapTop = OPC_JUMP_WIN_TOP,
+        .width = OPC_JUMP_WIN_W,
+        .height = OPC_JUMP_WIN_H,
+        .paletteNum = OPC_BG_UI,
+        .baseBlock = 0xD0,
     };
+    u16 i;
 
     sChooseBoxMenu->curBox = curBox;
-    template.tileTag = sChooseBoxMenu->tileTag;
-    template.paletteTag = sChooseBoxMenu->paletteTag;
-
-    spriteId = CreateSprite(&template, 160, 96, 0);
-    sChooseBoxMenu->menuSprite = &gSprites[spriteId];
-
-    oamData.shape = SPRITE_SHAPE(8x32);
-    oamData.size = SPRITE_SIZE(8x32);
-    template.tileTag = sChooseBoxMenu->tileTag + 1;
-    template.anims = sAnims_ChooseBoxMenu;
+    sChooseBoxMenu->menuSprite = NULL;
     for (i = 0; i < ARRAY_COUNT(sChooseBoxMenu->menuSideSprites); i++)
-    {
-        u16 anim;
-        spriteId = CreateSprite(&template, 124, 80, sChooseBoxMenu->subpriority);
-        sChooseBoxMenu->menuSideSprites[i] = &gSprites[spriteId];
-        anim = 0;
-        if (i & 2)
-        {
-            sChooseBoxMenu->menuSideSprites[i]->x = 196;
-            anim = 2;
-        }
-        if (i & 1)
-        {
-            sChooseBoxMenu->menuSideSprites[i]->y = 112;
-            sChooseBoxMenu->menuSideSprites[i]->oam.size = 0;
-            anim++;
-        }
-        StartSpriteAnim(sChooseBoxMenu->menuSideSprites[i], anim);
-    }
+        sChooseBoxMenu->menuSideSprites[i] = NULL;
+    sChooseBoxMenu->windowId = AddWindow(&sTemplate);
+    DrawStdFrameWithCustomTileAndPalette(sChooseBoxMenu->windowId, FALSE, OPC_FRAME_TILE, OPC_BG_WINDOW);
+    PutWindowTilemap(sChooseBoxMenu->windowId);
     for (i = 0; i < ARRAY_COUNT(sChooseBoxMenu->arrowSprites); i++)
-    {
-        sChooseBoxMenu->arrowSprites[i] = CreateChooseBoxArrows(72 * i + 124, 88, i, 0, sChooseBoxMenu->subpriority);
-        if (sChooseBoxMenu->arrowSprites[i])
-        {
-            sChooseBoxMenu->arrowSprites[i]->data[0] = (i == 0 ? -1 : 1);
-            sChooseBoxMenu->arrowSprites[i]->callback = SpriteCB_ChooseBoxArrow;
-        }
-    }
+        sChooseBoxMenu->arrowSprites[i] = CreateChooseBoxArrows(i == 0 ? OPC_JUMP_CHEV_L_X : OPC_JUMP_CHEV_R_X, OPC_JUMP_CHEV_Y, i, 0, sChooseBoxMenu->subpriority);
     ChooseBoxMenu_PrintInfo();
 }
 
 static void ChooseBoxMenu_DestroySprites(void)
 {
     u16 i;
-    if (sChooseBoxMenu->menuSprite)
-    {
-        DestroySprite(sChooseBoxMenu->menuSprite);
-        sChooseBoxMenu->menuSprite = NULL;
-    }
-    for (i = 0; i < ARRAY_COUNT(sChooseBoxMenu->menuSideSprites); i++)
-    {
-        if (sChooseBoxMenu->menuSideSprites[i])
-        {
-            DestroySprite(sChooseBoxMenu->menuSideSprites[i]);
-            sChooseBoxMenu->menuSideSprites[i] = NULL;
-        }
-    }
+
+    ClearStdWindowAndFrameToTransparent(sChooseBoxMenu->windowId, FALSE);
+    RemoveWindow(sChooseBoxMenu->windowId);
+    ScheduleBgCopyTilemapToVram(0);
     for (i = 0; i < ARRAY_COUNT(sChooseBoxMenu->arrowSprites); i++)
     {
         if (sChooseBoxMenu->arrowSprites[i])
+        {
             DestroySprite(sChooseBoxMenu->arrowSprites[i]);
+            sChooseBoxMenu->arrowSprites[i] = NULL;
+        }
     }
 }
 
@@ -1892,49 +1978,39 @@ static void ChooseBoxMenu_MoveLeft(void)
 
 static void ChooseBoxMenu_PrintInfo(void)
 {
-    u8 numBoxMonsText[16];
-    struct WindowTemplate template;
-    u8 windowId;
-    u8 *boxName = GetBoxNamePtr(sChooseBoxMenu->curBox);
-    u8 numInBox = CountMonsInBox(sChooseBoxMenu->curBox);
-    u32 winTileData;
-    s32 center;
+    static const u8 sNameColors[3] = {TEXT_COLOR_TRANSPARENT, OPC_ROLE_WHITE, OPC_ROLE_ACCENT_DARK};
+    static const u8 sCountColors[3] = {TEXT_COLOR_TRANSPARENT, OPC_ROLE_INK, OPC_ROLE_PANEL_SHADE};
+    u8 windowId = sChooseBoxMenu->windowId;
+    u8 boxId = sChooseBoxMenu->curBox;
+    const u8 *boxName = GetBoxNamePtr(boxId);
+    u8 text[16], *ptr;
+    s32 width = OPC_JUMP_WIN_W * 8;
+    s32 countX = 6 + 42 + 6;
+    s32 w;
+    u32 i;
 
-    memset(&template, 0, sizeof(template));
-    template.width = 8;
-    template.height = 4;
+    FillWindowPixelBuffer(windowId, PIXEL_FILL(OPC_ROLE_WHITE));
+    OrchidDrawRoundedBox(windowId, 16, 1, width - 32, 14, 4, OPC_ROLE_ACCENT, OPC_ROLE_INK, OPC_ROLE_ACCENT_LIGHT, OPC_ROLE_ACCENT_DARK);
+    w = GetStringWidth(FONT_NORMAL, boxName, 0);
+    AddTextPrinterParameterized4(windowId, FONT_NORMAL, width / 2 - w / 2, 0, 0, 0, sNameColors, TEXT_SKIP_DRAW, boxName);
 
-    windowId = AddWindow(&template);
-    FillWindowPixelBuffer(windowId, PIXEL_FILL(4));
-
-    // Print box name
-    center = GetStringCenterAlignXOffset(FONT_NORMAL, boxName, 64);
-    AddTextPrinterParameterized3(windowId, FONT_NORMAL, center, 1, sChooseBoxMenu_TextColors, TEXT_SKIP_DRAW, boxName);
-
-    // Print #/30 for number of Pokémon in the box
-    ConvertIntToDecimalStringN(numBoxMonsText, numInBox, STR_CONV_MODE_RIGHT_ALIGN, 2);
-    StringAppend(numBoxMonsText, sText_OutOf30);
-    center = GetStringCenterAlignXOffset(FONT_NORMAL, numBoxMonsText, 64);
-    AddTextPrinterParameterized3(windowId, FONT_NORMAL, center, 17, sChooseBoxMenu_TextColors, TEXT_SKIP_DRAW, numBoxMonsText);
-
-    winTileData = GetWindowAttribute(windowId, WINDOW_TILE_DATA);
-    CpuCopy32((void *)winTileData, (void *)OBJ_VRAM0 + 0x100 + (GetSpriteTileStartByTag(sChooseBoxMenu->tileTag) * 32), 0x400);
-
-    RemoveWindow(windowId);
-}
-
-static void SpriteCB_ChooseBoxArrow(struct Sprite *sprite)
-{
-    if (++sprite->data[1] > 3)
+    // 6x5 occupancy map (pc_ext.box_minimap): accent dot = occupied, recess = empty
+    for (i = 0; i < IN_BOX_COUNT; i++)
     {
-        sprite->data[1] = 0;
-        sprite->x2 += sprite->data[0];
-        if (++sprite->data[2] > 5)
-        {
-            sprite->data[2] = 0;
-            sprite->x2 = 0;
-        }
+        s32 x = 6 + 7 * (i % IN_BOX_COLUMNS), y = 22 + 7 * (i / IN_BOX_COLUMNS);
+        if (GetBoxMonDataAt(boxId, i, MON_DATA_SPECIES) != SPECIES_NONE)
+            OrchidDrawRoundedBox(windowId, x, y, 6, 6, 1, OPC_ROLE_ACCENT, OPC_ROLE_INK, OPC_ROLE_ACCENT_LIGHT, OPC_ROLE_ACCENT_DARK);
+        else
+            OrchidDrawRoundedBox(windowId, x, y, 6, 6, 1, OPC_ROLE_PANEL_DARK, OPC_ROLE_PANEL_SHADE, OPC_ROLE_PANEL_DARK, OPC_ROLE_PANEL_DARK);
     }
+
+    OrchidDrawRoundedBox(windowId, countX, 31, width - countX - 2, 14, 4, OPC_ROLE_PANEL, OPC_ROLE_INK, OPC_ROLE_WHITE, OPC_ROLE_PANEL_SHADE);
+    ptr = ConvertIntToDecimalStringN(text, CountMonsInBox(boxId), STR_CONV_MODE_LEFT_ALIGN, 2);
+    StringCopy(ptr, sText_OutOf30);
+    w = GetStringWidth(FONT_SMALL, text, 0);
+    AddTextPrinterParameterized4(windowId, FONT_SMALL, countX + (width - countX - 2 - w) / 2 + 1, 32, 0, 0, sCountColors, TEXT_SKIP_DRAW, text);
+    CopyWindowToVram(windowId, COPYWIN_FULL);
+    ScheduleBgCopyTilemapToVram(0);
 }
 
 
@@ -2036,9 +2112,6 @@ static void ResetForPokeStorage(void)
     gReservedSpriteTileCount = 0x280;
     gKeyRepeatStartDelay = 20;
     ClearScheduledBgCopiesToVram();
-    TilemapUtil_Init(TILEMAPID_COUNT);
-    TilemapUtil_SetMap(TILEMAPID_PKMN_DATA, 1, sPkmnData_Tilemap, 8, 4);
-    TilemapUtil_SetPos(TILEMAPID_PKMN_DATA, 1, 0);
     sStorage->closeBoxFlashing = FALSE;
 }
 
@@ -2052,7 +2125,7 @@ static void InitStartingPosData(void)
 static void SetMonIconTransparency(void)
 {
     SetGpuReg(REG_OFFSET_BLDCNT, BLDCNT_TGT2_ALL);
-    SetGpuReg(REG_OFFSET_BLDALPHA, BLDALPHA_BLEND(7, 11));
+    SetGpuReg(REG_OFFSET_BLDALPHA, BLDALPHA_BLEND(8, 8)); // Orchid: half-bright, like mock_pc._dim
     SetGpuReg(REG_OFFSET_DISPCNT, DISPCNT_OBJ_ON | DISPCNT_BG_ALL_ON | DISPCNT_OBJ_1D_MAP);
 }
 
@@ -2099,10 +2172,8 @@ static void Task_InitPokeStorage(u8 taskId)
         }
         break;
     case 2:
-        PutWindowTilemap(WIN_DISPLAY_INFO);
         ClearWindowTilemap(WIN_MESSAGE);
         CpuFill32(0, (void *)VRAM, 0x200);
-        LoadUserWindowBorderGfx(WIN_MESSAGE, 0xB, BG_PLTT_ID(14));
         break;
     case 3:
         ResetAllBgCoords();
@@ -2186,7 +2257,10 @@ static void Task_ShowPokeStorage(u8 taskId)
         break;
     case 1:
         if (!IsComputerScreenOpenEffectActive())
+        {
+            OrchidPC_SetBoxClip(TRUE);
             SetPokeStorageTask(Task_PokeStorageMain);
+        }
         break;
     }
 }
@@ -2196,6 +2270,7 @@ static void Task_ReshowPokeStorage(u8 taskId)
     switch (sStorage->state)
     {
     case 0:
+        OrchidPC_SetBoxClip(TRUE);
         BeginNormalPaletteFade(PALETTES_ALL, -1, 0x10, 0, RGB_BLACK);
         sStorage->state++;
         break;
@@ -2436,6 +2511,9 @@ static void Task_PokeStorageMain(u8 taskId)
         if (!ScrollToBox())
         {
             SetCurrentBox(sStorage->newCurrBoxId);
+            sStorage->opcRingHidden = FALSE;
+            OrchidPC_UpdateRing();
+            OrchidPC_ContentsChanged();
             if (!sInPartyMenu && !IsMonBeingMoved())
             {
                 RefreshDisplayMon();
@@ -2533,11 +2611,14 @@ static void Task_HidePartyPokemon(u8 taskId)
     case 0:
         PlaySE(SE_SELECT);
         SetUpHidePartyMenu();
+        sStorage->opcRingHidden = TRUE; // Orchid: no ring over the box while the panel slides away
+        OrchidPC_UpdateRing();
         sStorage->state++;
         break;
     case 1:
         if (!HidePartyMenu())
         {
+            sStorage->opcRingHidden = FALSE;
             SetCursorBoxPosition(GetSavedCursorPos());
             sStorage->state++;
         }
@@ -3413,86 +3494,41 @@ static void Task_HandleBoxOptions(u8 taskId)
     }
 }
 
+// Orchid: COLOUR picks one of the box colours (mock_pc state 10); left / right preview it live on the box.
 static void Task_HandleWallpapers(u8 taskId)
 {
     switch (sStorage->state)
     {
     case 0:
-        AddWallpaperSetsMenu();
-        PrintMessage(MSG_PICK_A_THEME);
+        PrintMessage(MSG_PICK_A_WALLPAPER);
+        OrchidPC_ColourPickerOpen();
         sStorage->state++;
         break;
     case 1:
-        if (!IsMenuLoading())
-             sStorage->state++;
-        break;
-    case 2:
-        sStorage->wallpaperSetId = HandleMenuInput();
-        switch (sStorage->wallpaperSetId)
+        if (JOY_NEW(A_BUTTON))
         {
-        case MENU_B_PRESSED:
-            AnimateBoxScrollArrows(TRUE);
+            PlaySE(SE_SELECT);
+            SetBoxWallpaper(StorageGetCurrentBox(), sStorage->opcColourSel);
+            OrchidPC_ColourPickerClose();
             ClearBottomWindow();
             SetPokeStorageTask(Task_PokeStorageMain);
-            break;
-        case MENU_SCENERY_1:
-        case MENU_SCENERY_2:
-        case MENU_SCENERY_3:
-        case MENU_ETCETERA:
-            PlaySE(SE_SELECT);
-            RemoveMenu();
-            sStorage->wallpaperSetId -= MENU_WALLPAPER_SETS_START;
-            sStorage->state++;
-            break;
-        case MENU_FRIENDS:
-            // New wallpaper from Walda.
-            PlaySE(SE_SELECT);
-            sStorage->wallpaperId = WALLPAPER_FRIENDS;
-            RemoveMenu();
-            ClearBottomWindow();
-            sStorage->state = 6;
-            break;
         }
-        break;
-    case 3:
-        if (!IsDma3ManagerBusyWithBgCopy())
+        else if (JOY_NEW(B_BUTTON))
         {
-            AddWallpapersMenu(sStorage->wallpaperSetId);
-            PrintMessage(MSG_PICK_A_WALLPAPER);
-            sStorage->state++;
-        }
-        break;
-    case 4:
-        sStorage->wallpaperId = HandleMenuInput();
-        switch (sStorage->wallpaperId)
-        {
-        case MENU_NOTHING_CHOSEN:
-            break;
-        case MENU_B_PRESSED:
-            ClearBottomWindow();
-            sStorage->state = 0;
-            break;
-        default:
             PlaySE(SE_SELECT);
+            OrchidPC_ColourPickerClose();
             ClearBottomWindow();
-            sStorage->wallpaperId -= MENU_WALLPAPERS_START;
-            SetWallpaperForCurrentBox(sStorage->wallpaperId);
-            sStorage->state++;
-            break;
-        }
-        break;
-    case 5:
-        if (!DoWallpaperGfxChange())
-        {
-            AnimateBoxScrollArrows(TRUE);
             SetPokeStorageTask(Task_PokeStorageMain);
         }
-        break;
-    case 6:
-        if (!IsDma3ManagerBusyWithBgCopy())
+        else if (JOY_REPEAT(DPAD_LEFT))
         {
-            SetWallpaperForCurrentBox(sStorage->wallpaperId);
-            sStorage->state = 5;
+            PlaySE(SE_SELECT);
+            OrchidPC_ColourPickerMove(-1);
+        }
+        else if (JOY_REPEAT(DPAD_RIGHT))
+        {
+            PlaySE(SE_SELECT);
+            OrchidPC_ColourPickerMove(1);
         }
         break;
     }
@@ -3538,6 +3574,9 @@ static void Task_JumpBox(u8 taskId)
         if (!ScrollToBox())
         {
             SetCurrentBox(sStorage->newCurrBoxId);
+            sStorage->opcRingHidden = FALSE;
+            OrchidPC_UpdateRing();
+            OrchidPC_ContentsChanged();
             SetPokeStorageTask(Task_PokeStorageMain);
         }
         break;
@@ -3650,6 +3689,7 @@ static void Task_OnCloseBoxPressed(u8 taskId)
         }
         break;
     case 3:
+        OrchidPC_SetBoxClip(FALSE);
         ComputerScreenCloseEffect(20, 0, 1);
         sStorage->state++;
         break;
@@ -3728,6 +3768,7 @@ static void Task_OnBPressed(u8 taskId)
         }
         break;
     case 3:
+        OrchidPC_SetBoxClip(FALSE);
         ComputerScreenCloseEffect(20, 0, 0);
         sStorage->state++;
         break;
@@ -3815,7 +3856,7 @@ static void GiveChosenBagItem(void)
 
 static void FreePokeStorageData(void)
 {
-    TilemapUtil_Free();
+    TRY_FREE_AND_SET_NULL(sStorage->opcTypeSheet);
     MultiMove_Free();
     FREE_AND_SET_NULL(sStorage);
     FreeAllWindowBuffers();
@@ -3823,35 +3864,676 @@ static void FreePokeStorageData(void)
 
 
 //------------------------------------------------------------------------------
-//  SECTION: Misc
+//  Orchid UI helpers (dev_scripts/orchid_ui/mock_pc.py, export_pc.py)
 //
-//  No real uniform section below. Misc functions including more initialization,
-//  showing/hiding the party menu, updating the Close Box button, printing
-//  messages, doing the mosaic effect when transitioning between Pokémon, etc.
+//  BG1 holds the screen art (sOPcStaticMap) plus the party panel (sOPcPanel*), both
+//  rebuilt into the BG1 buffer by OrchidPC_RedrawBg1. A gold cursor is a palette swap
+//  of the cells its element owns. The info / title / party slot text windows sit on
+//  BG1 too: their tiles start as a copy of the art under them, then get text.
 //------------------------------------------------------------------------------
 
+static const u8 sText_OrchidLv[] = _("{LV}");
+static const u8 sText_OrchidNone[] = _("None");
+
+static void OrchidPC_RedrawBg1(void);
+static void OrchidPC_PrintTitle(u8 boxId);
+
+static u16 *OrchidPC_Bg1Map(void)
+{
+    return (u16 *)sStorage->displayMenuTilemapBuffer;
+}
+
+static bool32 OrchidPC_IsRingArea(u8 area, u8 pos)
+{
+    return area == CURSOR_AREA_IN_BOX || (area == CURSOR_AREA_IN_PARTY && pos < PARTY_SIZE);
+}
+
+// Copies one art tile (with its tilemap flips) into a 4bpp tile buffer.
+static void OrchidPC_CopyArtTile(u8 *dst, u16 entry)
+{
+    const u8 *src = &gOrchidPcBg1_Gfx[(entry & 0x3FF) * TILE_SIZE_4BPP];
+    bool32 hFlip = (entry & 0x400) != 0;
+    bool32 vFlip = (entry & 0x800) != 0;
+    u32 x, y;
+
+    for (y = 0; y < 8; y++)
+    {
+        const u8 *row = src + (vFlip ? 7 - y : y) * 4;
+        for (x = 0; x < 4; x++)
+        {
+            if (hFlip)
+            {
+                u8 b = row[3 - x];
+                dst[y * 4 + x] = (b >> 4) | (b << 4);
+            }
+            else
+            {
+                dst[y * 4 + x] = row[x];
+            }
+        }
+    }
+}
+
+static u16 OrchidPC_PanelEntry(u32 row, u32 col)
+{
+    u32 slots = sOPcPanelSlots[row][col];
+    u32 combo = 0, bit = 0, k;
+
+    for (k = 0; k < PARTY_SIZE; k++)
+    {
+        if (slots & (1 << k))
+        {
+            if (sStorage->opcFilled & (1 << k))
+                combo |= 1 << bit;
+            bit++;
+        }
+    }
+    return sOPcPanelVariants[sOPcPanelBase[row][col] + combo];
+}
+
+// The art under a window (static art, or the open party panel for the slot windows).
+static void OrchidPC_FillWindowFromArt(u8 windowId)
+{
+    u8 *tiles = (u8 *)GetWindowAttribute(windowId, WINDOW_TILE_DATA);
+    u32 left = GetWindowAttribute(windowId, WINDOW_TILEMAP_LEFT);
+    u32 top = GetWindowAttribute(windowId, WINDOW_TILEMAP_TOP);
+    u32 width = GetWindowAttribute(windowId, WINDOW_WIDTH);
+    u32 height = GetWindowAttribute(windowId, WINDOW_HEIGHT);
+    bool32 panel = (windowId >= WIN_PSLOT_0);
+    u32 x, y;
+
+    for (y = 0; y < height; y++)
+    {
+        for (x = 0; x < width; x++)
+        {
+            u16 entry;
+            if (panel)
+                entry = OrchidPC_PanelEntry(top + y - OPC_PANEL_ROW0, left + x - OPC_PANEL_COL0);
+            else
+                entry = sOPcStaticMap[top + y][left + x];
+            OrchidPC_CopyArtTile(&tiles[(y * width + x) * TILE_SIZE_4BPP], entry);
+        }
+    }
+}
+
+static void OrchidPC_SetWindowPixel(u8 windowId, u32 x, u32 y, u8 color)
+{
+    u8 *tiles = (u8 *)GetWindowAttribute(windowId, WINDOW_TILE_DATA);
+    u32 width = GetWindowAttribute(windowId, WINDOW_WIDTH);
+    u8 *b = &tiles[((y / 8) * width + x / 8) * TILE_SIZE_4BPP + (y % 8) * 4 + (x % 8) / 2];
+
+    if (x & 1)
+        *b = (*b & 0x0F) | (color << 4);
+    else
+        *b = (*b & 0xF0) | color;
+}
+
+// Writes a window's tiles into the BG1 buffer at (left, top) (rows from 20 down are skipped).
+static void OrchidPC_PutBg1Window(u8 windowId, s32 left, s32 top, u8 palette)
+{
+    u16 *map = OrchidPC_Bg1Map();
+    u32 base = GetWindowAttribute(windowId, WINDOW_BASE_BLOCK);
+    u32 width = GetWindowAttribute(windowId, WINDOW_WIDTH);
+    u32 height = GetWindowAttribute(windowId, WINDOW_HEIGHT);
+    u32 x, y;
+
+    for (y = 0; y < height; y++)
+    {
+        if (top + y >= DISPLAY_TILE_HEIGHT)
+            break;
+        for (x = 0; x < width; x++)
+            map[(top + y) * 32 + left + x] = (base + y * width + x) | (palette << 12);
+    }
+}
+
+static u8 OrchidPC_SlotHpPal(u8 slot, bool32 gold)
+{
+    return OPC_BG_SLOT + sStorage->opcSlotHp[slot] + (gold ? 3 : 0);
+}
+
+// ---- BG1: static art + windows + party panel
+static void OrchidPC_RedrawBg1(void)
+{
+    u16 *map = OrchidPC_Bg1Map();
+    u32 r, c, k;
+    s32 slide = sStorage->opcPartySlide;
+
+    for (r = 0; r < DISPLAY_TILE_HEIGHT; r++)
+    {
+        for (c = 0; c < DISPLAY_TILE_WIDTH; c++)
+        {
+            u8 own = sOPcStaticOwner[r][c];
+            u8 pal = (own != OPC_OWN_NONE && own == sStorage->opcGoldOwner) ? OPC_BG_UI_GOLD : OPC_BG_UI;
+            map[r * 32 + c] = sOPcStaticMap[r][c] | (pal << 12);
+        }
+    }
+    OrchidPC_PutBg1Window(WIN_DISPLAY_INFO, OPC_INFO_WIN_LEFT, OPC_INFO_WIN_TOP, OPC_BG_UI);
+    OrchidPC_PutBg1Window(WIN_TITLE, OPC_TITLE_WIN_LEFT, OPC_TITLE_WIN_TOP,
+                          sStorage->opcGoldOwner == OPC_OWN_TITLE ? OPC_BG_TITLE_GOLD : OPC_BG_TITLE);
+
+    if (slide < OPC_PANEL_SLIDE)
+    {
+        for (r = 0; r < OPC_PANEL_ROWS; r++)
+        {
+            s32 row = OPC_PANEL_ROW0 + r + slide;
+            if (row >= DISPLAY_TILE_HEIGHT)
+                break;
+            for (c = 0; c < OPC_PANEL_COLS; c++)
+            {
+                u16 entry;
+                if (r == 0 && slide == 0)
+                {
+                    // the tab's bottom edge and the panel's top edge share these cells
+                    entry = sOPcPanelRow4Open[c] | (OPC_BG_UI << 12);
+                }
+                else
+                {
+                    u8 own = sOPcPanelOwner[r][c];
+                    bool32 gold = (own != 0xFF && own == sStorage->opcPartySel);
+                    entry = OrchidPC_PanelEntry(r, c) | ((gold ? OPC_BG_SLOT + 3 : OPC_BG_SLOT) << 12);
+                }
+                map[row * 32 + OPC_PANEL_COL0 + c] = entry;
+            }
+        }
+        for (k = 0; k < PARTY_SIZE; k++)
+        {
+            u8 win = WIN_PSLOT_0 + k;
+            if (!(sStorage->opcFilled & (1 << k)))
+                continue;
+            OrchidPC_PutBg1Window(win, GetWindowAttribute(win, WINDOW_TILEMAP_LEFT),
+                                  GetWindowAttribute(win, WINDOW_TILEMAP_TOP) + slide,
+                                  OrchidPC_SlotHpPal(k, sStorage->opcPartySel == k));
+        }
+    }
+    ScheduleBgCopyTilemapToVram(1);
+}
+
+// Gold cursor art: buttons / title tab / party slot or CANCEL under the cursor.
+static void OrchidPC_SetSelection(u8 area, u8 pos)
+{
+    u8 gold = OPC_OWN_NONE, partySel = 0xFF;
+
+    switch (area)
+    {
+    case CURSOR_AREA_BUTTONS:
+        gold = (pos == 0) ? OPC_OWN_PARTY : OPC_OWN_CLOSE;
+        break;
+    case CURSOR_AREA_BOX_TITLE:
+        gold = OPC_OWN_TITLE;
+        break;
+    case CURSOR_AREA_IN_PARTY:
+        partySel = pos;
+        break;
+    }
+    if (gold != sStorage->opcGoldOwner || partySel != sStorage->opcPartySel)
+    {
+        sStorage->opcGoldOwner = gold;
+        sStorage->opcPartySel = partySel;
+        OrchidPC_RedrawBg1();
+    }
+}
+
+// ---- party slot windows: Lv + mini HP bar (pc_ext.party_slot / party_slot_text)
+static void OrchidPC_RefreshPartySlots(void)
+{
+    static const u8 sColors[3] = {TEXT_COLOR_TRANSPARENT, OPC_ROLE_INK, OPC_ROLE_PANEL_SHADE};
+    u32 k;
+
+    sStorage->opcFilled = 0;
+    for (k = 0; k < PARTY_SIZE; k++)
+    {
+        if (GetMonData(&gParties[B_TRAINER_PLAYER][k], MON_DATA_SPECIES) != SPECIES_NONE)
+            sStorage->opcFilled |= 1 << k;
+    }
+
+    for (k = 0; k < PARTY_SIZE; k++)
+    {
+        struct Pokemon *mon = &gParties[B_TRAINER_PLAYER][k];
+        u8 win = WIN_PSLOT_0 + k;
+        s32 slotX = OPC_PSLOT_X0 + OPC_PSLOT_DX * (k % 2);
+        s32 slotY = OPC_PSLOT_Y0 + OPC_PSLOT_DY * (k / 2);
+        s32 winX = GetWindowAttribute(win, WINDOW_TILEMAP_LEFT) * 8;
+        s32 winY = GetWindowAttribute(win, WINDOW_TILEMAP_TOP) * 8;
+        u32 hp, maxHp, fill, x;
+        u8 text[16];
+
+        sStorage->opcSlotHp[k] = 0;
+        if (!(sStorage->opcFilled & (1 << k)))
+            continue;
+        OrchidPC_FillWindowFromArt(win);
+        if (!GetMonData(mon, MON_DATA_IS_EGG))
+        {
+            u8 *ptr = StringCopy(text, sText_OrchidLv);
+            ConvertIntToDecimalStringN(ptr, GetMonData(mon, MON_DATA_LEVEL), STR_CONV_MODE_LEFT_ALIGN, 3);
+            AddTextPrinterParameterized4(win, FONT_SMALL, slotX + OPC_PLV_DX - winX, slotY + OPC_PLV_DY - winY, 0, 0, sColors, TEXT_SKIP_DRAW, text);
+
+            // KX.bar(x + 25, y + 16, 15, frac, h=2): outline + trough are in the art; fill rows y+17 (light), y+18 (dark)
+            hp = GetMonData(mon, MON_DATA_HP);
+            maxHp = GetMonData(mon, MON_DATA_MAX_HP);
+            if (maxHp == 0)
+                maxHp = 1;
+            if (hp * 2 > maxHp)
+                sStorage->opcSlotHp[k] = 0;
+            else if (hp * 5 > maxHp)
+                sStorage->opcSlotHp[k] = 1;
+            else
+                sStorage->opcSlotHp[k] = 2;
+            fill = (OPC_PBAR_W * hp * 2 + maxHp) / (maxHp * 2);
+            if (hp > 0 && fill == 0)
+                fill = 1;
+            for (x = 0; x < fill; x++)
+            {
+                s32 px = slotX + OPC_PBAR_DX + 1 + x - winX;
+                OrchidPC_SetWindowPixel(win, px, slotY + OPC_PBAR_DY + 1 - winY, OPC_ROLE_ACCENT_PALE);
+                OrchidPC_SetWindowPixel(win, px, slotY + OPC_PBAR_DY + 2 - winY, OPC_ROLE_SPARE_B);
+            }
+        }
+        CopyWindowToVram(win, COPYWIN_GFX);
+    }
+}
+
+// ---- info panel: name (gender colour), Lv, markings, item (pc_ext.info_text)
+static void OrchidPC_SetNameColors(u8 gender)
+{
+    u16 colors[2];
+
+    if (gender == MON_MALE)
+    {
+        colors[0] = ORCHID_NAME_MALE_FG;
+        colors[1] = ORCHID_NAME_MALE_SHADOW;
+    }
+    else if (gender == MON_FEMALE)
+    {
+        colors[0] = ORCHID_NAME_FEMALE_FG;
+        colors[1] = ORCHID_NAME_FEMALE_SHADOW;
+    }
+    else
+    {
+        colors[0] = gOrchidPc_Pal[OPC_PAL_UI * 16 + OPC_ROLE_INK];
+        colors[1] = gOrchidPc_Pal[OPC_PAL_UI * 16 + OPC_ROLE_PANEL_SHADE];
+    }
+    LoadPalette(colors, BG_PLTT_ID(OPC_BG_UI) + OPC_ROLE_SPARE_A, PLTT_SIZEOF(2));
+}
+
+static void OrchidPC_UpdateTypeIcons(enum Species species, bool32 show)
+{
+    enum Type types[2] = {TYPE_NONE, TYPE_NONE};
+    u32 i, base = GetSpriteTileStartByTag(GFXTAG_TYPE_ICONS);
+
+    if (show && species != SPECIES_NONE)
+    {
+        types[0] = GetSpeciesType(species, 0);
+        types[1] = GetSpeciesType(species, 1);
+        if (types[1] == types[0])
+            types[1] = TYPE_NONE;
+    }
+    for (i = 0; i < 2; i++)
+    {
+        struct Sprite *sprite;
+        if (sStorage->opcTypeSprites[i] == SPRITE_NONE)
+            continue;
+        sprite = &gSprites[sStorage->opcTypeSprites[i]];
+        if (types[i] == TYPE_NONE || sStorage->opcTypeSheet == NULL || base == 0xFFFF)
+        {
+            sprite->invisible = TRUE;
+        }
+        else
+        {
+            u32 row = gTypesInfo[types[i]].palette - 13;
+            struct SpritePalette pal = {gMoveTypes_Pal + row * 16, PALTAG_TYPE_0 + row};
+            u8 palNum = LoadSpritePalette(&pal);
+
+            CpuCopy32(sStorage->opcTypeSheet + types[i] * 8 * TILE_SIZE_4BPP,
+                      (void *)(OBJ_VRAM0 + (base + i * 8) * TILE_SIZE_4BPP), 8 * TILE_SIZE_4BPP);
+            sprite->invisible = (palNum == 0xFF);
+            sprite->oam.paletteNum = palNum;
+        }
+    }
+}
+
+static void OrchidPC_UpdateItemIcon(enum Item item)
+{
+    if (item == sStorage->opcItemShown && (item == ITEM_NONE || sStorage->opcItemSprite != SPRITE_NONE))
+        return;
+    if (sStorage->opcItemSprite != SPRITE_NONE)
+    {
+        DestroySprite(&gSprites[sStorage->opcItemSprite]);
+        FreeSpriteTilesByTag(GFXTAG_DISC_ITEM);
+        FreeSpritePaletteByTag(PALTAG_DISC_ITEM);
+        sStorage->opcItemSprite = SPRITE_NONE;
+    }
+    sStorage->opcItemShown = item;
+    if (item != ITEM_NONE)
+    {
+        u8 spriteId = AddItemIconSprite(GFXTAG_DISC_ITEM, PALTAG_DISC_ITEM, item);
+        if (spriteId != MAX_SPRITES)
+        {
+            gSprites[spriteId].x = OPC_ITEM_ICON_X;
+            gSprites[spriteId].y = OPC_ITEM_ICON_Y;
+            gSprites[spriteId].oam.priority = 1;
+            sStorage->opcItemSprite = spriteId;
+        }
+    }
+}
+
+static void OrchidPC_PrintInfo(void)
+{
+    static const u8 sNameColors[3] = {TEXT_COLOR_TRANSPARENT, OPC_ROLE_SPARE_A, OPC_ROLE_SPARE_B};
+    static const u8 sLvColors[3] = {TEXT_COLOR_TRANSPARENT, OPC_ROLE_WHITE, OPC_ROLE_ACCENT_DARK};
+    static const u8 sInkColors[3] = {TEXT_COLOR_TRANSPARENT, OPC_ROLE_INK, OPC_ROLE_PANEL_SHADE};
+    static const u8 sNoneColors[3] = {TEXT_COLOR_TRANSPARENT, OPC_ROLE_INK_SOFT, OPC_ROLE_PANEL_SHADE};
+    u8 win = WIN_DISPLAY_INFO;
+    s32 winX = OPC_INFO_WIN_LEFT * 8, winY = OPC_INFO_WIN_TOP * 8;
+    bool32 hasMon = (sStorage->displayMonSpecies != SPECIES_NONE);
+    u8 text[24];
+    u32 fontId, w, k, x, y;
+
+    OrchidPC_FillWindowFromArt(win);
+    if (hasMon)
+    {
+        const u8 *name = sStorage->displayMonIsEgg ? sStorage->displayMonNameText : sStorage->displayMonName;
+        u8 *end;
+
+        // name: the ROM's nickname, trailing spaces trimmed
+        end = StringCopy(text, name);
+        while (end > text && end[-1] == CHAR_SPACE)
+            end--;
+        *end = EOS;
+        OrchidPC_SetNameColors(sStorage->displayMonIsEgg ? MON_GENDERLESS : sStorage->displayMonGender);
+        fontId = (GetStringWidth(FONT_NORMAL, text, 0) <= OPC_NAME_W - 10) ? FONT_NORMAL : FONT_NARROW;
+        w = GetStringWidth(fontId, text, 0);
+        AddTextPrinterParameterized4(win, fontId, OPC_NAME_X + (s32)(OPC_NAME_W - w) / 2 - winX, OPC_NAME_Y - 1 - winY, 0, 0, sNameColors, TEXT_SKIP_DRAW, text);
+
+        if (!sStorage->displayMonIsEgg)
+        {
+            AddTextPrinterParameterized4(win, FONT_SMALL, OPC_LV_X + 4 - winX, OPC_LV_Y + 1 - winY, 0, 0, sLvColors, TEXT_SKIP_DRAW, sText_OrchidLv);
+            ConvertIntToDecimalStringN(text, sStorage->displayMonLevel, STR_CONV_MODE_LEFT_ALIGN, 3);
+            w = GetStringWidth(FONT_SMALL, text, 0);
+            AddTextPrinterParameterized4(win, FONT_SMALL, OPC_LV_X + OPC_LV_W - 5 - w - winX, OPC_LV_Y + 1 - winY, 0, 0, sInkColors, TEXT_SKIP_DRAW, text);
+        }
+
+        // markings: the ROM's four shapes, ACCENT_DARK when set, PANEL_SHADE when not
+        for (k = 0; k < 4; k++)
+        {
+            u8 color = (sStorage->displayMonMarkings & (1 << k)) ? OPC_ROLE_ACCENT_DARK : OPC_ROLE_PANEL_SHADE;
+            for (y = 0; y < 8; y++)
+            {
+                for (x = 0; x < 8; x++)
+                {
+                    if (sOPcMarks[k][y] & (0x80 >> x))
+                        OrchidPC_SetWindowPixel(win, OPC_MARK_X + 9 * k + x - winX, OPC_MARK_Y + y - winY, color);
+                }
+            }
+        }
+
+        if (!sStorage->displayMonIsEgg)
+        {
+            const u8 *itemName = (sStorage->displayMonItemId != ITEM_NONE) ? GetItemName(sStorage->displayMonItemId) : sText_OrchidNone;
+            s32 width = OPC_ITEM_TEXT_X1 - OPC_ITEM_TEXT_X0;
+
+            fontId = GetFontIdToFit(itemName, FONT_NORMAL, 0, width);
+            w = GetStringWidth(fontId, itemName, 0);
+            AddTextPrinterParameterized4(win, fontId, OPC_ITEM_TEXT_X0 + (width - (s32)w) / 2 + 1 - winX, OPC_ITEM_Y - winY, 0, 0,
+                                         (sStorage->displayMonItemId != ITEM_NONE) ? sInkColors : sNoneColors, TEXT_SKIP_DRAW, itemName);
+        }
+    }
+    CopyWindowToVram(win, COPYWIN_GFX);
+    OrchidPC_UpdateTypeIcons(sStorage->displayMonSpecies, hasMon && !sStorage->displayMonIsEgg);
+    OrchidPC_UpdateItemIcon(hasMon && !sStorage->displayMonIsEgg ? sStorage->displayMonItemId : ITEM_NONE);
+}
+
+// ---- title tab: box name on the accent cap, "n/30" in the inset (mock_pc.render)
+static void OrchidPC_PrintTitle(u8 boxId)
+{
+    static const u8 sNameColors[3] = {TEXT_COLOR_TRANSPARENT, OPC_ROLE_SPARE_A, OPC_ROLE_ACCENT_DARK};
+    static const u8 sCountColors[3] = {TEXT_COLOR_TRANSPARENT, OPC_ROLE_INK, OPC_ROLE_PANEL_SHADE};
+    s32 winX = OPC_TITLE_WIN_LEFT * 8, winY = OPC_TITLE_WIN_TOP * 8;
+    const u8 *name = GetBoxNamePtr(boxId);
+    u8 text[16], *ptr;
+    s32 w;
+
+    sStorage->opcTitleBox = boxId;
+    sStorage->opcTitleDirty = FALSE;
+    OrchidPC_FillWindowFromArt(WIN_TITLE);
+    w = GetStringWidth(FONT_NORMAL, name, 0);
+    AddTextPrinterParameterized4(WIN_TITLE, FONT_NORMAL, OPC_TAB_X + (OPC_TAB_CAP - w) / 2 + 1 - winX, OPC_TAB_Y - 1 - winY, 0, 0, sNameColors, TEXT_SKIP_DRAW, name);
+    ptr = ConvertIntToDecimalStringN(text, CountMonsInBox(boxId), STR_CONV_MODE_LEFT_ALIGN, 2);
+    StringCopy(ptr, sText_OutOf30);
+    w = GetStringWidth(FONT_SMALL, text, 0);
+    AddTextPrinterParameterized4(WIN_TITLE, FONT_SMALL, OPC_TAB_X + OPC_TAB_CAP + (OPC_TAB_W - OPC_TAB_CAP - w) / 2 + 1 - winX, OPC_TAB_Y + 1 - winY, 0, 0, sCountColors, TEXT_SKIP_DRAW, text);
+    CopyWindowToVram(WIN_TITLE, COPYWIN_GFX);
+}
+
+// ---- BG2: slot recesses (one 3x3-tile cell per slot), 512 px wide for the box slide
+static u8 OrchidPC_GetBoxColour(u8 boxId)
+{
+    u8 colour = GetBoxWallpaper(boxId);
+    return (colour < OPC_BOX_COLOURS) ? colour : 0;
+}
+
+static void OrchidPC_LoadBoxColour(u8 colour, u8 bgPal)
+{
+    LoadPalette(&gOrchidPcBoxColours_Pal[colour * 16], BG_PLTT_ID(bgPal), PLTT_SIZE_4BPP);
+}
+
+static void OrchidPC_SetBg2Entry(u32 x, u32 y, u16 entry)
+{
+    u16 *map = (u16 *)sStorage->wallpaperBgTilemapBuffer;
+    x &= 63;
+    map[(x >= 32 ? 0x400 : 0) + y * 32 + (x & 31)] = entry;
+}
+
+static void OrchidPC_DrawBoxSlots(u32 col0, u8 bgPal)
+{
+    u32 i, x, y;
+
+    for (i = 0; i < IN_BOX_COUNT; i++)
+    {
+        u32 cx = col0 + 3 * (i % IN_BOX_COLUMNS);
+        u32 cy = OPC_SLOT_ROW0 + 3 * (i / IN_BOX_COLUMNS);
+        for (y = 0; y < 3; y++)
+            for (x = 0; x < 3; x++)
+                OrchidPC_SetBg2Entry(cx + x, cy + y, sOPcSlotCell[y][x] | (bgPal << 12));
+    }
+}
+
+static void OrchidPC_ClearBoxSlotsExcept(s32 keepCol0, bool32 keep)
+{
+    u32 x, y;
+
+    for (x = 0; x < 64; x++)
+    {
+        if (keep && ((x - keepCol0) & 63) < IN_BOX_COLUMNS * 3)
+            continue;
+        for (y = 0; y < 32; y++)
+            OrchidPC_SetBg2Entry(x, y, 0);
+    }
+}
+
+// ---- BG1 window on/off for the box slide: BG2 only inside x 80..239 (WIN1; WIN0 is the PC open / close effect)
+static void OrchidPC_SetBoxClip(bool32 on)
+{
+    if (on)
+    {
+        SetGpuReg(REG_OFFSET_WIN1H, WIN_RANGE(80, DISPLAY_WIDTH));
+        SetGpuReg(REG_OFFSET_WIN1V, WIN_RANGE(0, DISPLAY_HEIGHT));
+        SetGpuReg(REG_OFFSET_WININ, WININ_WIN1_ALL);
+        SetGpuReg(REG_OFFSET_WINOUT, WINOUT_WIN01_BG0 | WINOUT_WIN01_BG1 | WINOUT_WIN01_BG3 | WINOUT_WIN01_OBJ | WINOUT_WIN01_CLR);
+        SetGpuRegBits(REG_OFFSET_DISPCNT, DISPCNT_WIN1_ON);
+    }
+    else
+    {
+        ClearGpuRegBits(REG_OFFSET_DISPCNT, DISPCNT_WIN1_ON);
+    }
+}
+
+// ---- cursor ring visibility
+static void OrchidPC_UpdateRing(void)
+{
+    if (sStorage->cursorSprite == NULL)
+        return;
+    sStorage->cursorSprite->invisible = sStorage->opcRingHidden || !OrchidPC_IsRingArea(sCursorArea, sCursorPosition);
+    if (sCursorArea == CURSOR_AREA_IN_PARTY)
+    {
+        // above the party icons (mock_pc.render draws it after the panel layer)
+        sStorage->cursorSprite->oam.priority = 1;
+        sStorage->cursorSprite->subpriority = 10;
+    }
+    else if (sCursorArea == CURSOR_AREA_IN_BOX)
+    {
+        // under the box icons; over the multi-move layer while selecting several
+        sStorage->cursorSprite->oam.priority = (sStorage->inBoxMovingMode != MOVE_MODE_NORMAL) ? 0 : 2;
+        sStorage->cursorSprite->subpriority = 21;
+    }
+}
+
+// ---- MOVE ITEMS: hold tags on the Pokémon that hold something (mock state 8)
+static void OrchidPC_DestroyHoldTags(void)
+{
+    u32 i;
+
+    for (i = 0; i < ARRAY_COUNT(sStorage->opcTagSprites); i++)
+    {
+        if (sStorage->opcTagSprites[i] != SPRITE_NONE)
+        {
+            DestroySprite(&gSprites[sStorage->opcTagSprites[i]]);
+            sStorage->opcTagSprites[i] = SPRITE_NONE;
+        }
+    }
+}
+
+static const struct OamData sOamData_OrchidHoldTag =
+{
+    .shape = SPRITE_SHAPE(8x8),
+    .size = SPRITE_SIZE(8x8),
+    .priority = 2,
+};
+
+static const struct SpriteTemplate sSpriteTemplate_OrchidHoldTag =
+{
+    .tileTag = GFXTAG_HOLD_TAG,
+    .paletteTag = PALTAG_MISC_2,
+    .oam = &sOamData_OrchidHoldTag,
+    .anims = gDummySpriteAnimTable,
+    .images = NULL,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallbackDummy,
+};
+
+static void OrchidPC_RefreshHoldTags(void)
+{
+    u32 i;
+
+    sStorage->opcTagsDirty = FALSE;
+    OrchidPC_DestroyHoldTags();
+    if (sStorage->boxOption != OPTION_MOVE_ITEMS)
+        return;
+    for (i = 0; i < IN_BOX_COUNT; i++)
+    {
+        if (GetCurrentBoxMonData(i, MON_DATA_SPECIES) != SPECIES_NONE && GetCurrentBoxMonData(i, MON_DATA_HELD_ITEM) != ITEM_NONE)
+        {
+            u8 spriteId = CreateSprite(&sSpriteTemplate_OrchidHoldTag,
+                                       OPC_SLOT_X0 + OPC_SLOT_PITCH * (i % IN_BOX_COLUMNS) + OPC_HOLD_TAG_DX,
+                                       OPC_SLOT_Y0 + OPC_SLOT_PITCH * (i / IN_BOX_COLUMNS) + OPC_HOLD_TAG_DY, 13);
+            sStorage->opcTagSprites[i] = (spriteId == MAX_SPRITES) ? SPRITE_NONE : spriteId;
+        }
+    }
+    if (sInPartyMenu && sStorage->opcPartySlide == 0)
+    {
+        for (i = 0; i < PARTY_SIZE; i++)
+        {
+            struct Pokemon *mon = &gParties[B_TRAINER_PLAYER][i];
+            if (GetMonData(mon, MON_DATA_SPECIES) != SPECIES_NONE && GetMonData(mon, MON_DATA_HELD_ITEM) != ITEM_NONE)
+            {
+                u8 spriteId = CreateSprite(&sSpriteTemplate_OrchidHoldTag,
+                                           OPC_PSLOT_X0 + OPC_PSLOT_DX * (i % 2) + OPC_PICON_DX + OPC_HOLD_TAG_DX,
+                                           OPC_PSLOT_Y0 + OPC_PSLOT_DY * (i / 2) + OPC_PICON_DY + OPC_HOLD_TAG_DY, 11);
+                if (spriteId != MAX_SPRITES)
+                {
+                    gSprites[spriteId].oam.priority = 1;
+                    sStorage->opcTagSprites[IN_BOX_COUNT + i] = spriteId;
+                }
+            }
+        }
+    }
+}
+
+// Per-frame Orchid upkeep (CB2): title count after box contents change, hold tags.
+static void OrchidPC_Update(void)
+{
+    if (sStorage == NULL)
+        return;
+    if (sStorage->opcTitleDirty)
+        OrchidPC_PrintTitle(sStorage->opcTitleBox);
+    if (sStorage->opcTagsDirty)
+        OrchidPC_RefreshHoldTags();
+}
+
+static void OrchidPC_ContentsChanged(void)
+{
+    sStorage->opcTitleDirty = TRUE;
+    sStorage->opcTagsDirty = TRUE;
+}
+
+static void OrchidPC_LoadSlotPalettes(void)
+{
+    LoadPalette(&gOrchidPc_Pal[OPC_PAL_SLOT_G * 16], BG_PLTT_ID(OPC_BG_SLOT), 6 * PLTT_SIZE_4BPP);
+}
+
+static void OrchidPC_PartyIconPos(u8 partyId, s16 *x, s16 *y)
+{
+    *x = OPC_PSLOT_X0 + OPC_PSLOT_DX * (partyId % 2) + OPC_PICON_DX;
+    *y = OPC_PSLOT_Y0 + OPC_PSLOT_DY * (partyId / 2) + OPC_PICON_DY + OPC_ICON_DY;
+}
+
+
+//------------------------------------------------------------------------------
+//  SECTION: Misc
+//------------------------------------------------------------------------------
 
 static void SetScrollingBackground(void)
 {
+    u16 *map = (u16 *)BG_SCREEN_ADDR(31);
+    u32 x, y;
+
+    // BW grid, 2x2 tiles repeated (backdrop.grid_tile_image)
     SetGpuReg(REG_OFFSET_BG3CNT, BGCNT_PRIORITY(3) | BGCNT_CHARBASE(3) | BGCNT_16COLOR | BGCNT_SCREENBASE(31));
-    DecompressAndLoadBgGfxUsingHeap(3, sScrollingBg_Gfx, 0, 0, 0);
-    DecompressDataWithHeaderVram(sScrollingBg_Tilemap, (void *)BG_SCREEN_ADDR(31));
+    for (y = 0; y < 32; y++)
+        for (x = 0; x < 32; x++)
+            map[y * 32 + x] = (OPC_GRID_TILE_BASE + (y & 1) * 2 + (x & 1)) | (OPC_BG_GRID << 12);
 }
 
+// The grid scrolls diagonally down-right, 1 px every 4 frames.
 static void ScrollBackground(void)
 {
-    ChangeBgX(3, 128, BG_COORD_ADD);
-    ChangeBgY(3, 128, BG_COORD_SUB);
+    if (sStorage != NULL && (++sStorage->opcFrame % OPC_GRID_SCROLL_FRAMES) == 0)
+    {
+        ChangeBgX(3, 256, BG_COORD_SUB);
+        ChangeBgY(3, 256, BG_COORD_SUB);
+    }
 }
 
 static void LoadPokeStorageMenuGfx(void)
 {
     InitBgsFromTemplates(0, sBgTemplates, ARRAY_COUNT(sBgTemplates));
-    DecompressAndLoadBgGfxUsingHeap(1, gStorageSystemMenu_Gfx, 0, 0, 0);
-    DecompressDataWithHeaderWram(sDisplayMenu_Tilemap, sStorage->displayMenuTilemapBuffer);
+    LoadBgTiles(1, gOrchidPcBg1_Gfx, OPC_BG1_ART_TILES * TILE_SIZE_4BPP, 0);
+    LoadBgTiles(2, gOrchidPcBox_Gfx, OPC_BOX_TILES * TILE_SIZE_4BPP, 0); // BG2 + BG3 (charblock 3)
+    sStorage->opcGoldOwner = OPC_OWN_NONE;
+    sStorage->opcPartySel = 0xFF;
+    sStorage->opcPartySlide = OPC_PANEL_SLIDE;
+    sStorage->opcFilled = 0;
+    sStorage->opcRingHidden = FALSE;
+    sStorage->opcTitleDirty = FALSE;
+    sStorage->opcTagsDirty = FALSE;
+    sStorage->opcItemSprite = SPRITE_NONE;
+    sStorage->opcItemShown = ITEM_NONE;
+    sStorage->opcTypeSprites[0] = sStorage->opcTypeSprites[1] = SPRITE_NONE;
+    sStorage->opcLift = OPC_LIFT;
+    sStorage->opcTypeSheet = NULL;
+    memset(sStorage->opcTagSprites, SPRITE_NONE, sizeof(sStorage->opcTagSprites));
+    memset(sStorage->displayMenuTilemapBuffer, 0, sizeof(sStorage->displayMenuTilemapBuffer));
     SetBgTilemapBuffer(1, sStorage->displayMenuTilemapBuffer);
     ShowBg(1);
-    ScheduleBgCopyTilemapToVram(1);
 }
 
 static bool8 InitPokeStorageWindows(void)
@@ -3872,44 +4554,72 @@ static void LoadWaveformSpritePalette(void)
     LoadSpritePalette(&sWaveformSpritePalette);
 }
 
+static const struct OamData sOamData_OrchidTypeIcon =
+{
+    .shape = SPRITE_SHAPE(32x16),
+    .size = SPRITE_SIZE(32x16),
+    .priority = 1,
+};
+
 static void InitPalettesAndSprites(void)
 {
-    LoadPalette(sInterface_Pal, BG_PLTT_ID(0), sizeof(sInterface_Pal));
-    LoadPalette(sPkmnDataGray_Pal, BG_PLTT_ID(2), sizeof(sPkmnDataGray_Pal));
-    LoadPalette(sTextWindows_Pal, BG_PLTT_ID(15), sizeof(sTextWindows_Pal));
-    if (sStorage->boxOption != OPTION_MOVE_ITEMS)
-        LoadPalette(sScrollingBg_Pal, BG_PLTT_ID(3), sizeof(sScrollingBg_Pal));
-    else
-        LoadPalette(sScrollingBgMoveItems_Pal, BG_PLTT_ID(3), sizeof(sScrollingBgMoveItems_Pal));
+    u32 i;
 
-    SetGpuReg(REG_OFFSET_BG1CNT, BGCNT_PRIORITY(1) | BGCNT_CHARBASE(1) | BGCNT_16COLOR | BGCNT_SCREENBASE(30));
+    LoadPalette(&gOrchidPc_Pal[OPC_PAL_UI * 16], BG_PLTT_ID(OPC_BG_UI), 2 * PLTT_SIZE_4BPP);
+    OrchidPC_LoadSlotPalettes();
+    LoadPalette(&gOrchidPc_Pal[OPC_PAL_TITLE * 16], BG_PLTT_ID(OPC_BG_TITLE), 2 * PLTT_SIZE_4BPP);
+    LoadPalette(gOrchidYesNoFrame_Pal, BG_PLTT_ID(OPC_BG_WINDOW), PLTT_SIZE_4BPP);
+    LoadPalette(sTextWindows_Pal, BG_PLTT_ID(OPC_BG_TEXTWIN), sizeof(sTextWindows_Pal));
+    if (sStorage->boxOption != OPTION_MOVE_ITEMS)
+        LoadPalette(&gOrchidPc_Pal[OPC_PAL_GRID * 16], BG_PLTT_ID(OPC_BG_GRID), PLTT_SIZE_4BPP);
+    else
+        LoadPalette(&gOrchidPc_Pal[OPC_PAL_GRID_ITEMS * 16], BG_PLTT_ID(OPC_BG_GRID), PLTT_SIZE_4BPP);
+
+    SetGpuReg(REG_OFFSET_BG1CNT, BGCNT_PRIORITY(1) | BGCNT_CHARBASE(2) | BGCNT_16COLOR | BGCNT_SCREENBASE(30));
+
+    // type icons: two 32x16 slots filled from the decompressed Gen 3 type sheet
+    sStorage->opcTypeSheet = Alloc((NUMBER_OF_MON_TYPES + CONTEST_CATEGORIES_COUNT) * 0x100);
+    if (sStorage->opcTypeSheet != NULL)
+    {
+        struct SpriteSheet sheet = {sStorage->opcTypeSheet, 2 * 8 * TILE_SIZE_4BPP, GFXTAG_TYPE_ICONS};
+        struct SpriteTemplate template = {
+            .tileTag = GFXTAG_TYPE_ICONS,
+            .paletteTag = TAG_NONE,
+            .oam = &sOamData_OrchidTypeIcon,
+            .anims = gDummySpriteAnimTable,
+            .affineAnims = gDummySpriteAffineAnimTable,
+            .callback = SpriteCallbackDummy,
+        };
+        DecompressDataWithHeaderWram(gMoveTypes_Gfx, sStorage->opcTypeSheet);
+        if (LoadSpriteSheet(&sheet) != 0)
+        {
+            for (i = 0; i < 2; i++)
+            {
+                u8 spriteId = CreateSprite(&template, OPC_TYPES_X + OPC_TYPES_PITCH * i + 16, OPC_TYPES_Y + 8, 1);
+                if (spriteId != MAX_SPRITES)
+                {
+                    gSprites[spriteId].oam.tileNum += i * 8;
+                    gSprites[spriteId].invisible = TRUE;
+                    sStorage->opcTypeSprites[i] = spriteId;
+                }
+            }
+        }
+    }
+
     CreateDisplayMonSprite();
     CreateMarkingComboSprite();
     CreateWaveformSprites();
     RefreshDisplayMonData();
 }
 
+// Orchid: markings are drawn in the info window
 static void CreateMarkingComboSprite(void)
 {
-    sStorage->markingComboSprite = CreateMonMarkingComboSprite(GFXTAG_MARKING_COMBO, PALTAG_MARKING_COMBO, NULL);
-    sStorage->markingComboSprite->oam.priority = 1;
-    sStorage->markingComboSprite->subpriority = 1;
-    sStorage->markingComboSprite->x = 40;
-    sStorage->markingComboSprite->y = 150;
-    sStorage->markingComboTilesPtr = (void *) OBJ_VRAM0 + 32 * GetSpriteTileStartByTag(GFXTAG_MARKING_COMBO);
 }
 
+// Orchid: no "Pkmn Data" waveform
 static void CreateWaveformSprites(void)
 {
-    u16 i;
-    struct SpriteSheet sheet = sSpriteSheet_Waveform;
-
-    LoadSpriteSheet(&sheet);
-    for (i = 0; i < ARRAY_COUNT(sStorage->waveformSprites); i++)
-    {
-        u8 spriteId = CreateSprite(&sSpriteTemplate_Waveform, i * 63 + 8, 9, 2);
-        sStorage->waveformSprites[i] = &gSprites[spriteId];
-    }
 }
 
 static void RefreshDisplayMonData(void)
@@ -3976,7 +4686,7 @@ static void CreateDisplayMonSprite(void)
         if (palSlot == 0xFF)
             break;
 
-        spriteId = CreateSpriteUnchecked(&template, 40, 48, 0);
+        spriteId = CreateSpriteUnchecked(&template, OPC_DAIS_X, OPC_STAGE_Y - 32, 0);
         if (spriteId == MAX_SPRITES)
             break;
 
@@ -3999,9 +4709,12 @@ static void LoadDisplayMonGfx(enum Species species, u32 pid, bool32 isEgg)
 
     if (species != SPECIES_NONE)
     {
+        // Orchid: the front pic stands on the dais stage (mock_pc: bottom row on OPC_STAGE_Y)
+        enum Species picSpecies = isEgg ? SPECIES_EGG : SanitizeSpeciesId(species);
         LoadSpecialPokePicIsEgg(sStorage->tileBuffer, species, pid, TRUE, isEgg);
         CpuCopy32(sStorage->tileBuffer, sStorage->displayMonTilePtr, MON_PIC_SIZE);
         LoadPalette(sStorage->displayMonPalette, sStorage->displayMonPalOffset, PLTT_SIZE_4BPP);
+        sStorage->displayMonSprite->y = OPC_STAGE_Y - 32 + gSpeciesInfo[picSpecies].frontPicYOffset;
         sStorage->displayMonSprite->invisible = FALSE;
     }
     else
@@ -4012,106 +4725,55 @@ static void LoadDisplayMonGfx(enum Species species, u32 pid, bool32 isEgg)
 
 static void PrintDisplayMonInfo(void)
 {
-    FillWindowPixelBuffer(WIN_DISPLAY_INFO, PIXEL_FILL(1));
-    if (sStorage->boxOption != OPTION_MOVE_ITEMS)
-    {
-        AddTextPrinterParameterized(WIN_DISPLAY_INFO, GetFontIdToFit(sStorage->displayMonNameText, FONT_NORMAL, 0, WindowWidthPx(WIN_DISPLAY_INFO) - 6), sStorage->displayMonNameText, 6, 0, TEXT_SKIP_DRAW, NULL);
-        AddTextPrinterParameterized(WIN_DISPLAY_INFO, GetFontIdToFit(sStorage->displayMonNameText, FONT_SHORT, 0, WindowWidthPx(WIN_DISPLAY_INFO) - 12), sStorage->displayMonSpeciesName, 6, 15, TEXT_SKIP_DRAW, NULL);
-        AddTextPrinterParameterized(WIN_DISPLAY_INFO, FONT_SHORT, sStorage->displayMonGenderLvlText, 10, 29, TEXT_SKIP_DRAW, NULL);
-        AddTextPrinterParameterized(WIN_DISPLAY_INFO, GetFontIdToFit(sStorage->displayMonItemName, FONT_SMALL, 0, WindowWidthPx(WIN_DISPLAY_INFO) - 6), sStorage->displayMonItemName, 6, 43, TEXT_SKIP_DRAW, NULL);
-    }
-    else
-    {
-        AddTextPrinterParameterized(WIN_DISPLAY_INFO, GetFontIdToFit(sStorage->displayMonItemName, FONT_SMALL, 0, WindowWidthPx(WIN_DISPLAY_INFO) - 6), sStorage->displayMonItemName, 6, 0, TEXT_SKIP_DRAW, NULL);
-        AddTextPrinterParameterized(WIN_DISPLAY_INFO, GetFontIdToFit(sStorage->displayMonNameText, FONT_NORMAL, 0, WindowWidthPx(WIN_DISPLAY_INFO) - 6), sStorage->displayMonNameText, 6, 13, TEXT_SKIP_DRAW, NULL);
-        AddTextPrinterParameterized(WIN_DISPLAY_INFO, GetFontIdToFit(sStorage->displayMonSpeciesName, FONT_SHORT, 0, WindowWidthPx(WIN_DISPLAY_INFO) - 12), sStorage->displayMonSpeciesName, 6, 28, TEXT_SKIP_DRAW, NULL);
-        AddTextPrinterParameterized(WIN_DISPLAY_INFO, FONT_SHORT, sStorage->displayMonGenderLvlText, 10, 42, TEXT_SKIP_DRAW, NULL);
-    }
-
-    CopyWindowToVram(WIN_DISPLAY_INFO, COPYWIN_GFX);
-    if (sStorage->displayMonSpecies != SPECIES_NONE)
-    {
-        UpdateMonMarkingTiles(sStorage->displayMonMarkings, sStorage->markingComboTilesPtr);
-        sStorage->markingComboSprite->invisible = FALSE;
-    }
-    else
-    {
-        sStorage->markingComboSprite->invisible = TRUE;
-    }
+    OrchidPC_PrintInfo();
 }
 
-// Turn the wave animation on the sides of "Pkmn Data" on/off
+// Orchid: no waveform / "Pkmn Data" header
 static void UpdateWaveformAnimation(void)
 {
-    u16 i;
-
-    if (sStorage->displayMonSpecies != SPECIES_NONE)
-    {
-        // Start waveform animation and color "Pkmn Data"
-        TilemapUtil_SetRect(TILEMAPID_PKMN_DATA, 0, 0, 8, 2);
-        for (i = 0; i < ARRAY_COUNT(sStorage->waveformSprites); i++)
-            StartSpriteAnimIfDifferent(sStorage->waveformSprites[i], i * 2 + 1);
-    }
-    else
-    {
-        // Stop waveform animation and gray out "Pkmn Data"
-        TilemapUtil_SetRect(TILEMAPID_PKMN_DATA, 0, 2, 8, 2);
-        for (i = 0; i < ARRAY_COUNT(sStorage->waveformSprites); i++)
-            StartSpriteAnim(sStorage->waveformSprites[i], i * 2);
-    }
-
-    TilemapUtil_Update(TILEMAPID_PKMN_DATA);
-    ScheduleBgCopyTilemapToVram(1);
 }
 
 static void InitSupplementalTilemaps(void)
 {
-    DecompressDataWithHeaderWram(gStorageSystemPartyMenu_Tilemap, sStorage->partyMenuTilemapBuffer);
-    LoadPalette(gStorageSystemPartyMenu_Pal, BG_PLTT_ID(1), PLTT_SIZE_4BPP);
-    TilemapUtil_SetMap(TILEMAPID_PARTY_MENU, 1, sStorage->partyMenuTilemapBuffer, 12, 22);
-    TilemapUtil_SetMap(TILEMAPID_CLOSE_BUTTON, 1, sCloseBoxButton_Tilemap, 9, 4);
-    TilemapUtil_SetPos(TILEMAPID_PARTY_MENU, 10, 0);
-    TilemapUtil_SetPos(TILEMAPID_CLOSE_BUTTON, 21, 0);
-    SetPartySlotTilemaps();
     if (sInPartyMenu)
     {
-        UpdateCloseBoxButtonTilemap(TRUE);
+        sStorage->opcPartySlide = 0;
+        OrchidPC_RefreshPartySlots();
         CreatePartyMonsSprites(TRUE);
-        TilemapUtil_Update(TILEMAPID_CLOSE_BUTTON);
-        TilemapUtil_Update(TILEMAPID_PARTY_MENU);
     }
     else
     {
-        TilemapUtil_SetRect(TILEMAPID_PARTY_MENU, 0, 20, 12, 2);
-        UpdateCloseBoxButtonTilemap(TRUE);
-        TilemapUtil_Update(TILEMAPID_PARTY_MENU);
-        TilemapUtil_Update(TILEMAPID_CLOSE_BUTTON);
+        sStorage->opcPartySlide = OPC_PANEL_SLIDE;
     }
-
-    ScheduleBgCopyTilemapToVram(1);
-    sStorage->closeBoxFlashing = FALSE;
+    OrchidPC_PrintTitle(StorageGetCurrentBox());
+    OrchidPC_SetSelection(sCursorArea, sCursorPosition);
+    OrchidPC_RedrawBg1();
+    sStorage->opcTagsDirty = TRUE;
 }
 
 static void SetUpShowPartyMenu(void)
 {
     sStorage->partyMenuY = 2;
     sStorage->partyMenuMoveTimer = 0;
+    sStorage->opcPartySlide = OPC_PANEL_SLIDE;
+    OrchidPC_LoadSlotPalettes();
+    OrchidPC_RefreshPartySlots();
     CreatePartyMonsSprites(FALSE);
 }
 
+// Orchid: the panel slides up from the bottom, 1 tile per frame, icons with it
 static bool8 ShowPartyMenu(void)
 {
-    if (sStorage->partyMenuMoveTimer == 20)
+    if (sStorage->partyMenuMoveTimer == OPC_PANEL_SLIDE)
         return FALSE;
 
-    sStorage->partyMenuY++;
-    TilemapUtil_Move(TILEMAPID_PARTY_MENU, 3, 1);
-    TilemapUtil_Update(TILEMAPID_PARTY_MENU);
-    ScheduleBgCopyTilemapToVram(1);
-    MovePartySprites(8);
-    if (++sStorage->partyMenuMoveTimer == 20)
+    sStorage->opcPartySlide--;
+    OrchidPC_RedrawBg1();
+    MovePartySprites(-8);
+    if (++sStorage->partyMenuMoveTimer == OPC_PANEL_SLIDE)
     {
         sInPartyMenu = TRUE;
+        sStorage->opcTagsDirty = TRUE;
         return FALSE;
     }
     else
@@ -4125,123 +4787,55 @@ static void SetUpHidePartyMenu(void)
     sStorage->partyMenuY = 22;
     sStorage->partyMenuMoveTimer = 0;
     if (sStorage->boxOption == OPTION_MOVE_ITEMS)
+    {
         MoveHeldItemWithPartyMenu();
+        OrchidPC_DestroyHoldTags();
+    }
 }
 
 static bool8 HidePartyMenu(void)
 {
-    if (sStorage->partyMenuMoveTimer != 20)
+    if (sStorage->partyMenuMoveTimer != OPC_PANEL_SLIDE)
     {
-        sStorage->partyMenuY--;
-        TilemapUtil_Move(TILEMAPID_PARTY_MENU, 3, -1);
-        TilemapUtil_Update(TILEMAPID_PARTY_MENU);
-        FillBgTilemapBufferRect_Palette0(1, 0x100, 10, sStorage->partyMenuY, 12, 1);
-        MovePartySprites(-8);
-        if (++sStorage->partyMenuMoveTimer != 20)
-        {
-            ScheduleBgCopyTilemapToVram(1);
+        sStorage->opcPartySlide++;
+        OrchidPC_RedrawBg1();
+        MovePartySprites(8);
+        if (++sStorage->partyMenuMoveTimer != OPC_PANEL_SLIDE)
             return TRUE;
-        }
-        else
-        {
-            sInPartyMenu = FALSE;
-            DestroyAllPartyMonIcons();
-            CompactPartySlots();
 
-            // The close box button gets partially covered by
-            // the party menu, restore it
-            TilemapUtil_SetRect(TILEMAPID_CLOSE_BUTTON, 0, 0, 9, 2);
-            TilemapUtil_Update(TILEMAPID_CLOSE_BUTTON);
-            ScheduleBgCopyTilemapToVram(1);
-            return FALSE;
-        }
+        sInPartyMenu = FALSE;
+        DestroyAllPartyMonIcons();
+        CompactPartySlots();
+        sStorage->opcTagsDirty = TRUE;
+        return FALSE;
     }
 
     return FALSE;
 }
 
-static void UpdateCloseBoxButtonTilemap(bool8 normal)
-{
-    if (normal)
-        TilemapUtil_SetRect(TILEMAPID_CLOSE_BUTTON, 0, 0, 9, 2);
-    else // flashing
-        TilemapUtil_SetRect(TILEMAPID_CLOSE_BUTTON, 0, 2, 9, 2);
-
-    TilemapUtil_Update(TILEMAPID_CLOSE_BUTTON);
-    ScheduleBgCopyTilemapToVram(1);
-}
-
+// Orchid: the CLOSE BOX button turns gold under the cursor instead of flashing
 static void StartFlashingCloseBoxButton(void)
 {
-    sStorage->closeBoxFlashing = TRUE;
-    sStorage->closeBoxFlashTimer = 30;
-    sStorage->closeBoxFlashState = TRUE;
 }
 
 static void StopFlashingCloseBoxButton(void)
 {
-    if (sStorage->closeBoxFlashing)
-    {
-        sStorage->closeBoxFlashing = FALSE;
-        UpdateCloseBoxButtonTilemap(TRUE);
-    }
 }
 
 static void UpdateCloseBoxButtonFlash(void)
 {
-    if (sStorage != NULL)
-    {
-        if (sStorage->closeBoxFlashing && ++sStorage->closeBoxFlashTimer > 30)
-        {
-            sStorage->closeBoxFlashTimer = 0;
-            sStorage->closeBoxFlashState = (sStorage->closeBoxFlashState == FALSE);
-            UpdateCloseBoxButtonTilemap(sStorage->closeBoxFlashState);
-        }
-    }
+    OrchidPC_Update();
 }
 
 static void SetPartySlotTilemaps(void)
 {
-    u8 i;
-
-    // Skips first party slot, it should always be drawn
-    // as if it has a Pokémon in it
-    for (i = 1; i < PARTY_SIZE; i++)
-    {
-        s32 species = GetMonData(&gParties[B_TRAINER_PLAYER][i], MON_DATA_SPECIES);
-        SetPartySlotTilemap(i, species != SPECIES_NONE);
-    }
-}
-
-static void SetPartySlotTilemap(u8 partyId, bool8 hasMon)
-{
-    u16 i, j, index;
-    const u16 *data;
-
-    if (hasMon)
-        data = sPartySlotFilled_Tilemap;
-    else
-        data = sPartySlotEmpty_Tilemap;
-
-    index = 3 * (3 * (partyId - 1) + 1);
-    index *= 4;
-    index += 7;
-    for (i = 0; i < 3; i++)
-    {
-        for (j = 0; j < 4; j++)
-            sStorage->partyMenuTilemapBuffer[index + j] = data[j];
-
-        data += 4;
-        index += 12;
-    }
+    OrchidPC_RefreshPartySlots();
 }
 
 static void UpdatePartySlotColors(void)
 {
     SetPartySlotTilemaps();
-    TilemapUtil_SetRect(TILEMAPID_PARTY_MENU, 0, 0, 12, 22);
-    TilemapUtil_Update(TILEMAPID_PARTY_MENU);
-    ScheduleBgCopyTilemapToVram(1);
+    OrchidPC_RedrawBg1();
 }
 
 static void SetUpDoShowPartyMenu(void)
@@ -4288,7 +4882,8 @@ static void UpdateBoxToSendMons(void)
 static void InitPokeStorageBg0(void)
 {
     SetGpuReg(REG_OFFSET_BG0CNT, BGCNT_PRIORITY(0) | BGCNT_CHARBASE(0) | BGCNT_SCREENBASE(29));
-    LoadUserWindowBorderGfx(WIN_MESSAGE, 2, BG_PLTT_ID(13));
+    LoadBgTiles(0, gOrchidYesNoFrame_Gfx, 9 * TILE_SIZE_4BPP, OPC_FRAME_TILE);
+    LoadBgTiles(0, gOrchidPcSwatch_Gfx, OPC_SWATCH_TILES * TILE_SIZE_4BPP, OPC_SWATCH_TILE);
     FillBgTilemapBufferRect(0, 0, 0, 0, 32, 20, 17);
     CopyBgTilemapBufferToVram(0);
 }
@@ -4329,7 +4924,7 @@ static void PrintMessage(u8 id)
     DynamicPlaceholderTextUtil_ExpandPlaceholders(sStorage->messageText, sMessages[id].text);
     FillWindowPixelBuffer(WIN_MESSAGE, PIXEL_FILL(1));
     AddTextPrinterParameterized(WIN_MESSAGE, FONT_NORMAL, sStorage->messageText, 0, 1, TEXT_SKIP_DRAW, NULL);
-    DrawTextBorderOuter(WIN_MESSAGE, 2, 14);
+    DrawTextBorderOuter(WIN_MESSAGE, OPC_FRAME_TILE, OPC_BG_WINDOW);
     PutWindowTilemap(WIN_MESSAGE);
     CopyWindowToVram(WIN_MESSAGE, COPYWIN_GFX);
     ScheduleBgCopyTilemapToVram(0);
@@ -4337,7 +4932,7 @@ static void PrintMessage(u8 id)
 
 static void ShowYesNoWindow(s8 cursorPos)
 {
-    CreateYesNoMenu(&sYesNoWindowTemplate, 11, 14, 0);
+    CreateOrchidYesNoMenu(&sYesNoWindowTemplate, OPC_FRAME_TILE, OPC_BG_WINDOW, 0);
     Menu_MoveCursorNoWrapAround(cursorPos);
 }
 
@@ -4347,49 +4942,58 @@ static void ClearBottomWindow(void)
     ScheduleBgCopyTilemapToVram(0);
 }
 
-static void AddWallpaperSetsMenu(void)
+// ---- Orchid box colour picker (replaces the wallpaper menus): six swatches over the box, gold ring
+static void OrchidPC_ColourPickerOpen(void)
 {
-    InitMenu();
-    SetMenuText(MENU_SCENERY_1);
-    SetMenuText(MENU_SCENERY_2);
-    SetMenuText(MENU_SCENERY_3);
-    SetMenuText(MENU_ETCETERA);
-    if (IsWaldaWallpaperUnlocked())
-        SetMenuText(MENU_FRIENDS);
-    AddMenu();
+    static const struct WindowTemplate sTemplate = {
+        .bg = 0,
+        .tilemapLeft = OPC_SWATCH_WIN_LEFT,
+        .tilemapTop = OPC_SWATCH_WIN_TOP,
+        .width = OPC_BOX_COLOURS * 3,
+        .height = 3,
+        .paletteNum = OPC_BG_WINDOW,
+        .baseBlock = 0xD0,
+    };
+    u32 k, x, y;
+
+    sStorage->opcColourSel = OrchidPC_GetBoxColour(StorageGetCurrentBox());
+    sStorage->opcColourWindow = AddWindow(&sTemplate);
+    DrawStdFrameWithCustomTileAndPalette(sStorage->opcColourWindow, FALSE, OPC_FRAME_TILE, OPC_BG_WINDOW);
+    for (k = 0; k < OPC_BOX_COLOURS; k++)
+    {
+        OrchidPC_LoadBoxColour(k, OPC_BG_SLOT + k);
+        for (y = 0; y < 3; y++)
+            for (x = 0; x < 3; x++)
+                FillBgTilemapBufferRect(0, OPC_SWATCH_TILE + sOPcSwatchCell[y][x], OPC_SWATCH_WIN_LEFT + 3 * k + x, OPC_SWATCH_WIN_TOP + y, 1, 1, OPC_BG_SLOT + k);
+    }
+    ScheduleBgCopyTilemapToVram(0);
+    sStorage->cursorSprite->x = OPC_SWATCH_X0 + OPC_SLOT_PITCH * sStorage->opcColourSel;
+    sStorage->cursorSprite->y = OPC_SWATCH_Y;
+    sStorage->cursorSprite->oam.priority = 0;
+    sStorage->cursorSprite->subpriority = 0;
+    sStorage->cursorSprite->invisible = FALSE;
 }
 
-static void AddWallpapersMenu(u8 wallpaperSet)
+static void OrchidPC_ColourPickerMove(s8 delta)
 {
-    InitMenu();
-    switch (wallpaperSet)
-    {
-    case MENU_SCENERY_1 - MENU_WALLPAPER_SETS_START:
-        SetMenuText(MENU_FOREST);
-        SetMenuText(MENU_CITY);
-        SetMenuText(MENU_DESERT);
-        SetMenuText(MENU_SAVANNA);
-        break;
-    case MENU_SCENERY_2 - MENU_WALLPAPER_SETS_START:
-        SetMenuText(MENU_CRAG);
-        SetMenuText(MENU_VOLCANO);
-        SetMenuText(MENU_SNOW);
-        SetMenuText(MENU_CAVE);
-        break;
-    case MENU_SCENERY_3 - MENU_WALLPAPER_SETS_START:
-        SetMenuText(MENU_BEACH);
-        SetMenuText(MENU_SEAFLOOR);
-        SetMenuText(MENU_RIVER);
-        SetMenuText(MENU_SKY);
-        break;
-    case MENU_ETCETERA - MENU_WALLPAPER_SETS_START:
-        SetMenuText(MENU_POLKADOT);
-        SetMenuText(MENU_POKECENTER);
-        SetMenuText(MENU_MACHINE);
-        SetMenuText(MENU_SIMPLE);
-        break;
-    }
-    AddMenu();
+    sStorage->opcColourSel = (sStorage->opcColourSel + OPC_BOX_COLOURS + delta) % OPC_BOX_COLOURS;
+    sStorage->cursorSprite->x = OPC_SWATCH_X0 + OPC_SLOT_PITCH * sStorage->opcColourSel;
+    OrchidPC_LoadBoxColour(sStorage->opcColourSel, OPC_BG_BOX + sStorage->wallpaperOffset); // live preview
+}
+
+static void OrchidPC_ColourPickerClose(void)
+{
+    u16 x, y;
+
+    ClearStdWindowAndFrameToTransparent(sStorage->opcColourWindow, FALSE);
+    RemoveWindow(sStorage->opcColourWindow);
+    OrchidPC_LoadSlotPalettes();
+    OrchidPC_LoadBoxColour(OrchidPC_GetBoxColour(StorageGetCurrentBox()), OPC_BG_BOX + sStorage->wallpaperOffset);
+    GetCursorCoordsByPos(sCursorArea, sCursorPosition, &x, &y);
+    sStorage->cursorSprite->x = x;
+    sStorage->cursorSprite->y = y;
+    OrchidPC_UpdateRing();
+    ScheduleBgCopyTilemapToVram(0);
 }
 
 static u8 GetCurrentBoxOption(void)
@@ -4441,9 +5045,10 @@ static void InitMonIconFields(void)
     sStorage->movingMonSprite = NULL;
 }
 
+// Orchid: the held Pokémon floats above the BG1 art (title tab, party panel) wherever the cursor is
 static u8 GetMonIconPriorityByCursorPos(void)
 {
-    return (IsCursorInBox() ? 2 : 1);
+    return 1;
 }
 
 static void CreateMovingMonIcon(void)
@@ -4455,6 +5060,7 @@ static void CreateMovingMonIcon(void)
 
     sStorage->movingMonSprite = CreateMonIconSprite(species, personality, 0, 0, priority, 7, isEgg);
     sStorage->movingMonSprite->callback = SpriteCB_HeldMon;
+    sStorage->opcLift = OPC_LIFT;
 }
 
 static bool32 ShouldBoxmonSpriteBeTransparent(u32 boxId, u32 boxPosition)
@@ -4488,7 +5094,7 @@ static void InitBoxMonSprites(u8 boxId)
             if (species != SPECIES_NONE)
             {
                 personality = GetBoxMonDataAt(boxId, boxPosition, MON_DATA_PERSONALITY);
-                sStorage->boxMonsSprites[count] = CreateMonIconSprite(species, personality, 8 * (3 * j) + 100, 8 * (3 * i) + 44, 2, 19 - j, isEgg);
+                sStorage->boxMonsSprites[count] = CreateMonIconSprite(species, personality, 8 * (3 * j) + OPC_SLOT_X0, 8 * (3 * i) + OPC_SLOT_Y0 + OPC_ICON_DY, 2, 19 - j, isEgg);
 
                 if (ShouldBoxmonSpriteBeTransparent(boxId, boxPosition))
                     sStorage->boxMonsSprites[boxPosition]->oam.objMode = ST_OAM_OBJ_BLEND;
@@ -4510,8 +5116,8 @@ static void CreateBoxMonIconAtPos(u8 boxPosition)
 
     if (species != SPECIES_NONE)
     {
-        s16 x = 8 * (3 * (boxPosition % IN_BOX_COLUMNS)) + 100;
-        s16 y = 8 * (3 * (boxPosition / IN_BOX_COLUMNS)) + 44;
+        s16 x = 8 * (3 * (boxPosition % IN_BOX_COLUMNS)) + OPC_SLOT_X0;
+        s16 y = 8 * (3 * (boxPosition / IN_BOX_COLUMNS)) + OPC_SLOT_Y0 + OPC_ICON_DY;
         u32 personality = GetCurrentBoxMonData(boxPosition, MON_DATA_PERSONALITY);
 
         sStorage->boxMonsSprites[boxPosition] = CreateMonIconSprite(species, personality, x, y, 2, 19 - (boxPosition % IN_BOX_COLUMNS), isEgg);
@@ -4548,12 +5154,14 @@ static void SpriteCB_BoxMonIconScrollIn(struct Sprite *sprite)
         // Icon moving
         sprite->sDistance--;
         sprite->x += sprite->sSpeed;
+        sprite->invisible = (sprite->x < OPC_ICON_CLIP_X); // Orchid: not over the info panel
     }
     else
     {
         // Icon arrived
         sStorage->iconScrollNumIncoming--;
         sprite->x = sprite->sScrollInDestX;
+        sprite->invisible = FALSE;
         sprite->callback = SpriteCallbackDummy;
     }
 }
@@ -4569,6 +5177,7 @@ static void SpriteCB_BoxMonIconScrollOut(struct Sprite *sprite)
         // Icon moving
         sprite->x += sprite->sSpeed;
         sprite->sScrollOutX = sprite->x + sprite->x2;
+        sprite->invisible = (sprite->sScrollOutX < OPC_ICON_CLIP_X); // Orchid: not over the info panel
 
         // Check if icon offscreen
         if (sprite->sScrollOutX <= 68 || sprite->sScrollOutX >= 252)
@@ -4598,8 +5207,8 @@ static void DestroyBoxMonIconsInColumn(u8 column)
 static u8 CreateBoxMonIconsInColumn(u8 column, u16 distance, s16 speed)
 {
     s32 i;
-    u16 y = 44;
-    s16 xDest = 8 * (3 * column) + 100;
+    u16 y = OPC_SLOT_Y0 + OPC_ICON_DY;
+    s16 xDest = 8 * (3 * column) + OPC_SLOT_X0;
     u16 x = xDest - ((distance + 1) * speed);
     u8 subpriority = 19 - column;
     u8 iconsCreated = 0;
@@ -4747,16 +5356,19 @@ static void  CreatePartyMonSprite(u8 partyPosition, bool8 visible)
     bool32 isEgg = GetMonData(partyPokemon, MON_DATA_IS_EGG);
     u32 personality = GetMonData(partyPokemon, MON_DATA_PERSONALITY);
 
-    if (partyPosition == 0)
-        sStorage->partySprites[0] = CreateMonIconSprite(species, personality, 104, 64, 1, 12, isEgg);
-    else
-        sStorage->partySprites[partyPosition] = CreateMonIconSprite(species, personality, 152,  8 * (3 * (partyPosition - 1)) + 16, 1, 12, isEgg);
+    s16 x, y;
+
+    OrchidPC_PartyIconPos(partyPosition, &x, &y);
+    sStorage->partySprites[partyPosition] = CreateMonIconSprite(species, personality, x, y, 1, 12, isEgg);
 
     struct Sprite *partySprite = sStorage->partySprites[partyPosition];
 
+    if (partySprite == NULL)
+        return;
     if (!visible)
     {
-        partySprite->y -= DISPLAY_HEIGHT;
+        // Orchid: the panel slides up from the bottom, the icons with it
+        partySprite->y += OPC_PANEL_SLIDE * 8;
         partySprite->invisible = TRUE;
     }
 
@@ -4775,35 +5387,28 @@ static void  CreatePartyMonSprite(u8 partyPosition, bool8 visible)
 
 static void CreatePartyMonsSprites(bool8 visible)
 {
-    u16 i, count;
-    enum Species species = GetMonData(&gParties[B_TRAINER_PLAYER][0], MON_DATA_SPECIES);
-    bool32 isEgg = GetMonData(&gParties[B_TRAINER_PLAYER][0], MON_DATA_IS_EGG);
-    u32 personality = GetMonData(&gParties[B_TRAINER_PLAYER][0], MON_DATA_PERSONALITY);
+    u16 i;
+    enum Species species;
+    bool32 isEgg;
+    u32 personality;
+    s16 x, y;
 
-    sStorage->partySprites[0] = CreateMonIconSprite(species, personality, 104, 64, 1, 12, isEgg);
-    count = 1;
-    for (i = 1; i < PARTY_SIZE; i++)
+    for (i = 0; i < PARTY_SIZE; i++)
     {
         species = GetMonData(&gParties[B_TRAINER_PLAYER][i], MON_DATA_SPECIES);
         isEgg = GetMonData(&gParties[B_TRAINER_PLAYER][i], MON_DATA_IS_EGG);
+        sStorage->partySprites[i] = NULL;
         if (species != SPECIES_NONE)
         {
             personality = GetMonData(&gParties[B_TRAINER_PLAYER][i], MON_DATA_PERSONALITY);
-            sStorage->partySprites[i] = CreateMonIconSprite(species, personality, 152,  8 * (3 * (i - 1)) + 16, 1, 12, isEgg);
-            count++;
-        }
-        else
-        {
-            sStorage->partySprites[i] = NULL;
-        }
-    }
-
-    if (!visible)
-    {
-        for (i = 0; i < count; i++)
-        {
-            sStorage->partySprites[i]->y -= DISPLAY_HEIGHT;
-            sStorage->partySprites[i]->invisible = TRUE;
+            OrchidPC_PartyIconPos(i, &x, &y);
+            sStorage->partySprites[i] = CreateMonIconSprite(species, personality, x, y, 1, 12, isEgg);
+            if (sStorage->partySprites[i] != NULL && !visible)
+            {
+                // Orchid: the panel slides up from the bottom, the icons with it
+                sStorage->partySprites[i]->y += OPC_PANEL_SLIDE * 8;
+                sStorage->partySprites[i]->invisible = TRUE;
+            }
         }
     }
 
@@ -4863,10 +5468,7 @@ static void MovePartySpriteToNextSlot(struct Sprite *sprite, u16 partyId)
     s16 x, y;
 
     sprite->sPartyId = partyId;
-    if (partyId == 0)
-        x = 104, y = 64;
-    else
-        x = 152, y = 8 * (3 * (partyId - 1)) + 16;
+    OrchidPC_PartyIconPos(partyId, &x, &y);
 
     sprite->sMonX = (u16)(sprite->x) * 8;
     sprite->sMonY = (u16)(sprite->y) * 8;
@@ -4888,16 +5490,11 @@ static void SpriteCB_MovePartyMonToNextSlot(struct Sprite *sprite)
     }
     else
     {
-        if (sprite->sPartyId == 0)
-        {
-            sprite->x = 104;
-            sprite->y = 64;
-        }
-        else
-        {
-            sprite->x = 152;
-            sprite->y = 8 * (3 * (sprite->sPartyId - 1)) + 16;
-        }
+        s16 x, y;
+
+        OrchidPC_PartyIconPos(sprite->sPartyId, &x, &y);
+        sprite->x = x;
+        sprite->y = y;
         sprite->callback = SpriteCallbackDummy;
         sStorage->partySprites[sprite->sPartyId] = sprite;
         sStorage->numPartyToCompact--;
@@ -4922,19 +5519,15 @@ static void DestroyMovingMonIcon(void)
 
 static void MovePartySprites(s16 yDelta)
 {
-    u16 i, posY;
+    u16 i;
 
     for (i = 0; i < PARTY_SIZE; i++)
     {
         if (sStorage->partySprites[i] != NULL)
         {
             sStorage->partySprites[i]->y += yDelta;
-            posY = sStorage->partySprites[i]->y + sStorage->partySprites[i]->y2 + sStorage->partySprites[i]->centerToCornerVecY;
-            posY += 16;
-            if (posY > 192)
-                sStorage->partySprites[i]->invisible = TRUE;
-            else
-                sStorage->partySprites[i]->invisible = FALSE;
+            // Orchid: hidden while the icon's top edge is below the screen
+            sStorage->partySprites[i]->invisible = (sStorage->partySprites[i]->y + sStorage->partySprites[i]->centerToCornerVecY >= DISPLAY_HEIGHT);
         }
     }
 }
@@ -5021,17 +5614,20 @@ static void SaveMonSpriteAtPos(u8 boxId, u8 position)
     sStorage->shiftTimer = 0;
 }
 
+// Orchid: the held Pokémon sinks into the slot while the one there rises to the held height
 static bool8 MoveShiftingMons(void)
 {
+    s32 rise;
+    s16 restY;
+
     if (sStorage->shiftTimer == 16)
         return FALSE;
 
     sStorage->shiftTimer++;
-    if (sStorage->shiftTimer & 1)
-    {
-        (*sStorage->shiftMonSpritePtr)->y--;
-        sStorage->movingMonSprite->y++;
-    }
+    restY = sStorage->cursorSprite->y + OPC_ICON_DY;
+    rise = sStorage->shiftTimer * OPC_LIFT / 16;
+    (*sStorage->shiftMonSpritePtr)->y = restY - rise;
+    sStorage->movingMonSprite->y = restY - (OPC_LIFT - rise);
 
     (*sStorage->shiftMonSpritePtr)->x2 = gSineTable[sStorage->shiftTimer * 8] / 16;
     sStorage->movingMonSprite->x2 = -(gSineTable[sStorage->shiftTimer * 8] / 16);
@@ -5051,6 +5647,7 @@ static bool8 MoveShiftingMons(void)
 
         sStorage->movingMonSprite->callback = SpriteCB_HeldMon;
         (*sStorage->shiftMonSpritePtr)->callback = SpriteCallbackDummy;
+        sStorage->opcLift = OPC_LIFT;
     }
 
     return TRUE;
@@ -5126,13 +5723,20 @@ static bool8 ResetReleaseMonSpritePtr(void)
 
 static void SetMovingMonPriority(u8 priority)
 {
-    sStorage->movingMonSprite->oam.priority = priority;
+    sStorage->movingMonSprite->oam.priority = GetMonIconPriorityByCursorPos();
 }
 
+// Orchid: the held Pokémon floats OPC_LIFT px above the ring with a 1 px bob every 16 frames
 static void SpriteCB_HeldMon(struct Sprite *sprite)
 {
+    s32 bob = 0;
+
+    if (sStorage->opcLift == OPC_LIFT)
+        bob = (++sStorage->opcBobTimer / OPC_BOB_PERIOD) & 1;
+    else
+        sStorage->opcBobTimer = 0;
     sprite->x = sStorage->cursorSprite->x;
-    sprite->y = sStorage->cursorSprite->y + sStorage->cursorSprite->y2 + 4;
+    sprite->y = sStorage->cursorSprite->y + OPC_ICON_DY - sStorage->opcLift - bob;
 }
 
 static u32 MakeIconIdFromSpeciesAndIconType(enum Species species, enum SpeciesIconType iconType)
@@ -5305,7 +5909,7 @@ static void Task_InitBox(u8 taskId)
         InitBoxTitle(task->tBoxId);
         CreateBoxScrollArrows();
         InitBoxMonSprites(task->tBoxId);
-        SetGpuReg(REG_OFFSET_BG2CNT, BGCNT_PRIORITY(2) | BGCNT_CHARBASE(2) | BGCNT_SCREENBASE(27) | BGCNT_TXT512x256);
+        SetGpuReg(REG_OFFSET_BG2CNT, BGCNT_PRIORITY(2) | BGCNT_CHARBASE(3) | BGCNT_SCREENBASE(27) | BGCNT_TXT512x256);
         break;
     case 4:
         DestroyTask(taskId);
@@ -5350,13 +5954,20 @@ static bool8 ScrollToBox(void)
         InitBoxMonIconScroll(sStorage->scrollToBoxId, sStorage->scrollDirection);
         CreateIncomingBoxTitle(sStorage->scrollToBoxId, sStorage->scrollDirection);
         StartBoxScrollArrowsSlide(sStorage->scrollDirection);
+        // Orchid: the ring hides during the slide and comes back on the same slot
+        sStorage->opcRingHidden = TRUE;
+        OrchidPC_UpdateRing();
+        OrchidPC_DestroyHoldTags();
         break;
     case 2:
         iconsScrolling = UpdateBoxMonIconScroll();
         if (sStorage->scrollTimer != 0)
         {
             sStorage->bg2_X += sStorage->scrollSpeed;
-            if (--sStorage->scrollTimer != 0)
+            // Orchid: the title tab switches to the incoming box at the halfway point
+            if (--sStorage->scrollTimer == 16)
+                OrchidPC_PrintTitle(sStorage->scrollToBoxId);
+            if (sStorage->scrollTimer != 0)
                 return TRUE;
             CycleBoxTitleSprites();
             StopBoxScrollArrowsSlide();
@@ -5389,100 +6000,23 @@ static s8 DetermineBoxScrollDirection(u8 boxId)
 //------------------------------------------------------------------------------
 
 
-static void SetWallpaperForCurrentBox(u8 wallpaperId)
-{
-    u8 boxId = StorageGetCurrentBox();
-    SetBoxWallpaper(boxId, wallpaperId);
-    sStorage->wallpaperChangeState = 0;
-}
-
-static bool8 DoWallpaperGfxChange(void)
-{
-    switch (sStorage->wallpaperChangeState)
-    {
-    case 0:
-        BeginNormalPaletteFade(sStorage->wallpaperPalBits, 1, 0, 16, RGB_WHITEALPHA);
-        sStorage->wallpaperChangeState++;
-        break;
-    case 1:
-        if (!UpdatePaletteFade())
-        {
-            u8 curBox = StorageGetCurrentBox();
-            LoadWallpaperGfx(curBox, 0);
-            sStorage->wallpaperChangeState++;
-        }
-        break;
-    case 2:
-        if (WaitForWallpaperGfxLoad() == TRUE)
-        {
-            CycleBoxTitleColor();
-            BeginNormalPaletteFade(sStorage->wallpaperPalBits, 1, 16, 0, RGB_WHITEALPHA);
-            sStorage->wallpaperChangeState++;
-        }
-        break;
-    case 3:
-        if (!UpdatePaletteFade())
-            sStorage->wallpaperChangeState++;
-        break;
-    case 4:
-        return FALSE;
-    }
-
-    return TRUE;
-}
-
+// Orchid: a box is 30 slot recesses on BG2 in its box colour (BG palette 8 / 9, alternating per slide
+// like vanilla's wallpaperOffset). The incoming box is drawn 24 tiles along the 512 px map.
 static void LoadWallpaperGfx(u8 boxId, s8 direction)
 {
-    u8 wallpaperId;
-    const struct Wallpaper *wallpaper;
-    void *iconGfx;
-    u32 tilesSize, iconSize;
+    s32 curCol0 = ((sStorage->bg2_X / 8) + OPC_SLOT_COL0) & 63;
+    s32 col0 = (curCol0 + direction * OPC_BOX_SLIDE_TILES) & 63;
+    u8 bgPal;
 
     sStorage->wallpaperLoadBoxId = boxId;
     sStorage->wallpaperLoadDir = direction;
-    if (sStorage->wallpaperLoadDir != 0)
-    {
+    if (direction != 0)
         sStorage->wallpaperOffset = (sStorage->wallpaperOffset == 0);
-        TrimOldWallpaper(sStorage->wallpaperBgTilemapBuffer);
-    }
+    bgPal = OPC_BG_BOX + sStorage->wallpaperOffset;
 
-    wallpaperId = GetBoxWallpaper(sStorage->wallpaperLoadBoxId);
-    if (wallpaperId != WALLPAPER_FRIENDS)
-    {
-        wallpaper = &sWallpapers[wallpaperId];
-        DecompressDataWithHeaderWram(wallpaper->tilemap, sStorage->wallpaperTilemap);
-        DrawWallpaper(sStorage->wallpaperTilemap, sStorage->wallpaperLoadDir, sStorage->wallpaperOffset);
-
-        if (sStorage->wallpaperLoadDir != 0)
-            LoadPalette(wallpaper->palettes, BG_PLTT_ID(4) + BG_PLTT_ID(sStorage->wallpaperOffset * 2), 2 * PLTT_SIZE_4BPP);
-        else
-            CpuCopy16(wallpaper->palettes, &gPlttBufferUnfaded[BG_PLTT_ID(4) + BG_PLTT_ID(sStorage->wallpaperOffset * 2)], 2 * PLTT_SIZE_4BPP);
-
-        sStorage->wallpaperTiles = malloc_and_decompress(wallpaper->tiles, &tilesSize);
-        LoadBgTiles(2, sStorage->wallpaperTiles, tilesSize, sStorage->wallpaperOffset << 8);
-    }
-    else
-    {
-        wallpaper = &sWaldaWallpapers[GetWaldaWallpaperPatternId()];
-        DecompressDataWithHeaderWram(wallpaper->tilemap, sStorage->wallpaperTilemap);
-        DrawWallpaper(sStorage->wallpaperTilemap, sStorage->wallpaperLoadDir, sStorage->wallpaperOffset);
-
-        CpuCopy16(wallpaper->palettes, sStorage->wallpaperTilemap, 0x40);
-        CpuCopy16(GetWaldaWallpaperColorsPtr(), &sStorage->wallpaperTilemap[1], 4);
-        CpuCopy16(GetWaldaWallpaperColorsPtr(), &sStorage->wallpaperTilemap[17], 4);
-
-        if (sStorage->wallpaperLoadDir != 0)
-            LoadPalette(sStorage->wallpaperTilemap, BG_PLTT_ID(4) + BG_PLTT_ID(sStorage->wallpaperOffset * 2), 2 * PLTT_SIZE_4BPP);
-        else
-            CpuCopy16(sStorage->wallpaperTilemap, &gPlttBufferUnfaded[BG_PLTT_ID(4) + BG_PLTT_ID(sStorage->wallpaperOffset * 2)], 2 * PLTT_SIZE_4BPP);
-
-        sStorage->wallpaperTiles = malloc_and_decompress(wallpaper->tiles, &tilesSize);
-        iconGfx = malloc_and_decompress(sWaldaWallpaperIcons[GetWaldaWallpaperIconId()], &iconSize);
-        CpuCopy32(iconGfx, sStorage->wallpaperTiles + 0x800, iconSize);
-        Free(iconGfx);
-        LoadBgTiles(2, sStorage->wallpaperTiles, tilesSize, sStorage->wallpaperOffset << 8);
-    }
-
+    OrchidPC_LoadBoxColour(OrchidPC_GetBoxColour(boxId), bgPal);
+    OrchidPC_ClearBoxSlotsExcept(curCol0, direction != 0);
+    OrchidPC_DrawBoxSlots(col0, bgPal);
     CopyBgTilemapBufferToVram(2);
 }
 
@@ -5491,49 +6025,7 @@ static bool32 WaitForWallpaperGfxLoad(void)
     if (IsDma3ManagerBusyWithBgCopy())
         return FALSE;
 
-    TRY_FREE_AND_SET_NULL(sStorage->wallpaperTiles);
-
     return TRUE;
-}
-
-static void DrawWallpaper(const void *tilemap, s8 direction, u8 offset)
-{
-    s16 tileOffset = offset * 256;
-    s16 paletteNum = (offset * 2) + 3;
-    s16 x = ((sStorage->bg2_X / 8 + 10) + (direction * 24)) & 0x3F;
-
-    CopyRectToBgTilemapBufferRect(2, tilemap, 0, 0, 20, 18, x, 2, 20, 18, 17, tileOffset, paletteNum);
-
-    if (direction == 0)
-        return;
-    if (direction > 0)
-        x += 20;
-    else
-        x -= 4;
-
-    FillBgTilemapBufferRect(2, 0, x, 2, 4, 0x12, 17);
-}
-
-static void TrimOldWallpaper(void *tilemap)
-{
-    u16 i;
-    u16 *dest = tilemap;
-    s16 r3 = ((sStorage->bg2_X / 8) + 30) & 0x3F;
-
-    if (r3 <= 31)
-        dest += r3 + 0x260;
-    else
-        dest += r3 + 0x640;
-
-    for (i = 0; i < 0x2C; i++)
-    {
-        *dest++ = 0;
-        r3 = (r3 + 1) & 0x3F;
-        if (r3 == 0)
-            dest -= 0x420;
-        if (r3 == 0x20)
-            dest += 0x3e0;
-    }
 }
 
 
@@ -5542,161 +6034,19 @@ static void TrimOldWallpaper(void *tilemap)
 //------------------------------------------------------------------------------
 
 
+// Orchid: the title is BG1 text on the title tab (OrchidPC_PrintTitle); during a box slide it switches to
+// the incoming box at the halfway point (ScrollToBox) instead of sliding.
 static void InitBoxTitle(u8 boxId)
 {
-    u8 tagIndex;
-    s16 x;
-    u16 i;
-
-    struct SpriteSheet spriteSheet = {sStorage->boxTitleTiles, 0x200, GFXTAG_BOX_TITLE};
-    struct SpritePalette palettes[] = {
-        {sStorage->boxTitlePal, PALTAG_BOX_TITLE},
-        {}
-    };
-
-    u16 wallpaperId = GetBoxWallpaper(boxId);
-
-    sStorage->boxTitlePal[14] = sBoxTitleColors[wallpaperId][0]; // Shadow color
-    sStorage->boxTitlePal[15] = sBoxTitleColors[wallpaperId][1]; // Text Color
-    LoadSpritePalettes(palettes);
-    sStorage->wallpaperPalBits = 0x3f0;
-
-    tagIndex = IndexOfSpritePaletteTag(PALTAG_BOX_TITLE);
-    sStorage->boxTitlePalOffset = OBJ_PLTT_ID(tagIndex) + 14;
-    sStorage->wallpaperPalBits |= (1 << 16) << tagIndex;
-
-    // The below seems intended to have separately tracked
-    // the incoming wallpaper title's palette, but as they now
-    // share a palette tag, all colors (and fields in some cases)
-    // this is redundant along with the use of boxTitleAltPalOffset
-    tagIndex = IndexOfSpritePaletteTag(PALTAG_BOX_TITLE);
-    sStorage->boxTitleAltPalOffset = OBJ_PLTT_ID(tagIndex) + 14;
-    sStorage->wallpaperPalBits |= (1 << 16) << tagIndex;
-
-    StringCopyPadded(sStorage->boxTitleText, GetBoxNamePtr(boxId), 0, BOX_NAME_LENGTH);
-    DrawTextWindowAndBufferTiles(sStorage->boxTitleText, sStorage->boxTitleTiles, 0, 0, 2);
-    LoadSpriteSheet(&spriteSheet);
-    x = GetBoxTitleBaseX(GetBoxNamePtr(boxId));
-
-    // Title is split across two sprites
-    for (i = 0; i < 2; i++)
-    {
-        u8 spriteId = CreateSprite(&sSpriteTemplate_BoxTitle, x + i * 32, 28, 24);
-        sStorage->curBoxTitleSprites[i] = &gSprites[spriteId];
-        StartSpriteAnim(sStorage->curBoxTitleSprites[i], i);
-    }
-    sStorage->boxTitleCycleId = 0;
+    OrchidPC_PrintTitle(boxId);
 }
-
-// Sprite data for moving title text
-#define sSpeed data[0]
-// Flipped between incoming/outgoing for some reason
-#define sIncomingX     data[1]
-#define sIncomingDelay data[2]
-#define sOutgoingDelay data[1]
-#define sOutgoingX     data[2]
 
 static void CreateIncomingBoxTitle(u8 boxId, s8 direction)
 {
-    u16 palOffset;
-    s16 x, adjustedX;
-    u16 i;
-    struct SpriteSheet spriteSheet = {sStorage->boxTitleTiles, 0x200, GFXTAG_BOX_TITLE};
-    struct SpriteTemplate template = sSpriteTemplate_BoxTitle;
-
-    sStorage->boxTitleCycleId = (sStorage->boxTitleCycleId == 0);
-    if (sStorage->boxTitleCycleId == 0)
-    {
-        spriteSheet.tag = GFXTAG_BOX_TITLE;
-        palOffset = sStorage->boxTitlePalOffset;
-    }
-    else
-    {
-        spriteSheet.tag = GFXTAG_BOX_TITLE_ALT;
-        palOffset = sStorage->boxTitlePalOffset;
-        template.tileTag = GFXTAG_BOX_TITLE_ALT;
-        template.paletteTag = PALTAG_BOX_TITLE;
-    }
-
-    StringCopyPadded(sStorage->boxTitleText, GetBoxNamePtr(boxId), 0, BOX_NAME_LENGTH);
-    DrawTextWindowAndBufferTiles(sStorage->boxTitleText, sStorage->boxTitleTiles, 0, 0, 2);
-    LoadSpriteSheet(&spriteSheet);
-    LoadPalette(sBoxTitleColors[GetBoxWallpaper(boxId)], palOffset, sizeof(sBoxTitleColors[0]));
-    x = GetBoxTitleBaseX(GetBoxNamePtr(boxId));
-    adjustedX = x;
-    adjustedX += direction * 192;
-
-    // Title is split across two sprites
-    for (i = 0; i < 2; i++)
-    {
-        u8 spriteId = CreateSprite(&template, i * 32 + adjustedX, 28, 24);
-
-        sStorage->nextBoxTitleSprites[i] = &gSprites[spriteId];
-        sStorage->nextBoxTitleSprites[i]->sSpeed = (-direction) * 6;
-        sStorage->nextBoxTitleSprites[i]->sIncomingX = i * 32 + x;
-        sStorage->nextBoxTitleSprites[i]->sIncomingDelay = 0;
-        sStorage->nextBoxTitleSprites[i]->callback = SpriteCB_IncomingBoxTitle;
-        StartSpriteAnim(sStorage->nextBoxTitleSprites[i], i);
-
-        sStorage->curBoxTitleSprites[i]->sSpeed = (-direction) * 6;
-        sStorage->curBoxTitleSprites[i]->sOutgoingDelay = 1;
-        sStorage->curBoxTitleSprites[i]->callback = SpriteCB_OutgoingBoxTitle;
-    }
 }
 
 static void CycleBoxTitleSprites(void)
 {
-    if (sStorage->boxTitleCycleId == 0)
-        FreeSpriteTilesByTag(GFXTAG_BOX_TITLE_ALT);
-    else
-        FreeSpriteTilesByTag(GFXTAG_BOX_TITLE);
-
-    sStorage->curBoxTitleSprites[0] = sStorage->nextBoxTitleSprites[0];
-    sStorage->curBoxTitleSprites[1] = sStorage->nextBoxTitleSprites[1];
-}
-
-static void SpriteCB_IncomingBoxTitle(struct Sprite *sprite)
-{
-    if (sprite->sIncomingDelay != 0)
-        sprite->sIncomingDelay--;
-    else if ((sprite->x += sprite->sSpeed) == sprite->sIncomingX)
-        sprite->callback = SpriteCallbackDummy;
-}
-
-static void SpriteCB_OutgoingBoxTitle(struct Sprite *sprite)
-{
-    if (sprite->sOutgoingDelay != 0)
-    {
-        sprite->sOutgoingDelay--;
-    }
-    else
-    {
-        sprite->x += sprite->sSpeed;
-        sprite->sOutgoingX = sprite->x + sprite->x2;
-        if (sprite->sOutgoingX < 64 || sprite->sOutgoingX > DISPLAY_WIDTH + 16)
-            DestroySprite(sprite);
-    }
-}
-
-#undef sSpeed
-#undef sIncomingX
-#undef sIncomingDelay
-#undef sOutgoingDelay
-#undef sOutgoingX
-
-static void CycleBoxTitleColor(void)
-{
-    u8 boxId = StorageGetCurrentBox();
-    u8 wallpaperId = GetBoxWallpaper(boxId);
-    if (sStorage->boxTitleCycleId == 0)
-        CpuCopy16(sBoxTitleColors[wallpaperId], &gPlttBufferUnfaded[sStorage->boxTitlePalOffset], PLTT_SIZEOF(2));
-    else
-        CpuCopy16(sBoxTitleColors[wallpaperId], &gPlttBufferUnfaded[sStorage->boxTitleAltPalOffset], PLTT_SIZEOF(2));
-}
-
-static s16 GetBoxTitleBaseX(const u8 *string)
-{
-    return DISPLAY_WIDTH - 64 - GetStringWidth(FONT_NORMAL, string, 0) / 2;
 }
 
 
@@ -5705,10 +6055,10 @@ static s16 GetBoxTitleBaseX(const u8 *string)
 //------------------------------------------------------------------------------
 
 
-// Sprite data for box scroll arrows
-#define sState data[0]
-#define sTimer data[1]
-#define sSpeed data[3]
+// Orchid: two small red chevrons either side of the title tab. A box switch lights the one in the
+// direction of travel for 8 frames, nudged 2 px outward (anim_pc.box_switch_gif).
+#define sLitTimer data[0]
+#define sSide     data[1]
 
 static void CreateBoxScrollArrows(void)
 {
@@ -5717,128 +6067,52 @@ static void CreateBoxScrollArrows(void)
     LoadSpriteSheet(&sSpriteSheet_Arrow);
     for (i = 0; i < 2; i++)
     {
-        u8 spriteId = CreateSpriteUnchecked(&sSpriteTemplate_Arrow, 92 + i * 136, 28, 22);
+        u8 spriteId = CreateSpriteUnchecked(&sSpriteTemplate_Arrow, i == 0 ? OPC_CHEV_L_X : OPC_CHEV_R_X, OPC_CHEV_Y, 22);
+        sStorage->arrowSprites[i] = NULL;
         if (spriteId != MAX_SPRITES)
         {
             struct Sprite *sprite = &gSprites[spriteId];
             StartSpriteAnim(sprite, i);
-            sprite->sSpeed = (i == 0) ? -1 : 1;
+            sprite->oam.priority = 1;
+            sprite->sSide = i;
+            sprite->sLitTimer = 0;
             sStorage->arrowSprites[i] = sprite;
         }
     }
-    if (IsCursorOnBoxTitle())
-        AnimateBoxScrollArrows(TRUE);
 }
 
-// Slide box scroll arrows horizontally for box change
+static void LightChevron(struct Sprite *sprite)
+{
+    if (sprite == NULL)
+        return;
+    sprite->sLitTimer = OPC_CHEV_LIT_FRAMES;
+    StartSpriteAnim(sprite, 2 + sprite->sSide);
+    sprite->x2 = sprite->sSide == 0 ? -OPC_CHEV_LIT_DX : OPC_CHEV_LIT_DX;
+}
+
 static void StartBoxScrollArrowsSlide(s8 direction)
 {
-    u16 i;
-
-    for (i = 0; i < 2; i++)
-    {
-        sStorage->arrowSprites[i]->x2 = 0;
-        sStorage->arrowSprites[i]->sState = 2;
-    }
-    if (direction < 0)
-    {
-        sStorage->arrowSprites[0]->sTimer = 29;
-        sStorage->arrowSprites[1]->sTimer = 5;
-        sStorage->arrowSprites[0]->data[2] = 72;
-        sStorage->arrowSprites[1]->data[2] = 72;
-    }
-    else
-    {
-        sStorage->arrowSprites[0]->sTimer = 5;
-        sStorage->arrowSprites[1]->sTimer = 29;
-        sStorage->arrowSprites[0]->data[2] = DISPLAY_WIDTH + 8;
-        sStorage->arrowSprites[1]->data[2] = DISPLAY_WIDTH + 8;
-    }
-    sStorage->arrowSprites[0]->data[7] = 0;
-    sStorage->arrowSprites[1]->data[7] = 1;
+    LightChevron(sStorage->arrowSprites[direction > 0 ? 1 : 0]);
 }
 
-// New box's scroll arrows have entered, stop sliding and set their position
 static void StopBoxScrollArrowsSlide(void)
 {
-    u16 i;
-
-    for (i = 0; i < 2; i++)
-    {
-        sStorage->arrowSprites[i]->x = 136 * i + 92;
-        sStorage->arrowSprites[i]->x2 = 0;
-        sStorage->arrowSprites[i]->invisible = FALSE;
-    }
-    AnimateBoxScrollArrows(TRUE);
 }
 
-// Bounce scroll arrows while title is selected
 static void AnimateBoxScrollArrows(bool8 animate)
 {
-    u16 i;
-
-    if (animate)
-    {
-        // Start arrows moving
-        for (i = 0; i < 2; i++)
-        {
-            sStorage->arrowSprites[i]->sState = 1;
-            sStorage->arrowSprites[i]->sTimer = 0;
-            sStorage->arrowSprites[i]->data[2] = 0;
-            sStorage->arrowSprites[i]->data[4] = 0;
-        }
-    }
-    else
-    {
-        // Stop arrows moving
-        for (i = 0; i < 2; i++)
-            sStorage->arrowSprites[i]->sState = 0;
-    }
 }
 
 static void SpriteCB_Arrow(struct Sprite *sprite)
 {
-    switch (sprite->sState)
+    if (sprite->sLitTimer != 0 && --sprite->sLitTimer == 0)
     {
-    case 0:
+        StartSpriteAnim(sprite, sprite->sSide);
         sprite->x2 = 0;
-        break;
-    case 1:
-        if (++sprite->sTimer > 3)
-        {
-            sprite->sTimer = 0;
-            sprite->x2 += sprite->sSpeed;
-            if (++sprite->data[2] > 5)
-            {
-                sprite->data[2] = 0;
-                sprite->x2 = 0;
-            }
-        }
-        break;
-    case 2:
-        sprite->sState = 3;
-        break;
-    case 3:
-        sprite->x -= sStorage->scrollSpeed;
-        if (sprite->x <= 72 || sprite->x >= DISPLAY_WIDTH + 8)
-            sprite->invisible = TRUE;
-        if (--sprite->sTimer == 0)
-        {
-            sprite->x = sprite->data[2];
-            sprite->invisible = FALSE;
-            sprite->sState = 4;
-        }
-        break;
-    case 4:
-        sprite->x -= sStorage->scrollSpeed;
-        break;
     }
 }
 
-#undef sState
-#undef sSpeed
-
-// Arrows for Deposit/Jump Box selection
+// Chevrons either side of the jump / deposit popup's box name
 static struct Sprite *CreateChooseBoxArrows(u16 x, u16 y, u8 animId, u8 priority, u8 subpriority)
 {
     u8 spriteId = CreateSpriteUnchecked(&sSpriteTemplate_Arrow, x, y, subpriority);
@@ -5848,9 +6122,13 @@ static struct Sprite *CreateChooseBoxArrows(u16 x, u16 y, u8 animId, u8 priority
     animId %= 2;
     StartSpriteAnim(&gSprites[spriteId], animId);
     gSprites[spriteId].oam.priority = priority;
-    gSprites[spriteId].callback = SpriteCallbackDummy;
+    gSprites[spriteId].sSide = animId;
+    gSprites[spriteId].sLitTimer = 0;
     return &gSprites[spriteId];
 }
+
+#undef sLitTimer
+#undef sSide
 
 
 //------------------------------------------------------------------------------
@@ -5895,36 +6173,33 @@ static void InitCursorOnReopen(void)
 
 static void GetCursorCoordsByPos(u8 cursorArea, u8 cursorPosition, u16 *x, u16 *y)
 {
+    // Orchid: the cursor is the gold ring around a slot; its position is the slot centre. On the title tab
+    // and the buttons (no ring, the art turns gold) it is where a held Pokémon floats (centre + lift).
     switch (cursorArea)
     {
     case CURSOR_AREA_IN_BOX:
-        *x = (cursorPosition % IN_BOX_COLUMNS) * 24 + 100;
-        *y = (cursorPosition / IN_BOX_COLUMNS) * 24 +  32;
+        *x = (cursorPosition % IN_BOX_COLUMNS) * OPC_SLOT_PITCH + OPC_SLOT_X0;
+        *y = (cursorPosition / IN_BOX_COLUMNS) * OPC_SLOT_PITCH + OPC_SLOT_Y0;
         break;
     case CURSOR_AREA_IN_PARTY:
-        if (cursorPosition == 0)
+        if (cursorPosition >= PARTY_SIZE)
         {
-            *x = 104;
-            *y = 52;
-        }
-        else if (cursorPosition == PARTY_SIZE)
-        {
-            *x = 152;
-            *y = 132;
+            *x = OPC_PCANCEL_X;
+            *y = OPC_PCANCEL_Y;
         }
         else
         {
-            *x = 152;
-            *y = (cursorPosition - 1) * 24 + 4;
+            *x = OPC_PSLOT_X0 + OPC_PSLOT_DX * (cursorPosition % 2) + OPC_PICON_DX;
+            *y = OPC_PSLOT_Y0 + OPC_PSLOT_DY * (cursorPosition / 2) + OPC_PICON_DY;
         }
         break;
     case CURSOR_AREA_BOX_TITLE:
-        *x = 162;
-        *y = 12;
+        *x = OPC_TAB_X + OPC_TAB_W / 2;
+        *y = 16 - OPC_ICON_DY + OPC_LIFT;
         break;
     case CURSOR_AREA_BUTTONS:
-        *y = sIsMonBeingMoved ? 8 : 14;
-        *x = cursorPosition * 88 + 120;
+        *y = 12 - OPC_ICON_DY + OPC_LIFT;
+        *x = cursorPosition * 80 + 124;
         break;
     case 4:
         *x = 160;
@@ -6122,6 +6397,15 @@ static void SetCursorPosition(u8 newCursorArea, u8 newCursorPosition)
         }
         break;
     }
+
+    // Orchid: gold art follows the cursor at once; the ring only shows between two ring places
+    OrchidPC_SetSelection(newCursorArea, newCursorPosition);
+    if (!OrchidPC_IsRingArea(sCursorArea, sCursorPosition) || !OrchidPC_IsRingArea(newCursorArea, newCursorPosition))
+        sStorage->cursorSprite->invisible = TRUE;
+    if (newCursorArea == CURSOR_AREA_IN_PARTY)
+        sStorage->cursorSprite->subpriority = 10;
+    else if (newCursorArea == CURSOR_AREA_IN_BOX)
+        sStorage->cursorSprite->subpriority = 21;
 }
 
 static void DoCursorNewPosUpdate(void)
@@ -6163,6 +6447,7 @@ static void DoCursorNewPosUpdate(void)
         }
         break;
     }
+    OrchidPC_UpdateRing();
 }
 
 static void SetCursorInParty(void)
@@ -6227,6 +6512,7 @@ static void InitMultiMonPlaceChange(bool8 up)
         sStorage->monPlaceChangeFunc = MultiMonPlaceChange_Down;
     else
         sStorage->monPlaceChangeFunc = MultiMonPlaceChange_Up;
+    sStorage->opcLiftTimer = up ? 8 : 0;
 
     sStorage->monPlaceChangeState = 0;
 }
@@ -6236,6 +6522,8 @@ static bool8 DoMonPlaceChange(void)
     return sStorage->monPlaceChangeFunc();
 }
 
+// Orchid (anim_pc.pickup_gif): A flashes the ring and the Pokémon rises OPC_LIFT px over 8 frames (ease-out);
+// putting it down sinks it over 8 frames, then it is placed and the ring flashes.
 static bool8 MonPlaceChange_Grab(void)
 {
     switch (sStorage->monPlaceChangeState)
@@ -6243,22 +6531,18 @@ static bool8 MonPlaceChange_Grab(void)
     case 0:
         if (sIsMonBeingMoved)
             return FALSE;
-        StartSpriteAnim(sStorage->cursorSprite, CURSOR_ANIM_OPEN);
+        StartSpriteAnim(sStorage->cursorSprite, CURSOR_ANIM_FLASH);
+        sStorage->opcLift = 0;
+        sStorage->opcLiftTimer = 0;
+        MoveMon();
         sStorage->monPlaceChangeState++;
         break;
     case 1:
-        if (!MonPlaceChange_CursorDown())
-        {
-            StartSpriteAnim(sStorage->cursorSprite, CURSOR_ANIM_FIST);
-            MoveMon();
+        sStorage->opcLift = sOPcLiftUp[sStorage->opcLiftTimer];
+        if (++sStorage->opcLiftTimer == OPC_LIFT_FRAMES)
             sStorage->monPlaceChangeState++;
-        }
         break;
     case 2:
-        if (!MonPlaceChange_CursorUp())
-            sStorage->monPlaceChangeState++;
-        break;
-    case 3:
         return FALSE;
     }
 
@@ -6270,17 +6554,19 @@ static bool8 MonPlaceChange_Place(void)
     switch (sStorage->monPlaceChangeState)
     {
     case 0:
-        if (!MonPlaceChange_CursorDown())
-        {
-            StartSpriteAnim(sStorage->cursorSprite, CURSOR_ANIM_OPEN);
-            PlaceMon();
-            sStorage->monPlaceChangeState++;
-        }
-        break;
+        sStorage->opcLiftTimer = 0;
+        sStorage->monPlaceChangeState++;
+        // fallthrough
     case 1:
-        if (!MonPlaceChange_CursorUp())
+        if (sStorage->opcLiftTimer < OPC_LIFT_FRAMES)
         {
-            StartSpriteAnim(sStorage->cursorSprite, CURSOR_ANIM_BOUNCE);
+            sStorage->opcLift = sOPcLiftDown[sStorage->opcLiftTimer++];
+        }
+        else
+        {
+            PlaceMon();
+            sStorage->opcLift = OPC_LIFT;
+            StartSpriteAnim(sStorage->cursorSprite, CURSOR_ANIM_FLASH);
             sStorage->monPlaceChangeState++;
         }
         break;
@@ -6336,34 +6622,20 @@ static bool8 MultiMonPlaceChange_Up(void)
     return MonPlaceChange_CursorUp();
 }
 
+// Orchid: the multi-move grab / place keep vanilla's 8 + 8 frame timing; the ring stays put (no hand dip)
 static bool8 MonPlaceChange_CursorDown(void)
 {
-    switch (sStorage->cursorSprite->y2)
-    {
-    default:
-        sStorage->cursorSprite->y2++;
-        break;
-    case 0:
-        sStorage->cursorSprite->y2++;
-        break;
-    case 8: // Cursor has reached bottom
+    if (sStorage->opcLiftTimer == 8)
         return FALSE;
-    }
-
+    sStorage->opcLiftTimer++;
     return TRUE;
 }
 
 static bool8 MonPlaceChange_CursorUp(void)
 {
-    switch (sStorage->cursorSprite->y2)
-    {
-    case 0: // Cursor has reached top
+    if (sStorage->opcLiftTimer == 0)
         return FALSE;
-    default:
-        sStorage->cursorSprite->y2--;
-        break;
-    }
-
+    sStorage->opcLiftTimer--;
     return TRUE;
 }
 
@@ -6449,6 +6721,7 @@ static void SetMovingMonData(u8 boxId, u8 position)
 
 static void SetPlacedMonData(u8 boxId, u8 position)
 {
+    OrchidPC_ContentsChanged();
     if (OW_PC_HEAL <= GEN_7)
         HealPokemon(&sStorage->movingMon);
 
@@ -6469,6 +6742,7 @@ static void SetPlacedMonData(u8 boxId, u8 position)
 
 static void PurgeMonOrBoxMon(u8 boxId, u8 position)
 {
+    OrchidPC_ContentsChanged();
     if (boxId == TOTAL_BOXES_COUNT)
         ZeroMonData(&gParties[B_TRAINER_PLAYER][position]);
     else
@@ -6926,10 +7200,6 @@ static bool8 IsCursorOnCloseBox(void)
     return (sCursorArea == CURSOR_AREA_BUTTONS && sCursorPosition == 1);
 }
 
-static bool8 IsCursorInBox(void)
-{
-    return (sCursorArea == CURSOR_AREA_IN_BOX);
-}
 
 static void TryRefreshDisplayMon(void)
 {
@@ -7044,6 +7314,7 @@ static void SetDisplayMonData(void *pokemon, u8 mode)
         sStorage->displayMonItemId = ITEM_NONE;
     }
 
+    sStorage->displayMonGender = (sStorage->displayMonSpecies == SPECIES_NONE) ? MON_GENDERLESS : gender;
     if (sStorage->displayMonSpecies == SPECIES_NONE)
     {
         StringFill(sStorage->displayMonName, CHAR_SPACE, 5);
@@ -7459,35 +7730,43 @@ static u8 HandleInput_InParty(void)
         gotoBox = FALSE;
         retVal = INPUT_NONE;
 
+        // Orchid: 2x3 party grid (lead top-left, BW order) with CANCEL below
         if (JOY_REPEAT(DPAD_UP))
         {
-            if (--cursorPosition < 0)
+            if (cursorPosition == PARTY_SIZE)
+                cursorPosition = PARTY_SIZE - 2;
+            else if (cursorPosition < 2)
                 cursorPosition = PARTY_SIZE;
+            else
+                cursorPosition -= 2;
             if (cursorPosition != sCursorPosition)
                 retVal = INPUT_MOVE_CURSOR;
             break;
         }
         else if (JOY_REPEAT(DPAD_DOWN))
         {
-            if (++cursorPosition > PARTY_SIZE)
+            if (cursorPosition == PARTY_SIZE)
                 cursorPosition = 0;
+            else if (cursorPosition >= PARTY_SIZE - 2)
+                cursorPosition = PARTY_SIZE;
+            else
+                cursorPosition += 2;
             if (cursorPosition != sCursorPosition)
                 retVal = INPUT_MOVE_CURSOR;
             break;
         }
-        else if (JOY_REPEAT(DPAD_LEFT) && sCursorPosition != 0)
+        else if (JOY_REPEAT(DPAD_LEFT) && sCursorPosition < PARTY_SIZE && (sCursorPosition % 2) == 1)
         {
             retVal = INPUT_MOVE_CURSOR;
-            sStorage->cursorPrevHorizPos = sCursorPosition;
-            cursorPosition = 0;
+            cursorPosition = sCursorPosition - 1;
             break;
         }
         else if (JOY_REPEAT(DPAD_RIGHT))
         {
-            if (sCursorPosition == 0)
+            if (sCursorPosition < PARTY_SIZE && (sCursorPosition % 2) == 0)
             {
                 retVal = INPUT_MOVE_CURSOR;
-                cursorPosition = sStorage->cursorPrevHorizPos;
+                cursorPosition = sCursorPosition + 1;
             }
             else
             {
@@ -7870,27 +8149,36 @@ static bool8 SetMenuTexts_Item(void)
 //------------------------------------------------------------------------------
 
 
+// Orchid: the lift shadow under a held Pokémon / item, in the slot's recess (mock_pc: 16x8 at (cx - 8, cy - 1))
 static void SpriteCB_CursorShadow(struct Sprite *sprite)
 {
+    bool32 holding = sIsMonBeingMoved || IsMovingItem();
+
     sprite->x = sStorage->cursorSprite->x;
-    sprite->y = sStorage->cursorSprite->y + 20;
+    sprite->y = sStorage->cursorSprite->y + OPC_SHADOW_DY;
+    sprite->invisible = !holding || sStorage->cursorSprite->invisible || sStorage->inBoxMovingMode != MOVE_MODE_NORMAL;
+    if (sCursorArea == CURSOR_AREA_IN_PARTY)
+    {
+        sprite->oam.priority = 1;
+        sprite->subpriority = 9;
+    }
+    else
+    {
+        sprite->oam.priority = 2;
+        sprite->subpriority = 22;
+    }
 }
 
+// Orchid: the cursor is a gold ring (32x32: normal, flash) hugging the slot lip, plus the lift shadow
 static void CreateCursorSprites(void)
 {
     u16 x, y;
     u8 spriteId;
-    u8 priority, subpriority;
     struct SpriteSheet spriteSheets[] =
     {
-        {sHandCursor_Gfx, 0x800, GFXTAG_CURSOR},
-        {sHandCursorShadow_Gfx, 0x80, GFXTAG_CURSOR_SHADOW},
-        {}
-    };
-
-    struct SpritePalette spritePalettes[] =
-    {
-        {sHandCursor_Pal, PALTAG_MISC_1},
+        {gOrchidPcObj_Gfx + OPC_OBJ_RING * TILE_SIZE_4BPP, 32 * TILE_SIZE_4BPP, GFXTAG_CURSOR},
+        {gOrchidPcObj_Gfx + OPC_OBJ_SHADOW * TILE_SIZE_4BPP, 2 * TILE_SIZE_4BPP, GFXTAG_CURSOR_SHADOW},
+        {gOrchidPcObj_Gfx + OPC_OBJ_HOLD_TAG * TILE_SIZE_4BPP, TILE_SIZE_4BPP, GFXTAG_HOLD_TAG},
         {}
     };
 
@@ -7898,43 +8186,34 @@ static void CreateCursorSprites(void)
     {
         .shape = SPRITE_SHAPE(32x32),
         .size = SPRITE_SIZE(32x32),
-        .priority = 1,
+        .priority = 2,
     };
     static const struct OamData sOamData_CursorShadow =
     {
-        .shape = SPRITE_SHAPE(16x16),
-        .size = SPRITE_SIZE(16x16),
-        .priority = 1,
+        .shape = SPRITE_SHAPE(16x8),
+        .size = SPRITE_SIZE(16x8),
+        .priority = 2,
     };
 
-    static const union AnimCmd sAnim_Cursor_Bouncing[] =
-    {
-        ANIMCMD_FRAME(0, 30),
-        ANIMCMD_FRAME(16, 30),
-        ANIMCMD_JUMP(0)
-    };
     static const union AnimCmd sAnim_Cursor_Still[] =
     {
         ANIMCMD_FRAME(0, 5),
         ANIMCMD_END
     };
-    static const union AnimCmd sAnim_Cursor_Open[] =
+    static const union AnimCmd sAnim_Cursor_Flash[] =
     {
-        ANIMCMD_FRAME(32, 5),
-        ANIMCMD_END
-    };
-    static const union AnimCmd sAnim_Cursor_Fist[] =
-    {
-        ANIMCMD_FRAME(48, 5),
+        ANIMCMD_FRAME(16, OPC_FLASH_FRAMES),
+        ANIMCMD_FRAME(0, 5),
         ANIMCMD_END
     };
 
     static const union AnimCmd *const sAnims_Cursor[] =
     {
-        [CURSOR_ANIM_BOUNCE] = sAnim_Cursor_Bouncing,
+        [CURSOR_ANIM_BOUNCE] = sAnim_Cursor_Still,
         [CURSOR_ANIM_STILL]  = sAnim_Cursor_Still,
-        [CURSOR_ANIM_OPEN]   = sAnim_Cursor_Open,
-        [CURSOR_ANIM_FIST]   = sAnim_Cursor_Fist
+        [CURSOR_ANIM_OPEN]   = sAnim_Cursor_Still,
+        [CURSOR_ANIM_FIST]   = sAnim_Cursor_Still,
+        [CURSOR_ANIM_FLASH]  = sAnim_Cursor_Flash,
     };
 
     static const struct SpriteTemplate sSpriteTemplate_Cursor =
@@ -7943,6 +8222,9 @@ static void CreateCursorSprites(void)
         .paletteTag = PALTAG_MISC_2,
         .oam = &sOamData_Cursor,
         .anims = sAnims_Cursor,
+        .images = NULL,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy,
     };
 
     static const struct SpriteTemplate sSpriteTemplate_CursorShadow =
@@ -7950,47 +8232,33 @@ static void CreateCursorSprites(void)
         .tileTag = GFXTAG_CURSOR_SHADOW,
         .paletteTag = PALTAG_MISC_2,
         .oam = &sOamData_CursorShadow,
+        .anims = gDummySpriteAnimTable,
+        .images = NULL,
+        .affineAnims = gDummySpriteAffineAnimTable,
         .callback = SpriteCB_CursorShadow,
     };
 
     LoadSpriteSheets(spriteSheets);
-    LoadSpritePalettes(spritePalettes);
-    sStorage->cursorPalNums[0] = IndexOfSpritePaletteTag(PALTAG_MISC_2); // White hand, normal
-    sStorage->cursorPalNums[1] = IndexOfSpritePaletteTag(PALTAG_MISC_1); // Yellow hand, when auto-action is on
+    sStorage->cursorPalNums[0] = IndexOfSpritePaletteTag(PALTAG_MISC_2);
+    sStorage->cursorPalNums[1] = sStorage->cursorPalNums[0];
 
     GetCursorCoordsByPos(sCursorArea, sCursorPosition, &x, &y);
-    spriteId = CreateSpriteUnchecked(&sSpriteTemplate_Cursor, x, y, 6);
+    spriteId = CreateSpriteUnchecked(&sSpriteTemplate_Cursor, x, y, 21);
     if (spriteId != MAX_SPRITES)
     {
         sStorage->cursorSprite = &gSprites[spriteId];
-        sStorage->cursorSprite->oam.paletteNum = sStorage->cursorPalNums[sAutoActionOn];
-        sStorage->cursorSprite->oam.priority = 1;
-        if (sIsMonBeingMoved)
-            StartSpriteAnim(sStorage->cursorSprite, CURSOR_ANIM_FIST);
+        OrchidPC_UpdateRing();
     }
     else
     {
         sStorage->cursorSprite = NULL;
     }
 
-    if (sCursorArea == CURSOR_AREA_IN_PARTY)
-    {
-        subpriority = 13;
-        priority = 1;
-    }
-    else
-    {
-        subpriority = 21;
-        priority = 2;
-    }
-
-    spriteId = CreateSpriteUnchecked(&sSpriteTemplate_CursorShadow, 0, 0, subpriority);
+    spriteId = CreateSpriteUnchecked(&sSpriteTemplate_CursorShadow, 0, 0, 22);
     if (spriteId != MAX_SPRITES)
     {
         sStorage->cursorShadowSprite = &gSprites[spriteId];
-        sStorage->cursorShadowSprite->oam.priority = priority;
-        if (sCursorArea)
-            sStorage->cursorShadowSprite->invisible = TRUE;
+        sStorage->cursorShadowSprite->invisible = TRUE;
     }
     else
     {
@@ -8059,7 +8327,7 @@ static void InitMenu(void)
     sStorage->menuItemsCount = 0;
     sStorage->menuWidth = 0;
     sStorage->menuWindow.bg = 0;
-    sStorage->menuWindow.paletteNum = 15;
+    sStorage->menuWindow.paletteNum = OPC_BG_WINDOW;
     sStorage->menuWindow.baseBlock = 92;
 }
 
@@ -8077,7 +8345,7 @@ static const u8 *const sMenuTexts[] =
     [MENU_RELEASE]    = COMPOUND_STRING("RELEASE"),
     [MENU_MARK]       = COMPOUND_STRING("MARK"),
     [MENU_JUMP]       = COMPOUND_STRING("JUMP"),
-    [MENU_WALLPAPER]  = COMPOUND_STRING("WALLPAPER"),
+    [MENU_WALLPAPER]  = COMPOUND_STRING("COLOUR"), // Orchid: box colours replace wallpapers
     [MENU_NAME]       = COMPOUND_STRING("NAME"),
     [MENU_TAKE]       = COMPOUND_STRING("TAKE"),
     [MENU_GIVE]       = gPCText_Give,
@@ -8134,17 +8402,19 @@ static s8 GetMenuItemTextId(u8 menuIdx)
         return sStorage->menuItems[menuIdx].textId;
 }
 
+// Orchid (mock_pc.menu): std Orchid frame anchored like vanilla (right edge tile 29, bottom tile 15), sized
+// to the widest text in pixels; the gold pill marks the row, no ▶.
 static void AddMenu(void)
 {
-    sStorage->menuWindow.width = sStorage->menuWidth + 2;
+    sStorage->menuWindow.width = GetOrchidPillMenuWidth((void *)sStorage->menuItems, sStorage->menuItemsCount);
     sStorage->menuWindow.height = 2 * sStorage->menuItemsCount;
     sStorage->menuWindow.tilemapLeft = 29 - sStorage->menuWindow.width;
     sStorage->menuWindow.tilemapTop = 15 - sStorage->menuWindow.height;
     sStorage->menuWindowId = AddWindow(&sStorage->menuWindow);
     ClearWindowTilemap(sStorage->menuWindowId);
-    DrawStdFrameWithCustomTileAndPalette(sStorage->menuWindowId, FALSE, 11, 14);
-    PrintMenuTable(sStorage->menuWindowId, sStorage->menuItemsCount, (void *)sStorage->menuItems);
-    InitMenuInUpperLeftCornerNormal(sStorage->menuWindowId, sStorage->menuItemsCount, 0);
+    DrawStdFrameWithCustomTileAndPalette(sStorage->menuWindowId, FALSE, OPC_FRAME_TILE, OPC_BG_WINDOW);
+    InitOrchidPillMenu(sStorage->menuWindowId, sStorage->menuItemsCount, (void *)sStorage->menuItems, 0);
+    PutWindowTilemap(sStorage->menuWindowId);
     ScheduleBgCopyTilemapToVram(0);
 }
 
@@ -8296,7 +8566,8 @@ static bool8 MultiMove_Start(void)
     {
     case 0:
         HideBg(0);
-        TryLoadAllMonIconPalettesAtOffset(BG_PLTT_ID(8));
+        // Orchid: the icon palettes borrow the party slot palettes (the panel is hidden in the box)
+        TryLoadAllMonIconPalettesAtOffset(BG_PLTT_ID(OPC_BG_SLOT));
         sMultiMove->state++;
         break;
     case 1:
@@ -8304,14 +8575,14 @@ static bool8 MultiMove_Start(void)
         sMultiMove->toColumn = sMultiMove->fromColumn;
         sMultiMove->toRow = sMultiMove->fromRow;
         ChangeBgX(0, -1024, BG_COORD_SET);
-        ChangeBgY(0, -1024, BG_COORD_SET);
+        ChangeBgY(0, -2048, BG_COORD_SET); // Orchid: box icons sit 4 px lower than vanilla (y 48)
         FillBgTilemapBufferRect_Palette0(0, 0, 0, 0, 0x20, 0x20);
         FillWindowPixelBuffer8Bit(sStorage->multiMoveWindowId, PIXEL_FILL(0));
         MultiMove_SetIconToBg(sMultiMove->fromColumn, sMultiMove->fromRow);
         SetBgAttribute(0, BG_ATTR_PALETTEMODE, 1);
         PutWindowTilemap(sStorage->multiMoveWindowId);
         CopyWindowToVram8Bit(sStorage->multiMoveWindowId, COPYWIN_FULL);
-        BlendPalettes(0x3F00, 8, RGB_WHITE);
+        BlendPalettes(0x3F << OPC_BG_SLOT, 8, RGB_WHITE);
         StartCursorAnim(CURSOR_ANIM_OPEN);
         SetGpuRegBits(REG_OFFSET_BG0CNT, BGCNT_256COLOR);
         sMultiMove->state++;
@@ -8345,6 +8616,7 @@ static bool8 MultiMove_Cancel(void)
         if (!IsDma3ManagerBusyWithBgCopy())
         {
             SetCursorPriorityTo1();
+            OrchidPC_UpdateRing();
             LoadPalette(GetTextWindowPalette(3), BG_PLTT_ID(13), PLTT_SIZE_4BPP);
             ShowBg(0);
             return FALSE;
@@ -8453,6 +8725,7 @@ static bool8 MultiMove_PlaceMons(void)
         {
             LoadPalette(GetTextWindowPalette(3), BG_PLTT_ID(13), PLTT_SIZE_4BPP);
             SetCursorPriorityTo1();
+            OrchidPC_UpdateRing();
             ShowBg(0);
             return FALSE;
         }
@@ -8576,7 +8849,7 @@ static void MultiMove_SetIconToBg(u8 x, u8 y)
     if (species != SPECIES_NONE)
     {
         const u8 *iconGfx = GetMonIconPtrIsEgg(species, personality, isEgg);
-        u8 index = GetValidMonIconPalIndex(species) + 8;
+        u8 index = GetValidMonIconPalIndex(species) + OPC_BG_SLOT;
 
         BlitBitmapRectToWindow4BitTo8Bit(sStorage->multiMoveWindowId,
                                          iconGfx,
@@ -8733,6 +9006,8 @@ static void MultiMove_ResetBg(void)
     ClearGpuRegBits(REG_OFFSET_BG0CNT, BGCNT_256COLOR);
     FillBgTilemapBufferRect_Palette0(0, 0, 0, 0, 32, 32);
     CopyBgTilemapBufferToVram(0);
+    OrchidPC_LoadSlotPalettes();
+    OrchidPC_ContentsChanged();
 }
 
 static u8 MultiMove_GetOrigin(void)
@@ -8926,6 +9201,9 @@ static void TryLoadItemIconAtPos(u8 cursorArea, u8 cursorPos)
         LoadItemIconGfx(id, tiles, pal);
         SetItemIconAffineAnim(id, ITEM_ANIM_APPEAR);
         SetItemIconActive(id, TRUE);
+        // Orchid: an item resting on a Pokémon shows as its hold tag + the info disc, not as an icon
+        if (id < MAX_ITEM_ICONS)
+            sStorage->itemIcons[id].sprite->invisible = TRUE;
     }
 }
 
@@ -8969,6 +9247,7 @@ static void TakeItemFromMon(u8 cursorArea, u8 cursorPos)
     }
 
     sStorage->movingItemId = sStorage->displayMonItemId;
+    OrchidPC_ContentsChanged();
 }
 
 static void InitItemIconInCursor(enum Item itemId)
@@ -9014,6 +9293,7 @@ static void SwapItemsWithMon(u8 cursorArea, u8 cursorPos)
     id = GetItemIconIdxByPosition(CURSOR_AREA_IN_HAND, 0);
     SetItemIconAffineAnim(id, ITEM_ANIM_PUT_DOWN);
     SetItemIconCallback(id, ITEM_CB_SWAP_TO_MON, cursorArea, cursorPos);
+    OrchidPC_ContentsChanged();
 }
 
 static void GiveItemToMon(u8 cursorArea, u8 cursorPos)
@@ -9039,6 +9319,7 @@ static void GiveItemToMon(u8 cursorArea, u8 cursorPos)
         SetPartyMonIconObjMode(cursorPos, ST_OAM_OBJ_NORMAL);
         SetMonFormPSS_ItemHold(&mon->box);
     }
+    OrchidPC_ContentsChanged();
 }
 
 static void MoveItemFromMonToBag(u8 cursorArea, u8 cursorPos)
@@ -9066,6 +9347,7 @@ static void MoveItemFromMonToBag(u8 cursorArea, u8 cursorPos)
         SetPartyMonIconObjMode(cursorPos, ST_OAM_OBJ_BLEND);
         SetMonFormPSS_ItemHold(&mon->box);
     }
+    OrchidPC_ContentsChanged();
 }
 
 static void MoveItemFromCursorToBag(void)
@@ -9204,27 +9486,23 @@ static void SetItemIconPosition(u8 id, u8 cursorArea, u8 cursorPos)
     if (id >= MAX_ITEM_ICONS)
         return;
 
+    // Orchid: resting spots are hidden (hold tag + info disc instead); they are where the pick-up / put-down
+    // flight starts or ends, 12 frames of (10, 21) / 16 px away from the carried spot (cursor + (4, -10)).
     switch (cursorArea)
     {
     case CURSOR_AREA_IN_BOX:
         x = cursorPos % IN_BOX_COLUMNS;
         y = cursorPos / IN_BOX_COLUMNS;
-        sStorage->itemIcons[id].sprite->x = (24 * x) + 112;
-        sStorage->itemIcons[id].sprite->y = (24 * y) + 56;
+        sStorage->itemIcons[id].sprite->x = (OPC_SLOT_PITCH * x) + OPC_SLOT_X0 + 12;
+        sStorage->itemIcons[id].sprite->y = (OPC_SLOT_PITCH * y) + OPC_SLOT_Y0 + 6;
         sStorage->itemIcons[id].sprite->oam.priority = 2;
+        sStorage->itemIcons[id].sprite->invisible = TRUE;
         break;
     case CURSOR_AREA_IN_PARTY:
-        if (cursorPos == 0)
-        {
-            sStorage->itemIcons[id].sprite->x = 116;
-            sStorage->itemIcons[id].sprite->y = 76;
-        }
-        else
-        {
-            sStorage->itemIcons[id].sprite->x = 164;
-            sStorage->itemIcons[id].sprite->y = 24 * (cursorPos - 1) + 28;
-        }
+        sStorage->itemIcons[id].sprite->x = OPC_PSLOT_X0 + OPC_PSLOT_DX * (cursorPos % 2) + OPC_PICON_DX + 12;
+        sStorage->itemIcons[id].sprite->y = OPC_PSLOT_Y0 + OPC_PSLOT_DY * (cursorPos / 2) + OPC_PICON_DY + 6;
         sStorage->itemIcons[id].sprite->oam.priority = 1;
+        sStorage->itemIcons[id].sprite->invisible = TRUE;
         break;
     }
 
@@ -9407,6 +9685,7 @@ static void SpriteCB_ItemIcon_ToHand(struct Sprite *sprite)
         sprite->data[5] = 0;
         sprite->sState++;
     case 1:
+        sprite->invisible = FALSE;
         sprite->data[1] -= sprite->data[3];
         sprite->data[2] -= sprite->data[4];
         sprite->x = sprite->data[1] >> 4;
@@ -9417,11 +9696,13 @@ static void SpriteCB_ItemIcon_ToHand(struct Sprite *sprite)
     }
 }
 
+// Orchid: the carried item floats OPC_LIFT px above the cursor slot, like a held Pokémon (mock state 8)
 static void SpriteCB_ItemIcon_SetPosToCursor(struct Sprite *sprite)
 {
+    sprite->invisible = FALSE;
     sprite->x = sStorage->cursorSprite->x + 4;
-    sprite->y = sStorage->cursorSprite->y + sStorage->cursorSprite->y2 + 8;
-    sprite->oam.priority = sStorage->cursorSprite->oam.priority;
+    sprite->y = sStorage->cursorSprite->y + 4 - OPC_LIFT;
+    sprite->oam.priority = 1;
 }
 
 static void SpriteCB_ItemIcon_ToMon(struct Sprite *sprite)
@@ -9436,6 +9717,7 @@ static void SpriteCB_ItemIcon_ToMon(struct Sprite *sprite)
         sprite->data[5] = 0;
         sprite->sState++;
     case 1:
+        sprite->invisible = FALSE;
         sprite->data[1] += sprite->data[3];
         sprite->data[2] += sprite->data[4];
         sprite->x = sprite->data[1] >> 4;
@@ -9466,6 +9748,7 @@ static void SpriteCB_ItemIcon_SwapToHand(struct Sprite *sprite)
         sprite->x = sprite->data[1] >> 4;
         sprite->y = sprite->data[2] >> 4;
         sprite->x2 = gSineTable[sprite->data[5] * 8] >> 4;
+        sprite->invisible = FALSE;
         if (++sprite->data[5] > 11)
         {
             SetItemIconPosition(GetItemIconIdxBySprite(sprite), sprite->sCursorArea, sprite->sCursorPos);
@@ -9493,6 +9776,7 @@ static void SpriteCB_ItemIcon_SwapToMon(struct Sprite *sprite)
         sprite->x = sprite->data[1] >> 4;
         sprite->y = sprite->data[2] >> 4;
         sprite->x2 = -(gSineTable[sprite->data[5] * 8] >> 4);
+        sprite->invisible = FALSE;
         if (++sprite->data[5] > 11)
         {
             SetItemIconPosition(GetItemIconIdxBySprite(sprite), sprite->sCursorArea, sprite->sCursorPos);
@@ -9503,10 +9787,11 @@ static void SpriteCB_ItemIcon_SwapToMon(struct Sprite *sprite)
     }
 }
 
+// Orchid: the party panel slides down to close
 static void SpriteCB_ItemIcon_HideParty(struct Sprite *sprite)
 {
-    sprite->y -= 8;
-    if (sprite->y + sprite->y2 < -16)
+    sprite->y += 8;
+    if (sprite->y + sprite->y2 > DISPLAY_HEIGHT + 16)
     {
         sprite->callback = SpriteCallbackDummy;
         SetItemIconActive(GetItemIconIdxBySprite(sprite), FALSE);
@@ -9792,246 +10077,6 @@ void SetWaldaPhrase(const u8 *src)
 bool32 IsWaldaPhraseEmpty(void)
 {
     return (gSaveBlock1Ptr->waldaPhrase.text[0] == EOS);
-}
-
-
-//------------------------------------------------------------------------------
-//  SECTION: TilemapUtil
-//
-//  Handles 3 particular tilemaps in a somewhat unusual way.
-//  For example, while the cursor is on the Close Box button it flashes between
-//  two states alternately. Both these states are their own part of the same
-//  tilemap that's always present. The utility shifts the tilemap up and down
-//  to show/hide the states, and limits the view with a rectangle that only
-//  reveals one at a time.
-//  Each tilemap is tracked with a TILEMAPID that can be used to reference it.
-//------------------------------------------------------------------------------
-
-
-struct TilemapUtil_RectData
-{
-    s16 x;
-    s16 y;
-    u16 width;
-    u16 height;
-    s16 destX;
-    s16 destY;
-};
-
-struct TilemapUtil
-{
-    struct TilemapUtil_RectData prev; // Only read in unused function
-    struct TilemapUtil_RectData cur;
-    const void *savedTilemap; // Only written in unused function
-    const void *tilemap;
-    u16 altWidth;
-    u16 altHeight; // Never read
-    u16 width;
-    u16 height; // Never read
-    u16 rowSize; // Never read
-    u8 tileSize;
-    u8 bg;
-    bool8 active;
-};
-
-EWRAM_DATA static struct TilemapUtil *sTilemapUtil = NULL;
-EWRAM_DATA static u16 sNumTilemapUtilIds = 0;
-
-static void TilemapUtil_Init(u8 count)
-{
-    u16 i;
-
-    sTilemapUtil = Alloc(sizeof(*sTilemapUtil) * count);
-    sNumTilemapUtilIds = (sTilemapUtil == NULL) ? 0 : count;
-    for (i = 0; i < sNumTilemapUtilIds; i++)
-    {
-        sTilemapUtil[i].savedTilemap = NULL;
-        sTilemapUtil[i].active = FALSE;
-    }
-}
-
-static void TilemapUtil_Free(void)
-{
-    Free(sTilemapUtil);
-}
-
-static void UNUSED TilemapUtil_UpdateAll(void)
-{
-    s32 i;
-
-    for (i = 0; i < sNumTilemapUtilIds; i++)
-    {
-        if (sTilemapUtil[i].active == TRUE)
-            TilemapUtil_Update(i);
-    }
-}
-
-struct
-{
-    u16 width;
-    u16 height;
-} static const sTilemapDimensions[][4] =
-{
-    [BG_TYPE_NORMAL] = {
-        { 256,  256},
-        { 512,  256},
-        { 256,  512},
-        { 512,  512},
-    },
-    [BG_TYPE_AFFINE] = {
-        { 128,  128},
-        { 256,  256},
-        { 512,  512},
-        {1024, 1024},
-    },
-};
-
-static void TilemapUtil_SetMap(u8 id, u8 bg, const void *tilemap, u16 width, u16 height)
-{
-    u16 bgScreenSize, bgType;
-
-    if (id >= sNumTilemapUtilIds)
-        return;
-
-    sTilemapUtil[id].savedTilemap = NULL;
-    sTilemapUtil[id].tilemap = tilemap;
-    sTilemapUtil[id].bg = bg;
-    sTilemapUtil[id].width = width;
-    sTilemapUtil[id].height = height;
-
-    bgScreenSize = GetBgAttribute(bg, BG_ATTR_SCREENSIZE);
-    bgType = GetBgAttribute(bg, BG_ATTR_TYPE);
-    sTilemapUtil[id].altWidth = sTilemapDimensions[bgType][bgScreenSize].width;
-    sTilemapUtil[id].altHeight = sTilemapDimensions[bgType][bgScreenSize].height;
-    if (bgType != BG_TYPE_NORMAL)
-        sTilemapUtil[id].tileSize = 1;
-    else
-        sTilemapUtil[id].tileSize = 2;
-
-    sTilemapUtil[id].rowSize = sTilemapUtil[id].tileSize * width;
-    sTilemapUtil[id].cur.width = width;
-    sTilemapUtil[id].cur.height = height;
-    sTilemapUtil[id].cur.x = 0;
-    sTilemapUtil[id].cur.y = 0;
-    sTilemapUtil[id].cur.destX = 0;
-    sTilemapUtil[id].cur.destY = 0;
-    sTilemapUtil[id].prev = sTilemapUtil[id].cur;
-    sTilemapUtil[id].active = TRUE;
-}
-
-static void UNUSED TilemapUtil_SetSavedMap(u8 id, const void *tilemap)
-{
-    if (id >= sNumTilemapUtilIds)
-        return;
-
-    sTilemapUtil[id].savedTilemap = tilemap;
-    sTilemapUtil[id].active = TRUE;
-}
-
-static void TilemapUtil_SetPos(u8 id, u16 x, u16 y)
-{
-    if (id >= sNumTilemapUtilIds)
-        return;
-
-    sTilemapUtil[id].cur.destX = x;
-    sTilemapUtil[id].cur.destY = y;
-    sTilemapUtil[id].active = TRUE;
-}
-
-static void TilemapUtil_SetRect(u8 id, u16 x, u16 y, u16 width, u16 height)
-{
-    if (id >= sNumTilemapUtilIds)
-        return;
-
-    sTilemapUtil[id].cur.x = x;
-    sTilemapUtil[id].cur.y = y;
-    sTilemapUtil[id].cur.width = width;
-    sTilemapUtil[id].cur.height = height;
-    sTilemapUtil[id].active = TRUE;
-}
-
-static void TilemapUtil_Move(u8 id, u8 mode, s8 val)
-{
-    if (id >= sNumTilemapUtilIds)
-        return;
-
-    switch (mode)
-    {
-    case 0:
-        sTilemapUtil[id].cur.destX += val;
-        sTilemapUtil[id].cur.width -= val;
-        break;
-    case 1:
-        sTilemapUtil[id].cur.x += val;
-        sTilemapUtil[id].cur.width += val;
-        break;
-    case 2:
-        sTilemapUtil[id].cur.destY += val;
-        sTilemapUtil[id].cur.height -= val;
-        break;
-    case 3:
-        sTilemapUtil[id].cur.y -= val;
-        sTilemapUtil[id].cur.height += val;
-        break;
-    case 4:
-        sTilemapUtil[id].cur.destX += val;
-        break;
-    case 5:
-        sTilemapUtil[id].cur.destY += val;
-        break;
-    }
-
-    sTilemapUtil[id].active = TRUE;
-}
-
-static void TilemapUtil_Update(u8 id)
-{
-    if (id >= sNumTilemapUtilIds)
-        return;
-
-    if (sTilemapUtil[id].savedTilemap != NULL)
-        TilemapUtil_DrawPrev(id); // Never called, above always FALSE
-
-    TilemapUtil_Draw(id);
-    sTilemapUtil[id].prev = sTilemapUtil[id].cur;
-}
-
-static void TilemapUtil_DrawPrev(u8 id)
-{
-    s32 i;
-    u32 adder = sTilemapUtil[id].tileSize * sTilemapUtil[id].altWidth;
-    const void *tiles = (sTilemapUtil[id].savedTilemap + (adder * sTilemapUtil[id].prev.destY))
-                      + (sTilemapUtil[id].tileSize * sTilemapUtil[id].prev.destX);
-
-    for (i = 0; i < sTilemapUtil[id].prev.height; i++)
-    {
-        CopyToBgTilemapBufferRect(sTilemapUtil[id].bg,
-                                  tiles,
-                                  sTilemapUtil[id].prev.destX,
-                                  sTilemapUtil[id].prev.destY + i,
-                                  sTilemapUtil[id].prev.width,
-                                  1);
-        tiles += adder;
-    }
-}
-
-static void TilemapUtil_Draw(u8 id)
-{
-    s32 i;
-    u32 adder = sTilemapUtil[id].tileSize * sTilemapUtil[id].width;
-    const void *tiles = (sTilemapUtil[id].tilemap + (adder * sTilemapUtil[id].cur.y))
-                      + (sTilemapUtil[id].tileSize * sTilemapUtil[id].cur.x);
-
-    for (i = 0; i < sTilemapUtil[id].cur.height; i++)
-    {
-        CopyToBgTilemapBufferRect(sTilemapUtil[id].bg,
-                                  tiles,
-                                  sTilemapUtil[id].cur.destX,
-                                  sTilemapUtil[id].cur.destY + i,
-                                  sTilemapUtil[id].cur.width,
-                                  1);
-        tiles += adder;
-    }
 }
 
 

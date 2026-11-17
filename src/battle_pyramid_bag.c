@@ -1520,7 +1520,10 @@ static void CloseMenuActionWindowById(u8 windowArrayId)
 
 static void CreatePyramidBagYesNo(u8 taskId, const struct YesNoFuncTable *yesNoTable)
 {
-    CreateYesNoMenuWithCallbacks(taskId, &sWindowTemplates_MenuActions[MENU_WIN_YESNO], 1, 0, 2, 1, 0xE, yesNoTable);
+    // Orchid YES/NO: Orchid frame after the last BG1 window, pill + accent colours into the std palette's 10-15
+    LoadOrchidYesNoFrame(1, 0x22C);
+    LoadOrchidYesNoColors(15, FALSE);
+    CreateOrchidYesNoMenuWithCallbacks(taskId, &sWindowTemplates_MenuActions[MENU_WIN_YESNO], 0x22C, 15, yesNoTable);
 }
 
 void DisplayItemMessageInBattlePyramid(u8 taskId, const u8 *str, TaskFunc callback)

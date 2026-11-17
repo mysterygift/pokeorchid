@@ -75,6 +75,12 @@ const u16 gMetatileAttributes_UrbanInterior[] = INCBIN_U16("data/tilesets/second
 const u16 gMetatiles_HawkerCentre[] = INCBIN_U16("data/tilesets/secondary/hawker_centre/metatiles.bin");
 const u16 gMetatileAttributes_HawkerCentre[] = INCBIN_U16("data/tilesets/secondary/hawker_centre/metatile_attributes.bin");
 
+const u16 gMetatiles_TosaPort[] = INCBIN_U16("data/tilesets/secondary/tosa_port/metatiles.bin");
+const u16 gMetatileAttributes_TosaPort[] = INCBIN_U16("data/tilesets/secondary/tosa_port/metatile_attributes.bin");
+
+const u16 gMetatiles_ColdStorage[] = INCBIN_U16("data/tilesets/secondary/cold_storage/metatiles.bin");
+const u16 gMetatileAttributes_ColdStorage[] = INCBIN_U16("data/tilesets/secondary/cold_storage/metatile_attributes.bin");
+
 const u16 gMetatiles_PokemonFanClub[] = INCBIN_U16("data/tilesets/secondary/pokemon_fan_club/metatiles.bin");
 const u16 gMetatileAttributes_PokemonFanClub[] = INCBIN_U16("data/tilesets/secondary/pokemon_fan_club/metatile_attributes.bin");
 

@@ -14,6 +14,7 @@
 #include "match_call.h"
 #include "menu.h"
 #include "menu_helpers.h"
+#include "overworld.h"
 #include "palette.h"
 #include "pokedex.h"
 #include "pokemon_icon.h"
@@ -25,6 +26,8 @@
 #include "task.h"
 #include "text_window.h"
 #include "window.h"
+#include "constants/orchid_ui.h"
+#include "constants/rgb.h"
 #include "constants/songs.h"
 
 struct MenuInfoIcon
@@ -70,6 +73,23 @@ static EWRAM_DATA struct Menu sMenu = {0};
 static EWRAM_DATA u16 sTileNum = 0;
 static EWRAM_DATA u8 sPaletteNum = 0;
 static EWRAM_DATA u8 sYesNoWindowId = 0;
+// Orchid YES/NO: while active, RedrawMenuCursor draws gold pill rows in this window instead of the ▶.
+static EWRAM_DATA struct {
+    bool8 pending; // set by CreateOrchidYesNoMenu, consumed by the next InitMenu
+    bool8 active;
+    u8 windowId;
+} sOrchidYesNo = {0};
+// Orchid pill menu: like the YES/NO, but for any list of MenuAction texts (PC menus). Gold pill on the
+// selected row, no ▶. Window palette = the Orchid window palette layout (export_yesno.py).
+static EWRAM_DATA struct {
+    bool8 pending; // set by InitOrchidPillMenu, consumed by the next InitMenu
+    bool8 active;
+    u8 windowId;
+    u8 count;
+    bool8 yesNoStyle; // rows drawn like the Orchid YES/NO (pill 2 px in, text at 8, PANEL_SHADE shadow)
+    const struct MenuAction *items;
+    void (*drawRows)(u8 selected); // InitOrchidCustomMenu: the screen draws its own rows (start menu)
+} sOrchidPillMenu = {0};
 static EWRAM_DATA u8 sHofPCTopBarWindowId = 0;
 static EWRAM_DATA bool8 sScheduledBgCopiesToVram[4] = {FALSE};
 static EWRAM_DATA u16 sTempTileDataBufferIdx = 0;
@@ -99,6 +119,18 @@ static const struct WindowTemplate sYesNo_WindowTemplates =
     .width = 5,
     .height = 4,
     .paletteNum = 15,
+    .baseBlock = 0x125
+};
+
+// Orchid field YES/NO: 2 tiles right of vanilla so its frame ends at x=232 like the other Orchid popups.
+static const struct WindowTemplate sOrchidYesNo_FieldWindowTemplate =
+{
+    .bg = 0,
+    .tilemapLeft = 23,
+    .tilemapTop = 9,
+    .width = 5,
+    .height = 4,
+    .paletteNum = ORCHID_YESNO_FIELD_PAL,
     .baseBlock = 0x125
 };
 
@@ -380,20 +412,26 @@ void DisplayItemMessageOnField(u8 taskId, const u8 *string, TaskFunc callback)
     CopyWindowToVram(0, COPYWIN_FULL);
 }
 
+// Orchid: in the overworld (script questions, save prompt, PC, decorations ...) the YES/NO is the
+// Orchid one. Other screens that call these (Berry Crush, roulette) keep the vanilla box.
 void DisplayYesNoMenuDefaultYes(void)
 {
-    CreateYesNoMenu(&sYesNo_WindowTemplates, STD_WINDOW_BASE_TILE_NUM, STD_WINDOW_PALETTE_NUM, 0);
+    DisplayYesNoMenuWithDefault(0);
 }
 
 void DisplayYesNoMenuWithDefault(u8 initialCursorPos)
 {
-    CreateYesNoMenu(&sYesNo_WindowTemplates, STD_WINDOW_BASE_TILE_NUM, STD_WINDOW_PALETTE_NUM, initialCursorPos);
+    if (gMain.callback2 == CB2_Overworld)
+        CreateOrchidFieldYesNoMenu(&sOrchidYesNo_FieldWindowTemplate, initialCursorPos);
+    else
+        CreateYesNoMenu(&sYesNo_WindowTemplates, STD_WINDOW_BASE_TILE_NUM, STD_WINDOW_PALETTE_NUM, initialCursorPos);
 }
 
 u8 AddStartMenuWindow(u8 numActions)
 {
     if (sStartMenuWindowId == WINDOW_NONE)
-        sStartMenuWindowId = AddWindowParameterized(0, 22, 1, 7, (numActions * 2) + 2, 15, 0x139);
+        // Orchid start menu (mock_system.start_menu): tiles 20-28, Orchid field window palette
+        sStartMenuWindowId = AddWindowParameterized(0, 20, 1, 9, numActions * 2, ORCHID_YESNO_FIELD_PAL, 0x139);
     return sStartMenuWindowId;
 }
 
@@ -633,6 +671,16 @@ void HofPCTopBar_RemoveWindow(void)
     }
 }
 
+// The Orchid YES/NO owns the menu only if the init right after CreateOrchidYesNoMenu is for its window;
+// any other menu init turns it off, so multichoice / list menus always keep their ▶.
+static void OrchidYesNo_OnMenuInit(u8 windowId)
+{
+    sOrchidYesNo.active = sOrchidYesNo.pending && windowId == sOrchidYesNo.windowId;
+    sOrchidYesNo.pending = FALSE;
+    sOrchidPillMenu.active = sOrchidPillMenu.pending && windowId == sOrchidPillMenu.windowId;
+    sOrchidPillMenu.pending = FALSE;
+}
+
 static u8 InitMenu(u8 windowId, u8 fontId, u8 left, u8 top, u8 cursorHeight, u8 numChoices, u8 initialCursorPos, bool8 muteAPress)
 {
     s32 pos;
@@ -645,6 +693,7 @@ static u8 InitMenu(u8 windowId, u8 fontId, u8 left, u8 top, u8 cursorHeight, u8 
     sMenu.fontId = fontId;
     sMenu.optionHeight = cursorHeight;
     sMenu.APressMuted = muteAPress;
+    OrchidYesNo_OnMenuInit(windowId);
 
     pos = initialCursorPos;
 
@@ -669,9 +718,26 @@ static u8 UNUSED InitMenuDefaultCursorHeight(u8 windowId, u8 fontId, u8 left, u8
     return InitMenuNormal(windowId, fontId, left, top, cursorHeight, numChoices, initialCursorPos);
 }
 
+static void OrchidYesNo_DrawRows(u8 selected);
+static void OrchidPillMenu_DrawRows(u8 selected);
+
 void RedrawMenuCursor(u8 oldPos, u8 newPos)
 {
     u8 width, height;
+
+    if (sOrchidYesNo.active && sMenu.windowId == sOrchidYesNo.windowId)
+    {
+        OrchidYesNo_DrawRows(newPos);
+        return;
+    }
+    if (sOrchidPillMenu.active && sMenu.windowId == sOrchidPillMenu.windowId)
+    {
+        if (sOrchidPillMenu.drawRows != NULL)
+            sOrchidPillMenu.drawRows(newPos);
+        else
+            OrchidPillMenu_DrawRows(newPos);
+        return;
+    }
 
     width = GetMenuCursorDimensionByFont(sMenu.fontId, 0);
     height = GetMenuCursorDimensionByFont(sMenu.fontId, 1);
@@ -954,8 +1020,250 @@ s8 Menu_ProcessInputNoWrapClearOnChoose(void)
 
 void EraseYesNoWindow(void)
 {
+    if (sOrchidYesNo.windowId == sYesNoWindowId)
+        sOrchidYesNo.active = FALSE;
     ClearStdWindowAndFrameToTransparent(sYesNoWindowId, TRUE);
     RemoveWindow(sYesNoWindowId);
+}
+
+// ---------------------------------------------------------------- Orchid YES/NO
+// Port of kit.rounded_box (dev_scripts/orchid_ui/kit.py), pixel for pixel: Gen 3 rounded box with an
+// ink outline and a light top-left / dark bottom-right bevel, drawn into a window's bitmap.
+static const u8 sOrchidRoundInset[5][5] = {{0}, {1, 0}, {2, 1, 0}, {3, 1, 1, 0}, {4, 2, 1, 1, 0}};
+
+static s32 OrchidRoundInset(s32 r, s32 y, s32 h)
+{
+    s32 fromBottom = h - 1 - y;
+
+    if (r < 0 || r > 4)
+        return 0;
+    if (y >= 0 && y < r)
+        return sOrchidRoundInset[r][y];
+    if (fromBottom >= 0 && fromBottom < r)
+        return sOrchidRoundInset[r][fromBottom];
+    return 0;
+}
+
+static void OrchidHLine(u8 windowId, s32 x0, s32 x1, s32 y, u8 color)
+{
+    if (x1 >= x0)
+        FillWindowPixelRect(windowId, PIXEL_FILL(color), x0, y, x1 - x0 + 1, 1);
+}
+
+void OrchidDrawRoundedBox(u8 windowId, s32 x0, s32 y0, s32 w, s32 h, s32 r, u8 face, u8 outline, u8 light, u8 shade)
+{
+    s32 x, y, ins, ins2;
+
+    for (y = 0; y < h; y++)
+    {
+        ins = OrchidRoundInset(r, y, h);
+        OrchidHLine(windowId, x0 + ins, x0 + w - 1 - ins, y0 + y, face);
+        OrchidHLine(windowId, x0 + ins, x0 + ins, y0 + y, outline);
+        OrchidHLine(windowId, x0 + w - 1 - ins, x0 + w - 1 - ins, y0 + y, outline);
+    }
+    ins = OrchidRoundInset(r, 0, h);
+    OrchidHLine(windowId, x0 + ins, x0 + w - 1 - ins, y0, outline);
+    OrchidHLine(windowId, x0 + ins, x0 + w - 1 - ins, y0 + h - 1, outline);
+    // diagonal corner pixels so the outline is closed
+    for (y = 1; y < h - 1; y++)
+    {
+        ins = OrchidRoundInset(r, y, h);
+        ins2 = OrchidRoundInset(r, y - 1, h);
+        for (x = ins + 1; x < ins2; x++)
+        {
+            s32 yy = (y <= h / 2) ? y0 + y - 1 : y0 + y;
+            OrchidHLine(windowId, x0 + x, x0 + x, yy, outline);
+            OrchidHLine(windowId, x0 + w - 1 - x, x0 + w - 1 - x, yy, outline);
+        }
+    }
+    for (y = h - 2; y > 0; y--)
+    {
+        ins = OrchidRoundInset(r, y, h);
+        ins2 = OrchidRoundInset(r, y + 1, h);
+        for (x = ins + 1; x < ins2; x++)
+        {
+            OrchidHLine(windowId, x0 + x, x0 + x, y0 + y + 1, outline);
+            OrchidHLine(windowId, x0 + w - 1 - x, x0 + w - 1 - x, y0 + y + 1, outline);
+        }
+    }
+    // bevel
+    for (y = 1; y < h - 1; y++)
+    {
+        ins = OrchidRoundInset(r, y, h);
+        if (y == 1)
+        {
+            OrchidHLine(windowId, x0 + ins + 1, x0 + w - 2 - ins, y0 + y, light);
+        }
+        else if (y == h - 2)
+        {
+            OrchidHLine(windowId, x0 + ins + 1, x0 + w - 2 - ins, y0 + y, shade);
+        }
+        else
+        {
+            OrchidHLine(windowId, x0 + ins + 1, x0 + ins + 1, y0 + y, light);
+            OrchidHLine(windowId, x0 + w - 2 - ins, x0 + w - 2 - ins, y0 + y, shade);
+        }
+    }
+}
+
+// The 9 Orchid frame tiles (Orchid window palette layout) at frameTile on bg.
+void LoadOrchidYesNoFrame(u8 bg, u16 frameTile)
+{
+    LoadBgTiles(bg, gOrchidYesNoFrame_Gfx, 9 * TILE_SIZE_4BPP, frameTile);
+}
+
+// wholePalette: the full Orchid window palette into a free slot. Otherwise only entries 10-15 (gold pill
+// + frame accent), for a screen whose window palette is the standard menu palette (10-15 unused).
+void LoadOrchidYesNoColors(u8 palSlot, bool32 wholePalette)
+{
+    if (wholePalette)
+        LoadPalette(gOrchidYesNoFrame_Pal, BG_PLTT_ID(palSlot), PLTT_SIZE_4BPP);
+    else
+        LoadPalette(&gOrchidYesNoFrame_Pal[ORCHID_PILL_SHADE], BG_PLTT_ID(palSlot) + ORCHID_PILL_SHADE, PLTT_SIZEOF(6));
+}
+
+static const u8 sOrchidYesNoTextColors[3] = {TEXT_COLOR_TRANSPARENT, TEXT_COLOR_DARK_GRAY, TEXT_COLOR_LIGHT_GRAY};
+
+static void OrchidYesNo_DrawRows(u8 selected)
+{
+    u8 windowId = sOrchidYesNo.windowId;
+    u32 width = GetWindowAttribute(windowId, WINDOW_WIDTH) * 8;
+    u32 row;
+
+    for (row = 0; row < 2; row++)
+    {
+        FillWindowPixelRect(windowId, PIXEL_FILL(TEXT_COLOR_WHITE), 0, row * 16, width, 16);
+        if (row == selected)
+            OrchidDrawRoundedBox(windowId, 2, row * 16 + 1, width - 4, 14, 4, ORCHID_PILL_FACE, TEXT_COLOR_DARK_GRAY, ORCHID_PILL_LIGHT, ORCHID_PILL_SHADE);
+    }
+    AddTextPrinterParameterized4(windowId, FONT_NORMAL, 8, 0, 0, 0, sOrchidYesNoTextColors, TEXT_SKIP_DRAW, gText_Yes);
+    AddTextPrinterParameterized4(windowId, FONT_NORMAL, 8, 16, 0, 0, sOrchidYesNoTextColors, TEXT_SKIP_DRAW, gText_No);
+    CopyWindowToVram(windowId, COPYWIN_GFX);
+}
+
+// Orchid YES/NO: frame from frameTile / framePal (already loaded by the caller), YES / NO rows with a gold
+// pill on the selected one (no ▶). The window's palette must have the pill colours at 10-12 and text at 1-3.
+void CreateOrchidYesNoMenu(const struct WindowTemplate *window, u16 frameTile, u8 framePal, u8 initialCursorPos)
+{
+    sYesNoWindowId = AddWindow(window);
+    DrawStdFrameWithCustomTileAndPalette(sYesNoWindowId, TRUE, frameTile, framePal);
+    sOrchidYesNo.windowId = sYesNoWindowId;
+    sOrchidYesNo.pending = TRUE;
+    InitMenuInUpperLeftCornerNormal(sYesNoWindowId, 2, initialCursorPos);
+}
+
+// Pill menu rows (mock_pc.menu): white rows, the selected one a gold pill 1 px inside the window with its
+// text shadow in SELECT_DARK; text 5 px from the left. Rows are 16 px.
+static void OrchidPillMenu_DrawRows(u8 selected)
+{
+    u8 windowId = sOrchidPillMenu.windowId;
+    u32 width = GetWindowAttribute(windowId, WINDOW_WIDTH) * 8;
+    u32 row;
+    u8 colors[3] = {TEXT_COLOR_TRANSPARENT, TEXT_COLOR_DARK_GRAY, TEXT_COLOR_LIGHT_GRAY};
+
+    u32 inset = sOrchidPillMenu.yesNoStyle ? 2 : 1;
+    u32 textX = sOrchidPillMenu.yesNoStyle ? 8 : 5;
+
+    for (row = 0; row < sOrchidPillMenu.count; row++)
+    {
+        FillWindowPixelRect(windowId, PIXEL_FILL(TEXT_COLOR_WHITE), 0, row * 16, width, 16);
+        colors[2] = TEXT_COLOR_LIGHT_GRAY;
+        if (row == selected)
+        {
+            OrchidDrawRoundedBox(windowId, inset, row * 16 + 1, width - 2 * inset, 14, 4, ORCHID_PILL_FACE, TEXT_COLOR_DARK_GRAY, ORCHID_PILL_LIGHT, ORCHID_PILL_SHADE);
+            if (!sOrchidPillMenu.yesNoStyle)
+                colors[2] = ORCHID_PILL_SHADE;
+        }
+        AddTextPrinterParameterized4(windowId, FONT_NORMAL, textX, row * 16, 0, 0, colors, TEXT_SKIP_DRAW, sOrchidPillMenu.items[row].text);
+    }
+    CopyWindowToVram(windowId, COPYWIN_GFX);
+}
+
+// A menu in an Orchid window (frame already drawn by the caller): the rows are drawn by the cursor routine,
+// so there is no need to print them first. Input works as for any InitMenu menu (Menu_ProcessInput ...).
+u8 InitOrchidPillMenu(u8 windowId, u8 numItems, const struct MenuAction *items, u8 initialCursorPos)
+{
+    sOrchidPillMenu.windowId = windowId;
+    sOrchidPillMenu.count = numItems;
+    sOrchidPillMenu.items = items;
+    sOrchidPillMenu.yesNoStyle = FALSE;
+    sOrchidPillMenu.drawRows = NULL;
+    sOrchidPillMenu.pending = TRUE;
+    return InitMenuInUpperLeftCornerNormal(windowId, numItems, initialCursorPos);
+}
+
+// Same, with the rows drawn exactly like the Orchid YES/NO (mock_mart.render_menu: Poké Mart BUY / SELL / QUIT).
+u8 InitOrchidPillMenuYesNoStyle(u8 windowId, u8 numItems, const struct MenuAction *items, u8 initialCursorPos)
+{
+    sOrchidPillMenu.windowId = windowId;
+    sOrchidPillMenu.count = numItems;
+    sOrchidPillMenu.items = items;
+    sOrchidPillMenu.yesNoStyle = TRUE;
+    sOrchidPillMenu.drawRows = NULL;
+    sOrchidPillMenu.pending = TRUE;
+    return InitMenuInUpperLeftCornerNormal(windowId, numItems, initialCursorPos);
+}
+
+// A menu whose rows the caller draws (gold pill, icons ...): drawRows(selected) runs on init and on every
+// cursor move instead of the ▶. Input works as for any InitMenu menu.
+u8 InitOrchidCustomMenu(u8 windowId, u8 numItems, u8 initialCursorPos, void (*drawRows)(u8 selected))
+{
+    sOrchidPillMenu.windowId = windowId;
+    sOrchidPillMenu.count = numItems;
+    sOrchidPillMenu.items = NULL;
+    sOrchidPillMenu.yesNoStyle = FALSE;
+    sOrchidPillMenu.drawRows = drawRows;
+    sOrchidPillMenu.pending = TRUE;
+    return InitMenuInUpperLeftCornerNormal(windowId, numItems, initialCursorPos);
+}
+
+// Field windows in the Orchid window palette (BG 13): the whole palette, plus the field extras the start
+// menu, its chips and the save card use (export_system.py): 4 PANEL, 5 PANEL_DARK, 6 / 7 the player's
+// name colour (gender). The YES/NO only uses 1-3 and 10-15, so it shares the slot.
+void LoadOrchidFieldWindowPalette(void)
+{
+    u16 extras[4];
+
+    extras[0] = RGB(29, 29, 28); // PANEL (232, 232, 224)
+    extras[1] = RGB(18, 18, 19); // PANEL_DARK (144, 144, 152)
+    if (gSaveBlock2Ptr->playerGender == MALE)
+    {
+        extras[2] = ORCHID_NAME_MALE_FG;
+        extras[3] = ORCHID_NAME_MALE_SHADOW;
+    }
+    else
+    {
+        extras[2] = ORCHID_NAME_FEMALE_FG;
+        extras[3] = ORCHID_NAME_FEMALE_SHADOW;
+    }
+    LoadPalette(gOrchidYesNoFrame_Pal, BG_PLTT_ID(ORCHID_YESNO_FIELD_PAL), PLTT_SIZE_4BPP);
+    LoadPalette(extras, BG_PLTT_ID(ORCHID_YESNO_FIELD_PAL) + 4, sizeof(extras));
+}
+
+// Pixel width of the widest text, in tiles, the way the pill menu mockups size their windows.
+u32 GetOrchidPillMenuWidth(const struct MenuAction *items, u32 numItems)
+{
+    u32 i, w, maxWidth = 0;
+
+    for (i = 0; i < numItems; i++)
+    {
+        w = GetStringWidth(FONT_NORMAL, items[i].text, 0);
+        if (w > maxWidth)
+            maxWidth = w;
+    }
+    return (maxWidth + 7) / 8 + 1;
+}
+
+// Field version: loads the Orchid frame + window palette into the field's free slots (0x21D / BG pal 13).
+// The window's own palette is replaced by the Orchid window palette.
+void CreateOrchidFieldYesNoMenu(const struct WindowTemplate *window, u8 initialCursorPos)
+{
+    struct WindowTemplate template = *window;
+
+    template.paletteNum = ORCHID_YESNO_FIELD_PAL;
+    LoadOrchidYesNoFrame(template.bg, ORCHID_YESNO_FIELD_TILE);
+    LoadOrchidFieldWindowPalette();
+    CreateOrchidYesNoMenu(&template, ORCHID_YESNO_FIELD_TILE, ORCHID_YESNO_FIELD_PAL, initialCursorPos);
 }
 
 static void PrintMenuActionGridText(u8 windowId, u8 fontId, u8 left, u8 top, u8 width, u8 height, u8 columns, u8 rows, const struct MenuAction *menuActions)
@@ -1021,6 +1329,7 @@ static u8 InitMenuGrid(u8 windowId, u8 fontId, u8 left, u8 top, u8 optionWidth, 
     sMenu.minCursorPos = 0;
     sMenu.maxCursorPos = numChoices - 1;
     sMenu.windowId = windowId;
+    OrchidYesNo_OnMenuInit(windowId);
     sMenu.fontId = fontId;
     sMenu.optionWidth = optionWidth;
     sMenu.optionHeight = optionHeight;
@@ -1303,6 +1612,7 @@ u8 InitMenuInUpperLeftCorner(u8 windowId, u8 itemCount, u8 initialCursorPos, boo
     sMenu.fontId = FONT_NORMAL;
     sMenu.optionHeight = 16;
     sMenu.APressMuted = APressMuted;
+    OrchidYesNo_OnMenuInit(windowId);
 
     pos = initialCursorPos;
 
@@ -1437,6 +1747,7 @@ u8 InitMenuActionGrid(u8 windowId, u8 optionWidth, u8 columns, u8 rows, u8 initi
     sMenu.minCursorPos = 0;
     sMenu.maxCursorPos = (columns * rows) - 1;
     sMenu.windowId = windowId;
+    OrchidYesNo_OnMenuInit(windowId);
     sMenu.fontId = FONT_NORMAL;
     sMenu.optionWidth = optionWidth;
     sMenu.optionHeight = 16;

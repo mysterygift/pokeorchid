@@ -1877,6 +1877,9 @@ extern const u16 gOrchidLineupBalls_Pal[];
 extern const u32 gOrchidPartySlots_Gfx[];
 extern const u32 gOrchidPartyButtons_Gfx[];
 extern const u32 gOrchidPartyGrid_Gfx[];
+// Orchid UI: YES/NO window
+extern const u32 gOrchidYesNoFrame_Gfx[];
+extern const u16 gOrchidYesNoFrame_Pal[];
 
 // Orchid UI: dex
 extern const u32 gOrchidDexList_Gfx[];
@@ -1887,6 +1890,9 @@ extern const u32 gOrchidDexArea_Tilemap[];
 extern const u32 gOrchidDexSearch_Tilemap[];
 extern const u32 gOrchidDexCry_Tilemap[];
 extern const u32 gOrchidDexSize_Tilemap[];
+extern const u32 gOrchidDexRegistered_Tilemap[];
+extern const u32 gOrchidRegionMapFrame_Gfx[];
+extern const u32 gOrchidRegionMapFrame_Tilemap[];
 extern const u16 gOrchidDexScreen_Pal[];
 extern const u8 gOrchidDexRow_Gfx[];
 extern const u8 gOrchidDexBall_Gfx[];
@@ -1898,6 +1904,80 @@ extern const u16 gSatchelArrow_Pal[];
 extern const u8 gSatchelHMIcon_Gfx[];
 extern const u8 gTextWindowFrameOrchid_Gfx[];
 extern const u16 gTextWindowFrameOrchid_Pal[];
+
+// Orchid UI: summary
+extern const u32 gOrchidSummaryTiles_Gfx[];
+extern const u8 gOrchidSummaryBars_Gfx[];
+extern const u16 gOrchidSummaryMale_Pal[];
+extern const u16 gOrchidSummaryFemale_Pal[];
+extern const u32 gOrchidSummaryCategory_Gfx[];
+extern const u16 gOrchidSummaryCategory_Pal[];
+extern const u32 gOrchidSummaryShinyStar_Gfx[];
+extern const u16 gOrchidSummaryShinyStar_Pal[];
+
+// Orchid UI: PC storage
+extern const u8 gOrchidPcBg1_Gfx[];
+extern const u8 gOrchidPcBox_Gfx[];
+extern const u8 gOrchidPcSwatch_Gfx[];
+extern const u16 gOrchidPc_Pal[];
+extern const u16 gOrchidPcBoxColours_Pal[];
+extern const u8 gOrchidPcObj_Gfx[];
+extern const u16 gOrchidPcObj_Pal[];
+
+// Orchid UI: Poké Mart
+extern const u32 gOrchidShopBg_Gfx[];
+extern const u32 gOrchidShopBg_Tilemap[];
+extern const u16 gOrchidShopBg_Pal[];
+extern const u8 gOrchidShopQtyTag_Gfx[];
+extern const u8 gOrchidShopMsgFrame_Gfx[];
+extern const u8 gOrchidShopThumb_Gfx[];
+extern const u8 gOrchidShopChevrons_Gfx[];
+extern const u8 gOrchidShopCoin_Gfx[];
+extern const u16 gOrchidShopObj_Pal[];
+extern const u8 gOrchidShopTmDiscs_Gfx[];
+
+// Orchid UI: options
+extern const u32 gOrchidOptionsBg_Gfx[];
+extern const u32 gOrchidOptionsBg_Tilemap[];
+extern const u16 gOrchidOptionsBg_Pal[];
+extern const u8 gOrchidOptionsDone_Gfx[];
+extern const u8 gOrchidOptionsKeypad_Gfx[];
+extern const u8 gOrchidOptionsChevron_Gfx[];
+extern const u16 gOrchidOptionsChevron_Pal[];
+extern const u8 gOrchidFrame1_Gfx[];
+extern const u8 gOrchidFrame2_Gfx[];
+extern const u8 gOrchidFrame3_Gfx[];
+extern const u8 gOrchidFrame4_Gfx[];
+extern const u8 gOrchidFrame5_Gfx[];
+extern const u8 gOrchidFrame6_Gfx[];
+extern const u8 gOrchidFrame7_Gfx[];
+extern const u8 gOrchidFrame8_Gfx[];
+extern const u16 gOrchidFrame1_Pal[];
+extern const u16 gOrchidFrame2_Pal[];
+extern const u16 gOrchidFrame3_Pal[];
+extern const u16 gOrchidFrame4_Pal[];
+extern const u16 gOrchidFrame5_Pal[];
+extern const u16 gOrchidFrame6_Pal[];
+extern const u16 gOrchidFrame7_Pal[];
+extern const u16 gOrchidFrame8_Pal[];
+
+// Orchid UI: system
+extern const u8 gOrchidStartMenuIcons_Gfx[];
+extern const u16 gOrchidStartMenuIcons_Pal[];
+extern const u16 gOrchidStartMenuIconsMuted_Pal[];
+extern const u8 gOrchidSaveBall_Gfx[];
+extern const u8 gOrchidSaveSparkles_Gfx[];
+extern const u8 gOrchidSaveCard_Gfx[];
+extern const u8 gOrchidStartChips_Gfx[];
+extern const u8 gOrchidStartBanner_Gfx[];
+extern const u8 gOrchidWeatherCaps_Gfx[];
+extern const u16 gOrchidStartObj_Pal[];
+
+// Orchid UI: trainer card
+extern const u8 gOrchidCardTiles_Gfx[];
+extern const u8 gOrchidCardBadges_Gfx[];
+extern const u16 gOrchidCardBadges_Pal[];
+extern const u16 gOrchidCard_Pal[];
 
 // item menu icons graphics
 extern const u32 gBagMaleTiles[];

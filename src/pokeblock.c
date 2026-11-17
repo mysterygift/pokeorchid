@@ -1211,7 +1211,10 @@ static void PokeblockAction_Toss(u8 taskId)
 
 static void CreateTossPokeblockYesNoMenu(u8 taskId)
 {
-    CreateYesNoMenuWithCallbacks(taskId, &sTossPkblockWindowTemplate, 1, 0, 2, 1, 0xE, &sTossYesNoFuncTable);
+    // Orchid YES/NO: Orchid frame after the last BG1 window, pill + accent colours into the std palette's 10-15
+    LoadOrchidYesNoFrame(1, 0x21E);
+    LoadOrchidYesNoColors(15, FALSE);
+    CreateOrchidYesNoMenuWithCallbacks(taskId, &sTossPkblockWindowTemplate, 0x21E, 15, &sTossYesNoFuncTable);
 }
 
 static void TossedPokeblockMessage(u8 taskId)
