@@ -350,8 +350,8 @@ script TosaPort_Tuber {
 script TosaPort_ColdStorageGuard {
 	lock
 	faceplayer
-	msgbox("Sorry pal, but the site's currently\n"
-	"closed.")
+	msgbox("The site's open, pal, but mind your\n"
+	"step. The floor in there is solid ice.")
 	release
 	end
 }
