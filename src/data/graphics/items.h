@@ -2112,3 +2112,13 @@ const u16 gItemIconPalette_SwapSnack[] = INCGFX_U16("graphics/items/icon_palette
 
 const u32 gItemIcon_TwiceSpicedRadish[] = INCGFX_U32("graphics/items/icons/twice_spiced_radish.png", ".4bpp.smol");
 const u16 gItemIconPalette_TwiceSpicedRadish[] = INCGFX_U16("graphics/items/icon_palettes/twice_spiced_radish.pal", ".gbapal");
+
+// Tosa cafe items (Pokemon Orchid)
+const u32 gItemIcon_Kopi[] = INCGFX_U32("graphics/items/icons/kopi.png", ".4bpp.smol");
+const u16 gItemIconPalette_Kopi[] = INCGFX_U16("graphics/items/icon_palettes/kopi.pal", ".gbapal");
+
+const u32 gItemIcon_SteamedBao[] = INCGFX_U32("graphics/items/icons/steamed_bao.png", ".4bpp.smol");
+const u16 gItemIconPalette_SteamedBao[] = INCGFX_U16("graphics/items/icon_palettes/steamed_bao.pal", ".gbapal");
+
+const u32 gItemIcon_KayaToast[] = INCGFX_U32("graphics/items/icons/kaya_toast.png", ".4bpp.smol");
+const u16 gItemIconPalette_KayaToast[] = INCGFX_U16("graphics/items/icon_palettes/kaya_toast.pal", ".gbapal");

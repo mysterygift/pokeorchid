@@ -947,10 +947,19 @@ static enum ItemEffect StatRaiseBerry(enum BattlerId battler, enum Item itemId, 
 static enum ItemEffect CriticalHitRatioUp(enum BattlerId battler, enum Item itemId)
 {
     enum ItemEffect effect = ITEM_NO_EFFECT;
+    bool32 ready;
+
+    // Orchid: Kopi is drunk once HP is below holdEffectParam percent, and only while awake
+    if (itemId == ITEM_KOPI)
+        ready = IsBattlerAlive(battler)
+             && gBattleMons[battler].hp * 100 < gBattleMons[battler].maxHP * GetItemHoldEffectParam(itemId)
+             && !(gBattleMons[battler].status1 & STATUS1_SLEEP);
+    else
+        ready = HasEnoughHpToEatBerry(battler, GetBattlerAbility(battler), GetItemHoldEffectParam(itemId), itemId);
 
     if (!gBattleMons[battler].volatiles.focusEnergy
      && !gBattleMons[battler].volatiles.dragonCheer
-     && HasEnoughHpToEatBerry(battler, GetBattlerAbility(battler), GetItemHoldEffectParam(itemId), itemId))
+     && ready)
     {
         gBattleMons[battler].volatiles.focusEnergy = TRUE;
         BattleScriptCall(BattleScript_BerryFocusEnergy);

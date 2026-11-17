@@ -16099,6 +16099,72 @@ const struct ItemInfo gItemsInfo[] =
         .iconPic = gItemIcon_PokeshiDoll,
         .iconPalette = gItemIconPalette_PokeshiDoll,
     },
+
+    // Tosa cafe items (Pokemon Orchid)
+
+    // Kopi shares the Lansat Berry's hold effect (Focus Energy, item consumed) but has its own
+    // trigger in CriticalHitRatioUp: HP below holdEffectParam percent, and the holder awake.
+    // It is not in the Berries pocket, so Unnerve, Gluttony, Cheek Pouch etc. ignore it.
+    [ITEM_KOPI] =
+    {
+        .name = ITEM_NAME("Kopi"),
+        .pluralName = ITEM_PLURAL_NAME("Kopi"),
+        .price = 300,
+        .holdEffect = HOLD_EFFECT_CRITICAL_UP,
+        .holdEffectParam = 40, // percent of max HP
+        .description = COMPOUND_STRING(
+            "A held item drunk\n"
+            "at low HP to boost\n"
+            "the critical rate."),
+        .pocket = POCKET_ITEMS,
+        .sortType = ITEM_TYPE_HELD_ITEM,
+        .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .flingPower = 30,
+        .iconPic = gItemIcon_Kopi,
+        .iconPalette = gItemIconPalette_Kopi,
+    },
+
+    [ITEM_STEAMED_BAO] =
+    {
+        .name = ITEM_NAME("Steamed Bao"),
+        .pluralName = ITEM_PLURAL_NAME("Steamed Bao"),
+        .price = 350,
+        .description = COMPOUND_STRING(
+            "Tosa's fluffy bun.\n"
+            "It heals all\n"
+            "status problems."),
+        .pocket = POCKET_ITEMS,
+        .sortType = ITEM_TYPE_STATUS_RECOVERY,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_Medicine,
+        .battleUsage = EFFECT_ITEM_CURE_STATUS,
+        .effect = gItemEffect_FullHeal,
+        .flingPower = 30,
+        .iconPic = gItemIcon_SteamedBao,
+        .iconPalette = gItemIconPalette_SteamedBao,
+    },
+
+    [ITEM_KAYA_TOAST] =
+    {
+        .name = ITEM_NAME("Kaya Toast"),
+        .pluralName = ITEM_PLURAL_NAME("Kaya Toast"),
+        .price = 400,
+        .holdEffectParam = 60,
+        .description = COMPOUND_STRING(
+            "Sweet toast Pokémon\n"
+            "love. Restores HP\n"
+            "by 60 points."),
+        .pocket = POCKET_ITEMS,
+        .sortType = ITEM_TYPE_HEALTH_RECOVERY,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_Medicine,
+        .battleUsage = EFFECT_ITEM_RESTORE_HP,
+        .effect = gItemEffect_KayaToast,
+        .flingPower = 30,
+        .iconPic = gItemIcon_KayaToast,
+        .iconPalette = gItemIconPalette_KayaToast,
+    },
 };
 
 #undef ITEM_NAME
