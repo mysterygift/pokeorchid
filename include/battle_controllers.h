@@ -413,6 +413,7 @@ void CB2_SetUpReshowBattleScreenAfterMenu2(void);
 void Task_PlayerController_RestoreBgmAfterCry(u8 taskId);
 void ActionSelectionCreateCursorAt(u8 cursorPosition, u8 baseTileNum);
 u32 OrchidActionCursorMove(u32 cursor);
+void OrchidDisplayZMove(enum BattlerId battler, enum Move zmove, const u8 *name, const u8 *info);
 void ActionSelectionDestroyCursorAt(u8 cursorPosition);
 void InitMoveSelectionsVarsAndStrings(enum BattlerId battler);
 void MoveSelectionCreateCursorAt(u8 cursorPos, u8 arg1);
