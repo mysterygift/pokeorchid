@@ -44,9 +44,7 @@
 #define STAT_STAGE(battler, stat) (gBattleMons[battler].statStages[stat - 1])
 
 // Function Declarations
-static void ZMoveSelectionDisplayPpNumber(enum BattlerId battler);
-static void ZMoveSelectionDisplayPower(enum Move move, enum Move zMove);
-static void ZMoveSelectionDisplayMoveType(enum Move zMove, enum BattlerId battler);
+static void ZMoveSelectionDisplayPower(enum Move move, enum Move zMove, u8 *dst);
 
 // Const Data
 static const struct SignatureZMove sSignatureZMoves[] =
@@ -264,7 +262,9 @@ bool32 MoveSelectionDisplayZMove(enum Move zmove, enum BattlerId battler)
     u32 i;
     struct ChooseMoveStruct *moveInfo = (struct ChooseMoveStruct *)(&gBattleResources->bufferA[battler][4]);
     enum Move move = moveInfo->moves[gMoveSelectionCursor[battler]];
+    u8 info[32]; // Orchid UI: power / Z-effect line, shown on the pill under the Z-Move
 
+    info[0] = EOS;
     PlaySE(SE_SELECT);
     gBattleStruct->zmove.viewing = TRUE;
     if (zmove != MOVE_NONE)
@@ -359,34 +359,31 @@ bool32 MoveSelectionDisplayZMove(enum Move zmove, enum BattlerId battler)
                 break;
             }
 
-            BattlePutTextOnWindow(gDisplayedStringBattle, B_WIN_MOVE_NAME_3);
+            StringCopy(info, gDisplayedStringBattle);
             gDisplayedStringBattle[0] = CHAR_Z;
             gDisplayedStringBattle[1] = CHAR_HYPHEN;
             StringCopy(gDisplayedStringBattle + 2, GetMoveName(move));
         }
         else if (GetMoveEffect(zmove) == EFFECT_EXTREME_EVOBOOST)
         {
-            StringCopy(gDisplayedStringBattle, sText_StatsPlus2);
-            BattlePutTextOnWindow(gDisplayedStringBattle, B_WIN_MOVE_NAME_3);
+            StringCopy(info, sText_StatsPlus2);
             StringCopy(gDisplayedStringBattle, GetMoveName(zmove));
         }
         else
         {
-            ZMoveSelectionDisplayPower(move, zmove);
+            ZMoveSelectionDisplayPower(move, zmove, info);
             StringCopy(gDisplayedStringBattle, GetMoveName(zmove));
         }
-        BattlePutTextOnWindow(gDisplayedStringBattle, B_WIN_MOVE_NAME_1);
-
-        ZMoveSelectionDisplayPpNumber(battler);
-        ZMoveSelectionDisplayMoveType(zmove, battler);
-        MoveSelectionCreateCursorAt(0, 0);
+        // Orchid UI: the Z-Move takes the first (gold) pill with its type icon and PP 1/1,
+        // the power / Z-effect sits on the pill under it; the other pills stay empty
+        OrchidDisplayZMove(battler, zmove, gDisplayedStringBattle, info);
         return TRUE;
     }
 
     return FALSE;
 }
 
-static void ZMoveSelectionDisplayPower(enum Move move, enum Move zMove)
+static void ZMoveSelectionDisplayPower(enum Move move, enum Move zMove, u8 *dst)
 {
     u8 *txtPtr;
     u16 power = GetZMovePower(move);
@@ -396,40 +393,12 @@ static void ZMoveSelectionDisplayPower(enum Move move, enum Move zMove)
 
     if (GetMoveCategory(move) != DAMAGE_CATEGORY_STATUS)
     {
-        txtPtr = StringCopy(gDisplayedStringBattle, sText_PowerColon);
+        txtPtr = StringCopy(dst, sText_PowerColon);
         ConvertIntToDecimalStringN(txtPtr, power, STR_CONV_MODE_LEFT_ALIGN, 3);
-        BattlePutTextOnWindow(gDisplayedStringBattle, B_WIN_MOVE_NAME_3);
     }
 }
 
-static void ZMoveSelectionDisplayPpNumber(enum BattlerId battler)
-{
-    u8 *txtPtr;
 
-    if (gBattleResources->bufferA[battler][2] == TRUE) // Check if we didn't want to display pp number
-        return;
-
-    SetPPNumbersPaletteInMoveSelection(battler);
-    txtPtr = ConvertIntToDecimalStringN(gDisplayedStringBattle, 1, STR_CONV_MODE_RIGHT_ALIGN, 2);
-    *(txtPtr)++ = CHAR_SLASH;
-    ConvertIntToDecimalStringN(txtPtr, 1, STR_CONV_MODE_RIGHT_ALIGN, 2);
-    BattlePutTextOnWindow(gDisplayedStringBattle, B_WIN_PP_REMAINING);
-}
-
-static void ZMoveSelectionDisplayMoveType(enum Move zMove, enum BattlerId battler)
-{
-    u8 *txtPtr, *end;
-    enum Type zMoveType = GetBattleMoveType(zMove);
-
-    txtPtr = StringCopy(gDisplayedStringBattle, gText_MoveInterfaceType);
-    *(txtPtr)++ = EXT_CTRL_CODE_BEGIN;
-    *(txtPtr)++ = EXT_CTRL_CODE_FONT;
-    *(txtPtr)++ = FONT_NORMAL;
-
-    end = StringCopy(txtPtr, gTypesInfo[zMoveType].name);
-    PrependFontIdToFit(txtPtr, end, FONT_NORMAL, WindowWidthPx(B_WIN_MOVE_TYPE) - 25);
-    BattlePutTextOnWindow(gDisplayedStringBattle, B_WIN_MOVE_TYPE);
-}
 
 #define Z_EFFECT_BS_LENGTH  5
 // This function kinda cheats by setting a return battle script to after the setzeffect various command

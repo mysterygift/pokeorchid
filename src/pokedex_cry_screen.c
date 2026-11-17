@@ -67,8 +67,10 @@ static EWRAM_DATA struct PokedexCryScreen *sDexCryScreen = NULL;
 static EWRAM_DATA u8 *sCryWaveformWindowTiledata = NULL;
 static EWRAM_DATA struct PokedexCryMeterNeedle *sCryMeterNeedle = NULL;
 
-static const u16 sCryMeterNeedle_Pal[] = INCGFX_U16("graphics/pokedex/cry_meter_needle.png", ".gbapal");
-static const u8 sCryMeterNeedle_Gfx[] = INCGFX_U8("graphics/pokedex/cry_meter_needle.png", ".4bpp");
+// Orchid UI: kit-coloured needle and scope (dev_scripts/orchid_ui/export_dex.py); the vanilla
+// cry_meter_needle.png / cry_screen_bg.png stay in the repo unused.
+static const u16 sCryMeterNeedle_Pal[] = INCGFX_U16("graphics/pokedex/orchid/needle.png", ".gbapal");
+static const u8 sCryMeterNeedle_Gfx[] = INCGFX_U8("graphics/pokedex/orchid/needle.png", ".4bpp");
 
 static const u16 sCryMeter_Tilemap[] = INCBIN_U16("graphics/pokedex/cry_meter_map.bin"); // Unused
 static const u16 sCryMeter_Pal[] = INCGFX_U16("graphics/pokedex/cry_meter.png", ".gbapal");
@@ -159,8 +161,8 @@ static const u16 sWaveformOffsets[][72] =
     }
 };
 
-static const u16 sCryScreenBg_Pal[] = INCGFX_U16("graphics/pokedex/cry_screen_bg.png", ".gbapal");
-static const u8 sCryScreenBg_Gfx[] = INCGFX_U8("graphics/pokedex/cry_screen_bg.png", ".4bpp");
+static const u16 sCryScreenBg_Pal[] = INCGFX_U16("graphics/pokedex/orchid/scope_bg.png", ".gbapal");
+static const u8 sCryScreenBg_Gfx[] = INCGFX_U8("graphics/pokedex/orchid/scope_bg.png", ".4bpp");
 
 static const u8 sWaveformTileDataNybbleMasks[] = {0xF0, 0x0F};
 
@@ -465,6 +467,32 @@ bool8 LoadCryMeter(struct CryScreenWindow *window, u8 windowId)
         LoadSpriteSheets(sCryMeterNeedleSpriteSheets);
         LoadSpritePalettes(sCryMeterNeedleSpritePalettes);
         sCryMeterNeedle->spriteId = CreateSprite(&sCryMeterNeedleSpriteTemplate, 40 + window->xPos * 8, 56 + window->yPos * 8, 1);
+        sCryMeterNeedle->rotation = MIN_NEEDLE_POS;
+        sCryMeterNeedle->targetRotation = MIN_NEEDLE_POS;
+        sCryMeterNeedle->moveIncrement = 0;
+        finished = TRUE;
+        break;
+    }
+
+    return finished;
+}
+
+// Orchid UI: the dial is BG art, so only the needle is needed; (pivotX, pivotY) = needle base
+bool8 LoadCryMeterNeedle(s16 pivotX, s16 pivotY)
+{
+    bool8 finished = FALSE;
+
+    switch (gDexCryScreenState)
+    {
+    case 0:
+        if (!sCryMeterNeedle)
+            sCryMeterNeedle = AllocZeroed(sizeof(*sCryMeterNeedle));
+        gDexCryScreenState++;
+        break;
+    case 1:
+        LoadSpriteSheets(sCryMeterNeedleSpriteSheets);
+        LoadSpritePalettes(sCryMeterNeedleSpritePalettes);
+        sCryMeterNeedle->spriteId = CreateSprite(&sCryMeterNeedleSpriteTemplate, pivotX, pivotY, 1);
         sCryMeterNeedle->rotation = MIN_NEEDLE_POS;
         sCryMeterNeedle->targetRotation = MIN_NEEDLE_POS;
         sCryMeterNeedle->moveIncrement = 0;

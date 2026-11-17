@@ -52,8 +52,8 @@
 #else
 
 #define FLAG_HIDE_TOSA_GATEWAY_RIVAL         0x20 // Hide Rival in Tosa Gateway.
-#define FLAG_UNUSED_0x021    0x21 // Unused Flag
-#define FLAG_UNUSED_0x022    0x22 // Unused Flag
+#define FLAG_DYNAMAX_BATTLE   0x21 // B_FLAG_DYNAMAX_BATTLE: Dynamax is allowed in battle
+#define FLAG_TERA_ORB_CHARGED 0x22 // B_FLAG_TERA_ORB_CHARGED: set when the party is healed, cleared on Terastallizing
 #define FLAG_UNUSED_0x023    0x23 // Unused Flag
 #define FLAG_UNUSED_0x024    0x24 // Unused Flag
 #define FLAG_UNUSED_0x025    0x25 // Unused Flag

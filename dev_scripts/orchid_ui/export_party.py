@@ -1,0 +1,247 @@
+"""
+Export the Orchid party menu to game assets (reuses party_ext's drawing code, so ROM art == mockup art).
+
+Writes (all under the repo root):
+  graphics/party_menu/orchid_slots.png    slot art tiles (lead + wide, with / without HP row), blitted into
+                                          the BG0 slot windows by party_menu.c (uncompressed, no flips)
+  graphics/party_menu/orchid_buttons.png  BG1 tiles: blank tile 0 + CANCEL and CONFIRM pills (labels baked in)
+  graphics/party_menu/orchid_grid.png     BG3 grid, 2x2 tiles (TL, TR, BL, BR)
+  src/data/party_menu_orchid.h            generated tilemaps, palettes and layout constants
+
+usage: export_party.py
+"""
+import os
+from PIL import Image
+from kit import *
+import kit_ext as KX
+import party_ext as P
+from gamefont import draw_text, text_width, _font
+from backdrop import GRID_PAL, grid_tile_image
+import windows as Wn
+
+ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+OUT = lambda *p: os.path.join(ROOT, *p)
+
+THEMES = ("male", "female")
+STATES = ("normal", "selected", "moving", "moving_sel", "fainted", "fainted_sel")
+GENDERS = (None, "m", "f")
+
+
+def save_indexed(im, path, pal):
+    flat = [c for rgb in pal for c in rgb]
+    out = im.copy()
+    out.putpalette(flat + [0] * (768 - len(flat)))
+    out.save(path, transparency=0)
+
+
+def pad16(pal):
+    return list(pal) + [(0, 0, 0)] * (16 - len(pal))
+
+
+def rgb555(c):
+    r, g, b = c
+    return "RGB(%d, %d, %d)" % (r >> 3, g >> 3, b >> 3)
+
+
+# ---------------------------------------------------------------- slot art (no text: text is printed at runtime)
+def slot_art(lead, hp):
+    g = P.LEAD if lead else P.WIDE
+    w, h = (80, 56) if lead else (144, 24)
+    im = new_sheet(w, h, "male")
+    cv = Canvas(im)
+    sx, sy, sw, sh = g["slab"]
+    rounded_box(cv, sx, sy, sw, sh, 4, PANEL, INK, WHITE, PANEL_SHADE)
+    P._dais(cv, g)
+    if hp:
+        P.hp_tag(cv, *g["hp_tag"])
+        bx, by, bw = g["bar"]
+        KX.bar(cv, bx, by, bw, 0.0, P.HP_LIGHT, P.HP_DARK, trough=PANEL_DARK, outline=INK, h=3)
+    return im
+
+
+def export_slots():
+    tiles = [tuple([0] * 64)]
+    maps = {}
+    for key, lead, hp in (("lead", True, True), ("lead_nohp", True, False),
+                          ("wide", False, True), ("wide_nohp", False, False)):
+        tiles, tm = to_tiles(slot_art(lead, hp), dedupe=True, flips=False, base=tiles)
+        maps[key] = [t[0] for t in tm]
+    assert len(tiles) <= 256, "slot tilemaps are u8"
+    sheet = tiles_to_image(tiles, new_sheet(8, 8, "male"))
+    save_indexed(sheet, OUT("graphics", "party_menu", "orchid_slots.png"), palette("male"))
+    return len(tiles), maps
+
+
+# ---------------------------------------------------------------- BG1 buttons (CANCEL / CONFIRM pills)
+def button_art(label, font="normal", dy=0):
+    """48x16 pill cell (pill rows 1..14). dy shifts the art inside the cell: the choose-half pair is
+    CONFIRM 1px up + CANCEL 1px down, a 4px gap (approved follow-up, confirm_mock.png)."""
+    im = new_sheet(48, 16, "male")
+    cv = Canvas(im)
+    rounded_box(cv, 1, 1 + dy, 46, 14, 4, PANEL, INK, WHITE, PANEL_SHADE)
+    draw_text(cv, 24 - text_width(label, font) // 2, -1 + dy, label, INK, PANEL_SHADE, font=font)
+    return im
+
+
+def export_buttons():
+    tiles = [tuple([0] * 64)]
+    maps = {}
+    for key, label, font, dy in (("cancel", "CANCEL", "normal", 0),
+                                 ("confirm", "CONFIRM", "narrow", -1),   # choose-half: above CANCEL
+                                 ("cancel_low", "CANCEL", "normal", 1)): # choose-half: below CONFIRM
+        tiles, tm = to_tiles(button_art(label, font, dy), dedupe=True, flips=True, base=tiles)
+        maps[key] = [t[0] | (t[1] << 10) | (t[2] << 11) for t in tm]
+    sheet = tiles_to_image(tiles, new_sheet(8, 8, "male"))
+    save_indexed(sheet, OUT("graphics", "party_menu", "orchid_buttons.png"), palette("male"))
+    return len(tiles), maps
+
+
+def export_grid():
+    g = grid_tile_image()
+    save_indexed(g, OUT("graphics", "party_menu", "orchid_grid.png"), pad16(GRID_PAL))
+
+
+# ---------------------------------------------------------------- palettes
+def menu_text_palette():
+    """BG palette 14/15 for the std windows (message, action popup, yes/no, ...).
+    Keeps the TEXT_COLOR_* slots the game prints with (1 white fill, 2 text, 3 shadow, 4/5 red, 6/7 green,
+    8/9 blue -> field moves) and adds the gold pill ramp (10-12) used by the popup cursor."""
+    k = palette("orchid")
+    std = [(255, 255, 255), (255, 255, 255), (98, 98, 98), (213, 213, 205), (230, 8, 8), (255, 189, 115),
+           (32, 156, 8), (148, 246, 148), (49, 82, 205), (164, 197, 246)]
+    p = [snap(c) for c in std] + [(0, 0, 0)] * 6
+    p[1], p[2], p[3] = k[WHITE], k[INK], k[PANEL_SHADE]
+    p[8], p[9] = k[ACCENT_DARK], k[ACCENT_LIGHT]          # field moves: accent instead of Gen 3 blue
+    p[10], p[11], p[12] = k[SELECT_DARK], k[SELECT], k[SELECT_LIGHT]
+    return p
+
+
+def c_pal(pal):
+    return "{" + ", ".join(rgb555(c) for c in pal) + "}"
+
+
+# ---------------------------------------------------------------- header
+def write_header(n_slot, slot_maps, n_btn, btn_maps):
+    L = []
+    A = L.append
+    A("// GENERATED by dev_scripts/orchid_ui/export_party.py - do not edit by hand.")
+    A("// Orchid party menu: slot art tilemaps, slot palettes and layout constants (Layout A).")
+    A("#ifndef GUARD_DATA_PARTY_MENU_ORCHID_H")
+    A("#define GUARD_DATA_PARTY_MENU_ORCHID_H")
+    A("")
+    A("#define ORCHID_SLOT_NUM_TILES   %d" % n_slot)
+    A("#define ORCHID_BUTTON_NUM_TILES %d   // BG1 tiles incl. blank tile 0" % n_btn)
+    A("")
+    A("// Slot palette roles (kit.py): text and fills index these in the slot window palettes.")
+    for name, v in (("INK", INK), ("INK_SOFT", INK_SOFT), ("WHITE", WHITE), ("PANEL", PANEL),
+                    ("PANEL_SHADE", PANEL_SHADE), ("PANEL_DARK", PANEL_DARK), ("ACCENT_DARK", ACCENT_DARK),
+                    ("ACCENT", ACCENT), ("ACCENT_LIGHT", ACCENT_LIGHT), ("NAME_FG", P.NAME_FG),
+                    ("NAME_SH", P.NAME_SH), ("HP_LIGHT", P.HP_LIGHT), ("HP_DARK", P.HP_DARK)):
+        A("#define ORCHID_COL_%-13s %d" % (name, v))
+    A("")
+    # geometry, window-relative px
+    for pre, g in (("LEAD", P.LEAD), ("WIDE", P.WIDE)):
+        A("#define ORCHID_%s_NAME_X    %d" % (pre, g["name"][0]))
+        A("#define ORCHID_%s_NAME_Y    %d" % (pre, g["name"][1]))
+        A("#define ORCHID_%s_LV_X      %d" % (pre, g["lv"][0]))
+        A("#define ORCHID_%s_LV_Y      %d" % (pre, g["lv"][1]))
+        A("#define ORCHID_%s_BAR_X     %d   // bar outline top-left; fill is x+1.., rows y+1 (light), y+2..y+3 (dark)" % (pre, g["bar"][0]))
+        A("#define ORCHID_%s_BAR_Y     %d" % (pre, g["bar"][1]))
+        A("#define ORCHID_%s_BAR_W     %d" % (pre, g["bar"][2]))
+        A("#define ORCHID_%s_HPNUM_R   %d   // HP numbers right edge" % (pre, g["hpnum_r"]))
+        A("#define ORCHID_%s_HPNUM_Y   %d" % (pre, g["hpnum_y"]))
+        A("#define ORCHID_%s_ICON_X    %d   // mon icon centre" % (pre, g["icon"][0]))
+        A("#define ORCHID_%s_ICON_Y    %d" % (pre, g["icon"][1]))
+        A("#define ORCHID_%s_HOLD_X    %d   // held item icon centre" % (pre, g["hold"][0]))
+        A("#define ORCHID_%s_HOLD_Y    %d" % (pre, g["hold"][1]))
+        A("#define ORCHID_%s_STATUS_X  %d   // status tag centre (16x16 OBJ)" % (pre, g["status"][0] + 8))
+        A("#define ORCHID_%s_STATUS_Y  %d" % (pre, g["status"][1] + 8))
+        A("")
+    A("// ABLE / NOT ABLE tag (replaces the HP row in description mode): 13px tall, text = width + 10")
+    A("#define ORCHID_TAG_H            13")
+    A("#define ORCHID_TAG_PAD          10")
+    A("#define ORCHID_LEAD_TAG_CX      40   // lead: centred on x, top y below")
+    A("#define ORCHID_LEAD_TAG_Y       38")
+    A("#define ORCHID_WIDE_TAG_R       138  // wide: right edge (x + w <= this), top y below")
+    A("#define ORCHID_WIDE_TAG_Y       5")
+    _, widths = _font(P.HP_FONT)
+    from gamefont import _charmap
+    cm = _charmap()
+    dws = {widths[cm[d]] for d in "0123456789"}
+    assert len(dws) == 1, dws
+    A("// HP numbers use FONT_SMALL_NARROWER (party_ext.HP_FONT)")
+    A("#define ORCHID_HP_DIGIT_W       %d" % dws.pop())
+    A("#define ORCHID_HP_SLASH_W       %d" % widths[cm["/"]])
+    A("")
+    A("// Slot art tilemaps (tile indices into orchid_slots.png), row-major.")
+    A("static const u8 sOrchidSlotLead[2][10 * 7] = {")
+    A("    {" + ", ".join(str(v) for v in slot_maps["lead"]) + "},")
+    A("    {" + ", ".join(str(v) for v in slot_maps["lead_nohp"]) + "},")
+    A("};")
+    A("static const u8 sOrchidSlotWide[2][18 * 3] = {")
+    A("    {" + ", ".join(str(v) for v in slot_maps["wide"]) + "},")
+    A("    {" + ", ".join(str(v) for v in slot_maps["wide_nohp"]) + "},")
+    A("};")
+    A("")
+    A("// BG1 6x2 button tilemaps (tile + flip bits; palette set at runtime).")
+    A("static const u16 sOrchidCancelButton[6 * 2] = {" + ", ".join("0x%04X" % v for v in btn_maps["cancel"]) + "};")
+    A("// Choose-half pair: CONFIRM (24,16) drawn 1px up, CANCEL (24,18) drawn 1px down -> 4px gap.")
+    A("static const u16 sOrchidConfirmButton[6 * 2] = {" + ", ".join("0x%04X" % v for v in btn_maps["confirm"]) + "};")
+    A("static const u16 sOrchidCancelButtonLow[6 * 2] = {" + ", ".join("0x%04X" % v for v in btn_maps["cancel_low"]) + "};")
+    A("")
+    A("enum { ORCHID_SLOT_NORMAL, ORCHID_SLOT_SELECTED, ORCHID_SLOT_MOVING, ORCHID_SLOT_MOVING_SEL,")
+    A("       ORCHID_SLOT_FAINTED, ORCHID_SLOT_FAINTED_SEL, ORCHID_SLOT_PARTNER, ORCHID_SLOT_PARTNER_SEL,")
+    A("       ORCHID_SLOT_STATE_COUNT };")
+    A("enum { ORCHID_NAME_NONE, ORCHID_NAME_MALE, ORCHID_NAME_FEMALE };")
+    A("")
+    A("// [theme: male, female][state][name gender: none, male, female] -> 16 colours.")
+    A("// 14/15 (HP bar ramp) are green here and overwritten at runtime from sOrchidHpRamps.")
+    A("static const u16 sOrchidSlotPals[2][ORCHID_SLOT_STATE_COUNT][3][16] = {")
+    for th in THEMES:
+        A("    { // %s" % th)
+        for st in STATES + ("partner", "partner_sel"):
+            pals = []
+            for gd in GENDERS:
+                if st.startswith("partner"):
+                    pal = P.slot_palette("orchid", "selected" if st.endswith("sel") else "normal", gd, 1.0)
+                else:
+                    pal = P.slot_palette(th, st, gd, 1.0)
+                pals.append(c_pal(pal))
+            A("        { // %s" % st)
+            for p in pals:
+                A("            %s," % p)
+            A("        },")
+        A("    },")
+    A("};")
+    A("")
+    A("// HP bar (light, dark): green / yellow / red (Gen 3 hpbar.png ramps)")
+    A("static const u16 sOrchidHpRamps[3][2] = {")
+    for r in (KX.HP_GREEN, KX.HP_YELLOW, KX.HP_RED):
+        A("    {%s, %s}," % (rgb555(snap(r[0])), rgb555(snap(r[1]))))
+    A("};")
+    A("")
+    A("// BG1 CANCEL / CONFIRM button palettes: [theme][normal, selected]")
+    A("static const u16 sOrchidButtonPals[2][2][16] = {")
+    for th in THEMES:
+        A("    {%s,\n     %s}," % (c_pal(palette(th)), c_pal(P.slot_palette(th, "selected"))))
+    A("};")
+    A("")
+    A("static const u16 sOrchidGridPal[16] = %s;" % c_pal(pad16(GRID_PAL)))
+    A("")
+    A("// Std window text palette (BG 14 / 15): TEXT_COLOR_* slots in Orchid colours + gold pill 10-12.")
+    A("static const u16 sOrchidMenuTextPal[16] = %s;" % c_pal(menu_text_palette()))
+    A("#define ORCHID_MENU_PILL_SHADE  10")
+    A("#define ORCHID_MENU_PILL_FACE   11")
+    A("#define ORCHID_MENU_PILL_LIGHT  12")
+    A("")
+    A("#endif // GUARD_DATA_PARTY_MENU_ORCHID_H")
+    with open(OUT("src", "data", "party_menu_orchid.h"), "w") as f:
+        f.write("\n".join(L) + "\n")
+
+
+if __name__ == "__main__":
+    n_slot, slot_maps = export_slots()
+    n_btn, btn_maps = export_buttons()
+    export_grid()
+    write_header(n_slot, slot_maps, n_btn, btn_maps)
+    print("slot tiles %d, button tiles %d" % (n_slot, n_btn))

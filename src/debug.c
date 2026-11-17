@@ -316,6 +316,7 @@ static void DebugAction_Party_ClearParty(u8 taskId);
 static void DebugAction_Party_SetParty(u8 taskId);
 static void DebugAction_Party_BattleSingle(u8 taskId);
 static void DebugAction_Party_BattleFloor(u8 taskId, void *params);
+static void DebugAction_Party_BattleWild(u8 taskId);
 
 static void DebugAction_Trainers_SwitchDoublesFlag(u8 taskId);
 static void DebugAction_Trainers_SetRematch(u8 taskId);
@@ -683,6 +684,7 @@ static const struct DebugMenuOption sDebugMenu_Actions_Party[] =
     { COMPOUND_STRING("Start Debug Battle"), DebugAction_Party_BattleSingle },
     { COMPOUND_STRING("Debug Battle: Day…"),   DebugAction_OpenSubMenu, sDebugMenu_Actions_BattleFloorDay },
     { COMPOUND_STRING("Debug Battle: Night…"), DebugAction_OpenSubMenu, sDebugMenu_Actions_BattleFloorNight },
+    { COMPOUND_STRING("Start Wild Battle"),  DebugAction_Party_BattleWild },
     { NULL }
 };
 
@@ -4856,6 +4858,18 @@ static void DebugAction_Party_SetParty(u8 taskId)
     ZeroPlayerPartyMons();
     CreateNPCTrainerPartyFromTrainer(gParties[B_TRAINER_PLAYER], &sDebugTrainers[DIFFICULTY_NORMAL][DEBUG_TRAINER_PLAYER]);
     ScriptContext_Enable();
+    Debug_DestroyMenu_Full(taskId);
+}
+
+// Wild battle against the lead's species at its level (already caught, so the
+// healthbox shows the caught ball). Handy for testing the battle UI.
+static void DebugAction_Party_BattleWild(u8 taskId)
+{
+    enum Species species = GetMonData(&gParties[B_TRAINER_PLAYER][0], MON_DATA_SPECIES);
+    u8 level = GetMonData(&gParties[B_TRAINER_PLAYER][0], MON_DATA_LEVEL);
+
+    CreateScriptedWildMon(species, level, ITEM_NONE);
+    BattleSetup_StartScriptedWildBattle();
     Debug_DestroyMenu_Full(taskId);
 }
 
