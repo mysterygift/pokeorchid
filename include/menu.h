@@ -143,6 +143,8 @@ void CreateOrchidFieldYesNoMenu(const struct WindowTemplate *window, u8 initialC
 u8 InitOrchidPillMenu(u8 windowId, u8 numItems, const struct MenuAction *items, u8 initialCursorPos);
 u8 InitOrchidPillMenuYesNoStyle(u8 windowId, u8 numItems, const struct MenuAction *items, u8 initialCursorPos);
 u32 GetOrchidPillMenuWidth(const struct MenuAction *items, u32 numItems);
+u8 InitOrchidCustomMenu(u8 windowId, u8 numItems, u8 initialCursorPos, void (*drawRows)(u8 selected));
+void LoadOrchidFieldWindowPalette(void);
 void PrintMenuActionTextsAtPos(u8 windowId, u8 fontId, u8 left, u8 top, u8 lineHeight, u8 itemCount, const struct MenuAction *menuActions);
 void Menu_LoadStdPal(void);
 u8 AddSecondaryPopUpWindow(void);

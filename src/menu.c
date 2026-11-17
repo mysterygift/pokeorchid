@@ -26,6 +26,8 @@
 #include "task.h"
 #include "text_window.h"
 #include "window.h"
+#include "constants/orchid_ui.h"
+#include "constants/rgb.h"
 #include "constants/songs.h"
 
 struct MenuInfoIcon
@@ -86,6 +88,7 @@ static EWRAM_DATA struct {
     u8 count;
     bool8 yesNoStyle; // rows drawn like the Orchid YES/NO (pill 2 px in, text at 8, PANEL_SHADE shadow)
     const struct MenuAction *items;
+    void (*drawRows)(u8 selected); // InitOrchidCustomMenu: the screen draws its own rows (start menu)
 } sOrchidPillMenu = {0};
 static EWRAM_DATA u8 sHofPCTopBarWindowId = 0;
 static EWRAM_DATA bool8 sScheduledBgCopiesToVram[4] = {FALSE};
@@ -427,7 +430,8 @@ void DisplayYesNoMenuWithDefault(u8 initialCursorPos)
 u8 AddStartMenuWindow(u8 numActions)
 {
     if (sStartMenuWindowId == WINDOW_NONE)
-        sStartMenuWindowId = AddWindowParameterized(0, 22, 1, 7, (numActions * 2) + 2, 15, 0x139);
+        // Orchid start menu (mock_system.start_menu): tiles 20-28, Orchid field window palette
+        sStartMenuWindowId = AddWindowParameterized(0, 20, 1, 9, (numActions * 2) + 2, ORCHID_YESNO_FIELD_PAL, 0x139);
     return sStartMenuWindowId;
 }
 
@@ -728,7 +732,10 @@ void RedrawMenuCursor(u8 oldPos, u8 newPos)
     }
     if (sOrchidPillMenu.active && sMenu.windowId == sOrchidPillMenu.windowId)
     {
-        OrchidPillMenu_DrawRows(newPos);
+        if (sOrchidPillMenu.drawRows != NULL)
+            sOrchidPillMenu.drawRows(newPos);
+        else
+            OrchidPillMenu_DrawRows(newPos);
         return;
     }
 
@@ -1180,6 +1187,7 @@ u8 InitOrchidPillMenu(u8 windowId, u8 numItems, const struct MenuAction *items, 
     sOrchidPillMenu.count = numItems;
     sOrchidPillMenu.items = items;
     sOrchidPillMenu.yesNoStyle = FALSE;
+    sOrchidPillMenu.drawRows = NULL;
     sOrchidPillMenu.pending = TRUE;
     return InitMenuInUpperLeftCornerNormal(windowId, numItems, initialCursorPos);
 }
@@ -1191,8 +1199,45 @@ u8 InitOrchidPillMenuYesNoStyle(u8 windowId, u8 numItems, const struct MenuActio
     sOrchidPillMenu.count = numItems;
     sOrchidPillMenu.items = items;
     sOrchidPillMenu.yesNoStyle = TRUE;
+    sOrchidPillMenu.drawRows = NULL;
     sOrchidPillMenu.pending = TRUE;
     return InitMenuInUpperLeftCornerNormal(windowId, numItems, initialCursorPos);
+}
+
+// A menu whose rows the caller draws (gold pill, icons ...): drawRows(selected) runs on init and on every
+// cursor move instead of the ▶. Input works as for any InitMenu menu.
+u8 InitOrchidCustomMenu(u8 windowId, u8 numItems, u8 initialCursorPos, void (*drawRows)(u8 selected))
+{
+    sOrchidPillMenu.windowId = windowId;
+    sOrchidPillMenu.count = numItems;
+    sOrchidPillMenu.items = NULL;
+    sOrchidPillMenu.yesNoStyle = FALSE;
+    sOrchidPillMenu.drawRows = drawRows;
+    sOrchidPillMenu.pending = TRUE;
+    return InitMenuInUpperLeftCornerNormal(windowId, numItems, initialCursorPos);
+}
+
+// Field windows in the Orchid window palette (BG 13): the whole palette, plus the field extras the start
+// menu, its chips and the save card use (export_system.py): 4 PANEL, 5 PANEL_DARK, 6 / 7 the player's
+// name colour (gender). The YES/NO only uses 1-3 and 10-15, so it shares the slot.
+void LoadOrchidFieldWindowPalette(void)
+{
+    u16 extras[4];
+
+    extras[0] = RGB(29, 29, 28); // PANEL (232, 232, 224)
+    extras[1] = RGB(18, 18, 19); // PANEL_DARK (144, 144, 152)
+    if (gSaveBlock2Ptr->playerGender == MALE)
+    {
+        extras[2] = ORCHID_NAME_MALE_FG;
+        extras[3] = ORCHID_NAME_MALE_SHADOW;
+    }
+    else
+    {
+        extras[2] = ORCHID_NAME_FEMALE_FG;
+        extras[3] = ORCHID_NAME_FEMALE_SHADOW;
+    }
+    LoadPalette(gOrchidYesNoFrame_Pal, BG_PLTT_ID(ORCHID_YESNO_FIELD_PAL), PLTT_SIZE_4BPP);
+    LoadPalette(extras, BG_PLTT_ID(ORCHID_YESNO_FIELD_PAL) + 4, sizeof(extras));
 }
 
 // Pixel width of the widest text, in tiles, the way the pill menu mockups size their windows.
@@ -1217,7 +1262,7 @@ void CreateOrchidFieldYesNoMenu(const struct WindowTemplate *window, u8 initialC
 
     template.paletteNum = ORCHID_YESNO_FIELD_PAL;
     LoadOrchidYesNoFrame(template.bg, ORCHID_YESNO_FIELD_TILE);
-    LoadOrchidYesNoColors(ORCHID_YESNO_FIELD_PAL, TRUE);
+    LoadOrchidFieldWindowPalette();
     CreateOrchidYesNoMenu(&template, ORCHID_YESNO_FIELD_TILE, ORCHID_YESNO_FIELD_PAL, initialCursorPos);
 }
 
