@@ -112,6 +112,8 @@ void SetGimmickAsActivated(enum BattlerId battler, enum Gimmick gimmick)
 #define SINGLES_GIMMICK_TRIGGER_POS_Y_DIFF (-5)
 #define ORCHID_TRIGGER_DX 11 // Orchid UI: extra shift left / down from the healthbox
 #define ORCHID_TRIGGER_DY 2
+#define ORCHID_TRIGGER_DY_DOUBLES (-2) // compact boxes: keeps the lower box's trigger clear of the tray
+#define ORCHID_TRIGGER_Y_SHIFT(battler) (GetBattlerCoordsIndex(battler) == BATTLE_COORDS_DOUBLES ? ORCHID_TRIGGER_DY_DOUBLES : ORCHID_TRIGGER_DY)
 
 #define DOUBLES_GIMMICK_TRIGGER_POS_X_OPTIMAL (30)
 #define DOUBLES_GIMMICK_TRIGGER_POS_X_PRIORITY (31)
@@ -145,11 +147,12 @@ void CreateGimmickTriggerSprite(enum BattlerId battler)
 
     if (gBattleStruct->gimmick.triggerSpriteId == 0xFF)
     {
-        // Orchid UI boxes: the trigger sits 11 px further left / 2 px lower, clear of the socket
+        // Orchid UI boxes: the trigger sits 11 px further left / 2 px lower (2 px higher on the compact
+        // doubles boxes), clear of the socket
         if (IsOrchidStyleHealthbox(gHealthboxSpriteIds[battler]))
             gBattleStruct->gimmick.triggerSpriteId = CreateSprite(gimmick->triggerTemplate,
                                                                   gSprites[gHealthboxSpriteIds[battler]].x - ORCHID_TRIGGER_DX - SINGLES_GIMMICK_TRIGGER_POS_X_SLIDE,
-                                                                  gSprites[gHealthboxSpriteIds[battler]].y - SINGLES_GIMMICK_TRIGGER_POS_Y_DIFF + ORCHID_TRIGGER_DY, 0);
+                                                                  gSprites[gHealthboxSpriteIds[battler]].y - SINGLES_GIMMICK_TRIGGER_POS_Y_DIFF + ORCHID_TRIGGER_Y_SHIFT(battler), 0);
         else if (GetBattlerCoordsIndex(battler) == BATTLE_COORDS_DOUBLES)
             gBattleStruct->gimmick.triggerSpriteId = CreateSprite(gimmick->triggerTemplate,
                                                                   gSprites[gHealthboxSpriteIds[battler]].x - DOUBLES_GIMMICK_TRIGGER_POS_X_SLIDE,
@@ -229,7 +232,7 @@ static void SpriteCb_GimmickTrigger(struct Sprite *sprite)
         xSlide = SINGLES_GIMMICK_TRIGGER_POS_X_SLIDE;
         xPriority = SINGLES_GIMMICK_TRIGGER_POS_X_PRIORITY;
         xOptimal = SINGLES_GIMMICK_TRIGGER_POS_X_OPTIMAL;
-        yDiff = SINGLES_GIMMICK_TRIGGER_POS_Y_DIFF - ORCHID_TRIGGER_DY;
+        yDiff = SINGLES_GIMMICK_TRIGGER_POS_Y_DIFF - ORCHID_TRIGGER_Y_SHIFT(sprite->tBattler);
         xHealthbox -= ORCHID_TRIGGER_DX;
     }
 

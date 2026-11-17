@@ -2440,83 +2440,6 @@ static bool32 IsLeadPartyBox(struct PartyMenuBox *menuBox)
     return menuBox->infoRects == &sPartyBoxInfoRects[PARTY_BOX_LEFT_COLUMN];
 }
 
-// Port of kit.rounded_box (dev_scripts/orchid_ui/kit.py), pixel for pixel: Gen 3 rounded box with
-// an ink outline and a light top-left / dark bottom-right bevel, drawn into a window's bitmap.
-static const u8 sOrchidRoundInset[5][5] = {{0}, {1, 0}, {2, 1, 0}, {3, 1, 1, 0}, {4, 2, 1, 1, 0}};
-
-static s32 OrchidRoundInset(s32 r, s32 y, s32 h)
-{
-    s32 n = r; // table length - 1
-
-    if (y < n)
-        return sOrchidRoundInset[r][y];
-    if (h - 1 - y < n)
-        return sOrchidRoundInset[r][h - 1 - y];
-    return 0;
-}
-
-static void OrchidHLine(u8 windowId, s32 x0, s32 x1, s32 y, u8 color)
-{
-    if (x1 >= x0)
-        FillWindowPixelRect(windowId, PIXEL_FILL(color), x0, y, x1 - x0 + 1, 1);
-}
-
-static void OrchidDrawRoundedBox(u8 windowId, s32 x0, s32 y0, s32 w, s32 h, s32 r, u8 face, u8 outline, u8 light, u8 shade)
-{
-    s32 x, y, ins, ins2;
-
-    for (y = 0; y < h; y++)
-    {
-        ins = OrchidRoundInset(r, y, h);
-        OrchidHLine(windowId, x0 + ins, x0 + w - 1 - ins, y0 + y, face);
-        OrchidHLine(windowId, x0 + ins, x0 + ins, y0 + y, outline);
-        OrchidHLine(windowId, x0 + w - 1 - ins, x0 + w - 1 - ins, y0 + y, outline);
-    }
-    ins = OrchidRoundInset(r, 0, h);
-    OrchidHLine(windowId, x0 + ins, x0 + w - 1 - ins, y0, outline);
-    OrchidHLine(windowId, x0 + ins, x0 + w - 1 - ins, y0 + h - 1, outline);
-    // diagonal corner pixels so the outline is closed
-    for (y = 1; y < h - 1; y++)
-    {
-        ins = OrchidRoundInset(r, y, h);
-        ins2 = OrchidRoundInset(r, y - 1, h);
-        for (x = ins + 1; x < ins2; x++)
-        {
-            s32 yy = (y <= h / 2) ? y0 + y - 1 : y0 + y;
-            OrchidHLine(windowId, x0 + x, x0 + x, yy, outline);
-            OrchidHLine(windowId, x0 + w - 1 - x, x0 + w - 1 - x, yy, outline);
-        }
-    }
-    for (y = h - 2; y > 0; y--)
-    {
-        ins = OrchidRoundInset(r, y, h);
-        ins2 = OrchidRoundInset(r, y + 1, h);
-        for (x = ins + 1; x < ins2; x++)
-        {
-            OrchidHLine(windowId, x0 + x, x0 + x, y0 + y + 1, outline);
-            OrchidHLine(windowId, x0 + w - 1 - x, x0 + w - 1 - x, y0 + y + 1, outline);
-        }
-    }
-    // bevel
-    for (y = 1; y < h - 1; y++)
-    {
-        ins = OrchidRoundInset(r, y, h);
-        if (y == 1)
-        {
-            OrchidHLine(windowId, x0 + ins + 1, x0 + w - 2 - ins, y0 + y, light);
-        }
-        else if (y == h - 2)
-        {
-            OrchidHLine(windowId, x0 + ins + 1, x0 + w - 2 - ins, y0 + y, shade);
-        }
-        else
-        {
-            OrchidHLine(windowId, x0 + ins + 1, x0 + ins + 1, y0 + y, light);
-            OrchidHLine(windowId, x0 + w - 2 - ins, x0 + w - 2 - ins, y0 + y, shade);
-        }
-    }
-}
-
 // Copies slot art tiles straight into a window's tile buffer. Unlike BlitBitmapToWindow this
 // overwrites transparent pixels too, so a redraw always starts from clean art.
 static void CopySlotArtToPartyWindow(u8 windowId, const u8 *tilemap, u8 mapWidth, u8 x, u8 y, u8 width, u8 height)
@@ -3092,7 +3015,8 @@ static void PrintMessage(const u8 *text)
 
 static void PartyMenuDisplayYesNoMenu(void)
 {
-    CreateYesNoMenu(&sPartyMenuYesNoWindowTemplate, 0x4F, 13, 0);
+    // Orchid YES/NO: Orchid frame (0x4F, pal 13) and text palette 14, which already has the gold pill
+    CreateOrchidYesNoMenu(&sPartyMenuYesNoWindowTemplate, 0x4F, 13, 0);
 }
 
 static u8 CreateLevelUpStatsWindow(void)

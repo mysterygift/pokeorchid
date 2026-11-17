@@ -1787,6 +1787,9 @@ const u16 gOrchidLineupBalls_Pal[] = INCGFX_U16("graphics/battle_interface/orchi
 const u32 gOrchidPartySlots_Gfx[] = INCGFX_U32("graphics/party_menu/orchid_slots.png", ".4bpp");
 const u32 gOrchidPartyButtons_Gfx[] = INCGFX_U32("graphics/party_menu/orchid_buttons.png", ".4bpp");
 const u32 gOrchidPartyGrid_Gfx[] = INCGFX_U32("graphics/party_menu/orchid_grid.png", ".4bpp");
+// Orchid UI: YES/NO window (dev_scripts/orchid_ui/export_yesno.py)
+const u32 gOrchidYesNoFrame_Gfx[] = INCGFX_U32("graphics/text_window/orchid_yesno.png", ".4bpp");
+const u16 gOrchidYesNoFrame_Pal[] = INCGFX_U16("graphics/text_window/orchid_yesno.png", ".gbapal");
 
 // Orchid UI: dex
 const u32 gOrchidDexList_Gfx[] = INCGFX_U32("graphics/pokedex/orchid/list.png", ".4bpp.smol");
@@ -1797,6 +1800,9 @@ const u32 gOrchidDexArea_Tilemap[] = INCGFX_U32("graphics/pokedex/orchid/area.bi
 const u32 gOrchidDexSearch_Tilemap[] = INCGFX_U32("graphics/pokedex/orchid/search.bin", ".smolTM");
 const u32 gOrchidDexCry_Tilemap[] = INCGFX_U32("graphics/pokedex/orchid/cry.bin", ".smolTM");
 const u32 gOrchidDexSize_Tilemap[] = INCGFX_U32("graphics/pokedex/orchid/size.bin", ".smolTM");
+const u32 gOrchidDexRegistered_Tilemap[] = INCGFX_U32("graphics/pokedex/orchid/registered.bin", ".smolTM");
+const u32 gOrchidRegionMapFrame_Gfx[] = INCGFX_U32("graphics/pokenav/region_map/orchid_frame.png", ".4bpp.smol");
+const u32 gOrchidRegionMapFrame_Tilemap[] = INCGFX_U32("graphics/pokenav/region_map/orchid_frame.bin", ".smolTM");
 const u16 gOrchidDexScreen_Pal[] = INCGFX_U16("graphics/pokedex/orchid/screen.pal", ".gbapal");
 const u8 gOrchidDexRow_Gfx[] = INCGFX_U8("graphics/pokedex/orchid/row.png", ".4bpp");
 const u8 gOrchidDexBall_Gfx[] = INCGFX_U8("graphics/pokedex/orchid/ball.png", ".4bpp");
@@ -1808,6 +1814,16 @@ const u16 gSatchelArrow_Pal[] = INCGFX_U16("graphics/bag/satchel_arrow.png", ".g
 const u8 gSatchelHMIcon_Gfx[] = INCGFX_U8("graphics/bag/satchel_hm.png", ".4bpp");
 const u8 gTextWindowFrameOrchid_Gfx[] = INCGFX_U8("graphics/text_window/orchid.png", ".4bpp");
 const u16 gTextWindowFrameOrchid_Pal[] = INCGFX_U16("graphics/text_window/orchid.png", ".gbapal");
+
+// Orchid UI: summary (dev_scripts/orchid_ui/export_summary.py)
+const u32 gOrchidSummaryTiles_Gfx[] = INCGFX_U32("graphics/summary_screen/orchid/tiles.png", ".4bpp.smol");
+const u8 gOrchidSummaryBars_Gfx[] = INCGFX_U8("graphics/summary_screen/orchid/bars.png", ".4bpp");
+const u16 gOrchidSummaryMale_Pal[] = INCGFX_U16("graphics/summary_screen/orchid/screen_male.pal", ".gbapal");
+const u16 gOrchidSummaryFemale_Pal[] = INCGFX_U16("graphics/summary_screen/orchid/screen_female.pal", ".gbapal");
+const u32 gOrchidSummaryCategory_Gfx[] = INCGFX_U32("graphics/summary_screen/orchid/category_tags.png", ".4bpp");
+const u16 gOrchidSummaryCategory_Pal[] = INCGFX_U16("graphics/summary_screen/orchid/category_tags.png", ".gbapal");
+const u32 gOrchidSummaryShinyStar_Gfx[] = INCGFX_U32("graphics/summary_screen/orchid/shiny_star.png", ".4bpp");
+const u16 gOrchidSummaryShinyStar_Pal[] = INCGFX_U16("graphics/summary_screen/orchid/shiny_star.png", ".gbapal");
 
 const u32 gBattlePyramidBag_Gfx[]          = INCGFX_U32("graphics/bag/bag_pyramid.png", ".4bpp.smol");
 const u16 gBattlePyramidBag_Pal[]          = INCGFX_U16("graphics/bag/bag_pyramid.pal", ".gbapal"); // female palette is first and male is second.

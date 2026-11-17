@@ -656,7 +656,7 @@ static const struct WindowTemplate sZygardeCubeSelectWindowTemplate =
 static const struct WindowTemplate sPartyMenuYesNoWindowTemplate =
 {
     .bg = 2,
-    .tilemapLeft = 21,
+    .tilemapLeft = 23, // Orchid: was 21; frame ends at x=232 like the other popups
     .tilemapTop = 9,
     .width = 5,
     .height = 4,

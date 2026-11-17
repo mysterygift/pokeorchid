@@ -833,13 +833,13 @@ static const struct WindowTemplate sBattleArenaWindowTemplates[] =
         .paletteNum = 5,
         .baseBlock = 0x0148,
     },
-    [ARENA_WIN_JUDGMENT_TEXT] = {
+    [ARENA_WIN_JUDGMENT_TEXT] = { // Orchid UI: the referee uses the tray message panel
         .bg = 0,
         .tilemapLeft = 2,
         .tilemapTop = 15,
         .width = 26,
         .height = 4,
-        .paletteNum = 7,
+        .paletteNum = ORCHID_TRAY_BG_PAL,
         .baseBlock = 0x0090,
     },
     [B_WIN_MOVE_DESCRIPTION] = { // Orchid UI: Move Info panel over the move pills
@@ -1010,10 +1010,12 @@ void LoadBattleMenuWindowGfx(void)
     LoadUserWindowBorderGfx(2, 0x22, BG_PLTT_ID(1));
     LoadPalette(gBattleWindowTextPalette, BG_PLTT_ID(5), PLTT_SIZE_4BPP);
 
-    if ((gBattleTypeFlags & (BATTLE_TYPE_ARENA | BATTLE_TYPE_POKEDUDE))
+    // Orchid UI: the Battle Arena referee speaks in the tray panel; the vanilla box tiles at 0x30
+    // would overwrite the tray's
+    if ((gBattleTypeFlags & BATTLE_TYPE_POKEDUDE)
     || (IS_FRLG && (gBattleTypeFlags & BATTLE_TYPE_FIRST_BATTLE)))
     {
-        // Load graphics for the Battle Arena referee's mid-battle messages.
+        // Load graphics for the Pokédude's mid-battle messages.
         Menu_LoadStdPalAt(BG_PLTT_ID(7));
         LoadMessageBoxGfx(0, 0x30, BG_PLTT_ID(7));
         gPlttBufferUnfaded[BG_PLTT_ID(7) + 6] = 0;
