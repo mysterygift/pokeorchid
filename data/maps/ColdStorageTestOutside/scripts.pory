@@ -1,0 +1,9 @@
+// Outdoor half of the Cold Storage test: a scrap of Tosa Port with the new exterior tiles
+// (appended to gTileset_Slateport) and the animated sliding door.
+
+mapscripts ColdStorageTestOutside_MapScripts {}
+
+script ColdStorageTestOutside_EventScript_Sign {
+    msgbox(format("Tosa Port Cold Storage\pKeep doors shut. Mind the ice."), MSGBOX_SIGN)
+    end
+}

@@ -283,6 +283,17 @@ const struct Tileset gTileset_HawkerCentre =
     .callback = NULL,
 };
 
+const struct Tileset gTileset_ColdStorage =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_ColdStorage,
+    .palettes = gTilesetPalettes_ColdStorage,
+    .metatiles = gMetatiles_ColdStorage,
+    .metatileAttributes = gMetatileAttributes_ColdStorage,
+    .callback = NULL,
+};
+
 const struct Tileset gTileset_PokemonFanClub =
 {
     .isCompressed = TRUE,

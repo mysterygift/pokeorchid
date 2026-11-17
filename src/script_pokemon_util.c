@@ -543,3 +543,20 @@ void Script_GiveRandomBerry(struct ScriptContext *ctx)
 
     gSpecialVar_Result = BerryTypeToItemId(RandomUniform(RNG_RANDOM_BERRY, loBerry, hiBerry));
 }
+
+// Orchid: sets the met level of every party mon. Test NPCs that hand out a ready-made team use it
+// so the team obeys without badges (with B_OBEDIENCE_MECHANICS >= GEN_8 the player's own mons are
+// judged by the level they were met at, not their current level).
+void Script_SetPartyMetLevel(struct ScriptContext *ctx)
+{
+    u32 i;
+    u32 metLevel = ScriptReadByte(ctx);
+
+    Script_RequestEffects(SCREFF_V1 | SCREFF_SAVE);
+
+    for (i = 0; i < PARTY_SIZE; i++)
+    {
+        if (GetMonData(&gParties[B_TRAINER_PLAYER][i], MON_DATA_SPECIES) != SPECIES_NONE)
+            SetMonData(&gParties[B_TRAINER_PLAYER][i], MON_DATA_MET_LEVEL, &metLevel);
+    }
+}

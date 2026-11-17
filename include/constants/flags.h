@@ -54,12 +54,12 @@
 #define FLAG_HIDE_TOSA_GATEWAY_RIVAL         0x20 // Hide Rival in Tosa Gateway.
 #define FLAG_DYNAMAX_BATTLE   0x21 // B_FLAG_DYNAMAX_BATTLE: Dynamax is allowed in battle
 #define FLAG_TERA_ORB_CHARGED 0x22 // B_FLAG_TERA_ORB_CHARGED: set when the party is healed, cleared on Terastallizing
-#define FLAG_UNUSED_0x023    0x23 // Unused Flag
-#define FLAG_UNUSED_0x024    0x24 // Unused Flag
-#define FLAG_UNUSED_0x025    0x25 // Unused Flag
-#define FLAG_UNUSED_0x026    0x26 // Unused Flag
-#define FLAG_UNUSED_0x027    0x27 // Unused Flag
-#define FLAG_UNUSED_0x028    0x28 // Unused Flag
+#define FLAG_COLD_STORAGE_GATE_OPEN              0x23 // Cold Storage: security gate unlocked with the Storage Key
+#define FLAG_COLD_STORAGE_THAWED                 0x24 // Cold Storage: coolant switched off (meltable ice is thawed)
+#define FLAG_HIDE_COLD_STORAGE_VILLAINS          0x25 // Cold Storage: leader and admin gone after the multi battle
+#define FLAG_ITEM_COLD_STORAGE_STORAGE_KEY       0x26 // Cold Storage item ball
+#define FLAG_ITEM_COLD_STORAGE_NEVER_MELT_ICE    0x27 // Cold Storage item ball
+#define FLAG_ITEM_COLD_STORAGE_SUPER_POTION      0x28 // Cold Storage item ball
 #define FLAG_UNUSED_0x029    0x29 // Unused Flag
 #define FLAG_UNUSED_0x02A    0x2A // Unused Flag
 #define FLAG_UNUSED_0x02B    0x2B // Unused Flag

@@ -626,6 +626,8 @@
     "TrainTestWest",
     "TrainTestEast",
     "TrainTestNorth",
-    "HawkerCentreTest"
+    "HawkerCentreTest",
+    "ColdStorageTest",
+    "ColdStorageTestOutside"
   ]
 }
