@@ -50,7 +50,7 @@ X.......###.##..#####X
 X##############.#####X
 X##############.#####X
 X~~C~~~~~B~~~~~~~~~~~X
-X~~~~~~~~~~~~~~~~~~~~X
+X~~~~~~~~~~~O~~~~~~~~X
 X~~~~~A~~~~~~~~~~~~~~X
 X.~~~~~~~~B~~~~~~~~~~X
 X~~C~~~~~~~~~~~~~~~~~X
@@ -93,6 +93,9 @@ GATE, CONSOLE, GATE_STAND, CONSOLE_STAND = (10, 8), (16, 11), (10, 9), (16, 12)
 TRIGGER = (10, 7)
 KEY_BALL = (20, 21)
 ITEM_BALLS = {KEY_BALL: "key", (1, 31): "field1", (1, 25): "maze"}
+# The barrel at (12, 29) is there for the way OUT: coming back from the boss you slide east along
+# row 29 into it, which lines you up with the gap in the container row below (found by brute force
+# as the one extra obstacle that opens the return without changing the way in).
 NPCS = {                                    # static people: block movement in the solver
     "aide": (8, 37), "grunt1": (11, 19), "grunt2": (3, 18), "grunt3": (4, 24), "grunt4": (18, 13),
     "leader": (10, 3), "admin": (11, 3), "haru": (11, 5),
@@ -248,15 +251,22 @@ def paint_layout(ID):
 DIRS = {"N": (0, -1), "S": (0, 1), "W": (-1, 0), "E": (1, 0)}
 
 
+AFTER_SCENE = (10, 5)                       # where the boss scene leaves the player
+STAYS_AFTER_BOSS = ("aide", "haru")         # everyone else is hidden once the battle is won
+
+
 def solve(moved=None):
-    """BFS over (position, key?, thawed?, gate open?, bonus balls taken). Returns a dict of facts.
+    """BFS over (position, key?, thawed?, gate open?, bonus balls taken, boss beaten?). The goal is
+    to beat the boss AND walk back out of the exit. Returns a dict of facts.
     `moved` = {npc name: cell} overrides where people stand."""
-    npcs = set(dict(NPCS, **(moved or {})).values())
+    people = dict(NPCS, **(moved or {}))
+    before = set(people.values())
+    after = {people[n] for n in STAYS_AFTER_BOSS}
 
     def passable(p, st):
-        _, key, thawed, gate, taken = st
+        _, key, thawed, gate, taken, won = st
         ch = cell(*p)
-        if p in npcs:
+        if p in (after if won else before):
             return False
         if p in ITEM_BALLS and ITEM_BALLS[p] not in taken:
             return False
@@ -269,7 +279,10 @@ def solve(moved=None):
         return ch == "~" or (ch == "m" and not st[2])
 
     def moves(st):
-        pos, key, thawed, gate, taken = st
+        pos, key, thawed, gate, taken, won = st
+        if pos == TRIGGER and not won:                    # stepping here starts the scene
+            yield "[boss]", (AFTER_SCENE, key, thawed, gate, taken, True)
+            return
         for d, (dx, dy) in DIRS.items():
             p = (pos[0] + dx, pos[1] + dy)
             if not passable(p, st):
@@ -279,16 +292,16 @@ def solve(moved=None):
                 if not passable(q, st):
                     break
                 p = q
-            yield d, (p, key, thawed, gate, taken)
+            yield d, (p, key, thawed, gate, taken, won)
         for b, name in ITEM_BALLS.items():                # pick up an adjacent ball
             if name not in taken and abs(b[0] - pos[0]) + abs(b[1] - pos[1]) == 1:
-                yield f"[take {name}]", (pos, key or name == "key", thawed, gate, taken | {name})
+                yield f"[take {name}]", (pos, key or name == "key", thawed, gate, taken | {name}, won)
         if pos == CONSOLE_STAND:
-            yield "[console]", (pos, key, not thawed, gate, taken)
+            yield "[console]", (pos, key, not thawed, gate, taken, won)
         if pos == GATE_STAND and key and not gate:
-            yield "[unlock]", (pos, key, thawed, True, taken)
+            yield "[unlock]", (pos, key, thawed, True, taken, won)
 
-    start = (ENTRY, False, False, False, frozenset())
+    start = (ENTRY, False, False, False, frozenset(), False)
     prev, order = {start: None}, deque([start])
     while order:
         st = order.popleft()
@@ -304,10 +317,9 @@ def solve(moved=None):
             out.append(label)
         return out[::-1]
 
-    goals = [st for st in prev if st[0] == TRIGGER]
-    assert goals, f"the boss room cannot be reached (moved: {moved})"
-    best = min(goals, key=lambda st: len(route(st)))
-    # softlock check: from every reachable state the goal must still be reachable
+    assert any(st[5] for st in prev), f"the boss room cannot be reached (moved: {moved})"
+    goals = [st for st in prev if st[5] and cell(*st[0]) == "E"]
+    # softlock check: from every reachable state it must still be possible to win and leave
     rev = {}
     for st in prev:
         for _, nxt in moves(st):
@@ -320,7 +332,8 @@ def solve(moved=None):
                 good.add(p)
                 order.append(p)
     stuck = [st for st in prev if st not in good]
-    return dict(states=len(prev), route=route(best), stuck=stuck, prev=prev,
+    best = min(goals, key=lambda st: len(route(st))) if goals else None
+    return dict(states=len(prev), route=route(best) if best else None, stuck=stuck, prev=prev,
                 first=lambda pred: route(min((s for s in prev if pred(s)), key=lambda s: len(route(s)))))
 
 
@@ -341,11 +354,19 @@ def compress(route):
 
 def report():
     r = solve()
-    print(f"reachable states: {r['states']}; states with no way forward: {len(r['stuck'])}")
+    print(f"reachable states: {r['states']}; states with no way to win and leave: {len(r['stuck'])}")
     for st in r["stuck"][:5]:
         print("   stuck:", st)
+    if r["route"] is None:
+        print("NO ROUTE: the boss can be beaten but the exit cannot be reached afterwards")
+        won = [s for s in r["prev"] if s[5]]
+        print("   cells reachable after the boss:", sorted({s[0] for s in won}))
+        return
+    full = r["route"]
+    cut = full.index("[boss]") + 1
     print("shortest full route (each letter is one input; slides are one input):")
-    print("  ", compress(r["route"]))
+    print("   in: ", compress(full[:cut]))
+    print("   out:", compress(full[cut:]))
     print("to the key:        ", compress(r["first"](lambda s: s[1])))
     print("to the console:    ", compress(r["first"](lambda s: s[0] == CONSOLE_STAND)))
     for name in ("field1", "maze"):
@@ -354,7 +375,7 @@ def report():
         for stop in trainer_stops(name):
             v = solve({name: stop})
             verdict = "ok" if not v["stuck"] else f"{len(v['stuck'])} STUCK STATES"
-            print(f"{name} parked at {stop}: {verdict}, route {len(v['route'])} inputs")
+            print(f"{name} parked at {stop}: {verdict}, route {len(v['route'] or [])} inputs")
 
 
 # ------------------------------------------------------------------ previews

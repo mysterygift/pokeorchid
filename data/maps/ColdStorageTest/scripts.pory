@@ -4,10 +4,18 @@
 //
 // Puzzles: an ice field to slide across, the Storage Key in an icy pocket of the container maze,
 // a coolant console that thaws the centre aisle of the second ice field, and the locked gate.
+// After the multi battle the leader, admin and all four grunts are hidden, and the solver also
+// proves the player can slide back out to the exit.
 // The trainers are placeholders (Team Aqua assets: the FRLG Rocket ones are not compiled into an
 // Emerald-mode build) until Orchid's own villains exist.
 
 mapscripts ColdStorageTest_MapScripts {
+    // Haru stays put after the multi battle; once the player has left and comes back he is gone.
+    MAP_SCRIPT_ON_TRANSITION {
+        if (var(VAR_COLD_STORAGE_STATE) == 1) {
+            setflag(FLAG_HIDE_COLD_STORAGE_HARU)
+        }
+    }
     MAP_SCRIPT_ON_LOAD {
         if (flag(FLAG_COLD_STORAGE_GATE_OPEN)) {
             call(ColdStorageTest_EventScript_SetGateOpen)
@@ -270,6 +278,12 @@ script ColdStorageTest_EventScript_WonMultiBattle {
     removeobject(LOCALID_COLD_STORAGE_LEADER)
     removeobject(LOCALID_COLD_STORAGE_ADMIN)
     setflag(FLAG_HIDE_COLD_STORAGE_VILLAINS)
+    // the grunts clear out with them (removeobject only matters for one that is on screen)
+    removeobject(LOCALID_COLD_STORAGE_GRUNT_1)
+    removeobject(LOCALID_COLD_STORAGE_GRUNT_2)
+    removeobject(LOCALID_COLD_STORAGE_GRUNT_3)
+    removeobject(LOCALID_COLD_STORAGE_GRUNT_4)
+    setflag(FLAG_HIDE_COLD_STORAGE_GRUNTS)
     setvar(VAR_COLD_STORAGE_STATE, 1)
     fadescreen(FADE_FROM_BLACK)
     applymovement(LOCALID_COLD_STORAGE_HARU, moves(face_left))
