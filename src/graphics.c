@@ -1822,6 +1822,8 @@ const u16 gOrchidSummaryMale_Pal[] = INCGFX_U16("graphics/summary_screen/orchid/
 const u16 gOrchidSummaryFemale_Pal[] = INCGFX_U16("graphics/summary_screen/orchid/screen_female.pal", ".gbapal");
 const u32 gOrchidSummaryCategory_Gfx[] = INCGFX_U32("graphics/summary_screen/orchid/category_tags.png", ".4bpp");
 const u16 gOrchidSummaryCategory_Pal[] = INCGFX_U16("graphics/summary_screen/orchid/category_tags.png", ".gbapal");
+const u32 gOrchidSummaryShinyStar_Gfx[] = INCGFX_U32("graphics/summary_screen/orchid/shiny_star.png", ".4bpp");
+const u16 gOrchidSummaryShinyStar_Pal[] = INCGFX_U16("graphics/summary_screen/orchid/shiny_star.png", ".gbapal");
 
 const u32 gBattlePyramidBag_Gfx[]          = INCGFX_U32("graphics/bag/bag_pyramid.png", ".4bpp.smol");
 const u16 gBattlePyramidBag_Pal[]          = INCGFX_U16("graphics/bag/bag_pyramid.pal", ".gbapal"); // female palette is first and male is second.

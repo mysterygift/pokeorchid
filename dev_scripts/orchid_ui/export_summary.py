@@ -15,6 +15,7 @@ Writes (under the repo root):
   graphics/summary_screen/orchid/screen_male.pal  BG palettes 0-6 (see PAL_* below), male theme
   graphics/summary_screen/orchid/screen_female.pal
   graphics/summary_screen/orchid/category_tags.png  16x48 OBJ: physical / special / status tags
+  graphics/summary_screen/orchid/shiny_star.png   16x16 OBJ: shiny star (summary_extras.py), kit colours
   src/data/pokemon_summary_orchid.h               tilemaps, row variants, bar table, layout constants
 
 usage: export_summary.py
@@ -28,6 +29,7 @@ import dex_ext as D
 import mock_battle as MB
 import mock_summary as M
 import summary_ext as S
+import summary_extras as X
 from backdrop import GRID_PAL, grid_tile_image
 from gamefont import draw_text, text_width
 
@@ -425,6 +427,10 @@ def main():
     for t in THEMES:
         write_jasc(os.path.join(OUT, "screen_%s.pal" % t), [c for p in PALS[t] for c in p])
     category_sheet().save(os.path.join(OUT, "category_tags.png"), transparency=0)
+    star = X.star_sheet()
+    flat = [c for rgb in PALS["male"][PAL_ART] for c in rgb]
+    star.putpalette(flat + [0] * (768 - len(flat)))
+    star.save(os.path.join(OUT, "shiny_star.png"), transparency=0)
 
     # slide offsets (ease-out 1 - (1 - u)^2, u = (f + 1) / 12), Python rounding like the mock
     ease = [int(round(SLIDE_DIST * (1 - (1 - (f + 1) / SLIDE_FRAMES) ** 2))) for f in range(SLIDE_FRAMES)]
@@ -461,6 +467,21 @@ def main():
     )
     for k, v in consts.items():
         a("#define OSUM_%-20s %d" % (k, v))
+    a("")
+    a("// ---- shiny star OBJ (16x16, star at its top-left) and markings (summary_extras.py)")
+    a("#define OSUM_STAR_X           %d   // sprite centre" % (X.STAR_C[0] - 4 + 8))
+    a("#define OSUM_STAR_Y           %d" % (X.STAR_C[1] - 4 + 8))
+    a("#define OSUM_MARK_X0          %d" % X.MARK_X0)
+    a("#define OSUM_MARK_Y           %d" % X.MARK_Y)
+    a("#define OSUM_MARK_PITCH       %d" % X.MARK_PITCH)
+    a("#define OSUM_MARK_SIZE        %d" % len(X.MARKS[0]))
+    a("#define OSUM_MARK_ON          %d   // text palette roles" % X.MARK_ON)
+    a("#define OSUM_MARK_OFF         %d" % X.MARK_OFF)
+    a("// circle, square, triangle, heart (MON_DATA_MARKINGS bits 0-3); bit (size-1-x) of row y")
+    a("static const u8 sOSumMarks[4][%d] = {" % len(X.MARKS[0]))
+    for rows in X.MARKS:
+        a("    {%s}," % ", ".join("0x%02X" % sum(1 << (len(r) - 1 - i) for i, ch in enumerate(r) if ch == "X") for r in rows))
+    a("};")
     a("")
     a("// ---- BG1 static bases (header + left column [+ tray])")
     a("enum {%s, OSUM_HDR_COUNT};" % ", ".join("OSUM_HDR_" + n for n in HDR_NAMES))

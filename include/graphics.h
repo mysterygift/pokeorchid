@@ -1904,6 +1904,8 @@ extern const u16 gOrchidSummaryMale_Pal[];
 extern const u16 gOrchidSummaryFemale_Pal[];
 extern const u32 gOrchidSummaryCategory_Gfx[];
 extern const u16 gOrchidSummaryCategory_Pal[];
+extern const u32 gOrchidSummaryShinyStar_Gfx[];
+extern const u16 gOrchidSummaryShinyStar_Pal[];
 
 // item menu icons graphics
 extern const u32 gBagMaleTiles[];

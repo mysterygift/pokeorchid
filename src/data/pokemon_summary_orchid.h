@@ -52,6 +52,23 @@ static const u8 sOSumSlideOffsets[OSUM_SLIDE_FRAMES] = {24, 46, 66, 84, 100, 114
 #define OSUM_NATURE_GAP           5
 #define OSUM_HINT_Y               146
 
+// ---- shiny star OBJ (16x16, star at its top-left) and markings (summary_extras.py)
+#define OSUM_STAR_X           48   // sprite centre
+#define OSUM_STAR_Y           98
+#define OSUM_MARK_X0          31
+#define OSUM_MARK_Y           124
+#define OSUM_MARK_PITCH       6
+#define OSUM_MARK_SIZE        5
+#define OSUM_MARK_ON          7   // text palette roles
+#define OSUM_MARK_OFF         5
+// circle, square, triangle, heart (MON_DATA_MARKINGS bits 0-3); bit (size-1-x) of row y
+static const u8 sOSumMarks[4][5] = {
+    {0x0E, 0x1F, 0x1F, 0x1F, 0x0E},
+    {0x1F, 0x1F, 0x1F, 0x1F, 0x1F},
+    {0x04, 0x04, 0x0E, 0x0E, 0x1F},
+    {0x1B, 0x1F, 0x1F, 0x0E, 0x04},
+};
+
 // ---- BG1 static bases (header + left column [+ tray])
 enum {OSUM_HDR_INFO, OSUM_HDR_SKILLS, OSUM_HDR_IVS, OSUM_HDR_EVS, OSUM_HDR_MOVES, OSUM_HDR_MOVES_TRAY, OSUM_HDR_LEARN, OSUM_HDR_EGG, OSUM_HDR_COUNT};
 static const u16 sOSumStatic[OSUM_HDR_COUNT][20][30] = {
