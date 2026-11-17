@@ -106,7 +106,7 @@
       "width": 38,
       "height": 40,
       "primary_tileset": "gTileset_General",
-      "secondary_tileset": "gTileset_Slateport",
+      "secondary_tileset": "gTileset_TosaPort",
       "border_filepath": "data/layouts/TosaPort/border.bin",
       "blockdata_filepath": "data/layouts/TosaPort/map.bin",
       "layout_version": "emerald"
