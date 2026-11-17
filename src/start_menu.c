@@ -988,7 +988,7 @@ static void ShowSafariBallsWindow(void)
         ConvertIntToDecimalStringN(gStringVar1, gNumSafariBalls, STR_CONV_MODE_LEFT_ALIGN, 2);
         StringExpandPlaceholders(gStringVar4, sText_OrchidSafariStock);
         AddTextPrinterParameterized4(windowId, FONT_NORMAL, OSM_SAFARI_TEXT_X, 14, 0, 0, sOrchidTextColors, TEXT_SKIP_DRAW, gStringVar4);
-        CopyWindowToVram(windowId, COPYWIN_GFX);
+        CopyWindowToVram(windowId, COPYWIN_FULL);
         sOrchidSafariIconSpriteId = AddItemIconSprite(TAG_OSM_SAFARI_ICON, TAG_OSM_SAFARI_ICON, ITEM_SAFARI_BALL);
         if (sOrchidSafariIconSpriteId != MAX_SPRITES)
         {
@@ -1019,7 +1019,7 @@ static void ShowSafariBallsWindow(void)
         StringExpandPlaceholders(gStringVar4, gText_SafariBallStock);
         AddTextPrinterParameterized(sSafariBallsWindowId, FONT_NORMAL, gStringVar4, 0, 1, TEXT_SKIP_DRAW, NULL);
     }
-    CopyWindowToVram(sSafariBallsWindowId, COPYWIN_GFX);
+    CopyWindowToVram(sSafariBallsWindowId, COPYWIN_FULL);
 }
 
 // Orchid Pyramid chip (mock_system.chip_pyramid): "Battle Pyramid", 7 floor pips (cleared gold, current
@@ -1028,6 +1028,7 @@ static void ShowPyramidFloorWindow(void)
 {
     u32 floor = gSaveBlock2Ptr->frontier.curChallengeBattleNum;
     u32 k;
+    s32 floorX;
     u8 windowId;
 
     if (floor > FRONTIER_STAGES_PER_CHALLENGE)
@@ -1042,9 +1043,13 @@ static void ShowPyramidFloorWindow(void)
         BlitBitmapRectToWindow(windowId, gOrchidStartChips_Gfx, 0, OSM_CHIP_PIPS_Y + kind * OSM_PIP_CELL, OSM_CHIP_SHEET_W, 128,
                                OSM_PIP_X0 + 9 * k, OSM_PIP_Y, OSM_PIP_W, 10);
     }
-    AddTextPrinterParameterized4(windowId, FONT_NARROW, OSM_PYRAMID_FLOOR_X, OSM_PYRAMID_FLOOR_Y, 0, 0, sOrchidTextColors,
+    // the mock's "Floor N" runs 2 px into the frame; keep it inside the 96 px window
+    floorX = 96 - GetStringWidth(FONT_NARROW, sPyramidFloorNames[floor], 0);
+    if (floorX > OSM_PYRAMID_FLOOR_X)
+        floorX = OSM_PYRAMID_FLOOR_X;
+    AddTextPrinterParameterized4(windowId, FONT_NARROW, floorX, OSM_PYRAMID_FLOOR_Y, 0, 0, sOrchidTextColors,
                                  TEXT_SKIP_DRAW, sPyramidFloorNames[floor]);
-    CopyWindowToVram(windowId, COPYWIN_GFX);
+    CopyWindowToVram(windowId, COPYWIN_FULL);
 }
 
 // Removes the info chip (location / Safari / Pyramid) and the menu icons; safe to call more than once.
@@ -1062,7 +1067,7 @@ static void RemoveExtraStartMenuWindows(void)
     if (sOrchidChip != ORCHID_CHIP_LOCATION) // the location pill is OBJ (gone with the icons)
     {
         ClearStdWindowAndFrameToTransparent(sOrchidChipWindowId, FALSE);
-        CopyWindowToVram(sOrchidChipWindowId, COPYWIN_GFX);
+        CopyWindowToVram(sOrchidChipWindowId, COPYWIN_FULL);
         RemoveWindow(sOrchidChipWindowId);
     }
     sOrchidChip = ORCHID_CHIP_NONE;
