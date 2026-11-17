@@ -578,6 +578,68 @@ def render_size(entry_index=0, player="JAXSON", trainer="brendan", grid_scroll=0
     return out
 
 
+# ------------------------------------------------------------------ post-catch page (round 4)
+# Shown after "X's data was added to the POKéDEX." in battle. Same INFO body; the header band
+# loses the tabs (nothing to switch to) and carries a gold NEW pill + "Registered to the POKéDEX!".
+# The NEW pill pulses (pal 1 SELECT <-> SELECT_LIGHT every 16 frames) where vanilla flickered its
+# header palette. The pic is the battle sprite of the caught mon (its own shiny / personality).
+REG_TITLE = "Registered to the POKéDEX!"
+REG_NEW = (12, 1, 34)          # x, y, w of the NEW pill in the header
+
+
+def draw_registered_art(cv, cur=None):
+    D.header_band(cv, 0, W - 1, round_left=False)
+    D.tab_pill(cur if cur is not None else cv, REG_NEW[0], REG_NEW[1], REG_NEW[2])
+    D.dais(cv, E_DAIS_C[0], E_DAIS_C[1], E_DAIS_R, E_DAIS_IN)
+    D.label_pill(cv, E_X, E_NAME_Y, E_W, E_NUM_CAP)
+    rounded_box(cv, E_X, E_CAT_Y, E_W, 14, 4, PANEL, INK, WHITE, PANEL_SHADE)
+    D.label_pill(cv, E_X, E_HW_Y, 70, HW_CAP)
+    D.label_pill(cv, E_X + E_W - 70, E_HW_Y, 70, HW_CAP)
+    fx, fy, fw, fh = FOOT_WELL
+    D.well(cv, fx, fy, fw, fh)
+    D.tray(cv, E_TRAY_Y)
+
+
+def render_registered(entry_index, grid_scroll=0, fade=0.0, pulse=False, sprite_pos=None, show_ui_obj=True):
+    pal = D.dex_palette("orchid")
+    sel = D.selected(pal)
+    if pulse:
+        sel = list(sel)
+        sel[PANEL] = sel[WHITE]
+    e = ENTRIES[entry_index]
+    sp = info(e)
+    out = KX.grid_frame(grid_scroll)
+    ui = KX.blank()
+    art, cur = sheet("orchid"), sheet("orchid")
+    draw_registered_art(Canvas(art), Canvas(cur))
+    a = KX.sheet_rgba(art, pal)
+    a.alpha_composite(KX.sheet_rgba(cur, sel))
+    ui.alpha_composite(a)
+    txt = sheet("orchid")
+    tc = Canvas(txt)
+    x, y, w = REG_NEW
+    draw_text(tc, x + (w - text_width("NEW")) // 2, 0, "NEW", INK, SELECT_DARK)
+    tx = x + w + (W - x - w - text_width(REG_TITLE)) // 2
+    draw_text(tc, tx, 0, REG_TITLE, WHITE, ACCENT_DARK)
+    num = "%03d" % e["num"]
+    draw_text(tc, E_X + (E_NUM_CAP - text_width(num)) // 2 + 1, E_NAME_Y - 1, num, WHITE, ACCENT_DARK)
+    draw_text(tc, E_X + E_NUM_CAP + 6, E_NAME_Y - 1, sp["name"], INK, PANEL_SHADE)
+    D.caught_ball(tc, E_X + E_W - 15, E_NAME_Y + 3)
+    info_text(tc, sp, None, True)
+    compose(ui, txt, pal)
+    if fade:
+        ui = darken(ui, fade)
+    out.alpha_composite(ui)
+    spr = D.mon_pic(sp["folder"])
+    stage = E_DAIS_C[1] + int(E_DAIS_IN * 0.55) + 3
+    cx, cy = sprite_pos or (E_DAIS_C[0], stage - D.sprite_bottom(spr) + 32)
+    out.alpha_composite(spr, (cx - 32, cy - 32))
+    if show_ui_obj and not fade:
+        for k, t in enumerate(sp["types"]):
+            out.alpha_composite(KX.type_icon(t), (E_X + 2 + 36 * k, E_TYPES_Y))
+    return out
+
+
 # ------------------------------------------------------------------ search menu (std-window style)
 SEARCH_ROWS = [("ORDER", "Numerical"), ("NAME", "ABC"), ("TYPE", None), ("MODE", "TOSA")]
 S_X, S_W, S_CAP, S_Y0, S_PITCH = 16, 208, 56, 24, 20
