@@ -1834,6 +1834,18 @@ const u16 gOrchidPcBoxColours_Pal[] = INCGFX_U16("graphics/pokemon_storage/orchi
 const u8 gOrchidPcObj_Gfx[] = INCGFX_U8("graphics/pokemon_storage/orchid/ui_obj.png", ".4bpp");
 const u16 gOrchidPcObj_Pal[] = INCGFX_U16("graphics/pokemon_storage/orchid/ui_obj.png", ".gbapal");
 
+// Orchid UI: Poké Mart (dev_scripts/orchid_ui/export_mart.py)
+const u32 gOrchidShopBg_Gfx[] = INCGFX_U32("graphics/shop/orchid/bg_tiles.png", ".4bpp.smol");
+const u32 gOrchidShopBg_Tilemap[] = INCGFX_U32("graphics/shop/orchid/bg.bin", ".smolTM");
+const u16 gOrchidShopBg_Pal[] = INCGFX_U16("graphics/shop/orchid/bg.pal", ".gbapal");
+const u8 gOrchidShopQtyTag_Gfx[] = INCGFX_U8("graphics/shop/orchid/qty_tag.png", ".4bpp");
+const u8 gOrchidShopMsgFrame_Gfx[] = INCGFX_U8("graphics/shop/orchid/msg_frame.png", ".4bpp");
+const u8 gOrchidShopThumb_Gfx[] = INCGFX_U8("graphics/shop/orchid/thumb.png", ".4bpp");
+const u8 gOrchidShopChevrons_Gfx[] = INCGFX_U8("graphics/shop/orchid/chevrons.png", ".4bpp");
+const u8 gOrchidShopCoin_Gfx[] = INCGFX_U8("graphics/shop/orchid/coin.png", ".4bpp");
+const u16 gOrchidShopObj_Pal[] = INCGFX_U16("graphics/shop/orchid/obj.pal", ".gbapal");
+const u8 gOrchidShopTmDiscs_Gfx[] = INCGFX_U8("graphics/shop/orchid/tm_discs.png", ".4bpp");
+
 const u32 gBattlePyramidBag_Gfx[]          = INCGFX_U32("graphics/bag/bag_pyramid.png", ".4bpp.smol");
 const u16 gBattlePyramidBag_Pal[]          = INCGFX_U16("graphics/bag/bag_pyramid.pal", ".gbapal"); // female palette is first and male is second.
 const u32 gBattlePyramidBagTilemap[]       = INCGFX_U32("graphics/bag/menu_pyramid.bin", ".smolTM");

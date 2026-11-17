@@ -1916,6 +1916,18 @@ extern const u16 gOrchidPcBoxColours_Pal[];
 extern const u8 gOrchidPcObj_Gfx[];
 extern const u16 gOrchidPcObj_Pal[];
 
+// Orchid UI: Poké Mart
+extern const u32 gOrchidShopBg_Gfx[];
+extern const u32 gOrchidShopBg_Tilemap[];
+extern const u16 gOrchidShopBg_Pal[];
+extern const u8 gOrchidShopQtyTag_Gfx[];
+extern const u8 gOrchidShopMsgFrame_Gfx[];
+extern const u8 gOrchidShopThumb_Gfx[];
+extern const u8 gOrchidShopChevrons_Gfx[];
+extern const u8 gOrchidShopCoin_Gfx[];
+extern const u16 gOrchidShopObj_Pal[];
+extern const u8 gOrchidShopTmDiscs_Gfx[];
+
 // item menu icons graphics
 extern const u32 gBagMaleTiles[];
 extern const u32 gBagFemaleTiles[];
