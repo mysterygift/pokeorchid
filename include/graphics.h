@@ -1965,6 +1965,12 @@ extern const u8 gOrchidStartBanner_Gfx[];
 extern const u8 gOrchidWeatherCaps_Gfx[];
 extern const u16 gOrchidStartObj_Pal[];
 
+// Orchid UI: trainer card
+extern const u8 gOrchidCardTiles_Gfx[];
+extern const u8 gOrchidCardBadges_Gfx[];
+extern const u16 gOrchidCardBadges_Pal[];
+extern const u16 gOrchidCard_Pal[];
+
 // item menu icons graphics
 extern const u32 gBagMaleTiles[];
 extern const u32 gBagFemaleTiles[];
