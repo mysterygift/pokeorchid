@@ -1,9 +1,11 @@
 #include "global.h"
+#include "battle_main.h"
 #include "bg.h"
 #include "data.h"
 #include "decompress.h"
 #include "decoration.h"
 #include "decoration_inventory.h"
+#include "event_data.h"
 #include "event_object_movement.h"
 #include "field_player_avatar.h"
 #include "field_screen_effect.h"
@@ -42,12 +44,27 @@
 #include "constants/rgb.h"
 #include "constants/songs.h"
 
-#define TAG_SCROLL_ARROW   2100
-#define TAG_ITEM_ICON_BASE 9110 // immune to time blending
+#include "data/shop_orchid.h"
 
-#define MAX_ITEMS_SHOWN 8
-#define SHOP_MENU_PALETTE_ID (gMapHeader.mapLayout->isFrlg ? 11 : 12)
-#define ORCHID_SHOP_YESNO_FRAME_TILE 0x222 // after the last BG0 window (YES/NO at 0x20E..0x221)
+#define TAG_ITEM_ICON_BASE 9110 // immune to time blending
+#define TAG_ITEM_ICON_BONUS (TAG_ITEM_ICON_BASE + 2)
+#define TAG_OSHOP_OBJ_PAL   2100 // thumb, chevrons, coin
+#define TAG_OSHOP_THUMB     2101
+#define TAG_OSHOP_CHEVRONS  2102
+#define TAG_OSHOP_COIN      2103
+#define TAG_OSHOP_TM_DISCS  2104 // tiles + palette
+
+#define MAX_ITEMS_SHOWN OSHOP_LIST_ROWS
+
+// Orchid kit palette roles (dev_scripts/orchid_ui/kit.py) used by the text on BG palette 0
+#define OSHOP_INK         1
+#define OSHOP_PANEL_SHADE 5
+#define OSHOP_SPARE_B     15 // price-tag manila shade
+
+// BG0 tiles (charblock 2): tile 0 blank + the Orchid message frame, then the YES/NO frame, then windows
+#define OSHOP_MSG_FRAME_BASE   0
+#define ORCHID_SHOP_YESNO_FRAME_TILE 0x10
+#define OSHOP_WINDOW_PAL       15 // Orchid window palette (message box, YES/NO)
 
 enum {
     WIN_BUY_SELL_QUIT,
@@ -58,31 +75,19 @@ enum {
     WIN_MONEY,
     WIN_ITEM_LIST,
     WIN_ITEM_DESCRIPTION,
-    WIN_QUANTITY_IN_BAG,
-    WIN_QUANTITY_PRICE,
+    WIN_QUANTITY, // BG1: the hanging quantity tag
     WIN_MESSAGE,
 };
 
 enum {
-    COLORID_NORMAL,      // Item descriptions, quantity in bag, and quantity/price
-    COLORID_ITEM_LIST,   // The text in the item list, and the cursor normally
-    COLORID_GRAY_CURSOR, // When the cursor has selected an item to purchase
+    COLORID_NORMAL, // ink with the panel shade (money, descriptions, quantity, money left)
+    COLORID_PRICE,  // ink with the manila tag shade (prices in the list, quantity total)
 };
 
 enum {
     MART_TYPE_NORMAL,
     MART_TYPE_DECOR,
     MART_TYPE_DECOR2,
-};
-
-// shop view window NPC info enum
-enum
-{
-    OBJ_EVENT_ID,
-    X_COORD,
-    Y_COORD,
-    ANIM_NUM,
-    LAYER_TYPE
 };
 
 struct MartInfo
@@ -97,16 +102,24 @@ struct MartInfo
 
 struct ShopData
 {
-    u16 tilemapBuffers[4][0x400];
+    u16 tilemapBuffers[4][0x400]; // BG0..BG3
     u32 totalCost;
     u16 itemsShowed;
     u16 selectedRow;
     u16 scrollOffset;
     u16 maxQuantity;
-    u8 scrollIndicatorsTaskId;
     u8 iconSlot;
     u8 itemSpriteIds[2];
-    s16 viewportObjects[OBJECT_EVENTS_COUNT][5];
+    // Orchid
+    u8 pillVariant;   // sOrchidShopPillRows entry for the item rows (price tag width)
+    u8 gridTimer;
+    u8 thumbSpriteId;
+    u8 clerkSpriteId;
+    u8 bonusSpriteId;
+    u8 coinSpriteId;
+    u8 chevronSpriteIds[2];
+    u8 discSpriteIds[OSHOP_LIST_ROWS];
+    TaskFunc messageNextTask;
 };
 
 static EWRAM_DATA struct MartInfo sMartInfo = {0};
@@ -124,7 +137,6 @@ static void MapPostLoadHook_ReturnToShopMenu(void);
 static void Task_ReturnToShopMenu(u8 taskId);
 static void ShowShopMenuAfterExitingBuyOrSellMenu(u8 taskId);
 static void BuyMenuDrawGraphics(void);
-static void BuyMenuAddScrollIndicatorArrows(void);
 static void Task_BuyMenu(u8 taskId);
 static void BuyMenuBuildListMenuTemplate(void);
 static void BuyMenuInitBgs(void);
@@ -134,15 +146,6 @@ static void BuyMenuSetListEntry(struct ListMenuItem *, enum Item, u8 *);
 static void BuyMenuAddItemIcon(enum Item, u8);
 static void BuyMenuRemoveItemIcon(enum Item, u8);
 static void BuyMenuPrint(u8 windowId, const u8 *text, u8 x, u8 y, s8 speed, u8 colorSet);
-static void BuyMenuDrawMapGraphics(void);
-static void BuyMenuCopyMenuBgToBg1TilemapBuffer(void);
-static void BuyMenuCollectObjectEventData(void);
-static void BuyMenuDrawObjectEvents(void);
-static void BuyMenuDrawMapBg(void);
-static bool8 BuyMenuCheckForOverlapWithMenuBg(int, int);
-static void BuyMenuDrawMapMetatile(s16, s16, const u16 *, u8);
-static void BuyMenuDrawMapMetatileLayer(u16 *dest, s16 offset1, s16 offset2, const u16 *src);
-static bool8 BuyMenuCheckIfObjectEventOverlapsMenuBg(s16 *);
 static void ExitBuyMenu(u8 taskId);
 static void Task_ExitBuyMenu(u8 taskId);
 static void BuyMenuTryMakePurchase(u8 taskId);
@@ -159,6 +162,11 @@ static void Task_HandleShopMenuBuy(u8 taskId);
 static void Task_HandleShopMenuSell(u8 taskId);
 static void BuyMenuPrintItemDescriptionAndShowItemIcon(s32 item, bool8 onInit, struct ListMenu *list);
 static void BuyMenuPrintPriceInList(u8 windowId, u32 itemId, u8 y);
+static void OrchidShop_CreateSprites(void);
+static void OrchidShop_DrawRows(u16 scroll, u16 selectedRow);
+static void OrchidShop_PrintMoney(void);
+static void OrchidShop_ShowQuantityTag(bool32 show);
+static void OrchidShop_ShowBonusBall(bool32 show);
 
 static const struct YesNoFuncTable sShopPurchaseYesNoFuncs =
 {
@@ -179,15 +187,17 @@ static const struct MenuAction sShopMenuActions_BuyQuit[] =
     { gText_ShopQuit, {.void_u8=Task_HandleShopMenuQuit} }
 };
 
+// Orchid (mock_mart.render_menu): BUY / SELL / QUIT in the Orchid frame at tile (2, 1), 6 tiles wide, gold pill
+// rows like the YES/NO. Frame + window palette in the field's free slots (ORCHID_YESNO_FIELD_TILE / _PAL).
 static const struct WindowTemplate sShopMenuWindowTemplates[] =
 {
     [WIN_BUY_SELL_QUIT] = {
         .bg = 0,
         .tilemapLeft = 2,
         .tilemapTop = 1,
-        .width = 9,
+        .width = 6,
         .height = 6,
-        .paletteNum = 15,
+        .paletteNum = ORCHID_YESNO_FIELD_PAL,
         .baseBlock = 0x0008,
     },
     // Separate shop menu window for decorations, which can't be sold
@@ -195,13 +205,14 @@ static const struct WindowTemplate sShopMenuWindowTemplates[] =
         .bg = 0,
         .tilemapLeft = 2,
         .tilemapTop = 1,
-        .width = 9,
+        .width = 6,
         .height = 4,
-        .paletteNum = 15,
+        .paletteNum = ORCHID_YESNO_FIELD_PAL,
         .baseBlock = 0x0008,
     }
 };
 
+// The gold pill rows on BG2 are the cursor (OrchidShop_DrawRows), so no ▶.
 static const struct ListMenuTemplate sShopBuyMenuListTemplate =
 {
     .items = NULL,
@@ -211,20 +222,21 @@ static const struct ListMenuTemplate sShopBuyMenuListTemplate =
     .maxShowed = 0,
     .windowId = WIN_ITEM_LIST,
     .header_X = 0,
-    .item_X = 8,
+    .item_X = OSHOP_NAME_X,
     .cursor_X = 0,
-    .upText_Y = 1,
-    .cursorPal = 2,
+    .upText_Y = 0,
+    .cursorPal = OSHOP_INK,
     .fillValue = 0,
-    .cursorShadowPal = 3,
+    .cursorShadowPal = OSHOP_PANEL_SHADE,
     .lettersSpacing = 0,
     .itemVerticalPadding = 0,
     .scrollMultiple = LIST_NO_MULTIPLE_SCROLL,
     .fontId = FONT_NARROW,
-    .cursorKind = CURSOR_BLACK_ARROW,
-    .textNarrowWidth = 84,
+    .cursorKind = CURSOR_INVISIBLE,
+    .textNarrowWidth = 84, // set from the price tag width in BuyMenuBuildListMenuTemplate
 };
 
+// Orchid (export_mart.py): BG0 text, BG1 quantity tag (in front), BG2 shop art, BG3 scrolling grid.
 static const struct BgTemplate sShopBuyMenuBgTemplates[] =
 {
     {
@@ -233,16 +245,16 @@ static const struct BgTemplate sShopBuyMenuBgTemplates[] =
         .mapBaseIndex = 31,
         .screenSize = 0,
         .paletteMode = 0,
-        .priority = 0,
+        .priority = 1,
         .baseTile = 0
     },
     {
         .bg = 1,
-        .charBaseIndex = 0,
+        .charBaseIndex = 2,
         .mapBaseIndex = 30,
         .screenSize = 0,
         .paletteMode = 0,
-        .priority = 1,
+        .priority = 0,
         .baseTile = 0
     },
     {
@@ -265,81 +277,149 @@ static const struct BgTemplate sShopBuyMenuBgTemplates[] =
     }
 };
 
+// BG0 and BG1 share charblock 2 (tiles may run on into charblock 3 below the maps at screenblock 28).
 static const struct WindowTemplate sShopBuyMenuWindowTemplates[] =
 {
-    [WIN_MONEY] = {
+    [WIN_MONEY] = { // the cream pill on the hanging money sign
         .bg = 0,
-        .tilemapLeft = 1,
-        .tilemapTop = 1,
-        .width = 10,
-        .height = 2,
-        .paletteNum = 15,
-        .baseBlock = 0x001E,
+        .tilemapLeft = 3,
+        .tilemapTop = 2,
+        .width = 8,
+        .height = 3,
+        .paletteNum = OSHOP_PAL_KIT,
+        .baseBlock = 0x0020,
     },
     [WIN_ITEM_LIST] = {
         .bg = 0,
-        .tilemapLeft = 14,
-        .tilemapTop = 2,
-        .width = 15,
-        .height = 16,
-        .paletteNum = 15,
-        .baseBlock = 0x0032,
+        .tilemapLeft = OSHOP_PILL_COL,
+        .tilemapTop = OSHOP_LIST_ROW_TILE,
+        .width = OSHOP_PILL_COLS,
+        .height = 2 * OSHOP_LIST_ROWS,
+        .paletteNum = OSHOP_PAL_KIT,
+        .baseBlock = 0x0038,
     },
-    [WIN_ITEM_DESCRIPTION] = {
-        .bg = 0,
-        .tilemapLeft = 0,
-        .tilemapTop = 13,
-        .width = 14,
-        .height = 6,
-        .paletteNum = 15,
-        .baseBlock = 0x0122,
-    },
-    [WIN_QUANTITY_IN_BAG] = {
+    [WIN_ITEM_DESCRIPTION] = { // the card pinned on the counter front
         .bg = 0,
         .tilemapLeft = 1,
-        .tilemapTop = 11,
-        .width = 12,
-        .height = 2,
-        .paletteNum = 15,
-        .baseBlock = 0x0176,
+        .tilemapTop = 14,
+        .width = 28,
+        .height = 6,
+        .paletteNum = OSHOP_PAL_KIT,
+        .baseBlock = 0x00F8,
     },
-    [WIN_QUANTITY_PRICE] = {
-        .bg = 0,
-        .tilemapLeft = 18,
-        .tilemapTop = 11,
-        .width = 10,
-        .height = 2,
-        .paletteNum = 15,
-        .baseBlock = 0x018E,
+    [WIN_QUANTITY] = {
+        .bg = 1,
+        .tilemapLeft = OSHOP_QTY_WIN_X,
+        .tilemapTop = OSHOP_QTY_WIN_Y,
+        .width = OSHOP_QTY_WIN_W,
+        .height = OSHOP_QTY_WIN_H,
+        .paletteNum = OSHOP_PAL_KIT,
+        .baseBlock = 0x01A0,
     },
     [WIN_MESSAGE] = {
         .bg = 0,
-        .tilemapLeft = 2,
-        .tilemapTop = 15,
-        .width = 27,
-        .height = 4,
-        .paletteNum = 15,
-        .baseBlock = 0x01A2,
+        .tilemapLeft = OSHOP_MSG_WIN_X,
+        .tilemapTop = OSHOP_MSG_WIN_Y,
+        .width = OSHOP_MSG_WIN_W,
+        .height = OSHOP_MSG_WIN_H,
+        .paletteNum = OSHOP_WINDOW_PAL,
+        .baseBlock = 0x01FA,
     },
     DUMMY_WIN_TEMPLATE
 };
 
+// mock_mart.yesno: std frame at tile (24, 9), 5x4
 static const struct WindowTemplate sShopBuyMenuYesNoWindowTemplates =
 {
     .bg = 0,
-    .tilemapLeft = 21,
+    .tilemapLeft = 24,
     .tilemapTop = 9,
     .width = 5,
     .height = 4,
-    .paletteNum = 15,
-    .baseBlock = 0x020E,
+    .paletteNum = OSHOP_WINDOW_PAL,
+    .baseBlock = 0x0262,
 };
 
 static const u8 sShopBuyMenuTextColors[][3] =
 {
-    [COLORID_NORMAL]      = {1, 2, 3},
-    [COLORID_ITEM_LIST]   = {0, 2, 3},
-    [COLORID_GRAY_CURSOR] = {0, 3, 2},
+    [COLORID_NORMAL] = {TEXT_COLOR_TRANSPARENT, OSHOP_INK, OSHOP_PANEL_SHADE},
+    [COLORID_PRICE]  = {TEXT_COLOR_TRANSPARENT, OSHOP_INK, OSHOP_SPARE_B},
+};
+
+// Orchid OBJ: scroll thumb, quantity chevrons + coin (one palette), TM discs (palette built per list page)
+static const struct OamData sOamData_OrchidShop8x16 = {.shape = SPRITE_SHAPE(8x16), .size = SPRITE_SIZE(8x16), .priority = 2};
+static const struct OamData sOamData_OrchidShop16x8 = {.shape = SPRITE_SHAPE(16x8), .size = SPRITE_SIZE(16x8), .priority = 0};
+static const struct OamData sOamData_OrchidShop16x16 = {.shape = SPRITE_SHAPE(16x16), .size = SPRITE_SIZE(16x16), .priority = 0};
+static const struct OamData sOamData_OrchidShopDisc = {.shape = SPRITE_SHAPE(16x16), .size = SPRITE_SIZE(16x16), .priority = 1};
+
+static const union AnimCmd sAnim_OrchidShop_Frame0[] = {ANIMCMD_FRAME(0, 0), ANIMCMD_END};
+static const union AnimCmd sAnim_OrchidShop_Frame1[] = {ANIMCMD_FRAME(2, 0), ANIMCMD_END};
+static const union AnimCmd *const sAnims_OrchidShopChevrons[] = {sAnim_OrchidShop_Frame0, sAnim_OrchidShop_Frame1};
+static const union AnimCmd sAnim_OrchidShopDisc0[] = {ANIMCMD_FRAME(0, 0), ANIMCMD_END};
+static const union AnimCmd sAnim_OrchidShopDisc1[] = {ANIMCMD_FRAME(4, 0), ANIMCMD_END};
+static const union AnimCmd sAnim_OrchidShopDisc2[] = {ANIMCMD_FRAME(8, 0), ANIMCMD_END};
+static const union AnimCmd sAnim_OrchidShopDisc3[] = {ANIMCMD_FRAME(12, 0), ANIMCMD_END};
+static const union AnimCmd sAnim_OrchidShopDisc4[] = {ANIMCMD_FRAME(16, 0), ANIMCMD_END};
+static const union AnimCmd sAnim_OrchidShopDisc5[] = {ANIMCMD_FRAME(20, 0), ANIMCMD_END};
+static const union AnimCmd *const sAnims_OrchidShopDiscs[OSHOP_LIST_ROWS] =
+{
+    sAnim_OrchidShopDisc0, sAnim_OrchidShopDisc1, sAnim_OrchidShopDisc2,
+    sAnim_OrchidShopDisc3, sAnim_OrchidShopDisc4, sAnim_OrchidShopDisc5,
+};
+
+static const struct SpriteSheet sOrchidShopSpriteSheets[] =
+{
+    {gOrchidShopThumb_Gfx, 2 * TILE_SIZE_4BPP, TAG_OSHOP_THUMB},
+    {gOrchidShopChevrons_Gfx, 4 * TILE_SIZE_4BPP, TAG_OSHOP_CHEVRONS},
+    {gOrchidShopCoin_Gfx, 4 * TILE_SIZE_4BPP, TAG_OSHOP_COIN},
+    {gOrchidShopTmDiscs_Gfx, 4 * OSHOP_LIST_ROWS * TILE_SIZE_4BPP, TAG_OSHOP_TM_DISCS},
+    {0}
+};
+
+static const struct SpritePalette sOrchidShopObjPalette = {gOrchidShopObj_Pal, TAG_OSHOP_OBJ_PAL};
+
+static const struct SpriteTemplate sSpriteTemplate_OrchidShopThumb =
+{
+    .tileTag = TAG_OSHOP_THUMB,
+    .paletteTag = TAG_OSHOP_OBJ_PAL,
+    .oam = &sOamData_OrchidShop8x16,
+    .anims = gDummySpriteAnimTable,
+    .images = NULL,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallbackDummy,
+};
+
+static const struct SpriteTemplate sSpriteTemplate_OrchidShopChevron =
+{
+    .tileTag = TAG_OSHOP_CHEVRONS,
+    .paletteTag = TAG_OSHOP_OBJ_PAL,
+    .oam = &sOamData_OrchidShop16x8,
+    .anims = sAnims_OrchidShopChevrons,
+    .images = NULL,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallbackDummy,
+};
+
+static const struct SpriteTemplate sSpriteTemplate_OrchidShopCoin =
+{
+    .tileTag = TAG_OSHOP_COIN,
+    .paletteTag = TAG_OSHOP_OBJ_PAL,
+    .oam = &sOamData_OrchidShop16x16,
+    .anims = gDummySpriteAnimTable,
+    .images = NULL,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallbackDummy,
+};
+
+static const struct SpriteTemplate sSpriteTemplate_OrchidShopDisc =
+{
+    .tileTag = TAG_OSHOP_TM_DISCS,
+    .paletteTag = TAG_OSHOP_TM_DISCS,
+    .oam = &sOamData_OrchidShopDisc,
+    .anims = sAnims_OrchidShopDiscs,
+    .images = NULL,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallbackDummy,
 };
 
 static const enum Item sShopItemsListDummy[] = { ITEM_NONE };
@@ -353,26 +433,23 @@ static u8 CreateShopMenu(u8 martType)
 
     if (martType == MART_TYPE_NORMAL)
     {
-        struct WindowTemplate winTemplate = sShopMenuWindowTemplates[WIN_BUY_SELL_QUIT];
-        winTemplate.width = GetMaxWidthInMenuTable(sShopMenuActions_BuySellQuit, ARRAY_COUNT(sShopMenuActions_BuySellQuit));
-        sMartInfo.windowId = AddWindow(&winTemplate);
+        sMartInfo.windowId = AddWindow(&sShopMenuWindowTemplates[WIN_BUY_SELL_QUIT]);
         sMartInfo.menuActions = sShopMenuActions_BuySellQuit;
         numMenuItems = ARRAY_COUNT(sShopMenuActions_BuySellQuit);
     }
     else
     {
-        struct WindowTemplate winTemplate = sShopMenuWindowTemplates[WIN_BUY_QUIT];
-        winTemplate.width = GetMaxWidthInMenuTable(sShopMenuActions_BuyQuit, ARRAY_COUNT(sShopMenuActions_BuyQuit));
-        sMartInfo.windowId = AddWindow(&winTemplate);
+        sMartInfo.windowId = AddWindow(&sShopMenuWindowTemplates[WIN_BUY_QUIT]);
         sMartInfo.menuActions = sShopMenuActions_BuyQuit;
         numMenuItems = ARRAY_COUNT(sShopMenuActions_BuyQuit);
     }
 
-    SetStandardWindowBorderStyle(sMartInfo.windowId, FALSE);
-    PrintMenuTable(sMartInfo.windowId, numMenuItems, sMartInfo.menuActions);
-    InitMenuInUpperLeftCornerNormal(sMartInfo.windowId, numMenuItems, 0);
+    LoadOrchidYesNoFrame(0, ORCHID_YESNO_FIELD_TILE);
+    LoadOrchidYesNoColors(ORCHID_YESNO_FIELD_PAL, TRUE);
+    DrawStdFrameWithCustomTileAndPalette(sMartInfo.windowId, FALSE, ORCHID_YESNO_FIELD_TILE, ORCHID_YESNO_FIELD_PAL);
+    InitOrchidPillMenuYesNoStyle(sMartInfo.windowId, numMenuItems, sMartInfo.menuActions, 0);
     PutWindowTilemap(sMartInfo.windowId);
-    CopyWindowToVram(sMartInfo.windowId, COPYWIN_MAP);
+    CopyWindowToVram(sMartInfo.windowId, COPYWIN_FULL);
 
     return CreateTask(Task_ShopMenu, 8);
 }
@@ -497,6 +574,12 @@ static void ShowShopMenuAfterExitingBuyOrSellMenu(u8 taskId)
 
 static void CB2_BuyMenu(void)
 {
+    // Orchid grid backdrop (BG3) scrolls diagonally down-right, 1px every 4 frames (as the bag)
+    if ((++sShopData->gridTimer & 3) == 0)
+    {
+        ChangeBgX(3, 1 << 8, BG_COORD_SUB);
+        ChangeBgY(3, 1 << 8, BG_COORD_SUB);
+    }
     RunTasks();
     AnimateSprites();
     BuildOamBuffer();
@@ -527,10 +610,13 @@ static void CB2_InitBuyMenu(void)
         ResetSpriteData();
         ResetTasks();
         ClearScheduledBgCopiesToVram();
+        DmaClearLarge16(3, (void *)VRAM, VRAM_SIZE, 0x1000);
         sShopData = AllocZeroed(sizeof(struct ShopData));
-        sShopData->scrollIndicatorsTaskId = TASK_NONE;
         sShopData->itemSpriteIds[0] = SPRITE_NONE;
         sShopData->itemSpriteIds[1] = SPRITE_NONE;
+        sShopData->thumbSpriteId = SPRITE_NONE;
+        sShopData->clerkSpriteId = SPRITE_NONE;
+        sShopData->bonusSpriteId = SPRITE_NONE;
         if (sMartInfo.martType == MART_TYPE_NORMAL)
             TryBuildDynamicShopItemList(&sMartInfo.itemList, &sMartInfo.itemCount);
         BuyMenuBuildListMenuTemplate();
@@ -548,8 +634,8 @@ static void CB2_InitBuyMenu(void)
             gMain.state++;
         break;
     default:
+        OrchidShop_CreateSprites();
         BuyMenuDrawGraphics();
-        BuyMenuAddScrollIndicatorArrows();
         taskId = CreateTask(Task_BuyMenu, 8);
         gTasks[taskId].tListTaskId = ListMenuInit(&gMultiuseListMenuTemplate, 0, 0);
         BlendPalettes(PALETTES_ALL, 16, RGB_BLACK);
@@ -571,9 +657,31 @@ static void BuyMenuFreeMemory(void)
     FreeAllWindowBuffers();
 }
 
+static bool32 OrchidShop_IsTM(u32 itemId)
+{
+    return sMartInfo.martType == MART_TYPE_NORMAL && itemId != LIST_CANCEL && GetItemPocket(itemId) == POCKET_TM_HM;
+}
+
+// The text in an item row's price tag: the price, or SOLD OUT (as vanilla).
+static void OrchidShop_GetPriceString(u32 itemId, u8 *dst)
+{
+    if (sMartInfo.martType == MART_TYPE_NORMAL)
+        ConvertIntToDecimalStringN(gStringVar1, GetItemPrice(itemId) >> IsPokeNewsActive(POKENEWS_SLATEPORT), STR_CONV_MODE_LEFT_ALIGN, 6);
+    else
+        ConvertIntToDecimalStringN(gStringVar1, gDecorations[itemId].price, STR_CONV_MODE_LEFT_ALIGN, 6);
+
+    if (GetItemImportance(itemId) && (CheckBagHasItem(itemId, 1) || CheckPCHasItem(itemId, 1)))
+        StringCopy(dst, gText_SoldOut);
+    else
+        StringExpandPlaceholders(dst, gText_PokedollarVar1);
+}
+
 static void BuyMenuBuildListMenuTemplate(void)
 {
     u16 i;
+    u32 width, tagWidth = 0;
+    bool32 hasTM = FALSE;
+    u8 price[16];
 
     sListMenuItems = Alloc((sMartInfo.itemCount + 1) * sizeof(*sListMenuItems));
     sItemNames = Alloc((sMartInfo.itemCount + 1) * sizeof(*sItemNames));
@@ -587,6 +695,26 @@ static void BuyMenuBuildListMenuTemplate(void)
     gMultiuseListMenuTemplate = sShopBuyMenuListTemplate;
     gMultiuseListMenuTemplate.items = sListMenuItems;
     gMultiuseListMenuTemplate.totalItems = sMartInfo.itemCount + 1;
+
+    // Price tags: one width for the whole list, widest price + 18 px (mock_mart.a_tag_w)
+    for (i = 0; i < sMartInfo.itemCount; i++)
+    {
+        OrchidShop_GetPriceString(sMartInfo.itemList[i], price);
+        width = GetStringWidth(FONT_NARROW, price, 0) + OSHOP_TAG_PAD;
+        if (width > tagWidth)
+            tagWidth = width;
+        if (OrchidShop_IsTM(sMartInfo.itemList[i]))
+            hasTM = TRUE;
+    }
+    if (tagWidth < OSHOP_TAG_W_MIN)
+        tagWidth = OSHOP_TAG_W_MIN;
+    if (tagWidth > OSHOP_TAG_W_MAX)
+        tagWidth = OSHOP_TAG_W_MAX;
+    sShopData->pillVariant = 1 + tagWidth - OSHOP_TAG_W_MIN;
+    // names squeeze to a narrower font rather than run into the tag
+    gMultiuseListMenuTemplate.textNarrowWidth = (OSHOP_PILL_COLS * 8 - 2 - tagWidth) - OSHOP_NAME_X - 2;
+    if (hasTM)
+        gMultiuseListMenuTemplate.textNarrowWidth -= OSHOP_NAME_X_TM - OSHOP_NAME_X;
     if (gMultiuseListMenuTemplate.totalItems > MAX_ITEMS_SHOWN)
         gMultiuseListMenuTemplate.maxShowed = MAX_ITEMS_SHOWN;
     else
@@ -597,7 +725,15 @@ static void BuyMenuBuildListMenuTemplate(void)
 
 static void BuyMenuSetListEntry(struct ListMenuItem *menuItem, enum Item item, u8 *name)
 {
-    if (sMartInfo.martType == MART_TYPE_NORMAL)
+    if (OrchidShop_IsTM(item))
+    {
+        // TM rows: the move name after the type disc (OBJ), mock_mart state_06
+        name[0] = EXT_CTRL_CODE_BEGIN;
+        name[1] = EXT_CTRL_CODE_SHIFT_RIGHT;
+        name[2] = OSHOP_NAME_X_TM - OSHOP_NAME_X;
+        StringCopy(&name[3], GetMoveName(ItemIdToBattleMoveId(item)));
+    }
+    else if (sMartInfo.martType == MART_TYPE_NORMAL)
         CopyItemName(item, name);
     else
         StringCopy(name, gDecorations[item].name);
@@ -612,10 +748,9 @@ static void BuyMenuPrintItemDescriptionAndShowItemIcon(s32 item, bool8 onInit, s
     if (onInit != TRUE)
         PlaySE(SE_SELECT);
 
+    // the selected item sits on the counter (none for CANCEL, mock_mart)
     if (item != LIST_CANCEL)
         BuyMenuAddItemIcon(item, sShopData->iconSlot);
-    else
-        BuyMenuAddItemIcon(ITEM_LIST_END, sShopData->iconSlot);
 
     BuyMenuRemoveItemIcon(item, sShopData->iconSlot ^ 1);
     sShopData->iconSlot ^= 1;
@@ -631,8 +766,12 @@ static void BuyMenuPrintItemDescriptionAndShowItemIcon(s32 item, bool8 onInit, s
         description = gText_QuitShopping;
     }
 
+    // 3 lines at a 14 px pitch on the card (FONT_NORMAL is 16: the u8 line advance wraps, as in the bag)
     FillWindowPixelBuffer(WIN_ITEM_DESCRIPTION, PIXEL_FILL(0));
-    BuyMenuPrint(WIN_ITEM_DESCRIPTION, description, 3, 1, 0, COLORID_NORMAL);
+    AddTextPrinterParameterized4(WIN_ITEM_DESCRIPTION, FONT_NORMAL, OSHOP_DESC_X - 8, OSHOP_DESC_Y - 112, 0, (u8)-2,
+                                 sShopBuyMenuTextColors[COLORID_NORMAL], 0, description);
+
+    OrchidShop_DrawRows(list->scrollOffset, list->selectedRow);
 }
 
 static void BuyMenuPrintPriceInList(u8 windowId, u32 itemId, u8 y)
@@ -641,61 +780,199 @@ static void BuyMenuPrintPriceInList(u8 windowId, u32 itemId, u8 y)
 
     if (itemId != LIST_CANCEL)
     {
-        if (sMartInfo.martType == MART_TYPE_NORMAL)
-        {
-            ConvertIntToDecimalStringN(
-                gStringVar1,
-                GetItemPrice(itemId) >> IsPokeNewsActive(POKENEWS_SLATEPORT),
-                STR_CONV_MODE_LEFT_ALIGN,
-                6);
-        }
-        else
-        {
-            ConvertIntToDecimalStringN(
-                gStringVar1,
-                gDecorations[itemId].price,
-                STR_CONV_MODE_LEFT_ALIGN,
-                6);
-        }
-
-        if (GetItemImportance(itemId) && (CheckBagHasItem(itemId, 1) || CheckPCHasItem(itemId, 1)))
-            StringCopy(gStringVar4, gText_SoldOut);
-        else
-            StringExpandPlaceholders(gStringVar4, gText_PokedollarVar1);
-        x = GetStringRightAlignXOffset(FONT_NARROW, gStringVar4, 120);
-        AddTextPrinterParameterized4(windowId, FONT_NARROW, x, y, 0, 0, sShopBuyMenuTextColors[COLORID_ITEM_LIST], TEXT_SKIP_DRAW, gStringVar4);
+        OrchidShop_GetPriceString(itemId, gStringVar4);
+        x = GetStringRightAlignXOffset(FONT_NARROW, gStringVar4, OSHOP_PRICE_RIGHT);
+        AddTextPrinterParameterized4(windowId, FONT_NARROW, x, y, 0, 0, sShopBuyMenuTextColors[COLORID_PRICE], TEXT_SKIP_DRAW, gStringVar4);
     }
 }
 
-static void BuyMenuAddScrollIndicatorArrows(void)
+// ---------------------------------------------------------------- Orchid screen pieces
+// Pill rows on BG2 (gold = the cursor), the TM type discs and the scroll thumb for the visible page.
+static void OrchidShop_DrawRows(u16 scroll, u16 selectedRow)
 {
-    if (sShopData->scrollIndicatorsTaskId == TASK_NONE && sMartInfo.itemCount + 1 > MAX_ITEMS_SHOWN)
+    u16 *map = sShopData->tilemapBuffers[2];
+    u16 discPal[16];
+    u32 r, k, c, index, variant, palBits, total = sMartInfo.itemCount + 1;
+    bool32 anyDisc = FALSE;
+
+    CpuCopy16(sOrchidShopTmDiscNeutrals, discPal, sizeof(sOrchidShopTmDiscNeutrals));
+    for (r = 0; r < OSHOP_LIST_ROWS; r++)
     {
-        sShopData->scrollIndicatorsTaskId = AddScrollIndicatorArrowPairParameterized(
-            SCROLL_ARROW_UP,
-            172,
-            12,
-            148,
-            sMartInfo.itemCount - (MAX_ITEMS_SHOWN - 1),
-            TAG_SCROLL_ARROW,
-            TAG_SCROLL_ARROW,
-            &sShopData->scrollOffset);
+        index = scroll + r;
+        palBits = ((r == selectedRow) ? OSHOP_PAL_SELECTED : OSHOP_PAL_KIT) << 12;
+        variant = (index == sMartInfo.itemCount) ? 0 : sShopData->pillVariant; // CANCEL: plain pill
+        for (k = 0; k < 2; k++)
+        {
+            u16 *dst = &map[(OSHOP_LIST_ROW_TILE + 2 * r + k) * 32 + OSHOP_PILL_COL];
+            for (c = 0; c < OSHOP_PILL_COLS; c++)
+            {
+                u16 e = sOrchidShopPillRows[variant][k][c];
+                dst[c] = (index < total && e != 0) ? (e | palBits) : 0;
+            }
+        }
+
+        if (sShopData->discSpriteIds[r] != SPRITE_NONE)
+        {
+            struct Sprite *disc = &gSprites[sShopData->discSpriteIds[r]];
+            if (index < sMartInfo.itemCount && OrchidShop_IsTM(sMartInfo.itemList[index]))
+            {
+                const u16 *typePal = gTypesInfo[GetMoveType(GetItemTMHMMoveId(sMartInfo.itemList[index]))].paletteTMHM;
+                discPal[4 + 2 * r] = typePal[6];
+                discPal[5 + 2 * r] = typePal[9];
+                disc->invisible = FALSE;
+                anyDisc = TRUE;
+            }
+            else
+            {
+                disc->invisible = TRUE;
+            }
+        }
     }
+    if (anyDisc)
+        LoadPalette(discPal, OBJ_PLTT_ID(IndexOfSpritePaletteTag(TAG_OSHOP_TM_DISCS)), PLTT_SIZE_4BPP);
+    ScheduleBgCopyTilemapToVram(2);
+
+    if (sShopData->thumbSpriteId != SPRITE_NONE)
+        gSprites[sShopData->thumbSpriteId].y = OSHOP_TRACK_Y0 + 2 + OSHOP_THUMB_SPAN * scroll / (total - OSHOP_LIST_ROWS) + 8;
 }
 
-static void BuyMenuRemoveScrollIndicatorArrows(void)
+static u16 OrchidShop_GetClerkGraphicsId(void)
 {
-    if (sShopData->scrollIndicatorsTaskId != TASK_NONE)
+    u8 objectEventId = GetObjectEventIdByLocalIdAndMap(gSpecialVar_LastTalked, gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup);
+
+    if (objectEventId < OBJECT_EVENTS_COUNT && gObjectEvents[objectEventId].active
+     && !(gObjectEvents[objectEventId].graphicsId & OBJ_EVENT_MON))
+        return gObjectEvents[objectEventId].graphicsId;
+    return OBJ_EVENT_GFX_MART_EMPLOYEE;
+}
+
+static void OrchidShop_CreateSprites(void)
+{
+    u32 i;
+    u16 graphicsId;
+    const struct ObjectEventGraphicsInfo *graphicsInfo;
+    u8 spriteId;
+
+    LoadSpriteSheets(sOrchidShopSpriteSheets);
+    LoadSpritePalette(&sOrchidShopObjPalette);
+
+    // clerk behind the counter (OBJ priority 3: under the BG2 counter, over the BG3 grid), facing the player
+    graphicsId = OrchidShop_GetClerkGraphicsId();
+    graphicsInfo = GetObjectEventGraphicsInfo(graphicsId);
+    spriteId = CreateObjectGraphicsSprite(graphicsId, SpriteCallbackDummy, OSHOP_CLERK_X + 8, OSHOP_CLERK_BOTTOM - graphicsInfo->height / 2, 2);
+    if (spriteId != MAX_SPRITES)
     {
-        RemoveScrollIndicatorArrowPair(sShopData->scrollIndicatorsTaskId);
-        sShopData->scrollIndicatorsTaskId = TASK_NONE;
+        sShopData->clerkSpriteId = spriteId;
+        gSprites[spriteId].oam.priority = 3;
+        StartSpriteAnim(&gSprites[spriteId], ANIM_STD_FACE_SOUTH);
+    }
+
+    // scroll thumb on the track (only when the list scrolls)
+    if (sMartInfo.itemCount + 1 > MAX_ITEMS_SHOWN)
+    {
+        spriteId = CreateSprite(&sSpriteTemplate_OrchidShopThumb, OSHOP_THUMB_X + 4, OSHOP_TRACK_Y0 + 2 + 8, 0);
+        if (spriteId != MAX_SPRITES)
+            sShopData->thumbSpriteId = spriteId;
+    }
+
+    // quantity tag: chevrons + coin (hidden until the tag drops in)
+    for (i = 0; i < 2; i++)
+    {
+        spriteId = CreateSprite(&sSpriteTemplate_OrchidShopChevron, OSHOP_CHEV_X + 8, (i == 0 ? OSHOP_CHEV_UP_Y : OSHOP_CHEV_DOWN_Y) + 4, 0);
+        sShopData->chevronSpriteIds[i] = spriteId;
+        if (spriteId != MAX_SPRITES)
+        {
+            StartSpriteAnim(&gSprites[spriteId], i);
+            gSprites[spriteId].invisible = TRUE;
+        }
+    }
+    spriteId = CreateSprite(&sSpriteTemplate_OrchidShopCoin, OSHOP_COIN_X + 8, OSHOP_COIN_Y + 8, 0);
+    sShopData->coinSpriteId = spriteId;
+    if (spriteId != MAX_SPRITES)
+        gSprites[spriteId].invisible = TRUE;
+
+    // TM type discs, one per list row; palette rebuilt per page in OrchidShop_DrawRows
+    for (i = 0; i < OSHOP_LIST_ROWS; i++)
+        sShopData->discSpriteIds[i] = SPRITE_NONE;
+    if (sMartInfo.martType == MART_TYPE_NORMAL)
+    {
+        bool32 hasTM = FALSE;
+        for (i = 0; i < sMartInfo.itemCount; i++)
+        {
+            if (OrchidShop_IsTM(sMartInfo.itemList[i]))
+                hasTM = TRUE;
+        }
+        if (hasTM)
+        {
+            struct SpritePalette discPal = {sOrchidShopTmDiscNeutrals, TAG_OSHOP_TM_DISCS};
+            LoadSpritePalette(&discPal);
+            for (i = 0; i < OSHOP_LIST_ROWS; i++)
+            {
+                spriteId = CreateSprite(&sSpriteTemplate_OrchidShopDisc, OSHOP_TM_DISC_X + 8, OSHOP_LIST_Y + 16 * i + 2 + 8, 0);
+                if (spriteId != MAX_SPRITES)
+                {
+                    sShopData->discSpriteIds[i] = spriteId;
+                    StartSpriteAnim(&gSprites[spriteId], i);
+                    gSprites[spriteId].invisible = TRUE;
+                }
+            }
+        }
     }
 }
 
-static void BuyMenuPrintCursor(u8 scrollIndicatorsTaskId, u8 colorSet)
+static void OrchidShop_PrintMoney(void)
 {
-    u8 y = ListMenuGetYCoordForPrintingArrowCursor(scrollIndicatorsTaskId);
-    BuyMenuPrint(WIN_ITEM_LIST, gText_SelectorArrow2, 0, y, 0, colorSet);
+    u8 str[16];
+
+    ConvertIntToDecimalStringN(gStringVar1, GetMoney(&gSaveBlock1Ptr->money), STR_CONV_MODE_LEFT_ALIGN, MAX_MONEY_DIGITS);
+    StringExpandPlaceholders(str, gText_PokedollarVar1);
+    FillWindowPixelBuffer(WIN_MONEY, PIXEL_FILL(0));
+    AddTextPrinterParameterized4(WIN_MONEY, FONT_NORMAL, GetStringRightAlignXOffset(FONT_NORMAL, str, OSHOP_MONEY_RIGHT - 24),
+                                 OSHOP_MONEY_Y - 16, 0, 0, sShopBuyMenuTextColors[COLORID_NORMAL], TEXT_SKIP_DRAW, str);
+    CopyWindowToVram(WIN_MONEY, COPYWIN_GFX);
+}
+
+static void OrchidShop_ShowQuantityTag(bool32 show)
+{
+    u32 i;
+
+    if (show)
+        PutWindowTilemap(WIN_QUANTITY);
+    else
+        ClearWindowTilemap(WIN_QUANTITY);
+    ScheduleBgCopyTilemapToVram(1);
+    for (i = 0; i < 2; i++)
+    {
+        if (sShopData->chevronSpriteIds[i] != MAX_SPRITES)
+            gSprites[sShopData->chevronSpriteIds[i]].invisible = !show;
+    }
+    if (sShopData->coinSpriteId != MAX_SPRITES)
+        gSprites[sShopData->coinSpriteId].invisible = !show;
+}
+
+// The bonus Premier Ball pops onto the counter beside the bought balls (mock_mart state_04).
+static void OrchidShop_ShowBonusBall(bool32 show)
+{
+    u8 spriteId;
+
+    if (sShopData->bonusSpriteId != SPRITE_NONE)
+    {
+        FreeSpriteTilesByTag(TAG_ITEM_ICON_BONUS);
+        FreeSpritePaletteByTag(TAG_ITEM_ICON_BONUS);
+        DestroySprite(&gSprites[sShopData->bonusSpriteId]);
+        sShopData->bonusSpriteId = SPRITE_NONE;
+    }
+    if (show)
+    {
+        spriteId = AddItemIconSprite(TAG_ITEM_ICON_BONUS, TAG_ITEM_ICON_BONUS, ITEM_PREMIER_BALL);
+        if (spriteId != MAX_SPRITES)
+        {
+            sShopData->bonusSpriteId = spriteId;
+            gSprites[spriteId].x2 = OSHOP_ICON_X + OSHOP_BONUS_DX + (32 - 24) / 2;
+            gSprites[spriteId].y2 = OSHOP_ICON_Y + OSHOP_BONUS_DY + (32 - 24) / 2;
+            gSprites[spriteId].oam.priority = 2;
+        }
+    }
 }
 
 static void BuyMenuAddItemIcon(enum Item item, u8 iconSlot)
@@ -705,19 +982,21 @@ static void BuyMenuAddItemIcon(enum Item item, u8 iconSlot)
     if (*spriteIdPtr != SPRITE_NONE)
         return;
 
+    // on the counter in front of the clerk; item icons are 24x24 art in the top-left of a 32x32 sprite
     if (sMartInfo.martType == MART_TYPE_NORMAL || item == ITEM_LIST_END)
     {
         spriteId = AddItemIconSprite(iconSlot + TAG_ITEM_ICON_BASE, iconSlot + TAG_ITEM_ICON_BASE, item);
         if (spriteId != MAX_SPRITES)
         {
             *spriteIdPtr = spriteId;
-            gSprites[spriteId].x2 = 24;
-            gSprites[spriteId].y2 = 88;
+            gSprites[spriteId].x2 = OSHOP_ICON_X + (32 - 24) / 2;
+            gSprites[spriteId].y2 = OSHOP_ICON_Y + (32 - 24) / 2;
+            gSprites[spriteId].oam.priority = 2;
         }
     }
     else
     {
-        spriteId = AddDecorationIconObject(item, 20, 84, 1, iconSlot + TAG_ITEM_ICON_BASE, iconSlot + TAG_ITEM_ICON_BASE);
+        spriteId = AddDecorationIconObject(item, OSHOP_ICON_X, OSHOP_ICON_Y, 2, iconSlot + TAG_ITEM_ICON_BASE, iconSlot + TAG_ITEM_ICON_BASE);
         if (spriteId != MAX_SPRITES)
             *spriteIdPtr = spriteId;
     }
@@ -739,9 +1018,10 @@ static void BuyMenuInitBgs(void)
 {
     ResetBgsAndClearDma3BusyFlags(0);
     InitBgsFromTemplates(0, sShopBuyMenuBgTemplates, ARRAY_COUNT(sShopBuyMenuBgTemplates));
+    SetBgTilemapBuffer(0, sShopData->tilemapBuffers[0]);
     SetBgTilemapBuffer(1, sShopData->tilemapBuffers[1]);
-    SetBgTilemapBuffer(2, sShopData->tilemapBuffers[3]);
-    SetBgTilemapBuffer(3, sShopData->tilemapBuffers[2]);
+    SetBgTilemapBuffer(2, sShopData->tilemapBuffers[2]);
+    SetBgTilemapBuffer(3, sShopData->tilemapBuffers[3]);
     SetGpuReg(REG_OFFSET_BG0HOFS, 0);
     SetGpuReg(REG_OFFSET_BG0VOFS, 0);
     SetGpuReg(REG_OFFSET_BG1HOFS, 0);
@@ -750,6 +1030,8 @@ static void BuyMenuInitBgs(void)
     SetGpuReg(REG_OFFSET_BG2VOFS, 0);
     SetGpuReg(REG_OFFSET_BG3HOFS, 0);
     SetGpuReg(REG_OFFSET_BG3VOFS, 0);
+    ChangeBgX(3, 0, BG_COORD_SET);
+    ChangeBgY(3, 0, BG_COORD_SET);
     SetGpuReg(REG_OFFSET_BLDCNT, 0);
     SetGpuReg(REG_OFFSET_DISPCNT, DISPCNT_MODE_0 | DISPCNT_OBJ_ON | DISPCNT_OBJ_1D_MAP);
     ShowBg(0);
@@ -758,19 +1040,30 @@ static void BuyMenuInitBgs(void)
     ShowBg(3);
 }
 
+// Orchid art (export_mart.py): BG2 shop art + BG3 grid tiles, BG palettes 0-4, the Orchid window palette
+// (message box + YES/NO) in 15, and the message / YES/NO frame tiles at the start of BG0's tiles.
 static void BuyMenuDecompressBgGraphics(void)
 {
-    DecompressAndCopyTileDataToVram(1, gShopMenu_Gfx, 0x3A0, 0x3E3, 0);
-    DecompressDataWithHeaderWram(gShopMenu_Tilemap, sShopData->tilemapBuffers[0]);
-    LoadPalette(gShopMenu_Pal, BG_PLTT_ID(SHOP_MENU_PALETTE_ID), PLTT_SIZE_4BPP);
+    u32 x, y;
+    u16 *grid = sShopData->tilemapBuffers[3];
+
+    DecompressAndCopyTileDataToVram(2, gOrchidShopBg_Gfx, 0, 0, 0);
+    DecompressDataWithHeaderWram(gOrchidShopBg_Tilemap, sShopData->tilemapBuffers[2]);
+    for (y = 0; y < 32; y++)
+    {
+        for (x = 0; x < 32; x++)
+            grid[y * 32 + x] = (OSHOP_GRID_TILE + (x & 1) + (y & 1) * 2) | (OSHOP_PAL_GRID << 12);
+    }
+    LoadPalette(gOrchidShopBg_Pal, BG_PLTT_ID(0), OSHOP_NUM_BG_PALS * PLTT_SIZE_4BPP);
+    LoadPalette(gOrchidYesNoFrame_Pal, BG_PLTT_ID(OSHOP_WINDOW_PAL), PLTT_SIZE_4BPP);
+    LoadBgTiles(0, gOrchidShopMsgFrame_Gfx, OSHOP_MSG_FRAME_TILES * TILE_SIZE_4BPP, OSHOP_MSG_FRAME_BASE);
+    LoadOrchidYesNoFrame(0, ORCHID_SHOP_YESNO_FRAME_TILE);
 }
 
 static void BuyMenuInitWindows(void)
 {
     InitWindows(sShopBuyMenuWindowTemplates);
     DeactivateAllTextPrinters();
-    LoadUserWindowBorderGfx(WIN_MONEY, 1, BG_PLTT_ID(13));
-    LoadMessageBoxGfx(WIN_MONEY, 0xA, BG_PLTT_ID(14));
     PutWindowTilemap(WIN_MONEY);
     PutWindowTilemap(WIN_ITEM_LIST);
     PutWindowTilemap(WIN_ITEM_DESCRIPTION);
@@ -781,216 +1074,55 @@ static void BuyMenuPrint(u8 windowId, const u8 *text, u8 x, u8 y, s8 speed, u8 c
     AddTextPrinterParameterized4(windowId, FONT_NORMAL, x, y, 0, 0, sShopBuyMenuTextColors[colorSet], speed, text);
 }
 
+// The Orchid dialogue box (windows.dialogue_box): the std message routine draws the vanilla frame, which is
+// then replaced by the Orchid frame's tilemap (the text window keeps its own cells).
+static void OrchidShop_DrawMessageFrame(void)
+{
+    u16 *map = GetBgTilemapBuffer(0);
+    u32 r, c;
+
+    for (r = 0; r < OSHOP_MSG_FRAME_ROWS; r++)
+    {
+        for (c = 0; c < 30; c++)
+        {
+            u16 e = sOrchidShopMsgFrame[r][c];
+            if (e == OSHOP_MSG_SKIP)
+                continue;
+            map[(OSHOP_MSG_FRAME_TOP + r) * 32 + c] = e ? ((e & 0xC00) | ((e & 0x3FF) + OSHOP_MSG_FRAME_BASE) | (OSHOP_WINDOW_PAL << 12)) : 0;
+        }
+    }
+}
+
+static const u8 sOrchidShopMessageColors[3] = {TEXT_COLOR_WHITE, TEXT_COLOR_DARK_GRAY, TEXT_COLOR_LIGHT_GRAY};
+
+static void Task_OrchidShopContinueAfterMessage(u8 taskId)
+{
+    if (!RunTextPrintersRetIsActive(WIN_MESSAGE))
+        sShopData->messageNextTask(taskId);
+}
+
+// As DisplayMessageAndContinueTask, but the text starts on the window's top row (mock_mart.msg_box, y 120)
+// rather than 1 px lower.
 static void BuyMenuDisplayMessage(u8 taskId, const u8 *text, TaskFunc callback)
 {
-    DisplayMessageAndContinueTask(taskId, WIN_MESSAGE, 10, 14, FONT_NORMAL, GetPlayerTextSpeedDelay(), text, callback);
+    DrawDialogFrameWithCustomTileAndPalette(WIN_MESSAGE, TRUE, OSHOP_MSG_FRAME_BASE, OSHOP_WINDOW_PAL);
+    OrchidShop_DrawMessageFrame();
+    if (text != gStringVar4)
+        StringExpandPlaceholders(gStringVar4, text);
+    gTextFlags.canABSpeedUpPrint = 1;
+    AddTextPrinterParameterized4(WIN_MESSAGE, FONT_NORMAL, 0, 0, 0, 0, sOrchidShopMessageColors, GetPlayerTextSpeedDelay(), gStringVar4);
+    sShopData->messageNextTask = callback;
+    gTasks[taskId].func = Task_OrchidShopContinueAfterMessage;
     ScheduleBgCopyTilemapToVram(0);
 }
 
 static void BuyMenuDrawGraphics(void)
 {
-    BuyMenuDrawMapGraphics();
-    BuyMenuCopyMenuBgToBg1TilemapBuffer();
-    AddMoneyLabelObject(19, 11);
-    PrintMoneyAmountInMoneyBoxWithBorder(WIN_MONEY, 1, 13, GetMoney(&gSaveBlock1Ptr->money));
+    OrchidShop_PrintMoney();
     ScheduleBgCopyTilemapToVram(0);
     ScheduleBgCopyTilemapToVram(1);
     ScheduleBgCopyTilemapToVram(2);
     ScheduleBgCopyTilemapToVram(3);
-}
-
-static void BuyMenuDrawMapGraphics(void)
-{
-    BuyMenuCollectObjectEventData();
-    BuyMenuDrawObjectEvents();
-    BuyMenuDrawMapBg();
-}
-
-static void BuyMenuDrawMapBg(void)
-{
-    s16 i, j;
-    s16 x, y;
-    const struct MapLayout *mapLayout;
-    u16 metatile;
-    u16 numMetatilesInPrimary;
-    u8 metatileLayerType;
-
-    mapLayout = gMapHeader.mapLayout;
-    numMetatilesInPrimary = GetNumMetatilesInPrimary(mapLayout);
-    GetXYCoordsOneStepInFrontOfPlayer(&x, &y);
-    x -= 4;
-    y -= 4;
-
-    for (j = 0; j < 10; j++)
-    {
-        for (i = 0; i < 15; i++)
-        {
-            metatile = MapGridGetMetatileIdAt(x + i, y + j);
-            if (BuyMenuCheckForOverlapWithMenuBg(i, j) == TRUE)
-                metatileLayerType = MapGridGetMetatileLayerTypeAt(x + i, y + j);
-            else
-                metatileLayerType = METATILE_LAYER_TYPE_COVERED;
-
-            if (metatile < numMetatilesInPrimary)
-                BuyMenuDrawMapMetatile(i, j, mapLayout->primaryTileset->metatiles + metatile * NUM_TILES_PER_METATILE, metatileLayerType);
-            else
-                BuyMenuDrawMapMetatile(i, j, mapLayout->secondaryTileset->metatiles + ((metatile - numMetatilesInPrimary) * NUM_TILES_PER_METATILE), metatileLayerType);
-        }
-    }
-}
-
-static void BuyMenuDrawMapMetatile(s16 x, s16 y, const u16 *src, u8 metatileLayerType)
-{
-    u16 offset1 = x * 2;
-    u16 offset2 = y * 64;
-
-    switch (metatileLayerType)
-    {
-    case METATILE_LAYER_TYPE_NORMAL:
-        BuyMenuDrawMapMetatileLayer(sShopData->tilemapBuffers[3], offset1, offset2, src);
-        BuyMenuDrawMapMetatileLayer(sShopData->tilemapBuffers[1], offset1, offset2, src + 4);
-        break;
-    case METATILE_LAYER_TYPE_COVERED:
-        BuyMenuDrawMapMetatileLayer(sShopData->tilemapBuffers[2], offset1, offset2, src);
-        BuyMenuDrawMapMetatileLayer(sShopData->tilemapBuffers[3], offset1, offset2, src + 4);
-        break;
-    case METATILE_LAYER_TYPE_SPLIT:
-        BuyMenuDrawMapMetatileLayer(sShopData->tilemapBuffers[2], offset1, offset2, src);
-        BuyMenuDrawMapMetatileLayer(sShopData->tilemapBuffers[1], offset1, offset2, src + 4);
-        break;
-    }
-}
-
-static void BuyMenuDrawMapMetatileLayer(u16 *dest, s16 offset1, s16 offset2, const u16 *src)
-{
-    // This function draws a whole 2x2 metatile.
-    dest[offset1 + offset2] = src[0]; // top left
-    dest[offset1 + offset2 + 1] = src[1]; // top right
-    dest[offset1 + offset2 + 32] = src[2]; // bottom left
-    dest[offset1 + offset2 + 33] = src[3]; // bottom right
-}
-
-static void BuyMenuCollectObjectEventData(void)
-{
-    s16 facingX;
-    s16 facingY;
-    u8 y;
-    u8 x;
-    u8 numObjects = 0;
-
-    GetXYCoordsOneStepInFrontOfPlayer(&facingX, &facingY);
-
-    for (y = 0; y < OBJECT_EVENTS_COUNT; y++)
-        sShopData->viewportObjects[y][OBJ_EVENT_ID] = OBJECT_EVENTS_COUNT;
-
-    for (y = 0; y < 5; y++)
-    {
-        for (x = 0; x < 7; x++)
-        {
-            u8 objEventId = GetObjectEventIdByXY(facingX - 4 + x, facingY - 2 + y);
-
-            // skip if invalid or an overworld Pokémon that is not following the player
-            if (objEventId != OBJECT_EVENTS_COUNT && !(gObjectEvents[objEventId].active && gObjectEvents[objEventId].graphicsId & OBJ_EVENT_MON && gObjectEvents[objEventId].localId != OBJ_EVENT_ID_FOLLOWER))
-            {
-                sShopData->viewportObjects[numObjects][OBJ_EVENT_ID] = objEventId;
-                sShopData->viewportObjects[numObjects][X_COORD] = x;
-                sShopData->viewportObjects[numObjects][Y_COORD] = y;
-                sShopData->viewportObjects[numObjects][LAYER_TYPE] = MapGridGetMetatileLayerTypeAt(facingX - 4 + x, facingY - 2 + y);
-
-                switch (gObjectEvents[objEventId].facingDirection)
-                {
-                case DIR_SOUTH:
-                    sShopData->viewportObjects[numObjects][ANIM_NUM] = ANIM_STD_FACE_SOUTH;
-                    break;
-                case DIR_NORTH:
-                    sShopData->viewportObjects[numObjects][ANIM_NUM] = ANIM_STD_FACE_NORTH;
-                    break;
-                case DIR_WEST:
-                    sShopData->viewportObjects[numObjects][ANIM_NUM] = ANIM_STD_FACE_WEST;
-                    break;
-                case DIR_EAST:
-                default:
-                    sShopData->viewportObjects[numObjects][ANIM_NUM] = ANIM_STD_FACE_EAST;
-                    break;
-                }
-                numObjects++;
-            }
-        }
-    }
-}
-
-static void BuyMenuDrawObjectEvents(void)
-{
-    u8 i;
-    u8 spriteId;
-    const struct ObjectEventGraphicsInfo *graphicsInfo;
-    u8 weatherTemp = gWeatherPtr->palProcessingState;
-
-    // This function runs during fadeout, so the weather palette processing state must be temporarily changed,
-    // so that time-blending will work properly
-    if (weatherTemp == WEATHER_PAL_STATE_SCREEN_FADING_OUT)
-        gWeatherPtr->palProcessingState = WEATHER_PAL_STATE_IDLE;
-    for (i = 0; i < OBJECT_EVENTS_COUNT; i++)
-    {
-        if (sShopData->viewportObjects[i][OBJ_EVENT_ID] == OBJECT_EVENTS_COUNT)
-            continue;
-
-        graphicsInfo = GetObjectEventGraphicsInfo(gObjectEvents[sShopData->viewportObjects[i][OBJ_EVENT_ID]].graphicsId);
-
-        spriteId = CreateObjectGraphicsSprite(
-            gObjectEvents[sShopData->viewportObjects[i][OBJ_EVENT_ID]].graphicsId,
-            SpriteCallbackDummy,
-            (u16)sShopData->viewportObjects[i][X_COORD] * 16 + 8,
-            (u16)sShopData->viewportObjects[i][Y_COORD] * 16 + 48 - graphicsInfo->height / 2,
-            2);
-
-        if (BuyMenuCheckIfObjectEventOverlapsMenuBg(sShopData->viewportObjects[i]) == TRUE)
-        {
-            gSprites[spriteId].subspriteTableNum = 4;
-            gSprites[spriteId].subspriteMode = SUBSPRITES_ON;
-        }
-
-        StartSpriteAnim(&gSprites[spriteId], sShopData->viewportObjects[i][ANIM_NUM]);
-    }
-
-    gWeatherPtr->palProcessingState = weatherTemp; // restore weather state
-    CpuFastCopy(gPlttBufferFaded + 16*16, gPlttBufferUnfaded + 16*16, PLTT_BUFFER_SIZE);
-}
-
-static bool8 BuyMenuCheckIfObjectEventOverlapsMenuBg(s16 *object)
-{
-    if (!BuyMenuCheckForOverlapWithMenuBg(object[X_COORD], object[Y_COORD] + 2) && object[LAYER_TYPE] != METATILE_LAYER_TYPE_COVERED)
-        return TRUE;
-    else
-        return FALSE;
-}
-
-static void BuyMenuCopyMenuBgToBg1TilemapBuffer(void)
-{
-    s16 i;
-    u16 *dest = sShopData->tilemapBuffers[1];
-    const u16 *src = sShopData->tilemapBuffers[0];
-
-    for (i = 0; i < 1024; i++)
-    {
-        if (src[i] != 0)
-            dest[i] = src[i] + ((SHOP_MENU_PALETTE_ID << 12) | 0x3E3);
-    }
-}
-
-static bool8 BuyMenuCheckForOverlapWithMenuBg(int x, int y)
-{
-    const u16 *metatile = sShopData->tilemapBuffers[0];
-    int offset1 = x * 2;
-    int offset2 = y * 64;
-
-    if (metatile[offset2 + offset1] == 0 &&
-        metatile[offset2 + offset1 + 32] == 0 &&
-        metatile[offset2 + offset1 + 1] == 0 &&
-        metatile[offset2 + offset1 + 33] == 0)
-        return TRUE;
-
-    return FALSE;
 }
 
 static void Task_BuyMenu(u8 taskId)
@@ -1013,9 +1145,7 @@ static void Task_BuyMenu(u8 taskId)
         default:
             PlaySE(SE_SELECT);
             tItemId = itemId;
-            ClearWindowTilemap(WIN_ITEM_DESCRIPTION);
-            BuyMenuRemoveScrollIndicatorArrows();
-            BuyMenuPrintCursor(tListTaskId, COLORID_GRAY_CURSOR);
+            ClearWindowTilemap(WIN_ITEM_DESCRIPTION); // the message box covers the card; the row stays gold
 
             if (sMartInfo.martType == MART_TYPE_NORMAL)
                 sShopData->totalCost = (GetItemPrice(itemId) >> IsPokeNewsActive(POKENEWS_SLATEPORT));
@@ -1073,17 +1203,12 @@ static void Task_BuyHowManyDialogueInit(u8 taskId)
 {
     s16 *data = gTasks[taskId].data;
 
-    u16 quantityInBag = CountTotalItemQuantityInBag(tItemId);
     u16 maxQuantity;
 
-    DrawStdFrameWithCustomTileAndPalette(WIN_QUANTITY_IN_BAG, FALSE, 1, 13);
-    ConvertIntToDecimalStringN(gStringVar1, quantityInBag, STR_CONV_MODE_RIGHT_ALIGN, MAX_ITEM_DIGITS + 1);
-    StringExpandPlaceholders(gStringVar4, gText_InBagVar1);
-    BuyMenuPrint(WIN_QUANTITY_IN_BAG, gStringVar4, 0, 1, 0, COLORID_NORMAL);
+    // Orchid: the hanging price tag drops over the list (quantity, total, coin + money left)
     tItemCount = 1;
-    DrawStdFrameWithCustomTileAndPalette(WIN_QUANTITY_PRICE, FALSE, 1, 13);
     BuyMenuPrintItemQuantityAndPrice(taskId);
-    ScheduleBgCopyTilemapToVram(0);
+    OrchidShop_ShowQuantityTag(TRUE);
 
     // Avoid division by zero in-case something costs 0 pokedollars.
     if (sShopData->totalCost == 0)
@@ -1113,10 +1238,7 @@ static void Task_BuyHowManyDialogueHandleInput(u8 taskId)
         if (JOY_NEW(A_BUTTON))
         {
             PlaySE(SE_SELECT);
-            ClearStdWindowAndFrameToTransparent(WIN_QUANTITY_PRICE, FALSE);
-            ClearStdWindowAndFrameToTransparent(WIN_QUANTITY_IN_BAG, FALSE);
-            ClearWindowTilemap(WIN_QUANTITY_PRICE);
-            ClearWindowTilemap(WIN_QUANTITY_IN_BAG);
+            OrchidShop_ShowQuantityTag(FALSE);
             PutWindowTilemap(WIN_ITEM_LIST);
             CopyItemName(tItemId, gStringVar1);
             ConvertIntToDecimalStringN(gStringVar2, tItemCount, STR_CONV_MODE_LEFT_ALIGN, MAX_ITEM_DIGITS);
@@ -1126,10 +1248,7 @@ static void Task_BuyHowManyDialogueHandleInput(u8 taskId)
         else if (JOY_NEW(B_BUTTON))
         {
             PlaySE(SE_SELECT);
-            ClearStdWindowAndFrameToTransparent(WIN_QUANTITY_PRICE, FALSE);
-            ClearStdWindowAndFrameToTransparent(WIN_QUANTITY_IN_BAG, FALSE);
-            ClearWindowTilemap(WIN_QUANTITY_PRICE);
-            ClearWindowTilemap(WIN_QUANTITY_IN_BAG);
+            OrchidShop_ShowQuantityTag(FALSE);
             BuyMenuReturnToItemList(taskId);
         }
     }
@@ -1137,10 +1256,8 @@ static void Task_BuyHowManyDialogueHandleInput(u8 taskId)
 
 static void BuyMenuConfirmPurchase(u8 taskId)
 {
-    // Orchid YES/NO: Orchid frame in free BG0 tiles, pill + accent colours into the window palette's unused 10-15
-    LoadOrchidYesNoFrame(0, ORCHID_SHOP_YESNO_FRAME_TILE);
-    LoadOrchidYesNoColors(15, FALSE);
-    CreateOrchidYesNoMenuWithCallbacks(taskId, &sShopBuyMenuYesNoWindowTemplates, ORCHID_SHOP_YESNO_FRAME_TILE, 15, &sShopPurchaseYesNoFuncs);
+    // Orchid YES/NO: frame tiles and the Orchid window palette were loaded with the screen
+    CreateOrchidYesNoMenuWithCallbacks(taskId, &sShopBuyMenuYesNoWindowTemplates, ORCHID_SHOP_YESNO_FRAME_TILE, OSHOP_WINDOW_PAL, &sShopPurchaseYesNoFuncs);
 }
 
 static void BuyMenuTryMakePurchase(u8 taskId)
@@ -1183,7 +1300,7 @@ static void BuyMenuSubtractMoney(u8 taskId)
     IncrementGameStat(GAME_STAT_SHOPPED);
     RemoveMoney(&gSaveBlock1Ptr->money, sShopData->totalCost);
     PlaySE(SE_SHOP);
-    PrintMoneyAmountInMoneyBox(WIN_MONEY, GetMoney(&gSaveBlock1Ptr->money), 0);
+    OrchidShop_PrintMoney();
 
     if (sMartInfo.martType == MART_TYPE_NORMAL)
         gTasks[taskId].func = Task_ReturnToItemListAfterItemPurchase;
@@ -1215,6 +1332,7 @@ static void Task_ReturnToItemListAfterItemPurchase(u8 taskId)
         AddBagItem(ITEM_PREMIER_BALL, premierBallsToAdd);
         if (premierBallsToAdd > 0)
         {
+            OrchidShop_ShowBonusBall(TRUE);
             ConvertIntToDecimalStringN(gStringVar1, premierBallsToAdd, STR_CONV_MODE_LEFT_ALIGN, MAX_ITEM_DIGITS);
             BuyMenuDisplayMessage(taskId, (premierBallsToAdd >= 2 ? gText_ThrowInPremierBalls : gText_ThrowInPremierBall), BuyMenuReturnToItemList);
         }
@@ -1239,24 +1357,35 @@ static void BuyMenuReturnToItemList(u8 taskId)
     s16 *data = gTasks[taskId].data;
 
     ClearDialogWindowAndFrameToTransparent(WIN_MESSAGE, FALSE);
+    OrchidShop_ShowBonusBall(FALSE);
     RedrawListMenu(tListTaskId);
-    BuyMenuPrintCursor(tListTaskId, COLORID_ITEM_LIST);
     PutWindowTilemap(WIN_ITEM_LIST);
     PutWindowTilemap(WIN_ITEM_DESCRIPTION);
     ScheduleBgCopyTilemapToVram(0);
-    BuyMenuAddScrollIndicatorArrows();
     gTasks[taskId].func = Task_BuyMenu;
 }
 
+// The hanging tag (mock_mart.a_qty): ×NNN in the recessed well, the total top-right, money left below it.
 static void BuyMenuPrintItemQuantityAndPrice(u8 taskId)
 {
     s16 *data = gTasks[taskId].data;
+    u8 str[24];
 
-    FillWindowPixelBuffer(WIN_QUANTITY_PRICE, PIXEL_FILL(1));
-    PrintMoneyAmount(WIN_QUANTITY_PRICE, CalculateMoneyTextHorizontalPosition(sShopData->totalCost), 1, sShopData->totalCost, TEXT_SKIP_DRAW);
+    CopyToWindowPixelBuffer(WIN_QUANTITY, gOrchidShopQtyTag_Gfx, OSHOP_QTY_WIN_W * OSHOP_QTY_WIN_H * TILE_SIZE_4BPP, 0);
+
     ConvertIntToDecimalStringN(gStringVar1, tItemCount, STR_CONV_MODE_LEADING_ZEROS, MAX_ITEM_DIGITS);
-    StringExpandPlaceholders(gStringVar4, gText_xVar1);
-    BuyMenuPrint(WIN_QUANTITY_PRICE, gStringVar4, 0, 1, 0, COLORID_NORMAL);
+    StringExpandPlaceholders(str, gText_xVar1);
+    BuyMenuPrint(WIN_QUANTITY, str, OSHOP_QTY_CENTRE_X - GetStringWidth(FONT_NORMAL, str, 0) / 2, OSHOP_QTY_Y, TEXT_SKIP_DRAW, COLORID_NORMAL);
+
+    ConvertIntToDecimalStringN(gStringVar1, sShopData->totalCost, STR_CONV_MODE_LEFT_ALIGN, MAX_MONEY_DIGITS);
+    StringExpandPlaceholders(str, gText_PokedollarVar1);
+    BuyMenuPrint(WIN_QUANTITY, str, GetStringRightAlignXOffset(FONT_NORMAL, str, OSHOP_QTY_RIGHT), OSHOP_TOTAL_Y, TEXT_SKIP_DRAW, COLORID_PRICE);
+
+    ConvertIntToDecimalStringN(gStringVar1, GetMoney(&gSaveBlock1Ptr->money) - sShopData->totalCost, STR_CONV_MODE_LEFT_ALIGN, MAX_MONEY_DIGITS);
+    StringExpandPlaceholders(str, gText_PokedollarVar1);
+    BuyMenuPrint(WIN_QUANTITY, str, GetStringRightAlignXOffset(FONT_NORMAL, str, OSHOP_QTY_RIGHT), OSHOP_LEFT_Y, TEXT_SKIP_DRAW, COLORID_NORMAL);
+
+    CopyWindowToVram(WIN_QUANTITY, COPYWIN_GFX);
 }
 
 static void ExitBuyMenu(u8 taskId)
@@ -1270,7 +1399,6 @@ static void Task_ExitBuyMenu(u8 taskId)
 {
     if (!gPaletteFade.active)
     {
-        RemoveMoneyLabelObject();
         BuyMenuFreeMemory();
         SetMainCallback2(CB2_ReturnToField);
         DestroyTask(taskId);
