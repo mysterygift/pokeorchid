@@ -110,6 +110,8 @@ void SetGimmickAsActivated(enum BattlerId battler, enum Gimmick gimmick)
 #define SINGLES_GIMMICK_TRIGGER_POS_X_PRIORITY (31)
 #define SINGLES_GIMMICK_TRIGGER_POS_X_SLIDE (15)
 #define SINGLES_GIMMICK_TRIGGER_POS_Y_DIFF (-5)
+#define ORCHID_TRIGGER_DX 11 // Orchid UI: extra shift left / down from the healthbox
+#define ORCHID_TRIGGER_DY 2
 
 #define DOUBLES_GIMMICK_TRIGGER_POS_X_OPTIMAL (30)
 #define DOUBLES_GIMMICK_TRIGGER_POS_X_PRIORITY (31)
@@ -143,7 +145,12 @@ void CreateGimmickTriggerSprite(enum BattlerId battler)
 
     if (gBattleStruct->gimmick.triggerSpriteId == 0xFF)
     {
-        if (GetBattlerCoordsIndex(battler) == BATTLE_COORDS_DOUBLES)
+        // Orchid UI boxes: the trigger sits 11 px further left / 2 px lower, clear of the socket
+        if (IsOrchidStyleHealthbox(gHealthboxSpriteIds[battler]))
+            gBattleStruct->gimmick.triggerSpriteId = CreateSprite(gimmick->triggerTemplate,
+                                                                  gSprites[gHealthboxSpriteIds[battler]].x - ORCHID_TRIGGER_DX - SINGLES_GIMMICK_TRIGGER_POS_X_SLIDE,
+                                                                  gSprites[gHealthboxSpriteIds[battler]].y - SINGLES_GIMMICK_TRIGGER_POS_Y_DIFF + ORCHID_TRIGGER_DY, 0);
+        else if (GetBattlerCoordsIndex(battler) == BATTLE_COORDS_DOUBLES)
             gBattleStruct->gimmick.triggerSpriteId = CreateSprite(gimmick->triggerTemplate,
                                                                   gSprites[gHealthboxSpriteIds[battler]].x - DOUBLES_GIMMICK_TRIGGER_POS_X_SLIDE,
                                                                   gSprites[gHealthboxSpriteIds[battler]].y - DOUBLES_GIMMICK_TRIGGER_POS_Y_DIFF, 0);
@@ -215,6 +222,15 @@ static void SpriteCb_GimmickTrigger(struct Sprite *sprite)
         xPriority = SINGLES_GIMMICK_TRIGGER_POS_X_PRIORITY;
         xOptimal = SINGLES_GIMMICK_TRIGGER_POS_X_OPTIMAL;
         yDiff = SINGLES_GIMMICK_TRIGGER_POS_Y_DIFF;
+    }
+    if (IsOrchidStyleHealthbox(gHealthboxSpriteIds[sprite->tBattler]))
+    {
+        // Orchid UI boxes: same slide, shifted clear of the pointed end and status socket
+        xSlide = SINGLES_GIMMICK_TRIGGER_POS_X_SLIDE;
+        xPriority = SINGLES_GIMMICK_TRIGGER_POS_X_PRIORITY;
+        xOptimal = SINGLES_GIMMICK_TRIGGER_POS_X_OPTIMAL;
+        yDiff = SINGLES_GIMMICK_TRIGGER_POS_Y_DIFF - ORCHID_TRIGGER_DY;
+        xHealthbox -= ORCHID_TRIGGER_DX;
     }
 
     if (sprite->tHide)
@@ -362,6 +378,16 @@ void UpdateIndicatorLevelData(u32 healthboxId, u32 level)
         xDelta += 5;
 
     gSprites[GetIndicatorSpriteId(healthboxId)].tLevelXDelta = xDelta;
+}
+
+// Orchid UI: singles healthboxes put the indicator where the Lv glyph would be.
+void SetIndicatorPosition(u32 healthboxId, s16 xFromHealthbox, s16 y)
+{
+    if (GetIndicatorSpriteId(healthboxId) == 0)
+        return;
+    gSprites[GetIndicatorSpriteId(healthboxId)].tPosX = xFromHealthbox;
+    gSprites[GetIndicatorSpriteId(healthboxId)].tLevelXDelta = 0;
+    gSprites[GetIndicatorSpriteId(healthboxId)].y = y;
 }
 
 static const s8 sIndicatorPositions[][2] =

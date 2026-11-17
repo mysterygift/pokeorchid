@@ -216,6 +216,22 @@ struct PokedexView
     u8 numEggMoves;
     u8 numLevelUpMoves;
     u8 numPreEvolutions;
+
+    // Orchid UI (pokedex.c)
+    u16 odexTop;            // first visible list entry
+    u16 odexHighlight;      // list entry whose pill row is gold
+    s16 odexScrollPx;       // list scroll position in px
+    u8 odexScrollStep;      // px per frame while the list glides, 0 = idle
+    u8 odexCooldown;        // frames until a held D-pad repeats
+    u8 odexRepeat;          // held D-pad repeats so far
+    u8 odexPicSpriteId;
+    u8 odexPicSlide;        // slide-in frame of the pic
+    u8 odexTypeSpriteIds[2];
+    u8 odexThumbSpriteId;
+    u8 odexArrowSpriteIds[2];
+    u8 odexTab;             // entry page tab (INFO / AREA / CRY / SIZE)
+    u8 odexTimer;
+    bool8 odexFromEntry;    // list page brightens in after the entry page darkened out
 };
 
 extern const u8 sCaughtBall_Gfx[];

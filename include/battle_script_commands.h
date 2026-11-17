@@ -9,7 +9,7 @@
 #define WINDOW_BG1   (1 << 7)
 
 // Arguments for 'xStart, yStart, xEnd, yEnd' in HandleBattleWindow
-#define YESNOBOX_X_Y 24, 8, 29, 13
+#define YESNOBOX_X_Y 24, 14, 29, 19 // Orchid UI: docked in the tray's right end (page 0)
 
 struct StatFractions
 {

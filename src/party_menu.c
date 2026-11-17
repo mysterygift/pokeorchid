@@ -80,6 +80,7 @@
 #include "constants/party_menu.h"
 #include "constants/rgb.h"
 #include "constants/songs.h"
+#include "constants/orchid_ui.h"
 
 enum {
     MENU_SUMMARY,
@@ -142,7 +143,16 @@ enum {
     TAG_POKEBALL = 1200,
     TAG_POKEBALL_SMALL,
     TAG_STATUS_ICONS,
+    TAG_ORCHID_STATUS,
 };
+
+// Orchid party menu BG palettes (see dev_scripts/orchid_ui/export_party.py).
+// Slot windows keep their template palettes 3-8.
+#define ORCHID_PAL_BUTTON          1
+#define ORCHID_PAL_BUTTON_SELECTED 2
+#define ORCHID_PAL_GRID            11
+#define ORCHID_PAL_FRAME           13
+#define ORCHID_FRAME_TILE          0x4F
 
 #define TAG_HELD_ITEM 55120
 
@@ -202,8 +212,13 @@ struct PartyMenuBox
     u8 windowId;
     u8 monSpriteId;
     u8 itemSpriteId;
-    u8 pokeballSpriteId;
+    u8 pokeballSpriteId; // Always SPRITE_NONE: Orchid slots have no Poké Ball sprite
     u8 statusSpriteId;
+    // Orchid: sprite coords computed from the slot window, and what the slot palette is built from
+    u8 coords[4 * 2];
+    u8 palState:4;       // ORCHID_SLOT_*
+    u8 nameGender:2;     // ORCHID_NAME_*
+    u8 hpLevel:2;        // 0 green, 1 yellow, 2 red
 };
 
 // EWRAM vars
@@ -222,6 +237,7 @@ static EWRAM_DATA enum Item sPartyMenuItemId = 0;
 EWRAM_DATA u8 gBattlePartyCurrentOrder[PARTY_SIZE / 2] = {0}; // bits 0-3 are the current pos of Slot 1, 4-7 are Slot 2, and so on
 static EWRAM_DATA u8 sInitialLevel = 0;
 static EWRAM_DATA u8 sFinalLevel = 0;
+static EWRAM_DATA u8 sOrchidGridScrollTimer = 0;
 
 // IWRAM common
 COMMON_DATA void (*gItemUseCB)(u8, TaskFunc) = NULL;
@@ -240,13 +256,13 @@ static void LoadPartyMenuWindows(void);
 static void InitPartyMenuBoxes(enum PartyMenuLayout);
 static void LoadPartyMenuBoxes(enum PartyMenuLayout);
 static void LoadPartyMenuPokeballGfx(void);
+static void SpriteCB_PartyHeldItem(struct Sprite *sprite);
 static bool8 CreatePartyMonSpritesLoop(void);
 static bool8 RenderPartyMenuBoxes(void);
 static void CreateCancelConfirmPokeballSprites(void);
 static void CreateCancelConfirmWindows(u8);
 static void Task_ExitPartyMenu(u8);
 static void FreePartyPointers(void);
-static void PartyPaletteBufferCopy(u8);
 static void DisplayPartyPokemonDataForMultiBattle(u8);
 static void LoadPartyBoxPalette(struct PartyMenuBox *, u8);
 static void DrawEmptySlot(u8 windowId);
@@ -274,6 +290,7 @@ static void DisplayPartyPokemonGender(u8, enum Species, u8 *, struct PartyMenuBo
 static void DisplayPartyPokemonHP(u16 hp, u16 maxHp, struct PartyMenuBox *menuBox);
 static void DisplayPartyPokemonMaxHP(u16, struct PartyMenuBox *);
 static void DisplayPartyPokemonHPBar(u16, u16, struct PartyMenuBox *);
+static void PrintPartyMonName(struct PartyMenuBox *menuBox, const u8 *name);
 static void CreatePartyMonIconSpriteParameterized(enum Species species, u32 pid, bool32 isEgg, struct PartyMenuBox *menuBox, u8 priority);
 static void CreatePartyMonHeldItemSpriteParameterized(enum Species, enum Item, struct PartyMenuBox *);
 static void CreatePartyMonPokeballSpriteParameterized(enum Species, struct PartyMenuBox *);
@@ -284,11 +301,8 @@ static void CreatePartyMonHeldItemSprite(struct Pokemon *, struct PartyMenuBox *
 static void CreatePartyMonPokeballSprite(struct Pokemon *, struct PartyMenuBox *);
 static void CreatePartyMonIconSprite(struct Pokemon *, struct PartyMenuBox *);
 static void CreatePartyMonStatusSprite(struct Pokemon *, struct PartyMenuBox *);
-static u8 CreateSmallPokeballButtonSprite(u8, u8);
 static void DrawCancelConfirmButtons(void);
-static u8 CreatePokeballButtonSprite(u8, u8);
 static void AnimateSelectedPartyIcon(u8, u8);
-static void PartyMenuStartSpriteAnim(u8, u8);
 static u8 GetPartyBoxPaletteFlags(u8, u8);
 static bool8 PartyBoxPal_ParnterOrDisqualifiedInArena(u8);
 static u8 GetPartyIdFromBattleSlot(u8);
@@ -505,6 +519,7 @@ static void Task_FirstBattleEnterParty_WaitFadeNormal(u8 taskId);
 static u8 CombinedToIndividualPartyId(u8 index);
 static u8 IndividualToCombinedPartyId(u8 index, enum BattlerId battler);
 
+static const u8 sText_DoWhatWithMonName[] = _("Do what with this {STR_VAR_1}?");
 static const u8 sText_askText[] = _("Would you like to change {STR_VAR_1}'s\nability to {STR_VAR_2}?");
 static const u8 sText_doneText[] = _("{STR_VAR_1}'s ability became\n{STR_VAR_2}!{PAUSE_UNTIL_PRESS}");
 static const u8 sText_BasePointsResetToZero[] = _("{STR_VAR_1}'s base points\nwere all reset to zero!{PAUSE_UNTIL_PRESS}");
@@ -513,6 +528,7 @@ static const u8 sText_CannotSendMonToBoxPartner[] = _("Cannot send a mon that do
 
 // static const data
 #include "data/party_menu.h"
+#include "data/party_menu_orchid.h"
 
 // code
 static void InitPartyMenu(enum PartyMenuType menuType, enum PartyMenuLayout layout, u8 partyAction, bool8 keepCursorPos, u8 messageId, TaskFunc task, MainCallback callback)
@@ -598,6 +614,12 @@ static void RefreshPartyMenu(void) //Refreshes the party menu without restarting
 
 static void CB2_UpdatePartyMenu(void)
 {
+    // Orchid: scroll the grid backdrop (BG3) diagonally down-right, 1px every 4 frames
+    if ((++sOrchidGridScrollTimer & 3) == 0)
+    {
+        ChangeBgX(3, 1 << 8, BG_COORD_SUB);
+        ChangeBgY(3, 1 << 8, BG_COORD_SUB);
+    }
     RunTasks();
     AnimateSprites();
     BuildOamBuffer();
@@ -700,7 +722,6 @@ static bool8 ShowPartyMenu(void)
         gMain.state++;
         break;
     case 13:
-        LoadPartyMenuAilmentGfx();
         gMain.state++;
         break;
     case 14:
@@ -806,7 +827,6 @@ static bool8 ReloadPartyMenu(void)
         gMain.state++;
         break;
     case 11:
-        LoadPartyMenuAilmentGfx();
         gMain.state++;
         break;
     case 12:
@@ -895,63 +915,62 @@ static bool8 AllocPartyMenuBg(void)
     ShowBg(0);
     ShowBg(1);
     ShowBg(2);
+    ShowBg(3);
     return TRUE;
 }
 
+static bool32 OrchidUseFemaleTheme(void)
+{
+    return gSaveBlock2Ptr->playerGender != MALE;
+}
+
+// BG3's map: the 2x2 grid tile block (TL, TR, BL, BR) repeated over the whole 32x32 screen.
+// Written straight to VRAM once during setup; BG3 only scrolls afterwards (CB2_UpdatePartyMenu).
+static void OrchidFillGridMap(void)
+{
+    u16 *map = (u16 *)BG_SCREEN_ADDR(27);
+    u32 x, y;
+
+    for (y = 0; y < 32; y++)
+    {
+        for (x = 0; x < 32; x++)
+            map[y * 32 + x] = ((x & 1) + (y & 1) * 2) | (ORCHID_PAL_GRID << 12);
+    }
+}
+
+// Orchid: the party menu's art is BG1 buttons (CANCEL / CONFIRM pills), slot art blitted into the
+// BG0 windows straight from ROM (gOrchidPartySlots_Gfx) and the BG3 grid. The old patterned bg is gone.
 static bool8 AllocPartyMenuBgGfx(void)
 {
-    u32 sizeout;
+    static const u16 sBlack = RGB_BLACK;
+    u32 theme = OrchidUseFemaleTheme();
 
     switch (sPartyMenuInternal->data[0])
     {
     case 0:
-        sPartyBgGfxTilemap = malloc_and_decompress(gPartyMenuBg_Gfx, &sizeout);
-        LoadBgTiles(1, sPartyBgGfxTilemap, sizeout, 0);
+        LoadBgTiles(1, gOrchidPartyButtons_Gfx, ORCHID_BUTTON_NUM_TILES * TILE_SIZE_4BPP, 0);
+        LoadBgTiles(3, gOrchidPartyGrid_Gfx, 4 * TILE_SIZE_4BPP, 0);
         sPartyMenuInternal->data[0]++;
         break;
     case 1:
         if (!IsDma3ManagerBusyWithBgCopy())
         {
-            DecompressDataWithHeaderWram(gPartyMenuBg_Tilemap, sPartyBgTilemapBuffer);
+            CopyToBgTilemapBufferRect_ChangePalette(1, sOrchidCancelButton, 24, 17, 6, 2, ORCHID_PAL_BUTTON);
+            OrchidFillGridMap();
             sPartyMenuInternal->data[0]++;
         }
         break;
     case 2:
-        LoadPalette(gPartyMenuBg_Pal, BG_PLTT_ID(0), 11 * PLTT_SIZE_4BPP);
-        CpuCopy16(gPlttBufferUnfaded, sPartyMenuInternal->palBuffer, 11 * PLTT_SIZE_4BPP);
-        sPartyMenuInternal->data[0]++;
-        break;
-    case 3:
-        PartyPaletteBufferCopy(4);
-        sPartyMenuInternal->data[0]++;
-        break;
-    case 4:
-        PartyPaletteBufferCopy(5);
-        sPartyMenuInternal->data[0]++;
-        break;
-    case 5:
-        PartyPaletteBufferCopy(6);
-        sPartyMenuInternal->data[0]++;
-        break;
-    case 6:
-        PartyPaletteBufferCopy(7);
-        sPartyMenuInternal->data[0]++;
-        break;
-    case 7:
-        PartyPaletteBufferCopy(8);
+        LoadPalette(&sBlack, BG_PLTT_ID(0), PLTT_SIZEOF(1));
+        LoadPalette(sOrchidButtonPals[theme][0], BG_PLTT_ID(ORCHID_PAL_BUTTON), PLTT_SIZE_4BPP);
+        LoadPalette(sOrchidButtonPals[theme][1], BG_PLTT_ID(ORCHID_PAL_BUTTON_SELECTED), PLTT_SIZE_4BPP);
+        LoadPalette(sOrchidGridPal, BG_PLTT_ID(ORCHID_PAL_GRID), PLTT_SIZE_4BPP);
         sPartyMenuInternal->data[0]++;
         break;
     default:
         return TRUE;
     }
     return FALSE;
-}
-
-static void PartyPaletteBufferCopy(u8 palNum)
-{
-    u8 offset = PLTT_ID(palNum);
-    CpuCopy16(&gPlttBufferUnfaded[BG_PLTT_ID(3)], &gPlttBufferUnfaded[offset], PLTT_SIZE_4BPP);
-    CpuCopy16(&gPlttBufferUnfaded[BG_PLTT_ID(3)], &gPlttBufferFaded[offset], PLTT_SIZE_4BPP);
 }
 
 static void FreePartyPointers(void)
@@ -973,6 +992,36 @@ static void InitPartyMenuBoxes(enum PartyMenuLayout layout)
     LoadPartyMenuBoxes(layout);
 }
 
+// Orchid: sprite coords follow the slot art, so they're derived from each slot's window
+// (works for every layout): icon on the dais, held item on the icon, status tag in the slot.
+static void SetPartyMenuBoxSpriteCoords(struct PartyMenuBox *menuBox, bool32 lead)
+{
+    u32 x = GetWindowAttribute(menuBox->windowId, WINDOW_TILEMAP_LEFT) * 8;
+    u32 y = GetWindowAttribute(menuBox->windowId, WINDOW_TILEMAP_TOP) * 8;
+
+    if (lead)
+    {
+        menuBox->coords[0] = x + ORCHID_LEAD_ICON_X;
+        menuBox->coords[1] = y + ORCHID_LEAD_ICON_Y;
+        menuBox->coords[2] = x + ORCHID_LEAD_HOLD_X;
+        menuBox->coords[3] = y + ORCHID_LEAD_HOLD_Y;
+        menuBox->coords[4] = x + ORCHID_LEAD_STATUS_X;
+        menuBox->coords[5] = y + ORCHID_LEAD_STATUS_Y;
+    }
+    else
+    {
+        menuBox->coords[0] = x + ORCHID_WIDE_ICON_X;
+        menuBox->coords[1] = y + ORCHID_WIDE_ICON_Y;
+        menuBox->coords[2] = x + ORCHID_WIDE_HOLD_X;
+        menuBox->coords[3] = y + ORCHID_WIDE_HOLD_Y;
+        menuBox->coords[4] = x + ORCHID_WIDE_STATUS_X;
+        menuBox->coords[5] = y + ORCHID_WIDE_STATUS_Y;
+    }
+    menuBox->coords[6] = menuBox->coords[0];
+    menuBox->coords[7] = menuBox->coords[1];
+    menuBox->spriteCoords = menuBox->coords;
+}
+
 static void LoadPartyMenuBoxes(enum PartyMenuLayout layout)
 {
     u32 i;
@@ -980,12 +1029,14 @@ static void LoadPartyMenuBoxes(enum PartyMenuLayout layout)
     for (i = 0; i < PARTY_SIZE; i++)
     {
         sPartyMenuBoxes[i].infoRects = &sPartyBoxInfoRects[PARTY_BOX_RIGHT_COLUMN];
-        sPartyMenuBoxes[i].spriteCoords = sPartyMenuSpriteCoords[layout][i];
         sPartyMenuBoxes[i].windowId = i;
         sPartyMenuBoxes[i].monSpriteId = SPRITE_NONE;
         sPartyMenuBoxes[i].itemSpriteId = SPRITE_NONE;
         sPartyMenuBoxes[i].pokeballSpriteId = SPRITE_NONE;
         sPartyMenuBoxes[i].statusSpriteId = SPRITE_NONE;
+        sPartyMenuBoxes[i].palState = ORCHID_SLOT_NORMAL;
+        sPartyMenuBoxes[i].nameGender = ORCHID_NAME_NONE;
+        sPartyMenuBoxes[i].hpLevel = 0;
     }
 
     // The first party mon goes in the left column
@@ -995,6 +1046,9 @@ static void LoadPartyMenuBoxes(enum PartyMenuLayout layout)
         sPartyMenuBoxes[3].infoRects = &sPartyBoxInfoRects[PARTY_BOX_LEFT_COLUMN];
     else if (layout == PARTY_LAYOUT_DOUBLE || layout == PARTY_LAYOUT_MULTI)
         sPartyMenuBoxes[1].infoRects = &sPartyBoxInfoRects[PARTY_BOX_LEFT_COLUMN];
+
+    for (i = 0; i < PARTY_SIZE; i++)
+        SetPartyMenuBoxSpriteCoords(&sPartyMenuBoxes[i], sPartyMenuBoxes[i].infoRects == &sPartyBoxInfoRects[PARTY_BOX_LEFT_COLUMN]);
 }
 
 static void RenderPartyMenuBox(u8 slot)
@@ -1067,6 +1121,8 @@ static void DisplayPartyPokemonData(u8 slot)
     else
     {
         sPartyMenuBoxes[slot].infoRects->blitFunc(sPartyMenuBoxes[slot].windowId, 0, 0, 0, 0, FALSE);
+        if (sPartyMenuBoxes[slot].statusSpriteId != SPRITE_NONE)
+            SetPartyMonAilmentGfx(mon, &sPartyMenuBoxes[slot]);
         DisplayPartyPokemonNickname(mon, &sPartyMenuBoxes[slot], 0);
         DisplayPartyPokemonLevelCheck(mon, &sPartyMenuBoxes[slot], 0);
         DisplayPartyPokemonGenderNidoranCheck(mon, &sPartyMenuBoxes[slot], 0);
@@ -1081,6 +1137,9 @@ static void DisplayPartyPokemonDescriptionData(u8 slot, u8 stringID)
     struct Pokemon *mon = GetPartyMonFromPartyMenuId(slot);
 
     sPartyMenuBoxes[slot].infoRects->blitFunc(sPartyMenuBoxes[slot].windowId, 0, 0, 0, 0, TRUE);
+    // Orchid: status tags hide while the slot shows a description tag (ABLE / NOT ABLE ...)
+    if (sPartyMenuBoxes[slot].statusSpriteId != SPRITE_NONE)
+        gSprites[sPartyMenuBoxes[slot].statusSpriteId].invisible = TRUE;
     DisplayPartyPokemonNickname(mon, &sPartyMenuBoxes[slot], 0);
     if (!GetMonData(mon, MON_DATA_IS_EGG))
     {
@@ -1224,7 +1283,7 @@ static void DisplayPartyPokemonDataForMultiBattle(u8 slot)
         StringCopy(gStringVar1, gMultiPartnerParty[actualSlot].nickname);
         StringGet_Nickname(gStringVar1);
         ConvertInternationalPlayerName(gStringVar1);
-        DisplayPartyPokemonBarDetailToFit(menuBox->windowId, gStringVar1, 0, menuBox->infoRects->dimensions, 50);
+        PrintPartyMonName(menuBox, gStringVar1);
         DisplayPartyPokemonLevel(gMultiPartnerParty[actualSlot].level, menuBox);
         DisplayPartyPokemonGender(gMultiPartnerParty[actualSlot].gender, gMultiPartnerParty[actualSlot].species, gMultiPartnerParty[actualSlot].nickname, menuBox);
         DisplayPartyPokemonHP(gMultiPartnerParty[actualSlot].hp, gMultiPartnerParty[actualSlot].maxhp, menuBox);
@@ -1240,11 +1299,6 @@ static bool8 RenderPartyMenuBoxes(void)
         return TRUE;
     else
         return FALSE;
-}
-
-static u8 *GetPartyMenuBgTile(u16 tileId)
-{
-    return &sPartyBgGfxTilemap[tileId << 5];
 }
 
 static void CreatePartyMonSprites(u8 slot)
@@ -1303,33 +1357,27 @@ static bool8 CreatePartyMonSpritesLoop(void)
         return FALSE;
 }
 
+// Orchid: no Poké Ball sprites on the buttons; the BG1 pills are the buttons.
 static void CreateCancelConfirmPokeballSprites(void)
 {
     if (gPartyMenu.menuType == PARTY_MENU_TYPE_MULTI_SHOWCASE
      || gPartyMenu.menuType == PARTY_MENU_TYPE_MULTI_FULL_SHOWCASE)
     {
         // The showcase has no Cancel/Confirm buttons
-        FillBgTilemapBufferRect(1, 14, 23, 17, 7, 2, 1);
+        FillBgTilemapBufferRect(1, 0, 24, 16, 6, 4, 0);
+        ScheduleBgCopyTilemapToVram(1);
     }
     else
     {
         if (sPartyMenuInternal->chooseHalf)
-        {
-            sPartyMenuInternal->spriteIdConfirmPokeball = CreateSmallPokeballButtonSprite(0xBF, 0x88);
             DrawCancelConfirmButtons();
-            sPartyMenuInternal->spriteIdCancelPokeball = CreateSmallPokeballButtonSprite(0xBF, 0x98);
-        }
-        else
-        {
-            sPartyMenuInternal->spriteIdCancelPokeball = CreatePokeballButtonSprite(198, 148);
-        }
         AnimatePartySlot(gPartyMenu.slotId, 1);
     }
 }
 
 void AnimatePartySlot(u8 slot, u8 animNum)
 {
-    u8 spriteId;
+    u32 pal = (animNum == 0) ? ORCHID_PAL_BUTTON : ORCHID_PAL_BUTTON_SELECTED;
 
     switch (slot)
     {
@@ -1338,37 +1386,16 @@ void AnimatePartySlot(u8 slot, u8 animNum)
         {
             LoadPartyBoxPalette(&sPartyMenuBoxes[slot], GetPartyBoxPaletteFlags(slot, animNum));
             AnimateSelectedPartyIcon(sPartyMenuBoxes[slot].monSpriteId, animNum);
-            PartyMenuStartSpriteAnim(sPartyMenuBoxes[slot].pokeballSpriteId, animNum);
         }
         return;
     case PARTY_SIZE: // Confirm
-        if (animNum == 0)
-            SetBgTilemapPalette(1, 23, 16, 7, 2, 1);
-        else
-            SetBgTilemapPalette(1, 23, 16, 7, 2, 2);
-        spriteId = sPartyMenuInternal->spriteIdConfirmPokeball;
+        SetBgTilemapPalette(1, 24, 16, 6, 2, pal);
         break;
     case PARTY_SIZE + 1: // Cancel
         // The position of the Cancel button changes if Confirm is present
-        if (!sPartyMenuInternal->chooseHalf)
-        {
-            if (animNum == 0)
-                SetBgTilemapPalette(1, 23, 17, 7, 2, 1);
-            else
-                SetBgTilemapPalette(1, 23, 17, 7, 2, 2);
-        }
-        else if (animNum == 0)
-        {
-            SetBgTilemapPalette(1, 23, 18, 7, 2, 1);
-        }
-        else
-        {
-            SetBgTilemapPalette(1, 23, 18, 7, 2, 2);
-        }
-        spriteId = sPartyMenuInternal->spriteIdCancelPokeball;
+        SetBgTilemapPalette(1, 24, sPartyMenuInternal->chooseHalf ? 18 : 17, 6, 2, pal);
         break;
     }
-    PartyMenuStartSpriteAnim(spriteId, animNum);
     ScheduleBgCopyTilemapToVram(1);
 }
 
@@ -1383,14 +1410,12 @@ static u8 GetPartyBoxPaletteFlags(u8 slot, u8 animNum)
         palFlags |= PARTY_PAL_FAINTED;
     if (PartyBoxPal_ParnterOrDisqualifiedInArena(slot) == TRUE)
         palFlags |= PARTY_PAL_MULTI_ALT;
-    if (gPartyMenu.action == PARTY_ACTION_SWITCHING)
-        palFlags |= PARTY_PAL_SWITCHING;
-    if (gPartyMenu.action == PARTY_ACTION_SWITCH)
-    {
-        if (slot == gPartyMenu.slotId || slot == gPartyMenu.slotId2)
-            palFlags |= PARTY_PAL_TO_SWITCH;
-    }
-    if (gPartyMenu.action == PARTY_ACTION_SOFTBOILED && slot == gPartyMenu.slotId )
+    // Orchid: only the slot being moved is "picked up" (accent face); the target just gets the gold cursor
+    if (gPartyMenu.action == PARTY_ACTION_SWITCHING && slot == gPartyMenu.slotId)
+        palFlags = (palFlags & ~PARTY_PAL_SELECTED) | PARTY_PAL_SWITCHING;
+    if (gPartyMenu.action == PARTY_ACTION_SWITCH && slot == gPartyMenu.slotId)
+        palFlags |= PARTY_PAL_TO_SWITCH;
+    if (gPartyMenu.action == PARTY_ACTION_SOFTBOILED && slot == gPartyMenu.slotId)
         palFlags |= PARTY_PAL_TO_SOFTBOIL;
 
     return palFlags;
@@ -1412,8 +1437,9 @@ static bool8 PartyBoxPal_ParnterOrDisqualifiedInArena(u8 slot)
 
 static void DrawCancelConfirmButtons(void)
 {
-    CopyToBgTilemapBufferRect_ChangePalette(1, sConfirmButton_Tilemap, 23, 16, 7, 2, 17);
-    CopyToBgTilemapBufferRect_ChangePalette(1, sCancelButton_Tilemap, 23, 18, 7, 2, 17);
+    FillBgTilemapBufferRect(1, 0, 24, 16, 6, 4, 0);
+    CopyToBgTilemapBufferRect_ChangePalette(1, sOrchidConfirmButton, 24, 16, 6, 2, ORCHID_PAL_BUTTON);
+    CopyToBgTilemapBufferRect_ChangePalette(1, sOrchidCancelButtonLow, 24, 18, 6, 2, ORCHID_PAL_BUTTON);
     ScheduleBgCopyTilemapToVram(1);
 }
 
@@ -2389,75 +2415,121 @@ static void LoadPartyMenuWindows(void)
     DeactivateAllTextPrinters();
     for (i = 0; i < PARTY_SIZE; i++)
         FillWindowPixelBuffer(i, PIXEL_FILL(0));
-    LoadUserWindowBorderGfx(0, 0x4F, BG_PLTT_ID(13));
-    LoadPalette(GetOverworldTextboxPalettePtr(), BG_PLTT_ID(14), PLTT_SIZE_4BPP);
-    LoadPalette(gStandardMenuPalette, BG_PLTT_ID(15), PLTT_SIZE_4BPP);
+    // Orchid: std frame + Orchid text colours for every popup (shared windows use the Orchid theme)
+    LoadBgTiles(0, gTextWindowFrameOrchid_Gfx, 9 * TILE_SIZE_4BPP, ORCHID_FRAME_TILE);
+    LoadPalette(gTextWindowFrameOrchid_Pal, BG_PLTT_ID(ORCHID_PAL_FRAME), PLTT_SIZE_4BPP);
+    LoadPalette(sOrchidMenuTextPal, BG_PLTT_ID(14), PLTT_SIZE_4BPP);
+    LoadPalette(sOrchidMenuTextPal, BG_PLTT_ID(15), PLTT_SIZE_4BPP);
 }
 
+// Orchid: the CANCEL / CONFIRM labels are baked into the BG1 button art (orchid_buttons.png),
+// so no label windows are needed.
 static void CreateCancelConfirmWindows(bool8 chooseHalf)
 {
-    u8 confirmWindowId;
-    u8 cancelWindowId;
-    u8 offset;
-    u8 mainOffset;
+}
 
-    if (gPartyMenu.menuType != PARTY_MENU_TYPE_MULTI_SHOWCASE
-     && gPartyMenu.menuType != PARTY_MENU_TYPE_MULTI_FULL_SHOWCASE)
+// ---------------------------------------------------------------- Orchid slot drawing
+// Text colours, as indices into a slot window's palette (kit roles, see party_menu_orchid.h).
+static const u8 sOrchidTextInk[3] = {TEXT_COLOR_TRANSPARENT, ORCHID_COL_INK, ORCHID_COL_PANEL_SHADE};
+static const u8 sOrchidTextName[3] = {TEXT_COLOR_TRANSPARENT, ORCHID_COL_NAME_FG, ORCHID_COL_NAME_SH};
+static const u8 sOrchidTextTagAble[3] = {TEXT_COLOR_TRANSPARENT, ORCHID_COL_WHITE, ORCHID_COL_ACCENT_DARK};
+static const u8 sOrchidTextTagNotAble[3] = {TEXT_COLOR_TRANSPARENT, ORCHID_COL_WHITE, ORCHID_COL_INK_SOFT};
+
+static bool32 IsLeadPartyBox(struct PartyMenuBox *menuBox)
+{
+    return menuBox->infoRects == &sPartyBoxInfoRects[PARTY_BOX_LEFT_COLUMN];
+}
+
+// Port of kit.rounded_box (dev_scripts/orchid_ui/kit.py), pixel for pixel: Gen 3 rounded box with
+// an ink outline and a light top-left / dark bottom-right bevel, drawn into a window's bitmap.
+static const u8 sOrchidRoundInset[5][5] = {{0}, {1, 0}, {2, 1, 0}, {3, 1, 1, 0}, {4, 2, 1, 1, 0}};
+
+static s32 OrchidRoundInset(s32 r, s32 y, s32 h)
+{
+    s32 n = r; // table length - 1
+
+    if (y < n)
+        return sOrchidRoundInset[r][y];
+    if (h - 1 - y < n)
+        return sOrchidRoundInset[r][h - 1 - y];
+    return 0;
+}
+
+static void OrchidHLine(u8 windowId, s32 x0, s32 x1, s32 y, u8 color)
+{
+    if (x1 >= x0)
+        FillWindowPixelRect(windowId, PIXEL_FILL(color), x0, y, x1 - x0 + 1, 1);
+}
+
+static void OrchidDrawRoundedBox(u8 windowId, s32 x0, s32 y0, s32 w, s32 h, s32 r, u8 face, u8 outline, u8 light, u8 shade)
+{
+    s32 x, y, ins, ins2;
+
+    for (y = 0; y < h; y++)
     {
-        if (chooseHalf == TRUE)
+        ins = OrchidRoundInset(r, y, h);
+        OrchidHLine(windowId, x0 + ins, x0 + w - 1 - ins, y0 + y, face);
+        OrchidHLine(windowId, x0 + ins, x0 + ins, y0 + y, outline);
+        OrchidHLine(windowId, x0 + w - 1 - ins, x0 + w - 1 - ins, y0 + y, outline);
+    }
+    ins = OrchidRoundInset(r, 0, h);
+    OrchidHLine(windowId, x0 + ins, x0 + w - 1 - ins, y0, outline);
+    OrchidHLine(windowId, x0 + ins, x0 + w - 1 - ins, y0 + h - 1, outline);
+    // diagonal corner pixels so the outline is closed
+    for (y = 1; y < h - 1; y++)
+    {
+        ins = OrchidRoundInset(r, y, h);
+        ins2 = OrchidRoundInset(r, y - 1, h);
+        for (x = ins + 1; x < ins2; x++)
         {
-            confirmWindowId = AddWindow(&sConfirmButtonWindowTemplate);
-            FillWindowPixelBuffer(confirmWindowId, PIXEL_FILL(0));
-            mainOffset = GetStringCenterAlignXOffset(FONT_SMALL, gMenuText_Confirm, 48);
-            AddTextPrinterParameterized4(confirmWindowId, FONT_SMALL, mainOffset, 1, 0, 0, sFontColorTable[0], TEXT_SKIP_DRAW, gMenuText_Confirm);
-            PutWindowTilemap(confirmWindowId);
-            CopyWindowToVram(confirmWindowId, COPYWIN_GFX);
-            cancelWindowId = AddWindow(&sMultiCancelButtonWindowTemplate);
-            offset = 0;
+            s32 yy = (y <= h / 2) ? y0 + y - 1 : y0 + y;
+            OrchidHLine(windowId, x0 + x, x0 + x, yy, outline);
+            OrchidHLine(windowId, x0 + w - 1 - x, x0 + w - 1 - x, yy, outline);
+        }
+    }
+    for (y = h - 2; y > 0; y--)
+    {
+        ins = OrchidRoundInset(r, y, h);
+        ins2 = OrchidRoundInset(r, y + 1, h);
+        for (x = ins + 1; x < ins2; x++)
+        {
+            OrchidHLine(windowId, x0 + x, x0 + x, y0 + y + 1, outline);
+            OrchidHLine(windowId, x0 + w - 1 - x, x0 + w - 1 - x, y0 + y + 1, outline);
+        }
+    }
+    // bevel
+    for (y = 1; y < h - 1; y++)
+    {
+        ins = OrchidRoundInset(r, y, h);
+        if (y == 1)
+        {
+            OrchidHLine(windowId, x0 + ins + 1, x0 + w - 2 - ins, y0 + y, light);
+        }
+        else if (y == h - 2)
+        {
+            OrchidHLine(windowId, x0 + ins + 1, x0 + w - 2 - ins, y0 + y, shade);
         }
         else
         {
-            cancelWindowId = AddWindow(&sCancelButtonWindowTemplate);
-            offset = 3;
+            OrchidHLine(windowId, x0 + ins + 1, x0 + ins + 1, y0 + y, light);
+            OrchidHLine(windowId, x0 + w - 2 - ins, x0 + w - 2 - ins, y0 + y, shade);
         }
-        FillWindowPixelBuffer(cancelWindowId, PIXEL_FILL(0));
-
-        // Branches are functionally identical. Second branch is never reached, Spin Trade wasnt fully implemented
-        if (gPartyMenu.menuType != PARTY_MENU_TYPE_SPIN_TRADE)
-        {
-            mainOffset = GetStringCenterAlignXOffset(FONT_SMALL, gText_Cancel, 48);
-            AddTextPrinterParameterized3(cancelWindowId, FONT_SMALL, mainOffset + offset, 1, sFontColorTable[0], TEXT_SKIP_DRAW, gText_Cancel);
-        }
-        else
-        {
-            mainOffset = GetStringCenterAlignXOffset(FONT_SMALL, gText_Cancel2, 48);
-            AddTextPrinterParameterized3(cancelWindowId, FONT_SMALL, mainOffset + offset, 1, sFontColorTable[0], TEXT_SKIP_DRAW, gText_Cancel2);
-        }
-        PutWindowTilemap(cancelWindowId);
-        CopyWindowToVram(cancelWindowId, COPYWIN_GFX);
-        ScheduleBgCopyTilemapToVram(0);
     }
 }
 
-static u16 *GetPartyMenuPalBufferPtr(u8 paletteId)
+// Copies slot art tiles straight into a window's tile buffer. Unlike BlitBitmapToWindow this
+// overwrites transparent pixels too, so a redraw always starts from clean art.
+static void CopySlotArtToPartyWindow(u8 windowId, const u8 *tilemap, u8 mapWidth, u8 x, u8 y, u8 width, u8 height)
 {
-    return &sPartyMenuInternal->palBuffer[paletteId];
-}
+    const u8 *src = (const u8 *)gOrchidPartySlots_Gfx;
+    u8 *dst = gWindows[windowId].tileData;
+    u32 winWidth = gWindows[windowId].window.width;
+    u32 i, j;
 
-static void BlitBitmapToPartyWindow(u8 windowId, const u8 *b, u8 c, u8 x, u8 y, u8 width, u8 height)
-{
-    u8 *pixels = AllocZeroed(height * width * 32);
-    u8 i, j;
-
-    if (pixels != NULL)
+    for (i = 0; i < height; i++)
     {
-        for (i = 0; i < height; i++)
-        {
-            for (j = 0; j < width; j++)
-                CpuCopy16(GetPartyMenuBgTile(b[x + j + ((y + i) * c)]), &pixels[(i * width + j) * 32], 32);
-        }
-        BlitBitmapToWindow(windowId, pixels, x * 8, y * 8, width * 8, height * 8);
-        Free(pixels);
+        for (j = 0; j < width; j++)
+            CpuCopy32(&src[tilemap[(y + i) * mapWidth + x + j] * TILE_SIZE_4BPP], &dst[((y + i) * winWidth + x + j) * TILE_SIZE_4BPP], TILE_SIZE_4BPP);
     }
 }
 
@@ -2468,10 +2540,7 @@ static void BlitBitmapToPartyWindow_LeftColumn(u8 windowId, u8 x, u8 y, u8 width
         width = 10;
         height = 7;
     }
-    if (hideHP == FALSE)
-        BlitBitmapToPartyWindow(windowId, sSlotTilemap_Main, 10, x, y, width, height);
-    else
-        BlitBitmapToPartyWindow(windowId, sSlotTilemap_MainNoHP, 10, x, y, width, height);
+    CopySlotArtToPartyWindow(windowId, sOrchidSlotLead[hideHP ? 1 : 0], 10, x, y, width, height);
 }
 
 static void BlitBitmapToPartyWindow_RightColumn(u8 windowId, u8 x, u8 y, u8 width, u8 height, bool8 hideHP)
@@ -2481,109 +2550,78 @@ static void BlitBitmapToPartyWindow_RightColumn(u8 windowId, u8 x, u8 y, u8 widt
         width = 18;
         height = 3;
     }
-    if (hideHP == FALSE)
-        BlitBitmapToPartyWindow(windowId, sSlotTilemap_Wide, 18, x, y, width, height);
-    else
-        BlitBitmapToPartyWindow(windowId, sSlotTilemap_WideNoHP, 18, x, y, width, height);
+    CopySlotArtToPartyWindow(windowId, sOrchidSlotWide[hideHP ? 1 : 0], 18, x, y, width, height);
 }
 
+// Empty slot: the window is cleared so the grid backdrop shows through.
 static void DrawEmptySlot(u8 windowId)
 {
-    BlitBitmapToPartyWindow(windowId, sSlotTilemap_WideEmpty, 18, 0, 0, 18, 3);
+    FillWindowPixelBuffer(windowId, PIXEL_FILL(0));
 }
 
-#define LOAD_PARTY_BOX_PAL(paletteIds, paletteOffsets)                                                    \
-{                                                                                                         \
-    LoadPalette(GetPartyMenuPalBufferPtr(paletteIds[0]), paletteOffsets[0] + palOffset, PLTT_SIZEOF(1));  \
-    LoadPalette(GetPartyMenuPalBufferPtr(paletteIds[1]), paletteOffsets[1] + palOffset, PLTT_SIZEOF(1));  \
-    LoadPalette(GetPartyMenuPalBufferPtr(paletteIds[2]), paletteOffsets[2] + palOffset, PLTT_SIZEOF(1));  \
+// Builds the slot window's palette: the state palette (normal / gold / moving / fainted / partner,
+// in the player's gender theme) with the name colour for the mon's gender, plus the HP bar ramp.
+static void ApplyPartyBoxPalette(struct PartyMenuBox *menuBox)
+{
+    u16 pal[16];
+    u32 palNum = GetWindowAttribute(menuBox->windowId, WINDOW_PALETTE_NUM);
+
+    CpuCopy16(sOrchidSlotPals[OrchidUseFemaleTheme()][menuBox->palState][menuBox->nameGender], pal, sizeof(pal));
+    pal[ORCHID_COL_HP_LIGHT] = sOrchidHpRamps[menuBox->hpLevel][0];
+    pal[ORCHID_COL_HP_DARK] = sOrchidHpRamps[menuBox->hpLevel][1];
+    LoadPalette(pal, BG_PLTT_ID(palNum), PLTT_SIZE_4BPP);
 }
 
 static void LoadPartyBoxPalette(struct PartyMenuBox *menuBox, u8 palFlags)
 {
-    u8 palOffset = BG_PLTT_ID(GetWindowAttribute(menuBox->windowId, WINDOW_PALETTE_NUM));
+    bool32 selected = (palFlags & PARTY_PAL_SELECTED) != 0;
+    u32 state;
 
     if (palFlags & PARTY_PAL_NO_MON)
-    {
-        LOAD_PARTY_BOX_PAL(sPartyBoxNoMonPalIds, sPartyBoxNoMonPalOffsets);
-    }
-    else if (palFlags & PARTY_PAL_TO_SOFTBOIL)
-    {
-        if (palFlags & PARTY_PAL_SELECTED)
-        {
-            LOAD_PARTY_BOX_PAL(sPartyBoxSelectedForActionPalIds1, sPartyBoxPalOffsets1);
-            LOAD_PARTY_BOX_PAL(sPartyBoxCurrSelectionPalIds2, sPartyBoxPalOffsets2);
-        }
-        else
-        {
-            LOAD_PARTY_BOX_PAL(sPartyBoxSelectedForActionPalIds1, sPartyBoxPalOffsets1);
-            LOAD_PARTY_BOX_PAL(sPartyBoxSelectedForActionPalIds2, sPartyBoxPalOffsets2);
-        }
-    }
-    else if (palFlags & PARTY_PAL_SWITCHING)
-    {
-        LOAD_PARTY_BOX_PAL(sPartyBoxSelectedForActionPalIds1, sPartyBoxPalOffsets1);
-        LOAD_PARTY_BOX_PAL(sPartyBoxSelectedForActionPalIds2, sPartyBoxPalOffsets2);
-    }
-    else if (palFlags & PARTY_PAL_TO_SWITCH)
-    {
-        if (palFlags & PARTY_PAL_SELECTED)
-        {
-            LOAD_PARTY_BOX_PAL(sPartyBoxSelectedForActionPalIds1, sPartyBoxPalOffsets1);
-            LOAD_PARTY_BOX_PAL(sPartyBoxCurrSelectionPalIds2, sPartyBoxPalOffsets2);
-        }
-        else
-        {
-            LOAD_PARTY_BOX_PAL(sPartyBoxSelectedForActionPalIds1, sPartyBoxPalOffsets1);
-            LOAD_PARTY_BOX_PAL(sPartyBoxSelectedForActionPalIds2, sPartyBoxPalOffsets2);
-        }
-    }
+        state = ORCHID_SLOT_NORMAL;
+    else if (palFlags & (PARTY_PAL_TO_SOFTBOIL | PARTY_PAL_SWITCHING | PARTY_PAL_TO_SWITCH))
+        state = selected ? ORCHID_SLOT_MOVING_SEL : ORCHID_SLOT_MOVING;
     else if (palFlags & PARTY_PAL_FAINTED)
-    {
-        if (palFlags & PARTY_PAL_SELECTED)
-        {
-            LOAD_PARTY_BOX_PAL(sPartyBoxCurrSelectionFaintedPalIds, sPartyBoxPalOffsets1);
-            LOAD_PARTY_BOX_PAL(sPartyBoxCurrSelectionPalIds2, sPartyBoxPalOffsets2);
-        }
-        else
-        {
-            LOAD_PARTY_BOX_PAL(sPartyBoxFaintedPalIds1, sPartyBoxPalOffsets1);
-            LOAD_PARTY_BOX_PAL(sPartyBoxFaintedPalIds2, sPartyBoxPalOffsets2);
-        }
-    }
+        state = selected ? ORCHID_SLOT_FAINTED_SEL : ORCHID_SLOT_FAINTED;
     else if (palFlags & PARTY_PAL_MULTI_ALT)
-    {
-        if (palFlags & PARTY_PAL_SELECTED)
-        {
-            LOAD_PARTY_BOX_PAL(sPartyBoxCurrSelectionMultiPalIds, sPartyBoxPalOffsets1);
-            LOAD_PARTY_BOX_PAL(sPartyBoxCurrSelectionPalIds2, sPartyBoxPalOffsets2);
-        }
-        else
-        {
-            LOAD_PARTY_BOX_PAL(sPartyBoxMultiPalIds1, sPartyBoxPalOffsets1);
-            LOAD_PARTY_BOX_PAL(sPartyBoxMultiPalIds2, sPartyBoxPalOffsets2);
-        }
-    }
-    else if (palFlags & PARTY_PAL_SELECTED)
-    {
-        LOAD_PARTY_BOX_PAL(sPartyBoxCurrSelectionPalIds1, sPartyBoxPalOffsets1);
-        LOAD_PARTY_BOX_PAL(sPartyBoxCurrSelectionPalIds2, sPartyBoxPalOffsets2);
-    }
+        state = selected ? ORCHID_SLOT_PARTNER_SEL : ORCHID_SLOT_PARTNER;
     else
-    {
-        LOAD_PARTY_BOX_PAL(sPartyBoxEmptySlotPalIds1, sPartyBoxPalOffsets1);
-        LOAD_PARTY_BOX_PAL(sPartyBoxEmptySlotPalIds2, sPartyBoxPalOffsets2);
-    }
+        state = selected ? ORCHID_SLOT_SELECTED : ORCHID_SLOT_NORMAL;
+
+    menuBox->palState = state;
+    ApplyPartyBoxPalette(menuBox);
 }
 
 static void DisplayPartyPokemonBarDetail(u8 windowId, const u8 *str, u8 color, const u8 *align)
 {
-    AddTextPrinterParameterized3(windowId, FONT_SMALL, align[0], align[1], sFontColorTable[color], 0, str);
+    AddTextPrinterParameterized3(windowId, FONT_SMALL, align[0], align[1], sOrchidTextInk, 0, str);
 }
 
+// Nickname in the gender colour (palette entries NAME_FG / NAME_SH); no ♂/♀ glyph.
 static void DisplayPartyPokemonBarDetailToFit(u8 windowId, const u8 *str, u8 color, const u8 *align, u32 width)
 {
-    AddTextPrinterParameterized3(windowId, GetFontIdToFit(str, FONT_SMALL, 0, width), align[0], align[1], sFontColorTable[color], 0, str);
+    AddTextPrinterParameterized3(windowId, GetFontIdToFit(str, FONT_SMALL, 0, width), align[0], align[1], sOrchidTextName, 0, str);
+}
+
+static void PrintPartyMonName(struct PartyMenuBox *menuBox, const u8 *name)
+{
+    u8 align[2];
+
+    align[0] = IsLeadPartyBox(menuBox) ? ORCHID_LEAD_NAME_X : ORCHID_WIDE_NAME_X;
+    align[1] = IsLeadPartyBox(menuBox) ? ORCHID_LEAD_NAME_Y : ORCHID_WIDE_NAME_Y;
+    DisplayPartyPokemonBarDetailToFit(menuBox->windowId, name, 0, align, 50);
+}
+
+// Full redraw of a mon's slot (art + all text). Orchid replaces vanilla's partial tile re-blits with this.
+static void RedrawPartyMonBox(struct Pokemon *mon, struct PartyMenuBox *menuBox)
+{
+    menuBox->infoRects->blitFunc(menuBox->windowId, 0, 0, 0, 0, FALSE);
+    DisplayPartyPokemonNickname(mon, menuBox, 0);
+    DisplayPartyPokemonLevelCheck(mon, menuBox, 0);
+    DisplayPartyPokemonHPCheck(mon, menuBox, 0);
+    DisplayPartyPokemonMaxHPCheck(mon, menuBox, 0);
+    DisplayPartyPokemonHPBarCheck(mon, menuBox);
+    CopyWindowToVram(menuBox->windowId, COPYWIN_GFX);
 }
 
 static void DisplayPartyPokemonNickname(struct Pokemon *mon, struct PartyMenuBox *menuBox, u8 c)
@@ -2592,67 +2630,64 @@ static void DisplayPartyPokemonNickname(struct Pokemon *mon, struct PartyMenuBox
 
     if (GetMonData(mon, MON_DATA_SPECIES) != SPECIES_NONE)
     {
-        if (c == 1)
-            menuBox->infoRects->blitFunc(menuBox->windowId, menuBox->infoRects->dimensions[0] >> 3, menuBox->infoRects->dimensions[1] >> 3, menuBox->infoRects->dimensions[2] >> 3, menuBox->infoRects->dimensions[3] >> 3, FALSE);
         GetMonNickname(mon, nickname);
-        DisplayPartyPokemonBarDetailToFit(menuBox->windowId, nickname, 0, menuBox->infoRects->dimensions, 50);
+        if (GetMonData(mon, MON_DATA_IS_EGG))
+        {
+            menuBox->nameGender = ORCHID_NAME_NONE;
+            ApplyPartyBoxPalette(menuBox);
+        }
+        else
+        {
+            DisplayPartyPokemonGender(GetMonGender(mon), GetMonData(mon, MON_DATA_SPECIES), nickname, menuBox);
+        }
+        PrintPartyMonName(menuBox, nickname);
     }
 }
 
+// Orchid: Lv is always shown (the status tag is its own sprite, it no longer replaces the level).
 static void DisplayPartyPokemonLevelCheck(struct Pokemon *mon, struct PartyMenuBox *menuBox, u8 c)
 {
     if (GetMonData(mon, MON_DATA_SPECIES) != SPECIES_NONE)
     {
-        u8 ailment = GetMonAilment(mon);
-        if (ailment == AILMENT_NONE || ailment == AILMENT_PKRS)
-        {
-            if (c != 0)
-                menuBox->infoRects->blitFunc(menuBox->windowId, menuBox->infoRects->dimensions[4] >> 3, (menuBox->infoRects->dimensions[5] >> 3) + 1, menuBox->infoRects->dimensions[6] >> 3, menuBox->infoRects->dimensions[7] >> 3, FALSE);
-            if (c != 2)
-                DisplayPartyPokemonLevel(GetMonData(mon, MON_DATA_LEVEL), menuBox);
-        }
+        if (c != 0)
+            RedrawPartyMonBox(mon, menuBox);
+        else
+            DisplayPartyPokemonLevel(GetMonData(mon, MON_DATA_LEVEL), menuBox);
     }
 }
 
 static void DisplayPartyPokemonLevel(u8 level, struct PartyMenuBox *menuBox)
 {
+    u8 align[2];
+
+    align[0] = IsLeadPartyBox(menuBox) ? ORCHID_LEAD_LV_X : ORCHID_WIDE_LV_X;
+    align[1] = IsLeadPartyBox(menuBox) ? ORCHID_LEAD_LV_Y : ORCHID_WIDE_LV_Y;
     ConvertIntToDecimalStringN(gStringVar2, level, STR_CONV_MODE_LEFT_ALIGN, 3);
     StringCopy(gStringVar1, gText_LevelSymbol);
     StringAppend(gStringVar1, gStringVar2);
-    DisplayPartyPokemonBarDetail(menuBox->windowId, gStringVar1, 0, &menuBox->infoRects->dimensions[4]);
+    DisplayPartyPokemonBarDetail(menuBox->windowId, gStringVar1, 0, align);
 }
 
 static void DisplayPartyPokemonGenderNidoranCheck(struct Pokemon *mon, struct PartyMenuBox *menuBox, u8 c)
 {
     u8 nickname[POKEMON_NAME_LENGTH + 1];
 
-    if (c == 1)
-        menuBox->infoRects->blitFunc(menuBox->windowId, menuBox->infoRects->dimensions[8] >> 3, (menuBox->infoRects->dimensions[9] >> 3) + 1, menuBox->infoRects->dimensions[10] >> 3, menuBox->infoRects->dimensions[11] >> 3, FALSE);
     GetMonNickname(mon, nickname);
     DisplayPartyPokemonGender(GetMonGender(mon), GetMonData(mon, MON_DATA_SPECIES), nickname, menuBox);
 }
 
+// Orchid: gender is shown by the name colour (male blue, female red, genderless ink), never a glyph.
 static void DisplayPartyPokemonGender(u8 gender, enum Species species, u8 *nickname, struct PartyMenuBox *menuBox)
 {
-    u8 palOffset = BG_PLTT_ID(GetWindowAttribute(menuBox->windowId, WINDOW_PALETTE_NUM));
-
+    if (gender == MON_MALE)
+        menuBox->nameGender = ORCHID_NAME_MALE;
+    else if (gender == MON_FEMALE)
+        menuBox->nameGender = ORCHID_NAME_FEMALE;
+    else
+        menuBox->nameGender = ORCHID_NAME_NONE;
     if (species == SPECIES_NONE)
-        return;
-    if ((species == SPECIES_NIDORAN_M || species == SPECIES_NIDORAN_F) && StringCompare(nickname, GetSpeciesName(species)) == 0)
-        return;
-    switch (gender)
-    {
-    case MON_MALE:
-        LoadPalette(GetPartyMenuPalBufferPtr(sGenderMalePalIds[0]), sGenderPalOffsets[0] + palOffset, PLTT_SIZEOF(1));
-        LoadPalette(GetPartyMenuPalBufferPtr(sGenderMalePalIds[1]), sGenderPalOffsets[1] + palOffset, PLTT_SIZEOF(1));
-        DisplayPartyPokemonBarDetail(menuBox->windowId, gText_MaleSymbol, 2, &menuBox->infoRects->dimensions[8]);
-        break;
-    case MON_FEMALE:
-        LoadPalette(GetPartyMenuPalBufferPtr(sGenderFemalePalIds[0]), sGenderPalOffsets[0] + palOffset, PLTT_SIZEOF(1));
-        LoadPalette(GetPartyMenuPalBufferPtr(sGenderFemalePalIds[1]), sGenderPalOffsets[1] + palOffset, PLTT_SIZEOF(1));
-        DisplayPartyPokemonBarDetail(menuBox->windowId, gText_FemaleSymbol, 2, &menuBox->infoRects->dimensions[8]);
-        break;
-    }
+        menuBox->nameGender = ORCHID_NAME_NONE;
+    ApplyPartyBoxPalette(menuBox);
 }
 
 static void DisplayPartyPokemonHPCheck(struct Pokemon *mon, struct PartyMenuBox *menuBox, u8 c)
@@ -2660,33 +2695,47 @@ static void DisplayPartyPokemonHPCheck(struct Pokemon *mon, struct PartyMenuBox 
     if (GetMonData(mon, MON_DATA_SPECIES) != SPECIES_NONE)
     {
         if (c != 0)
-            menuBox->infoRects->blitFunc(menuBox->windowId, menuBox->infoRects->dimensions[12] >> 3, (menuBox->infoRects->dimensions[13] >> 3) + 1, menuBox->infoRects->dimensions[14] >> 3, menuBox->infoRects->dimensions[15] >> 3, FALSE);
-        if (c != 2)
+            RedrawPartyMonBox(mon, menuBox);
+        else
             DisplayPartyPokemonHP(GetMonData(mon, MON_DATA_HP), GetMonData(mon, MON_DATA_MAX_HP), menuBox);
     }
 }
 
-static void DisplayParty4DigitsHP(struct PartyMenuBox *menuBox, const u8 *str, const u8 *origAlings, u32 toSub)
+// HP reads "hp/maxhp", right-aligned to the slot's HP edge with digit-wide padding (ROM style " 29/ 35"),
+// in FONT_SMALL_NARROWER so 3-digit HP keeps clear of the HP tag.
+static void PrintPartyHPText(struct PartyMenuBox *menuBox, const u8 *str, const u8 *align)
 {
-    u8 newAligns[4];
+    AddTextPrinterParameterized3(menuBox->windowId, FONT_SMALL_NARROWER, align[0], align[1], sOrchidTextInk, 0, str);
+}
 
-    memcpy(newAligns, origAlings, sizeof(newAligns));
-    newAligns[0] -= toSub; // x, so that the hp fits
-    DisplayPartyPokemonBarDetail(menuBox->windowId, str, 0, newAligns);
+static s32 GetPartyHPTextLeft(u16 maxhp, struct PartyMenuBox *menuBox, u32 *digits)
+{
+    s32 right = IsLeadPartyBox(menuBox) ? ORCHID_LEAD_HPNUM_R : ORCHID_WIDE_HPNUM_R;
+
+    *digits = (maxhp >= 1000) ? 4 : 3;
+    return right - (2 * (*digits) * ORCHID_HP_DIGIT_W + ORCHID_HP_SLASH_W);
+}
+
+static void PrintPartyHPNumber(struct PartyMenuBox *menuBox, u16 value, s32 fieldLeft, u32 digits)
+{
+    u8 align[2];
+
+    ConvertIntToDecimalStringN(gStringVar1, value, STR_CONV_MODE_LEFT_ALIGN, digits);
+    align[0] = fieldLeft + (digits - StringLength(gStringVar1)) * ORCHID_HP_DIGIT_W;
+    align[1] = IsLeadPartyBox(menuBox) ? ORCHID_LEAD_HPNUM_Y : ORCHID_WIDE_HPNUM_Y;
+    PrintPartyHPText(menuBox, gStringVar1, align);
 }
 
 static void DisplayPartyPokemonHP(u16 hp, u16 maxhp, struct PartyMenuBox *menuBox)
 {
-    bool32 fourDigits = (maxhp >= 1000);
-    u8 *strOut = ConvertIntToDecimalStringN(gStringVar1, hp, STR_CONV_MODE_RIGHT_ALIGN, fourDigits ? 4 : 3);
+    u32 digits;
+    s32 left = GetPartyHPTextLeft(maxhp, menuBox, &digits);
+    u8 align[2];
 
-    strOut[0] = CHAR_SLASH;
-    strOut[1] = EOS;
-
-    if (fourDigits)
-        DisplayParty4DigitsHP(menuBox, gStringVar1, &menuBox->infoRects->dimensions[12], 10);
-    else
-        DisplayPartyPokemonBarDetail(menuBox->windowId, gStringVar1, 0, &menuBox->infoRects->dimensions[12]);
+    PrintPartyHPNumber(menuBox, hp, left, digits);
+    align[0] = left + digits * ORCHID_HP_DIGIT_W;
+    align[1] = IsLeadPartyBox(menuBox) ? ORCHID_LEAD_HPNUM_Y : ORCHID_WIDE_HPNUM_Y;
+    PrintPartyHPText(menuBox, gText_Slash, align);
 }
 
 static void DisplayPartyPokemonMaxHPCheck(struct Pokemon *mon, struct PartyMenuBox *menuBox, u8 c)
@@ -2694,24 +2743,18 @@ static void DisplayPartyPokemonMaxHPCheck(struct Pokemon *mon, struct PartyMenuB
     if (GetMonData(mon, MON_DATA_SPECIES) != SPECIES_NONE)
     {
         if (c != 0)
-            menuBox->infoRects->blitFunc(menuBox->windowId, (menuBox->infoRects->dimensions[16] >> 3) + 1, (menuBox->infoRects->dimensions[17] >> 3) + 1, menuBox->infoRects->dimensions[18] >> 3, menuBox->infoRects->dimensions[19] >> 3, FALSE);
-        if (c != 2)
+            RedrawPartyMonBox(mon, menuBox);
+        else
             DisplayPartyPokemonMaxHP(GetMonData(mon, MON_DATA_MAX_HP), menuBox);
     }
 }
 
 static void DisplayPartyPokemonMaxHP(u16 maxhp, struct PartyMenuBox *menuBox)
 {
-    bool32 fourDigits = (maxhp >= 1000);
+    u32 digits;
+    s32 left = GetPartyHPTextLeft(maxhp, menuBox, &digits);
 
-    ConvertIntToDecimalStringN(gStringVar2, maxhp, STR_CONV_MODE_RIGHT_ALIGN, fourDigits ? 4 : 3);
-    StringCopy(gStringVar1, gText_Slash);
-    StringAppend(gStringVar1, gStringVar2);
-
-    if (fourDigits)
-        DisplayParty4DigitsHP(menuBox, gStringVar1, &menuBox->infoRects->dimensions[16], 5);
-    else
-        DisplayPartyPokemonBarDetail(menuBox->windowId, gStringVar1, 0, &menuBox->infoRects->dimensions[16]);
+    PrintPartyHPNumber(menuBox, maxhp, left + digits * ORCHID_HP_DIGIT_W + ORCHID_HP_SLASH_W, digits);
 }
 
 static void DisplayPartyPokemonHPBarCheck(struct Pokemon *mon, struct PartyMenuBox *menuBox)
@@ -2720,50 +2763,109 @@ static void DisplayPartyPokemonHPBarCheck(struct Pokemon *mon, struct PartyMenuB
         DisplayPartyPokemonHPBar(GetMonData(mon, MON_DATA_HP), GetMonData(mon, MON_DATA_MAX_HP), menuBox);
 }
 
+// The bar's ink outline and trough are slot art; only the fill is drawn here (light top row, dark body).
+// The bar colours are palette entries HP_LIGHT / HP_DARK, swapped green / yellow / red.
 static void DisplayPartyPokemonHPBar(u16 hp, u16 maxhp, struct PartyMenuBox *menuBox)
 {
-    u8 palOffset = BG_PLTT_ID(GetWindowAttribute(menuBox->windowId, WINDOW_PALETTE_NUM));
-    u8 hpFraction;
+    bool32 lead = IsLeadPartyBox(menuBox);
+    s32 x = (lead ? ORCHID_LEAD_BAR_X : ORCHID_WIDE_BAR_X) + 1;
+    s32 y = (lead ? ORCHID_LEAD_BAR_Y : ORCHID_WIDE_BAR_Y) + 1;
+    s32 width = lead ? ORCHID_LEAD_BAR_W : ORCHID_WIDE_BAR_W;
+    s32 fill = 0;
 
     switch (GetHPBarLevel(hp, maxhp))
     {
     case HP_BAR_GREEN:
     case HP_BAR_FULL:
-        LoadPalette(GetPartyMenuPalBufferPtr(sHPBarGreenPalIds[0]), sHPBarPalOffsets[0] + palOffset, PLTT_SIZEOF(1));
-        LoadPalette(GetPartyMenuPalBufferPtr(sHPBarGreenPalIds[1]), sHPBarPalOffsets[1] + palOffset, PLTT_SIZEOF(1));
+        menuBox->hpLevel = 0;
         break;
     case HP_BAR_YELLOW:
-        LoadPalette(GetPartyMenuPalBufferPtr(sHPBarYellowPalIds[0]), sHPBarPalOffsets[0] + palOffset, PLTT_SIZEOF(1));
-        LoadPalette(GetPartyMenuPalBufferPtr(sHPBarYellowPalIds[1]), sHPBarPalOffsets[1] + palOffset, PLTT_SIZEOF(1));
+        menuBox->hpLevel = 1;
         break;
     default:
-        LoadPalette(GetPartyMenuPalBufferPtr(sHPBarRedPalIds[0]), sHPBarPalOffsets[0] + palOffset, PLTT_SIZEOF(1));
-        LoadPalette(GetPartyMenuPalBufferPtr(sHPBarRedPalIds[1]), sHPBarPalOffsets[1] + palOffset, PLTT_SIZEOF(1));
+        menuBox->hpLevel = 2;
         break;
     }
+    ApplyPartyBoxPalette(menuBox);
 
-    hpFraction = GetScaledHPFraction(hp, maxhp, menuBox->infoRects->dimensions[22]);
-    FillWindowPixelRect(menuBox->windowId, sHPBarPalOffsets[1], menuBox->infoRects->dimensions[20], menuBox->infoRects->dimensions[21], hpFraction, 1);
-    FillWindowPixelRect(menuBox->windowId, sHPBarPalOffsets[0], menuBox->infoRects->dimensions[20], menuBox->infoRects->dimensions[21] + 1, hpFraction, 2);
-    if (hpFraction != menuBox->infoRects->dimensions[22])
+    if (maxhp != 0)
     {
-        // This appears to be an alternating fill
-        FillWindowPixelRect(menuBox->windowId, 0x0D, menuBox->infoRects->dimensions[20] + hpFraction, menuBox->infoRects->dimensions[21], menuBox->infoRects->dimensions[22] - hpFraction, 1);
-        FillWindowPixelRect(menuBox->windowId, 0x02, menuBox->infoRects->dimensions[20] + hpFraction, menuBox->infoRects->dimensions[21] + 1, menuBox->infoRects->dimensions[22] - hpFraction, 2);
+        fill = (hp * width * 2 + maxhp) / (maxhp * 2);
+        if (fill == 0 && hp != 0)
+            fill = 1;
+        if (fill > width)
+            fill = width;
+    }
+    FillWindowPixelRect(menuBox->windowId, PIXEL_FILL(ORCHID_COL_PANEL_DARK), x, y, width, 3);
+    if (fill != 0)
+    {
+        FillWindowPixelRect(menuBox->windowId, PIXEL_FILL(ORCHID_COL_HP_DARK), x, y, fill, 3);
+        FillWindowPixelRect(menuBox->windowId, PIXEL_FILL(ORCHID_COL_HP_LIGHT), x, y, fill, 1);
     }
     CopyWindowToVram(menuBox->windowId, COPYWIN_GFX);
+}
+
+// Description mode (TM / evolution stone / contest / battle entry ...): the HP row becomes a tag,
+// accent for ABLE-like results and grey for NOT ABLE-like ones.
+static void DrawPartyBoxDescriptionTag(u8 stringID, struct PartyMenuBox *menuBox)
+{
+    const u8 *str = sDescriptionStringTable[stringID];
+    bool32 able;
+    s32 width, x, y;
+
+    switch (stringID)
+    {
+    case PARTYBOX_DESC_NO_USE:
+    case PARTYBOX_DESC_NOT_ABLE:
+    case PARTYBOX_DESC_NOT_ABLE_2:
+    case PARTYBOX_DESC_LEARNED:
+    case PARTYBOX_DESC_DONT_HAVE:
+        able = FALSE;
+        break;
+    default:
+        able = TRUE;
+        break;
+    }
+    // The tags drop Gen 3's "!" (ABLE! / NOT ABLE!)
+    if (stringID == PARTYBOX_DESC_ABLE_2)
+        str = gText_Able;
+    else if (stringID == PARTYBOX_DESC_NOT_ABLE_2)
+        str = gText_NotAble;
+
+    width = GetStringWidth(FONT_SMALL, str, 0) + ORCHID_TAG_PAD;
+    if (IsLeadPartyBox(menuBox))
+    {
+        x = ORCHID_LEAD_TAG_CX - width / 2;
+        y = ORCHID_LEAD_TAG_Y;
+    }
+    else
+    {
+        x = ORCHID_WIDE_TAG_R - width;
+        y = ORCHID_WIDE_TAG_Y;
+    }
+    if (able)
+        OrchidDrawRoundedBox(menuBox->windowId, x, y, width, ORCHID_TAG_H, 3, ORCHID_COL_ACCENT, ORCHID_COL_INK, ORCHID_COL_ACCENT_LIGHT, ORCHID_COL_ACCENT_DARK);
+    else
+        OrchidDrawRoundedBox(menuBox->windowId, x, y, width, ORCHID_TAG_H, 3, ORCHID_COL_PANEL_DARK, ORCHID_COL_INK, ORCHID_COL_PANEL_SHADE, ORCHID_COL_INK_SOFT);
+    AddTextPrinterParameterized3(menuBox->windowId, FONT_SMALL, x + 5, y - 2, able ? sOrchidTextTagAble : sOrchidTextTagNotAble, 0, str);
 }
 
 static void DisplayPartyPokemonDescriptionText(u8 stringID, struct PartyMenuBox *menuBox, u8 c)
 {
     if (c)
     {
-        int width = ((menuBox->infoRects->descTextLeft % 8) + menuBox->infoRects->descTextWidth + 7) / 8;
-        int height = ((menuBox->infoRects->descTextTop % 8) + menuBox->infoRects->descTextHeight + 7) / 8;
-        menuBox->infoRects->blitFunc(menuBox->windowId, menuBox->infoRects->descTextLeft >> 3, menuBox->infoRects->descTextTop >> 3, width, height, TRUE);
+        // Orchid: redraw the whole slot (art without the HP row, name, level) instead of re-blitting tiles
+        struct Pokemon *mon = GetPartyMonFromPartyMenuId(menuBox - sPartyMenuBoxes);
+
+        menuBox->infoRects->blitFunc(menuBox->windowId, 0, 0, 0, 0, TRUE);
+        DisplayPartyPokemonNickname(mon, menuBox, 0);
+        if (!GetMonData(mon, MON_DATA_IS_EGG))
+            DisplayPartyPokemonLevelCheck(mon, menuBox, 0);
     }
     if (c != 2)
-        AddTextPrinterParameterized3(menuBox->windowId, FONT_NORMAL, menuBox->infoRects->descTextLeft, menuBox->infoRects->descTextTop, sFontColorTable[0], 0, sDescriptionStringTable[stringID]);
+        DrawPartyBoxDescriptionTag(stringID, menuBox);
+    if (c)
+        CopyWindowToVram(menuBox->windowId, COPYWIN_GFX);
 }
 
 static void PartyMenuRemoveWindow(u8 *ptr)
@@ -2823,8 +2925,19 @@ void DisplayPartyMenuStdMessage(u32 stringId)
                 stringId = PARTY_MSG_NO_POKEMON;
         }
         DrawStdFrameWithCustomTileAndPalette(*windowPtr, FALSE, 0x4F, 13);
-        StringExpandPlaceholders(gStringVar4, sActionStringTable[stringId]);
-        AddTextPrinterParameterized(*windowPtr, FONT_NORMAL, gStringVar4, 0, 1, 0, 0);
+        if (stringId == PARTY_MSG_DO_WHAT_WITH_MON)
+        {
+            // Orchid: the prompt names the mon; long names fall back to a narrower font
+            GetMonNickname(GetPartyMonFromPartyMenuId(gPartyMenu.slotId), gStringVar1);
+            StringExpandPlaceholders(gStringVar4, sText_DoWhatWithMonName);
+            AddTextPrinterParameterized(*windowPtr, GetFontIdToFit(gStringVar4, FONT_NORMAL, 0, GetWindowAttribute(*windowPtr, WINDOW_WIDTH) * 8),
+                                        gStringVar4, 0, 1, 0, 0);
+        }
+        else
+        {
+            StringExpandPlaceholders(gStringVar4, sActionStringTable[stringId]);
+            AddTextPrinterParameterized(*windowPtr, FONT_NORMAL, gStringVar4, 0, 1, 0, 0);
+        }
         ScheduleBgCopyTilemapToVram(2);
     }
 }
@@ -2848,17 +2961,86 @@ static bool8 ShouldUseChooseMonText(void)
     return FALSE;
 }
 
+// ---------------------------------------------------------------- Orchid pill cursor
+// Selection popups show a gold pill behind the current row instead of the ▶ cursor. menu.c still
+// owns the cursor position (Menu_GetCursorPos); after its input handling we redraw the old and new
+// rows, which also paints over the arrow it draws.
+#define ORCHID_PILL_MAX_ROWS 8
+#define ORCHID_PILL_TEXT_X   6
+
+static EWRAM_DATA struct {
+    const u8 *texts[ORCHID_PILL_MAX_ROWS];
+    u8 fontIds[ORCHID_PILL_MAX_ROWS];
+    bool8 fieldMove[ORCHID_PILL_MAX_ROWS];
+    u8 windowId;
+    u8 numRows;
+    s8 cursor;
+} sOrchidPill = {0};
+
+static const u8 sOrchidPillText[3] = {TEXT_COLOR_TRANSPARENT, TEXT_COLOR_DARK_GRAY, TEXT_COLOR_LIGHT_GRAY};
+static const u8 sOrchidPillFieldText[3] = {TEXT_COLOR_TRANSPARENT, TEXT_COLOR_BLUE, TEXT_COLOR_LIGHT_BLUE};
+static const u8 sOrchidPillFieldTextSelected[3] = {TEXT_COLOR_TRANSPARENT, TEXT_COLOR_BLUE, ORCHID_MENU_PILL_SHADE};
+
+static void OrchidPill_DrawRow(u32 row, bool32 selected)
+{
+    u8 windowId = sOrchidPill.windowId;
+    u32 width = GetWindowAttribute(windowId, WINDOW_WIDTH) * 8;
+    const u8 *colors = sOrchidPillText;
+
+    FillWindowPixelRect(windowId, PIXEL_FILL(TEXT_COLOR_WHITE), 0, row * 16, width, 16);
+    if (selected)
+        OrchidDrawRoundedBox(windowId, 2, row * 16 + 1, width - 4, 14, 4, ORCHID_MENU_PILL_FACE, TEXT_COLOR_DARK_GRAY, ORCHID_MENU_PILL_LIGHT, ORCHID_MENU_PILL_SHADE);
+    if (sOrchidPill.fieldMove[row])
+        colors = selected ? sOrchidPillFieldTextSelected : sOrchidPillFieldText;
+    if (sOrchidPill.texts[row] != NULL)
+        AddTextPrinterParameterized4(windowId, sOrchidPill.fontIds[row], ORCHID_PILL_TEXT_X, row * 16, 0, 0, colors, TEXT_SKIP_DRAW, sOrchidPill.texts[row]);
+}
+
+static void OrchidPill_SetRow(u32 row, const u8 *text, bool32 fieldMove, u32 maxWidth)
+{
+    if (row >= ORCHID_PILL_MAX_ROWS)
+        return;
+    sOrchidPill.texts[row] = text;
+    sOrchidPill.fieldMove[row] = fieldMove;
+    sOrchidPill.fontIds[row] = GetFontIdToFit(text, FONT_NORMAL, 0, maxWidth);
+}
+
+// Call after InitMenu*: draws every row, with the pill on menu.c's cursor row.
+static void OrchidPill_Init(u8 windowId, u32 numRows)
+{
+    u32 i;
+
+    sOrchidPill.windowId = windowId;
+    sOrchidPill.numRows = min(numRows, ORCHID_PILL_MAX_ROWS);
+    sOrchidPill.cursor = Menu_GetCursorPos();
+    for (i = 0; i < sOrchidPill.numRows; i++)
+        OrchidPill_DrawRow(i, i == (u32)sOrchidPill.cursor);
+    CopyWindowToVram(windowId, COPYWIN_GFX);
+}
+
+// Call after menu.c processed input for the pill window.
+static void OrchidPill_Update(void)
+{
+    s8 cursor = Menu_GetCursorPos();
+
+    if (cursor == sOrchidPill.cursor || cursor < 0 || cursor >= sOrchidPill.numRows)
+        return;
+    OrchidPill_DrawRow(sOrchidPill.cursor, FALSE);
+    OrchidPill_DrawRow(cursor, TRUE);
+    sOrchidPill.cursor = cursor;
+    CopyWindowToVram(sOrchidPill.windowId, COPYWIN_GFX);
+}
+
 static u8 DisplaySelectionWindow(u8 windowType)
 {
     struct WindowTemplate window;
-    u8 cursorDimension;
-    u8 letterSpacing;
     u8 i;
 
     switch (windowType)
     {
     case SELECTWINDOW_ACTIONS:
-        SetWindowTemplateFields(&window, 2, 19, 19 - (sPartyMenuInternal->numActions * 2), 10, sPartyMenuInternal->numActions * 2, 14, 0x2E9);
+        // Orchid: 8 tiles wide (was 10), so the widened "Do what with this <name>?" prompt fits beside it
+        SetWindowTemplateFields(&window, 2, 21, 19 - (sPartyMenuInternal->numActions * 2), 8, sPartyMenuInternal->numActions * 2, 14, 0x2E9);
         break;
     case SELECTWINDOW_ITEM:
         window = sItemGiveTakeWindowTemplate;
@@ -2881,26 +3063,21 @@ static u8 DisplaySelectionWindow(u8 windowType)
     DrawStdFrameWithCustomTileAndPalette(sPartyMenuInternal->windowId[0], FALSE, 0x4F, 13);
     if (windowType == SELECTWINDOW_MOVES)
         return sPartyMenuInternal->windowId[0];
-    cursorDimension = GetMenuCursorDimensionByFont(FONT_NORMAL, 0);
-    letterSpacing = GetFontAttribute(FONT_NORMAL, FONTATTR_LETTER_SPACING);
 
-    for (i = 0; i < sPartyMenuInternal->numActions; i++)
+    for (i = 0; i < sPartyMenuInternal->numActions && i < ORCHID_PILL_MAX_ROWS; i++)
     {
         const u8 *text;
-        u8 fontColorsId = 3;
+        bool32 fieldMove = (sPartyMenuInternal->actions[i] >= MENU_FIELD_MOVES);
 
-        if (sPartyMenuInternal->actions[i] >= MENU_FIELD_MOVES)
-            fontColorsId = 4;
-
-        if (sPartyMenuInternal->actions[i] >= MENU_FIELD_MOVES)
+        if (fieldMove)
             text = GetMoveName(FieldMove_GetMoveId(sPartyMenuInternal->actions[i] - MENU_FIELD_MOVES));
         else
             text = sCursorOptions[sPartyMenuInternal->actions[i]].text;
-
-        AddTextPrinterParameterized4(sPartyMenuInternal->windowId[0], FONT_NORMAL, cursorDimension, (i * 16) + 1, letterSpacing, 0, sFontColorTable[fontColorsId], 0, text);
+        OrchidPill_SetRow(i, text, fieldMove, window.width * 8 - ORCHID_PILL_TEXT_X - 2);
     }
 
     InitMenuInUpperLeftCorner(sPartyMenuInternal->windowId[0], sPartyMenuInternal->numActions, 0, TRUE);
+    OrchidPill_Init(sPartyMenuInternal->windowId[0], sPartyMenuInternal->numActions);
     ScheduleBgCopyTilemapToVram(2);
 
     return sPartyMenuInternal->windowId[0];
@@ -3100,6 +3277,7 @@ static void Task_HandleSelectionMenuInput(u8 taskId)
             input = ProcessMenuInput_other();
 
         data[0] = Menu_GetCursorPos();
+        OrchidPill_Update();
         switch (input)
         {
         case MENU_NOTHING_CHOSEN:
@@ -3286,10 +3464,13 @@ static void MoveAndBufferPartySlot(const void *rectSrc, s16 x, s16 y, s16 width,
 
 static void MovePartyMenuBoxSprites(struct PartyMenuBox *menuBox, s16 offset)
 {
-    gSprites[menuBox->pokeballSpriteId].x2 += offset * 8;
-    gSprites[menuBox->itemSpriteId].x2 += offset * 8;
-    gSprites[menuBox->monSpriteId].x2 += offset * 8;
-    gSprites[menuBox->statusSpriteId].x2 += offset * 8;
+    // Orchid: no Poké Ball sprite; the held item copies the icon's offsets (SpriteCB_PartyHeldItem)
+    if (menuBox->itemSpriteId != SPRITE_NONE)
+        gSprites[menuBox->itemSpriteId].x2 += offset * 8;
+    if (menuBox->monSpriteId != SPRITE_NONE)
+        gSprites[menuBox->monSpriteId].x2 += offset * 8;
+    if (menuBox->statusSpriteId != SPRITE_NONE)
+        gSprites[menuBox->statusSpriteId].x2 += offset * 8;
 }
 
 static void SlidePartyMenuBoxSpritesOneStep(u8 taskId)
@@ -3377,6 +3558,8 @@ static void SwitchMenuBoxSprites(u8 *spriteIdPtr1, u8 *spriteIdPtr2)
     u8 spriteIdBuffer = *spriteIdPtr1;
     u16 xBuffer1, yBuffer1, xBuffer2, yBuffer2;
 
+    if (*spriteIdPtr1 == SPRITE_NONE || *spriteIdPtr2 == SPRITE_NONE)
+        return; // Orchid: the (removed) Poké Ball sprites
     *spriteIdPtr1 = *spriteIdPtr2;
     *spriteIdPtr2 = spriteIdBuffer;
     xBuffer1 = gSprites[*spriteIdPtr1].x;
@@ -4423,29 +4606,16 @@ static void UpdatePartyMonHPBar(u8 spriteId, struct Pokemon *mon)
     UpdateHPBar(spriteId, GetMonData(mon, MON_DATA_HP), GetMonData(mon, MON_DATA_MAX_HP));
 }
 
+// Orchid: unselected icons sit still on the dais (vanilla's -4px nudge is gone); the selected one bobs.
 static void AnimateSelectedPartyIcon(u8 spriteId, u8 animNum)
 {
     gSprites[spriteId].data[0] = 0;
+    gSprites[spriteId].x2 = 0;
+    gSprites[spriteId].y2 = 0;
     if (animNum == 0)
-    {
-        if (gSprites[spriteId].x == 16)
-        {
-            gSprites[spriteId].x2 = 0;
-            gSprites[spriteId].y2 = -4;
-        }
-        else
-        {
-            gSprites[spriteId].x2 = -4;
-            gSprites[spriteId].y2 = 0;
-        }
         gSprites[spriteId].callback = SpriteCB_UpdatePartyMonIcon;
-    }
     else
-    {
-        gSprites[spriteId].x2 = 0;
-        gSprites[spriteId].y2 = 0;
         gSprites[spriteId].callback = SpriteCB_BouncePartyMonIcon;
-    }
 }
 
 static void SpriteCB_BouncePartyMonIcon(struct Sprite *sprite)
@@ -4466,11 +4636,30 @@ static void SpriteCB_UpdatePartyMonIcon(struct Sprite *sprite)
     UpdateMonIconFrame(sprite);
 }
 
+
+// Orchid: the held item marker sits on the icon, so it follows the icon's bob and slide offsets.
+#define sIconSpriteId data[7]
+static void SpriteCB_PartyHeldItem(struct Sprite *sprite)
+{
+    sprite->x2 = gSprites[sprite->sIconSpriteId].x2;
+    sprite->y2 = gSprites[sprite->sIconSpriteId].y2;
+}
+
+static void SetPartyHeldItemFollowsIcon(struct PartyMenuBox *menuBox)
+{
+    if (menuBox->itemSpriteId == SPRITE_NONE || menuBox->monSpriteId == SPRITE_NONE)
+        return;
+    gSprites[menuBox->itemSpriteId].sIconSpriteId = menuBox->monSpriteId;
+    gSprites[menuBox->itemSpriteId].callback = SpriteCB_PartyHeldItem;
+}
+#undef sIconSpriteId
+
 static void CreatePartyMonHeldItemSprite(struct Pokemon *mon, struct PartyMenuBox *menuBox)
 {
     if (GetMonData(mon, MON_DATA_SPECIES) != SPECIES_NONE)
     {
         menuBox->itemSpriteId = CreateSprite(&sSpriteTemplate_HeldItem, menuBox->spriteCoords[2], menuBox->spriteCoords[3], 0);
+        SetPartyHeldItemFollowsIcon(menuBox);
         UpdatePartyMonHeldItemSprite(mon, menuBox);
     }
 }
@@ -4481,6 +4670,7 @@ static void CreatePartyMonHeldItemSpriteParameterized(enum Species species, enum
     {
         menuBox->itemSpriteId = CreateSprite(&sSpriteTemplate_HeldItem, menuBox->spriteCoords[2], menuBox->spriteCoords[3], 0);
         gSprites[menuBox->itemSpriteId].oam.priority = 0;
+        SetPartyHeldItemFollowsIcon(menuBox);
         ShowOrHideHeldItemSprite(item, menuBox);
     }
 }
@@ -4569,37 +4759,12 @@ static void SpriteCB_HeldItem(struct Sprite *sprite)
 
 static void CreatePartyMonPokeballSprite(struct Pokemon *mon, struct PartyMenuBox *menuBox)
 {
-    if (GetMonData(mon, MON_DATA_SPECIES) != SPECIES_NONE)
-        menuBox->pokeballSpriteId = CreateSprite(&sSpriteTemplate_MenuPokeball, menuBox->spriteCoords[6], menuBox->spriteCoords[7], 8);
+    menuBox->pokeballSpriteId = SPRITE_NONE;
 }
 
 static void CreatePartyMonPokeballSpriteParameterized(enum Species species, struct PartyMenuBox *menuBox)
 {
-    if (species != SPECIES_NONE)
-    {
-        menuBox->pokeballSpriteId = CreateSprite(&sSpriteTemplate_MenuPokeball, menuBox->spriteCoords[6], menuBox->spriteCoords[7], 8);
-        gSprites[menuBox->pokeballSpriteId].oam.priority = 0;
-    }
-}
-
-// For Cancel when Confirm isnt present
-static u8 CreatePokeballButtonSprite(u8 x, u8 y)
-{
-    u8 spriteId = CreateSprite(&sSpriteTemplate_MenuPokeball, x, y, 8);
-
-    gSprites[spriteId].oam.priority = 2;
-    return spriteId;
-}
-
-// For Confirm and Cancel when both are present
-static u8 CreateSmallPokeballButtonSprite(u8 x, u8 y)
-{
-    return CreateSprite(&sSpriteTemplate_MenuPokeballSmall, x, y, 8);
-}
-
-static void PartyMenuStartSpriteAnim(u8 spriteId, u8 animNum)
-{
-    StartSpriteAnim(&gSprites[spriteId], animNum);
+    menuBox->pokeballSpriteId = SPRITE_NONE;
 }
 
 // Might explain the large blank section in gPartyMenuPokeballSmall_Gfx
@@ -4622,18 +4787,18 @@ static void UNUSED SpriteCB_BounceConfirmCancelButton(u8 spriteId, u8 spriteId2,
     }
 }
 
+// Orchid: the Poké Ball sprites are gone; this loads the shared status pictogram sheet instead.
 static void LoadPartyMenuPokeballGfx(void)
 {
-    LoadCompressedSpriteSheet(&sSpriteSheet_MenuPokeball);
-    LoadCompressedSpriteSheet(&sSpriteSheet_MenuPokeballSmall);
-    LoadSpritePalette(&sSpritePalette_MenuPokeball);
+    LoadCompressedSpriteSheet(&sSpriteSheet_OrchidStatus);
+    LoadSpritePalette(&sSpritePalette_OrchidStatus);
 }
 
 static void CreatePartyMonStatusSprite(struct Pokemon *mon, struct PartyMenuBox *menuBox)
 {
     if (GetMonData(mon, MON_DATA_SPECIES) != SPECIES_NONE)
     {
-        menuBox->statusSpriteId = CreateSprite(&gSpriteTemplate_StatusIcons, menuBox->spriteCoords[4], menuBox->spriteCoords[5], 0);
+        menuBox->statusSpriteId = CreateSprite(&sSpriteTemplate_OrchidStatus, menuBox->spriteCoords[4], menuBox->spriteCoords[5], 0);
         SetPartyMonAilmentGfx(mon, menuBox);
     }
 }
@@ -4642,7 +4807,7 @@ static void CreatePartyMonStatusSpriteParameterized(enum Species species, u8 sta
 {
     if (species != SPECIES_NONE)
     {
-        menuBox->statusSpriteId = CreateSprite(&gSpriteTemplate_StatusIcons, menuBox->spriteCoords[4], menuBox->spriteCoords[5], 0);
+        menuBox->statusSpriteId = CreateSprite(&sSpriteTemplate_OrchidStatus, menuBox->spriteCoords[4], menuBox->spriteCoords[5], 0);
         UpdatePartyMonAilmentGfx(status, menuBox);
         gSprites[menuBox->statusSpriteId].oam.priority = 0;
     }
@@ -4650,11 +4815,30 @@ static void CreatePartyMonStatusSpriteParameterized(enum Species species, u8 sta
 
 static void SetPartyMonAilmentGfx(struct Pokemon *mon, struct PartyMenuBox *menuBox)
 {
-    UpdatePartyMonAilmentGfx(GetMonAilment(mon), menuBox);
+    u8 ailment = GetMonAilment(mon);
+
+    UpdatePartyMonAilmentGfx(ailment, menuBox);
+    // Orchid: toxic gets its own (skull) pictogram
+    if (ailment == AILMENT_PSN && (GetMonData(mon, MON_DATA_STATUS) & STATUS1_TOXIC_POISON))
+        StartSpriteAnim(&gSprites[menuBox->statusSpriteId], ORCHID_STATUS_TOX);
 }
+
+static const u8 sAilmentToOrchidStatus[] =
+{
+    [AILMENT_PSN]  = ORCHID_STATUS_PSN,
+    [AILMENT_PRZ]  = ORCHID_STATUS_PAR,
+    [AILMENT_SLP]  = ORCHID_STATUS_SLP,
+    [AILMENT_FRZ]  = ORCHID_STATUS_FRZ,
+    [AILMENT_BRN]  = ORCHID_STATUS_BRN,
+    [AILMENT_PKRS] = ORCHID_STATUS_PKRS,
+    [AILMENT_FNT]  = ORCHID_STATUS_FNT,
+    [AILMENT_FRB]  = ORCHID_STATUS_FRB,
+};
 
 static void UpdatePartyMonAilmentGfx(u8 status, struct PartyMenuBox *menuBox)
 {
+    if (menuBox->statusSpriteId == SPRITE_NONE)
+        return;
     switch (status)
     {
     case AILMENT_NONE:
@@ -4662,7 +4846,7 @@ static void UpdatePartyMonAilmentGfx(u8 status, struct PartyMenuBox *menuBox)
         gSprites[menuBox->statusSpriteId].invisible = TRUE;
         break;
     default:
-        StartSpriteAnim(&gSprites[menuBox->statusSpriteId], status - 1);
+        StartSpriteAnim(&gSprites[menuBox->statusSpriteId], sAilmentToOrchidStatus[status]);
         gSprites[menuBox->statusSpriteId].invisible = FALSE;
         break;
     }
@@ -5390,12 +5574,13 @@ static void ShowMoveSelectWindow(u8 slot)
     for (i = 0; i < MAX_MON_MOVES; i++)
     {
         move = GetMonData(&gParties[B_TRAINER_PLAYER][slot], MON_DATA_MOVE1 + i);
-        u8 fontId = GetFontIdToFit(GetMoveName(move), FONT_NORMAL, 0, 72);
-        AddTextPrinterParameterized(windowId, fontId, GetMoveName(move), 8, (i * 16) + 1, TEXT_SKIP_DRAW, NULL);
+        OrchidPill_SetRow(i, GetMoveName(move), FALSE, 72);
         if (move != MOVE_NONE)
             moveCount++;
     }
     InitMenuInUpperLeftCornerNormal(windowId, moveCount, 0);
+    OrchidPill_Init(windowId, MAX_MON_MOVES);
+    sOrchidPill.numRows = moveCount;
     ScheduleBgCopyTilemapToVram(2);
 }
 
@@ -5403,6 +5588,7 @@ static void Task_HandleWhichMoveInput(u8 taskId)
 {
     s8 input = Menu_ProcessInput();
 
+    OrchidPill_Update();
     if (input != MENU_NOTHING_CHOSEN)
     {
         if (input == MENU_B_PRESSED)
@@ -8014,7 +8200,7 @@ static void Task_WaitAfterMultiPartnerPartySlideIn(u8 taskId)
 
 static void MoveMultiPartyMenuBoxSprite(u8 spriteId, s16 x)
 {
-    if (x >= 0)
+    if (x >= 0 && spriteId != SPRITE_NONE)
         gSprites[spriteId].x2 = x;
 }
 

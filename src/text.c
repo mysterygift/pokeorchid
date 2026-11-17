@@ -644,6 +644,30 @@ static u32 RenderFont(struct TextPrinter *textPrinter)
     return ret;
 }
 
+// Orchid UI: decode one Latin glyph of fontId into gCurGlyph, coloured with the current
+// GenerateFontHalfRowLookupTable colours, for custom blitters (battle healthboxes).
+void DecodeGlyphForFont(u32 fontId, u16 glyphId)
+{
+    switch (fontId)
+    {
+    case FONT_SMALL:
+        DecompressGlyph_Small(glyphId, FALSE);
+        break;
+    case FONT_NARROW:
+        DecompressGlyph_Narrow(glyphId, FALSE);
+        break;
+    case FONT_SMALL_NARROW:
+        DecompressGlyph_SmallNarrow(glyphId, FALSE);
+        break;
+    case FONT_SMALL_NARROWER:
+        DecompressGlyph_SmallNarrower(glyphId, FALSE);
+        break;
+    default:
+        DecompressGlyph_Normal(glyphId, FALSE);
+        break;
+    }
+}
+
 void GenerateFontHalfRowLookupTable(union TextColor color)
 {
     if (color.asU32 == sLastTextColor.asU32)

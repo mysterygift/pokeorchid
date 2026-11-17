@@ -32,6 +32,7 @@
 #include "constants/battle_anim.h"
 #include "constants/battle_partner.h"
 #include "data/battle_environment.h"
+#include "data/battle_orchid_ui.h"
 
 // .rodata
 
@@ -165,59 +166,59 @@ static const struct WindowTemplate sStandardBattleWindowTemplates[] =
         .paletteNum = 0,
         .baseBlock = 0x0090,
     },
-    [B_WIN_ACTION_PROMPT] = {
+    [B_WIN_ACTION_PROMPT] = { // Orchid UI
         .bg = 0,
-        .tilemapLeft = 1,
-        .tilemapTop = 35,
-        .width = 14,
-        .height = 4,
-        .paletteNum = 0,
+        .tilemapLeft = ORCHID_PROMPT_WIN_X,
+        .tilemapTop = 20 + ORCHID_PROMPT_WIN_Y,
+        .width = ORCHID_PROMPT_WIN_W,
+        .height = ORCHID_PROMPT_WIN_H,
+        .paletteNum = ORCHID_TRAY_BG_PAL,
         .baseBlock = 0x01c0,
     },
-    [B_WIN_ACTION_MENU] = {
+    [B_WIN_ACTION_MENU] = { // Orchid UI
         .bg = 0,
-        .tilemapLeft = 17,
-        .tilemapTop = 35,
-        .width = 12,
-        .height = 4,
-        .paletteNum = 5,
-        .baseBlock = 0x0190,
+        .tilemapLeft = ORCHID_ACTION_WIN_X,
+        .tilemapTop = 20 + ORCHID_ACTION_WIN_Y,
+        .width = ORCHID_ACTION_WIN_W,
+        .height = ORCHID_ACTION_WIN_H,
+        .paletteNum = ORCHID_TRAY_BG_PAL,
+        .baseBlock = 0x0110,
     },
-    [B_WIN_MOVE_NAME_1] = {
+    [B_WIN_MOVE_NAME_1] = { // Orchid UI
         .bg = 0,
-        .tilemapLeft = 2,
-        .tilemapTop = 55,
-        .width = 16,    //for z move names
-        .height = 2,
-        .paletteNum = 5,
-        .baseBlock = 0x0300,
+        .tilemapLeft = 0,
+        .tilemapTop = 40 + 14,
+        .width = 15,
+        .height = 3,
+        .paletteNum = ORCHID_MOVES_BG_PAL,
+        .baseBlock = 0x0164,
     },
-    [B_WIN_MOVE_NAME_2] = {
+    [B_WIN_MOVE_NAME_2] = { // Orchid UI
         .bg = 0,
-        .tilemapLeft = 11,
-        .tilemapTop = 55,
-        .width = 8,
-        .height = 2,
-        .paletteNum = 5,
-        .baseBlock = 0x0318,
+        .tilemapLeft = 15,
+        .tilemapTop = 40 + 14,
+        .width = 15,
+        .height = 3,
+        .paletteNum = ORCHID_MOVES_BG_PAL,
+        .baseBlock = 0x0191,
     },
-    [B_WIN_MOVE_NAME_3] = {
+    [B_WIN_MOVE_NAME_3] = { // Orchid UI
         .bg = 0,
-        .tilemapLeft = 2,
-        .tilemapTop = 57,
-        .width = 16,    //for z effect descriptions
-        .height = 2,
-        .paletteNum = 5,
-        .baseBlock = 0x0328,
+        .tilemapLeft = 0,
+        .tilemapTop = 40 + 17,
+        .width = 15,
+        .height = 3,
+        .paletteNum = ORCHID_MOVES_BG_PAL,
+        .baseBlock = 0x022B,
     },
-    [B_WIN_MOVE_NAME_4] = {
+    [B_WIN_MOVE_NAME_4] = { // Orchid UI
         .bg = 0,
-        .tilemapLeft = 11,
-        .tilemapTop = 57,
-        .width = 8,
-        .height = 2,
-        .paletteNum = 5,
-        .baseBlock = 0x0340,
+        .tilemapLeft = 15,
+        .tilemapTop = 40 + 17,
+        .width = 15,
+        .height = 3,
+        .paletteNum = ORCHID_MOVES_BG_PAL,
+        .baseBlock = 0x0258,
     },
     [B_WIN_PP] = {
         .bg = 0,
@@ -264,13 +265,13 @@ static const struct WindowTemplate sStandardBattleWindowTemplates[] =
         .paletteNum = 5,
         .baseBlock = 0x02b0,
     },
-    [B_WIN_YESNO] = {
+    [B_WIN_YESNO] = { // Orchid UI
         .bg = 0,
-        .tilemapLeft = 26,
-        .tilemapTop = 9,
-        .width = 3,
-        .height = 4,
-        .paletteNum = 5,
+        .tilemapLeft = ORCHID_YESNO_WIN_X,
+        .tilemapTop = ORCHID_YESNO_WIN_Y,
+        .width = ORCHID_YESNO_WIN_W,
+        .height = ORCHID_YESNO_WIN_H,
+        .paletteNum = ORCHID_TRAY_BG_PAL,
         .baseBlock = 0x0100,
     },
     [B_WIN_LEVEL_UP_BOX] = {
@@ -372,14 +373,14 @@ static const struct WindowTemplate sStandardBattleWindowTemplates[] =
         .paletteNum = 0,
         .baseBlock = 0x00b0,
     },
-    [B_WIN_MOVE_DESCRIPTION] = {
+    [B_WIN_MOVE_DESCRIPTION] = { // Orchid UI: Move Info panel over the move pills
         .bg = 0,
-        .tilemapLeft = 1,
-        .tilemapTop = 47,
-        .width = 18,
-        .height = 6,
-        .paletteNum = 5,
-        .baseBlock = 0x0350,
+        .tilemapLeft = ORCHID_MOVEINFO_WIN_X,
+        .tilemapTop = 40 + ORCHID_MOVEINFO_WIN_Y,
+        .width = ORCHID_MOVEINFO_WIN_W,
+        .height = ORCHID_MOVEINFO_WIN_H,
+        .paletteNum = ORCHID_MOVES_BG_PAL,
+        .baseBlock = 0x0285,
     },
     [B_CATCH_OR_NOT] = {
         .bg = 0,
@@ -404,59 +405,59 @@ static const struct WindowTemplate sKantoTutorialBattleWindowTemplates[] =
         .paletteNum = 0,
         .baseBlock = 0x0090,
     },
-    [B_WIN_ACTION_PROMPT] = {
+    [B_WIN_ACTION_PROMPT] = { // Orchid UI
         .bg = 0,
-        .tilemapLeft = 1,
-        .tilemapTop = 35,
-        .width = 14,
-        .height = 4,
-        .paletteNum = 0,
+        .tilemapLeft = ORCHID_PROMPT_WIN_X,
+        .tilemapTop = 20 + ORCHID_PROMPT_WIN_Y,
+        .width = ORCHID_PROMPT_WIN_W,
+        .height = ORCHID_PROMPT_WIN_H,
+        .paletteNum = ORCHID_TRAY_BG_PAL,
         .baseBlock = 0x01c0,
     },
-    [B_WIN_ACTION_MENU] = {
+    [B_WIN_ACTION_MENU] = { // Orchid UI
         .bg = 0,
-        .tilemapLeft = 17,
-        .tilemapTop = 35,
-        .width = 12,
-        .height = 4,
-        .paletteNum = 5,
-        .baseBlock = 0x0190,
+        .tilemapLeft = ORCHID_ACTION_WIN_X,
+        .tilemapTop = 20 + ORCHID_ACTION_WIN_Y,
+        .width = ORCHID_ACTION_WIN_W,
+        .height = ORCHID_ACTION_WIN_H,
+        .paletteNum = ORCHID_TRAY_BG_PAL,
+        .baseBlock = 0x0110,
     },
-    [B_WIN_MOVE_NAME_1] = {
+    [B_WIN_MOVE_NAME_1] = { // Orchid UI
         .bg = 0,
-        .tilemapLeft = 2,
-        .tilemapTop = 55,
-        .width = 16,    //for z move names
-        .height = 2,
-        .paletteNum = 5,
-        .baseBlock = 0x0300,
+        .tilemapLeft = 0,
+        .tilemapTop = 40 + 14,
+        .width = 15,
+        .height = 3,
+        .paletteNum = ORCHID_MOVES_BG_PAL,
+        .baseBlock = 0x0164,
     },
-    [B_WIN_MOVE_NAME_2] = {
+    [B_WIN_MOVE_NAME_2] = { // Orchid UI
         .bg = 0,
-        .tilemapLeft = 11,
-        .tilemapTop = 55,
-        .width = 8,
-        .height = 2,
-        .paletteNum = 5,
-        .baseBlock = 0x0318,
+        .tilemapLeft = 15,
+        .tilemapTop = 40 + 14,
+        .width = 15,
+        .height = 3,
+        .paletteNum = ORCHID_MOVES_BG_PAL,
+        .baseBlock = 0x0191,
     },
-    [B_WIN_MOVE_NAME_3] = {
+    [B_WIN_MOVE_NAME_3] = { // Orchid UI
         .bg = 0,
-        .tilemapLeft = 2,
-        .tilemapTop = 57,
-        .width = 16,    //for z effect descriptions
-        .height = 2,
-        .paletteNum = 5,
-        .baseBlock = 0x0328,
+        .tilemapLeft = 0,
+        .tilemapTop = 40 + 17,
+        .width = 15,
+        .height = 3,
+        .paletteNum = ORCHID_MOVES_BG_PAL,
+        .baseBlock = 0x022B,
     },
-    [B_WIN_MOVE_NAME_4] = {
+    [B_WIN_MOVE_NAME_4] = { // Orchid UI
         .bg = 0,
-        .tilemapLeft = 11,
-        .tilemapTop = 57,
-        .width = 8,
-        .height = 2,
-        .paletteNum = 5,
-        .baseBlock = 0x0340,
+        .tilemapLeft = 15,
+        .tilemapTop = 40 + 17,
+        .width = 15,
+        .height = 3,
+        .paletteNum = ORCHID_MOVES_BG_PAL,
+        .baseBlock = 0x0258,
     },
     [B_WIN_PP] = {
         .bg = 0,
@@ -503,13 +504,13 @@ static const struct WindowTemplate sKantoTutorialBattleWindowTemplates[] =
         .paletteNum = 5,
         .baseBlock = 0x02b0,
     },
-    [B_WIN_YESNO] = {
+    [B_WIN_YESNO] = { // Orchid UI
         .bg = 0,
-        .tilemapLeft = 26,
-        .tilemapTop = 9,
-        .width = 3,
-        .height = 4,
-        .paletteNum = 5,
+        .tilemapLeft = ORCHID_YESNO_WIN_X,
+        .tilemapTop = ORCHID_YESNO_WIN_Y,
+        .width = ORCHID_YESNO_WIN_W,
+        .height = ORCHID_YESNO_WIN_H,
+        .paletteNum = ORCHID_TRAY_BG_PAL,
         .baseBlock = 0x0100,
     },
     [B_WIN_LEVEL_UP_BOX] = {
@@ -611,14 +612,14 @@ static const struct WindowTemplate sKantoTutorialBattleWindowTemplates[] =
         .paletteNum = 0,
         .baseBlock = 0x00b0,
     },
-    [B_WIN_MOVE_DESCRIPTION] = {
+    [B_WIN_MOVE_DESCRIPTION] = { // Orchid UI: Move Info panel over the move pills
         .bg = 0,
-        .tilemapLeft = 1,
-        .tilemapTop = 47,
-        .width = 18,
-        .height = 6,
-        .paletteNum = 5,
-        .baseBlock = 0x0350,
+        .tilemapLeft = ORCHID_MOVEINFO_WIN_X,
+        .tilemapTop = 40 + ORCHID_MOVEINFO_WIN_Y,
+        .width = ORCHID_MOVEINFO_WIN_W,
+        .height = ORCHID_MOVEINFO_WIN_H,
+        .paletteNum = ORCHID_MOVES_BG_PAL,
+        .baseBlock = 0x0285,
     },
     [B_WIN_OAK_OLD_MAN] = {
         .bg = 0,
@@ -643,59 +644,59 @@ static const struct WindowTemplate sBattleArenaWindowTemplates[] =
         .paletteNum = 0,
         .baseBlock = 0x0090,
     },
-    [B_WIN_ACTION_PROMPT] = {
+    [B_WIN_ACTION_PROMPT] = { // Orchid UI
         .bg = 0,
-        .tilemapLeft = 1,
-        .tilemapTop = 35,
-        .width = 14,
-        .height = 4,
-        .paletteNum = 0,
+        .tilemapLeft = ORCHID_PROMPT_WIN_X,
+        .tilemapTop = 20 + ORCHID_PROMPT_WIN_Y,
+        .width = ORCHID_PROMPT_WIN_W,
+        .height = ORCHID_PROMPT_WIN_H,
+        .paletteNum = ORCHID_TRAY_BG_PAL,
         .baseBlock = 0x01c0,
     },
-    [B_WIN_ACTION_MENU] = {
+    [B_WIN_ACTION_MENU] = { // Orchid UI
         .bg = 0,
-        .tilemapLeft = 17,
-        .tilemapTop = 35,
-        .width = 12,
-        .height = 4,
-        .paletteNum = 5,
-        .baseBlock = 0x0190,
+        .tilemapLeft = ORCHID_ACTION_WIN_X,
+        .tilemapTop = 20 + ORCHID_ACTION_WIN_Y,
+        .width = ORCHID_ACTION_WIN_W,
+        .height = ORCHID_ACTION_WIN_H,
+        .paletteNum = ORCHID_TRAY_BG_PAL,
+        .baseBlock = 0x0110,
     },
-    [B_WIN_MOVE_NAME_1] = {
+    [B_WIN_MOVE_NAME_1] = { // Orchid UI
         .bg = 0,
-        .tilemapLeft = 2,
-        .tilemapTop = 55,
-        .width = 8,
-        .height = 2,
-        .paletteNum = 5,
-        .baseBlock = 0x0300,
+        .tilemapLeft = 0,
+        .tilemapTop = 40 + 14,
+        .width = 15,
+        .height = 3,
+        .paletteNum = ORCHID_MOVES_BG_PAL,
+        .baseBlock = 0x0164,
     },
-    [B_WIN_MOVE_NAME_2] = {
+    [B_WIN_MOVE_NAME_2] = { // Orchid UI
         .bg = 0,
-        .tilemapLeft = 11,
-        .tilemapTop = 55,
-        .width = 8,
-        .height = 2,
-        .paletteNum = 5,
-        .baseBlock = 0x0310,
+        .tilemapLeft = 15,
+        .tilemapTop = 40 + 14,
+        .width = 15,
+        .height = 3,
+        .paletteNum = ORCHID_MOVES_BG_PAL,
+        .baseBlock = 0x0191,
     },
-    [B_WIN_MOVE_NAME_3] = {
+    [B_WIN_MOVE_NAME_3] = { // Orchid UI
         .bg = 0,
-        .tilemapLeft = 2,
-        .tilemapTop = 57,
-        .width = 8,
-        .height = 2,
-        .paletteNum = 5,
-        .baseBlock = 0x0320,
+        .tilemapLeft = 0,
+        .tilemapTop = 40 + 17,
+        .width = 15,
+        .height = 3,
+        .paletteNum = ORCHID_MOVES_BG_PAL,
+        .baseBlock = 0x022B,
     },
-    [B_WIN_MOVE_NAME_4] = {
+    [B_WIN_MOVE_NAME_4] = { // Orchid UI
         .bg = 0,
-        .tilemapLeft = 11,
-        .tilemapTop = 57,
-        .width = 8,
-        .height = 2,
-        .paletteNum = 5,
-        .baseBlock = 0x0330,
+        .tilemapLeft = 15,
+        .tilemapTop = 40 + 17,
+        .width = 15,
+        .height = 3,
+        .paletteNum = ORCHID_MOVES_BG_PAL,
+        .baseBlock = 0x0258,
     },
     [B_WIN_PP] = {
         .bg = 0,
@@ -742,13 +743,13 @@ static const struct WindowTemplate sBattleArenaWindowTemplates[] =
         .paletteNum = 5,
         .baseBlock = 0x02b0,
     },
-    [B_WIN_YESNO] = {
+    [B_WIN_YESNO] = { // Orchid UI
         .bg = 0,
-        .tilemapLeft = 26,
-        .tilemapTop = 9,
-        .width = 3,
-        .height = 4,
-        .paletteNum = 5,
+        .tilemapLeft = ORCHID_YESNO_WIN_X,
+        .tilemapTop = ORCHID_YESNO_WIN_Y,
+        .width = ORCHID_YESNO_WIN_W,
+        .height = ORCHID_YESNO_WIN_H,
+        .paletteNum = ORCHID_TRAY_BG_PAL,
         .baseBlock = 0x0100,
     },
     [B_WIN_LEVEL_UP_BOX] = {
@@ -841,14 +842,14 @@ static const struct WindowTemplate sBattleArenaWindowTemplates[] =
         .paletteNum = 7,
         .baseBlock = 0x0090,
     },
-    [B_WIN_MOVE_DESCRIPTION] = {
+    [B_WIN_MOVE_DESCRIPTION] = { // Orchid UI: Move Info panel over the move pills
         .bg = 0,
-        .tilemapLeft = 1,
-        .tilemapTop = 47,
-        .width = 18,
-        .height = 6,
-        .paletteNum = 5,
-        .baseBlock = 0x0350,
+        .tilemapLeft = ORCHID_MOVEINFO_WIN_X,
+        .tilemapTop = 40 + ORCHID_MOVEINFO_WIN_Y,
+        .width = ORCHID_MOVEINFO_WIN_W,
+        .height = ORCHID_MOVEINFO_WIN_H,
+        .paletteNum = ORCHID_MOVES_BG_PAL,
+        .baseBlock = 0x0285,
     },
     DUMMY_WIN_TEMPLATE
 };
@@ -1027,10 +1028,11 @@ void DrawMainBattleBackground(void)
 
 void LoadBattleTextboxAndBackground(void)
 {
-    DecompressDataWithHeaderVram(gBattleTextboxTiles, (void *)(BG_CHAR_ADDR(0)));
-    CopyToBgTilemapBuffer(0, gBattleTextboxTilemap, 0, 0);
+    // Orchid UI: black grid tray + panels (dev_scripts/orchid_ui/export_battle.py)
+    DecompressDataWithHeaderVram(gOrchidBattleTray_Gfx, (void *)(BG_CHAR_ADDR(0)));
+    CopyToBgTilemapBuffer(0, gOrchidBattleTray_Tilemap, 0, 0);
     CopyBgTilemapBufferToVram(0);
-    LoadPalette(gBattleTextboxPalette, BG_PLTT_ID(0), 2 * PLTT_SIZE_4BPP);
+    LoadPalette(gOrchidBattleTray_Pal, BG_PLTT_ID(ORCHID_TRAY_BG_PAL), PLTT_SIZE_4BPP);
     LoadBattleMenuWindowGfx();
     if (B_TERRAIN_BG_CHANGE == TRUE)
         DrawTerrainTypeBattleBackground();
@@ -1363,14 +1365,14 @@ bool8 LoadChosenBattleElement(u8 caseId)
     switch (caseId)
     {
     case 0:
-        DecompressDataWithHeaderVram(gBattleTextboxTiles, (void *)(BG_CHAR_ADDR(0)));
+        DecompressDataWithHeaderVram(gOrchidBattleTray_Gfx, (void *)(BG_CHAR_ADDR(0)));
         break;
     case 1:
-        CopyToBgTilemapBuffer(0, gBattleTextboxTilemap, 0, 0);
+        CopyToBgTilemapBuffer(0, gOrchidBattleTray_Tilemap, 0, 0);
         CopyBgTilemapBufferToVram(0);
         break;
     case 2:
-        LoadPalette(gBattleTextboxPalette, BG_PLTT_ID(0), 2 * PLTT_SIZE_4BPP);
+        LoadPalette(gOrchidBattleTray_Pal, BG_PLTT_ID(ORCHID_TRAY_BG_PAL), PLTT_SIZE_4BPP);
         break;
     case 3:
         DecompressDataWithHeaderVram(gBattleEnvironmentInfo[GetBattleEnvironmentOverride()].background.tileset, (void *)(BG_CHAR_ADDR(2)));

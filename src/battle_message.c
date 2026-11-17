@@ -4,6 +4,7 @@
 #include "battle_ai_record.h"
 #include "battle_controllers.h"
 #include "battle_message.h"
+#include "data/battle_orchid_ui.h"
 #include "battle_setup.h"
 #include "battle_special.h"
 #include "battle_z_move.h"
@@ -1587,82 +1588,82 @@ static const u8 sText_EmptyStatus[] = _("$$$$$$$");
 
 static const struct BattleWindowText sTextOnWindowsInfo_Normal[] =
 {
-    [B_WIN_MSG] = {
-        .fillValue = PIXEL_FILL(0xF),
+    [B_WIN_MSG] = { // Orchid UI
+        .fillValue = PIXEL_FILL(ORCHID_COL_WHITE),
         .fontId = FONT_NORMAL,
         .x = 0,
-        .y = 1,
+        .y = 0,
         .speed = 1,
-        .color.foreground = 1,
-        .color.background = 15,
-        .color.accent = 15,
-        .color.shadow = 6,
+        .color.foreground = ORCHID_COL_INK,
+        .color.background = ORCHID_COL_WHITE,
+        .color.accent = ORCHID_COL_WHITE,
+        .color.shadow = ORCHID_COL_SHADE,
     },
-    [B_WIN_ACTION_PROMPT] = {
-        .fillValue = PIXEL_FILL(0xF),
-        .fontId = FONT_NORMAL,
-        .x = 1,
-        .y = 1,
-        .speed = 0,
-        .color.foreground = 1,
-        .color.background = 15,
-        .color.accent = 15,
-        .color.shadow = 6,
-    },
-    [B_WIN_ACTION_MENU] = {
-        .fillValue = PIXEL_FILL(0xE),
+    [B_WIN_ACTION_PROMPT] = { // Orchid UI
+        .fillValue = PIXEL_FILL(ORCHID_COL_WHITE),
         .fontId = FONT_NORMAL,
         .x = 0,
+        .y = 0,
+        .speed = 0,
+        .color.foreground = ORCHID_COL_INK,
+        .color.background = ORCHID_COL_WHITE,
+        .color.accent = ORCHID_COL_WHITE,
+        .color.shadow = ORCHID_COL_SHADE,
+    },
+    [B_WIN_ACTION_MENU] = { // Orchid UI
+        .fillValue = PIXEL_FILL(ORCHID_COL_PANEL),
+        .fontId = FONT_NORMAL,
+        .x = 0,
         .y = 1,
         .speed = 0,
-        .color.foreground = 13,
-        .color.background = 14,
-        .color.accent = 14,
-        .color.shadow = 15,
+        .color.foreground = ORCHID_COL_INK,
+        .color.background = ORCHID_COL_PANEL,
+        .color.accent = ORCHID_COL_PANEL,
+        .color.shadow = ORCHID_COL_SHADE,
     },
-    [B_WIN_MOVE_NAME_1] = {
-        .fillValue = PIXEL_FILL(0xE),
+    [B_WIN_MOVE_NAME_1] = { // Orchid UI
+        .fillValue = PIXEL_FILL(ORCHID_COL_PANEL),
         .fontId = FONT_NARROW,
         .x = 0,
         .y = 1,
         .speed = 0,
-        .color.foreground = 13,
-        .color.background = 14,
-        .color.accent = 14,
-        .color.shadow = 15,
+        .color.foreground = ORCHID_COL_INK,
+        .color.background = ORCHID_COL_PANEL,
+        .color.accent = ORCHID_COL_PANEL,
+        .color.shadow = ORCHID_COL_SHADE,
     },
-    [B_WIN_MOVE_NAME_2] = {
-        .fillValue = PIXEL_FILL(0xE),
+    [B_WIN_MOVE_NAME_2] = { // Orchid UI
+        .fillValue = PIXEL_FILL(ORCHID_COL_PANEL),
         .fontId = FONT_NARROW,
         .x = 0,
         .y = 1,
         .speed = 0,
-        .color.foreground = 13,
-        .color.background = 14,
-        .color.accent = 14,
-        .color.shadow = 15,
+        .color.foreground = ORCHID_COL_INK,
+        .color.background = ORCHID_COL_PANEL,
+        .color.accent = ORCHID_COL_PANEL,
+        .color.shadow = ORCHID_COL_SHADE,
     },
-    [B_WIN_MOVE_NAME_3] = {
-        .fillValue = PIXEL_FILL(0xE),
+    [B_WIN_MOVE_NAME_3] = { // Orchid UI
+        .fillValue = PIXEL_FILL(ORCHID_COL_PANEL),
         .fontId = FONT_NARROW,
         .x = 0,
         .y = 1,
         .speed = 0,
-        .color.foreground = 13,
-        .color.background = 14,
-        .color.accent = 14,
-        .color.shadow = 15,
+        .color.foreground = ORCHID_COL_INK,
+        .color.background = ORCHID_COL_PANEL,
+        .color.accent = ORCHID_COL_PANEL,
+        .color.shadow = ORCHID_COL_SHADE,
     },
-    [B_WIN_MOVE_NAME_4] = {
-        .fillValue = PIXEL_FILL(0xE),
+    [B_WIN_MOVE_NAME_4] = { // Orchid UI
+        .fillValue = PIXEL_FILL(ORCHID_COL_PANEL),
         .fontId = FONT_NARROW,
         .x = 0,
         .y = 1,
         .speed = 0,
-        .color.foreground = 13,
-        .color.background = 14,
-        .color.accent = 14,
-        .color.shadow = 15,
+        .color.foreground = ORCHID_COL_INK,
+        .color.background = ORCHID_COL_PANEL,
+        .color.accent = ORCHID_COL_PANEL,
+        .color.shadow = ORCHID_COL_SHADE,
     },
     [B_WIN_PP] = {
         .fillValue = PIXEL_FILL(0xE),
@@ -1719,16 +1720,16 @@ static const struct BattleWindowText sTextOnWindowsInfo_Normal[] =
         .color.accent = 14,
         .color.shadow = 15,
     },
-    [B_WIN_YESNO] = {
-        .fillValue = PIXEL_FILL(0xE),
+    [B_WIN_YESNO] = { // Orchid UI
+        .fillValue = PIXEL_FILL(ORCHID_COL_WHITE),
         .fontId = FONT_NORMAL,
-        .x = 0,
+        .x = 8,
         .y = 1,
         .speed = 0,
-        .color.foreground = 13,
-        .color.background = 14,
-        .color.accent = 14,
-        .color.shadow = 15,
+        .color.foreground = ORCHID_COL_INK,
+        .color.background = ORCHID_COL_WHITE,
+        .color.accent = ORCHID_COL_WHITE,
+        .color.shadow = ORCHID_COL_SHADE,
     },
     [B_WIN_LEVEL_UP_BOX] = {
         .fillValue = PIXEL_FILL(0xE),
@@ -1871,82 +1872,82 @@ static const struct BattleWindowText sTextOnWindowsInfo_Normal[] =
 
 static const struct BattleWindowText sTextOnWindowsInfo_KantoTutorial[] =
 {
-    [B_WIN_MSG] = {
-        .fillValue = PIXEL_FILL(0xF),
+    [B_WIN_MSG] = { // Orchid UI
+        .fillValue = PIXEL_FILL(ORCHID_COL_WHITE),
         .fontId = FONT_NORMAL,
         .x = 0,
-        .y = 1,
+        .y = 0,
         .speed = 1,
-        .color.foreground = 1,
-        .color.background = 15,
-        .color.accent = 15,
-        .color.shadow = 6,
+        .color.foreground = ORCHID_COL_INK,
+        .color.background = ORCHID_COL_WHITE,
+        .color.accent = ORCHID_COL_WHITE,
+        .color.shadow = ORCHID_COL_SHADE,
     },
-    [B_WIN_ACTION_PROMPT] = {
-        .fillValue = PIXEL_FILL(0xF),
-        .fontId = FONT_NORMAL,
-        .x = 1,
-        .y = 1,
-        .speed = 0,
-        .color.foreground = 1,
-        .color.background = 15,
-        .color.accent = 15,
-        .color.shadow = 6,
-    },
-    [B_WIN_ACTION_MENU] = {
-        .fillValue = PIXEL_FILL(0xE),
+    [B_WIN_ACTION_PROMPT] = { // Orchid UI
+        .fillValue = PIXEL_FILL(ORCHID_COL_WHITE),
         .fontId = FONT_NORMAL,
         .x = 0,
+        .y = 0,
+        .speed = 0,
+        .color.foreground = ORCHID_COL_INK,
+        .color.background = ORCHID_COL_WHITE,
+        .color.accent = ORCHID_COL_WHITE,
+        .color.shadow = ORCHID_COL_SHADE,
+    },
+    [B_WIN_ACTION_MENU] = { // Orchid UI
+        .fillValue = PIXEL_FILL(ORCHID_COL_PANEL),
+        .fontId = FONT_NORMAL,
+        .x = 0,
         .y = 1,
         .speed = 0,
-        .color.foreground = 13,
-        .color.background = 14,
-        .color.accent = 14,
-        .color.shadow = 15,
+        .color.foreground = ORCHID_COL_INK,
+        .color.background = ORCHID_COL_PANEL,
+        .color.accent = ORCHID_COL_PANEL,
+        .color.shadow = ORCHID_COL_SHADE,
     },
-    [B_WIN_MOVE_NAME_1] = {
-        .fillValue = PIXEL_FILL(0xE),
+    [B_WIN_MOVE_NAME_1] = { // Orchid UI
+        .fillValue = PIXEL_FILL(ORCHID_COL_PANEL),
         .fontId = FONT_NARROW,
         .x = 0,
         .y = 1,
         .speed = 0,
-        .color.foreground = 13,
-        .color.background = 14,
-        .color.accent = 14,
-        .color.shadow = 15,
+        .color.foreground = ORCHID_COL_INK,
+        .color.background = ORCHID_COL_PANEL,
+        .color.accent = ORCHID_COL_PANEL,
+        .color.shadow = ORCHID_COL_SHADE,
     },
-    [B_WIN_MOVE_NAME_2] = {
-        .fillValue = PIXEL_FILL(0xE),
+    [B_WIN_MOVE_NAME_2] = { // Orchid UI
+        .fillValue = PIXEL_FILL(ORCHID_COL_PANEL),
         .fontId = FONT_NARROW,
         .x = 0,
         .y = 1,
         .speed = 0,
-        .color.foreground = 13,
-        .color.background = 14,
-        .color.accent = 14,
-        .color.shadow = 15,
+        .color.foreground = ORCHID_COL_INK,
+        .color.background = ORCHID_COL_PANEL,
+        .color.accent = ORCHID_COL_PANEL,
+        .color.shadow = ORCHID_COL_SHADE,
     },
-    [B_WIN_MOVE_NAME_3] = {
-        .fillValue = PIXEL_FILL(0xE),
+    [B_WIN_MOVE_NAME_3] = { // Orchid UI
+        .fillValue = PIXEL_FILL(ORCHID_COL_PANEL),
         .fontId = FONT_NARROW,
         .x = 0,
         .y = 1,
         .speed = 0,
-        .color.foreground = 13,
-        .color.background = 14,
-        .color.accent = 14,
-        .color.shadow = 15,
+        .color.foreground = ORCHID_COL_INK,
+        .color.background = ORCHID_COL_PANEL,
+        .color.accent = ORCHID_COL_PANEL,
+        .color.shadow = ORCHID_COL_SHADE,
     },
-    [B_WIN_MOVE_NAME_4] = {
-        .fillValue = PIXEL_FILL(0xE),
+    [B_WIN_MOVE_NAME_4] = { // Orchid UI
+        .fillValue = PIXEL_FILL(ORCHID_COL_PANEL),
         .fontId = FONT_NARROW,
         .x = 0,
         .y = 1,
         .speed = 0,
-        .color.foreground = 13,
-        .color.background = 14,
-        .color.accent = 14,
-        .color.shadow = 15,
+        .color.foreground = ORCHID_COL_INK,
+        .color.background = ORCHID_COL_PANEL,
+        .color.accent = ORCHID_COL_PANEL,
+        .color.shadow = ORCHID_COL_SHADE,
     },
     [B_WIN_PP] = {
         .fillValue = PIXEL_FILL(0xE),
@@ -2003,16 +2004,16 @@ static const struct BattleWindowText sTextOnWindowsInfo_KantoTutorial[] =
         .color.accent = 14,
         .color.shadow = 15,
     },
-    [B_WIN_YESNO] = {
-        .fillValue = PIXEL_FILL(0xE),
+    [B_WIN_YESNO] = { // Orchid UI
+        .fillValue = PIXEL_FILL(ORCHID_COL_WHITE),
         .fontId = FONT_NORMAL,
-        .x = 0,
+        .x = 8,
         .y = 1,
         .speed = 0,
-        .color.foreground = 13,
-        .color.background = 14,
-        .color.accent = 14,
-        .color.shadow = 15,
+        .color.foreground = ORCHID_COL_INK,
+        .color.background = ORCHID_COL_WHITE,
+        .color.accent = ORCHID_COL_WHITE,
+        .color.shadow = ORCHID_COL_SHADE,
     },
     [B_WIN_LEVEL_UP_BOX] = {
         .fillValue = PIXEL_FILL(0xE),
@@ -2156,82 +2157,82 @@ static const struct BattleWindowText sTextOnWindowsInfo_KantoTutorial[] =
 
 static const struct BattleWindowText sTextOnWindowsInfo_Arena[] =
 {
-    [B_WIN_MSG] = {
-        .fillValue = PIXEL_FILL(0xF),
+    [B_WIN_MSG] = { // Orchid UI
+        .fillValue = PIXEL_FILL(ORCHID_COL_WHITE),
         .fontId = FONT_NORMAL,
         .x = 0,
-        .y = 1,
+        .y = 0,
         .speed = 1,
-        .color.foreground = 1,
-        .color.background = 15,
-        .color.accent = 15,
-        .color.shadow = 6,
+        .color.foreground = ORCHID_COL_INK,
+        .color.background = ORCHID_COL_WHITE,
+        .color.accent = ORCHID_COL_WHITE,
+        .color.shadow = ORCHID_COL_SHADE,
     },
-    [B_WIN_ACTION_PROMPT] = {
-        .fillValue = PIXEL_FILL(0xF),
-        .fontId = FONT_NORMAL,
-        .x = 1,
-        .y = 1,
-        .speed = 0,
-        .color.foreground = 1,
-        .color.background = 15,
-        .color.accent = 15,
-        .color.shadow = 6,
-    },
-    [B_WIN_ACTION_MENU] = {
-        .fillValue = PIXEL_FILL(0xE),
+    [B_WIN_ACTION_PROMPT] = { // Orchid UI
+        .fillValue = PIXEL_FILL(ORCHID_COL_WHITE),
         .fontId = FONT_NORMAL,
         .x = 0,
+        .y = 0,
+        .speed = 0,
+        .color.foreground = ORCHID_COL_INK,
+        .color.background = ORCHID_COL_WHITE,
+        .color.accent = ORCHID_COL_WHITE,
+        .color.shadow = ORCHID_COL_SHADE,
+    },
+    [B_WIN_ACTION_MENU] = { // Orchid UI
+        .fillValue = PIXEL_FILL(ORCHID_COL_PANEL),
+        .fontId = FONT_NORMAL,
+        .x = 0,
         .y = 1,
         .speed = 0,
-        .color.foreground = 13,
-        .color.background = 14,
-        .color.accent = 14,
-        .color.shadow = 15,
+        .color.foreground = ORCHID_COL_INK,
+        .color.background = ORCHID_COL_PANEL,
+        .color.accent = ORCHID_COL_PANEL,
+        .color.shadow = ORCHID_COL_SHADE,
     },
-    [B_WIN_MOVE_NAME_1] = {
-        .fillValue = PIXEL_FILL(0xE),
+    [B_WIN_MOVE_NAME_1] = { // Orchid UI
+        .fillValue = PIXEL_FILL(ORCHID_COL_PANEL),
         .fontId = FONT_NARROW,
         .x = 0,
         .y = 1,
         .speed = 0,
-        .color.foreground = 13,
-        .color.background = 14,
-        .color.accent = 14,
-        .color.shadow = 15,
+        .color.foreground = ORCHID_COL_INK,
+        .color.background = ORCHID_COL_PANEL,
+        .color.accent = ORCHID_COL_PANEL,
+        .color.shadow = ORCHID_COL_SHADE,
     },
-    [B_WIN_MOVE_NAME_2] = {
-        .fillValue = PIXEL_FILL(0xE),
+    [B_WIN_MOVE_NAME_2] = { // Orchid UI
+        .fillValue = PIXEL_FILL(ORCHID_COL_PANEL),
         .fontId = FONT_NARROW,
         .x = 0,
         .y = 1,
         .speed = 0,
-        .color.foreground = 13,
-        .color.background = 14,
-        .color.accent = 14,
-        .color.shadow = 15,
+        .color.foreground = ORCHID_COL_INK,
+        .color.background = ORCHID_COL_PANEL,
+        .color.accent = ORCHID_COL_PANEL,
+        .color.shadow = ORCHID_COL_SHADE,
     },
-    [B_WIN_MOVE_NAME_3] = {
-        .fillValue = PIXEL_FILL(0xE),
+    [B_WIN_MOVE_NAME_3] = { // Orchid UI
+        .fillValue = PIXEL_FILL(ORCHID_COL_PANEL),
         .fontId = FONT_NARROW,
         .x = 0,
         .y = 1,
         .speed = 0,
-        .color.foreground = 13,
-        .color.background = 14,
-        .color.accent = 14,
-        .color.shadow = 15,
+        .color.foreground = ORCHID_COL_INK,
+        .color.background = ORCHID_COL_PANEL,
+        .color.accent = ORCHID_COL_PANEL,
+        .color.shadow = ORCHID_COL_SHADE,
     },
-    [B_WIN_MOVE_NAME_4] = {
-        .fillValue = PIXEL_FILL(0xE),
+    [B_WIN_MOVE_NAME_4] = { // Orchid UI
+        .fillValue = PIXEL_FILL(ORCHID_COL_PANEL),
         .fontId = FONT_NARROW,
         .x = 0,
         .y = 1,
         .speed = 0,
-        .color.foreground = 13,
-        .color.background = 14,
-        .color.accent = 14,
-        .color.shadow = 15,
+        .color.foreground = ORCHID_COL_INK,
+        .color.background = ORCHID_COL_PANEL,
+        .color.accent = ORCHID_COL_PANEL,
+        .color.shadow = ORCHID_COL_SHADE,
     },
     [B_WIN_PP] = {
         .fillValue = PIXEL_FILL(0xE),
@@ -2288,16 +2289,16 @@ static const struct BattleWindowText sTextOnWindowsInfo_Arena[] =
         .color.accent = 14,
         .color.shadow = 15,
     },
-    [B_WIN_YESNO] = {
-        .fillValue = PIXEL_FILL(0xE),
+    [B_WIN_YESNO] = { // Orchid UI
+        .fillValue = PIXEL_FILL(ORCHID_COL_WHITE),
         .fontId = FONT_NORMAL,
-        .x = 0,
+        .x = 8,
         .y = 1,
         .speed = 0,
-        .color.foreground = 13,
-        .color.background = 14,
-        .color.accent = 14,
-        .color.shadow = 15,
+        .color.foreground = ORCHID_COL_INK,
+        .color.background = ORCHID_COL_WHITE,
+        .color.accent = ORCHID_COL_WHITE,
+        .color.shadow = ORCHID_COL_SHADE,
     },
     [B_WIN_LEVEL_UP_BOX] = {
         .fillValue = PIXEL_FILL(0xE),
@@ -3083,6 +3084,29 @@ static const u8 *BattleStringGetOpponentClassByTrainerId(u16 trainerId)
 // This ensures that custom Enigma Berry names will fit in the text buffer at the top of BattleStringExpandPlaceholders.
 STATIC_ASSERT(BERRY_NAME_LENGTH + ARRAY_COUNT(sText_BerrySuffix) <= ITEM_NAME_LENGTH, BerryNameTooLong);
 
+// Orchid UI: strings that are followed by the docked YES/NO box.
+static bool32 IsOrchidYesNoQuestion(const u8 *src)
+{
+    static const u16 sQuestions[] =
+    {
+        STRINGID_GIVENICKNAMECAPTURED,
+        STRINGID_ENEMYABOUTTOSWITCHPKMN,
+        STRINGID_USENEXTPKMN,
+        STRINGID_TRYTOLEARNMOVE3,
+        STRINGID_STOPLEARNINGMOVE,
+        STRINGID_QUESTIONFORFEITMATCH,
+        STRINGID_SENDCAUGHTMONPARTYORBOX,
+    };
+    u32 i;
+
+    for (i = 0; i < ARRAY_COUNT(sQuestions); i++)
+    {
+        if (src == gBattleStringsTable[sQuestions[i]])
+            return TRUE;
+    }
+    return FALSE;
+}
+
 u32 BattleStringExpandPlaceholders(const u8 *src, u8 *dst, u32 dstSize)
 {
     u32 dstID = 0; // if they used dstID, why not use srcID as well?
@@ -3696,7 +3720,8 @@ u32 BattleStringExpandPlaceholders(const u8 *src, u8 *dst, u32 dstSize)
     dst[dstID] = *src;
     dstID++;
 
-    BreakStringAutomatic(dst, BATTLE_MSG_MAX_WIDTH, BATTLE_MSG_MAX_LINES, fontId, SHOW_SCROLL_PROMPT);
+    // Orchid UI: questions answered with the docked YES/NO wrap short so the dock doesn't cover them
+    BreakStringAutomatic(dst, IsOrchidYesNoQuestion(src) ? ORCHID_YESNO_MSG_WIDTH : BATTLE_MSG_MAX_WIDTH, BATTLE_MSG_MAX_LINES, fontId, SHOW_SCROLL_PROMPT);
 
     return dstID;
 }

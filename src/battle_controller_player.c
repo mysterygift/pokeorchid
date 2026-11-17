@@ -48,6 +48,10 @@
 #include "type_icons.h"
 #include "pokedex.h"
 #include "test/battle.h"
+#include "graphics.h"
+#include "decompress.h"
+#include "malloc.h"
+#include "data/battle_orchid_ui.h"
 
 static void PlayerHandleLoadMonSprite(enum BattlerId battler);
 static void PlayerHandleDrawTrainerPic(enum BattlerId battler);
@@ -231,6 +235,371 @@ static enum Item GetNextBall(enum Item ballId)
     return ballId;
 }
 
+// Order based numerically, with EFFECTIVENESS_CANNOT_VIEW at 0 to always prioritize any other effectiveness during comparison
+enum
+{
+    EFFECTIVENESS_CANNOT_VIEW,
+    EFFECTIVENESS_NO_EFFECT,
+    EFFECTIVENESS_MOSTLY_INEFFECTIVE,
+    EFFECTIVENESS_NOT_VERY_EFFECTIVE,
+    EFFECTIVENESS_NORMAL,
+    EFFECTIVENESS_SUPER_EFFECTIVE,
+    EFFECTIVENESS_EXTREMELY_EFFECTIVE,
+};
+
+// ---------------------------------------------------------------------------------------------
+// Orchid UI: action menu / move select (dev_scripts/orchid_ui/export_battle.py).
+// Every panel is a window blitted from its normal / selected panel art, then text is drawn
+// on top; the gold face is the cursor. Icon fields and type icons are OBJ that only show
+// while their BG0 page is on screen and remove themselves when it goes away.
+// ---------------------------------------------------------------------------------------------
+#define ORCHID_PAGE_ACTION  DISPLAY_HEIGHT
+#define ORCHID_PAGE_MOVES   (DISPLAY_HEIGHT * 2)
+
+static EWRAM_DATA u8 sOrchidMoveBattler = 0;
+static EWRAM_DATA u8 sOrchidEffectiveness = 0;
+static EWRAM_DATA u8 sOrchidTypeIconIds[MAX_MON_MOVES] = {0};
+static EWRAM_DATA u8 sOrchidMoveInfoSlot = 0; // 1 + move slot whose Move Info panel is open, 0 = closed
+static void OrchidCloseMoveInfo(void);
+
+static const u8 sOrchidTextColors[3] = {0, ORCHID_COL_INK, ORCHID_COL_SHADE};
+static const u8 *const sOrchidActionLabels[] =
+{
+    COMPOUND_STRING("FIGHT"), COMPOUND_STRING("BAG"), COMPOUND_STRING("POKéMON"), COMPOUND_STRING("RUN"),
+};
+static const u8 *const sOrchidSafariLabels[] =
+{
+    COMPOUND_STRING("BALL"), COMPOUND_STRING("BLOCK"), COMPOUND_STRING("GO NEAR"), COMPOUND_STRING("RUN"),
+};
+
+#define sIconPage   data[0]
+#define sIconArmed  data[1]
+#define sIconOwner  data[2]
+#define sIconSlot   data[3] // type icons: move slot (0..3)
+
+static void SpriteCB_OrchidPageIcon(struct Sprite *sprite);
+static void OrchidDrawMovePill(enum BattlerId battler, u32 slot, bool32 selected);
+
+static const struct OamData sOamData_OrchidIcon32x32 = { .shape = SPRITE_SHAPE(32x32), .size = SPRITE_SIZE(32x32), .priority = 0 };
+static const struct OamData sOamData_OrchidIcon16x16 = { .shape = SPRITE_SHAPE(16x16), .size = SPRITE_SIZE(16x16), .priority = 0 };
+static const struct OamData sOamData_OrchidIcon32x16 = { .shape = SPRITE_SHAPE(32x16), .size = SPRITE_SIZE(32x16), .priority = 0 };
+
+static const struct SpriteTemplate sOrchidFightIconTemplate =
+{
+    .tileTag = TAG_ORCHID_ACTION_TILE, .paletteTag = TAG_ORCHID_ACTION_PAL, .oam = &sOamData_OrchidIcon32x32,
+    .anims = gDummySpriteAnimTable, .affineAnims = gDummySpriteAffineAnimTable, .callback = SpriteCB_OrchidPageIcon,
+};
+static const struct SpriteTemplate sOrchidSideIconTemplate =
+{
+    .tileTag = TAG_ORCHID_ACTION_TILE, .paletteTag = TAG_ORCHID_ACTION_PAL, .oam = &sOamData_OrchidIcon16x16,
+    .anims = gDummySpriteAnimTable, .affineAnims = gDummySpriteAffineAnimTable, .callback = SpriteCB_OrchidPageIcon,
+};
+static const struct SpriteTemplate sOrchidTypeIconTemplate =
+{
+    .tileTag = TAG_ORCHID_TYPE_TILE, .paletteTag = TAG_NONE, .oam = &sOamData_OrchidIcon32x16,
+    .anims = gDummySpriteAnimTable, .affineAnims = gDummySpriteAffineAnimTable, .callback = SpriteCB_OrchidPageIcon,
+};
+
+static void SpriteCB_OrchidPageIcon(struct Sprite *sprite)
+{
+    if (gBattle_BG0_Y == sprite->sIconPage && gBattle_BG0_X == 0)
+    {
+        sprite->invisible = FALSE;
+        sprite->sIconArmed = TRUE;
+        if (sprite->template == &sOrchidTypeIconTemplate)
+        {
+            // Move Info covers the pills: only the described move's icon shows, in its header
+            if (sOrchidMoveInfoSlot == 0)
+            {
+                sprite->x2 = sprite->y2 = 0;
+            }
+            else if (sprite->sIconSlot + 1 == sOrchidMoveInfoSlot)
+            {
+                sprite->x2 = ORCHID_MI_TYPE_X - (sOrchidMovePillScreen[sprite->sIconSlot][0] + ORCHID_MOVE_ICON_DX);
+                sprite->y2 = ORCHID_MI_TYPE_Y - (sOrchidMovePillScreen[sprite->sIconSlot][1] + ORCHID_MOVE_ICON_DY);
+            }
+            else
+            {
+                sprite->invisible = TRUE;
+            }
+        }
+    }
+    else if (sprite->sIconArmed)
+    {
+        if (sprite->sIconOwner)
+        {
+            FreeSpriteTilesByTag(sprite->template->tileTag);
+            if (sprite->template->tileTag == TAG_ORCHID_ACTION_TILE)
+            {
+                FreeSpritePaletteByTag(TAG_ORCHID_ACTION_PAL);
+            }
+            else
+            {
+                FreeSpritePaletteByTag(TAG_ORCHID_TYPE_PAL_0);
+                FreeSpritePaletteByTag(TAG_ORCHID_TYPE_PAL_0 + 1);
+                FreeSpritePaletteByTag(TAG_ORCHID_TYPE_PAL_0 + 2);
+            }
+        }
+        DestroySprite(sprite);
+    }
+    else
+    {
+        sprite->invisible = TRUE;
+    }
+}
+
+static void OrchidCreateActionIcons(void)
+{
+    struct SpriteSheet sheet;
+    struct SpritePalette pal = {gOrchidActionIcons_Pal, TAG_ORCHID_ACTION_PAL};
+    u8 buffer[(16 + 3 * 4) * TILE_SIZE_4BPP];
+    u32 i, base;
+    u8 spriteId;
+
+    if (GetSpriteTileStartByTag(TAG_ORCHID_ACTION_TILE) != 0xFFFF)
+        return;
+
+    // Safari battles get their own pictograms (Poké Ball / PokéBlock / footprints / RUN)
+    if (gBattleTypeFlags & BATTLE_TYPE_SAFARI)
+    {
+        memcpy(buffer, gOrchidActionSafariBall_Gfx, 16 * TILE_SIZE_4BPP);
+        memcpy(buffer + 16 * TILE_SIZE_4BPP, gOrchidActionSafariSide_Gfx, 12 * TILE_SIZE_4BPP);
+    }
+    else
+    {
+        memcpy(buffer, gOrchidActionFight_Gfx, 16 * TILE_SIZE_4BPP);
+        memcpy(buffer + 16 * TILE_SIZE_4BPP, gOrchidActionSide_Gfx, 12 * TILE_SIZE_4BPP);
+    }
+    sheet.data = buffer;
+    sheet.size = sizeof(buffer);
+    sheet.tag = TAG_ORCHID_ACTION_TILE;
+    LoadSpriteSheet(&sheet);
+    LoadSpritePalette(&pal);
+    base = GetSpriteTileStartByTag(TAG_ORCHID_ACTION_TILE);
+
+    spriteId = CreateSprite(&sOrchidFightIconTemplate, ORCHID_FIGHT_ICON_X, ORCHID_FIGHT_ICON_Y, 0);
+    gSprites[spriteId].sIconPage = ORCHID_PAGE_ACTION;
+    gSprites[spriteId].sIconOwner = TRUE;
+    gSprites[spriteId].invisible = TRUE;
+    for (i = 0; i < 3; i++)
+    {
+        spriteId = CreateSprite(&sOrchidSideIconTemplate, ORCHID_SIDE_ICON_X, sOrchidSideIconY[i], 0);
+        gSprites[spriteId].oam.tileNum = base + 16 + i * 4;
+        gSprites[spriteId].sIconPage = ORCHID_PAGE_ACTION;
+        gSprites[spriteId].invisible = TRUE;
+    }
+}
+
+static void OrchidDrawActionMenu(u8 cursor)
+{
+    const u8 *const *labels = (gBattleTypeFlags & BATTLE_TYPE_SAFARI) ? sOrchidSafariLabels : sOrchidActionLabels;
+    u32 size = ORCHID_ACTION_WIN_W * ORCHID_ACTION_WIN_H * TILE_SIZE_4BPP;
+    u32 i, x;
+
+    CopyToWindowPixelBuffer(B_WIN_ACTION_MENU, (const u8 *)gOrchidActionPanels_Gfx + cursor * size, size, 0);
+    x = ORCHID_FIGHT_LABEL_CX - 22 + (44 - GetStringWidth(FONT_NORMAL, labels[0], 0)) / 2 + 1;
+    AddTextPrinterParameterized4(B_WIN_ACTION_MENU, FONT_NORMAL, x, ORCHID_FIGHT_LABEL_Y, 0, 0, sOrchidTextColors, TEXT_SKIP_DRAW, labels[0]);
+    for (i = 0; i < 3; i++)
+        AddTextPrinterParameterized4(B_WIN_ACTION_MENU, FONT_NARROW, ORCHID_SIDE_LABEL_X, sOrchidSideLabelY[i], 0, 0, sOrchidTextColors, TEXT_SKIP_DRAW, labels[i + 1]);
+    PutWindowTilemap(B_WIN_ACTION_MENU);
+    CopyWindowToVram(B_WIN_ACTION_MENU, COPYWIN_FULL);
+    OrchidCreateActionIcons();
+}
+
+// FIGHT (0) is the big button; BAG (1) / POKéMON (2) / RUN (3) form the right column.
+u32 OrchidActionCursorMove(u32 cursor)
+{
+    if (JOY_NEW(DPAD_LEFT))
+        return 0;
+    if (JOY_NEW(DPAD_RIGHT))
+        return cursor == 0 ? 1 : cursor;
+    if (JOY_NEW(DPAD_UP))
+        return cursor >= 2 ? cursor - 1 : cursor;
+    if (JOY_NEW(DPAD_DOWN))
+        return (cursor >= 1 && cursor < 3) ? cursor + 1 : cursor;
+    return cursor;
+}
+
+static enum Type GetMoveSelectionDisplayType(enum BattlerId battler, enum Move move);
+
+// Type icon per move slot, 32x16 from the Gen 3 move-type sheet (gMoveTypes_Gfx / gMoveTypes_Pal).
+// TYPE_NONE = no icon in that slot.
+static void OrchidSetTypeIconsTo(const enum Type slotTypes[MAX_MON_MOVES])
+{
+    u8 *types = Alloc((NUMBER_OF_MON_TYPES + CONTEST_CATEGORIES_COUNT) * 0x100);
+    bool32 create = (GetSpriteTileStartByTag(TAG_ORCHID_TYPE_TILE) == 0xFFFF);
+    u32 i, base;
+
+    if (types == NULL)
+        return;
+    DecompressDataWithHeaderWram(gMoveTypes_Gfx, types);
+    if (create)
+    {
+        struct SpriteSheet sheet = {types, MAX_MON_MOVES * 8 * TILE_SIZE_4BPP, TAG_ORCHID_TYPE_TILE};
+        LoadSpriteSheet(&sheet);
+    }
+    base = GetSpriteTileStartByTag(TAG_ORCHID_TYPE_TILE);
+
+    for (i = 0; i < MAX_MON_MOVES; i++)
+    {
+        struct Sprite *sprite;
+
+        if (create)
+        {
+            sOrchidTypeIconIds[i] = CreateSprite(&sOrchidTypeIconTemplate,
+                                                 sOrchidMovePillScreen[i][0] + ORCHID_MOVE_ICON_DX + 16,
+                                                 sOrchidMovePillScreen[i][1] + ORCHID_MOVE_ICON_DY + 8, 0);
+            gSprites[sOrchidTypeIconIds[i]].sIconPage = ORCHID_PAGE_MOVES;
+            gSprites[sOrchidTypeIconIds[i]].sIconOwner = (i == 0);
+            gSprites[sOrchidTypeIconIds[i]].sIconSlot = i;
+            gSprites[sOrchidTypeIconIds[i]].invisible = TRUE;
+        }
+        sprite = &gSprites[sOrchidTypeIconIds[i]];
+        sprite->oam.tileNum = base + i * 8;
+        if (slotTypes[i] == TYPE_NONE)
+        {
+            CpuFill32(0, (void *)(OBJ_VRAM0 + (base + i * 8) * TILE_SIZE_4BPP), 8 * TILE_SIZE_4BPP);
+        }
+        else
+        {
+            enum Type type = slotTypes[i];
+            u32 row = gTypesInfo[type].palette - 13;
+            struct SpritePalette pal = {gMoveTypes_Pal + row * 16, TAG_ORCHID_TYPE_PAL_0 + row};
+
+            u32 paletteNum = LoadSpritePalette(&pal);
+
+            CpuCopy32(types + type * 8 * TILE_SIZE_4BPP, (void *)(OBJ_VRAM0 + (base + i * 8) * TILE_SIZE_4BPP), 8 * TILE_SIZE_4BPP);
+            if (paletteNum == 0xFF) // no free OBJ palette: leave the icon out rather than show garbage
+                CpuFill32(0, (void *)(OBJ_VRAM0 + (base + i * 8) * TILE_SIZE_4BPP), 8 * TILE_SIZE_4BPP);
+            else
+                sprite->oam.paletteNum = paletteNum;
+        }
+    }
+    Free(types);
+}
+
+static void OrchidSetTypeIcons(enum BattlerId battler)
+{
+    struct ChooseMoveStruct *moveInfo = (struct ChooseMoveStruct *)(&gBattleResources->bufferA[battler][4]);
+    enum Type types[MAX_MON_MOVES];
+    u32 i;
+
+    for (i = 0; i < MAX_MON_MOVES; i++)
+        types[i] = (moveInfo->moves[i] == MOVE_NONE) ? TYPE_NONE : GetMoveSelectionDisplayType(battler, moveInfo->moves[i]);
+    OrchidSetTypeIconsTo(types);
+}
+
+// Ink PP notch in the pill's bottom edge with "PP cur/max" in the text_pp colours; returns its left x.
+static s32 OrchidDrawPPNotch(u32 win, s32 ox, s32 oy, bool32 selected, u32 cur, u32 max)
+{
+    static const u8 sPPLabel[] = _("PP");
+    static const u8 sPPSpace[] = _("PP ");
+    static const u8 sPPColorIds[] = {ORCHID_COL_PP_YELLOW, ORCHID_COL_PP_ORANGE, ORCHID_COL_PP_RED, ORCHID_COL_WHITE};
+    u8 text[16], *ptr;
+    u8 colors[3] = {0, ORCHID_COL_PANEL_DARK, 0};
+    u32 face = selected ? ORCHID_COL_SELECT : ORCHID_COL_PANEL;
+    s32 tw, px, nx0, nx1;
+
+    ptr = ConvertIntToDecimalStringN(text, cur, STR_CONV_MODE_LEFT_ALIGN, 2);
+    *ptr++ = CHAR_SLASH;
+    ConvertIntToDecimalStringN(ptr, max, STR_CONV_MODE_LEFT_ALIGN, 2);
+    tw = GetStringWidth(FONT_SMALL, sPPSpace, 0) + GetStringWidth(FONT_SMALL, text, 0);
+    px = ox + ORCHID_MOVE_W - 9 - tw;
+    nx0 = px - 4;
+    nx1 = ox + ORCHID_MOVE_W - 5;
+    // top corners rounded off with the face colour
+    FillWindowPixelRect(win, ORCHID_COL_INK, nx0, oy + 12, nx1 - nx0 + 1, ORCHID_MOVE_H - 12);
+    FillWindowPixelRect(win, face, nx0, oy + 12, 1, 1);
+    FillWindowPixelRect(win, face, nx1, oy + 12, 1, 1);
+    AddTextPrinterParameterized4(win, FONT_SMALL, px, oy + 9, 0, 0, colors, TEXT_SKIP_DRAW, sPPLabel);
+    colors[1] = sPPColorIds[GetCurrentPPToMaxPPState(cur, max) & 3];
+    AddTextPrinterParameterized4(win, FONT_SMALL, px + GetStringWidth(FONT_SMALL, sPPSpace, 0), oy + 9, 0, 0, colors, TEXT_SKIP_DRAW, text);
+    return nx0;
+}
+
+// Z-Move view (battle_z_move.c): the Z-Move on the first, gold pill with its type icon and PP 1/1,
+// its power / Z-effect on the pill under it, the other two pills empty.
+void OrchidDisplayZMove(enum BattlerId battler, enum Move zmove, const u8 *name, const u8 *info)
+{
+    enum Type types[MAX_MON_MOVES] = {GetBattleMoveType(zmove), TYPE_NONE, TYPE_NONE, TYPE_NONE};
+    u32 size = 15 * 3 * TILE_SIZE_4BPP;
+    u32 i;
+
+    for (i = 0; i < MAX_MON_MOVES; i++)
+    {
+        u32 win = B_WIN_MOVE_NAME_1 + i;
+        s32 ox = sOrchidMovePillOrigin[i][0], oy = sOrchidMovePillOrigin[i][1];
+        const u8 *text = (i == 0) ? name : (i == 2 ? info : NULL);
+
+        CopyToWindowPixelBuffer(win, (const u8 *)gOrchidMovePanels_Gfx + (i * 2 + (i == 0 ? 1 : 0)) * size, size, 0);
+        if (text != NULL && *text != EOS)
+        {
+            u32 fontId = GetStringWidth(FONT_NORMAL, text, 0) <= ORCHID_MOVE_W - ORCHID_MOVE_NAME_DX - 4 ? FONT_NORMAL : FONT_NARROW;
+            AddTextPrinterParameterized4(win, fontId, ox + ORCHID_MOVE_NAME_DX, oy + ORCHID_MOVE_NAME_DY, 0, 0, sOrchidTextColors, TEXT_SKIP_DRAW, text);
+        }
+        if (i == 0 && gBattleResources->bufferA[battler][2] != TRUE)
+            OrchidDrawPPNotch(win, ox, oy, TRUE, 1, 1);
+        PutWindowTilemap(win);
+        CopyWindowToVram(win, COPYWIN_FULL);
+    }
+    OrchidSetTypeIconsTo(types);
+}
+
+static void OrchidDrawMovePill(enum BattlerId battler, u32 slot, bool32 selected)
+{
+    struct ChooseMoveStruct *moveInfo = (struct ChooseMoveStruct *)(&gBattleResources->bufferA[battler][4]);
+    u32 win = B_WIN_MOVE_NAME_1 + slot;
+    u32 size = 15 * 3 * TILE_SIZE_4BPP;
+    s32 ox = sOrchidMovePillOrigin[slot][0], oy = sOrchidMovePillOrigin[slot][1];
+    enum Move move = moveInfo->moves[slot];
+
+    CopyToWindowPixelBuffer(win, (const u8 *)gOrchidMovePanels_Gfx + (slot * 2 + (selected ? 1 : 0)) * size, size, 0);
+    if (move != MOVE_NONE)
+    {
+        const u8 *name;
+        u32 fontId;
+
+        if (IsGimmickSelected(battler, GIMMICK_DYNAMAX) || GetActiveGimmick(battler) == GIMMICK_DYNAMAX)
+            name = GetMoveName(GetMaxMove(battler, move));
+        else
+            name = GetMoveName(move);
+        fontId = GetStringWidth(FONT_NORMAL, name, 0) <= ORCHID_MOVE_NAME_MAX ? FONT_NORMAL : FONT_NARROW;
+        AddTextPrinterParameterized4(win, fontId, ox + ORCHID_MOVE_NAME_DX, oy + ORCHID_MOVE_NAME_DY, 0, 0, sOrchidTextColors, TEXT_SKIP_DRAW, name);
+
+        if (gBattleResources->bufferA[battler][2] != TRUE) // PP numbers shown
+        {
+            s32 nx0 = OrchidDrawPPNotch(win, ox, oy, selected, moveInfo->currentPP[slot], moveInfo->maxPP[slot]);
+
+            // type effectiveness mark (B_SHOW_EFFECTIVENESS) on the selected pill, left of the notch
+            if (selected && sOrchidEffectiveness != EFFECTIVENESS_CANNOT_VIEW && !IsBattleMoveStatus(move))
+            {
+                static const u8 sMarkStar[] = _("{STAR}");
+                static const u8 sMarkDot[] = _("{CIRCLE_DOT}");
+                static const u8 sMarkTri[] = _("{TRIANGLE}");
+                static const u8 sMarkTriDown[] = _("{TRIANGLE_UPSIDE_DOWN}");
+                static const u8 sMarkX[] = _("{BIG_MULT_X}");
+                static const u8 sMarkCircle[] = _("{CIRCLE_HOLLOW}");
+                const u8 *mark = NULL;
+
+                switch (sOrchidEffectiveness)
+                {
+                case EFFECTIVENESS_EXTREMELY_EFFECTIVE: mark = sMarkStar; break;
+                case EFFECTIVENESS_SUPER_EFFECTIVE:     mark = sMarkDot; break;
+                case EFFECTIVENESS_NOT_VERY_EFFECTIVE:  mark = sMarkTri; break;
+                case EFFECTIVENESS_MOSTLY_INEFFECTIVE:  mark = sMarkTriDown; break;
+                case EFFECTIVENESS_NO_EFFECT:           mark = sMarkX; break;
+                case EFFECTIVENESS_NORMAL:              mark = sMarkCircle; break;
+                default: break;
+                }
+                if (mark != NULL)
+                    AddTextPrinterParameterized4(win, FONT_NORMAL, nx0 - 3 - GetStringWidth(FONT_NORMAL, mark, 0), oy + 8,
+                                                 0, 0, sOrchidTextColors, TEXT_SKIP_DRAW, mark);
+            }
+        }
+    }
+    CopyWindowToVram(win, COPYWIN_GFX); // tilemap is put once in MoveSelectionDisplayMoveNames
+}
+
 static void HandleInputChooseAction(enum BattlerId battler)
 {
     enum Item itemId = gBattleResources->bufferA[battler][2] | (gBattleResources->bufferA[battler][3] << 8);
@@ -324,43 +693,15 @@ static void HandleInputChooseAction(enum BattlerId battler)
         }
         BtlController_Complete(battler);
     }
-    else if (JOY_NEW(DPAD_LEFT))
+    else if (JOY_NEW(DPAD_ANY))
     {
-        if (gActionSelectionCursor[battler] & 1) // if is B_ACTION_USE_ITEM or B_ACTION_RUN
+        // Orchid UI: big FIGHT button on the left, BAG / POKéMON / RUN in a column on the right
+        u32 next = OrchidActionCursorMove(gActionSelectionCursor[battler]);
+        if (next != gActionSelectionCursor[battler])
         {
             PlaySE(SE_SELECT);
             ActionSelectionDestroyCursorAt(gActionSelectionCursor[battler]);
-            gActionSelectionCursor[battler] ^= 1;
-            ActionSelectionCreateCursorAt(gActionSelectionCursor[battler], 0);
-        }
-    }
-    else if (JOY_NEW(DPAD_RIGHT))
-    {
-        if (!(gActionSelectionCursor[battler] & 1)) // if is B_ACTION_USE_MOVE or B_ACTION_SWITCH
-        {
-            PlaySE(SE_SELECT);
-            ActionSelectionDestroyCursorAt(gActionSelectionCursor[battler]);
-            gActionSelectionCursor[battler] ^= 1;
-            ActionSelectionCreateCursorAt(gActionSelectionCursor[battler], 0);
-        }
-    }
-    else if (JOY_NEW(DPAD_UP))
-    {
-        if (gActionSelectionCursor[battler] & 2) // if is B_ACTION_SWITCH or B_ACTION_RUN
-        {
-            PlaySE(SE_SELECT);
-            ActionSelectionDestroyCursorAt(gActionSelectionCursor[battler]);
-            gActionSelectionCursor[battler] ^= 2;
-            ActionSelectionCreateCursorAt(gActionSelectionCursor[battler], 0);
-        }
-    }
-    else if (JOY_NEW(DPAD_DOWN))
-    {
-        if (!(gActionSelectionCursor[battler] & 2)) // if is B_ACTION_USE_MOVE or B_ACTION_USE_ITEM
-        {
-            PlaySE(SE_SELECT);
-            ActionSelectionDestroyCursorAt(gActionSelectionCursor[battler]);
-            gActionSelectionCursor[battler] ^= 2;
+            gActionSelectionCursor[battler] = next;
             ActionSelectionCreateCursorAt(gActionSelectionCursor[battler], 0);
         }
     }
@@ -889,9 +1230,7 @@ void HandleInputChooseMove(enum BattlerId battler)
                 gCategoryIconSpriteId = 0xFF;
             }
 
-            FillWindowPixelBuffer(B_WIN_MOVE_DESCRIPTION, PIXEL_FILL(0));
-            ClearStdWindowAndFrame(B_WIN_MOVE_DESCRIPTION, FALSE);
-            CopyWindowToVram(B_WIN_MOVE_DESCRIPTION, COPYWIN_GFX);
+            OrchidCloseMoveInfo();
             PlaySE(SE_SELECT);
             if (B_SHOW_EFFECTIVENESS)
                 MoveSelectionDisplayMoveEffectiveness(CheckTargetTypeEffectiveness(battler), battler);
@@ -1655,52 +1994,36 @@ static void MoveSelectionDisplayMoveNames(enum BattlerId battler)
 {
     s32 i;
     struct ChooseMoveStruct *moveInfo = (struct ChooseMoveStruct *)(&gBattleResources->bufferA[battler][4]);
-    gNumberOfMovesToChoose = 0;
 
+    // Orchid UI: every move is a two-line pill (name, type icon, PP notch); the selected one is gold
+    sOrchidMoveBattler = battler;
+    sOrchidMoveInfoSlot = 0;
+    LoadPalette(gOrchidBattleTrayMoves_Pal, BG_PLTT_ID(ORCHID_MOVES_BG_PAL), PLTT_SIZE_4BPP);
+    gNumberOfMovesToChoose = 0;
     for (i = 0; i < MAX_MON_MOVES; i++)
     {
-        MoveSelectionDestroyCursorAt(i);
-        if (IsGimmickSelected(battler, GIMMICK_DYNAMAX) || GetActiveGimmick(battler) == GIMMICK_DYNAMAX)
-            StringCopy(gDisplayedStringBattle, GetMoveName(GetMaxMove(battler, moveInfo->moves[i])));
-        else
-            StringCopy(gDisplayedStringBattle, GetMoveName(moveInfo->moves[i]));
-        // Prints on windows B_WIN_MOVE_NAME_1, B_WIN_MOVE_NAME_2, B_WIN_MOVE_NAME_3, B_WIN_MOVE_NAME_4
-        BattlePutTextOnWindow(gDisplayedStringBattle, i + B_WIN_MOVE_NAME_1);
+        OrchidDrawMovePill(battler, i, FALSE);
+        PutWindowTilemap(B_WIN_MOVE_NAME_1 + i);
         if (moveInfo->moves[i] != MOVE_NONE)
             gNumberOfMovesToChoose++;
     }
+    CopyBgTilemapBufferToVram(0);
+    OrchidSetTypeIcons(battler);
 }
 
 static void MoveSelectionDisplayPPString(enum BattlerId battler)
 {
-    StringCopy(gDisplayedStringBattle, gText_MoveInterfacePP);
-    BattlePutTextOnWindow(gDisplayedStringBattle, B_WIN_PP);
+    // Orchid UI: PP lives in each pill's notch
 }
 
 static void MoveSelectionDisplayPPNumber(enum BattlerId battler)
 {
-    u8 *txtPtr;
-    struct ChooseMoveStruct *moveInfo;
-
-    if (gBattleResources->bufferA[battler][2] == TRUE) // check if we didn't want to display PP number
-        return;
-
-    SetPPNumbersPaletteInMoveSelection(battler);
-    moveInfo = (struct ChooseMoveStruct *)(&gBattleResources->bufferA[battler][4]);
-    txtPtr = ConvertIntToDecimalStringN(gDisplayedStringBattle, moveInfo->currentPP[gMoveSelectionCursor[battler]], STR_CONV_MODE_RIGHT_ALIGN, 2);
-    *(txtPtr)++ = CHAR_SLASH;
-    ConvertIntToDecimalStringN(txtPtr, moveInfo->maxPP[gMoveSelectionCursor[battler]], STR_CONV_MODE_RIGHT_ALIGN, 2);
-
-    BattlePutTextOnWindow(gDisplayedStringBattle, B_WIN_PP_REMAINING);
+    // Orchid UI: PP lives in each pill's notch
 }
 
-static void MoveSelectionDisplayMoveType(enum BattlerId battler)
+static enum Type GetMoveSelectionDisplayType(enum BattlerId battler, enum Move move)
 {
-    u8 *txtPtr, *end;
     enum Species speciesId = gBattleMons[battler].species;
-    struct ChooseMoveStruct *moveInfo = (struct ChooseMoveStruct *)(&gBattleResources->bufferA[battler][4]);
-    txtPtr = StringCopy(gDisplayedStringBattle, gText_MoveInterfaceType);
-    enum Move move = moveInfo->moves[gMoveSelectionCursor[battler]];
     enum Type type = GetMoveType(move);
     enum BattleMoveEffects effect = GetMoveEffect(move);
 
@@ -1732,10 +2055,13 @@ static void MoveSelectionDisplayMoveType(enum BattlerId battler)
         struct Pokemon *mon = GetBattlerMon(battler);
         type = CheckDynamicMoveType(mon, move, battler, MON_IN_BATTLE);
     }
-    end = StringCopy(txtPtr, gTypesInfo[type].name);
+    return type;
+}
 
-    PrependFontIdToFit(txtPtr, end, FONT_NORMAL, WindowWidthPx(B_WIN_MOVE_TYPE) - 25);
-    BattlePutTextOnWindow(gDisplayedStringBattle, B_WIN_MOVE_TYPE);
+static void MoveSelectionDisplayMoveType(enum BattlerId battler)
+{
+    // Orchid UI: each pill carries its Gen 3 type icon (OBJ), refreshed whenever the move list is
+    // (re)drawn (Tera / Dynamax toggles reload it); nothing to do when the cursor moves
 }
 
 static void TryMoveSelectionDisplayMoveDescription(enum BattlerId battler)
@@ -1747,13 +2073,29 @@ static void TryMoveSelectionDisplayMoveDescription(enum BattlerId battler)
         MoveSelectionDisplayMoveDescription(battler);
 }
 
+// Orchid UI: Move Info opens inside the tray. One panel window (dark header strip with the type
+// icon, name, category icon and gold PWR / ACC values; light body with the description at a
+// 14 px pitch) covers the four pills; closing it puts the pill windows back.
 static void MoveSelectionDisplayMoveDescription(enum BattlerId battler)
 {
+    static const u8 sPwr[] = _("PWR");
+    static const u8 sAcc[] = _("ACC");
+    static const u8 sDash[] = _("-");
+    static const u8 sNameColors[3] = {0, ORCHID_COL_WHITE, ORCHID_COL_INK};
+    static const u8 sValueColors[3] = {0, ORCHID_COL_SELECT_LIGHT, ORCHID_COL_SELECT_DARK};
+    static const u8 sLabelColors[3] = {0, ORCHID_COL_PANEL_DARK, 0};
     struct ChooseMoveStruct *moveInfo = (struct ChooseMoveStruct*)(&gBattleResources->bufferA[battler][4]);
     enum Move move = moveInfo->moves[gMoveSelectionCursor[battler]];
     u16 pwr = GetMovePower(move);
     u16 acc = GetMoveAccuracy(move);
     enum DamageCategory cat = GetBattleMoveCategory(move);
+    u32 win = B_WIN_MOVE_DESCRIPTION;
+    u8 value[8];
+    const u8 *text;
+    const u8 *labels[2] = {sAcc, sPwr};
+    u16 values[2];
+    s32 x, i, vw, lw;
+    u8 *end;
 
     if (GetActiveGimmick(battler) == GIMMICK_DYNAMAX || IsGimmickSelected(battler, GIMMICK_DYNAMAX))
     {
@@ -1761,83 +2103,93 @@ static void MoveSelectionDisplayMoveDescription(enum BattlerId battler)
         move = GetMaxMove(battler, move);
         acc = 0;
     }
+    values[0] = acc;
+    values[1] = pwr;
 
-    u8 pwr_num[3], acc_num[3];
-    u8 cat_desc[7] = _("CAT: ");
-    u8 pwr_desc[7] = _("PWR: ");
-    u8 acc_desc[7] = _("ACC: ");
-    u8 cat_start[] = _("{CLEAR_TO 3}");
-    u8 pwr_start[] = _("{CLEAR_TO 56}");
-    u8 acc_start[] = _("{CLEAR_TO 108}");
-    LoadMessageBoxAndBorderGfx();
-    DrawStdWindowFrame(B_WIN_MOVE_DESCRIPTION, FALSE);
-    if (pwr < 2)
-        StringCopy(pwr_num, gText_BattleSwitchWhich5);
-    else
-        ConvertIntToDecimalStringN(pwr_num, pwr, STR_CONV_MODE_LEFT_ALIGN, 3);
-    if (acc < 2)
-        StringCopy(acc_num, gText_BattleSwitchWhich5);
-    else
-        ConvertIntToDecimalStringN(acc_num, acc, STR_CONV_MODE_LEFT_ALIGN, 3);
-    StringCopy(gDisplayedStringBattle, cat_start);
-    StringAppend(gDisplayedStringBattle, cat_desc);
-    StringAppend(gDisplayedStringBattle, pwr_start);
-    StringAppend(gDisplayedStringBattle, pwr_desc);
-    StringAppend(gDisplayedStringBattle, pwr_num);
-    StringAppend(gDisplayedStringBattle, acc_start);
-    StringAppend(gDisplayedStringBattle, acc_desc);
-    StringAppend(gDisplayedStringBattle, acc_num);
-    u8 *descStart = StringAppend(gDisplayedStringBattle, gText_NewLine);
-    u8 *descEnd = StringAppend(gDisplayedStringBattle, GetMoveDescription(move));
-    WrapFontIdToFit(descStart, descEnd, FONT_NORMAL, WindowWidthPx(B_WIN_MOVE_DESCRIPTION));
-    BattlePutTextOnWindow(gDisplayedStringBattle, B_WIN_MOVE_DESCRIPTION);
+    CopyToWindowPixelBuffer(win, gOrchidMoveInfoPanel_Gfx, ORCHID_MOVEINFO_WIN_W * ORCHID_MOVEINFO_WIN_H * TILE_SIZE_4BPP, 0);
+    AddTextPrinterParameterized4(win, FONT_NORMAL, ORCHID_MI_NAME_X, ORCHID_MI_NAME_Y, 0, 0, sNameColors, TEXT_SKIP_DRAW, GetMoveName(move));
+
+    // ACC then PWR, right to left: grey label + gold value ("-" like vanilla when < 2)
+    x = ORCHID_MI_VALUES_RIGHT;
+    for (i = 0; i < 2; i++)
+    {
+        if (values[i] < 2)
+            StringCopy(value, sDash);
+        else
+            ConvertIntToDecimalStringN(value, values[i], STR_CONV_MODE_LEFT_ALIGN, 3);
+        vw = GetStringWidth(FONT_SMALL, value, 0);
+        AddTextPrinterParameterized4(win, FONT_SMALL, x - vw, ORCHID_MI_VALUES_Y, 0, 0, sValueColors, TEXT_SKIP_DRAW, value);
+        lw = GetStringWidth(FONT_SMALL, labels[i], 0) + GetStringWidth(FONT_SMALL, gText_Space2, 0);
+        AddTextPrinterParameterized4(win, FONT_SMALL, x - vw - lw, ORCHID_MI_VALUES_Y, 0, 0, sLabelColors, TEXT_SKIP_DRAW, labels[i]);
+        x -= vw + lw + ORCHID_MI_VALUE_GAP;
+    }
+
+    // description re-wrapped to the panel (the data has line breaks for narrower boxes)
+    text = GetMoveDescription(move);
+    end = StringCopy(gDisplayedStringBattle, text);
+    for (i = 0; gDisplayedStringBattle + i < end; i++)
+    {
+        if (gDisplayedStringBattle[i] != CHAR_NEWLINE)
+            continue;
+        if (i > 0 && gDisplayedStringBattle[i - 1] == CHAR_HYPHEN)
+        {
+            // "full-\nbody" -> "full-body"
+            memmove(&gDisplayedStringBattle[i], &gDisplayedStringBattle[i + 1], end - &gDisplayedStringBattle[i]);
+            end--;
+            i--;
+        }
+        else
+        {
+            gDisplayedStringBattle[i] = CHAR_SPACE;
+        }
+    }
+    BreakStringAutomatic(gDisplayedStringBattle, ORCHID_MI_DESC_W, 2, FONT_NORMAL, HIDE_SCROLL_PROMPT);
+    // FONT_NORMAL advances 16 px per line; -2 gives the 14 px pitch (the u8 wraps)
+    AddTextPrinterParameterized4(win, FONT_NORMAL, ORCHID_MI_DESC_X, ORCHID_MI_DESC_Y, 0, (u8)-2, sOrchidTextColors, TEXT_SKIP_DRAW, gDisplayedStringBattle);
+
+    PutWindowTilemap(win);
+    CopyWindowToVram(win, COPYWIN_FULL);
 
     if (gCategoryIconSpriteId == 0xFF)
-        gCategoryIconSpriteId = CreateSprite(&gSpriteTemplate_CategoryIcons, 38, 64, 1);
-
+        gCategoryIconSpriteId = CreateSprite(&gSpriteTemplate_CategoryIcons, 0, 0, 0);
+    gSprites[gCategoryIconSpriteId].x = x - 14 + 8; // 16x16, centred; ends 6 px before "PWR"
+    gSprites[gCategoryIconSpriteId].y = ORCHID_MI_CAT_Y + 8;
     StartSpriteAnim(&gSprites[gCategoryIconSpriteId], cat);
 
-    CopyWindowToVram(B_WIN_MOVE_DESCRIPTION, COPYWIN_FULL);
+    sOrchidMoveInfoSlot = gMoveSelectionCursor[battler] + 1;
+}
+
+// Put the move pills back over the Move Info panel.
+static void OrchidCloseMoveInfo(void)
+{
+    u32 i;
+
+    for (i = 0; i < MAX_MON_MOVES; i++)
+        PutWindowTilemap(B_WIN_MOVE_NAME_1 + i);
+    CopyBgTilemapBufferToVram(0);
+    sOrchidMoveInfoSlot = 0;
 }
 
 void MoveSelectionCreateCursorAt(u8 cursorPosition, u8 baseTileNum)
 {
-    u16 src[2];
-    src[0] = baseTileNum + 1;
-    src[1] = baseTileNum + 2;
-
-    CopyToBgTilemapBufferRect_ChangePalette(0, src, 9 * (cursorPosition & 1) + 1, 55 + (cursorPosition & 2), 1, 2, 0x11);
-    CopyBgTilemapBufferToVram(0);
+    if (cursorPosition < MAX_MON_MOVES)
+        OrchidDrawMovePill(sOrchidMoveBattler, cursorPosition, TRUE);
 }
 
 void MoveSelectionDestroyCursorAt(u8 cursorPosition)
 {
-    u16 src[2];
-    src[0] = 0x1016;
-    src[1] = 0x1016;
-
-    CopyToBgTilemapBufferRect_ChangePalette(0, src, 9 * (cursorPosition & 1) + 1, 55 + (cursorPosition & 2), 1, 2, 0x11);
-    CopyBgTilemapBufferToVram(0);
+    if (cursorPosition < MAX_MON_MOVES)
+        OrchidDrawMovePill(sOrchidMoveBattler, cursorPosition, FALSE);
 }
 
 void ActionSelectionCreateCursorAt(u8 cursorPosition, u8 baseTileNum)
 {
-    u16 src[2];
-    src[0] = 1;
-    src[1] = 2;
-
-    CopyToBgTilemapBufferRect_ChangePalette(0, src, 7 * (cursorPosition & 1) + 16, 35 + (cursorPosition & 2), 1, 2, 0x11);
-    CopyBgTilemapBufferToVram(0);
+    OrchidDrawActionMenu(cursorPosition);
 }
 
 void ActionSelectionDestroyCursorAt(u8 cursorPosition)
 {
-    u16 src[2];
-    src[0] = 0x1016;
-    src[1] = 0x1016;
-
-    CopyToBgTilemapBufferRect_ChangePalette(0, src, 7 * (cursorPosition & 1) + 16, 35 + (cursorPosition & 2), 1, 2, 0x11);
-    CopyBgTilemapBufferToVram(0);
+    // nothing to erase: ActionSelectionCreateCursorAt redraws the whole button panel
 }
 
 void CB2_SetUpReshowBattleScreenAfterMenu(void)
@@ -2348,17 +2700,6 @@ static void PlayerHandleBattleDebug(enum BattlerId battler)
     gBattlerControllerFuncs[battler] = Controller_WaitForDebug;
 }
 
-// Order based numerically, with EFFECTIVENESS_CANNOT_VIEW at 0 to always prioritize any other effectiveness during comparison
-enum
-{
-    EFFECTIVENESS_CANNOT_VIEW,
-    EFFECTIVENESS_NO_EFFECT,
-    EFFECTIVENESS_MOSTLY_INEFFECTIVE,
-    EFFECTIVENESS_NOT_VERY_EFFECTIVE,
-    EFFECTIVENESS_NORMAL,
-    EFFECTIVENESS_SUPER_EFFECTIVE,
-    EFFECTIVENESS_EXTREMELY_EFFECTIVE,
-};
 
 static bool32 ShouldShowTypeEffectiveness(u32 targetId)
 {
@@ -2428,46 +2769,8 @@ static u32 CheckTargetTypeEffectiveness(enum BattlerId battler)
 
 static void MoveSelectionDisplayMoveEffectiveness(u32 foeEffectiveness, enum BattlerId battler)
 {
-    static const u8 noIcon[] =  _("");
-    static const u8 effectiveIcon[] =  _("{CIRCLE_HOLLOW}");
-    static const u8 extremeleyEffectiveIcon[] =  _("{STAR}");
-    static const u8 superEffectiveIcon[] =  _("{CIRCLE_DOT}");
-    static const u8 notVeryEffectiveIcon[] =  _("{TRIANGLE}");
-    static const u8 mostlyIneffectiveIcon[] =  _("{TRIANGLE_UPSIDE_DOWN}");
-    static const u8 immuneIcon[] =  _("{BIG_MULT_X}");
-    struct ChooseMoveStruct *moveInfo = (struct ChooseMoveStruct *)(&gBattleResources->bufferA[battler][4]);
-    u8 *txtPtr;
-
-    txtPtr = StringCopy(gDisplayedStringBattle, gText_MoveInterfacePP);
-
-    if (!IsBattleMoveStatus(moveInfo->moves[gMoveSelectionCursor[battler]]))
-    {
-        switch (foeEffectiveness)
-        {
-        case EFFECTIVENESS_EXTREMELY_EFFECTIVE:
-            StringCopy(txtPtr, extremeleyEffectiveIcon);
-            break;
-        case EFFECTIVENESS_SUPER_EFFECTIVE:
-            StringCopy(txtPtr, superEffectiveIcon);
-            break;
-        case EFFECTIVENESS_NOT_VERY_EFFECTIVE:
-            StringCopy(txtPtr, notVeryEffectiveIcon);
-            break;
-        case EFFECTIVENESS_MOSTLY_INEFFECTIVE:
-            StringCopy(txtPtr, mostlyIneffectiveIcon);
-            break;
-        case EFFECTIVENESS_NO_EFFECT:
-            StringCopy(txtPtr, immuneIcon);
-            break;
-        case EFFECTIVENESS_NORMAL:
-            StringCopy(txtPtr, effectiveIcon);
-            break;
-        default:
-        case EFFECTIVENESS_CANNOT_VIEW:
-            StringCopy(txtPtr, noIcon);
-            break;
-        }
-    }
-
-    BattlePutTextOnWindow(gDisplayedStringBattle, B_WIN_PP);
+    // Orchid UI: the mark is drawn on the selected pill, left of its PP notch
+    sOrchidEffectiveness = foeEffectiveness;
+    if (gMoveSelectionCursor[battler] < MAX_MON_MOVES && !gBattleStruct->zmove.viewing) // the Z view owns the pills
+        OrchidDrawMovePill(battler, gMoveSelectionCursor[battler], TRUE);
 }

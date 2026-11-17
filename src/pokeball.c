@@ -1,6 +1,7 @@
 #include "global.h"
 #include "battle.h"
 #include "battle_anim.h"
+#include "battle_interface.h"
 #include "decompress.h"
 #include "graphics.h"
 #include "main.h"
@@ -1328,7 +1329,7 @@ void StartHealthboxSlideIn(enum BattlerId battler)
 
     healthboxSprite->sSpeedX = 5;
     healthboxSprite->sSpeedY = 0;
-    healthboxSprite->x2 = 0x73;
+    healthboxSprite->x2 = IsOrchidStyleHealthbox(gHealthboxSpriteIds[battler]) ? 130 : 0x73; // Orchid boxes are wider
     healthboxSprite->y2 = 0;
     healthboxSprite->callback = SpriteCB_HealthboxSlideIn;
     if (!IsOnPlayerSide(battler))
