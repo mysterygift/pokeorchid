@@ -1961,6 +1961,9 @@ extern const u8 gOrchidSaveBall_Gfx[];
 extern const u8 gOrchidSaveSparkles_Gfx[];
 extern const u8 gOrchidSaveCard_Gfx[];
 extern const u8 gOrchidStartChips_Gfx[];
+extern const u8 gOrchidStartBanner_Gfx[];
+extern const u8 gOrchidPillCap_Gfx[];
+extern const u16 gOrchidStartObj_Pal[];
 
 // item menu icons graphics
 extern const u32 gBagMaleTiles[];

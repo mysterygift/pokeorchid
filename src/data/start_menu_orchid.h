@@ -54,4 +54,38 @@ static const u8 sOrchidSaveBallRock[OSM_ROCK_LEN] = {2, 3, 3, 3, 4, 4, 4, 4, 4, 
 // sparkles around the ball (mock_system.render_save): dx, dy, small
 static const s8 sOrchidSaveSparkles[3][3] = {{-5, -2, 0}, {17, -1, 1}, {16, 9, 0}};
 
+// start menu v2 (mock_start_v2.py, variant B): icon banner flush right, gold tab with the option name
+#define OSM2_PITCH        18
+#define OSM2_BAND         3
+#define OSM2_BW           25  // banner width on screen
+#define OSM2_X0           215  // banner left edge when docked
+#define OSM2_MAX_ENTRIES  9
+#define OSM2_ICON_DX      6  // icon x = banner x + this; the selected one 4 px further left, 1 px up
+#define OSM2_ICON_DY      4   // icon y = banner y + this + row * pitch
+#define OSM2_TAB_H        17
+#define OSM2_TAB_TEXT_DX  6
+#define OSM2_TAB_PAD      14  // tab left edge = banner x - (label width + 10) - 4
+#define OSM2_TAB_TAIL     33  // tab right edge = banner x + this (off-screen)
+#define OSM2_PILL_X       8
+#define OSM2_PILL_Y       9   // pill box top; text at y 8
+#define OSM2_PILL_PAD     27  // pill width = text width + this
+#define OSM2_PILL_TEXT_DX 20
+// palette roles of start_obj.pal (kit 'orchid')
+#define OSM2_INK           1
+#define OSM2_WHITE         3
+#define OSM2_PANEL         4
+#define OSM2_PANEL_SHADE   5
+#define OSM2_SELECT_DARK   11
+#define OSM2_SELECT        12
+#define OSM2_SELECT_LIGHT  13
+#define OSM2_SPARE_A       14
+#define OSM2_SPARE_B       15
+// banner.png: [entries - 1] = {tile offset, number of 32x64 OBJs}
+static const u16 sOrchidBannerLayout[OSM2_MAX_ENTRIES][2] = {{0, 1}, {32, 1}, {64, 1}, {96, 2}, {160, 2}, {224, 2}, {288, 3}, {384, 3}, {480, 3}};
+// slide: banner pushed right / pill pushed left, per frame (open ease-out 12 frames, close ease-in 8)
+#define OSM2_OPEN_FRAMES  12
+#define OSM2_CLOSE_FRAMES 8
+static const u8 sOrchidSlideOpen[13][2] = {{73, 104}, {56, 80}, {42, 60}, {31, 44}, {22, 31}, {14, 21}, {9, 13}, {5, 8}, {3, 4}, {1, 2}, {0, 0}, {0, 0}, {0, 0}};
+static const u8 sOrchidSlideClose[9][2] = {{0, 0}, {1, 2}, {5, 6}, {10, 15}, {18, 26}, {29, 41}, {41, 58}, {56, 80}, {73, 104}};
+
 #endif // GUARD_DATA_START_MENU_ORCHID_H

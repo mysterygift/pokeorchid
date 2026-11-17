@@ -1879,6 +1879,9 @@ const u8 gOrchidSaveBall_Gfx[] = INCGFX_U8("graphics/start_menu/saving_ball.png"
 const u8 gOrchidSaveSparkles_Gfx[] = INCGFX_U8("graphics/start_menu/sparkles.png", ".4bpp");
 const u8 gOrchidSaveCard_Gfx[] = INCGFX_U8("graphics/start_menu/save_card.png", ".4bpp");
 const u8 gOrchidStartChips_Gfx[] = INCGFX_U8("graphics/start_menu/chips.png", ".4bpp");
+const u8 gOrchidStartBanner_Gfx[] = INCGFX_U8("graphics/start_menu/banner.png", ".4bpp");
+const u8 gOrchidPillCap_Gfx[] = INCGFX_U8("graphics/start_menu/pill_cap.png", ".4bpp");
+const u16 gOrchidStartObj_Pal[] = INCGFX_U16("graphics/start_menu/start_obj.pal", ".gbapal");
 
 const u32 gBattlePyramidBag_Gfx[]          = INCGFX_U32("graphics/bag/bag_pyramid.png", ".4bpp.smol");
 const u16 gBattlePyramidBag_Pal[]          = INCGFX_U16("graphics/bag/bag_pyramid.pal", ".gbapal"); // female palette is first and male is second.
