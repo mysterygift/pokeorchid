@@ -29,6 +29,7 @@
       "flag": "0"
     },
     {
+      "local_id": "LOCALID_COLD_STORAGE_GRUNT_1",
       "graphics_id": "OBJ_EVENT_GFX_AQUA_MEMBER_M",
       "x": 11,
       "y": 19,
@@ -39,9 +40,10 @@
       "trainer_type": "TRAINER_TYPE_NORMAL",
       "trainer_sight_or_berry_tree_id": "2",
       "script": "ColdStorageTest_EventScript_Grunt1",
-      "flag": "0"
+      "flag": "FLAG_HIDE_COLD_STORAGE_GRUNTS"
     },
     {
+      "local_id": "LOCALID_COLD_STORAGE_GRUNT_2",
       "graphics_id": "OBJ_EVENT_GFX_AQUA_MEMBER_F",
       "x": 3,
       "y": 18,
@@ -52,9 +54,10 @@
       "trainer_type": "TRAINER_TYPE_NORMAL",
       "trainer_sight_or_berry_tree_id": "1",
       "script": "ColdStorageTest_EventScript_Grunt2",
-      "flag": "0"
+      "flag": "FLAG_HIDE_COLD_STORAGE_GRUNTS"
     },
     {
+      "local_id": "LOCALID_COLD_STORAGE_GRUNT_3",
       "graphics_id": "OBJ_EVENT_GFX_AQUA_MEMBER_M",
       "x": 4,
       "y": 24,
@@ -65,9 +68,10 @@
       "trainer_type": "TRAINER_TYPE_NORMAL",
       "trainer_sight_or_berry_tree_id": "3",
       "script": "ColdStorageTest_EventScript_Grunt3",
-      "flag": "0"
+      "flag": "FLAG_HIDE_COLD_STORAGE_GRUNTS"
     },
     {
+      "local_id": "LOCALID_COLD_STORAGE_GRUNT_4",
       "graphics_id": "OBJ_EVENT_GFX_AQUA_MEMBER_F",
       "x": 18,
       "y": 13,
@@ -78,7 +82,7 @@
       "trainer_type": "TRAINER_TYPE_NORMAL",
       "trainer_sight_or_berry_tree_id": "2",
       "script": "ColdStorageTest_EventScript_Grunt4",
-      "flag": "0"
+      "flag": "FLAG_HIDE_COLD_STORAGE_GRUNTS"
     },
     {
       "local_id": "LOCALID_COLD_STORAGE_LEADER",
@@ -120,7 +124,7 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "ColdStorageTest_EventScript_Haru",
-      "flag": "0"
+      "flag": "FLAG_HIDE_COLD_STORAGE_HARU"
     },
     {
       "graphics_id": "OBJ_EVENT_GFX_ITEM_BALL",
