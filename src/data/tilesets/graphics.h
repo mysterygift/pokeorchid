@@ -506,6 +506,28 @@ const u16 gTilesetPalettes_UrbanInterior[][16] =
     INCGFX_U16("data/tilesets/secondary/urban_interior/palettes/15.pal", ".gbapal"),
 };
 
+const u32 gTilesetTiles_HawkerCentre[] = INCGFX_U32("data/tilesets/secondary/hawker_centre/tiles.png", ".4bpp.fastSmol");
+
+const u16 gTilesetPalettes_HawkerCentre[][16] =
+{
+    INCGFX_U16("data/tilesets/secondary/hawker_centre/palettes/00.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/hawker_centre/palettes/01.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/hawker_centre/palettes/02.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/hawker_centre/palettes/03.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/hawker_centre/palettes/04.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/hawker_centre/palettes/05.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/hawker_centre/palettes/06.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/hawker_centre/palettes/07.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/hawker_centre/palettes/08.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/hawker_centre/palettes/09.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/hawker_centre/palettes/10.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/hawker_centre/palettes/11.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/hawker_centre/palettes/12.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/hawker_centre/palettes/13.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/hawker_centre/palettes/14.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/hawker_centre/palettes/15.pal", ".gbapal"),
+};
+
 const u32 gTilesetTiles_PokemonFanClub[] = INCGFX_U32("data/tilesets/secondary/pokemon_fan_club/tiles.png", ".4bpp.fastSmol", "-num_tiles 319 -Wnum_tiles");
 
 const u16 gTilesetPalettes_PokemonFanClub[][16] =
