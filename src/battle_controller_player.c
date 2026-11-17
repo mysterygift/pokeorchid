@@ -97,6 +97,8 @@ static void PrintLinkStandbyMsg(void);
 
 static void ReloadMoveNames(enum BattlerId battler);
 static u32 CheckTypeEffectiveness(enum BattlerId battlerAtk, enum BattlerId battlerDef);
+static u32 CheckMoveTypeEffectiveness(enum BattlerId battlerAtk, enum BattlerId battlerDef, enum Move move);
+static u32 OrchidMoveEffectiveness(enum BattlerId battler, enum Move move);
 static u32 CheckTargetTypeEffectiveness(enum BattlerId battler);
 static void MoveSelectionDisplayMoveEffectiveness(u32 foeEffectiveness, enum BattlerId battler);
 
@@ -257,7 +259,6 @@ enum
 #define ORCHID_PAGE_MOVES   (DISPLAY_HEIGHT * 2)
 
 static EWRAM_DATA u8 sOrchidMoveBattler = 0;
-static EWRAM_DATA u8 sOrchidEffectiveness = 0;
 static EWRAM_DATA u8 sOrchidTypeIconIds[MAX_MON_MOVES] = {0};
 static EWRAM_DATA u8 sOrchidMoveInfoSlot = 0; // 1 + move slot whose Move Info panel is open, 0 = closed
 static void OrchidCloseMoveInfo(void);
@@ -489,8 +490,9 @@ static void OrchidSetTypeIcons(enum BattlerId battler)
     OrchidSetTypeIconsTo(types);
 }
 
-// Ink PP notch in the pill's bottom edge with "PP cur/max" in the text_pp colours; returns its left x.
-static s32 OrchidDrawPPNotch(u32 win, s32 ox, s32 oy, bool32 selected, u32 cur, u32 max)
+// Ink PP notch in the pill's bottom edge with "PP cur/max" in the text_pp colours. With a type
+// effectiveness mark the notch grows 10 px to the left and the mark sits in gold before "PP".
+static void OrchidDrawPPNotch(u32 win, s32 ox, s32 oy, bool32 selected, u32 cur, u32 max, const u8 *mark)
 {
     static const u8 sPPLabel[] = _("PP");
     static const u8 sPPSpace[] = _("PP ");
@@ -500,12 +502,13 @@ static s32 OrchidDrawPPNotch(u32 win, s32 ox, s32 oy, bool32 selected, u32 cur, 
     u32 face = selected ? ORCHID_COL_SELECT : ORCHID_COL_PANEL;
     s32 tw, px, nx0, nx1;
 
+
     ptr = ConvertIntToDecimalStringN(text, cur, STR_CONV_MODE_LEFT_ALIGN, 2);
     *ptr++ = CHAR_SLASH;
     ConvertIntToDecimalStringN(ptr, max, STR_CONV_MODE_LEFT_ALIGN, 2);
     tw = GetStringWidth(FONT_SMALL, sPPSpace, 0) + GetStringWidth(FONT_SMALL, text, 0);
     px = ox + ORCHID_MOVE_W - 9 - tw;
-    nx0 = px - 4;
+    nx0 = px - 4 - (mark != NULL ? 10 : 0);
     nx1 = ox + ORCHID_MOVE_W - 5;
     // top corners rounded off with the face colour
     FillWindowPixelRect(win, ORCHID_COL_INK, nx0, oy + 12, nx1 - nx0 + 1, ORCHID_MOVE_H - 12);
@@ -514,7 +517,11 @@ static s32 OrchidDrawPPNotch(u32 win, s32 ox, s32 oy, bool32 selected, u32 cur, 
     AddTextPrinterParameterized4(win, FONT_SMALL, px, oy + 9, 0, 0, colors, TEXT_SKIP_DRAW, sPPLabel);
     colors[1] = sPPColorIds[GetCurrentPPToMaxPPState(cur, max) & 3];
     AddTextPrinterParameterized4(win, FONT_SMALL, px + GetStringWidth(FONT_SMALL, sPPSpace, 0), oy + 9, 0, 0, colors, TEXT_SKIP_DRAW, text);
-    return nx0;
+    if (mark != NULL)
+    {
+        colors[1] = ORCHID_COL_SELECT_LIGHT;
+        AddTextPrinterParameterized4(win, FONT_SMALL, nx0 + 3, oy + 9, 0, 0, colors, TEXT_SKIP_DRAW, mark);
+    }
 }
 
 // Z-Move view (battle_z_move.c): the Z-Move on the first, gold pill with its type icon and PP 1/1,
@@ -538,7 +545,7 @@ void OrchidDisplayZMove(enum BattlerId battler, enum Move zmove, const u8 *name,
             AddTextPrinterParameterized4(win, fontId, ox + ORCHID_MOVE_NAME_DX, oy + ORCHID_MOVE_NAME_DY, 0, 0, sOrchidTextColors, TEXT_SKIP_DRAW, text);
         }
         if (i == 0 && gBattleResources->bufferA[battler][2] != TRUE)
-            OrchidDrawPPNotch(win, ox, oy, TRUE, 1, 1);
+            OrchidDrawPPNotch(win, ox, oy, TRUE, 1, 1, NULL);
         PutWindowTilemap(win);
         CopyWindowToVram(win, COPYWIN_FULL);
     }
@@ -568,20 +575,18 @@ static void OrchidDrawMovePill(enum BattlerId battler, u32 slot, bool32 selected
 
         if (gBattleResources->bufferA[battler][2] != TRUE) // PP numbers shown
         {
-            s32 nx0 = OrchidDrawPPNotch(win, ox, oy, selected, moveInfo->currentPP[slot], moveInfo->maxPP[slot]);
+            static const u8 sMarkStar[] = _("{STAR}");
+            static const u8 sMarkDot[] = _("{CIRCLE_DOT}");
+            static const u8 sMarkTri[] = _("{TRIANGLE}");
+            static const u8 sMarkTriDown[] = _("{TRIANGLE_UPSIDE_DOWN}");
+            static const u8 sMarkX[] = _("{BIG_MULT_X}");
+            static const u8 sMarkCircle[] = _("{CIRCLE_HOLLOW}");
+            const u8 *mark = NULL;
 
-            // type effectiveness mark (B_SHOW_EFFECTIVENESS) on the selected pill, left of the notch
-            if (selected && sOrchidEffectiveness != EFFECTIVENESS_CANNOT_VIEW && !IsBattleMoveStatus(move))
+            // type effectiveness mark (B_SHOW_EFFECTIVENESS) on every damaging move's pill
+            if (B_SHOW_EFFECTIVENESS && !IsBattleMoveStatus(move))
             {
-                static const u8 sMarkStar[] = _("{STAR}");
-                static const u8 sMarkDot[] = _("{CIRCLE_DOT}");
-                static const u8 sMarkTri[] = _("{TRIANGLE}");
-                static const u8 sMarkTriDown[] = _("{TRIANGLE_UPSIDE_DOWN}");
-                static const u8 sMarkX[] = _("{BIG_MULT_X}");
-                static const u8 sMarkCircle[] = _("{CIRCLE_HOLLOW}");
-                const u8 *mark = NULL;
-
-                switch (sOrchidEffectiveness)
+                switch (OrchidMoveEffectiveness(battler, move))
                 {
                 case EFFECTIVENESS_EXTREMELY_EFFECTIVE: mark = sMarkStar; break;
                 case EFFECTIVENESS_SUPER_EFFECTIVE:     mark = sMarkDot; break;
@@ -591,10 +596,8 @@ static void OrchidDrawMovePill(enum BattlerId battler, u32 slot, bool32 selected
                 case EFFECTIVENESS_NORMAL:              mark = sMarkCircle; break;
                 default: break;
                 }
-                if (mark != NULL)
-                    AddTextPrinterParameterized4(win, FONT_NORMAL, nx0 - 3 - GetStringWidth(FONT_NORMAL, mark, 0), oy + 8,
-                                                 0, 0, sOrchidTextColors, TEXT_SKIP_DRAW, mark);
             }
+            OrchidDrawPPNotch(win, ox, oy, selected, moveInfo->currentPP[slot], moveInfo->maxPP[slot], mark);
         }
     }
     CopyWindowToVram(win, COPYWIN_GFX); // tilemap is put once in MoveSelectionDisplayMoveNames
@@ -799,6 +802,10 @@ void HandleInputChooseTarget(enum BattlerId battler)
             gBattleStruct->gimmick.playerSelect = 0;
             gBattleStruct->zmove.viewing = TRUE;
             ReloadMoveNames(battler);
+        }
+        else if (B_SHOW_EFFECTIVENESS) // Orchid UI: marks back from the target to the foe
+        {
+            MoveSelectionDisplayMoveEffectiveness(CheckTargetTypeEffectiveness(battler), battler);
         }
         TryToAddMoveInfoWindow();
         DoBounceEffect(battler, BOUNCE_HEALTHBOX, 7, 1);
@@ -2099,8 +2106,17 @@ static void MoveSelectionDisplayMoveDescription(enum BattlerId battler)
 
     if (GetActiveGimmick(battler) == GIMMICK_DYNAMAX || IsGimmickSelected(battler, GIMMICK_DYNAMAX))
     {
-        pwr = GetMaxMovePower(move, move);
+        // status moves become Max Guard, which has no power ("-" like any status move)
+        pwr = IsBattleMoveStatus(move) ? 0 : GetMaxMovePower(move, move);
         move = GetMaxMove(battler, move);
+        acc = 0;
+    }
+    else if (gBattleStruct->zmove.viewing && !IsBattleMoveStatus(move)
+             && GetUsableZMove(battler, move) != MOVE_NONE)
+    {
+        // the Z view describes the Z-Move it shows (status Z-Moves keep the base move)
+        pwr = GetZMovePower(move);
+        move = GetUsableZMove(battler, move);
         acc = 0;
     }
     values[0] = acc;
@@ -2718,10 +2734,16 @@ static bool32 ShouldShowTypeEffectiveness(u32 targetId)
 static u32 CheckTypeEffectiveness(enum BattlerId battlerAtk, enum BattlerId battlerDef)
 {
     struct ChooseMoveStruct *moveInfo = (struct ChooseMoveStruct *)(&gBattleResources->bufferA[battlerAtk][4]);
+
+    return CheckMoveTypeEffectiveness(battlerAtk, battlerDef, moveInfo->moves[gMoveSelectionCursor[battlerAtk]]);
+}
+
+static u32 CheckMoveTypeEffectiveness(enum BattlerId battlerAtk, enum BattlerId battlerDef, enum Move move)
+{
     struct DamageContext ctx = {0};
     ctx.battlerAtk = battlerAtk;
     ctx.battlerDef = battlerDef;
-    ctx.move = moveInfo->moves[gMoveSelectionCursor[battlerAtk]];
+    ctx.move = move;
     ctx.moveType = CheckDynamicMoveType(GetBattlerMon(battlerAtk), ctx.move, battlerAtk, MON_IN_BATTLE);
     ctx.updateFlags = FALSE;
     ctx.weather = GetWeather();
@@ -2751,13 +2773,26 @@ static u32 CheckTypeEffectiveness(enum BattlerId battlerAtk, enum BattlerId batt
 
 static u32 CheckTargetTypeEffectiveness(enum BattlerId battler)
 {
-    enum BattlerId battlerFoe = GetOppositeBattler(battler);
-    u32 foeEffectiveness = CheckTypeEffectiveness(battler, battlerFoe);
+    struct ChooseMoveStruct *moveInfo = (struct ChooseMoveStruct *)(&gBattleResources->bufferA[battler][4]);
 
+    return OrchidMoveEffectiveness(battler, moveInfo->moves[gMoveSelectionCursor[battler]]);
+}
+
+// Orchid UI: effectiveness of any move slot. While a target is picked it is against that target,
+// otherwise against the foe (in doubles the better of the two, like CheckTargetTypeEffectiveness).
+static u32 OrchidMoveEffectiveness(enum BattlerId battler, enum Move move)
+{
+    enum BattlerId battlerFoe = GetOppositeBattler(battler);
+    u32 foeEffectiveness;
+
+    if (gBattlerControllerFuncs[battler] == HandleInputChooseTarget)
+        return CheckMoveTypeEffectiveness(battler, gMultiUsePlayerCursor, move);
+
+    foeEffectiveness = CheckMoveTypeEffectiveness(battler, battlerFoe, move);
     if (IsDoubleBattle())
     {
         enum BattlerId partnerFoe = GetPartnerBattler(battlerFoe);
-        u32 partnerFoeEffectiveness = CheckTypeEffectiveness(battler, partnerFoe);
+        u32 partnerFoeEffectiveness = CheckMoveTypeEffectiveness(battler, partnerFoe, move);
         if (!IsBattlerAlive(battlerFoe))
             return partnerFoeEffectiveness;
         if (IsBattlerAlive(battlerFoe) && IsBattlerAlive(partnerFoe)
@@ -2769,8 +2804,14 @@ static u32 CheckTargetTypeEffectiveness(enum BattlerId battler)
 
 static void MoveSelectionDisplayMoveEffectiveness(u32 foeEffectiveness, enum BattlerId battler)
 {
-    // Orchid UI: the mark is drawn on the selected pill, left of its PP notch
-    sOrchidEffectiveness = foeEffectiveness;
-    if (gMoveSelectionCursor[battler] < MAX_MON_MOVES && !gBattleStruct->zmove.viewing) // the Z view owns the pills
-        OrchidDrawMovePill(battler, gMoveSelectionCursor[battler], TRUE);
+    u32 i;
+
+    // Orchid UI: every pill carries its own mark (OrchidDrawMovePill works it out), so redraw them
+    // all when the target may have changed. The Z view owns the pills, also while its target is
+    // picked (viewing is cleared by then).
+    if (gBattleStruct->zmove.viewing
+        || (gBattleStruct->gimmick.playerSelect && gBattleStruct->gimmick.usableGimmick[battler] == GIMMICK_Z_MOVE))
+        return;
+    for (i = 0; i < gNumberOfMovesToChoose && i < MAX_MON_MOVES; i++)
+        OrchidDrawMovePill(battler, i, i == gMoveSelectionCursor[battler]);
 }

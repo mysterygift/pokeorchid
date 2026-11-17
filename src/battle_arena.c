@@ -562,50 +562,13 @@ static void BufferArenaOpponentName(void)
     GetFrontierTrainerName(gStringVar1, TRAINER_BATTLE_PARAM.opponentA);
 }
 
+// Orchid UI: the referee speaks in the tray's own message panel (ARENA_WIN_JUDGMENT_TEXT sits on
+// B_WIN_MSG with the same tiles and palette), so there is no separate box to draw or erase; the
+// vanilla box tiles would land on the tray's.
 void DrawArenaRefereeTextBox(void)
 {
-    u8 width = 27;
-    u8 palNum = 7;
-
-    FillBgTilemapBufferRect(0, 0,    254, 14, 1,  6, palNum);
-    FillBgTilemapBufferRect(0, 0,    32,  14, 1,  6, palNum);
-    FillBgTilemapBufferRect(0, 0x31, 0,   14, 1,  1, palNum);
-    FillBgTilemapBufferRect(0, 0x33, 1,   14, 1,  1, palNum);
-    FillBgTilemapBufferRect(0, 0x34, 2,   14, width, 1, palNum);
-    width++;
-    FillBgTilemapBufferRect(0, 0x35, 28,  14, 1,  1, palNum);
-    FillBgTilemapBufferRect(0, 0x36, 29,  14, 1,  1, palNum);
-    FillBgTilemapBufferRect(0, 0x37, 0,   15, 1,  5, palNum);
-    FillBgTilemapBufferRect(0, 0x39, 1,   15, width, 5, palNum);
-    FillBgTilemapBufferRect(0, 0x3A, 29,  15, 1,  5, palNum);
-    FillBgTilemapBufferRect(0, 0x831, 0,  19, 1,  1, palNum);
-    FillBgTilemapBufferRect(0, 0x833, 1,  19, 1,  1, palNum);
-    FillBgTilemapBufferRect(0, 0x834, 2,  19, width - 2, 1, palNum);
-    FillBgTilemapBufferRect(0, 0x835, 28, 19, 1,  1, palNum);
-    FillBgTilemapBufferRect(0, 0x836, 29, 19, 1,  1, palNum);
 }
 
 void EraseArenaRefereeTextBox(void)
 {
-    u8 width;
-    u8 height;
-    u8 palNum = 0;
-
-    FillBgTilemapBufferRect(0, 3, 0, 14, 1, 1, palNum);
-    height = 4;
-    FillBgTilemapBufferRect(0, 4, 1, 14, 1, 1, palNum);
-    width = 27;
-    FillBgTilemapBufferRect(0, 5, 2, 14, width, 1, palNum);
-    FillBgTilemapBufferRect(0, 6, 28, 14, 1, 1, palNum);
-    FillBgTilemapBufferRect(0, 7, 29, 14, 1, 1, palNum);
-    FillBgTilemapBufferRect(0, 8, 0, 15, 1, height, palNum);
-    FillBgTilemapBufferRect(0, 9, 1, 15, 1, height, palNum);
-    FillBgTilemapBufferRect(0, 0xA, 2, 15, width, height, palNum);
-    FillBgTilemapBufferRect(0, 0xB, 28, 15, 1, height, palNum);
-    FillBgTilemapBufferRect(0, 0xC, 29, 15, 1, height, palNum);
-    FillBgTilemapBufferRect(0, 0xD, 0, 19, 1, 1, palNum);
-    FillBgTilemapBufferRect(0, 0xE, 1, 19, 1, 1, palNum);
-    FillBgTilemapBufferRect(0, 0xF, 2, 19, width, 1, palNum);
-    FillBgTilemapBufferRect(0, 0x10, 28, 19, 1, 1, palNum);
-    FillBgTilemapBufferRect(0, 0x11, 29, 19, 1, 1, palNum);
 }
