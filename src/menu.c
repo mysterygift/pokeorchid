@@ -657,6 +657,14 @@ void HofPCTopBar_RemoveWindow(void)
     }
 }
 
+// The Orchid YES/NO owns the menu only if the init right after CreateOrchidYesNoMenu is for its window;
+// any other menu init turns it off, so multichoice / list menus always keep their ▶.
+static void OrchidYesNo_OnMenuInit(u8 windowId)
+{
+    sOrchidYesNo.active = sOrchidYesNo.pending && windowId == sOrchidYesNo.windowId;
+    sOrchidYesNo.pending = FALSE;
+}
+
 static u8 InitMenu(u8 windowId, u8 fontId, u8 left, u8 top, u8 cursorHeight, u8 numChoices, u8 initialCursorPos, bool8 muteAPress)
 {
     s32 pos;
@@ -669,8 +677,7 @@ static u8 InitMenu(u8 windowId, u8 fontId, u8 left, u8 top, u8 cursorHeight, u8 
     sMenu.fontId = fontId;
     sMenu.optionHeight = cursorHeight;
     sMenu.APressMuted = muteAPress;
-    sOrchidYesNo.active = sOrchidYesNo.pending && windowId == sOrchidYesNo.windowId;
-    sOrchidYesNo.pending = FALSE;
+    OrchidYesNo_OnMenuInit(windowId);
 
     pos = initialCursorPos;
 
@@ -1195,6 +1202,7 @@ static u8 InitMenuGrid(u8 windowId, u8 fontId, u8 left, u8 top, u8 optionWidth, 
     sMenu.minCursorPos = 0;
     sMenu.maxCursorPos = numChoices - 1;
     sMenu.windowId = windowId;
+    OrchidYesNo_OnMenuInit(windowId);
     sMenu.fontId = fontId;
     sMenu.optionWidth = optionWidth;
     sMenu.optionHeight = optionHeight;
@@ -1477,6 +1485,7 @@ u8 InitMenuInUpperLeftCorner(u8 windowId, u8 itemCount, u8 initialCursorPos, boo
     sMenu.fontId = FONT_NORMAL;
     sMenu.optionHeight = 16;
     sMenu.APressMuted = APressMuted;
+    OrchidYesNo_OnMenuInit(windowId);
 
     pos = initialCursorPos;
 
@@ -1611,6 +1620,7 @@ u8 InitMenuActionGrid(u8 windowId, u8 optionWidth, u8 columns, u8 rows, u8 initi
     sMenu.minCursorPos = 0;
     sMenu.maxCursorPos = (columns * rows) - 1;
     sMenu.windowId = windowId;
+    OrchidYesNo_OnMenuInit(windowId);
     sMenu.fontId = FONT_NORMAL;
     sMenu.optionWidth = optionWidth;
     sMenu.optionHeight = 16;
