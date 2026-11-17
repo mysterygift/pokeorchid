@@ -1775,6 +1775,10 @@ const u16 gOrchidActionIcons_Pal[] = INCGFX_U16("graphics/battle_interface/orchi
 const u32 gOrchidLineupBars_Gfx[] = INCGFX_U32("graphics/battle_interface/orchid_lineup_bars.png", ".4bpp", "-mwidth 4 -mheight 2");
 const u32 gOrchidLineupBalls_Gfx[] = INCGFX_U32("graphics/battle_interface/orchid_lineup_balls.png", ".4bpp");
 const u16 gOrchidLineupBalls_Pal[] = INCGFX_U16("graphics/battle_interface/orchid_lineup_balls.png", ".gbapal");
+// Orchid UI: party (dev_scripts/orchid_ui/export_party.py)
+const u32 gOrchidPartySlots_Gfx[] = INCGFX_U32("graphics/party_menu/orchid_slots.png", ".4bpp");
+const u32 gOrchidPartyButtons_Gfx[] = INCGFX_U32("graphics/party_menu/orchid_buttons.png", ".4bpp");
+const u32 gOrchidPartyGrid_Gfx[] = INCGFX_U32("graphics/party_menu/orchid_grid.png", ".4bpp");
 const u8 gSatchelRing_Gfx[] = INCGFX_U8("graphics/bag/satchel_ring.png", ".4bpp");
 const u8 gSatchelThumb_Gfx[] = INCGFX_U8("graphics/bag/satchel_thumb.png", ".4bpp");
 const u8 gSatchelArrow_Gfx[] = INCGFX_U8("graphics/bag/satchel_arrow.png", ".4bpp");

@@ -1821,6 +1821,10 @@ extern const u16 gOrchidActionIcons_Pal[];
 extern const u32 gOrchidLineupBars_Gfx[];
 extern const u32 gOrchidLineupBalls_Gfx[];
 extern const u16 gOrchidLineupBalls_Pal[];
+// Orchid UI: party
+extern const u32 gOrchidPartySlots_Gfx[];
+extern const u32 gOrchidPartyButtons_Gfx[];
+extern const u32 gOrchidPartyGrid_Gfx[];
 extern const u8 gSatchelRing_Gfx[];
 extern const u8 gSatchelThumb_Gfx[];
 extern const u8 gSatchelArrow_Gfx[];

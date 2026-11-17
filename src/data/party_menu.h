@@ -27,6 +27,15 @@ static const struct BgTemplate sPartyMenuBgTemplates[] =
         .priority = 0,
         .baseTile = 0
     },
+    { // Orchid: scrolling grid backdrop
+        .bg = 3,
+        .charBaseIndex = 2,
+        .mapBaseIndex = 27,
+        .screenSize = 0,
+        .paletteMode = 0,
+        .priority = 3,
+        .baseTile = 0
+    },
 };
 
 static const struct PartyMenuBoxInfoRects sPartyBoxInfoRects[] =
@@ -528,7 +537,7 @@ static const struct WindowTemplate sDoWhatWithMonMsgWindowTemplate =
     .bg = 2,
     .tilemapLeft = 1,
     .tilemapTop = 17,
-    .width = 16,
+    .width = 18, // Orchid: was 16, fits "Do what with this <name>?"
     .height = 2,
     .paletteNum = 15,
     .baseBlock = 0x279,
@@ -1175,6 +1184,57 @@ const struct SpriteTemplate gSpriteTemplate_StatusIcons =
     .paletteTag = TAG_STATUS_ICONS,
     .oam = &sOamData_StatusCondition,
     .anims = sSpriteTemplate_StatusCondition,
+};
+
+// Orchid: shared status pictogram tags (graphics/interface/orchid_status_icons.png, 16x16 frames,
+// order = enum OrchidStatusIcon), one shared palette.
+static const struct OamData sOamData_OrchidStatus =
+{
+    .affineMode = ST_OAM_AFFINE_OFF,
+    .objMode = ST_OAM_OBJ_NORMAL,
+    .bpp = ST_OAM_4BPP,
+    .shape = SPRITE_SHAPE(16x16),
+    .size = SPRITE_SIZE(16x16),
+    .priority = 1,
+};
+
+#define ORCHID_STATUS_ANIM(n) static const union AnimCmd sAnim_OrchidStatus##n[] = {ANIMCMD_FRAME((n) * 4, 0), ANIMCMD_END};
+ORCHID_STATUS_ANIM(0)
+ORCHID_STATUS_ANIM(1)
+ORCHID_STATUS_ANIM(2)
+ORCHID_STATUS_ANIM(3)
+ORCHID_STATUS_ANIM(4)
+ORCHID_STATUS_ANIM(5)
+ORCHID_STATUS_ANIM(6)
+ORCHID_STATUS_ANIM(7)
+ORCHID_STATUS_ANIM(8)
+#undef ORCHID_STATUS_ANIM
+
+static const union AnimCmd *const sAnims_OrchidStatus[ORCHID_STATUS_COUNT] =
+{
+    sAnim_OrchidStatus0, sAnim_OrchidStatus1, sAnim_OrchidStatus2, sAnim_OrchidStatus3, sAnim_OrchidStatus4,
+    sAnim_OrchidStatus5, sAnim_OrchidStatus6, sAnim_OrchidStatus7, sAnim_OrchidStatus8,
+};
+
+static const struct CompressedSpriteSheet sSpriteSheet_OrchidStatus =
+{
+    gOrchidStatusIcons_Gfx, ORCHID_STATUS_COUNT * 16 * 16 / 2, TAG_ORCHID_STATUS
+};
+
+static const struct SpritePalette sSpritePalette_OrchidStatus =
+{
+    gOrchidStatusIcons_Pal, TAG_ORCHID_STATUS
+};
+
+static const struct SpriteTemplate sSpriteTemplate_OrchidStatus =
+{
+    .tileTag = TAG_ORCHID_STATUS,
+    .paletteTag = TAG_ORCHID_STATUS,
+    .oam = &sOamData_OrchidStatus,
+    .anims = sAnims_OrchidStatus,
+    .images = NULL,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallbackDummy,
 };
 
 static const u8 *const sUnused_StatStrings[] =
