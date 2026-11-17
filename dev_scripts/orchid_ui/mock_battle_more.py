@@ -382,6 +382,115 @@ def dynamax_sheet():
     return sheet
 
 
+# ================================================================== Safari action pictograms (proposal)
+SAFARI_SILHOUETTES = {
+    "safari_ball": [      # Safari Ball: camo-hatched top half, band + button, plain lower half
+        "....XXXXXX....",
+        "..XX.XX.XX.X..",
+        ".X.XX.XX.XX.X.",
+        ".XX.XX.XX.XX..",
+        "X.XX.XX.XX.XXX",
+        "XXXXX....XXXXX",
+        ".....X..X.....",
+        "XXXXX....XXXXX",
+        "XXXXXXXXXXXXXX",
+        ".XXXXXXXXXXXX.",
+        "..XXXXXXXXXX..",
+        "....XXXXXX....",
+    ],
+    "block": [            # PokéBlock: isometric cube, a Y of gaps splits the three faces
+        "....XX....",
+        "..XXXXXX..",
+        "XXXXXXXXXX",
+        "X..XXXX..X",
+        "XXX.XX.XXX",
+        "XXXX..XXXX",
+        "XXXX..XXXX",
+        "XXXX..XXXX",
+        ".XXX..XXX.",
+        "...X..X...",
+    ],
+    "go_near": [          # two footprints, stepping forward (up-right)
+        "......XX.",
+        ".....XXXX",
+        ".....XXXX",
+        "XX...XXXX",
+        "XXX...XX.",
+        "XXX......",
+        "XXX...XX.",
+        ".X....XX.",
+        "XX.......",
+        "XX.......",
+    ],
+}
+SAFARI_COL = ["green", "yellow", "red", "blue"]      # BALL / BLOCK / GO NEAR / RUN (same 4 ramps)
+
+
+def _safari_field(cv, x, y, w, h, colour, icon, r=3):
+    rounded_box(cv, x, y, w, h, r, M.btn_idx(colour, 1), 1, M.btn_idx(colour, 0), M.btn_idx(colour, 2))
+    rows = SAFARI_SILHOUETTES.get(icon) or BX.SILHOUETTES[icon]
+    pw, ph = len(rows[0]) + 1, len(rows) + 1
+    BX.silhouette(cv, x + (w - pw + 1) // 2, y + (h - ph + 1) // 2, rows, 2, M.btn_idx(colour, 2))
+
+
+def safari_tray(cursor, proposed):
+    out = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    bg = M.p_sheet(W, H, M.UI_PAL)
+    cv = Canvas(bg)
+    M.draw_tray(cv)
+    M.msg_panel(cv, 2, 126)
+    draw_text(cv, M.MSG_X, M.MSG_Y, "What will\nBRENDAN do?", INK, PANEL_SHADE)
+    M.comp(out, bg)
+    win = M.p_sheet(W, H, M.MENU_PAL)
+    saved = (M.ACTIONS, M.draw_text)
+    M.ACTIONS = ["BALL", "BLOCK", "GO NEAR", "RUN"]
+    def dt(cv_, x_, y_, s_, fg, sh, font="normal", **k):
+        if s_ == "FIGHT":
+            x_ += (text_width("FIGHT") - text_width("BALL")) // 2
+            s_ = "BALL"
+        return draw_text(cv_, x_, y_, s_, fg, sh, font=font, **k)
+    M.draw_text = dt
+    try:
+        M.draw_action(Canvas(win), cursor)
+    finally:
+        M.ACTIONS, M.draw_text = saved
+    M.comp(out, win)
+    if proposed:
+        im = M.p_sheet(W, H, M.BTN_PAL)
+        fc = Canvas(im)
+        _safari_field(fc, *M.FIGHT_FIELD, "green", "safari_ball", r=4)
+        icons = ["block", "go_near", "run"]
+        for i in range(3):
+            x, y, w, h = M.side_rect(i)
+            _safari_field(fc, x, y, M.SIDE_FIELD_W, h, SAFARI_COL[i + 1], icons[i])
+        M.comp(out, im)
+    else:
+        M.button_fields(out)
+    sky = Image.new("RGBA", (W, H), (28, 28, 36, 255))
+    sky.alpha_composite(out)
+    return sky.crop((0, M.TRAY - 2, W, H))
+
+
+def safari_icons_sheet():
+    S = 4
+    th = H - (M.TRAY - 2)
+    rows = [("current (FIGHT / BAG / POKéMON pictograms)", [safari_tray(c, False) for c in (0, 1)]),
+            ("proposed: Safari Ball (green), PokéBlock cube (yellow), footprints (red), RUN shoe kept (blue)",
+             [safari_tray(c, True) for c in (0, 1)]),
+            ("proposed, GO NEAR / RUN selected", [safari_tray(c, True) for c in (2, 3)])]
+    sheet = Image.new("RGBA", (16 + 2 * (W + 16) + 2 * (120 * S + 16), 16 + len(rows) * (th * S + 30)), (28, 28, 36, 255))
+    d = ImageDraw.Draw(sheet)
+    y = 8
+    for label, ims in rows:
+        d.text((16, y), label + "   (1x left, 4x right: right half of the tray)", fill=(240, 220, 150))
+        for i, im in enumerate(ims):
+            sheet.alpha_composite(im, (16 + i * (W + 16), y + 16))
+            sheet.alpha_composite(K.upscale(im.crop((120, 0, 240, th)), S), (16 + 2 * (W + 16) + i * (120 * S + 16), y + 16))
+        y += th * S + 30
+    d.text((16, y - 10), "Same 32x32 / 16x16 icon-field OBJ and the same BTN_PAL ramps (no extra palette); Safari loads its own 28-tile sheet instead of the standard one.", fill=(200, 200, 210))
+    return sheet
+
+
 if __name__ == "__main__":
     OUT = sys.argv[1]
     os.makedirs(OUT, exist_ok=True)
@@ -389,4 +498,5 @@ if __name__ == "__main__":
     safari_sheet().save(os.path.join(OUT, "safari_mock.png"))
     triggers_sheet().save(os.path.join(OUT, "triggers_mock.png"))
     dynamax_sheet().save(os.path.join(OUT, "dynamax_hp_mock.png"))
+    safari_icons_sheet().save(os.path.join(OUT, "safari_icons_mock.png"))
     print("ok")
