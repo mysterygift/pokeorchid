@@ -79,6 +79,7 @@ enum
     SPRITE_ARR_ID_CATEGORY,
     SPRITE_ARR_ID_ARROW_L,
     SPRITE_ARR_ID_ARROW_R,
+    SPRITE_ARR_ID_SHINY,
     SPRITE_ARR_ID_TYPE, // 2 for mon types, 5 for move types (4 moves and 1 to learn)
     SPRITE_ARR_ID_COUNT = SPRITE_ARR_ID_TYPE + TYPE_ICON_SPRITE_COUNT
 };
@@ -134,10 +135,10 @@ enum
 #define OSUM_C_PP_QUARTER OSUM_C_SPARE_A
 #define OSUM_C_PP_EMPTY   OSUM_C_SPARE_B
 // BG palette 5 (bars): healthbar ramps
-#define OSUM_BAR_GREEN   4
-#define OSUM_BAR_YELLOW  6
-#define OSUM_BAR_RED     8
-#define OSUM_BAR_EXP     10
+#define OSUM_RAMP_GREEN   4
+#define OSUM_RAMP_YELLOW  6
+#define OSUM_RAMP_RED    8
+#define OSUM_RAMP_EXP    10
 
 #define TAG_MOVE_TYPES       30002
 #define TAG_CATEGORY_ICONS   30004
@@ -145,6 +146,7 @@ enum
 #define TAG_OSUM_CATEGORY    30006
 #define TAG_OSUM_ARROW       30007
 #define TAG_OSUM_ITEM        30008
+#define TAG_OSUM_STAR        30009
 
 static EWRAM_DATA struct PokemonSummaryScreenData
 {
@@ -345,6 +347,21 @@ static const struct SpriteTemplate sSpriteTemplate_OSumArrow =
     .paletteTag = TAG_OSUM_ARROW,
     .oam = &sOamData_OSum8x16,
     .anims = sAnims_OSumArrow,
+    .images = NULL,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallbackDummy,
+};
+
+// Shiny star in the dais band (summary_extras.py)
+static const struct SpriteSheet sSpriteSheet_OSumStar = {gOrchidSummaryShinyStar_Gfx, 16 * 16 / 2, TAG_OSUM_STAR};
+static const struct SpritePalette sSpritePal_OSumStar = {gOrchidSummaryShinyStar_Pal, TAG_OSUM_STAR};
+
+static const struct SpriteTemplate sSpriteTemplate_OSumStar =
+{
+    .tileTag = TAG_OSUM_STAR,
+    .paletteTag = TAG_OSUM_STAR,
+    .oam = &sOamData_OSum16x16,
+    .anims = gDummySpriteAnimTable,
     .images = NULL,
     .affineAnims = gDummySpriteAffineAnimTable,
     .callback = SpriteCallbackDummy,
@@ -985,6 +1002,8 @@ static bool8 DecompressGraphics(void)
         LoadSpritePalette(&sSpritePal_OSumCategory);
         LoadSpriteSheet(&sSpriteSheet_OSumArrow);
         LoadSpritePalette(&sSpritePal_OSumArrow);
+        LoadSpriteSheet(&sSpriteSheet_OSumStar);
+        LoadSpritePalette(&sSpritePal_OSumStar);
         sMonSummaryScreen->switchCounter = 0;
         return TRUE;
     }
@@ -1581,7 +1600,7 @@ static void OSum_PaintBars(void)
             if (fill == 0)
                 fill = 1;
         }
-        i = fill > 24 ? OSUM_BAR_GREEN : (fill > 9 ? OSUM_BAR_YELLOW : OSUM_BAR_RED);
+        i = fill > 24 ? OSUM_RAMP_GREEN : (fill > 9 ? OSUM_RAMP_YELLOW : OSUM_RAMP_RED);
         OSum_PaintBar(OSUM_BAR_HP, fill, i, i + 1);
     }
     else
@@ -1609,7 +1628,7 @@ static void OSum_PaintBars(void)
         if (sum->exp > lo && hi > lo)
             fill = OSum_RoundDiv(OSUM_BAR_W * (sum->exp - lo), hi - lo);
     }
-    OSum_PaintBar(OSUM_BAR_EXP, fill, OSUM_BAR_EXP, OSUM_BAR_EXP + 1);
+    OSum_PaintBar(OSUM_BAR_EXP, fill, OSUM_RAMP_EXP, OSUM_RAMP_EXP + 1);
 }
 
 static u32 OSum_HeaderId(void)
@@ -1795,6 +1814,26 @@ static void OSum_FormatThousands(u8 *dst, u32 value)
     *dst = EOS;
 }
 
+// Markings (circle, square, triangle, heart) in the No. pill: set = ACCENT_DARK, unset = PANEL_SHADE
+static void OSum_DrawMarkings(u32 markings)
+{
+    u32 i, x, y;
+
+    for (i = 0; i < ARRAY_COUNT(sOSumMarks); i++)
+    {
+        u8 c = (markings & (1 << i)) ? OSUM_MARK_ON : OSUM_MARK_OFF;
+
+        for (y = 0; y < OSUM_MARK_SIZE; y++)
+        {
+            for (x = 0; x < OSUM_MARK_SIZE; x++)
+            {
+                if (sOSumMarks[i][y] & (1 << (OSUM_MARK_SIZE - 1 - x)))
+                    OSum_Fill(OSUM_WIN_LEFT, OSUM_MARK_X0 + i * OSUM_MARK_PITCH + x, OSUM_MARK_Y + y, 1, 1, c);
+            }
+        }
+    }
+}
+
 // Left column: name + Lv (name pill), dex number + held item
 static void OSum_PrintLeft(void)
 {
@@ -1833,6 +1872,7 @@ static void OSum_PrintLeft(void)
             ConvertIntToDecimalStringN(gStringVar1, dexNum, STR_CONV_MODE_LEADING_ZEROS, digitCount);
             OSum_PrintRight(OSUM_WIN_LEFT, FONT_NORMAL, gStringVar1, OSUM_LX + OSUM_LW - 6, OSUM_NO_Y - 1, OSUM_C_INK, OSUM_C_PANEL_SHADE);
         }
+        OSum_DrawMarkings(GetMonData(mon, MON_DATA_MARKINGS));
         if (sum->item == ITEM_ENIGMA_BERRY_E_READER && IsMultiBattle() == TRUE
          && (sMonSummaryScreen->curMonIndex == 1 || sMonSummaryScreen->curMonIndex == 4 || sMonSummaryScreen->curMonIndex == 5))
         {
@@ -1840,7 +1880,7 @@ static void OSum_PrintLeft(void)
         }
         else if (sum->item == ITEM_NONE)
         {
-            item = gText_None;
+            item = COMPOUND_STRING("None");
         }
         else
         {
@@ -2030,7 +2070,9 @@ static void OSum_PrintSkillsPage(void)
     {
         ConvertIntToDecimalStringN(gStringVar1, OSum_IvEvValue(STAT_HP), STR_CONV_MODE_LEFT_ALIGN, 3);
     }
-    OSum_PrintRight(OSUM_WIN_PAGE, FONT_NORMAL, gStringVar1, right, y - 1, OSUM_C_INK, OSUM_C_PANEL_SHADE);
+    // keep 3-digit HP clear of the bar (outline ends at x 191): narrow font if it would touch
+    k = GetStringWidth(FONT_NORMAL, gStringVar1, 0) + OSUM_RX + OSUM_CAP + 6 + OSUM_BAR_W + 2 + 2 <= right ? FONT_NORMAL : FONT_NARROW;
+    OSum_PrintRight(OSUM_WIN_PAGE, k, gStringVar1, right, y - 1, OSUM_C_INK, OSUM_C_PANEL_SHADE);
 
     for (k = 0; k < ARRAY_COUNT(sOSumStatOrder); k++)
     {
@@ -2724,6 +2766,8 @@ static void OSum_CreateUiSprites(void)
     ids[SPRITE_ARR_ID_ARROW_R] = CreateSprite(&sSpriteTemplate_OSumArrow, OSUM_ARROW_R_X, OSUM_ARROW_Y, 0);
     // sprite->hFlip is XORed into the OAM flip bits by the anim code
     gSprites[ids[SPRITE_ARR_ID_ARROW_R]].hFlip = TRUE;
+    ids[SPRITE_ARR_ID_SHINY] = CreateSprite(&sSpriteTemplate_OSumStar, OSUM_STAR_X, OSUM_STAR_Y, 0);
+    gSprites[ids[SPRITE_ARR_ID_SHINY]].invisible = TRUE;
 }
 
 // Chevrons (not on eggs or the "Forget which move?" header), held item (not under the tray)
@@ -2735,6 +2779,7 @@ static void OSum_UpdateLeftSprites(void)
     SetSpriteInvisibility(SPRITE_ARR_ID_ARROW_L, !arrows);
     SetSpriteInvisibility(SPRITE_ARR_ID_ARROW_R, !arrows);
     SetSpriteInvisibility(SPRITE_ARR_ID_ITEM, tray);
+    SetSpriteInvisibility(SPRITE_ARR_ID_SHINY, !sMonSummaryScreen->summary.isShiny || sMonSummaryScreen->summary.isEgg);
 }
 
 // Held item icon in the item row's disc well (24x24 icon at the 32x32 sprite's top-left)
