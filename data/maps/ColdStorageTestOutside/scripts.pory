@@ -1,5 +1,6 @@
-// Outdoor half of the Cold Storage test: a scrap of Tosa Port with the new exterior tiles
-// (appended to gTileset_Slateport) and the animated sliding door.
+// A scrap of Tosa Port with the Cold Storage exterior tiles (appended to gTileset_Slateport) and the
+// animated sliding door. One-way now: the door leads inside, but the interior's exit goes to the
+// real building on Tosa Port.
 
 mapscripts ColdStorageTestOutside_MapScripts {}
 

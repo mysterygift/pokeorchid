@@ -101,7 +101,7 @@
     },
     {
       "graphics_id": "OBJ_EVENT_GFX_SAILOR",
-      "x": 27,
+      "x": 26,
       "y": 10,
       "elevation": 0,
       "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
@@ -313,6 +313,13 @@
       "elevation": 0,
       "dest_map": "MAP_TOSA_PORT_BRENDANS_HOUSE_1F",
       "dest_warp_id": "2"
+    },
+    {
+      "x": 27,
+      "y": 9,
+      "elevation": 0,
+      "dest_map": "MAP_COLD_STORAGE_TEST",
+      "dest_warp_id": "0"
     }
   ],
   "coord_events": [

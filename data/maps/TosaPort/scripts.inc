@@ -792,8 +792,8 @@ TosaPort_Tuber_Text_0:
 
 TosaPort_ColdStorageGuard_Text_0:
 # 353 "data/maps/TosaPort/scripts.pory"
-	.string "Sorry pal, but the site's currently\n"
-	.string "closed.$"
+	.string "The site's open, pal, but mind your\n"
+	.string "step. The floor in there is solid ice.$"
 
 TosaPort_Martin_Text_0:
 # 362 "data/maps/TosaPort/scripts.pory"

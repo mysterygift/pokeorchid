@@ -167,15 +167,15 @@
       "x": 10,
       "y": 39,
       "elevation": 0,
-      "dest_map": "MAP_COLD_STORAGE_TEST_OUTSIDE",
-      "dest_warp_id": "0"
+      "dest_map": "MAP_TOSA_PORT",
+      "dest_warp_id": "4"
     },
     {
       "x": 11,
       "y": 39,
       "elevation": 0,
-      "dest_map": "MAP_COLD_STORAGE_TEST_OUTSIDE",
-      "dest_warp_id": "0"
+      "dest_map": "MAP_TOSA_PORT",
+      "dest_warp_id": "4"
     }
   ],
   "coord_events": [
