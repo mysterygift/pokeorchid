@@ -2403,13 +2403,13 @@ void AnimTask_HideSwapSprite(u8 taskId)
 void AnimTask_HideOpponentShadows(u8 taskId)
 {
     enum BattlerId battlerLeft = GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT);
-    gSprites[gBattleSpritesDataPtr->healthBoxesData[battlerLeft].shadowSpriteIdPrimary].callback = SpriteCB_SetInvisible;
-    gSprites[gBattleSpritesDataPtr->healthBoxesData[battlerLeft].shadowSpriteIdSecondary].callback = SpriteCB_SetInvisible;
+    HideShadowSprite(gBattleSpritesDataPtr->healthBoxesData[battlerLeft].shadowSpriteIdPrimary);
+    HideShadowSprite(gBattleSpritesDataPtr->healthBoxesData[battlerLeft].shadowSpriteIdSecondary);
     if (IsDoubleBattle())
     {
         enum BattlerId battlerRight = GetBattlerAtPosition(B_POSITION_OPPONENT_RIGHT);
-        gSprites[gBattleSpritesDataPtr->healthBoxesData[battlerRight].shadowSpriteIdPrimary].callback = SpriteCB_SetInvisible;
-        gSprites[gBattleSpritesDataPtr->healthBoxesData[battlerRight].shadowSpriteIdSecondary].callback = SpriteCB_SetInvisible;
+        HideShadowSprite(gBattleSpritesDataPtr->healthBoxesData[battlerRight].shadowSpriteIdPrimary);
+        HideShadowSprite(gBattleSpritesDataPtr->healthBoxesData[battlerRight].shadowSpriteIdSecondary);
     }
     DestroyAnimVisualTask(taskId);
 }
