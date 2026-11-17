@@ -4,7 +4,7 @@
 #define GUARD_DATA_PARTY_MENU_ORCHID_H
 
 #define ORCHID_SLOT_NUM_TILES   57
-#define ORCHID_BUTTON_NUM_TILES 25   // BG1 tiles incl. blank tile 0
+#define ORCHID_BUTTON_NUM_TILES 37   // BG1 tiles incl. blank tile 0
 
 // Slot palette roles (kit.py): text and fills index these in the slot window palettes.
 #define ORCHID_COL_INK           1
@@ -60,8 +60,9 @@
 #define ORCHID_LEAD_TAG_Y       38
 #define ORCHID_WIDE_TAG_R       138  // wide: right edge (x + w <= this), top y below
 #define ORCHID_WIDE_TAG_Y       5
-#define ORCHID_SMALL_DIGIT_W    5
-#define ORCHID_SMALL_SLASH_W    5
+// HP numbers use FONT_SMALL_NARROWER (party_ext.HP_FONT)
+#define ORCHID_HP_DIGIT_W       4
+#define ORCHID_HP_SLASH_W       4
 
 // Slot art tilemaps (tile indices into orchid_slots.png), row-major.
 static const u8 sOrchidSlotLead[2][10 * 7] = {
@@ -75,7 +76,9 @@ static const u8 sOrchidSlotWide[2][18 * 3] = {
 
 // BG1 6x2 button tilemaps (tile + flip bits; palette set at runtime).
 static const u16 sOrchidCancelButton[6 * 2] = {0x0001, 0x0002, 0x0003, 0x0004, 0x0005, 0x0006, 0x0007, 0x0008, 0x0009, 0x000A, 0x000B, 0x000C};
+// Choose-half pair: CONFIRM (24,16) drawn 1px up, CANCEL (24,18) drawn 1px down -> 4px gap.
 static const u16 sOrchidConfirmButton[6 * 2] = {0x000D, 0x000E, 0x000F, 0x0010, 0x0011, 0x0012, 0x0013, 0x0014, 0x0015, 0x0016, 0x0017, 0x0018};
+static const u16 sOrchidCancelButtonLow[6 * 2] = {0x0019, 0x001A, 0x001B, 0x001C, 0x001D, 0x001E, 0x001F, 0x0020, 0x0021, 0x0022, 0x0023, 0x0024};
 
 enum { ORCHID_SLOT_NORMAL, ORCHID_SLOT_SELECTED, ORCHID_SLOT_MOVING, ORCHID_SLOT_MOVING_SEL,
        ORCHID_SLOT_FAINTED, ORCHID_SLOT_FAINTED_SEL, ORCHID_SLOT_PARTNER, ORCHID_SLOT_PARTNER_SEL,

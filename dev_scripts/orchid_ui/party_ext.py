@@ -23,6 +23,11 @@ from PIL import Image
 from kit import *
 import kit_ext as KX
 from gamefont import draw_text, text_width, _font
+import gamefont as _G
+
+# FONT_SMALL_NARROWER (4px digits), used for the HP numbers (approved follow-up, hp3_mock.png)
+_G._FONTS.setdefault("small_narrower", ("latin_small_narrower.png", "gFontSmallNarrowerLatinGlyphWidths"))
+HP_FONT = "small_narrower"
 
 NAME_FG, NAME_SH, HP_LIGHT, HP_DARK = SELECT_DARK, SELECT, SPARE_A, SPARE_B
 from battle_ext import NAME_MALE, NAME_FEMALE
@@ -132,12 +137,12 @@ def sp_width(s, font="small"):
 
 def draw_hp_numbers(cv, xr, y, hp, maxhp):
     a, b = hp_text(hp, maxhp)
-    x = xr - sp_width(a + b)
+    x = xr - sp_width(a + b, HP_FONT)
     for ch in a + b:
         if ch == " ":
-            x += text_width("0", "small")
+            x += text_width("0", HP_FONT)
             continue
-        x = draw_text(cv, x, y, ch, INK, PANEL_SHADE, font="small")
+        x = draw_text(cv, x, y, ch, INK, PANEL_SHADE, font=HP_FONT)
 
 
 # ---------------------------------------------------------------- slot art

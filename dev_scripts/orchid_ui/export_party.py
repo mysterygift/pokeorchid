@@ -73,19 +73,23 @@ def export_slots():
 
 
 # ---------------------------------------------------------------- BG1 buttons (CANCEL / CONFIRM pills)
-def button_art(label):
+def button_art(label, font="normal", dy=0):
+    """48x16 pill cell (pill rows 1..14). dy shifts the art inside the cell: the choose-half pair is
+    CONFIRM 1px up + CANCEL 1px down, a 4px gap (approved follow-up, confirm_mock.png)."""
     im = new_sheet(48, 16, "male")
     cv = Canvas(im)
-    rounded_box(cv, 1, 1, 46, 14, 4, PANEL, INK, WHITE, PANEL_SHADE)
-    draw_text(cv, 24 - text_width(label) // 2, -1, label, INK, PANEL_SHADE)
+    rounded_box(cv, 1, 1 + dy, 46, 14, 4, PANEL, INK, WHITE, PANEL_SHADE)
+    draw_text(cv, 24 - text_width(label, font) // 2, -1 + dy, label, INK, PANEL_SHADE, font=font)
     return im
 
 
 def export_buttons():
     tiles = [tuple([0] * 64)]
     maps = {}
-    for key, label in (("cancel", "CANCEL"), ("confirm", "CONFIRM")):
-        tiles, tm = to_tiles(button_art(label), dedupe=True, flips=True, base=tiles)
+    for key, label, font, dy in (("cancel", "CANCEL", "normal", 0),
+                                 ("confirm", "CONFIRM", "narrow", -1),   # choose-half: above CANCEL
+                                 ("cancel_low", "CANCEL", "normal", 1)): # choose-half: below CONFIRM
+        tiles, tm = to_tiles(button_art(label, font, dy), dedupe=True, flips=True, base=tiles)
         maps[key] = [t[0] | (t[1] << 10) | (t[2] << 11) for t in tm]
     sheet = tiles_to_image(tiles, new_sheet(8, 8, "male"))
     save_indexed(sheet, OUT("graphics", "party_menu", "orchid_buttons.png"), palette("male"))
@@ -160,13 +164,14 @@ def write_header(n_slot, slot_maps, n_btn, btn_maps):
     A("#define ORCHID_LEAD_TAG_Y       38")
     A("#define ORCHID_WIDE_TAG_R       138  // wide: right edge (x + w <= this), top y below")
     A("#define ORCHID_WIDE_TAG_Y       5")
-    _, widths = _font("small")
+    _, widths = _font(P.HP_FONT)
     from gamefont import _charmap
     cm = _charmap()
     dws = {widths[cm[d]] for d in "0123456789"}
     assert len(dws) == 1, dws
-    A("#define ORCHID_SMALL_DIGIT_W    %d" % dws.pop())
-    A("#define ORCHID_SMALL_SLASH_W    %d" % widths[cm["/"]])
+    A("// HP numbers use FONT_SMALL_NARROWER (party_ext.HP_FONT)")
+    A("#define ORCHID_HP_DIGIT_W       %d" % dws.pop())
+    A("#define ORCHID_HP_SLASH_W       %d" % widths[cm["/"]])
     A("")
     A("// Slot art tilemaps (tile indices into orchid_slots.png), row-major.")
     A("static const u8 sOrchidSlotLead[2][10 * 7] = {")
@@ -180,7 +185,9 @@ def write_header(n_slot, slot_maps, n_btn, btn_maps):
     A("")
     A("// BG1 6x2 button tilemaps (tile + flip bits; palette set at runtime).")
     A("static const u16 sOrchidCancelButton[6 * 2] = {" + ", ".join("0x%04X" % v for v in btn_maps["cancel"]) + "};")
+    A("// Choose-half pair: CONFIRM (24,16) drawn 1px up, CANCEL (24,18) drawn 1px down -> 4px gap.")
     A("static const u16 sOrchidConfirmButton[6 * 2] = {" + ", ".join("0x%04X" % v for v in btn_maps["confirm"]) + "};")
+    A("static const u16 sOrchidCancelButtonLow[6 * 2] = {" + ", ".join("0x%04X" % v for v in btn_maps["cancel_low"]) + "};")
     A("")
     A("enum { ORCHID_SLOT_NORMAL, ORCHID_SLOT_SELECTED, ORCHID_SLOT_MOVING, ORCHID_SLOT_MOVING_SEL,")
     A("       ORCHID_SLOT_FAINTED, ORCHID_SLOT_FAINTED_SEL, ORCHID_SLOT_PARTNER, ORCHID_SLOT_PARTNER_SEL,")
