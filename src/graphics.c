@@ -1846,6 +1846,12 @@ const u8 gOrchidShopCoin_Gfx[] = INCGFX_U8("graphics/shop/orchid/coin.png", ".4b
 const u16 gOrchidShopObj_Pal[] = INCGFX_U16("graphics/shop/orchid/obj.pal", ".gbapal");
 const u8 gOrchidShopTmDiscs_Gfx[] = INCGFX_U8("graphics/shop/orchid/tm_discs.png", ".4bpp");
 
+// Orchid UI: trainer card (dev_scripts/orchid_ui/export_card.py)
+const u8 gOrchidCardTiles_Gfx[] = INCGFX_U8("graphics/trainer_card/orchid/tiles.png", ".4bpp");
+const u8 gOrchidCardBadges_Gfx[] = INCGFX_U8("graphics/trainer_card/orchid/badges.png", ".4bpp");
+const u16 gOrchidCardBadges_Pal[] = INCGFX_U16("graphics/trainer_card/orchid/badges.png", ".gbapal");
+const u16 gOrchidCard_Pal[] = INCGFX_U16("graphics/trainer_card/orchid/card.pal", ".gbapal");
+
 const u32 gBattlePyramidBag_Gfx[]          = INCGFX_U32("graphics/bag/bag_pyramid.png", ".4bpp.smol");
 const u16 gBattlePyramidBag_Pal[]          = INCGFX_U16("graphics/bag/bag_pyramid.pal", ".gbapal"); // female palette is first and male is second.
 const u32 gBattlePyramidBagTilemap[]       = INCGFX_U32("graphics/bag/menu_pyramid.bin", ".smolTM");

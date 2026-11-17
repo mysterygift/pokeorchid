@@ -33,6 +33,7 @@
 #include "constants/rgb.h"
 #include "constants/trainers.h"
 #include "constants/union_room.h"
+#include "data/trainer_card_orchid.h"
 
 enum {
     WIN_MSG,
@@ -90,6 +91,12 @@ struct TrainerCardData
     u16 bgTilemapBuffer[0x1000];
     u16 cardTop;
     u8 language;
+    // Orchid card (export_card.py): the player's own card outside the Union Room
+    bool8 orchid;
+    u8 gridTimer;
+    u8 orchidNumRows;
+    u8 orchidRows[OCARD_BACK_MAX_ROWS];
+    u8 orchidRowValue[OCARD_BACK_MAX_ROWS][24];
 };
 
 // EWRAM
@@ -167,6 +174,15 @@ static bool8 Task_AnimateCardFlipUp(struct Task *task);
 static bool8 Task_EndCardFlip(struct Task *task);
 static void UpdateCardFlipRegs(u16);
 static void LoadMonIconGfx(void);
+static void OrchidCard_InitRows(void);
+static void OrchidCard_BuildTilemaps(void);
+static void OrchidCard_BufferBackRows(void);
+static bool8 OrchidCard_PrintFront(void);
+static bool8 OrchidCard_PrintBack(void);
+static void OrchidCard_PrintTime(void);
+static void OrchidCard_DrawGrid(void);
+static void OrchidCard_DrawBadges(void);
+static void FillCardTilemapBuffer(u16 *ptr);
 
 static const u32 sTrainerCardStickers_Gfx[]      = INCGFX_U32("graphics/trainer_card/frlg/stickers.png", ".4bpp.smol");
 static const u16 sUnused_Pal[]                   = INCGFX_U16("graphics/trainer_card/unused.pal", ".gbapal");
@@ -317,6 +333,100 @@ static const u8 sTrainerPicFacilityClass[][GENDER_COUNT] =
     }
 };
 
+// ---------------------------------------------------------------- Orchid card
+// Approved Orchid design (dev_scripts/orchid_ui/mock_card.py); art and layout from export_card.py.
+// BG0 card art (charblock 0), BG1 card text (charblock 2), BG2 scrolling grid (charblock 0),
+// BG3 earned badges + trainer pic (charblock 1). Link cards and the FRLG card keep the vanilla path.
+static const struct BgTemplate sOrchidCardBgTemplates[4] =
+{
+    {.bg = 0, .charBaseIndex = 0, .mapBaseIndex = 27, .screenSize = 2, .paletteMode = 0, .priority = 2, .baseTile = 0},
+    {.bg = 1, .charBaseIndex = 2, .mapBaseIndex = 29, .screenSize = 0, .paletteMode = 0, .priority = 0, .baseTile = 0},
+    {.bg = 2, .charBaseIndex = 0, .mapBaseIndex = 30, .screenSize = 0, .paletteMode = 0, .priority = 3, .baseTile = 0},
+    {.bg = 3, .charBaseIndex = 1, .mapBaseIndex = 31, .screenSize = 0, .paletteMode = 0, .priority = 1, .baseTile = 0},
+};
+
+static const struct WindowTemplate sOrchidCardWindowTemplates[] =
+{
+    [WIN_MSG] = {
+        .bg = 1,
+        .tilemapLeft = 2,
+        .tilemapTop = 15,
+        .width = 27,
+        .height = 4,
+        .paletteNum = 15,
+        .baseBlock = 0x253,
+    },
+    [WIN_CARD_TEXT] = {
+        .bg = 1,
+        .tilemapLeft = OCARD_TEXT_WIN_X,
+        .tilemapTop = OCARD_TEXT_WIN_Y,
+        .width = 28,
+        .height = 18,
+        .paletteNum = OCARD_PAL_CARD,
+        .baseBlock = 0x1,
+    },
+    [WIN_TRAINER_PIC] = {
+        .bg = 3,
+        .tilemapLeft = OCARD_PIC_WIN_X,
+        .tilemapTop = OCARD_PIC_WIN_Y,
+        .width = OCARD_PIC_WIN_W,
+        .height = OCARD_PIC_WIN_H,
+        .paletteNum = OCARD_PAL_PIC,
+        .baseBlock = OCARD_PIC_BASE_BLOCK,
+    },
+    DUMMY_WIN_TEMPLATE
+};
+
+// Card palette roles (kit.py): 1 INK, 3 WHITE, 5 PANEL_SHADE, 14/15 gender name colour
+static const u8 sOrchidCardInkColors[] = {TEXT_COLOR_TRANSPARENT, 1, 5};
+static const u8 sOrchidCardWhiteColors[] = {TEXT_COLOR_TRANSPARENT, 3, 1};
+static const u8 sOrchidCardNameColors[] = {TEXT_COLOR_TRANSPARENT, 14, 15};
+
+static const u8 sText_OrchidTrainerCard[] = _("TRAINER CARD");
+static const u8 sText_OrchidUnionRoom[] = _("UNION ROOM");
+static const u8 sText_OrchidContestsWFriends[] = _("CONTESTS W/FRIENDS");
+static const u8 sText_OrchidWinsLosses[] = _("W:{STR_VAR_1}  L:{STR_VAR_2}");
+static const u8 sText_OrchidNumBP[] = _("{STR_VAR_1}BP");
+
+// Back rows, in the order they are listed (only non-zero rows are shown, up to OCARD_BACK_MAX_ROWS)
+enum {
+    OCARD_ROW_HOF,
+    OCARD_ROW_LINK,
+    OCARD_ROW_TRADES,
+    OCARD_ROW_UNION,
+    OCARD_ROW_BERRY_CRUSH,
+    OCARD_ROW_CONTESTS,
+    OCARD_ROW_POKEBLOCKS,
+    OCARD_ROW_BATTLE_POINTS,
+    OCARD_ROW_COUNT,
+};
+
+static const u8 *const sOrchidCardRowLabels[OCARD_ROW_COUNT] =
+{
+    [OCARD_ROW_HOF]           = gText_HallOfFameDebut,
+    [OCARD_ROW_LINK]          = gText_LinkBattles,
+    [OCARD_ROW_TRADES]        = gText_PokemonTrades,
+    [OCARD_ROW_UNION]         = sText_OrchidUnionRoom,
+    [OCARD_ROW_BERRY_CRUSH]   = gText_BerryCrush,
+    [OCARD_ROW_CONTESTS]      = sText_OrchidContestsWFriends,
+    [OCARD_ROW_POKEBLOCKS]    = gText_PokeblocksWithFriends,
+    [OCARD_ROW_BATTLE_POINTS] = gText_BattlePtsWon,
+};
+
+// Pokéblocks and Battle Points have no icon of their own in the approved mock yet: they borrow
+// the berry and the trophy.
+static const u8 sOrchidCardRowIcons[OCARD_ROW_COUNT] =
+{
+    [OCARD_ROW_HOF]           = OCARD_ICON_HOF,
+    [OCARD_ROW_LINK]          = OCARD_ICON_LINK,
+    [OCARD_ROW_TRADES]        = OCARD_ICON_TRADE,
+    [OCARD_ROW_UNION]         = OCARD_ICON_UNION,
+    [OCARD_ROW_BERRY_CRUSH]   = OCARD_ICON_BERRY,
+    [OCARD_ROW_CONTESTS]      = OCARD_ICON_CONTEST,
+    [OCARD_ROW_POKEBLOCKS]    = OCARD_ICON_BERRY,
+    [OCARD_ROW_BATTLE_POINTS] = OCARD_ICON_HOF,
+};
+
 static bool8 (*const sTrainerCardFlipTasks[])(struct Task *) =
 {
     Task_BeginCardFlip,
@@ -346,11 +456,24 @@ static void HblankCb_TrainerCard(void)
     REG_IME = 0;
     bgVOffset = gScanlineEffectRegBuffers[1][REG_VCOUNT & 0xFF];
     REG_BG0VOFS = bgVOffset;
+    if (sData->orchid)
+    {
+        // Orchid: the text and the badges / trainer pic fold with the card art
+        REG_BG1VOFS = bgVOffset;
+        REG_BG3VOFS = bgVOffset;
+    }
     REG_IME = backup;
 }
 
 static void CB2_TrainerCard(void)
 {
+    // Orchid grid backdrop (BG2) scrolls diagonally down-right, 1px every 4 frames.
+    // Before RunTasks: closing the card frees sData.
+    if (sData->orchid && (++sData->gridTimer & 3) == 0)
+    {
+        ChangeBgX(2, 1 << 8, BG_COORD_SUB);
+        ChangeBgY(2, 1 << 8, BG_COORD_SUB);
+    }
     RunTasks();
     AnimateSprites();
     BuildOamBuffer();
@@ -531,6 +654,12 @@ static void Task_TrainerCard(u8 taskId)
 
 static bool8 LoadCardGfx(void)
 {
+    if (sData->orchid)
+    {
+        // Orchid tiles are loaded straight from ROM in SetCardBgsAndPals
+        OrchidCard_BuildTilemaps();
+        return TRUE;
+    }
     switch (sData->gfxLoadState)
     {
     case 0:
@@ -613,7 +742,8 @@ static void CB2_InitTrainerCard(void)
         gMain.state++;
         break;
     case 5:
-        LoadMonIconGfx();
+        if (!sData->orchid)
+            LoadMonIconGfx();
         gMain.state++;
         break;
     case 6:
@@ -621,7 +751,8 @@ static void CB2_InitTrainerCard(void)
             gMain.state++;
         break;
     case 7:
-        LoadStickerGfx();
+        if (!sData->orchid)
+            LoadStickerGfx();
         gMain.state++;
         break;
     case 8:
@@ -866,10 +997,20 @@ static void InitGpuRegs(void)
     ShowBg(1);
     ShowBg(2);
     ShowBg(3);
-    SetGpuReg(REG_OFFSET_BLDCNT, BLDCNT_TGT1_BG0 | BLDCNT_EFFECT_DARKEN);
+    if (sData->orchid)
+    {
+        // The whole card (art, text, badges + pic) darkens and is clipped by WIN0 while it flips;
+        // only the grid shows outside
+        SetGpuReg(REG_OFFSET_BLDCNT, BLDCNT_TGT1_BG0 | BLDCNT_TGT1_BG1 | BLDCNT_TGT1_BG3 | BLDCNT_EFFECT_DARKEN);
+        SetGpuReg(REG_OFFSET_WINOUT, WINOUT_WIN01_BG2 | WINOUT_WIN01_OBJ);
+    }
+    else
+    {
+        SetGpuReg(REG_OFFSET_BLDCNT, BLDCNT_TGT1_BG0 | BLDCNT_EFFECT_DARKEN);
+        SetGpuReg(REG_OFFSET_WINOUT, WINOUT_WIN01_BG1 | WINOUT_WIN01_BG2 | WINOUT_WIN01_BG3 | WINOUT_WIN01_OBJ);
+    }
     SetGpuReg(REG_OFFSET_BLDY, 0);
     SetGpuReg(REG_OFFSET_WININ, WININ_WIN0_BG_ALL | WININ_WIN0_OBJ | WININ_WIN0_CLR);
-    SetGpuReg(REG_OFFSET_WINOUT, WINOUT_WIN01_BG1 | WINOUT_WIN01_BG2 | WINOUT_WIN01_BG3 | WINOUT_WIN01_OBJ);
     SetGpuReg(REG_OFFSET_WIN0V, DISPLAY_HEIGHT);
     SetGpuReg(REG_OFFSET_WIN0H, DISPLAY_WIDTH);
     if (gReceivedRemoteLinkPlayers)
@@ -903,7 +1044,10 @@ static void ResetGpuRegs(void)
 static void InitBgsAndWindows(void)
 {
     ResetBgsAndClearDma3BusyFlags(0);
-    InitBgsFromTemplates(0, sTrainerCardBgTemplates, ARRAY_COUNT(sTrainerCardBgTemplates));
+    if (sData->orchid)
+        InitBgsFromTemplates(0, sOrchidCardBgTemplates, ARRAY_COUNT(sOrchidCardBgTemplates));
+    else
+        InitBgsFromTemplates(0, sTrainerCardBgTemplates, ARRAY_COUNT(sTrainerCardBgTemplates));
     ChangeBgX(0, 0, BG_COORD_SET);
     ChangeBgY(0, 0, BG_COORD_SET);
     ChangeBgX(1, 0, BG_COORD_SET);
@@ -912,7 +1056,10 @@ static void InitBgsAndWindows(void)
     ChangeBgY(2, 0, BG_COORD_SET);
     ChangeBgX(3, 0, BG_COORD_SET);
     ChangeBgY(3, 0, BG_COORD_SET);
-    InitWindows(sTrainerCardWindowTemplates);
+    if (sData->orchid)
+        InitWindows(sOrchidCardWindowTemplates);
+    else
+        InitWindows(sTrainerCardWindowTemplates);
     DeactivateAllTextPrinters();
     LoadMessageBoxAndBorderGfx();
 }
@@ -929,10 +1076,14 @@ static void SetUpTrainerCardTask(void)
     CreateTask(Task_TrainerCard, 0);
     InitTrainerCardData();
     SetDataFromTrainerCard();
+    if (sData->orchid)
+        OrchidCard_InitRows();
 }
 
 static bool8 PrintAllOnCardFront(void)
 {
+    if (sData->orchid)
+        return OrchidCard_PrintFront();
     switch (sData->printState)
     {
     case 0:
@@ -963,6 +1114,8 @@ static bool8 PrintAllOnCardFront(void)
 
 static bool8 PrintAllOnCardBack(void)
 {
+    if (sData->orchid)
+        return OrchidCard_PrintBack();
     switch (sData->printState)
     {
     case 0:
@@ -1011,6 +1164,8 @@ static void BufferTextsVarsForCardPage2(void)
     BufferLinkPokeblocksNum();
     BufferLinkContestNum();
     BufferBattleFacilityStats();
+    if (sData->orchid)
+        OrchidCard_BufferBackRows();
 }
 
 static void PrintNameOnCardFront(void)
@@ -1115,6 +1270,11 @@ static void PrintTimeOnCard(void)
     s32 width;
     u32 x, y, totalWidth;
 
+    if (sData->orchid)
+    {
+        OrchidCard_PrintTime();
+        return;
+    }
     if (!sData->isHoenn)
         AddTextPrinterParameterized3(WIN_CARD_TEXT, FONT_NORMAL, 20, 88, sTrainerCardTextColors, TEXT_SKIP_DRAW, gText_TrainerCardTime);
     else
@@ -1436,12 +1596,31 @@ static u8 SetCardBgsAndPals(void)
     switch (sData->bgPalLoadState)
     {
     case 0:
+        if (sData->orchid)
+        {
+            LoadBgTiles(3, gOrchidCardBadges_Gfx, OCARD_NUM_BADGE_TILES * TILE_SIZE_4BPP, 0);
+            break;
+        }
         LoadBgTiles(3, sData->badgeTiles, ARRAY_COUNT(sData->badgeTiles), 0);
         break;
     case 1:
-        LoadBgTiles(0, sData->cardTiles, 0x1800, 0);
+        if (sData->orchid)
+            LoadBgTiles(0, gOrchidCardTiles_Gfx, OCARD_NUM_TILES * TILE_SIZE_4BPP, 0);
+        else
+            LoadBgTiles(0, sData->cardTiles, 0x1800, 0);
         break;
     case 2:
+        if (sData->orchid)
+        {
+            // card.pal: 5 tiers (0-4 stars) per gender theme, then the grid
+            u32 tier = min(sData->trainerCard.stars, OCARD_NUM_TIERS - 1);
+            if (sData->trainerCard.gender != MALE)
+                tier += OCARD_NUM_TIERS;
+            LoadPalette(&gOrchidCard_Pal[tier * 16], BG_PLTT_ID(OCARD_PAL_CARD), PLTT_SIZE_4BPP);
+            LoadPalette(gOrchidCardBadges_Pal, BG_PLTT_ID(OCARD_PAL_BADGES), PLTT_SIZE_4BPP);
+            LoadPalette(&gOrchidCard_Pal[OCARD_GRID_PAL_INDEX * 16], BG_PLTT_ID(OCARD_PAL_GRID), PLTT_SIZE_4BPP);
+            break;
+        }
         if (sData->cardType != CARD_TYPE_FRLG)
         {
             LoadPalette(sHoennTrainerCardPals[sData->trainerCard.stars], BG_PLTT_ID(0), 3 * PLTT_SIZE_4BPP);
@@ -1478,6 +1657,12 @@ static void DrawCardScreenBackground(u16 *ptr)
     s16 i, j;
     u16 *dst = sData->bgTilemapBuffer;
 
+    if (sData->orchid)
+    {
+        OrchidCard_DrawGrid();
+        return;
+    }
+
     for (i = 0; i < 20; i++)
     {
         for (j = 0; j < 32; j++)
@@ -1493,6 +1678,12 @@ static void DrawCardScreenBackground(u16 *ptr)
 
 static void DrawCardFrontOrBack(u16 *ptr)
 {
+    FillCardTilemapBuffer(ptr);
+    CopyBgTilemapBufferToVram(0);
+}
+
+static void FillCardTilemapBuffer(u16 *ptr)
+{
     s16 i, j;
     u16 *dst = sData->cardTilemapBuffer;
 
@@ -1506,7 +1697,6 @@ static void DrawCardFrontOrBack(u16 *ptr)
                 dst[32 * i + j] = ptr[0];
         }
     }
-    CopyBgTilemapBufferToVram(0);
 }
 
 static void DrawStarsAndBadgesOnCard(void)
@@ -1517,6 +1707,11 @@ static void DrawStarsAndBadgesOnCard(void)
     u16 tileNum = 192;
     u8 palNum = 3;
 
+    if (sData->orchid)
+    {
+        OrchidCard_DrawBadges();
+        return;
+    }
     FillBgTilemapBufferRect(3, 143, 15, yOffsets[sData->isHoenn], sData->trainerCard.stars, 1, 4);
     if (!sData->isLink)
     {
@@ -1623,8 +1818,12 @@ static bool8 Task_BeginCardFlip(struct Task *task)
 {
     u32 i;
 
-    HideBg(1);
-    HideBg(3);
+    // Orchid: the whole card folds (the HBlank callback scrolls BG1 and BG3 too)
+    if (!sData->orchid)
+    {
+        HideBg(1);
+        HideBg(3);
+    }
     ScanlineEffect_Stop();
     ScanlineEffect_Clear();
     for (i = 0; i < DISPLAY_HEIGHT; i++)
@@ -1708,16 +1907,32 @@ static bool8 Task_DrawFlippedCardSide(struct Task *task)
             }
             break;
         case 2:
-            if (!sData->onBack)
+            // Orchid: the folded sliver keeps showing the old side; everything is committed
+            // to VRAM together in Task_SetCardFlipped
+            if (sData->orchid)
+            {
+                if (!sData->onBack)
+                    FillCardTilemapBuffer(sData->backTilemap);
+            }
+            else if (!sData->onBack)
+            {
                 DrawCardFrontOrBack(sData->backTilemap);
+            }
             else
+            {
                 DrawTrainerCardWindow(WIN_CARD_TEXT);
+            }
             break;
         case 3:
             if (!sData->onBack)
-                DrawCardBackStats();
+            {
+                if (!sData->orchid)
+                    DrawCardBackStats();
+            }
             else
+            {
                 FillWindowPixelBuffer(WIN_TRAINER_PIC, PIXEL_FILL(0));
+            }
             break;
         case 4:
             if (sData->onBack)
@@ -1746,6 +1961,11 @@ static bool8 Task_SetCardFlipped(struct Task *task)
         DrawCardScreenBackground(sData->bgTilemap);
         DrawCardFrontOrBack(sData->frontTilemap);
         DrawStarsAndBadgesOnCard();
+    }
+    else if (sData->orchid)
+    {
+        CopyBgTilemapBufferToVram(0);
+        CopyBgTilemapBufferToVram(3);
     }
     DrawTrainerCardWindow(WIN_CARD_TEXT);
     sData->onBack ^= 1;
@@ -1848,6 +2068,7 @@ static void InitTrainerCardData(void)
     sData->onBack = FALSE;
     sData->flipBlendY = 0;
     sData->cardType = GetSetCardType();
+    sData->orchid = (sData->cardType != CARD_TYPE_FRLG && !sData->isLink);
     for (i = 0; i < TRAINER_CARD_PROFILE_LENGTH; i++)
         CopyEasyChatWord(sData->easyChatProfile[i], sData->trainerCard.easyChatProfile[i]);
 }
@@ -1895,6 +2116,18 @@ static u8 VersionToCardType(enum GameVersion version)
 
 static void CreateTrainerCardTrainerPic(void)
 {
+    if (sData->orchid)
+    {
+        // standing on the dais (mock_card.py: feet 3px below the stage line)
+        bool32 female = (sData->trainerCard.gender != MALE);
+        CreateTrainerCardTrainerPicSprite(FacilityClassToPicIndex(sTrainerPicFacilityClass[sData->cardType][sData->trainerCard.gender]),
+                    TRUE,
+                    female ? OCARD_PIC_X_FEMALE : OCARD_PIC_X_MALE,
+                    female ? OCARD_PIC_Y_FEMALE : OCARD_PIC_Y_MALE,
+                    OCARD_PAL_PIC,
+                    WIN_TRAINER_PIC);
+        return;
+    }
     if (InUnionRoom() == TRUE && gReceivedRemoteLinkPlayers)
     {
         CreateTrainerCardTrainerPicSprite(FacilityClassToPicIndex(sData->trainerCard.unionRoomClass),
@@ -1913,4 +2146,267 @@ static void CreateTrainerCardTrainerPic(void)
                     8,
                     WIN_TRAINER_PIC);
     }
+}
+
+// ---------------------------------------------------------------- Orchid card
+// Back rows: only the non-zero stats are listed, top-down, in this order (as vanilla, but packed)
+static void OrchidCard_InitRows(void)
+{
+    u32 i;
+    bool8 show[OCARD_ROW_COUNT];
+
+    show[OCARD_ROW_HOF] = sData->hasHofResult;
+    show[OCARD_ROW_LINK] = sData->hasLinkResults;
+    show[OCARD_ROW_TRADES] = sData->hasTrades;
+    show[OCARD_ROW_UNION] = (GetGameStat(GAME_STAT_NUM_UNION_ROOM_BATTLES) != 0);
+    show[OCARD_ROW_BERRY_CRUSH] = (GetGameStat(GAME_STAT_PLAYED_BERRY_CRUSH) != 0);
+    show[OCARD_ROW_CONTESTS] = (sData->trainerCard.contestsWithFriends != 0);
+    show[OCARD_ROW_POKEBLOCKS] = (sData->trainerCard.pokeblocksWithFriends != 0);
+    show[OCARD_ROW_BATTLE_POINTS] = (sData->trainerCard.frontierBP != 0);
+
+    sData->orchidNumRows = 0;
+    for (i = 0; i < OCARD_ROW_COUNT && sData->orchidNumRows < OCARD_BACK_MAX_ROWS; i++)
+    {
+        if (show[i])
+            sData->orchidRows[sData->orchidNumRows++] = i;
+    }
+}
+
+static void OrchidCard_BufferBackRows(void)
+{
+    u32 k;
+
+    for (k = 0; k < sData->orchidNumRows; k++)
+    {
+        u8 *dst = sData->orchidRowValue[k];
+        switch (sData->orchidRows[k])
+        {
+        case OCARD_ROW_HOF:
+            StringCopy(dst, sData->textHofTime);
+            break;
+        case OCARD_ROW_LINK:
+            StringCopy(gStringVar1, sData->textLinkBattleWins);
+            StringCopy(gStringVar2, sData->textLinkBattleLosses);
+            StringExpandPlaceholders(dst, sText_OrchidWinsLosses);
+            break;
+        case OCARD_ROW_TRADES:
+            StringCopy(dst, sData->textNumTrades);
+            break;
+        case OCARD_ROW_UNION:
+            ConvertIntToDecimalStringN(dst, GetCappedGameStat(GAME_STAT_NUM_UNION_ROOM_BATTLES, 0xFFFF), STR_CONV_MODE_LEFT_ALIGN, 5);
+            break;
+        case OCARD_ROW_BERRY_CRUSH:
+            ConvertIntToDecimalStringN(dst, GetCappedGameStat(GAME_STAT_PLAYED_BERRY_CRUSH, 0xFFFF), STR_CONV_MODE_LEFT_ALIGN, 5);
+            break;
+        case OCARD_ROW_CONTESTS:
+            ConvertIntToDecimalStringN(dst, sData->trainerCard.contestsWithFriends, STR_CONV_MODE_LEFT_ALIGN, 3);
+            break;
+        case OCARD_ROW_POKEBLOCKS:
+            ConvertIntToDecimalStringN(dst, sData->trainerCard.pokeblocksWithFriends, STR_CONV_MODE_LEFT_ALIGN, 5);
+            break;
+        case OCARD_ROW_BATTLE_POINTS:
+            ConvertIntToDecimalStringN(gStringVar1, sData->trainerCard.frontierBP, STR_CONV_MODE_LEFT_ALIGN, 5);
+            StringExpandPlaceholders(dst, sText_OrchidNumBP);
+            break;
+        }
+    }
+}
+
+// BG0 maps: base front / back + star pips, earned sockets and the back-row strips
+static void OrchidCard_BuildTilemaps(void)
+{
+    u32 i, j, k;
+    u32 tier = min(sData->trainerCard.stars, OCARD_NUM_TIERS - 1);
+    u16 *front = sData->frontTilemap;
+    u16 *back = sData->backTilemap;
+
+    CpuCopy16(sData->hasPokedex ? sOrchidCardFrontDex : sOrchidCardFrontNoDex, front, sizeof(sOrchidCardFrontDex));
+    CpuCopy16(sOrchidCardBack, back, sizeof(sOrchidCardBack));
+
+    for (j = 0; j < OCARD_PIP_H; j++)
+    {
+        for (i = 0; i < OCARD_PIP_W; i++)
+        {
+            front[(OCARD_PIP_Y + j) * 30 + OCARD_PIP_X + i] = sOrchidCardPips[tier][j][i];
+            back[(OCARD_PIP_Y + j) * 30 + OCARD_PIP_X + i] = sOrchidCardPips[tier][j][i];
+        }
+    }
+
+    for (k = 0; k < NUM_BADGES; k++)
+    {
+        const struct OrchidCardPatch *p = &sOrchidCardSockets[k];
+        if (!sData->badgeCount[k])
+            continue;
+        for (j = 0; j < p->h; j++)
+        {
+            for (i = 0; i < p->w; i++)
+                front[(p->y + j) * 30 + p->x + i] = p->map[j][i];
+        }
+    }
+
+    for (k = 0; k < sData->orchidNumRows; k++)
+    {
+        const u16 (*strip)[30] = sOrchidCardRowStrips[sOrchidCardRowIcons[sData->orchidRows[k]]];
+        for (j = 0; j < 2; j++)
+        {
+            for (i = 0; i < 30; i++)
+                back[(OCARD_ROW_TILE + 2 * k + j) * 30 + i] = strip[j][i];
+        }
+    }
+}
+
+static void OrchidCard_PrintHeader(void)
+{
+    u8 buffer[8];
+    s32 x;
+
+    AddTextPrinterParameterized3(WIN_CARD_TEXT, FONT_NORMAL, OCARD_TITLE_X, OCARD_TITLE_Y, sOrchidCardWhiteColors, TEXT_SKIP_DRAW, sText_OrchidTrainerCard);
+    x = OCARD_ID_X + (OCARD_ID_CAP - GetStringWidth(FONT_NORMAL, gText_TrainerCardIDNo, 0)) / 2 + 1;
+    AddTextPrinterParameterized3(WIN_CARD_TEXT, FONT_NORMAL, x, OCARD_ID_Y, sOrchidCardWhiteColors, TEXT_SKIP_DRAW, gText_TrainerCardIDNo);
+    ConvertIntToDecimalStringN(buffer, sData->trainerCard.trainerId, STR_CONV_MODE_LEADING_ZEROS, 5);
+    x = OCARD_ID_X + OCARD_ID_CAP + (OCARD_ID_W - OCARD_ID_CAP - GetStringWidth(FONT_NORMAL, buffer, 0)) / 2;
+    AddTextPrinterParameterized3(WIN_CARD_TEXT, FONT_NORMAL, x, OCARD_ID_Y, sOrchidCardInkColors, TEXT_SKIP_DRAW, buffer);
+}
+
+static void OrchidCard_PrintValue(u32 row, const u8 *str)
+{
+    AddTextPrinterParameterized3(WIN_CARD_TEXT, FONT_NORMAL, OCARD_VALUE_RIGHT - GetStringWidth(FONT_NORMAL, str, 0),
+                                 sOrchidCardRowY[row], sOrchidCardInkColors, TEXT_SKIP_DRAW, str);
+}
+
+static bool8 OrchidCard_PrintFront(void)
+{
+    u8 buffer[32];
+
+    switch (sData->printState)
+    {
+    case 0:
+        OrchidCard_PrintHeader();
+        break;
+    case 1:
+        // name in the gender colour, centred on the nameplate
+        StringCopy(buffer, sData->trainerCard.playerName);
+        ConvertInternationalString(buffer, sData->language);
+        AddTextPrinterParameterized3(WIN_CARD_TEXT, FONT_NORMAL, OCARD_COL_X + (OCARD_COL_W - GetStringWidth(FONT_NORMAL, buffer, 0)) / 2,
+                                     OCARD_NAME_Y, sOrchidCardNameColors, TEXT_SKIP_DRAW, buffer);
+        break;
+    case 2:
+        ConvertIntToDecimalStringN(gStringVar1, sData->trainerCard.money, STR_CONV_MODE_LEFT_ALIGN, MAX_MONEY_DIGITS);
+        StringExpandPlaceholders(gStringVar4, gText_PokedollarVar1);
+        OrchidCard_PrintValue(0, gStringVar4);
+        break;
+    case 3:
+        // no POKéDEX yet: the row is not drawn and TIME moves up (vanilla rule)
+        if (sData->hasPokedex)
+        {
+            ConvertIntToDecimalStringN(gStringVar4, sData->trainerCard.caughtMonsCount, STR_CONV_MODE_LEFT_ALIGN, 4);
+            OrchidCard_PrintValue(1, gStringVar4);
+        }
+        break;
+    case 4:
+        OrchidCard_PrintTime();
+        break;
+    default:
+        sData->printState = 0;
+        return TRUE;
+    }
+    sData->printState++;
+    return FALSE;
+}
+
+// TIME: the colon blinks every 61 frames (BlinkTimeColon); the width stays fixed
+static void OrchidCard_PrintTime(void)
+{
+    u8 hours[8], minutes[4];
+    u32 h = gSaveBlock2Ptr->playTimeHours;
+    u32 m = gSaveBlock2Ptr->playTimeMinutes;
+    s32 x, wHours, wColon, wMinutes;
+    u32 y = sOrchidCardRowY[sData->hasPokedex ? 2 : 1];
+
+    if (h > 999)
+        h = 999;
+    if (m > 59)
+        m = 59;
+    ConvertIntToDecimalStringN(hours, h, STR_CONV_MODE_LEFT_ALIGN, 3);
+    ConvertIntToDecimalStringN(minutes, m, STR_CONV_MODE_LEADING_ZEROS, 2);
+    wHours = GetStringWidth(FONT_NORMAL, hours, 0);
+    wColon = GetStringWidth(FONT_NORMAL, gText_Colon2, 0);
+    wMinutes = GetStringWidth(FONT_NORMAL, minutes, 0);
+    x = OCARD_VALUE_RIGHT - (wHours + wColon + wMinutes);
+
+    FillWindowPixelRect(WIN_CARD_TEXT, PIXEL_FILL(0), OCARD_VALUE_RIGHT - 48, y, 48, 16);
+    AddTextPrinterParameterized3(WIN_CARD_TEXT, FONT_NORMAL, x, y, sOrchidCardInkColors, TEXT_SKIP_DRAW, hours);
+    if (!sData->timeColonInvisible)
+        AddTextPrinterParameterized3(WIN_CARD_TEXT, FONT_NORMAL, x + wHours, y, sOrchidCardInkColors, TEXT_SKIP_DRAW, gText_Colon2);
+    AddTextPrinterParameterized3(WIN_CARD_TEXT, FONT_NORMAL, x + wHours + wColon, y, sOrchidCardInkColors, TEXT_SKIP_DRAW, minutes);
+}
+
+static bool8 OrchidCard_PrintBack(void)
+{
+    u32 k, y;
+    u8 buffer[32];
+
+    switch (sData->printState)
+    {
+    case 0:
+        OrchidCard_PrintHeader();
+        break;
+    case 1:
+        for (k = 0; k < sData->orchidNumRows; k++)
+        {
+            const u8 *value = sData->orchidRowValue[k];
+            y = OCARD_BACK_ROW_Y0 + k * OCARD_BACK_PITCH;
+            AddTextPrinterParameterized3(WIN_CARD_TEXT, FONT_NORMAL, OCARD_BACK_LABEL_X, y, sOrchidCardInkColors, TEXT_SKIP_DRAW,
+                                         sOrchidCardRowLabels[sData->orchidRows[k]]);
+            AddTextPrinterParameterized3(WIN_CARD_TEXT, FONT_NORMAL, OCARD_BACK_VALUE_RIGHT - GetStringWidth(FONT_NORMAL, value, 0), y,
+                                         sOrchidCardInkColors, TEXT_SKIP_DRAW, value);
+        }
+        break;
+    case 2:
+        // printed signature: the name in the gender colour on the ruled line
+        StringCopy(buffer, sData->trainerCard.playerName);
+        ConvertInternationalString(buffer, sData->language);
+        AddTextPrinterParameterized3(WIN_CARD_TEXT, FONT_NORMAL, OCARD_SIG_NAME_X, OCARD_SIG_NAME_Y, sOrchidCardNameColors, TEXT_SKIP_DRAW, buffer);
+        break;
+    default:
+        sData->printState = 0;
+        return TRUE;
+    }
+    sData->printState++;
+    return FALSE;
+}
+
+static void OrchidCard_DrawGrid(void)
+{
+    u32 x, y;
+
+    for (y = 0; y < 32; y++)
+    {
+        for (x = 0; x < 32; x++)
+            sData->bgTilemapBuffer[y * 32 + x] = (OCARD_GRID_TILE + (x & 1) + (y & 1) * 2) | (OCARD_PAL_GRID << 12);
+    }
+    CopyBgTilemapBufferToVram(2);
+}
+
+// Earned badges (BG3), each pre-shifted to its socket
+static void OrchidCard_DrawBadges(void)
+{
+    u32 i, j, k;
+    u16 *map = GetBgTilemapBuffer(3);
+
+    for (k = 0; k < NUM_BADGES; k++)
+    {
+        const struct OrchidCardPatch *p = &sOrchidCardBadges[k];
+        if (!sData->badgeCount[k])
+            continue;
+        for (j = 0; j < p->h; j++)
+        {
+            for (i = 0; i < p->w; i++)
+            {
+                if (p->map[j][i])
+                    map[(p->y + j) * 32 + p->x + i] = p->map[j][i] | (OCARD_PAL_BADGES << 12);
+            }
+        }
+    }
+    CopyBgTilemapBufferToVram(3);
 }
