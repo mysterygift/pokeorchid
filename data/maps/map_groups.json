@@ -625,6 +625,7 @@
   "gMapGroup_TrainTest": [
     "TrainTestWest",
     "TrainTestEast",
-    "TrainTestNorth"
+    "TrainTestNorth",
+    "HawkerCentreTest"
   ]
 }

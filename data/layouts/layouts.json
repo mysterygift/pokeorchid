@@ -9334,6 +9334,17 @@
       "border_filepath": "data/layouts/TrainTestStation/border.bin",
       "blockdata_filepath": "data/layouts/TrainTestStation/map.bin",
       "layout_version": "emerald"
+    },
+    {
+      "id": "LAYOUT_HAWKER_CENTRE",
+      "name": "HawkerCentre_Layout",
+      "width": 19,
+      "height": 16,
+      "primary_tileset": "gTileset_Building",
+      "secondary_tileset": "gTileset_HawkerCentre",
+      "border_filepath": "data/layouts/HawkerCentre/border.bin",
+      "blockdata_filepath": "data/layouts/HawkerCentre/map.bin",
+      "layout_version": "emerald"
     }
   ]
 }
