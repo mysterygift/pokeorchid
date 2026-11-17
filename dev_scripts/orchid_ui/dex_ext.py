@@ -277,3 +277,156 @@ def track(cv, x0, y0, x1, y1):
 def mon_pic(folder):
     """Front pic; kit_ext.mon_front now handles front.png-only species itself."""
     return KX.mon_front(folder)
+
+
+# ------------------------------------------------------------------ CRY / SIZE pages (round 3)
+import math as _math
+
+# Scope palette (BG palette 8 on the CRY page, like vanilla's cry_screen_bg.pal): 1 = scope face,
+# 2 = graticule dot, 8..15 = trace ramp (8 at the centre line, 15 at the peaks) as vanilla's
+# sWaveformColor expects; orchid at the centre warming to gold at the peaks.
+SCOPE_FACE = (24, 24, 40)
+SCOPE_DOT = (56, 56, 88)
+
+
+def scope_palette():
+    ramp_from, ramp_to = (200, 152, 224), (248, 240, 168)    # ACCENT_LIGHT -> SELECT_LIGHT
+    pal = [(0, 0, 0), SCOPE_FACE, SCOPE_DOT] + [(0, 0, 0)] * 5
+    for k in range(8):
+        t = k / 7
+        mid = (248, 208, 88)                                 # SELECT halfway
+        if t < 0.5:
+            c = tuple(int(a + (b - a) * t * 2) for a, b in zip(ramp_from, mid))
+        else:
+            c = tuple(int(a + (b - a) * (t - 0.5) * 2) for a, b in zip(mid, ramp_to))
+        pal.append(snap(c))
+    return pal
+
+
+def scope_tile():
+    """8x8 scope background tile (vanilla cry_screen_bg.png slot): face + one graticule dot."""
+    im = Image.new("P", (8, 8), 1)
+    flat = [c for rgb in scope_palette() for c in rgb]
+    im.putpalette(flat + [0] * (768 - len(flat)))
+    im.putpixel((0, 0), 2)
+    return im
+
+
+def scope_well(cv, x, y, w, h):
+    """Recessed scope well with a gold ("brass") trim; its inside stays index 0 so BG0's
+    scrolling waveform window shows through."""
+    rounded_box(cv, x, y, w, h, 4, TRANSPARENT, INK, SELECT_DARK, SELECT_LIGHT)
+    for yy in range(y + 2, y + h - 2):
+        cv.set(x + 2, yy, INK)
+        cv.set(x + w - 3, yy, INK)
+    for xx in range(x + 2, x + w - 2):
+        cv.set(xx, y + 2, INK)
+        cv.set(xx, y + h - 3, INK)
+    return (x + 3, y + 3, x + w - 4, y + h - 4)      # transparent hole (inclusive)
+
+
+NEEDLE_REST, NEEDLE_MAX = 32, -32                   # vanilla MIN/MAX_NEEDLE_POS (256 = full turn)
+
+
+def dial(cv, cx, cy, r):
+    """VU dial in the dais language: half disc with accent band, pale face, ink ticks over the
+    needle's +-45 deg sweep (the last stretch in ball red), hub at the pivot (cx, cy)."""
+    for y in range(int(cy - r - 1), int(cy) + 1):
+        for x in range(int(cx - r - 1), int(cx + r + 2)):
+            d = _math.hypot(x + 0.5 - cx, y + 0.5 - cy)
+            if d <= r + 1:
+                c = INK
+                if d <= r:
+                    c = ACCENT_DARK
+                if d <= r - 1:
+                    c = ACCENT
+                if d <= r - 3:
+                    c = INK
+                if d <= r - 4:
+                    c = ACCENT_PALE if d > r - 9 else WHITE
+                cv.set(x, y, c)
+    # base line under the half disc
+    cv.hline(int(cx - r - 1), int(cx + r + 1), int(cy) + 1, INK)
+    cv.hline(int(cx - r), int(cx + r), int(cy), ACCENT_DARK)
+    # ticks: -45..+45 deg from vertical, every 15 deg; red from +25 deg
+    for k in range(-3, 4):
+        a = _math.radians(k * 15)
+        major = k % 3 == 0
+        r0 = r - 12 if major else r - 9
+        for t in range(int((r - 6 - r0) * 3)):
+            rr = r0 + t / 3
+            x = int(round(cx + rr * _math.sin(a) - 0.5))
+            y = int(round(cy - rr * _math.cos(a) - 0.5))
+            cv.set(x, y, SPARE_A if k * 15 >= 25 else INK)
+    for deg in range(25, 46):
+        a = _math.radians(deg)
+        for rr in (r - 6, r - 5.5):
+            cv.set(int(round(cx + rr * _math.sin(a) - 0.5)), int(round(cy - rr * _math.cos(a) - 0.5)), SPARE_A)
+    disc(cv, cx, cy - 0.5, 3.5, ACCENT_DARK, INK)
+
+
+def needle_image(length=30):
+    """64x64 affine needle OBJ (vanilla geometry: base 24px below the centre, pointing up)."""
+    im = Image.new("P", (64, 64), 0)
+    cv = Canvas(im)
+    base, tip = 32 + 24, 32 + 24 - length
+    for y in range(tip, base + 1):
+        cv.set(31, y, INK)
+        cv.set(32, y, SELECT if y > tip + 1 else INK)
+        cv.set(33, y, INK)
+    cv.set(32, tip, INK)
+    return im
+
+
+def affine_obj(src_rgba, cx, cy, pa, pb, pc, pd, out, size=64):
+    """GBA affine OBJ (not double-size): every screen pixel of the size x size box centred on
+    (cx, cy) samples the texture at centre + M * (dx, dy) >> 8."""
+    sp = src_rgba.load()
+    op = out.load()
+    h = size // 2
+    for dy in range(-h, h):
+        for dx in range(-h, h):
+            tx = h + ((pa * dx + pb * dy) >> 8)
+            ty = h + ((pc * dx + pd * dy) >> 8)
+            if 0 <= tx < size and 0 <= ty < size:
+                p = sp[tx, ty]
+                if p[3]:
+                    X, Y = cx + dx, cy + dy
+                    if 0 <= X < out.size[0] and 0 <= Y < out.size[1]:
+                        op[X, Y] = p
+
+
+def needle_matrix(rot):
+    """ObjAffineSet(scale 256, rotation rot * 256) as the cry screen does."""
+    th = (rot & 0xFF) / 256 * 2 * _math.pi
+    c, s = int(256 * _math.cos(th)), int(256 * _math.sin(th))
+    return c, -s, s, c
+
+
+def needle_offset(rot):
+    sine = lambda i: int(256 * _math.sin(2 * _math.pi * (i & 0xFF) / 256))
+    i = (rot + 0x7F) & 0xFF
+    return sine(i) * 24 // 256, sine(i + 64) * 24 // 256
+
+
+def size_panel(cv, x0, y0, x1, y1, floor_y):
+    """SIZE stage: recessed panel, floor band under floor_y, height ticks every 8px on the left
+    (longer every 32px) measured up from the floor."""
+    well(cv, x0, y0, x1 - x0 + 1, y1 - y0 + 1, r=4)
+    cv.rect(x0 + 2, floor_y + 1, x1 - 2, y1 - 2, PANEL_SHADE)
+    cv.hline(x0 + 2, x1 - 2, floor_y, INK)
+    cv.hline(x0 + 2, x1 - 2, floor_y + 1, PANEL_DARK)
+    y, k = floor_y - 8, 1
+    while y > y0 + 3:
+        n = 6 if k % 4 == 0 else 3
+        cv.hline(x0 + 2, x0 + 1 + n, y, INK_SOFT)
+        cv.hline(x1 - 1 - n, x1 - 2, y, INK_SOFT)
+        y -= 8
+        k += 1
+
+
+def species_size(name):
+    """pokemonScale / pokemonOffset / trainerScale / trainerOffset of SPECIES_<name>."""
+    b = _species_blocks()[name]
+    g = lambda f: int(re.search(r"\.%s\s*=\s*(-?\d+)" % f, b).group(1))
+    return g("pokemonScale"), g("pokemonOffset"), g("trainerScale"), g("trainerOffset")

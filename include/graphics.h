@@ -1825,6 +1825,20 @@ extern const u16 gOrchidLineupBalls_Pal[];
 extern const u32 gOrchidPartySlots_Gfx[];
 extern const u32 gOrchidPartyButtons_Gfx[];
 extern const u32 gOrchidPartyGrid_Gfx[];
+
+// Orchid UI: dex
+extern const u32 gOrchidDexList_Gfx[];
+extern const u32 gOrchidDexList_Tilemap[];
+extern const u32 gOrchidDexEntry_Gfx[];
+extern const u32 gOrchidDexInfo_Tilemap[];
+extern const u32 gOrchidDexArea_Tilemap[];
+extern const u32 gOrchidDexSearch_Tilemap[];
+extern const u32 gOrchidDexCry_Tilemap[];
+extern const u32 gOrchidDexSize_Tilemap[];
+extern const u16 gOrchidDexScreen_Pal[];
+extern const u8 gOrchidDexRow_Gfx[];
+extern const u8 gOrchidDexBall_Gfx[];
+extern const u8 gOrchidDexThumb_Gfx[];
 extern const u8 gSatchelRing_Gfx[];
 extern const u8 gSatchelThumb_Gfx[];
 extern const u8 gSatchelArrow_Gfx[];

@@ -1,0 +1,241 @@
+"""
+Export the Orchid Pokédex screens to game assets (re-uses mock_dex.py / dex_ext.py drawing code,
+so the ROM art is the mockup art pixel for pixel).
+
+Writes (all under the repo root):
+  graphics/pokedex/orchid/list.png        list screen art (tiles 1-4 = grid) (kit palette indices)
+  graphics/pokedex/orchid/list.bin        BG1 tilemap, 32x32
+  graphics/pokedex/orchid/entry.png       shared tile sheet: INFO, AREA, SEARCH, CRY and SIZE art (tiles 1-4 = grid)
+  graphics/pokedex/orchid/info.bin        INFO tab tilemap
+  graphics/pokedex/orchid/area.bin        AREA tab tilemap
+  graphics/pokedex/orchid/search.bin      search page tilemap
+  graphics/pokedex/orchid/cry.bin         CRY tab tilemap (VU dial, scope well with an open hole)
+  graphics/pokedex/orchid/size.bin        SIZE tab tilemap (stage panel, HT pill)
+  graphics/pokedex/orchid/scope_bg.png    8x8 scope tile + palette 8 (trace ramp 8-15), used by pokedex_cry_screen.c
+  graphics/pokedex/orchid/needle.png      64x64 affine VU needle OBJ (kit colours)
+  graphics/pokedex/orchid/screen.pal      48 colours: pal 0 kit (+ ball red), pal 1 gold selected, pal 2 grid
+  graphics/pokedex/orchid/row.png         136x16 list pill (blitted into the BG2 list window per row)
+  graphics/pokedex/orchid/ball.png        8x8 caught marker, kit roles (blitted into text windows)
+  graphics/pokedex/orchid/thumb.png       8x16 scrollbar thumb OBJ (kit palette = BG pal 0 colours)
+  src/data/pokedex_orchid.h               generated layout constants
+
+usage: export_dex.py
+"""
+import os
+from PIL import Image
+from kit import *
+import dex_ext as D
+import mock_dex as M
+from backdrop import GRID_PAL, grid_tile_image
+
+ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+P = lambda *p: os.path.join(ROOT, *p)
+OUT = P("graphics", "pokedex", "orchid")
+
+
+def save_indexed(im, path, pal):
+    flat = [c for rgb in pal for c in rgb]
+    out = im.copy()
+    out.putpalette(flat + [0] * (768 - len(flat)))
+    out.save(path, transparency=0)
+
+
+def pad16(pal):
+    return list(pal) + [(0, 0, 0)] * (16 - len(pal))
+
+
+def grid_tiles():
+    g = grid_tile_image()
+    gpx = g.load()
+    out = []
+    for ty in range(2):
+        for tx in range(2):
+            out.append(tuple(gpx[tx * 8 + x, ty * 8 + y] for y in range(8) for x in range(8)))
+    return out
+
+
+BASE = [tuple([0] * 64)] + grid_tiles()
+
+
+def cells(tm):
+    """30x20 tilemap list -> 32x32 cell list."""
+    c = [None] * (32 * 32)
+    for i, item in enumerate(tm):
+        c[(i // 30) * 32 + i % 30] = item
+    return c
+
+
+def art(fn):
+    im = M.sheet("orchid")
+    fn(Canvas(im))
+    return im
+
+
+# search page layout and art live in mock_dex (search_art / socket_x)
+SEARCH_X, SEARCH_W, SEARCH_CAP, SEARCH_Y0, SEARCH_PITCH = M.S_X, M.S_W, M.S_CAP, M.S_Y0, M.S_PITCH
+SEARCH_BTN_X, SEARCH_BTN_Y, SEARCH_BTN_W = M.S_BTN_X, M.S_BTN_Y, M.S_BTN_W
+SEARCH_TRAY_Y = M.S_TRAY_Y
+search_art = M.search_art
+
+
+def export():
+    os.makedirs(OUT, exist_ok=True)
+    pal = D.dex_palette("orchid")
+    sel = D.selected(pal)
+    pals = pad16(pal) + pad16(sel) + pad16(GRID_PAL)
+    write_jasc(os.path.join(OUT, "screen.pal"), pals)
+
+    # ---- list screen
+    # Tiles 1-4 are the grid in BOTH sheets, so the grid (BG1, map 13) survives the list <-> entry swap.
+    lst = art(M.draw_list_art)
+    tiles, tm = to_tiles(lst, base=BASE)
+    n_list = len(tiles)
+    save_indexed(tiles_to_image(tiles, lst), os.path.join(OUT, "list.png"), pal)
+    write_tilemap(os.path.join(OUT, "list.bin"), cells(tm))
+    assert len(tiles) < 256
+
+    # ---- entry screens: one shared sheet
+    info = art(lambda cv: M.draw_entry_art(cv, 0))
+    area = art(lambda cv: M.draw_entry_art(cv, 1))
+    srch = art(search_art)
+    tiles, tm_info = to_tiles(info, base=BASE)
+    tiles, tm_area = to_tiles(area, base=tiles)
+    tiles, tm_search = to_tiles(srch, base=tiles)
+    tiles, tm_cry = to_tiles(art(M.draw_cry_art), base=tiles)
+    tiles, tm_size = to_tiles(art(M.draw_size_art), base=tiles)
+    n_entry = len(tiles)
+    save_indexed(tiles_to_image(tiles, info), os.path.join(OUT, "entry.png"), pal)
+    write_tilemap(os.path.join(OUT, "info.bin"), cells(tm_info))
+    write_tilemap(os.path.join(OUT, "area.bin"), cells(tm_area))
+    write_tilemap(os.path.join(OUT, "search.bin"), cells(tm_search))
+    write_tilemap(os.path.join(OUT, "cry.bin"), cells(tm_cry))
+    write_tilemap(os.path.join(OUT, "size.bin"), cells(tm_size))
+
+    # ---- CRY: scope background tile (BG palette 8, trace ramp 8-15) and the needle OBJ
+    D.scope_tile().save(os.path.join(OUT, "scope_bg.png"), transparency=0)
+    save_indexed(D.needle_image(), os.path.join(OUT, "needle.png"), pal)
+
+    # ---- list pill row (136x16, window starts at x = 96)
+    row = M.sheet("orchid").crop((0, 0, 136, 16))
+    rounded_box(Canvas(row), M.PILL_X - 96, 1, M.PILL_W, M.PILL_H, 4, PANEL, INK, WHITE, PANEL_SHADE)
+    save_indexed(row, os.path.join(OUT, "row.png"), pal)
+
+    # ---- caught ball 8x8
+    ball = M.sheet("orchid").crop((0, 0, 8, 8))
+    D.caught_ball(Canvas(ball), 0, 0)
+    save_indexed(ball, os.path.join(OUT, "ball.png"), pal)
+
+    # ---- scrollbar thumb OBJ 8x16 (box at x+2, like the satchel thumb)
+    th = M.sheet("orchid").crop((0, 0, 8, 16))
+    rounded_box(Canvas(th), 2, 0, 4, 12, 1, SELECT, INK, SELECT_LIGHT, SELECT_DARK)
+    save_indexed(th, os.path.join(OUT, "thumb.png"), pal)
+    return n_list, n_entry
+
+
+def write_header(n_list, n_entry):
+    L = []
+    a = L.append
+    a("// GENERATED by dev_scripts/orchid_ui/export_dex.py — do not edit by hand.")
+    a("// Layout of the Orchid Pokédex screens (mockups: dev_scripts/orchid_ui/mock_dex.py).")
+    a("#ifndef GUARD_DATA_POKEDEX_ORCHID_H")
+    a("#define GUARD_DATA_POKEDEX_ORCHID_H")
+    a("")
+    a("#define ODEX_LIST_NUM_TILES      %d   // list sheet tiles (blank 0, grid 1-4, art)" % n_list)
+    a("#define ODEX_ENTRY_NUM_TILES     %d   // INFO + AREA + SEARCH sheet tiles (blank 0, grid 1-4, art)" % n_entry)
+    a("#define ODEX_GRID_TILE_BASE      1    // grid TL, TR, BL, BR in both sheets")
+    a("#define ODEX_PAL_NORMAL          0")
+    a("#define ODEX_PAL_SELECTED        1")
+    a("#define ODEX_PAL_GRID            2")
+    a("")
+    a("// ---- list")
+    a("#define ODEX_LIST_Y              %d" % M.LIST_Y)
+    a("#define ODEX_ROW_H               %d" % M.ROW_H)
+    a("#define ODEX_LIST_ROWS           %d" % M.ROWS)
+    a("#define ODEX_CURSOR_MARGIN       %d" % M.CURSOR_MARGIN)
+    a("#define ODEX_LIST_WIN_LEFT       12  // list window tile column (x = 96)")
+    a("#define ODEX_LIST_WIN_WIDTH      17")
+    a("#define ODEX_ROW_NUM_X           %d  // in-window x of the number" % (M.PILL_X + 6 - 96))
+    a("#define ODEX_ROW_NAME_X          %d" % (M.PILL_X + 28 - 96))
+    a("#define ODEX_ROW_BALL_X          %d" % (M.PILL_X + M.PILL_W - 15 - 96))
+    a("#define ODEX_ROW_BALL_Y          4")
+    a("#define ODEX_TITLE_CX            %d" % M.TITLE_CX)
+    a("#define ODEX_HDR_ARROW_L_X       %d" % M.HEADER_ARROWS[0][0])
+    a("#define ODEX_HDR_ARROW_R_X       %d" % M.HEADER_ARROWS[1][0])
+    a("#define ODEX_HDR_ARROW_Y         %d  // sprite centre (8x16 arrow)" % (M.HEADER_ARROWS[0][1] + 1))
+    a("#define ODEX_COUNT_X             %d" % M.COUNT_PILLS[0][0])
+    a("#define ODEX_SEEN_Y              %d" % M.COUNT_PILLS[0][1])
+    a("#define ODEX_OWN_Y               %d" % M.COUNT_PILLS[1][1])
+    a("#define ODEX_COUNT_W             %d" % M.COUNT_W)
+    a("#define ODEX_COUNT_CAP           %d" % M.COUNT_CAP)
+    a("#define ODEX_DAIS_X              %d" % M.DAIS_C[0])
+    a("#define ODEX_DAIS_STAGE_Y        %d  // y the pic's lowest pixel row sits on" % (M.DAIS_C[1] + int(M.DAIS_IN * 0.55) + 3))
+    a("#define ODEX_TYPES_Y             %d" % M.TYPES_Y)
+    x0, y0, x1, y1 = M.TRACK
+    a("#define ODEX_THUMB_X             %d  // thumb sprite centre x (8x16, box at +2)" % (x0 + 1 - 2 + 4))
+    a("#define ODEX_THUMB_TOP           %d  // thumb box top-most y" % (y0 + 2))
+    a("#define ODEX_THUMB_SPAN          %d" % ((y1 - y0 - 3) - 12))
+    a("")
+    a("// ---- entry (INFO / AREA)")
+    a("#define ODEX_TAB_X0              %d" % M.TAB_X0)
+    a("#define ODEX_TAB_W               %d" % M.TAB_W)
+    a("#define ODEX_TAB_PITCH           %d" % (M.TAB_W + M.TAB_GAP))
+    a("#define ODEX_TAB_ARROW_L_X       %d" % M.TAB_ARROWS[0][0])
+    a("#define ODEX_TAB_ARROW_R_X       %d" % M.TAB_ARROWS[1][0])
+    a("#define ODEX_TAB_ARROW_Y         %d" % (M.TAB_ARROWS[0][1] + 1))
+    a("#define ODEX_E_DAIS_X            %d" % M.E_DAIS_C[0])
+    a("#define ODEX_E_DAIS_STAGE_Y      %d" % (M.E_DAIS_C[1] + int(M.E_DAIS_IN * 0.55) + 3))
+    a("#define ODEX_E_X                 %d" % M.E_X)
+    a("#define ODEX_E_W                 %d" % M.E_W)
+    a("#define ODEX_E_NAME_Y            %d" % M.E_NAME_Y)
+    a("#define ODEX_E_CAT_Y             %d" % M.E_CAT_Y)
+    a("#define ODEX_E_TYPES_Y           %d" % M.E_TYPES_Y)
+    a("#define ODEX_E_HW_Y              %d" % M.E_HW_Y)
+    a("#define ODEX_E_NUM_CAP           %d" % M.E_NUM_CAP)
+    a("#define ODEX_HW_W                70")
+    a("#define ODEX_HW_CAP              %d" % M.HW_CAP)
+    fx, fy, fw, fh = M.FOOT_WELL
+    a("#define ODEX_FOOT_X              %d" % (fx + (fw - 16) // 2))
+    a("#define ODEX_FOOT_Y              %d" % (fy + (fh - 16) // 2))
+    ax0, ay0, ax1, ay1 = M.AREA_WELL
+    a("#define ODEX_AREA_X0             %d" % ax0)
+    a("#define ODEX_AREA_Y0             %d" % ay0)
+    a("#define ODEX_AREA_X1             %d" % ax1)
+    a("#define ODEX_AREA_Y1             %d" % ay1)
+    a("#define ODEX_DESC_X              %d" % M.DESC_X)
+    a("#define ODEX_DESC_Y              %d" % M.DESC_Y)
+    a("#define ODEX_DESC_PITCH          %d" % M.DESC_PITCH)
+    a("")
+    a("// ---- search")
+    a("#define ODEX_S_X                 %d" % SEARCH_X)
+    a("#define ODEX_S_W                 %d" % SEARCH_W)
+    a("#define ODEX_S_CAP               %d" % SEARCH_CAP)
+    a("#define ODEX_S_Y0                %d" % SEARCH_Y0)
+    a("#define ODEX_S_PITCH             %d" % SEARCH_PITCH)
+    a("#define ODEX_S_BTN_X0            %d" % SEARCH_BTN_X[0])
+    a("#define ODEX_S_BTN_X1            %d" % SEARCH_BTN_X[1])
+    a("#define ODEX_S_BTN_Y             %d" % SEARCH_BTN_Y)
+    a("#define ODEX_S_BTN_W             %d" % SEARCH_BTN_W)
+    a("#define ODEX_S_TRAY_Y            %d" % SEARCH_TRAY_Y)
+    a("")
+    a("// ---- CRY / SIZE")
+    a("#define ODEX_DIAL_X              %d  // needle pivot" % M.DIAL_C[0])
+    a("#define ODEX_DIAL_Y              %d" % M.DIAL_C[1])
+    a("#define ODEX_SCOPE_TILE_ROW      %d  // waveform window (BG0) tile row" % (M.SCOPE_WIN_Y // 8 + 1))
+    a("#define ODEX_SCOPE_VOFS          %d  // BG0VOFS so the window top lands at y %d" % ((M.SCOPE_WIN_Y // 8 + 1) * 8 - M.SCOPE_WIN_Y, M.SCOPE_WIN_Y))
+    a("#define ODEX_SCOPE_START         %d  // vanilla playStartPos: samples are drawn at x = 8 * this" % M.SCOPE_START)
+    a("#define ODEX_SIZE_HT_X           %d" % M.SIZE_HT[0])
+    a("#define ODEX_SIZE_HT_Y           %d" % M.SIZE_HT[1])
+    a("#define ODEX_S_SOCKET_X0         %d  // TYPE row sockets (BG art), 2nd at + SOCKET_PITCH" % M.socket_x(0))
+    a("#define ODEX_S_SOCKET_PITCH      %d" % (M.SOCKET_W + M.SOCKET_GAP))
+    a("#define ODEX_S_SOCKET_Y          %d" % M.SOCKET_Y)
+    a("#define ODEX_S_SOCKET_W          %d" % M.SOCKET_W)
+    a("")
+    a("#endif // GUARD_DATA_POKEDEX_ORCHID_H")
+    with open(P("src", "data", "pokedex_orchid.h"), "w") as f:
+        f.write("\n".join(L) + "\n")
+
+
+if __name__ == "__main__":
+    n = export()
+    write_header(*n)
+    print("list tiles %d, entry tiles %d" % n)

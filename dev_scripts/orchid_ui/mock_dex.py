@@ -314,50 +314,346 @@ def area_body(tc, ac, sp):
               INK, PANEL_SHADE, line_h=DESC_PITCH)
 
 
+# ------------------------------------------------------------------ CRY page (round 3)
+# Frame = INFO's: tab header (CRY gold), dais + pic, number/name pill. Right well = VU dial
+# (BG art) with the 64x64 affine needle OBJ (vanilla geometry, kit colours). Tray = hint line +
+# a recessed gold-trimmed scope well whose hole shows BG0's scrolling waveform window
+# (vanilla 32x7-tile window, palette 8 re-coloured: orchid trace warming to gold at the peaks).
+CRY_WELL = (E_X, 38, E_W, 59)
+DIAL_C, DIAL_R = (164, 88), 38
+SCOPE = (6, 118, 228, 41)
+SCOPE_WIN_Y = 110            # waveform window top on screen (tile row 14 with BG0VOFS = 2)
+SCOPE_START = 29             # vanilla playStartPos (window.yPos): new samples drawn at x = 232
+CRY_HINT = "Press A to play the cry."
+
+
+def scope_hole():
+    x, y, w, h = SCOPE
+    return (x + 3, y + 3, x + w - 4, y + h - 4)
+
+
+def draw_cry_art(cv):
+    D.header_band(cv, 0, W - 1, round_left=False)
+    for i in range(4):
+        D.tab_pill(cv, TAB_X0 + i * (TAB_W + TAB_GAP), 1, TAB_W)
+    D.dais(cv, E_DAIS_C[0], E_DAIS_C[1], E_DAIS_R, E_DAIS_IN)
+    D.label_pill(cv, E_X, E_NAME_Y, E_W, E_NUM_CAP)
+    x, y, w, h = CRY_WELL
+    D.well(cv, x, y, w, h, r=4)
+    D.dial(cv, DIAL_C[0], DIAL_C[1], DIAL_R)
+    D.tray(cv, E_TRAY_Y)
+    D.scope_well(cv, *SCOPE)
+
+
+class Scope:
+    """Vanilla pokedex_cry_screen.c waveform window + needle, frame by frame."""
+    H = 56
+
+    def __init__(self):
+        self.win = [[1 if (x % 8 or y % 8) else 2 for x in range(256)] for y in range(self.H)]
+        self.playhead = 0
+        self.prev_y = self.H // 2
+        self.state = 0
+        self.buf = [0] * 16
+        self.rot, self.target, self.inc = D.NEEDLE_REST, D.NEEDLE_REST, 0
+        for i in range(SCOPE_START * 8):    # vanilla LoadCryWaveformWindow: flat line up to the start
+            self.segment(i, 0)
+
+    def segment(self, pos, amp):
+        y = int(((amp + 127) * 256) / 1152.0)
+        y = min(y, self.H - 1)
+        cur = y
+        x = pos & 0xFF
+        col = lambda yy: [15, 14, 13, 12, 11, 10, 9, 8, 8, 9, 10, 11, 12, 13, 14, 15][((yy // 3) - 1) & 15]
+        if y > self.prev_y:
+            while True:
+                self.win[y][x] = col(y); y -= 1
+                if not y > self.prev_y:
+                    break
+        else:
+            while True:
+                self.win[y][x] = col(y); y += 1
+                if not y < self.prev_y:
+                    break
+        self.prev_y = cur
+
+    def frame(self, pcm_snapshot=None, playing=False):
+        # AdvancePlayhead: scroll, then clear the tile column ahead
+        self.scroll = self.playhead & 0xFF
+        self.playhead = (self.playhead + 2) & 0xFF
+        col = (self.playhead // 8 + SCOPE_START + 1) % 32
+        for y in range(self.H):
+            for x in range(col * 8, col * 8 + 8):
+                self.win[y][x] = 1 if (x % 8 or y % 8) else 2
+        base = SCOPE_START * 8 + self.playhead
+        if self.state == 0:
+            if playing:
+                self.state = 1
+        if self.state == 0:
+            self.segment(base - 2, 0); self.segment(base - 1, 0)
+        else:
+            if self.state == 1 or self.state > 8:
+                if pcm_snapshot is None:
+                    self.state = 0
+                    self.segment(base - 2, 0); self.segment(base - 1, 0)
+                    self.needle()
+                    return
+                self.buf = pcm_snapshot
+                if self.state > 8:
+                    self.state = 1
+            i = 2 * (self.state - 1)
+            self.segment(base - 2, self.buf[i]); self.segment(base - 1, self.buf[i + 1])
+            self.state += 1
+        self.needle()
+
+    def needle(self):
+        def set_target(off):
+            r = (D.NEEDLE_REST - off) & 0xFF
+            if 32 < r < (D.NEEDLE_MAX & 0xFF):
+                r = D.NEEDLE_MAX & 0xFF
+            self.target = r - 256 if r > 127 else r
+            self.inc = 5
+        if self.state == 0:
+            self.target = D.NEEDLE_REST
+            if self.rot > 0:
+                if self.inc != 1:
+                    self.inc -= 1
+            else:
+                self.inc = 5
+        elif self.state == 3:          # vanilla checks cryState 2 before the increment above
+            set_target(max(0, max(self.buf)) * 208 // 256)
+        elif self.state == 7:
+            set_target(self.buf[10] * 208 // 256)
+        if self.rot < self.target:
+            self.rot = min(self.rot + self.inc, self.target)
+            if self.rot == self.target:
+                self.target = 0
+        elif self.rot > self.target:
+            self.rot = max(self.rot - self.inc, self.target)
+            if self.rot == self.target:
+                self.target = 0
+
+
+def cry_pcm(folder="treecko"):
+    """Cry samples as the mixer would see them (13379 Hz, s8 scaled by CRY_VOLUME_RS)."""
+    import wave
+    w = wave.open(os.path.join(KX.ROOT, "sound", "direct_sound_samples", "cries", folder + ".wav"))
+    raw = w.readframes(w.getnframes())
+    rate = w.getframerate()
+    src = [b - 128 for b in raw]
+    n = int(len(src) * 13379 / rate)
+    return [src[min(len(src) - 1, int(i * rate / 13379))] * 125 // 127 for i in range(n)]
+
+
+def pcm_snapshot(pcm, frame):
+    out = []
+    for i in range(16):
+        k = frame * 224 + i * 2
+        v = pcm[k] if k < len(pcm) else 0
+        v = (v * 2) & 0xFF
+        out.append(v - 256 if v > 127 else v)
+    return out
+
+
+def render_cry(entry_index=0, scope=None, grid_scroll=0, fade=0.0):
+    pal = D.dex_palette("orchid")
+    sel = D.selected(pal)
+    e = ENTRIES[entry_index]
+    sp = info(e)
+    out = KX.grid_frame(grid_scroll)
+    ui = KX.blank()
+    art = sheet("orchid")
+    draw_cry_art(Canvas(art))
+    a = KX.sheet_rgba(art, pal)
+    x0, y0, x1, y1 = tab_cells_selected(2)
+    a.alpha_composite(KX.sheet_rgba(art.crop((x0, y0, x1 + 1, y1 + 1)), sel), (x0, y0))
+    # BG0 waveform window behind the art (only its scope hole is open)
+    bg0 = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    scope = scope or Scope()
+    if not hasattr(scope, "scroll"):
+        scope.scroll = 0
+    spal = D.scope_palette()
+    bp = bg0.load()
+    hx0, hy0, hx1, hy1 = scope_hole()
+    for Y in range(hy0, hy1 + 1):
+        wy = Y - SCOPE_WIN_Y
+        for X in range(hx0, hx1 + 1):
+            bp[X, Y] = spal[scope.win[wy][(X + scope.scroll) & 0xFF]] + (255,)
+    ui.alpha_composite(bg0)
+    ui.alpha_composite(a)
+    txt = sheet("orchid")
+    tc = Canvas(txt)
+    for i, name in enumerate(TABS):
+        x = TAB_X0 + i * (TAB_W + TAB_GAP)
+        fg, sh = (INK, SELECT_DARK) if i == 2 else (INK_SOFT, PANEL_SHADE)
+        draw_text(tc, x + (TAB_W - text_width(name)) // 2, 0, name, fg, sh)
+    num = "%03d" % e["num"]
+    draw_text(tc, E_X + (E_NUM_CAP - text_width(num)) // 2 + 1, E_NAME_Y - 1, num, WHITE, ACCENT_DARK)
+    draw_text(tc, E_X + E_NUM_CAP + 6, E_NAME_Y - 1, sp["name"], INK, PANEL_SHADE)
+    if e["caught"]:
+        D.caught_ball(tc, E_X + E_W - 15, E_NAME_Y + 3)
+    draw_text(tc, DESC_X, DESC_Y, CRY_HINT, INK, PANEL_SHADE)
+    compose(ui, txt, pal)
+    if fade:
+        ui = darken(ui, fade)
+    out.alpha_composite(ui)
+    # OBJ: pic, needle, chevrons
+    spr = D.mon_pic(sp["folder"])
+    stage = E_DAIS_C[1] + int(E_DAIS_IN * 0.55) + 3
+    out.alpha_composite(spr, (E_DAIS_C[0] - 32, stage - D.sprite_bottom(spr)))
+    needle = KX.sheet_rgba(D.needle_image(), pal)
+    ox, oy = D.needle_offset(scope.rot)
+    D.affine_obj(needle, DIAL_C[0] + ox, DIAL_C[1] + oy, *D.needle_matrix(scope.rot), out)
+    for i, (ax, ay) in enumerate(TAB_ARROWS):
+        D.chevron(out, ax, ay, right=i == 1)
+    return out
+
+
+# ------------------------------------------------------------------ SIZE page (round 3)
+# Frame = INFO's tab header (SIZE gold). One recessed stage panel with a floor band and height
+# ticks; the vanilla affine silhouettes keep their spots (mon 88,56 / trainer 152,56) and their
+# pokemonScale / trainerScale / offsets. Mon silhouette = INK (as the unseen dex silhouette),
+# trainer = ACCENT_DARK. Tray: "Size comparison to <player>" + the HT pill.
+SIZE_PANEL = (6, 19, 233, 96)
+SIZE_FLOOR = 87           # first row under the trainer pics' feet (Brendan 85, May 86)
+SIZE_HT = ((W - 70) // 2, 124)
+
+
+def draw_size_art(cv):
+    D.header_band(cv, 0, W - 1, round_left=False)
+    for i in range(4):
+        D.tab_pill(cv, TAB_X0 + i * (TAB_W + TAB_GAP), 1, TAB_W)
+    D.size_panel(cv, *SIZE_PANEL, SIZE_FLOOR)
+    D.tray(cv, E_TRAY_Y)
+    D.label_pill(cv, SIZE_HT[0], SIZE_HT[1], 70, HW_CAP)
+
+
+def silhouette_obj(img, rgb):
+    out = img.copy()
+    px = out.load()
+    for y in range(64):
+        for x in range(64):
+            if px[x, y][3]:
+                px[x, y] = rgb + (255,)
+    return out
+
+
+def render_size(entry_index=0, player="JAXSON", trainer="brendan", grid_scroll=0):
+    pal = D.dex_palette("orchid")
+    sel = D.selected(pal)
+    e = ENTRIES[entry_index]
+    sp = info(e)
+    out = KX.grid_frame(grid_scroll)
+    ui = KX.blank()
+    art = sheet("orchid")
+    draw_size_art(Canvas(art))
+    a = KX.sheet_rgba(art, pal)
+    x0, y0, x1, y1 = tab_cells_selected(3)
+    a.alpha_composite(KX.sheet_rgba(art.crop((x0, y0, x1 + 1, y1 + 1)), sel), (x0, y0))
+    ui.alpha_composite(a)
+    txt = sheet("orchid")
+    tc = Canvas(txt)
+    for i, name in enumerate(TABS):
+        x = TAB_X0 + i * (TAB_W + TAB_GAP)
+        fg, sh = (INK, SELECT_DARK) if i == 3 else (INK_SOFT, PANEL_SHADE)
+        draw_text(tc, x + (TAB_W - text_width(name)) // 2, 0, name, fg, sh)
+    label = "Size comparison to %s" % player
+    draw_text(tc, (W - text_width(label)) // 2, DESC_Y, label, INK, PANEL_SHADE)
+    hx, hy = SIZE_HT
+    draw_text(tc, hx + (HW_CAP - text_width("HT")) // 2 + 1, hy - 1, "HT", WHITE, ACCENT_DARK)
+    ht = D.fmt_height(sp["height"])
+    draw_text(tc, hx + 70 - 7 - text_width(ht, "narrow"), hy - 1, ht, INK, PANEL_SHADE, font="narrow")
+    compose(ui, txt, pal)
+    out.alpha_composite(ui)
+    # OBJ: vanilla affine silhouettes (scale s: texture step s/256 per screen px)
+    ps, po, ts, to = D.species_size(e["const"])
+    pal_ink, pal_tr = pal[INK], pal[ACCENT_DARK]
+    tr = KX.sprite_rgba(os.path.join(KX.G("trainers", "front_pics"), trainer + ".png"),
+                        pal=KX.load_jasc(os.path.join(KX.G("trainers", "front_pics"), trainer + ".pal")))
+    D.affine_obj(silhouette_obj(tr, pal_tr), 152, 56 + to, ts, 0, 0, ts, out)
+    mon = D.mon_pic(sp["folder"])
+    D.affine_obj(silhouette_obj(mon, pal_ink), 88, 56 + po, ps, 0, 0, ps, out)
+    for i, (ax, ay) in enumerate(TAB_ARROWS):
+        D.chevron(out, ax, ay, right=i == 1)
+    return out
+
+
 # ------------------------------------------------------------------ search menu (std-window style)
 SEARCH_ROWS = [("ORDER", "Numerical"), ("NAME", "ABC"), ("TYPE", None), ("MODE", "TOSA")]
+S_X, S_W, S_CAP, S_Y0, S_PITCH = 16, 208, 56, 24, 20
+S_BTN_X, S_BTN_Y, S_BTN_W = (40, 128), 112, 72
+S_TRAY_Y = 136
+# TYPE row: two fixed recessed sockets (always drawn, so the row reads as two fields), centred in
+# the pill's value area (x 73-222). A set slot shows its 32x16 icon centred in the socket; an
+# unset slot shows a quiet "ANY" in INK_SOFT. The sockets fill the row's two tile rows (y 64-79,
+# 2px below the 14px pill) so the gold row swap never touches the NAME / MODE rows.
+SOCKET_W, SOCKET_H, SOCKET_GAP = 36, 16, 12
+SOCKET_Y = S_Y0 + 2 * S_PITCH
 
 
-def render_search(theme="orchid", cursor=0, grid_scroll=0):
+def socket_x(k):
+    x0, x1 = S_X + S_CAP + 1, S_X + S_W - 2
+    total = 2 * SOCKET_W + SOCKET_GAP
+    return (x0 + x1 + 1) // 2 - total // 2 + k * (SOCKET_W + SOCKET_GAP)
+
+
+def search_row_art(cv, i):
+    D.label_pill(cv, S_X, S_Y0 + i * S_PITCH, S_W, S_CAP)
+    if i == 2:
+        for k in range(2):
+            D.well(cv, socket_x(k), SOCKET_Y, SOCKET_W, SOCKET_H)
+
+
+def search_art(cv, cur=None, cursor=-1):
+    """BG art of the search page; the cursor row / button goes on `cur` (gold palette)."""
+    D.header_band(cv, 0, W - 1, round_left=False)
+    for i in range(4):
+        search_row_art(cur if (cur is not None and i == cursor) else cv, i)
+    for k, xx in enumerate(S_BTN_X):
+        c = cur if (cur is not None and cursor == 4 + k) else cv
+        rounded_box(c, xx, S_BTN_Y, S_BTN_W, 18, 4, PANEL, INK, WHITE, PANEL_SHADE)
+    D.tray(cv, S_TRAY_Y)
+
+
+def render_search(theme="orchid", cursor=0, grid_scroll=0, types=("grass", "water"), slot=0):
     pal = D.dex_palette(theme)
     sel = D.selected(pal)
     out = KX.grid_frame(grid_scroll)
     art, cur, txt = sheet(theme), sheet(theme), sheet(theme)
     ac, cc, tc = Canvas(art), Canvas(cur), Canvas(txt)
-    D.header_band(ac, 0, W - 1, round_left=False)
-    x, w, cap = 16, 208, 56
-    y0 = 24
-    for i, (lab, val) in enumerate(SEARCH_ROWS):
-        y = y0 + i * 20
-        D.label_pill(cc if i == cursor else ac, x, y, w, cap)
-    # buttons
-    bx = [(40, "SEARCH"), (128, "CANCEL")]
-    for i, (xx, lab) in enumerate(bx):
-        rounded_box(cc if cursor == 4 + i else ac, xx, 112, 72, 18, 4, PANEL, INK, WHITE, PANEL_SHADE)
-    D.tray(ac, 136)
+    search_art(ac, cc, cursor)
     draw_text(tc, (W - text_width("SEARCH")) // 2, 0, "SEARCH", WHITE, ACCENT_DARK)
     for i, (lab, val) in enumerate(SEARCH_ROWS):
-        y = y0 + i * 20
-        draw_text(tc, x + (cap - text_width(lab)) // 2 + 1, y - 1, lab, WHITE, ACCENT_DARK)
+        y = S_Y0 + i * S_PITCH
+        draw_text(tc, S_X + (S_CAP - text_width(lab)) // 2 + 1, y - 1, lab, WHITE, ACCENT_DARK)
         if val:
-            draw_text(tc, x + cap + (w - cap - text_width(val)) // 2, y - 1, val, INK, PANEL_SHADE)
-    for i, (xx, lab) in enumerate(bx):
-        draw_text(tc, xx + (72 - text_width(lab)) // 2, 113, lab, INK, PANEL_SHADE)
+            draw_text(tc, S_X + S_CAP + (S_W - S_CAP - text_width(val)) // 2, y - 1, val, INK, PANEL_SHADE)
+    for k in range(2):
+        if not types[k]:
+            sx = socket_x(k)
+            draw_text(tc, sx + (SOCKET_W - text_width("ANY", "narrow")) // 2, SOCKET_Y, "ANY", INK_SOFT, None, font="narrow")
+    for i, (xx, lab) in enumerate(zip(S_BTN_X, ("SEARCH", "CANCEL"))):
+        draw_text(tc, xx + (S_BTN_W - text_width(lab)) // 2, S_BTN_Y + 1, lab, INK, PANEL_SHADE)
     hint = ["Pick the order the list is sorted in.", "List POKéMON by their first letter.",
-            "Show POKéMON of up to two types.", "Switch TOSA / NATIONAL listings."][min(cursor, 3)]
-    draw_text(tc, DESC_X, 138, hint, INK, PANEL_SHADE, line_h=DESC_PITCH)
+            "Show POKéMON of up to two types. A: slot", "Switch TOSA / NATIONAL listings."][min(cursor, 3)]
+    draw_text(tc, DESC_X, S_TRAY_Y + 2, hint, INK, PANEL_SHADE, line_h=DESC_PITCH)
     a = KX.sheet_rgba(art, pal)
     a.alpha_composite(KX.sheet_rgba(cur, sel))
     a.alpha_composite(KX.sheet_rgba(txt, pal))
     out.alpha_composite(a)
-    # OBJ: value chevrons on the selected row, type icons in the TYPE row
-    ty = y0 + 2 * 20 - 1
-    out.alpha_composite(KX.type_icon("grass"), (x + cap + 40, ty))
-    out.alpha_composite(KX.type_icon("water"), (x + cap + 80, ty))
+    # OBJ: type icons centred in their sockets, value chevrons on the selected row
+    for k in range(2):
+        if types[k]:
+            out.alpha_composite(KX.type_icon(types[k]), (socket_x(k) + 2, SOCKET_Y))
     if cursor < 4:
-        y = y0 + cursor * 20 + 7
-        D.chevron(out, x + cap + 12, y)
-        D.chevron(out, x + w - 12, y, right=True)
+        y = S_Y0 + cursor * S_PITCH + 7
+        if cursor == 2:     # chevrons flank the socket being edited, 3px clear
+            sx = socket_x(slot)
+            D.chevron(out, sx - 6, y)
+            D.chevron(out, sx + SOCKET_W + 6, y, right=True)
+        else:
+            D.chevron(out, S_X + S_CAP + 12, y)
+            D.chevron(out, S_X + S_W - 12, y, right=True)
     return out
 
 
@@ -463,11 +759,23 @@ if __name__ == "__main__":
     s4 = render_entry(entry_index=idx(1))                             # Treecko INFO
     s5 = render_entry(entry_index=idx(20))                            # Lotad, Water/Grass
     s6 = render_search(cursor=0)
+    # TYPE row sockets: zero / one / two types, cursor on the TYPE row (editing slot 1 / 2)
+    s6t = [render_search(cursor=2, types=(None, None)), render_search(cursor=2, types=("grass", None)),
+           render_search(cursor=2, types=("grass", "water"), slot=1), render_search(cursor=1, types=("grass", None))]
     s7 = render_entry(entry_index=idx(26), tab=1)
     s8 = render_entry(entry_index=idx(21))                            # Lombre, seen only: ????? rule     # Taillow AREA placeholder
     save(s1, os.path.join(out, "main.png"))
     for i, im in enumerate((s1, s2, s3, s4, s5, s6, s7, s8), 1):
         save(im, os.path.join(out, "state_%02d.png" % i))
+    for k, im in enumerate(s6t):
+        save(im, os.path.join(out, "state_06%s.png" % "abcd"[k]))
+    # round 3: CRY (mid-cry frame) and SIZE pages
+    sc = Scope()
+    pcm = cry_pcm(info(ENTRIES[idx(1)])["folder"])
+    for f in range(40):
+        sc.frame(pcm_snapshot(pcm, f) if f * 224 < len(pcm) else None, playing=True)
+    save(render_cry(entry_index=idx(1), scope=sc), os.path.join(out, "cry_mock.png"))
+    save(render_size(entry_index=idx(1)), os.path.join(out, "size_mock.png"))
     parts_sheet().convert("RGB").save(os.path.join(out, "parts.png"))
     # theme A/B
     D.ensure_device_theme()
