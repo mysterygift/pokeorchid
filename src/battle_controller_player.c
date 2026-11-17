@@ -267,7 +267,7 @@ static const u8 *const sOrchidActionLabels[] =
 };
 static const u8 *const sOrchidSafariLabels[] =
 {
-    COMPOUND_STRING("BALL"), COMPOUND_STRING("POKéBLOCK"), COMPOUND_STRING("GO NEAR"), COMPOUND_STRING("RUN"),
+    COMPOUND_STRING("BALL"), COMPOUND_STRING("BLOCK"), COMPOUND_STRING("GO NEAR"), COMPOUND_STRING("RUN"),
 };
 
 #define sIconPage   data[0]
@@ -336,7 +336,7 @@ static void OrchidCreateActionIcons(void)
     u32 i, base;
     u8 spriteId;
 
-    if ((gBattleTypeFlags & BATTLE_TYPE_SAFARI) || GetSpriteTileStartByTag(TAG_ORCHID_ACTION_TILE) != 0xFFFF)
+    if (GetSpriteTileStartByTag(TAG_ORCHID_ACTION_TILE) != 0xFFFF)
         return;
 
     memcpy(buffer, gOrchidActionFight_Gfx, 16 * TILE_SIZE_4BPP);
