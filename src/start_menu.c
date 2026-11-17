@@ -52,6 +52,8 @@
 #include "wild_encounter.h"
 #include "constants/battle_frontier.h"
 #include "constants/items.h"
+#include "constants/map_types.h"
+#include "constants/weather.h"
 #include "constants/orchid_ui.h"
 #include "constants/rgb.h"
 #include "constants/songs.h"
@@ -88,7 +90,8 @@ enum
 #define TAG_OSM_BANNER       0x6E26 // start menu v2: banner body
 #define TAG_OSM_TAB          0x6E27 // gold tab with the option name (drawn at runtime)
 #define TAG_OSM_PILL         0x6E28 // location pill (drawn at runtime)
-#define TAG_OSM_OBJ_PAL      0x6E29 // start_obj.pal: banner, tab, pill
+#define TAG_OSM_OBJ_PAL      0x6E29 // start_obj.pal: banner, tab
+#define TAG_OSM_PILL_PAL     0x6E2A // start_obj.pal with the cap ramp of the current weather: location pill
 
 // Start menu v2: the tab and the location pill are drawn into an off-screen window, then copied to OBJ tiles.
 #define OSM2_CANVAS_W        16 // tiles
@@ -603,7 +606,7 @@ static const struct SpriteTemplate sSpriteTemplate_OrchidTab =
 };
 static const struct SpriteTemplate sSpriteTemplate_OrchidPill =
 {
-    .tileTag = TAG_OSM_PILL, .paletteTag = TAG_OSM_OBJ_PAL, .oam = &sOam_OrchidTab, .anims = sAnims_OrchidTab,
+    .tileTag = TAG_OSM_PILL, .paletteTag = TAG_OSM_PILL_PAL, .oam = &sOam_OrchidTab, .anims = sAnims_OrchidTab,
     .images = NULL, .affineAnims = gDummySpriteAffineAnimTable, .callback = SpriteCallbackDummy,
 };
 
@@ -689,20 +692,70 @@ static void OrchidStartMenu_Select(void)
     }
 }
 
-// Location pill straight on the field (mock_start_v2.chip_bare): a label pill with the map pin.
+// The pill's cap follows the overworld weather (mock_weather_pill.STYLES); indoor / underground maps keep
+// the pin. Cycling weathers (Route 119 / 123, abnormal, dynamic) show the weather running right now.
+static u32 OrchidStartMenu_WeatherCap(void)
+{
+    if (gMapHeader.mapType == MAP_TYPE_INDOOR || gMapHeader.mapType == MAP_TYPE_UNDERGROUND
+     || gMapHeader.mapType == MAP_TYPE_SECRET_BASE)
+        return ORCHID_WXCAP_INDOOR;
+
+    switch (GetCurrentWeather())
+    {
+    case WEATHER_DROUGHT:
+        return ORCHID_WXCAP_SUN;
+    case WEATHER_RAIN:
+    case WEATHER_DOWNPOUR:
+        return ORCHID_WXCAP_RAIN;
+    case WEATHER_RAIN_THUNDERSTORM:
+        return ORCHID_WXCAP_STORM;
+    case WEATHER_SNOW:
+        return ORCHID_WXCAP_SNOW;
+    case WEATHER_FOG_HORIZONTAL:
+    case WEATHER_FOG_DIAGONAL:
+    case WEATHER_FOG:
+        return ORCHID_WXCAP_FOG;
+    case WEATHER_THICK_SMOG:
+        return ORCHID_WXCAP_SMOG;
+    case WEATHER_SANDSTORM:
+        return ORCHID_WXCAP_SAND;
+    case WEATHER_VOLCANIC_ASH:
+        return ORCHID_WXCAP_ASH;
+    case WEATHER_SHADE:
+        return ORCHID_WXCAP_CLOUD;
+    case WEATHER_UNDERWATER:
+    case WEATHER_UNDERWATER_BUBBLES:
+        return ORCHID_WXCAP_WATER;
+    default: // NONE, SUNNY, SUNNY_CLOUDS
+        return ORCHID_WXCAP_CLEAR;
+    }
+}
+
+// Location pill straight on the field (mock_start_v2.chip_bare) with the weather cap (mock_weather_pill).
+// Its own copy of start_obj.pal: only the 3 cap ramp colours change with the weather.
 static void OrchidStartMenu_CreatePill(void)
 {
     struct SpriteSheet sheet;
-    u8 canvas = AddWindow(&sOrchidCanvasTemplate);
+    struct SpritePalette pal = {gOrchidStartObj_Pal, TAG_OSM_PILL_PAL};
+    u32 cap = OrchidStartMenu_WeatherCap();
+    u8 canvas, palSlot;
     u32 i;
 
-    if (canvas == WINDOW_NONE)
+    palSlot = LoadSpritePalette(&pal);
+    if (palSlot == 0xFF)
         return;
+    LoadPalette(sOrchidWeatherCapRamps[cap], OBJ_PLTT_ID(palSlot) + OSM2_ACCENT_DARK, sizeof(sOrchidWeatherCapRamps[cap]));
+    canvas = AddWindow(&sOrchidCanvasTemplate);
+    if (canvas == WINDOW_NONE)
+    {
+        FreeSpritePaletteByTag(TAG_OSM_PILL_PAL);
+        return;
+    }
     GetMapNameGeneric(gStringVar4, gMapHeader.regionMapSectionId);
     FillWindowPixelBuffer(canvas, PIXEL_FILL(0));
     OrchidDrawRoundedBox(canvas, 0, OSM2_PILL_Y - 8, GetStringWidth(FONT_NORMAL, gStringVar4, 0) + OSM2_PILL_PAD, 14, 4,
                          OSM2_PANEL, OSM2_INK, OSM2_WHITE, OSM2_PANEL_SHADE);
-    BlitBitmapRectToWindow(canvas, gOrchidPillCap_Gfx, 0, 0, 24, 16, 0, 0, 17, 16);
+    BlitBitmapRectToWindow(canvas, gOrchidWeatherCaps_Gfx, 0, cap * 16, 24, ORCHID_WXCAP_COUNT * 16, 0, 0, 17, 16);
     AddTextPrinterParameterized4(canvas, FONT_NORMAL, OSM2_PILL_TEXT_DX, 0, 0, 0, sOrchidPillColors, TEXT_SKIP_DRAW, gStringVar4);
     sheet.data = gWindows[canvas].tileData;
     sheet.size = 64 * TILE_SIZE_4BPP; // 2 x 64x32 OBJs (the pill uses the top 16 px)
@@ -732,6 +785,7 @@ static void OrchidStartMenu_DestroyPill(void)
             DestroySprite(&gSprites[sOrchidPillSpriteIds[i]]);
     }
     FreeSpriteTilesByTag(TAG_OSM_PILL);
+    FreeSpritePaletteByTag(TAG_OSM_PILL_PAL);
     sOrchidPillShown = FALSE;
 }
 
@@ -789,6 +843,22 @@ static bool32 OrchidStartMenu_CloseDone(void)
     return !sOrchidIconsShown || (task->tSlideMode == SLIDE_CLOSE && task->tSlideFrame >= OSM2_CLOSE_FRAMES);
 }
 
+// Sprites the field can still create (weather, field effects) beside the menu art; the menu art and the
+// saving ball only show when this many slots stay free after them, so they can never starve the field.
+#define ORCHID_SPRITE_RESERVE 8
+
+static u32 CountFreeSpriteSlots(void)
+{
+    u32 i, count = 0;
+
+    for (i = 0; i < MAX_SPRITES; i++)
+    {
+        if (!gSprites[i].inUse)
+            count++;
+    }
+    return count;
+}
+
 static void OrchidStartMenu_CreateIcons(void)
 {
     struct SpriteSheet icons = {gOrchidStartMenuIcons_Gfx, ICON_COUNT * 4 * TILE_SIZE_4BPP, TAG_OSM_ICONS};
@@ -804,6 +874,9 @@ static void OrchidStartMenu_CreateIcons(void)
         return;
     if (n > OSM2_MAX_ENTRIES)
         n = OSM2_MAX_ENTRIES;
+    // banner (up to 3) + tab (2) + icons + location pill (2)
+    if (CountFreeSpriteSlots() < n + sOrchidBannerLayout[n - 1][1] + 2 + 2 + ORCHID_SPRITE_RESERVE)
+        return; // the menu still works (and closes), without its art
     if (LoadSpritePalette(&objPal) == 0xFF || LoadSpritePalette(&pal) == 0xFF)
     {
         FreeSpritePaletteByTag(TAG_OSM_OBJ_PAL);
@@ -1743,6 +1816,8 @@ static void OrchidSaveBall_Create(void)
 
     if (sOrchidBallShown)
         return;
+    if (CountFreeSpriteSlots() < 1 + ARRAY_COUNT(sOrchidSparkleSpriteIds) + ORCHID_SPRITE_RESERVE)
+        return; // save without the ball
     if (LoadSpritePalette(&pal) == 0xFF)
         return; // no free OBJ palette: save without the ball
     LoadSpriteSheet(&ball);

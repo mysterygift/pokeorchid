@@ -87,5 +87,37 @@ static const u16 sOrchidBannerLayout[OSM2_MAX_ENTRIES][2] = {{0, 1}, {32, 1}, {6
 #define OSM2_CLOSE_FRAMES 8
 static const u8 sOrchidSlideOpen[13][2] = {{73, 104}, {56, 80}, {42, 60}, {31, 44}, {22, 31}, {14, 21}, {9, 13}, {5, 8}, {3, 4}, {1, 2}, {0, 0}, {0, 0}, {0, 0}};
 static const u8 sOrchidSlideClose[9][2] = {{0, 0}, {1, 2}, {5, 6}, {10, 15}, {18, 26}, {29, 41}, {41, 58}, {56, 80}, {73, 104}};
+// location pill weather caps (mock_weather_pill.STYLES): weather_caps.png frame + ACCENT ramp
+enum OrchidWeatherCap
+{
+    ORCHID_WXCAP_CLEAR,
+    ORCHID_WXCAP_SUN,
+    ORCHID_WXCAP_RAIN,
+    ORCHID_WXCAP_STORM,
+    ORCHID_WXCAP_SNOW,
+    ORCHID_WXCAP_FOG,
+    ORCHID_WXCAP_SMOG,
+    ORCHID_WXCAP_SAND,
+    ORCHID_WXCAP_ASH,
+    ORCHID_WXCAP_CLOUD,
+    ORCHID_WXCAP_WATER,
+    ORCHID_WXCAP_INDOOR,
+    ORCHID_WXCAP_COUNT,
+};
+#define OSM2_ACCENT_DARK  7  // the pill palette's cap ramp: dark, face, light
+static const u16 sOrchidWeatherCapRamps[ORCHID_WXCAP_COUNT][3] = {
+    [ORCHID_WXCAP_CLEAR] = {RGB(6, 15, 6), RGB(11, 22, 9), RGB(20, 27, 15)},
+    [ORCHID_WXCAP_SUN] = {RGB(19, 5, 5), RGB(28, 9, 6), RGB(31, 19, 12)},
+    [ORCHID_WXCAP_RAIN] = {RGB(4, 8, 18), RGB(7, 14, 27), RGB(15, 22, 31)},
+    [ORCHID_WXCAP_STORM] = {RGB(5, 5, 13), RGB(9, 9, 21), RGB(17, 17, 28)},
+    [ORCHID_WXCAP_SNOW] = {RGB(7, 16, 23), RGB(13, 23, 29), RGB(23, 28, 31)},
+    [ORCHID_WXCAP_FOG] = {RGB(11, 11, 13), RGB(18, 18, 20), RGB(25, 25, 26)},
+    [ORCHID_WXCAP_SMOG] = {RGB(11, 4, 14), RGB(17, 7, 20), RGB(24, 15, 27)},
+    [ORCHID_WXCAP_SAND] = {RGB(14, 9, 4), RGB(22, 16, 9), RGB(28, 23, 15)},
+    [ORCHID_WXCAP_ASH] = {RGB(7, 6, 6), RGB(13, 12, 12), RGB(20, 19, 18)},
+    [ORCHID_WXCAP_CLOUD] = {RGB(9, 11, 13), RGB(14, 17, 19), RGB(21, 24, 25)},
+    [ORCHID_WXCAP_WATER] = {RGB(3, 12, 14), RGB(5, 19, 20), RGB(13, 26, 26)},
+    [ORCHID_WXCAP_INDOOR] = {RGB(12, 6, 16), RGB(19, 11, 23), RGB(25, 19, 28)},
+};
 
 #endif // GUARD_DATA_START_MENU_ORCHID_H

@@ -18,7 +18,9 @@ Writes (under the repo root):
   graphics/start_menu/chips.png             location chip pill (10x2), Safari well (11x4), Pyramid chip (12x4), pips
   graphics/start_menu/banner.png            start menu v2 (mock_start_v2.py, variant B): the banner body for
                                             1..9 entries, 32 px wide, each padded to whole 32x64 OBJs, stacked
-  graphics/start_menu/pill_cap.png          location pill's accent cap with the pin (blitted over a runtime pill)
+  graphics/start_menu/weather_caps.png      location pill caps (24x16 each, mock_weather_pill.STYLES order): the
+                                            weather symbol on the accent cap, recoloured by the pill palette's
+                                            ACCENT ramp; the last one is the indoor pin
   graphics/start_menu/start_obj.pal         OBJ palette for banner / tab / pill (kit 'orchid'; SPARE_A/B = name colour at runtime)
   src/data/start_menu_orchid.h              layout constants, slide tables + the wobble frame table
 
@@ -224,19 +226,37 @@ def export_banner():
         strip.paste(b, (0, yy))
         yy += b.size[1]
     save_indexed(strip, os.path.join(OUT, "banner.png"), palette("orchid"))
-    cap = new_sheet(24, 16)
-    X.label_pill(Canvas(cap), 0, 1, 40, "pin")
-    px = cap.load()
-    for yy in range(16):
-        for xx in range(17, 24):
-            px[xx, yy] = 0                             # only the cap (+ divider) is blitted
-    save_indexed(cap, os.path.join(OUT, "pill_cap.png"), palette("orchid"))
     write_jasc(os.path.join(OUT, "start_obj.pal"), palette("orchid"))
     return offsets
 
 
+# ---------------------------------------------------------------- weather caps (mock_weather_pill.py)
+def export_weather_caps():
+    import mock_weather_pill as WP
+    caps = new_sheet(24, 16 * len(WP.ORDER))
+    for k, key in enumerate(WP.ORDER):
+        _, ramp, rows, _ = WP.STYLES[key]
+        sil = "pin"
+        if rows:
+            X.SIL["wx_" + key] = rows
+            sil = "wx_" + key
+        cap = new_sheet(24, 16)
+        cv = Canvas(cap)
+        # mock_weather_pill.weather_pill: pill, recoloured cap, centred white symbol (cap = left 17 px)
+        rounded_box(cv, 0, 1, 40, 14, 4, PANEL, INK, WHITE, PANEL_SHADE)
+        X.recolour_cap(cv, 0, 1, X.CAP_W - 1, 14, ACCENT, ACCENT_LIGHT, ACCENT_DARK)
+        X.centred_sil(cv, 1, 2, X.CAP_W - 1, 12, sil, WHITE, ACCENT_DARK)
+        px = cap.load()
+        for yy in range(16):
+            for xx in range(17, 24):
+                px[xx, yy] = 0                         # only the cap (+ divider) is blitted over the runtime pill
+        caps.paste(cap, (0, 16 * k))
+    save_indexed(caps, os.path.join(OUT, "weather_caps.png"), palette("orchid"))
+    return WP
+
+
 # ---------------------------------------------------------------- header
-def write_header(banner_offsets):
+def write_header(banner_offsets, WP):
     import mock_start_v2 as V
     L = []
     A = L.append
@@ -325,6 +345,21 @@ def write_header(banner_offsets):
     A("#define OSM2_CLOSE_FRAMES %d" % (len(cl) - 1))
     A("static const u8 sOrchidSlideOpen[%d][2] = {%s};" % (len(op), ", ".join("{%d, %d}" % t for t in op)))
     A("static const u8 sOrchidSlideClose[%d][2] = {%s};" % (len(cl), ", ".join("{%d, %d}" % t for t in cl)))
+    A("// location pill weather caps (mock_weather_pill.STYLES): weather_caps.png frame + ACCENT ramp")
+    A("enum OrchidWeatherCap")
+    A("{")
+    for key in WP.ORDER:
+        A("    ORCHID_WXCAP_%s," % key.upper())
+    A("    ORCHID_WXCAP_COUNT,")
+    A("};")
+    A("#define OSM2_ACCENT_DARK  %d  // the pill palette's cap ramp: dark, face, light" % ACCENT_DARK)
+    rgb = lambda c: "RGB(%d, %d, %d)" % (c[0] // 8, c[1] // 8, c[2] // 8)
+    A("static const u16 sOrchidWeatherCapRamps[ORCHID_WXCAP_COUNT][3] = {")
+    for key in WP.ORDER:
+        ramp = WP.STYLES[key][1]
+        cols = [snap(c) for c in ramp] if ramp else [palette("orchid")[i] for i in (ACCENT_DARK, ACCENT, ACCENT_LIGHT)]
+        A("    [ORCHID_WXCAP_%s] = {%s}," % (key.upper(), ", ".join(rgb(c) for c in cols)))
+    A("};")
     A("")
     A("#endif // GUARD_DATA_START_MENU_ORCHID_H")
     with open(HEADER, "w") as f:
@@ -336,7 +371,8 @@ def main():
     export_ball()
     export_card()
     export_chips()
-    write_header(export_banner())
+    banner = export_banner()
+    write_header(banner, export_weather_caps())
     print("wrote start menu / save assets")
 
 
