@@ -11,6 +11,13 @@
 #define STD_WINDOW_PALETTE_SIZE PLTT_SIZEOF(10)
 #define STD_WINDOW_BASE_TILE_NUM 0x214
 
+// Orchid YES/NO (gold pill, no ▶). Window palette layout: see dev_scripts/orchid_ui/export_yesno.py.
+#define ORCHID_PILL_SHADE        10
+#define ORCHID_PILL_FACE         11
+#define ORCHID_PILL_LIGHT        12
+#define ORCHID_YESNO_FIELD_TILE  0x21D   // field: 9 frame tiles after the std frame (as elevator / berry powder use)
+#define ORCHID_YESNO_FIELD_PAL   13      // field: BG palette 13 (maps use 0-12; weather leaves 13-15 alone)
+
 #define MENU_NOTHING_CHOSEN -2
 #define MENU_B_PRESSED -1
 
@@ -128,6 +135,11 @@ void HofPCTopBar_Clear(void);
 void ResetBgPositions(void);
 void AddTextPrinterWithCustomSpeedForMessage(bool8 allowSkippingDelayWithButtonPress, u8 speed);
 void EraseYesNoWindow(void);
+void OrchidDrawRoundedBox(u8 windowId, s32 x0, s32 y0, s32 w, s32 h, s32 r, u8 face, u8 outline, u8 light, u8 shade);
+void LoadOrchidYesNoFrame(u8 bg, u16 frameTile);
+void LoadOrchidYesNoColors(u8 palSlot, bool32 wholePalette);
+void CreateOrchidYesNoMenu(const struct WindowTemplate *window, u16 frameTile, u8 framePal, u8 initialCursorPos);
+void CreateOrchidFieldYesNoMenu(const struct WindowTemplate *window, u8 initialCursorPos);
 void PrintMenuActionTextsAtPos(u8 windowId, u8 fontId, u8 left, u8 top, u8 lineHeight, u8 itemCount, const struct MenuAction *menuActions);
 void Menu_LoadStdPal(void);
 u8 AddSecondaryPopUpWindow(void);

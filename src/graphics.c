@@ -1787,6 +1787,9 @@ const u16 gOrchidLineupBalls_Pal[] = INCGFX_U16("graphics/battle_interface/orchi
 const u32 gOrchidPartySlots_Gfx[] = INCGFX_U32("graphics/party_menu/orchid_slots.png", ".4bpp");
 const u32 gOrchidPartyButtons_Gfx[] = INCGFX_U32("graphics/party_menu/orchid_buttons.png", ".4bpp");
 const u32 gOrchidPartyGrid_Gfx[] = INCGFX_U32("graphics/party_menu/orchid_grid.png", ".4bpp");
+// Orchid UI: YES/NO window (dev_scripts/orchid_ui/export_yesno.py)
+const u32 gOrchidYesNoFrame_Gfx[] = INCGFX_U32("graphics/text_window/orchid_yesno.png", ".4bpp");
+const u16 gOrchidYesNoFrame_Pal[] = INCGFX_U16("graphics/text_window/orchid_yesno.png", ".gbapal");
 
 // Orchid UI: dex
 const u32 gOrchidDexList_Gfx[] = INCGFX_U32("graphics/pokedex/orchid/list.png", ".4bpp.smol");

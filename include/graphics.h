@@ -1869,6 +1869,9 @@ extern const u16 gOrchidLineupBalls_Pal[];
 extern const u32 gOrchidPartySlots_Gfx[];
 extern const u32 gOrchidPartyButtons_Gfx[];
 extern const u32 gOrchidPartyGrid_Gfx[];
+// Orchid UI: YES/NO window
+extern const u32 gOrchidYesNoFrame_Gfx[];
+extern const u16 gOrchidYesNoFrame_Pal[];
 
 // Orchid UI: dex
 extern const u32 gOrchidDexList_Gfx[];

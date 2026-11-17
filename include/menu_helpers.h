@@ -22,6 +22,8 @@ void DisplayMessageAndContinueTask(u8 taskId, u8 windowId, u16 tileNum, u8 palet
 bool16 RunTextPrintersRetIsActive(u8 textPrinterId);
 void DoYesNoFuncWithChoice(u8 taskId, const struct YesNoFuncTable *data);
 void CreateYesNoMenuWithCallbacks(u8 taskId, const struct WindowTemplate *template, u8 unused1, u8 unused2, u8 unused3, u16 tileStart, u8 palette, const struct YesNoFuncTable *yesNo);
+void CreateOrchidYesNoMenuWithCallbacks(u8 taskId, const struct WindowTemplate *template, u16 frameTile, u8 framePal, const struct YesNoFuncTable *yesNo);
+void CreateOrchidFieldYesNoMenuWithCallbacks(u8 taskId, const struct WindowTemplate *template, const struct YesNoFuncTable *yesNo);
 bool8 AdjustQuantityAccordingToDPadInput(s16 *quantity, u16 max);
 u8 GetLRKeysPressed(void);
 u8 GetLRKeysPressedAndHeld(void);
