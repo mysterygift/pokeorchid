@@ -713,14 +713,70 @@ bool8 BattleLoadAllHealthBoxesGfx(u8 state)
 {
     if (state == 1)
     {
-        LoadSpritePalette(&sSpritePalettes_HealthBoxHealthBar[0]);
-        LoadSpritePalette(&sSpritePalettes_HealthBoxHealthBar[1]);
+        u32 i;
+        bool32 anyVanillaBox = FALSE;
+
+        for (i = 0; i < gBattlersCount; i++)
+        {
+            if (!IsOrchidHealthboxBattler(i))
+                anyVanillaBox = TRUE;
+        }
+        LoadSpritePalette(&sSpritePalettes_HealthBoxHealthBar[0]); // also the enemy shadow palette
+        if (anyVanillaBox) // Orchid UI: singles boxes bring their own bar palette, save the slot
+            LoadSpritePalette(&sSpritePalettes_HealthBoxHealthBar[1]);
+        LoadOrchidHealthboxGfx();
         CategoryIcons_LoadSpritesGfx();
     }
 
     if (state < 2)
     {
         return FALSE;
+    }
+
+    // Orchid UI: singles-layout battlers get the Orchid healthbox (uncompressed, text drawn at runtime)
+    {
+        enum BattlerId orchidBattler = MAX_BATTLERS_COUNT;
+        bool32 orchidBar = FALSE;
+
+        if (IsDoubleBattle())
+        {
+            if (state == 2)
+                orchidBattler = GetBattlerAtPosition(B_POSITION_PLAYER_LEFT);
+            else if (state == 4)
+                orchidBattler = GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT);
+            else if (state >= 6 && state <= 9)
+                orchidBattler = state - 6, orchidBar = TRUE;
+        }
+        else
+        {
+            if (state == 2)
+                orchidBattler = GetBattlerAtPosition(B_POSITION_PLAYER_LEFT);
+            else if (state == 3)
+                orchidBattler = GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT);
+            else if (state == 4 || state == 5)
+                orchidBattler = state - 4, orchidBar = TRUE;
+        }
+
+        if (orchidBattler < gBattlersCount && IsOrchidHealthboxBattler(orchidBattler))
+        {
+            struct SpriteSheet sheet;
+            bool32 isPlayer = IsOnPlayerSide(orchidBattler);
+
+            if (orchidBar)
+            {
+                sheet.data = isPlayer ? gOrchidHealthbarPlayer_Gfx : gOrchidHealthbarOpponent_Gfx;
+                sheet.size = 16 * TILE_SIZE_4BPP;
+                sheet.tag = sSpriteSheets_HealthBar[GetBattlerPosition(orchidBattler)].tag;
+            }
+            else
+            {
+                sheet.data = isPlayer ? gOrchidHealthboxPlayer_Gfx : gOrchidHealthboxOpponent_Gfx;
+                sheet.size = 64 * TILE_SIZE_4BPP;
+                sheet.tag = isPlayer ? TAG_HEALTHBOX_PLAYER1_TILE : TAG_HEALTHBOX_OPPONENT1_TILE;
+            }
+            LoadSpriteSheet(&sheet);
+            return FALSE;
+        }
     }
 
     const struct CompressedSpriteSheet *spriteSheet = NULL;

@@ -34,6 +34,9 @@
 #include "constants/songs.h"
 #include "constants/items.h"
 #include "caps.h"
+#include "battle_gimmick.h"
+#include "constants/orchid_ui.h"
+#include "data/battle_orchid_ui.h"
 
 #define HEALTHBOX_BG_INDEX 2
 
@@ -367,143 +370,73 @@ static const struct SubspriteTable sHealthBar_SubspriteTables[] =
 /*                      v-- Origin
 [0     ][1     ][2     ][3     ]   128x8
 */
-static const struct Subsprite sStatusSummaryBar_Subsprites_Enter[] =
+// Orchid UI: party lineup (dev_scripts/orchid_ui/export_battle.py). The bar is 3x 32x16 in the
+// healthbox-B language (player art at tile 0, opponent art at tile 24, no flipping); the balls
+// are 16x16 frames: ready / empty / fainted / one per status colour.
+#define LINEUP_SUBSPRITE(n, side) \
+{ \
+    .x = 32 * (n), \
+    .y = 0, \
+    .shape = SPRITE_SHAPE(32x16), \
+    .size = SPRITE_SIZE(32x16), \
+    .tileOffset = 24 * (side) + 8 * (n), \
+    .priority = 1 \
+}
+
+static const struct Subsprite sStatusSummaryBar_Subsprites_Player[] =
 {
-    {
-        .x = 32 * -3,
-        .y = 0,
-        .shape = SPRITE_SHAPE(32x8),
-        .size = SPRITE_SIZE(32x8),
-        .tileOffset = 0,
-        .priority = 1
-    },
-    {
-        .x = 32 * -2,
-        .y = 0,
-        .shape = SPRITE_SHAPE(32x8),
-        .size = SPRITE_SIZE(32x8),
-        .tileOffset = 4,
-        .priority = 1
-    },
-    {
-        .x = 32 * -1,
-        .y = 0,
-        .shape = SPRITE_SHAPE(32x8),
-        .size = SPRITE_SIZE(32x8),
-        .tileOffset = 8,
-        .priority = 1
-    },
-    {
-        .x = 0,
-        .y = 0,
-        .shape = SPRITE_SHAPE(32x8),
-        .size = SPRITE_SIZE(32x8),
-        .tileOffset = 12,
-        .priority = 1
-    }
+    LINEUP_SUBSPRITE(0, 0), LINEUP_SUBSPRITE(1, 0), LINEUP_SUBSPRITE(2, 0),
 };
 
-/*                      v-- Origin
-[0     ][1     ][2     ][3     ][4     ][5     ]   192x8
-                 ^-- uses same tiles --^
-*/
-static const struct Subsprite sStatusSummaryBar_Subsprites_Exit[] =
+static const struct Subsprite sStatusSummaryBar_Subsprites_Opponent[] =
 {
-    {
-        .x = 32 * -3,
-        .y = 0,
-        .shape = SPRITE_SHAPE(32x8),
-        .size = SPRITE_SIZE(32x8),
-        .tileOffset = 0,
-        .priority = 1
-    },
-    {
-        .x = 32 * -2,
-        .y = 0,
-        .shape = SPRITE_SHAPE(32x8),
-        .size = SPRITE_SIZE(32x8),
-        .tileOffset = 4,
-        .priority = 1
-    },
-    {
-        .x = 32 * -1,
-        .y = 0,
-        .shape = SPRITE_SHAPE(32x8),
-        .size = SPRITE_SIZE(32x8),
-        .tileOffset = 8,
-        .priority = 1
-    },
-    {
-        .x = 32 * 0,
-        .y = 0,
-        .shape = SPRITE_SHAPE(32x8),
-        .size = SPRITE_SIZE(32x8),
-        .tileOffset = 8,
-        .priority = 1
-    },
-    {
-        .x = 32 * 1,
-        .y = 0,
-        .shape = SPRITE_SHAPE(32x8),
-        .size = SPRITE_SIZE(32x8),
-        .tileOffset = 8,
-        .priority = 1
-    },
-    {
-        .x = 32 * 2,
-        .y = 0,
-        .shape = SPRITE_SHAPE(32x8),
-        .size = SPRITE_SIZE(32x8),
-        .tileOffset = 12,
-        .priority = 1
-    }
+    LINEUP_SUBSPRITE(0, 1), LINEUP_SUBSPRITE(1, 1), LINEUP_SUBSPRITE(2, 1),
 };
 
-static const struct SubspriteTable sStatusSummaryBar_SubspriteTable_Enter[] =
+static const struct SubspriteTable sStatusSummaryBar_SubspriteTables[] =
 {
-    {ARRAY_COUNT(sStatusSummaryBar_Subsprites_Enter), sStatusSummaryBar_Subsprites_Enter}
+    {ARRAY_COUNT(sStatusSummaryBar_Subsprites_Player), sStatusSummaryBar_Subsprites_Player},
+    {ARRAY_COUNT(sStatusSummaryBar_Subsprites_Opponent), sStatusSummaryBar_Subsprites_Opponent},
 };
 
-static const struct SubspriteTable sStatusSummaryBar_SubspriteTable_Exit[] =
+static const struct SpriteSheet sStatusSummaryBarSpriteSheet =
 {
-    {ARRAY_COUNT(sStatusSummaryBar_Subsprites_Exit), sStatusSummaryBar_Subsprites_Exit}
-};
-
-static const struct CompressedSpriteSheet sStatusSummaryBarSpriteSheet =
-{
-    gBattleInterface_BallStatusBarGfx, 0x200, TAG_STATUS_SUMMARY_BAR_TILE
+    gOrchidLineupBars_Gfx, 48 * TILE_SIZE_4BPP, TAG_STATUS_SUMMARY_BAR_TILE
 };
 
 static const struct SpritePalette sStatusSummaryBarSpritePal =
 {
-    gBattleInterface_BallStatusBarPal, TAG_STATUS_SUMMARY_BAR_PAL
+    gOrchidHealthbox_Pal, TAG_STATUS_SUMMARY_BAR_PAL
 };
 
 static const struct SpritePalette sStatusSummaryBallsSpritePal =
 {
-    gBattleInterface_BallDisplayPal, TAG_STATUS_SUMMARY_BALLS_PAL
+    gOrchidLineupBalls_Pal, TAG_STATUS_SUMMARY_BALLS_PAL
 };
 
 static const struct SpriteSheet sStatusSummaryBallsSpriteSheet =
 {
-    &gHealthboxElementsGfxTable[HEALTHBOX_GFX_STATUS_BALL], 0x80, TAG_STATUS_SUMMARY_BALLS_TILE
+    gOrchidLineupBalls_Gfx, 8 * 4 * TILE_SIZE_4BPP, TAG_STATUS_SUMMARY_BALLS_TILE
+};
+
+static const struct OamData sOamData_StatusSummaryBar =
+{
+    .affineMode = ST_OAM_AFFINE_OFF,
+    .objMode = ST_OAM_OBJ_NORMAL,
+    .bpp = ST_OAM_4BPP,
+    .shape = SPRITE_SHAPE(32x16),
+    .size = SPRITE_SIZE(32x16),
+    .priority = 1,
 };
 
 static const struct OamData sOamData_StatusSummaryBalls =
 {
-    .y = 0,
     .affineMode = ST_OAM_AFFINE_OFF,
     .objMode = ST_OAM_OBJ_NORMAL,
-    .mosaic = FALSE,
     .bpp = ST_OAM_4BPP,
-    .shape = SPRITE_SHAPE(8x8),
-    .x = 0,
-    .matrixNum = 0,
-    .size = SPRITE_SIZE(8x8),
-    .tileNum = 0,
+    .shape = SPRITE_SHAPE(16x16),
+    .size = SPRITE_SIZE(16x16),
     .priority = 1,
-    .paletteNum = 0,
-    .affineParam = 0,
 };
 
 static const struct SpriteTemplate sStatusSummaryBarSpriteTemplates[2] =
@@ -511,13 +444,13 @@ static const struct SpriteTemplate sStatusSummaryBarSpriteTemplates[2] =
     { // Player
         .tileTag = TAG_STATUS_SUMMARY_BAR_TILE,
         .paletteTag = TAG_STATUS_SUMMARY_BAR_PAL,
-        .oam = &sOamData_64x32,
+        .oam = &sOamData_StatusSummaryBar,
         .callback = SpriteCB_StatusSummaryBar_Enter
     },
     { // Opponent
         .tileTag = TAG_STATUS_SUMMARY_BAR_TILE,
         .paletteTag = TAG_STATUS_SUMMARY_BAR_PAL,
-        .oam = &sOamData_64x32,
+        .oam = &sOamData_StatusSummaryBar,
         .callback = SpriteCB_StatusSummaryBar_Enter
     }
 };
@@ -537,6 +470,24 @@ static const struct SpriteTemplate sStatusSummaryBallsSpriteTemplates[2] =
         .callback = SpriteCB_StatusSummaryBalls_Enter
     }
 };
+
+// Ball frame (x4 tiles) for a party slot: status colour dot by primary status.
+static u32 LineupBallStatusTiles(u32 status)
+{
+    u32 frame = ORCHID_BALL_PSN;
+
+    if (status & STATUS1_SLEEP)
+        frame = ORCHID_BALL_SLP;
+    else if (status & STATUS1_PSN_ANY)
+        frame = ORCHID_BALL_PSN;
+    else if (status & STATUS1_BURN)
+        frame = ORCHID_BALL_BRN;
+    else if (status & (STATUS1_FREEZE | STATUS1_FROSTBITE))
+        frame = ORCHID_BALL_FRZ;
+    else if (status & STATUS1_PARALYSIS)
+        frame = ORCHID_BALL_PAR;
+    return frame * 4;
+}
 
 static const u8 sEmptyWhiteText_GrayHighlight[] = __("{COLOR WHITE}{BACKGROUND DARK_GRAY}{ACCENT DARK_GRAY}              ");
 static const u8 sEmptyWhiteText_TransparentHighlight[] = __("{COLOR WHITE}{BACKGROUND TRANSPARENT}{ACCENT TRANSPARENT}              ");
@@ -609,8 +560,482 @@ enum BattleCoordTypes GetBattlerCoordsIndex(enum BattlerId battler)
         return BATTLE_COORDS_SINGLES;
 }
 
+// ---------------------------------------------------------------------------------------------
+// Orchid UI: singles healthboxes, direction B (dev_scripts/orchid_ui/export_battle.py).
+// The box is 2x 64x32 OBJ (left = main sprite, right = its affineParam sprite) on its own
+// palette; name / Lv / HP numbers / caught ball are drawn straight into its tiles with the
+// ROM fonts at the mockup positions. The HP tag, HP bar and EXP strip live on the healthbar
+// sprite (4x 32x8 strip, own palette); the status pictogram is a 16x16 OBJ that follows the box.
+// Doubles, Safari (player) and B_HP_PERCENTAGE_DISPLAY keep the vanilla boxes.
+// ---------------------------------------------------------------------------------------------
+
+// data fields for the right half of an Orchid box
+#define hOrchid_Level        data[2]
+#define hOrchid_CurrHp       data[3]
+#define hOrchid_MaxHp        data[4]
+#define hOrchid_StatusSprite data[6]
+
+// data fields for the status icon sprite
+#define sStatus_Healthbox    data[0]
+#define sStatus_Shown        data[1]
+#define sStatus_X            data[2]
+#define sStatus_Y            data[3]
+
+#define ORCHID_BOX_W         128
+#define ORCHID_BOX_H         32
+#define ORCHID_TEXT_RIGHT    (ORCHID_BOX_W - 5)   // Lv right edge (battle_ext.hb_B)
+#define ORCHID_TAB_TEXT_Y    (-2)                 // tab text cell top
+#define ORCHID_HP_FONT       FONT_SMALL_NARROWER  // player HP numbers on the tab
+
+static void SpriteCB_OrchidStatusIcon(struct Sprite *sprite);
+
+static const struct SpriteTemplate sOrchidHealthboxTemplates[NUM_BATTLE_SIDES] =
+{
+    [B_SIDE_PLAYER] =
+    {
+        .tileTag = TAG_HEALTHBOX_PLAYER1_TILE,
+        .paletteTag = TAG_ORCHID_HEALTHBOX_PAL,
+        .oam = &sOamData_64x32,
+        .anims = gDummySpriteAnimTable,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy,
+    },
+    [B_SIDE_OPPONENT] =
+    {
+        .tileTag = TAG_HEALTHBOX_OPPONENT1_TILE,
+        .paletteTag = TAG_ORCHID_HEALTHBOX_PAL,
+        .oam = &sOamData_64x32,
+        .anims = gDummySpriteAnimTable,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy,
+    },
+};
+
+static const struct SpriteTemplate sOrchidHealthbarTemplates[MAX_BATTLERS_COUNT] =
+{
+    [B_POSITION_PLAYER_LEFT]    = { .tileTag = TAG_HEALTHBAR_PLAYER1_TILE,   .paletteTag = TAG_ORCHID_HEALTHBAR_PAL, .oam = &sOamData_Healthbar, .anims = gDummySpriteAnimTable, .affineAnims = gDummySpriteAffineAnimTable, .callback = SpriteCB_HealthBar },
+    [B_POSITION_OPPONENT_LEFT]  = { .tileTag = TAG_HEALTHBAR_OPPONENT1_TILE, .paletteTag = TAG_ORCHID_HEALTHBAR_PAL, .oam = &sOamData_Healthbar, .anims = gDummySpriteAnimTable, .affineAnims = gDummySpriteAffineAnimTable, .callback = SpriteCB_HealthBar },
+    [B_POSITION_PLAYER_RIGHT]   = { .tileTag = TAG_HEALTHBAR_PLAYER2_TILE,   .paletteTag = TAG_ORCHID_HEALTHBAR_PAL, .oam = &sOamData_Healthbar, .anims = gDummySpriteAnimTable, .affineAnims = gDummySpriteAffineAnimTable, .callback = SpriteCB_HealthBar },
+    [B_POSITION_OPPONENT_RIGHT] = { .tileTag = TAG_HEALTHBAR_OPPONENT2_TILE, .paletteTag = TAG_ORCHID_HEALTHBAR_PAL, .oam = &sOamData_Healthbar, .anims = gDummySpriteAnimTable, .affineAnims = gDummySpriteAffineAnimTable, .callback = SpriteCB_HealthBar },
+};
+
+// 128x8 bar strip at (box + OHB_BAR_STRIP_DX, box + OHB_BAR_STRIP_DY); sprite origin = box centre.
+#define ORCHID_BAR_SUBSPRITE(n) \
+{ \
+    .x = OHB_BAR_STRIP_DX - 32 + 32 * (n), \
+    .y = OHB_BAR_STRIP_DY - 16, \
+    .shape = SPRITE_SHAPE(32x8), \
+    .size = SPRITE_SIZE(32x8), \
+    .tileOffset = 4 * (n), \
+    .priority = 1 \
+}
+
+static const struct Subsprite sOrchidHealthBar_Subsprites[] =
+{
+    ORCHID_BAR_SUBSPRITE(0),
+    ORCHID_BAR_SUBSPRITE(1),
+    ORCHID_BAR_SUBSPRITE(2),
+    ORCHID_BAR_SUBSPRITE(3),
+};
+
+static const struct SubspriteTable sOrchidHealthBar_SubspriteTable[] =
+{
+    {ARRAY_COUNT(sOrchidHealthBar_Subsprites), sOrchidHealthBar_Subsprites}
+};
+
+static const struct OamData sOamData_OrchidStatus =
+{
+    .affineMode = ST_OAM_AFFINE_OFF,
+    .objMode = ST_OAM_OBJ_NORMAL,
+    .bpp = ST_OAM_4BPP,
+    .shape = SPRITE_SHAPE(16x16),
+    .size = SPRITE_SIZE(16x16),
+    .priority = 1,
+};
+
+static const struct SpriteTemplate sOrchidStatusTemplate =
+{
+    .tileTag = TAG_ORCHID_STATUS_TILE,
+    .paletteTag = TAG_ORCHID_STATUS_PAL,
+    .oam = &sOamData_OrchidStatus,
+    .anims = gDummySpriteAnimTable,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCB_OrchidStatusIcon,
+};
+
+static const struct CompressedSpriteSheet sOrchidStatusSheet =
+{
+    gOrchidStatusIcons_Gfx, ORCHID_STATUS_COUNT * 16 * 16 / 2, TAG_ORCHID_STATUS_TILE
+};
+
+static const struct SpritePalette sOrchidHealthboxPalettes[] =
+{
+    {gOrchidHealthbox_Pal, TAG_ORCHID_HEALTHBOX_PAL},
+    {gOrchidHealthbar_Pal, TAG_ORCHID_HEALTHBAR_PAL},
+    {gOrchidStatusIcons_Pal, TAG_ORCHID_STATUS_PAL},
+};
+
+bool32 IsOrchidHealthboxBattler(enum BattlerId battler)
+{
+    if (B_HP_PERCENTAGE_DISPLAY)
+        return FALSE;
+    if (GetBattlerCoordsIndex(battler) != BATTLE_COORDS_SINGLES)
+        return FALSE;
+    if ((gBattleTypeFlags & BATTLE_TYPE_SAFARI) && IsOnPlayerSide(battler))
+        return FALSE;
+    return TRUE;
+}
+
+bool32 IsOrchidHealthbox(u8 healthboxSpriteId)
+{
+    return gSprites[healthboxSpriteId].template->paletteTag == TAG_ORCHID_HEALTHBOX_PAL;
+}
+
+// Palettes + status sheet; only when some battler gets an Orchid box (doubles stay vanilla).
+void LoadOrchidHealthboxGfx(void)
+{
+    u32 i;
+    bool32 any = FALSE;
+
+    for (i = 0; i < gBattlersCount; i++)
+    {
+        if (IsOrchidHealthboxBattler(i))
+            any = TRUE;
+    }
+    if (!any)
+        return;
+
+    for (i = 0; i < ARRAY_COUNT(sOrchidHealthboxPalettes); i++)
+        LoadSpritePalette(&sOrchidHealthboxPalettes[i]);
+    if (GetSpriteTileStartByTag(TAG_ORCHID_STATUS_TILE) == 0xFFFF)
+        LoadCompressedSpriteSheet(&sOrchidStatusSheet);
+}
+
+static const u32 *OrchidBoxGfx(u32 side)
+{
+    return side == B_SIDE_PLAYER ? gOrchidHealthboxPlayer_Gfx : gOrchidHealthboxOpponent_Gfx;
+}
+
+// Byte offset of the u16 holding pixel (x, y) of the 128x32 box (2x 64x32, 1D-mapped).
+static inline u32 OrchidBoxPixelOffset(u32 x, u32 y)
+{
+    u32 tile = (x >= 64 ? 32 : 0) + (y / 8) * 8 + (x % 64) / 8;
+    return tile * TILE_SIZE_4BPP + (y % 8) * 4 + ((x % 8) / 4) * 2;
+}
+
+static void OrchidBoxPlot(u32 tileNum, s32 x, s32 y, u32 color)
+{
+    vu16 *p;
+    u32 shift;
+
+    if (x < 0 || x >= ORCHID_BOX_W || y < 0 || y >= ORCHID_BOX_H)
+        return;
+    p = (vu16 *)(OBJ_VRAM0 + tileNum * TILE_SIZE_4BPP + OrchidBoxPixelOffset(x, y));
+    shift = (x % 4) * 4;
+    *p = (*p & ~(0xF << shift)) | (color << shift);
+}
+
+// Copy a rect of the text-free box art back over the box tiles.
+static void OrchidBoxRestoreRect(u8 healthboxSpriteId, s32 x0, s32 y0, s32 w, s32 h)
+{
+    s32 x, y;
+    u32 tileNum = gSprites[healthboxSpriteId].oam.tileNum;
+    const u8 *src = (const u8 *)OrchidBoxGfx(GetBattlerSide(gSprites[healthboxSpriteId].hMain_Battler));
+
+    for (y = y0; y < y0 + h; y++)
+    {
+        for (x = x0; x < x0 + w; x++)
+        {
+            u32 v = *(const u16 *)(src + OrchidBoxPixelOffset(x, y));
+            OrchidBoxPlot(tileNum, x, y, (v >> ((x % 4) * 4)) & 0xF);
+        }
+    }
+}
+
+// Draw a string into the box with the ROM font glyphs (cell top-left at x, y; clipped).
+static s32 OrchidBoxPrint(u32 tileNum, s32 x, s32 y, const u8 *str, u32 fontId, u32 fg, u32 shadow)
+{
+    union TextColor saved = SaveTextColors();
+    union TextColor color = {.background = 0, .foreground = fg, .shadow = shadow, .accent = 0};
+
+    GenerateFontHalfRowLookupTable(color);
+    for (; *str != EOS; str++)
+    {
+        u32 gx, gy;
+
+        DecodeGlyphForFont(fontId, *str);
+        for (gy = 0; gy < gCurGlyph.height && gy < 16; gy++)
+        {
+            const u32 *buf = (gy < 8) ? gCurGlyph.gfxBufferTop : gCurGlyph.gfxBufferBottom;
+            for (gx = 0; gx < gCurGlyph.width && gx < 16; gx++)
+            {
+                u32 v = (buf[(gx < 8 ? 0 : 8) + (gy % 8)] >> ((gx % 8) * 4)) & 0xF;
+                if (v != 0)
+                    OrchidBoxPlot(tileNum, x + gx, y + gy, v);
+            }
+        }
+        x += gCurGlyph.width;
+    }
+    RestoreTextColors(saved);
+    return x;
+}
+
+static bool32 OrchidShowCaughtBall(enum BattlerId battler)
+{
+    if (gBattleTypeFlags & (BATTLE_TYPE_CATCH_TUTORIAL | BATTLE_TYPE_TRAINER))
+        return FALSE;
+    if (IsOnPlayerSide(battler) || IsGhostBattleWithoutScope())
+        return FALSE;
+    return GetSetPokedexFlag(SpeciesToNationalPokedexNum(GetMonData(GetBattlerMon(battler), MON_DATA_SPECIES)), FLAG_GET_CAUGHT);
+}
+
+// Top tab: brass Lv (or the gimmick indicator + level), HP numbers (player) or the caught ball (foe).
+static void OrchidDrawTab(u8 healthboxSpriteId)
+{
+    u8 text[16], *ptr;
+    enum BattlerId battler = gSprites[healthboxSpriteId].hMain_Battler;
+    struct Sprite *right = &gSprites[gSprites[healthboxSpriteId].oam.affineParam];
+    u32 tileNum = gSprites[healthboxSpriteId].oam.tileNum;
+    bool32 isPlayer = IsOnPlayerSide(battler);
+    bool32 indicator = (GetIndicatorPalTag(battler) != TAG_NONE);
+    s32 lvWidth, x;
+
+    OrchidBoxRestoreRect(healthboxSpriteId, isPlayer ? OHB_PLR_TAB_X : OHB_OPP_TAB_X, 0,
+                         isPlayer ? OHB_PLR_TAB_W : OHB_OPP_TAB_W, isPlayer ? OHB_PLR_TAB_H : OHB_OPP_TAB_H);
+    if (right->hOrchid_Level == 0)
+        return;
+
+    ptr = text;
+    if (!indicator)
+        *ptr++ = CHAR_LV;
+    ConvertIntToDecimalStringN(ptr, right->hOrchid_Level, STR_CONV_MODE_LEFT_ALIGN, 3);
+    lvWidth = GetStringWidth(FONT_SMALL, text, 0);
+    x = ORCHID_TEXT_RIGHT - lvWidth;
+    OrchidBoxPrint(tileNum, x, ORCHID_TAB_TEXT_Y, text, FONT_SMALL, OHB_COL_BRASS_LIGHT, OHB_COL_FRAME_DARK);
+
+    if (indicator)
+    {
+        s16 hx, hy;
+        // the 16x8 indicator takes the Lv glyph's place, right edge 1px before the digits
+        GetBattlerHealthboxCoords(battler, &hx, &hy);
+        SetIndicatorPosition(healthboxSpriteId, x - 1 - 8 - 32, hy - 12);
+        UpdateIndicatorVisibilityAndType(healthboxSpriteId, gSprites[healthboxSpriteId].invisible);
+        lvWidth += 17;
+    }
+    else
+    {
+        UpdateIndicatorVisibilityAndType(healthboxSpriteId, TRUE);
+    }
+
+    if (isPlayer)
+    {
+        if (right->hOrchid_MaxHp > 0)
+        {
+            ptr = ConvertIntToDecimalStringN(text, right->hOrchid_CurrHp, STR_CONV_MODE_LEFT_ALIGN, 4);
+            *ptr++ = CHAR_SLASH;
+            ConvertIntToDecimalStringN(ptr, right->hOrchid_MaxHp, STR_CONV_MODE_RIGHT_ALIGN, right->hOrchid_MaxHp >= 1000 ? 4 : 3);
+            // 4px digits so "999/999" + "Lv100" stay inside the tab (FONT_SMALL overflowed its slanted end)
+            x = ORCHID_TEXT_RIGHT - lvWidth - 7 - GetStringWidth(ORCHID_HP_FONT, text, 0);
+            OrchidBoxPrint(tileNum, x, ORCHID_TAB_TEXT_Y, text, ORCHID_HP_FONT, OHB_COL_BRASS_LIGHT, OHB_COL_FRAME_DARK);
+        }
+    }
+    else if (OrchidShowCaughtBall(battler))
+    {
+        s32 bx = ORCHID_TEXT_RIGHT - lvWidth - 11, i, j;
+        for (j = 0; j < 7; j++)
+        {
+            for (i = 0; i < 7; i++)
+            {
+                if (sOrchidCaughtBall[j][i] != 0)
+                    OrchidBoxPlot(tileNum, bx + i, 2 + j, sOrchidCaughtBall[j][i]);
+            }
+        }
+    }
+}
+
+// Name on the inset pill, coloured by gender (no gender glyph).
+static void OrchidDrawName(u8 healthboxSpriteId, struct Pokemon *mon)
+{
+    u8 nickname[POKEMON_NAME_LENGTH + 1];
+    enum BattlerId battler = gSprites[healthboxSpriteId].hMain_Battler;
+    bool32 isPlayer = IsOnPlayerSide(battler);
+    s32 px = isPlayer ? OHB_PLR_PILL_X : OHB_OPP_PILL_X;
+    s32 py = isPlayer ? OHB_PLR_PILL_Y : OHB_OPP_PILL_Y;
+    u32 fg = OHB_COL_INK, shadow = OHB_COL_PANEL_SHADE, fontId;
+    u8 gender;
+    enum Species species;
+    struct Pokemon *illusionMon = GetIllusionMonPtr(battler);
+
+    if (illusionMon != NULL)
+        mon = illusionMon;
+
+    GetMonData(mon, MON_DATA_NICKNAME, nickname);
+    StringGet_Nickname(nickname);
+    gender = GetMonGender(mon);
+    species = GetMonData(mon, MON_DATA_SPECIES);
+    if ((species == SPECIES_NIDORAN_F || species == SPECIES_NIDORAN_M) && StringCompare(nickname, GetSpeciesName(species)) == 0)
+        gender = MON_GENDERLESS;
+    if (!isPlayer && IsGhostBattleWithoutScope())
+        gender = MON_GENDERLESS;
+
+    if (gender == MON_MALE)
+        fg = OHB_COL_MALE, shadow = OHB_COL_MALE_SHADOW;
+    else if (gender == MON_FEMALE)
+        fg = OHB_COL_FEMALE, shadow = OHB_COL_FEMALE_SHADOW;
+
+    fontId = GetStringWidth(FONT_SMALL, nickname, 0) <= OHB_NAME_MAX_SMALL ? FONT_SMALL : FONT_NARROW;
+    OrchidBoxRestoreRect(healthboxSpriteId, px, py, isPlayer ? OHB_PLR_PILL_W : OHB_OPP_PILL_W,
+                         isPlayer ? OHB_PLR_PILL_H : OHB_OPP_PILL_H);
+    OrchidBoxPrint(gSprites[healthboxSpriteId].oam.tileNum, px + 5, py - 1, nickname, fontId, fg, shadow);
+}
+
+static void OrchidUpdateStatusIcon(u8 healthboxSpriteId)
+{
+    enum BattlerId battler = gSprites[healthboxSpriteId].hMain_Battler;
+    struct Pokemon *mon = GetBattlerMon(battler);
+    struct Sprite *icon = &gSprites[gSprites[gSprites[healthboxSpriteId].oam.affineParam].hOrchid_StatusSprite];
+    u32 status = GetMonData(mon, MON_DATA_STATUS);
+    u32 frame = ORCHID_STATUS_NONE;
+
+    if (status & STATUS1_SLEEP)
+        frame = ORCHID_STATUS_SLP;
+    else if (status & STATUS1_TOXIC_POISON)
+        frame = ORCHID_STATUS_TOX;
+    else if (status & STATUS1_POISON)
+        frame = ORCHID_STATUS_PSN;
+    else if (status & STATUS1_BURN)
+        frame = ORCHID_STATUS_BRN;
+    else if (status & STATUS1_FREEZE)
+        frame = ORCHID_STATUS_FRZ;
+    else if (status & STATUS1_FROSTBITE)
+        frame = ORCHID_STATUS_FRB;
+    else if (status & STATUS1_PARALYSIS)
+        frame = ORCHID_STATUS_PAR;
+    else if (GetMonData(mon, MON_DATA_HP) == 0)
+        frame = ORCHID_STATUS_FNT;
+    else if (GetMonData(mon, MON_DATA_POKERUS) & 0xF)
+        frame = ORCHID_STATUS_PKRS;
+
+    if (frame == ORCHID_STATUS_NONE)
+    {
+        icon->sStatus_Shown = FALSE;
+    }
+    else
+    {
+        icon->oam.tileNum = GetSpriteTileStartByTag(TAG_ORCHID_STATUS_TILE) + frame * 4;
+        icon->sStatus_Shown = TRUE;
+    }
+}
+
+static void SpriteCB_OrchidStatusIcon(struct Sprite *sprite)
+{
+    struct Sprite *box = &gSprites[sprite->sStatus_Healthbox];
+
+    sprite->x = box->x - 32 + sprite->sStatus_X + 8;
+    sprite->y = box->y - 16 + sprite->sStatus_Y + 8;
+    sprite->x2 = box->x2;
+    sprite->y2 = box->y2;
+    sprite->invisible = box->invisible || !sprite->sStatus_Shown;
+    sprite->oam.priority = box->oam.priority;
+}
+
+static void OrchidBarPlot(u32 tileNum, u32 x, u32 y, u32 color)
+{
+    vu16 *p = (vu16 *)(OBJ_VRAM0 + (tileNum + x / 8) * TILE_SIZE_4BPP + y * 4 + ((x % 8) / 4) * 2);
+    u32 shift = (x % 4) * 4;
+    *p = (*p & ~(0xF << shift)) | (color << shift);
+}
+
+static void OrchidDrawHpFill(u8 healthboxSpriteId, u32 filled, u32 level)
+{
+    u32 i, light = OHB_BAR_G1, dark = OHB_BAR_G2;
+    u32 tileNum = gSprites[gSprites[healthboxSpriteId].hMain_HealthBarSpriteId].oam.tileNum;
+    bool32 isPlayer = IsOnPlayerSide(gSprites[healthboxSpriteId].hMain_Battler);
+    u32 x0 = (isPlayer ? OHB_PLR_BAR_X : OHB_OPP_BAR_X) + 1;
+    u32 y0 = (isPlayer ? OHB_PLR_BAR_Y : OHB_OPP_BAR_Y) + 1;
+
+    if (level == HP_BAR_YELLOW)
+        light = OHB_BAR_Y1, dark = OHB_BAR_Y2;
+    else if (level == HP_BAR_RED)
+        light = OHB_BAR_R1, dark = OHB_BAR_R2;
+
+    for (i = 0; i < OHB_HP_PIXELS; i++)
+    {
+        bool32 on = (i < filled);
+        OrchidBarPlot(tileNum, x0 + i, y0, on ? light : OHB_BAR_TROUGH_HI);
+        OrchidBarPlot(tileNum, x0 + i, y0 + 1, on ? dark : OHB_BAR_TROUGH);
+        OrchidBarPlot(tileNum, x0 + i, y0 + 2, on ? dark : OHB_BAR_TROUGH);
+    }
+}
+
+static void OrchidDrawExpFill(u8 healthboxSpriteId, u32 filled)
+{
+    u32 i;
+    u32 tileNum = gSprites[gSprites[healthboxSpriteId].hMain_HealthBarSpriteId].oam.tileNum;
+
+    for (i = 0; i < OHB_PLR_EXP_W; i++)
+    {
+        bool32 on = (i < filled);
+        OrchidBarPlot(tileNum, OHB_PLR_EXP_X + i, OHB_PLR_EXP_Y, on ? OHB_BAR_E1 : OHB_BAR_TROUGH);
+        OrchidBarPlot(tileNum, OHB_PLR_EXP_X + i, OHB_PLR_EXP_Y + 1, on ? OHB_BAR_E2 : OHB_BAR_TROUGH_HI);
+    }
+}
+
+static u8 CreateOrchidHealthboxSprites(enum BattlerId battler)
+{
+    u32 side = GetBattlerSide(battler);
+    bool32 isPlayer = (side == B_SIDE_PLAYER);
+    u8 leftId, rightId, barId, statusId;
+
+    leftId = CreateSprite(&sOrchidHealthboxTemplates[side], DISPLAY_WIDTH, DISPLAY_HEIGHT, 1);
+    rightId = CreateSpriteAtEnd(&sOrchidHealthboxTemplates[side], DISPLAY_WIDTH, DISPLAY_HEIGHT, 1);
+    gSprites[rightId].oam.tileNum += 32;
+    gSprites[leftId].oam.affineParam = rightId;
+    gSprites[rightId].hOther_HealthBoxSpriteId = leftId;
+    gSprites[rightId].callback = SpriteCB_HealthBoxOther;
+    CpuCopy32(OrchidBoxGfx(side), (void *)(OBJ_VRAM0 + gSprites[leftId].oam.tileNum * TILE_SIZE_4BPP), 64 * TILE_SIZE_4BPP);
+
+    barId = CreateSpriteAtEnd(&sOrchidHealthbarTemplates[gBattlerPositions[battler]], 140, 60, 0);
+    SetSubspriteTables(&gSprites[barId], sOrchidHealthBar_SubspriteTable);
+    gSprites[barId].subspriteMode = SUBSPRITES_IGNORE_PRIORITY;
+    gSprites[barId].oam.priority = 1;
+    CpuCopy32(isPlayer ? gOrchidHealthbarPlayer_Gfx : gOrchidHealthbarOpponent_Gfx,
+              (void *)(OBJ_VRAM0 + gSprites[barId].oam.tileNum * TILE_SIZE_4BPP), 16 * TILE_SIZE_4BPP);
+    gSprites[barId].hBar_HealthBoxSpriteId = leftId;
+    gSprites[barId].hBar_Data6 = 3;
+    gSprites[barId].invisible = TRUE;
+
+    statusId = CreateSpriteAtEnd(&sOrchidStatusTemplate, 0, 0, 0);
+    gSprites[statusId].sStatus_Healthbox = leftId;
+    gSprites[statusId].sStatus_Shown = FALSE;
+    gSprites[statusId].sStatus_X = isPlayer ? OHB_PLR_STATUS_X : OHB_OPP_STATUS_X;
+    gSprites[statusId].sStatus_Y = isPlayer ? OHB_PLR_STATUS_Y : OHB_OPP_STATUS_Y;
+    gSprites[statusId].invisible = TRUE;
+
+    gSprites[rightId].hOrchid_StatusSprite = statusId;
+    gSprites[rightId].hOrchid_Level = 0;
+    gSprites[rightId].hOrchid_CurrHp = 0;
+    gSprites[rightId].hOrchid_MaxHp = 0;
+
+    gSprites[leftId].hMain_HealthBarSpriteId = barId;
+    gSprites[leftId].hMain_Battler = battler;
+    gSprites[leftId].invisible = TRUE;
+    gSprites[rightId].invisible = TRUE;
+
+    CreateIndicatorSprite(battler);
+
+    gBattleStruct->ballSpriteIds[0] = MAX_SPRITES;
+    gBattleStruct->ballSpriteIds[1] = MAX_SPRITES;
+    gBattleStruct->moveInfoSpriteId = MAX_SPRITES;
+
+    return leftId;
+}
+
 u8 CreateBattlerHealthboxSprites(enum BattlerId battler)
 {
+    if (IsOrchidHealthboxBattler(battler))
+        return CreateOrchidHealthboxSprites(battler);
+
     s16 data6 = 0;
     u8 healthboxLeftSpriteId, healthboxRightSpriteId;
     u8 healthbarSpriteId;
@@ -745,6 +1170,10 @@ static void SpriteCB_HealthBar(struct Sprite *sprite)
         sprite->x = gSprites[healthboxSpriteId].x + 16;
         sprite->y = gSprites[healthboxSpriteId].y;
         break;
+    case 3: // Orchid box: the strip's subsprites are placed relative to the box centre
+        sprite->x = gSprites[healthboxSpriteId].x;
+        sprite->y = gSprites[healthboxSpriteId].y;
+        break;
     case 2:
     default:
         sprite->x = gSprites[healthboxSpriteId].x + 8;
@@ -859,6 +1288,13 @@ void GetBattlerHealthboxCoords(enum BattlerId battler, s16 *x, s16 *y)
     enum BattlerPosition position = GetBattlerPosition(battler);
     enum BattleCoordTypes index = GetBattlerCoordsIndex(battler);
 
+    if (IsOrchidHealthboxBattler(battler))
+    {
+        // main (left) sprite centre of the Orchid box
+        *x = (IsOnPlayerSide(battler) ? OHB_PLR_X : OHB_OPP_X) + 32;
+        *y = (IsOnPlayerSide(battler) ? OHB_PLR_Y : OHB_OPP_Y) + 16;
+        return;
+    }
     *x = sBattlerHealthboxCoords[index][position][0];
     *y = sBattlerHealthboxCoords[index][position][1];
 }
@@ -876,6 +1312,13 @@ static void UpdateLvlInHealthbox(u8 healthboxSpriteId, u8 lvl)
     u8 text[16];
     enum BattlerId battler = gSprites[healthboxSpriteId].hMain_Battler;
     u32 spriteId = gSprites[healthboxSpriteId].oam.affineParam;
+
+    if (IsOrchidHealthbox(healthboxSpriteId))
+    {
+        gSprites[spriteId].hOrchid_Level = lvl;
+        OrchidDrawTab(healthboxSpriteId);
+        return;
+    }
 
     // Don't print Lv char if mon has a gimmick with an indicator active.
     if (GetIndicatorPalTag(battler) != TAG_NONE)
@@ -1078,6 +1521,16 @@ void UpdateHpTextInHealthbox(u32 healthboxSpriteId, u32 maxOrCurrent, s16 currHp
 {
     enum BattlerId battler = gSprites[healthboxSpriteId].hMain_Battler;
     u32 barSpriteId = gSprites[healthboxSpriteId].data[5];
+
+    if (IsOrchidHealthbox(healthboxSpriteId))
+    {
+        struct Sprite *right = &gSprites[gSprites[healthboxSpriteId].oam.affineParam];
+        right->hOrchid_CurrHp = currHp;
+        right->hOrchid_MaxHp = maxHp;
+        if (IsOnPlayerSide(battler))
+            OrchidDrawTab(healthboxSpriteId);
+        return;
+    }
     switch (GetBattlerCoordsIndex(battler))
     {
     default:
@@ -1351,29 +1804,25 @@ u8 CreatePartyStatusSummarySprites(enum BattlerId battler, struct HpAndStatus *p
         bar_data0 = 5;
     }
 
-    LoadCompressedSpriteSheetUsingHeap(&sStatusSummaryBarSpriteSheet);
-    LoadSpriteSheet(&sStatusSummaryBallsSpriteSheet);
+    // Orchid UI: the sheets are shared by every lineup on screen (multi battles show four); load once
+    if (GetSpriteTileStartByTag(TAG_STATUS_SUMMARY_BAR_TILE) == 0xFFFF)
+        LoadSpriteSheet(&sStatusSummaryBarSpriteSheet);
+    if (GetSpriteTileStartByTag(TAG_STATUS_SUMMARY_BALLS_TILE) == 0xFFFF)
+        LoadSpriteSheet(&sStatusSummaryBallsSpriteSheet);
     LoadSpritePalette(&sStatusSummaryBarSpritePal);
     LoadSpritePalette(&sStatusSummaryBallsSpritePal);
 
+    // Orchid UI: same vertical spots as vanilla (minus ORCHID_LINEUP_VANILLA_DY), bars flush to the screen edge
+    bar_Y += ORCHID_LINEUP_VANILLA_DY;
+    bar_X = isOpponent ? ORCHID_LINEUP_OPP_X : ORCHID_LINEUP_PLR_X;
     summaryBarSpriteId = CreateSprite(&sStatusSummaryBarSpriteTemplates[isOpponent], bar_X, bar_Y, 10);
-    SetSubspriteTables(&gSprites[summaryBarSpriteId], sStatusSummaryBar_SubspriteTable_Enter);
+    SetSubspriteTables(&gSprites[summaryBarSpriteId], &sStatusSummaryBar_SubspriteTables[isOpponent]);
     gSprites[summaryBarSpriteId].x2 = bar_pos2_X;
     gSprites[summaryBarSpriteId].data[0] = bar_data0;
 
-    if (isOpponent)
-    {
-        gSprites[summaryBarSpriteId].x -= 96;
-        gSprites[summaryBarSpriteId].oam.matrixNum = ST_OAM_HFLIP;
-    }
-    else
-    {
-        gSprites[summaryBarSpriteId].x += 96;
-    }
-
     for (i = 0; i < PARTY_SIZE; i++)
     {
-        ballIconSpritesIds[i] = CreateSpriteAtEnd(&sStatusSummaryBallsSpriteTemplates[isOpponent], bar_X, bar_Y - 4, 9);
+        ballIconSpritesIds[i] = CreateSpriteAtEnd(&sStatusSummaryBallsSpriteTemplates[isOpponent], bar_X + 8, bar_Y + ORCHID_LINEUP_SOCKET_DY + 8, 9);
 
         if (!isBattleStart)
             gSprites[ballIconSpritesIds[i]].callback = SpriteCB_StatusSummaryBalls_OnSwitchout;
@@ -1388,13 +1837,13 @@ u8 CreatePartyStatusSummarySprites(enum BattlerId battler, struct HpAndStatus *p
 
         if (!isOpponent)
         {
-            gSprites[ballIconSpritesIds[i]].x += 10 * i + 24;
+            gSprites[ballIconSpritesIds[i]].x += ORCHID_LINEUP_PLR_SOCKET0 + ORCHID_LINEUP_PITCH * i;
             gSprites[ballIconSpritesIds[i]].data[1] = i * 7 + 10;
             gSprites[ballIconSpritesIds[i]].x2 = 120;
         }
         else
         {
-            gSprites[ballIconSpritesIds[i]].x -= 10 * (5 - i) + 24;
+            gSprites[ballIconSpritesIds[i]].x += ORCHID_LINEUP_OPP_SOCKET0 - ORCHID_LINEUP_PITCH * (5 - i);
             gSprites[ballIconSpritesIds[i]].data[1] = (6 - i) * 7 + 10;
             gSprites[ballIconSpritesIds[i]].x2 = -120;
         }
@@ -1411,18 +1860,18 @@ u8 CreatePartyStatusSummarySprites(enum BattlerId battler, struct HpAndStatus *p
                 if (partyInfo[i].hp == HP_EMPTY_SLOT)
                 {
                     // empty slot or an egg
-                    gSprites[ballIconSpritesIds[i]].oam.tileNum += 1;
+                    gSprites[ballIconSpritesIds[i]].oam.tileNum += ORCHID_BALL_EMPTY * 4;
                     gSprites[ballIconSpritesIds[i]].data[7] = 1;
                 }
                 else if (partyInfo[i].hp == 0)
                 {
                     // fainted mon
-                    gSprites[ballIconSpritesIds[i]].oam.tileNum += 3;
+                    gSprites[ballIconSpritesIds[i]].oam.tileNum += ORCHID_BALL_FNT * 4;
                 }
                 else if (partyInfo[i].status != 0)
                 {
                     // mon with major status
-                    gSprites[ballIconSpritesIds[i]].oam.tileNum += 2;
+                    gSprites[ballIconSpritesIds[i]].oam.tileNum += LineupBallStatusTiles(partyInfo[i].status);
                 }
             }
         }
@@ -1433,7 +1882,7 @@ u8 CreatePartyStatusSummarySprites(enum BattlerId battler, struct HpAndStatus *p
                 if (partyInfo[j].hp == HP_EMPTY_SLOT)
                 {
                      // empty slot or an egg
-                    gSprites[ballIconSpritesIds[var]].oam.tileNum += 1;
+                    gSprites[ballIconSpritesIds[var]].oam.tileNum += ORCHID_BALL_EMPTY * 4;
                     gSprites[ballIconSpritesIds[var]].data[7] = 1;
                     var--;
                     continue;
@@ -1441,17 +1890,17 @@ u8 CreatePartyStatusSummarySprites(enum BattlerId battler, struct HpAndStatus *p
                 else if (partyInfo[j].hp == 0)
                 {
                     // fainted mon
-                    gSprites[ballIconSpritesIds[i]].oam.tileNum += 3;
+                    gSprites[ballIconSpritesIds[i]].oam.tileNum += ORCHID_BALL_FNT * 4;
                 }
                 else if (gBattleTypeFlags & BATTLE_TYPE_ARENA && gBattleStruct->arenaLostPlayerMons & (1u << j))
                 {
                     // fainted arena mon
-                    gSprites[ballIconSpritesIds[i]].oam.tileNum += 3;
+                    gSprites[ballIconSpritesIds[i]].oam.tileNum += ORCHID_BALL_FNT * 4;
                 }
                 else if (partyInfo[j].status != 0)
                 {
                     // mon with primary status
-                    gSprites[ballIconSpritesIds[i]].oam.tileNum += 2;
+                    gSprites[ballIconSpritesIds[i]].oam.tileNum += LineupBallStatusTiles(partyInfo[j].status);
                 }
                 i++;
             }
@@ -1466,18 +1915,18 @@ u8 CreatePartyStatusSummarySprites(enum BattlerId battler, struct HpAndStatus *p
                 if (partyInfo[i].hp == HP_EMPTY_SLOT)
                 {
                     // empty slot or an egg
-                    gSprites[ballIconSpritesIds[var]].oam.tileNum += 1;
+                    gSprites[ballIconSpritesIds[var]].oam.tileNum += ORCHID_BALL_EMPTY * 4;
                     gSprites[ballIconSpritesIds[var]].data[7] = 1;
                 }
                 else if (partyInfo[i].hp == 0)
                 {
                     // fainted mon
-                    gSprites[ballIconSpritesIds[var]].oam.tileNum += 3;
+                    gSprites[ballIconSpritesIds[var]].oam.tileNum += ORCHID_BALL_FNT * 4;
                 }
                 else if (partyInfo[i].status != 0)
                 {
                     // mon with primary status
-                    gSprites[ballIconSpritesIds[var]].oam.tileNum += 2;
+                    gSprites[ballIconSpritesIds[var]].oam.tileNum += LineupBallStatusTiles(partyInfo[i].status);
                 }
                 var--;
             }
@@ -1489,7 +1938,7 @@ u8 CreatePartyStatusSummarySprites(enum BattlerId battler, struct HpAndStatus *p
                 if (partyInfo[j].hp == HP_EMPTY_SLOT)
                 {
                     // empty slot or an egg
-                    gSprites[ballIconSpritesIds[i]].oam.tileNum += 1;
+                    gSprites[ballIconSpritesIds[i]].oam.tileNum += ORCHID_BALL_EMPTY * 4;
                     gSprites[ballIconSpritesIds[i]].data[7] = 1;
                     i++;
                     continue;
@@ -1497,17 +1946,17 @@ u8 CreatePartyStatusSummarySprites(enum BattlerId battler, struct HpAndStatus *p
                 else if (partyInfo[j].hp == 0)
                 {
                      // fainted mon
-                    gSprites[ballIconSpritesIds[PARTY_SIZE - 1 - var]].oam.tileNum += 3;
+                    gSprites[ballIconSpritesIds[PARTY_SIZE - 1 - var]].oam.tileNum += ORCHID_BALL_FNT * 4;
                 }
                 else if (gBattleTypeFlags & BATTLE_TYPE_ARENA && gBattleStruct->arenaLostOpponentMons & (1u << j))
                 {
                      // fainted arena mon
-                    gSprites[ballIconSpritesIds[PARTY_SIZE - 1 - var]].oam.tileNum += 3;
+                    gSprites[ballIconSpritesIds[PARTY_SIZE - 1 - var]].oam.tileNum += ORCHID_BALL_FNT * 4;
                 }
                 else if (partyInfo[j].status != 0)
                 {
                      // mon with primary status
-                    gSprites[ballIconSpritesIds[PARTY_SIZE - 1 - var]].oam.tileNum += 2;
+                    gSprites[ballIconSpritesIds[PARTY_SIZE - 1 - var]].oam.tileNum += LineupBallStatusTiles(partyInfo[j].status);
                 }
                 var++;
             }
@@ -1580,7 +2029,6 @@ void Task_HidePartyStatusSummary(u8 taskId)
         gSprites[summaryBarSpriteId].data[0] /= 2;
         gSprites[summaryBarSpriteId].data[1] = 0;
         gSprites[summaryBarSpriteId].callback = SpriteCB_StatusSummaryBar_Exit;
-        SetSubspriteTables(&gSprites[summaryBarSpriteId], sStatusSummaryBar_SubspriteTable_Exit);
         gTasks[taskId].func = Task_HidePartyStatusSummary_BattleStart_1;
     }
     else
@@ -1782,6 +2230,12 @@ void UpdateNickInHealthbox(u8 healthboxSpriteId, struct Pokemon *mon)
     enum Species species;
     u8 gender;
     struct Pokemon *illusionMon = GetIllusionMonPtr(gSprites[healthboxSpriteId].hMain_Battler);
+
+    if (IsOrchidHealthbox(healthboxSpriteId))
+    {
+        OrchidDrawName(healthboxSpriteId, mon);
+        return;
+    }
     if (illusionMon != NULL)
         mon = illusionMon;
 
@@ -1840,6 +2294,11 @@ void TryAddPokeballIconToHealthbox(u8 healthboxSpriteId, bool8 noStatus)
     enum BattlerId battler;
     u8 healthBarSpriteId;
 
+    if (IsOrchidHealthbox(healthboxSpriteId))
+    {
+        OrchidDrawTab(healthboxSpriteId); // the caught ball sits on the tab, independent of status
+        return;
+    }
     if (gBattleTypeFlags & BATTLE_TYPE_CATCH_TUTORIAL)
         return;
     if (gBattleTypeFlags & BATTLE_TYPE_TRAINER)
@@ -1870,6 +2329,12 @@ static void UpdateStatusIconInHealthbox(u8 healthboxSpriteId)
     const u8 *statusGfxPtr;
     s16 tileNumAdder;
     u8 statusPalId;
+
+    if (IsOrchidHealthbox(healthboxSpriteId))
+    {
+        OrchidUpdateStatusIcon(healthboxSpriteId);
+        return;
+    }
 
     battler = gSprites[healthboxSpriteId].hMain_Battler;
     healthBarSpriteId = gSprites[healthboxSpriteId].hMain_HealthBarSpriteId;
@@ -2189,6 +2654,47 @@ static void MoveBattleBarGraphically(enum BattlerId battler, u8 whichBar)
     u8 barElementId;
     u8 i;
     s32 currValue, maxValue;
+    u8 healthboxSpriteId = gBattleSpritesDataPtr->battleBars[battler].healthboxSpriteId;
+
+    if (IsOrchidHealthbox(healthboxSpriteId))
+    {
+        struct BattleBarInfo *bar = &gBattleSpritesDataPtr->battleBars[battler];
+        if (whichBar == HEALTH_BAR)
+        {
+            u32 filled = CalcBarFilledPixels(bar->maxValue, bar->oldValue, bar->receivedValue,
+                                             &bar->currValue, array, OHB_HP_PIXELS / 8);
+            if (B_HPBAR_COLOR_THRESHOLD < GEN_5)
+            {
+                maxValue = OHB_HP_PIXELS;
+                currValue = filled;
+            }
+            else
+            {
+                maxValue = bar->maxValue;
+                currValue = bar->currValue;
+                if (maxValue < OHB_HP_PIXELS)
+                    currValue = Q_24_8_TO_INT(currValue);
+            }
+            level = GetHPBarLevel(currValue, maxValue);
+            if (level == HP_BAR_RED && maxValue <= 1) // wonder guard
+                level = HP_BAR_GREEN;
+            OrchidDrawHpFill(healthboxSpriteId, filled, level);
+        }
+        else
+        {
+            // same value math as CalcBarFilledPixels, over the wider Orchid EXP strip
+            s32 pixels = 0;
+            if (GetMonData(GetBattlerMon(battler), MON_DATA_LEVEL) < MAX_LEVEL)
+            {
+                if (bar->maxValue < B_EXPBAR_PIXELS)
+                    pixels = SAFE_DIV(bar->currValue * OHB_PLR_EXP_W, bar->maxValue) >> 8;
+                else
+                    pixels = SAFE_DIV(bar->currValue * OHB_PLR_EXP_W, bar->maxValue);
+            }
+            OrchidDrawExpFill(healthboxSpriteId, min(max(pixels, 0), OHB_PLR_EXP_W));
+        }
+        return;
+    }
 
     switch (whichBar)
     {

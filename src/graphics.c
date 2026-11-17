@@ -1755,6 +1755,26 @@ const u16 gSatchelPocketIcons_Pal[] = INCGFX_U16("graphics/bag/pocket_icons.png"
 // Orchid UI kit: shared status pictograms (dev_scripts/orchid_ui/export_status.py)
 const u32 gOrchidStatusIcons_Gfx[] = INCGFX_U32("graphics/interface/orchid_status_icons.png", ".4bpp.smol");
 const u16 gOrchidStatusIcons_Pal[] = INCGFX_U16("graphics/interface/orchid_status_icons.png", ".gbapal");
+// Orchid UI: battle (dev_scripts/orchid_ui/export_battle.py)
+const u32 gOrchidHealthboxPlayer_Gfx[] = INCGFX_U32("graphics/battle_interface/orchid_healthbox_player.png", ".4bpp", "-mwidth 8 -mheight 4");
+const u32 gOrchidHealthboxOpponent_Gfx[] = INCGFX_U32("graphics/battle_interface/orchid_healthbox_opponent.png", ".4bpp", "-mwidth 8 -mheight 4");
+const u16 gOrchidHealthbox_Pal[] = INCGFX_U16("graphics/battle_interface/orchid_healthbox_player.png", ".gbapal");
+const u32 gOrchidHealthbarPlayer_Gfx[] = INCGFX_U32("graphics/battle_interface/orchid_healthbar_player.png", ".4bpp");
+const u32 gOrchidHealthbarOpponent_Gfx[] = INCGFX_U32("graphics/battle_interface/orchid_healthbar_opponent.png", ".4bpp");
+const u16 gOrchidHealthbar_Pal[] = INCGFX_U16("graphics/battle_interface/orchid_healthbar_player.png", ".gbapal");
+const u32 gOrchidBattleTray_Gfx[] = INCGFX_U32("graphics/battle_interface/orchid_tray.png", ".4bpp.smol");
+const u32 gOrchidBattleTray_Tilemap[] = INCGFX_U32("graphics/battle_interface/orchid_tray.bin", ".smolTM");
+const u16 gOrchidBattleTray_Pal[] = INCGFX_U16("graphics/battle_interface/orchid_tray.pal", ".gbapal");
+const u16 gOrchidBattleTrayMoves_Pal[] = INCGFX_U16("graphics/battle_interface/orchid_tray_moves.pal", ".gbapal");
+const u32 gOrchidActionPanels_Gfx[] = INCGFX_U32("graphics/battle_interface/orchid_action_panels.png", ".4bpp");
+const u32 gOrchidMovePanels_Gfx[] = INCGFX_U32("graphics/battle_interface/orchid_move_panels.png", ".4bpp");
+const u32 gOrchidYesNoPanels_Gfx[] = INCGFX_U32("graphics/battle_interface/orchid_yesno_panels.png", ".4bpp");
+const u32 gOrchidActionFight_Gfx[] = INCGFX_U32("graphics/battle_interface/orchid_action_fight.png", ".4bpp");
+const u32 gOrchidActionSide_Gfx[] = INCGFX_U32("graphics/battle_interface/orchid_action_side.png", ".4bpp");
+const u16 gOrchidActionIcons_Pal[] = INCGFX_U16("graphics/battle_interface/orchid_action_fight.png", ".gbapal");
+const u32 gOrchidLineupBars_Gfx[] = INCGFX_U32("graphics/battle_interface/orchid_lineup_bars.png", ".4bpp", "-mwidth 4 -mheight 2");
+const u32 gOrchidLineupBalls_Gfx[] = INCGFX_U32("graphics/battle_interface/orchid_lineup_balls.png", ".4bpp");
+const u16 gOrchidLineupBalls_Pal[] = INCGFX_U16("graphics/battle_interface/orchid_lineup_balls.png", ".gbapal");
 const u8 gSatchelRing_Gfx[] = INCGFX_U8("graphics/bag/satchel_ring.png", ".4bpp");
 const u8 gSatchelThumb_Gfx[] = INCGFX_U8("graphics/bag/satchel_thumb.png", ".4bpp");
 const u8 gSatchelArrow_Gfx[] = INCGFX_U8("graphics/bag/satchel_arrow.png", ".4bpp");

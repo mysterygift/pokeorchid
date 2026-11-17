@@ -531,8 +531,9 @@ void FreeHealthboxPalsForLevelUp(enum BattlerId battler)
 
     FreeSpritePaletteByTag(TAG_HEALTHBOX_PALS_1);
     FreeSpritePaletteByTag(TAG_HEALTHBOX_PALS_2);
-    paletteId1 = IndexOfSpritePaletteTag(TAG_HEALTHBOX_PAL);
-    paletteId2 = IndexOfSpritePaletteTag(TAG_HEALTHBAR_PAL);
+    // back to the palettes the sprites were created with (vanilla or Orchid healthbox)
+    paletteId1 = IndexOfSpritePaletteTag(gSprites[healthBoxSpriteId].template->paletteTag);
+    paletteId2 = IndexOfSpritePaletteTag(gSprites[spriteId2].template->paletteTag);
     gSprites[healthBoxSpriteId].oam.paletteNum = paletteId1;
     gSprites[spriteId1].oam.paletteNum = paletteId1;
     gSprites[spriteId2].oam.paletteNum = paletteId2;
@@ -570,7 +571,10 @@ static void AnimTask_FlashHealthboxOnLevelUp_Step(u8 taskId)
                 gTasks[taskId].data[2] = 16;
 
             paletteOffset = OBJ_PLTT_ID(paletteNum);
-            BlendPalette(paletteOffset + colorOffset, 1, gTasks[taskId].data[2], RGB(20, 27, 31));
+            if (IsOrchidHealthbox(gHealthboxSpriteIds[gBattleAnimAttacker]))
+                BlendPalette(paletteOffset + 1, 15, gTasks[taskId].data[2], RGB_WHITE); // Orchid: whole box flashes white
+            else
+                BlendPalette(paletteOffset + colorOffset, 1, gTasks[taskId].data[2], RGB(20, 27, 31));
             if (gTasks[taskId].data[2] == 16)
                 gTasks[taskId].data[1]++;
             break;
@@ -580,7 +584,10 @@ static void AnimTask_FlashHealthboxOnLevelUp_Step(u8 taskId)
                 gTasks[taskId].data[2] = 0;
 
             paletteOffset = OBJ_PLTT_ID(paletteNum);
-            BlendPalette(paletteOffset + colorOffset, 1, gTasks[taskId].data[2], RGB(20, 27, 31));
+            if (IsOrchidHealthbox(gHealthboxSpriteIds[gBattleAnimAttacker]))
+                BlendPalette(paletteOffset + 1, 15, gTasks[taskId].data[2], RGB_WHITE);
+            else
+                BlendPalette(paletteOffset + colorOffset, 1, gTasks[taskId].data[2], RGB(20, 27, 31));
             if (gTasks[taskId].data[2] == 0)
                 DestroyAnimVisualTask(taskId);
             break;

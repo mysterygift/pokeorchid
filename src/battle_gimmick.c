@@ -364,6 +364,16 @@ void UpdateIndicatorLevelData(u32 healthboxId, u32 level)
     gSprites[GetIndicatorSpriteId(healthboxId)].tLevelXDelta = xDelta;
 }
 
+// Orchid UI: singles healthboxes put the indicator where the Lv glyph would be.
+void SetIndicatorPosition(u32 healthboxId, s16 xFromHealthbox, s16 y)
+{
+    if (GetIndicatorSpriteId(healthboxId) == 0)
+        return;
+    gSprites[GetIndicatorSpriteId(healthboxId)].tPosX = xFromHealthbox;
+    gSprites[GetIndicatorSpriteId(healthboxId)].tLevelXDelta = 0;
+    gSprites[GetIndicatorSpriteId(healthboxId)].y = y;
+}
+
 static const s8 sIndicatorPositions[][2] =
 {
     [B_POSITION_PLAYER_LEFT] = {49, -9},
