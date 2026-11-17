@@ -138,6 +138,9 @@
 .include "sound/voicegroups/bard.inc"
 .include "sound/voicegroups/unused_2.inc" @ used by unused GSC radio tower takeover test track in RS
 
+@ Custom Voice Groups
+.include "sound/voicegroups/tosa_port.inc"
+
 @ FRLG
 .include "sound/voicegroups/rg_follow_me.inc"
 .include "sound/voicegroups/rg_game_corner.inc"

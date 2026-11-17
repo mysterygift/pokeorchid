@@ -598,10 +598,10 @@
     {
       "id": "LAYOUT_TOSA_PORT_BRENDANS_HOUSE_2F",
       "name": "TosaPort_BrendansHouse_2F_Layout",
-      "width": 9,
-      "height": 8,
-      "primary_tileset": "gTileset_Building",
-      "secondary_tileset": "gTileset_BrendansMaysHouse",
+      "width": 56,
+      "height": 50,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_BattleFactory",
       "border_filepath": "data/layouts/TosaPort_BrendansHouse_2F/border.bin",
       "blockdata_filepath": "data/layouts/TosaPort_BrendansHouse_2F/map.bin",
       "layout_version": "emerald"
