@@ -12,6 +12,9 @@ import export_exterior as X                             # noqa: E402
 from kit import ROOT                                    # noqa: E402
 
 
+TOSA_PORT_DOOR_WARP = "4"      # index of the (27, 9) warp in data/maps/TosaPort/map.json
+
+
 def obj(gfx, pos, script, facing="DOWN", flag="0", trainer=0, local_id=None):
     o = {}
     if local_id:
@@ -53,8 +56,9 @@ def interior():
         obj("OBJ_EVENT_GFX_ITEM_BALL", balls["maze"], p + "ItemSuperPotion", flag="FLAG_ITEM_COLD_STORAGE_SUPER_POTION"),
     ]
     exits = [(x, T.H - 1) for x in range(T.W) if T.GRID[T.H - 1][x] == "E"]
-    m["warp_events"] = [{"x": x, "y": y, "elevation": 0, "dest_map": "MAP_COLD_STORAGE_TEST_OUTSIDE",
-                         "dest_warp_id": "0"} for x, y in exits]
+    # out to the Cold Storage door on Tosa Port (warp 4 there, at 27,9)
+    m["warp_events"] = [{"x": x, "y": y, "elevation": 0, "dest_map": "MAP_TOSA_PORT",
+                         "dest_warp_id": TOSA_PORT_DOOR_WARP} for x, y in exits]
     m["coord_events"] = [{"type": "trigger", "x": T.TRIGGER[0], "y": T.TRIGGER[1], "elevation": 3,
                           "var": "VAR_COLD_STORAGE_STATE", "var_value": "0", "script": p + "BossTrigger"}]
     m["bg_events"] = [
