@@ -1,4 +1,5 @@
 #include "global.h"
+#include "graphics.h"
 #include "main.h"
 #include "text.h"
 #include "menu.h"
@@ -59,6 +60,7 @@ enum {
     WIN_MAPSEC_NAME,
     WIN_MAPSEC_NAME_TALL, // For fly destinations with subtitles (just Ever Grande)
     WIN_FLY_TO_WHERE,
+    WIN_FLY_TITLE,  // Orchid: "FLY" in the header
 };
 
 struct MultiNameFlyDest
@@ -121,7 +123,7 @@ static const u16 sRegionMapCursorPal[] = INCGFX_U16("graphics/pokenav/region_map
 static const u32 sRegionMapCursorSmallGfxLZ[] = INCGFX_U32("graphics/pokenav/region_map/cursor_small.png", ".4bpp.smol");
 static const u32 sRegionMapCursorLargeGfxLZ[] = INCGFX_U32("graphics/pokenav/region_map/cursor_large.png", ".4bpp.smol");
 static const u16 sRegionMapBg_Pal[] = INCGFX_U16("graphics/pokenav/region_map/map.pal", ".gbapal");
-static const u32 sRegionMapBg_GfxLZ[] = INCGFX_U32("graphics/pokenav/region_map/map.png", ".8bpp.smol", "-num_tiles 233 -Wnum_tiles");
+static const u32 sRegionMapBg_GfxLZ[] = INCGFX_U32("graphics/pokenav/region_map/map.png", ".8bpp.smol", "-num_tiles 249 -Wnum_tiles"); // Orchid: Tosa (export_region_map.py)
 static const u32 sRegionMapBg_TilemapLZ[] = INCGFX_U32("graphics/pokenav/region_map/map.bin", ".smolTM");
 static const u16 sRegionMapPlayerIcon_BrendanPal[] = INCGFX_U16("graphics/pokenav/region_map/brendan_icon.png", ".gbapal");
 static const u8 sRegionMapPlayerIcon_BrendanGfx[] = INCGFX_U8("graphics/pokenav/region_map/brendan_icon.png", ".4bpp");
@@ -287,14 +289,11 @@ static const mapsec_u8_t sMapSecIdsOffMap[] =
     MAPSEC_NAVEL_ROCK
 };
 
-static const u16 sRegionMapFramePal[] = INCGFX_U16("graphics/pokenav/region_map/frame.png", ".gbapal");
-static const u32 sRegionMapFrameGfxLZ[] = INCGFX_U32("graphics/pokenav/region_map/frame.png", ".4bpp.smol");
-static const u32 sRegionMapFrameTilemapLZ[] = INCGFX_U32("graphics/pokenav/region_map/frame.bin", ".smolTM");
 static const u16 sFlyTargetIcons_Pal[] = INCGFX_U16("graphics/pokenav/region_map/fly_target_icons.png", ".gbapal");
 static const u32 sFlyTargetIcons_Gfx[] = INCGFX_U32("graphics/pokenav/region_map/fly_target_icons.png", ".4bpp.smol");
 
 static const u16 ALIGNED(4) sPokedexAreaMap_Pal[] = INCGFX_U16("graphics/pokedex/region_map.pal", ".gbapal");
-static const u32 sPokedexAreaMap_Gfx[] = INCGFX_U32("graphics/pokedex/region_map.png", ".8bpp.smol", "-num_tiles 232 -Wnum_tiles");
+static const u32 sPokedexAreaMap_Gfx[] = INCGFX_U32("graphics/pokedex/region_map.png", ".8bpp.smol", "-num_tiles 249 -Wnum_tiles"); // Orchid: Tosa
 static const u32 sPokedexAreaMap_Tilemap[] = INCGFX_U32("graphics/pokedex/region_map.bin", ".smolTM");
 
 static const u16 ALIGNED(4) sPokedexAreaMapKanto_Pal[] = INCGFX_U16("graphics/pokedex/region_map_kanto.pal", ".gbapal");
@@ -580,37 +579,18 @@ static const struct BgTemplate sFlyMapBgTemplates[] =
     }
 };
 
+// Orchid frame (export_region_map.py): transparent text windows, palette 1 = the frame's kit palette
 static const struct WindowTemplate sFlyMapWindowTemplates[] =
 {
-    [WIN_MAPSEC_NAME] = {
-        .bg = 0,
-        .tilemapLeft = 17,
-        .tilemapTop = 17,
-        .width = 12,
-        .height = 2,
-        .paletteNum = 15,
-        .baseBlock = 0x01
-    },
-    [WIN_MAPSEC_NAME_TALL] = {
-        .bg = 0,
-        .tilemapLeft = 17,
-        .tilemapTop = 15,
-        .width = 12,
-        .height = 4,
-        .paletteNum = 15,
-        .baseBlock = 0x19
-    },
-    [WIN_FLY_TO_WHERE] = {
-        .bg = 0,
-        .tilemapLeft = 1,
-        .tilemapTop = 18,
-        .width = 14,
-        .height = 2,
-        .paletteNum = 15,
-        .baseBlock = 0x49
-    },
+    [WIN_MAPSEC_NAME] = {.bg = 0, .tilemapLeft = 1, .tilemapTop = 17, .width = 15, .height = 3, .paletteNum = 1, .baseBlock = 0x01},
+    [WIN_MAPSEC_NAME_TALL] = {.bg = 0, .tilemapLeft = 16, .tilemapTop = 2, .width = 14, .height = 4, .paletteNum = 1, .baseBlock = 0x2E},
+    [WIN_FLY_TO_WHERE] = {.bg = 0, .tilemapLeft = 16, .tilemapTop = 17, .width = 14, .height = 3, .paletteNum = 1, .baseBlock = 0x66},
+    [WIN_FLY_TITLE] = {.bg = 0, .tilemapLeft = 0, .tilemapTop = 0, .width = 30, .height = 2, .paletteNum = 1, .baseBlock = 0x90},
     DUMMY_WIN_TEMPLATE
 };
+
+static const u8 sFlyMapText_Ink[3] = {TEXT_COLOR_TRANSPARENT, 1, 5};    // INK on PANEL_SHADE
+static const u8 sFlyMapText_Label[3] = {TEXT_COLOR_TRANSPARENT, 3, 7};  // WHITE on ACCENT_DARK
 
 static const struct SpritePalette sFlyTargetIconsSpritePalette =
 {
@@ -1309,6 +1289,15 @@ static void InitMapBasedOnPlayerLocation(void)
 
     xOnMap = x;
 
+    // Orchid: vanilla Hoenn sections have no cell on the Tosa map (width/height 0, see
+    // dev_scripts/orchid_ui/export_region_map.py); show the cursor on Tosa Port instead.
+    if (gRegionMapEntries[sRegionMap->mapSecId].width == 0 || gRegionMapEntries[sRegionMap->mapSecId].height == 0)
+    {
+        sRegionMap->mapSecId = MAPSEC_TOSA_PORT;
+        mapWidth = mapHeight = 1;
+        x = y = 0;
+    }
+
     dimensionScale = mapWidth / gRegionMapEntries[sRegionMap->mapSecId].width;
     if (dimensionScale == 0)
     {
@@ -1400,6 +1389,8 @@ static void RegionMap_InitializeStateBasedOnSSTidalLocation(void)
         mapHeader = Overworld_GetMapHeaderByGroupAndId(mapGroup, mapNum);
 
         sRegionMap->mapSecId = mapHeader->regionMapSectionId;
+        if (gRegionMapEntries[sRegionMap->mapSecId].width == 0 || gRegionMapEntries[sRegionMap->mapSecId].height == 0)
+            sRegionMap->mapSecId = MAPSEC_TOSA_PORT; // Orchid: no cell on the Tosa map
         dimensionScale = mapHeader->mapLayout->width / gRegionMapEntries[sRegionMap->mapSecId].width;
         if (dimensionScale == 0)
             dimensionScale = 1;
@@ -1982,7 +1973,6 @@ void CB2_OpenFlyMap(void)
         gMain.state++;
         break;
     case 3:
-        LoadUserWindowBorderGfx(0, 0x65, BG_PLTT_ID(13));
         ClearScheduledBgCopiesToVram();
         gMain.state++;
         break;
@@ -1997,19 +1987,27 @@ void CB2_OpenFlyMap(void)
         gMain.state++;
         break;
     case 5:
-        DecompressDataWithHeaderVram(sRegionMapFrameGfxLZ, (u16 *)BG_CHAR_ADDR(3));
+        DecompressDataWithHeaderVram(gOrchidRegionMapFrame_Gfx, (u16 *)BG_CHAR_ADDR(3));
         gMain.state++;
         break;
     case 6:
-        DecompressDataWithHeaderVram(sRegionMapFrameTilemapLZ, (u16 *)BG_SCREEN_ADDR(30));
+        DecompressDataWithHeaderVram(gOrchidRegionMapFrame_Tilemap, (u16 *)BG_SCREEN_ADDR(30));
         gMain.state++;
         break;
     case 7:
-        LoadPalette(sRegionMapFramePal, BG_PLTT_ID(1), sizeof(sRegionMapFramePal));
-        PutWindowTilemap(WIN_FLY_TO_WHERE);
-        FillWindowPixelBuffer(WIN_FLY_TO_WHERE, PIXEL_FILL(0));
-        AddTextPrinterParameterized(WIN_FLY_TO_WHERE, FONT_NORMAL, gText_FlyToWhere, 0, 1, 0, NULL);
-        ScheduleBgCopyTilemapToVram(0);
+        {
+            static const u8 sText_Fly[] = _("FLY");
+
+            LoadPalette(gOrchidDexScreen_Pal, BG_PLTT_ID(1), PLTT_SIZE_4BPP);
+            PutWindowTilemap(WIN_FLY_TITLE);
+            FillWindowPixelBuffer(WIN_FLY_TITLE, PIXEL_FILL(0));
+            AddTextPrinterParameterized4(WIN_FLY_TITLE, FONT_NORMAL, GetStringCenterAlignXOffset(FONT_NORMAL, sText_Fly, DISPLAY_WIDTH), 0,
+                                         0, 0, sFlyMapText_Label, TEXT_SKIP_DRAW, sText_Fly);
+            CopyWindowToVram(WIN_FLY_TITLE, COPYWIN_GFX);
+            sDrawFlyDestTextWindow = TRUE;
+            DrawFlyDestTextWindow();
+            ScheduleBgCopyTilemapToVram(0);
+        }
         gMain.state++;
         break;
     case 8:
@@ -2055,64 +2053,38 @@ static void SetFlyMapCallback(void callback(void))
     sFlyMap->state = 0;
 }
 
+// Orchid: the name goes in the tray's pill (narrow font if it would not fit), the prompt to its
+// right: "Fly here?" on a town you can fly to, "FLY to where?" anywhere else.
 static void DrawFlyDestTextWindow(void)
 {
-    u16 i;
-    bool32 namePrinted;
-    const u8 *name;
+    static const u8 sText_FlyHere[] = _("Fly here?");
+    const u8 *name = sFlyMap->regionMap.mapSecName;
+    u32 i;
 
-    if (sFlyMap->regionMap.mapSecType > MAPSECTYPE_NONE && sFlyMap->regionMap.mapSecType < NUM_MAPSEC_TYPES)
+    if (sDrawFlyDestTextWindow)
     {
-        namePrinted = FALSE;
-        for (i = 0; i < ARRAY_COUNT(sMultiNameFlyDestinations); i++)
-        {
-            if (sFlyMap->regionMap.mapSecId == sMultiNameFlyDestinations[i].mapSecId)
-            {
-                if (FlagGet(sMultiNameFlyDestinations[i].flag))
-                {
-                    StringLength(sMultiNameFlyDestinations[i].name[sFlyMap->regionMap.posWithinMapSec]);
-                    namePrinted = TRUE;
-                    ClearStdWindowAndFrameToTransparent(WIN_MAPSEC_NAME, FALSE);
-                    DrawStdFrameWithCustomTileAndPalette(WIN_MAPSEC_NAME_TALL, FALSE, 101, 13);
-                    AddTextPrinterParameterized(WIN_MAPSEC_NAME_TALL, FONT_NORMAL, sFlyMap->regionMap.mapSecName, 0, 1, 0, NULL);
-                    name = sMultiNameFlyDestinations[i].name[sFlyMap->regionMap.posWithinMapSec];
-                    AddTextPrinterParameterized(WIN_MAPSEC_NAME_TALL, FONT_NORMAL, name, GetStringRightAlignXOffset(FONT_NORMAL, name, 96), 17, 0, NULL);
-                    ScheduleBgCopyTilemapToVram(0);
-                    sDrawFlyDestTextWindow = TRUE;
-                }
-                break;
-            }
-        }
-        if (!namePrinted)
-        {
-            if (sDrawFlyDestTextWindow == TRUE)
-            {
-                ClearStdWindowAndFrameToTransparent(WIN_MAPSEC_NAME_TALL, FALSE);
-                DrawStdFrameWithCustomTileAndPalette(WIN_MAPSEC_NAME, FALSE, 101, 13);
-            }
-            else
-            {
-                // Window is already drawn, just empty it
-                FillWindowPixelBuffer(WIN_MAPSEC_NAME, PIXEL_FILL(1));
-            }
-            AddTextPrinterParameterized(WIN_MAPSEC_NAME, FONT_NORMAL, sFlyMap->regionMap.mapSecName, 0, 1, 0, NULL);
-            ScheduleBgCopyTilemapToVram(0);
-            sDrawFlyDestTextWindow = FALSE;
-        }
-    }
-    else
-    {
-        // Selection is on MAPSECTYPE_NONE, draw empty fly destination text window
-        if (sDrawFlyDestTextWindow == TRUE)
-        {
-            ClearStdWindowAndFrameToTransparent(WIN_MAPSEC_NAME_TALL, FALSE);
-            DrawStdFrameWithCustomTileAndPalette(WIN_MAPSEC_NAME, FALSE, 101, 13);
-        }
-        FillWindowPixelBuffer(WIN_MAPSEC_NAME, PIXEL_FILL(1));
-        CopyWindowToVram(WIN_MAPSEC_NAME, COPYWIN_GFX);
-        ScheduleBgCopyTilemapToVram(0);
+        PutWindowTilemap(WIN_MAPSEC_NAME);
+        PutWindowTilemap(WIN_FLY_TO_WHERE);
         sDrawFlyDestTextWindow = FALSE;
     }
+    FillWindowPixelBuffer(WIN_MAPSEC_NAME, PIXEL_FILL(0));
+    FillWindowPixelBuffer(WIN_FLY_TO_WHERE, PIXEL_FILL(0));
+    if (sFlyMap->regionMap.mapSecType > MAPSECTYPE_NONE && sFlyMap->regionMap.mapSecType < NUM_MAPSEC_TYPES)
+    {
+        // vanilla subtitled destinations (Ever Grande) keep their subtitle, after the name
+        for (i = 0; i < ARRAY_COUNT(sMultiNameFlyDestinations); i++)
+        {
+            if (sFlyMap->regionMap.mapSecId == sMultiNameFlyDestinations[i].mapSecId && FlagGet(sMultiNameFlyDestinations[i].flag))
+                name = sMultiNameFlyDestinations[i].name[sFlyMap->regionMap.posWithinMapSec];
+        }
+        AddTextPrinterParameterized4(WIN_MAPSEC_NAME, GetFontIdToFit(name, FONT_NORMAL, 0, 104), 4, 3, 0, 0,
+                                     sFlyMapText_Ink, TEXT_SKIP_DRAW, name);
+    }
+    AddTextPrinterParameterized4(WIN_FLY_TO_WHERE, FONT_NORMAL, 4, 3, 0, 0, sFlyMapText_Ink, TEXT_SKIP_DRAW,
+                                 sFlyMap->regionMap.mapSecType == MAPSECTYPE_CITY_CANFLY ? sText_FlyHere : gText_FlyToWhere);
+    CopyWindowToVram(WIN_MAPSEC_NAME, COPYWIN_GFX);
+    CopyWindowToVram(WIN_FLY_TO_WHERE, COPYWIN_GFX);
+    ScheduleBgCopyTilemapToVram(0);
 }
 
 
@@ -2343,6 +2315,8 @@ static void CreateFlyDestIcons(void)
             continue;
 
         GetMapSecDimensions(sFlyLocations[i].mapsec, &x, &y, &width, &height);
+        if (width == 0 || height == 0)
+            continue; // Orchid: vanilla Hoenn section with no cell on the Tosa map
         x = (x + MAPCURSOR_X_MIN) * 8 + 4;
         y = (y + MAPCURSOR_Y_MIN) * 8 + 4;
 
@@ -2387,6 +2361,8 @@ static void TryCreateRedOutlineFlyDestIcons(void)
         {
             mapSecId = sRedOutlineFlyDestinations[i][1];
             GetMapSecDimensions(mapSecId, &x, &y, &width, &height);
+            if (width == 0 || height == 0)
+                continue; // Orchid: no cell on the Tosa map
             x = (x + MAPCURSOR_X_MIN) * 8;
             y = (y + MAPCURSOR_Y_MIN) * 8;
             spriteId = CreateSpriteUnchecked(&sFlyDestIconSpriteTemplate, x, y, 10);

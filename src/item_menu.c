@@ -2705,7 +2705,9 @@ static void RemoveItemMessageWindow(u8 windowType)
 
 void BagMenu_YesNo(u8 taskId, u8 windowType, const struct YesNoFuncTable *funcTable)
 {
-    CreateYesNoMenuWithCallbacks(taskId, &sContextMenuWindowTemplates[windowType], 1, 0, 2, 1, 14, funcTable);
+    // Orchid YES/NO: the bag's Orchid frame (tile 1, pal 14); gold pill colours into the std palette (15)
+    LoadOrchidYesNoColors(15, FALSE);
+    CreateOrchidYesNoMenuWithCallbacks(taskId, &sContextMenuWindowTemplates[windowType], 1, 14, funcTable);
 }
 
 static void DisplayCurrentMoneyWindow(void)

@@ -546,6 +546,97 @@ MOVEINFO_SAMPLES = [
 ]
 
 
+# ================================================================== type-effectiveness mark placement (proposal)
+EFF_GLYPH = {"dot": 0x115, "tri": 0x116, "x": 0x117, "circle": 0x118, "star": 0x119, "tri_down": 0x11A}
+
+
+def _mark(cv, x, y, mark, fg, sh, font):
+    return BX.draw_code(cv, x, y, EFF_GLYPH[mark], fg, sh, font=font)
+
+
+def eff_pill(cv, x, y, move, selected, option, mark):
+    """option: current | notch | tag | type | hide"""
+    name, typ, pp, mx = move
+    if selected:
+        Wn = __import__("windows")
+        Wn.selection_bar(cv, x, y, M.MOVE_W, M.MOVE_H)
+    else:
+        rounded_box(cv, x, y, M.MOVE_W, M.MOVE_H, 4, PANEL, INK, WHITE, PANEL_SHADE)
+    f = "normal" if text_width(name) <= M.MOVE_W - 42 else "narrow"
+    draw_text(cv, x + 38, y - 1, name, INK, PANEL_SHADE, font=f)
+    num = "%d/%d" % (pp, mx)
+    tw = text_width("PP " + num, "small")
+    extra = 10 if option == "notch" else 0
+    px = x + M.MOVE_W - 9 - tw
+    nx0, nx1 = px - 4 - extra, x + M.MOVE_W - 5
+    cv.rect(nx0, y + 12, nx1, y + M.MOVE_H - 1, INK)
+    cv.set(nx0, y + 12, cv.get(nx0, y + 11))
+    cv.set(nx1, y + 12, cv.get(nx1, y + 11))
+    draw_text(cv, px, y + 9, "PP", PANEL_DARK, None, font="small")
+    draw_text(cv, px + text_width("PP ", "small"), y + 9, num, M.PP_INDEX[M.pp_state(pp, mx)], None, font="small")
+    if option == "current":
+        _, w = _font("normal")
+        _mark(cv, nx0 - 3 - w[EFF_GLYPH[mark]], y + 8, mark, INK, PANEL_SHADE, "normal")
+    elif option == "notch":                 # gold mark at the notch's left end, before "PP"
+        _mark(cv, nx0 + 3, y + 9, mark, SELECT_LIGHT, None, "small")
+    elif option == "tag":                   # small dark tag riding the pill's top-right corner
+        tx0, ty0 = x + M.MOVE_W - 15, y - 3
+        rounded_box(cv, tx0, ty0, 13, 11, 3, INK, INK, PANEL_DARK, INK)
+        _mark(cv, tx0 + 3, ty0 - 2, mark, SELECT_LIGHT, None, "small")
+    elif option == "type":                  # right after the type icon, on the PP row
+        _mark(cv, x + 38, y + 9, mark, INK, PANEL_SHADE, "small")
+
+
+def eff_tray(option, marks=("dot", "tri", "x", "dot"), cursor=0):
+    out = BX.scene("grovyle", "zigzagoon")
+    M.healthboxes(out, M.default_player(), M.default_enemy())
+    bg = M.p_sheet(W, H, M.UI_PAL)
+    cv = Canvas(bg)
+    M.draw_tray(cv)
+    M.draw_back_tab(cv)
+    M.comp(out, bg)
+    win = M.p_sheet(W, H, M.MENU_PAL)
+    wc = Canvas(win)
+    for i, mv in enumerate(M.MOVES):
+        x, y = M.MOVE_POS[i]
+        if option == "hide":
+            M.draw_move_pill(wc, x, y, mv, i == cursor)
+        else:
+            eff_pill(wc, x, y, mv, i == cursor, option, marks[i])
+    M.comp(out, win)
+    M.type_icons(out, M.MOVES)
+    return out
+
+
+EFF_OPTIONS = [
+    ("current (unapproved): ink mark left of the PP notch", "current"),
+    ("A (recommended): gold mark inside the PP notch, before \"PP\" - reads with the PP info, no new shapes", "notch"),
+    ("B: small ink tag riding the pill's top-right corner, gold mark", "tag"),
+    ("C: ink mark right after the type tag, on the PP row", "type"),
+    ("D: hide it (B_SHOW_EFFECTIVENESS = NEVER)", "hide"),
+]
+
+
+
+def effectiveness_sheet():
+    """Each option: 1x tray (selected = Absorb ◎, unselected Quick Attack △ / Pursuit × / Fury Cutter ◎) + 4x crop."""
+    rows = []
+    for label, opt in EFF_OPTIONS:
+        rows.append((label, eff_tray(opt)))
+    S = 4
+    th = 48
+    sheet = Image.new("RGBA", (16 + 240 + 16 + 240 * S + 16, 16 + len(rows) * (th * S + 30) + 20), (28, 28, 36, 255))
+    d = ImageDraw.Draw(sheet)
+    y = 8
+    for label, im in rows:
+        d.text((16, y), label, fill=(240, 220, 150))
+        sheet.alpha_composite(im.crop((0, 100, 240, 160)), (16, y + 16))
+        sheet.alpha_composite(K.upscale(im.crop((0, 112, 240, 160)), S), (16 + 240 + 16, y + 16))
+        y += th * S + 30
+    d.text((16, y - 8), "Marks (ROM glyphs): double circle = super effective (Absorb, Fury Cutter), triangle = not very effective (Quick Attack), cross = no effect (Pursuit); also circle = normal, down-triangle = mostly ineffective, star = extremely. Shown on every pill so selected and unselected can be judged; the ROM can show it on the selected pill only (vanilla) or on all pills.", fill=(200, 200, 210))
+    return sheet
+
+
 if __name__ == "__main__":
     OUT = sys.argv[1]
     os.makedirs(OUT, exist_ok=True)
@@ -554,4 +645,5 @@ if __name__ == "__main__":
     triggers_sheet().save(os.path.join(OUT, "triggers_mock.png"))
     dynamax_sheet().save(os.path.join(OUT, "dynamax_hp_mock.png"))
     safari_icons_sheet().save(os.path.join(OUT, "safari_icons_mock.png"))
+    effectiveness_sheet().save(os.path.join(OUT, "effectiveness_mock.png"))
     print("ok")

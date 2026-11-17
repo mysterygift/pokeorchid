@@ -232,6 +232,7 @@ struct PokedexView
     u8 odexTab;             // entry page tab (INFO / AREA / CRY / SIZE)
     u8 odexTimer;
     bool8 odexFromEntry;    // list page brightens in after the entry page darkened out
+    u8 odexGlowSpriteIds[8]; // AREA map: habitat cell glows
 };
 
 extern const u8 sCaughtBall_Gfx[];

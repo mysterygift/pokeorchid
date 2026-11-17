@@ -47,6 +47,7 @@
 
 #define MAX_ITEMS_SHOWN 8
 #define SHOP_MENU_PALETTE_ID (gMapHeader.mapLayout->isFrlg ? 11 : 12)
+#define ORCHID_SHOP_YESNO_FRAME_TILE 0x222 // after the last BG0 window (YES/NO at 0x20E..0x221)
 
 enum {
     WIN_BUY_SELL_QUIT,
@@ -1136,7 +1137,10 @@ static void Task_BuyHowManyDialogueHandleInput(u8 taskId)
 
 static void BuyMenuConfirmPurchase(u8 taskId)
 {
-    CreateYesNoMenuWithCallbacks(taskId, &sShopBuyMenuYesNoWindowTemplates, 1, 0, 0, 1, 13, &sShopPurchaseYesNoFuncs);
+    // Orchid YES/NO: Orchid frame in free BG0 tiles, pill + accent colours into the window palette's unused 10-15
+    LoadOrchidYesNoFrame(0, ORCHID_SHOP_YESNO_FRAME_TILE);
+    LoadOrchidYesNoColors(15, FALSE);
+    CreateOrchidYesNoMenuWithCallbacks(taskId, &sShopBuyMenuYesNoWindowTemplates, ORCHID_SHOP_YESNO_FRAME_TILE, 15, &sShopPurchaseYesNoFuncs);
 }
 
 static void BuyMenuTryMakePurchase(u8 taskId)

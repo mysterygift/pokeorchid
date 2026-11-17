@@ -2397,16 +2397,16 @@ static const struct BattleWindowText sTextOnWindowsInfo_Arena[] =
         .color.accent = 14,
         .color.shadow = 15,
     },
-    [ARENA_WIN_JUDGMENT_TEXT] = {
-        .fillValue = PIXEL_FILL(0x1),
+    [ARENA_WIN_JUDGMENT_TEXT] = { // Orchid UI: same look as B_WIN_MSG (the referee uses its panel)
+        .fillValue = PIXEL_FILL(ORCHID_COL_WHITE),
         .fontId = FONT_NORMAL,
         .x = 0,
-        .y = 1,
+        .y = 0,
         .speed = 1,
-        .color.foreground = 2,
-        .color.background = 1,
-        .color.accent = 1,
-        .color.shadow = 3,
+        .color.foreground = ORCHID_COL_INK,
+        .color.background = ORCHID_COL_WHITE,
+        .color.accent = ORCHID_COL_WHITE,
+        .color.shadow = ORCHID_COL_SHADE,
     },
     [B_WIN_MOVE_DESCRIPTION] = {
         .fillValue = PIXEL_FILL(0xE),
@@ -3926,7 +3926,7 @@ void BattlePutTextOnWindow(const u8 *text, u8 windowId)
         printerTemplate.x = printerTemplate.currentX = alignX;
     }
 
-    if (windowId == ARENA_WIN_JUDGMENT_TEXT || windowId == B_WIN_OAK_OLD_MAN)
+    if (windowId == B_WIN_OAK_OLD_MAN) // Orchid UI: the Arena referee uses the battle panel's arrow
         gTextFlags.useAlternateDownArrow = FALSE;
     else
         gTextFlags.useAlternateDownArrow = TRUE;

@@ -1,5 +1,6 @@
 #include "global.h"
 #include "battle_main.h"
+#include "battle_mode7.h"
 #include "battle_script_commands.h"
 #include "bg.h"
 #include "data.h"
@@ -113,7 +114,6 @@ static void HighlightSubmenuScreenSelectBarItem(u8, u16);
 static void Task_DisplayCaughtMonDexPage(u8);
 static void Task_ExitCaughtMonPage(u8);
 static void SpriteCB_SlideCaughtMonToCenter(struct Sprite *sprite);
-static void PrintMonInfo(u32 num, u32, u32 owned, u32 newEntry);
 static u32 GetMeasurementTextPositions(u32 textElement);
 static void PrintUnknownMonMeasurements(void);
 static u8* GetUnknownMonHeightString(void);
@@ -1422,8 +1422,6 @@ static const u8 sODexText_UnkWeight[] = _("???.? kg");
 static const u8 sODexText_LivesIn[] = _("{STR_VAR_1} lives in:");
 static const u8 sODexText_AreaUnknown[] = _("Its habitat is unknown.");
 static const u8 sODexText_AndMore[] = _("…and other places.");
-static const u8 sODexText_MapTitle[] = _("TOSA");
-static const u8 sODexText_MapNone[] = _("No region map yet");
 static const u8 sODexText_CryHint[] = _("Press A to play the cry.");
 static const u8 sODexText_SizeLabel[] = _("Size comparison to {STR_VAR_1}");
 // SIZE silhouettes: the Pokémon in INK (as the unseen silhouette), the trainer in ACCENT_DARK
@@ -1673,10 +1671,13 @@ static void ODex_SetArrowsVisible(bool32 visible)
     }
 }
 
+static void ODex_DestroyAreaGlows(void);
+
 static void ODex_DestroyUiSprites(void)
 {
     u32 i;
 
+    ODex_DestroyAreaGlows();
     for (i = 0; i < 2; i++)
     {
         if (sPokedexView->odexTypeSpriteIds[i] != SPRITE_NONE)
@@ -1990,6 +1991,7 @@ static bool8 ODex_LoadListPage(u8 page)
         gReservedSpritePaletteCount = 8;
         sPokedexView->odexTypeSpriteIds[0] = sPokedexView->odexTypeSpriteIds[1] = SPRITE_NONE;
         sPokedexView->odexArrowSpriteIds[0] = sPokedexView->odexArrowSpriteIds[1] = SPRITE_NONE;
+        memset(sPokedexView->odexGlowSpriteIds, SPRITE_NONE, sizeof(sPokedexView->odexGlowSpriteIds));
         ODex_LoadSpriteGfx();
         ODex_CreateTypeIcons();
         if (ODex_CanSwitchMode())
@@ -2377,21 +2379,14 @@ static bool32 ODex_ListHasSpecies(const struct WildPokemonInfo *info, u32 count,
 
 #define ODEX_AREA_LINES 3
 
-static void ODex_PrintAreaTab(enum Species species)
+#define ODEX_MAX_HABITATS 8
+
+// Map sections whose wild encounter tables hold the species (first method found per section)
+static u32 ODex_FindHabitats(enum Species species, mapsec_u16_t *found, u8 *method, u32 max)
 {
-    mapsec_u16_t found[ODEX_AREA_LINES + 1];
-    u8 method[ODEX_AREA_LINES + 1];
     u32 numFound = 0, i, j, t, m;
-    u8 str[64];
-    u8 *end;
 
-    // the region map would go on BG2; Tosa has no map art yet, so the well says so
-    ODex_PrintCentered(WIN_INFO, FONT_NORMAL, sODexText_MapTitle, ODEX_AREA_X0, ODEX_AREA_X1 - ODEX_AREA_X0 + 1,
-                       (ODEX_AREA_Y0 + ODEX_AREA_Y1) / 2 - 16, sODexText_Faint);
-    ODex_PrintCentered(WIN_INFO, FONT_NARROW, sODexText_MapNone, ODEX_AREA_X0, ODEX_AREA_X1 - ODEX_AREA_X0 + 1,
-                       (ODEX_AREA_Y0 + ODEX_AREA_Y1) / 2 - 2, sODexText_Faint);
-
-    for (i = 0; gWildMonHeaders[i].mapGroup != MAP_GROUP(MAP_UNDEFINED) && numFound <= ODEX_AREA_LINES; i++)
+    for (i = 0; gWildMonHeaders[i].mapGroup != MAP_GROUP(MAP_UNDEFINED) && numFound < max; i++)
     {
         mapsec_u16_t mapsec = Overworld_GetMapHeaderByGroupAndId(gWildMonHeaders[i].mapGroup, gWildMonHeaders[i].mapNum)->regionMapSectionId;
 
@@ -2424,7 +2419,18 @@ static void ODex_PrintAreaTab(enum Species species)
             break;
         }
     }
+    return numFound;
+}
 
+static void ODex_PrintAreaTab(enum Species species)
+{
+    mapsec_u16_t found[ODEX_AREA_LINES + 1];
+    u8 method[ODEX_AREA_LINES + 1];
+    u32 numFound, j;
+    u8 str[64];
+    u8 *end;
+
+    numFound = ODex_FindHabitats(species, found, method, ODEX_AREA_LINES + 1);
     StringCopy(gStringVar1, GetSpeciesName(species));
     if (numFound == 0)
     {
@@ -2449,6 +2455,140 @@ static void ODex_PrintAreaTab(enum Species species)
         ODex_Print(WIN_INFO, GetFontIdToFit(str, FONT_NORMAL, 0, DISPLAY_WIDTH - 2 * ODEX_DESC_X), str,
                    ODEX_DESC_X, ODEX_DESC_Y + (j + 1) * ODEX_DESC_PITCH, sODexText_Ink);
     }
+}
+
+// ---- AREA map: the Tosa region map (dex copy, 8bpp) on BG0, clipped to the well by WIN0 and
+// panned to the habitats; habitat cells blink under small glow sprites.
+#define ODEX_AREA_MAP_TILE_OFFSET 128   // 8bpp tiles at charblock 0 + 0x2000 (after the 4bpp art)
+#define ODEX_MAPCELL_X(cx) (8 + (cx) * 8)
+#define ODEX_MAPCELL_Y(cy) (16 + (cy) * 8)
+#define TAG_ODEX_GLOW 0x5DE2
+
+static const u32 sODexGlow_Gfx[8] = {
+    0x11111111, 0x12222221, 0x12000021, 0x12000021, 0x12000021, 0x12000021, 0x12222221, 0x11111111,
+};
+static const u16 sODexGlow_Pal[16] = {0, RGB(31, 15, 6), RGB(31, 29, 12)};
+static const struct SpriteSheet sODexGlowSheet = {sODexGlow_Gfx, sizeof(sODexGlow_Gfx), TAG_ODEX_GLOW};
+static const struct SpritePalette sODexGlowPal = {sODexGlow_Pal, TAG_ODEX_GLOW};
+static const struct OamData sODexOam_8x8 = {.shape = SPRITE_SHAPE(8x8), .size = SPRITE_SIZE(8x8), .priority = 0};
+
+static void SpriteCB_ODexGlow(struct Sprite *sprite)
+{
+    sprite->invisible = (++sprite->data[0] & 16) != 0;
+}
+
+static const struct SpriteTemplate sODexGlowTemplate =
+{
+    .tileTag = TAG_ODEX_GLOW,
+    .paletteTag = TAG_ODEX_GLOW,
+    .oam = &sODexOam_8x8,
+    .anims = gDummySpriteAnimTable,
+    .images = NULL,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCB_ODexGlow,
+};
+
+static void ODex_DestroyAreaGlows(void)
+{
+    u32 i;
+
+    for (i = 0; i < ARRAY_COUNT(sPokedexView->odexGlowSpriteIds); i++)
+    {
+        if (sPokedexView->odexGlowSpriteIds[i] != SPRITE_NONE)
+            DestroySprite(&gSprites[sPokedexView->odexGlowSpriteIds[i]]);
+        sPokedexView->odexGlowSpriteIds[i] = SPRITE_NONE;
+    }
+}
+
+static void ODex_HideAreaMap(void)
+{
+    ODex_DestroyAreaGlows();
+    HideBg(0);
+    ClearGpuRegBits(REG_OFFSET_DISPCNT, DISPCNT_WIN0_ON);
+    // hand BG0 back to the vanilla info template (CRY's waveform window)
+    SetBgAttribute(0, BG_ATTR_CHARBASEINDEX, 2);
+    SetBgAttribute(0, BG_ATTR_PALETTEMODE, 0);
+    SetBgAttribute(0, BG_ATTR_PRIORITY, 3);
+    SetGpuReg(REG_OFFSET_BG0HOFS, 0);
+    SetGpuReg(REG_OFFSET_BG0VOFS, 0);
+}
+
+static void ODex_ShowAreaMap(enum Species species)
+{
+    mapsec_u16_t found[ODEX_MAX_HABITATS];
+    u8 method[ODEX_MAX_HABITATS];
+    u32 num = ODex_FindHabitats(species, found, method, ODEX_MAX_HABITATS);
+    s32 minX = 999, minY = 999, maxX = -1, maxY = -1, sx, sy, cx, cy;
+    s32 wx0 = ODEX_AREA_X0 + 2, wy0 = ODEX_AREA_Y0 + 2, wx1 = ODEX_AREA_X1 - 1, wy1 = ODEX_AREA_Y1 - 1;
+    u16 *map;
+    u32 i, k, glow = 0;
+
+    ODex_DestroyAreaGlows();
+    SetBgAttribute(0, BG_ATTR_CHARBASEINDEX, 0);
+    SetBgAttribute(0, BG_ATTR_PALETTEMODE, 1);
+    SetBgAttribute(0, BG_ATTR_PRIORITY, 2);
+    DecompressAndLoadBgGfxUsingHeap(0, gRegionMapInfos[REGION_MAP_HOENN].dexMapGfx, 0, ODEX_AREA_MAP_TILE_OFFSET, 0);
+    CopyToBgTilemapBuffer(0, gRegionMapInfos[REGION_MAP_HOENN].dexMapTilemap, 0, 0);
+    map = GetBgTilemapBuffer(0);
+    for (i = 0; i < 32 * 32; i++)
+        map[i] += ODEX_AREA_MAP_TILE_OFFSET;
+    CopyBgTilemapBufferToVram(0);
+    LoadPalette(gRegionMapInfos[REGION_MAP_HOENN].dexMapPalette, BG_PLTT_ID(7), gRegionMapInfos[REGION_MAP_HOENN].dexMapPaletteSize);
+
+    // bounds of the habitat cells that are on the Tosa map
+    for (i = 0; i < num; i++)
+    {
+        const struct RegionMapLocation *loc = &gRegionMapEntries[found[i]];
+
+        if (found[i] >= MAPSEC_NONE || loc->width == 0 || loc->height == 0)
+            continue;
+        minX = min(minX, ODEX_MAPCELL_X(loc->x));
+        minY = min(minY, ODEX_MAPCELL_Y(loc->y));
+        maxX = max(maxX, ODEX_MAPCELL_X(loc->x + loc->width));
+        maxY = max(maxY, ODEX_MAPCELL_Y(loc->y + loc->height));
+    }
+    if (maxX < 0)   // nowhere on the map: show Tosa Port's surroundings
+    {
+        minX = maxX = ODEX_MAPCELL_X(gRegionMapEntries[MAPSEC_TOSA_PORT].x) + 4;
+        minY = maxY = ODEX_MAPCELL_Y(gRegionMapEntries[MAPSEC_TOSA_PORT].y) + 4;
+    }
+    // pan so the habitats sit in the middle of the well, kept inside the map's grid area
+    sx = (minX + maxX) / 2 - (wx0 + wx1 + 1) / 2;
+    sy = (minY + maxY) / 2 - (wy0 + wy1 + 1) / 2;
+    sx = max(sx, 0 - wx0);
+    sx = min(sx, DISPLAY_WIDTH - (wx1 + 1));
+    sy = max(sy, 16 - wy0);
+    sy = min(sy, 136 - (wy1 + 1));
+    SetGpuReg(REG_OFFSET_BG0HOFS, sx & 0x1FF);
+    SetGpuReg(REG_OFFSET_BG0VOFS, sy & 0x1FF);
+
+    // glow sprites on every habitat cell that shows in the well
+    if (GetSpriteTileStartByTag(TAG_ODEX_GLOW) == 0xFFFF)
+        LoadSpriteSheet(&sODexGlowSheet);
+    LoadSpritePalette(&sODexGlowPal);
+    for (i = 0; i < num && glow < ARRAY_COUNT(sPokedexView->odexGlowSpriteIds); i++)
+    {
+        const struct RegionMapLocation *loc = &gRegionMapEntries[found[i]];
+
+        if (found[i] >= MAPSEC_NONE || loc->width == 0 || loc->height == 0)
+            continue;
+        for (k = 0; k < (u32)(loc->width * loc->height) && glow < ARRAY_COUNT(sPokedexView->odexGlowSpriteIds); k++)
+        {
+            cx = ODEX_MAPCELL_X(loc->x + k % loc->width) - sx;
+            cy = ODEX_MAPCELL_Y(loc->y + k / loc->width) - sy;
+            if (cx < wx0 || cx + 8 > wx1 + 1 || cy < wy0 || cy + 8 > wy1 + 1)
+                continue;
+            sPokedexView->odexGlowSpriteIds[glow++] = CreateSprite(&sODexGlowTemplate, cx + 4, cy + 4, 1);
+        }
+    }
+
+    // WIN0 = the well: BG0 only shows inside it
+    SetGpuReg(REG_OFFSET_WIN0H, WIN_RANGE(wx0, wx1 + 1));
+    SetGpuReg(REG_OFFSET_WIN0V, WIN_RANGE(wy0, wy1 + 1));
+    SetGpuReg(REG_OFFSET_WININ, WININ_WIN0_ALL);
+    SetGpuReg(REG_OFFSET_WINOUT, WINOUT_WIN01_BG1 | WINOUT_WIN01_BG2 | WINOUT_WIN01_BG3 | WINOUT_WIN01_OBJ | WINOUT_WIN01_CLR);
+    SetGpuRegBits(REG_OFFSET_DISPCNT, DISPCNT_WIN0_ON);
+    ShowBg(0);
 }
 
 // SIZE: "Size comparison to <player>" and the HT pill in the tray
@@ -2532,6 +2672,10 @@ static void ODex_SwitchEntryTab(u8 tab)
     ODex_DrawEntryArt(tab);
     ODex_PrintEntry(tab);
     ODex_ShowEntrySprites(tab);
+    if (tab == ODEX_TAB_AREA)
+        ODex_ShowAreaMap(NationalPokedexNumToSpeciesForm(sPokedexListItem->dexNum));
+    else
+        ODex_HideAreaMap();
     PlaySE(SE_DEX_PAGE);
 }
 
@@ -3044,6 +3188,7 @@ void ResetPokedexView(struct PokedexView *pokedexView)
     pokedexView->odexTypeSpriteIds[0] = pokedexView->odexTypeSpriteIds[1] = SPRITE_NONE;
     pokedexView->odexArrowSpriteIds[0] = pokedexView->odexArrowSpriteIds[1] = SPRITE_NONE;
     pokedexView->odexThumbSpriteId = SPRITE_NONE;
+    memset(pokedexView->odexGlowSpriteIds, SPRITE_NONE, sizeof(pokedexView->odexGlowSpriteIds));
 }
 
 void CB2_OpenPokedex(void)
@@ -4073,6 +4218,8 @@ void Task_LoadInfoScreen(u8 taskId)
         ShowBg(1);
         ShowBg(2);
         ShowBg(3);
+        if (sPokedexView->odexTab == ODEX_TAB_AREA)
+            ODex_ShowAreaMap(NationalPokedexNumToSpeciesForm(sPokedexListItem->dexNum));
         SetVBlankCallback(gPokedexVBlankCB);
         gTasks[taskId].tFadeTimer = ODEX_FADE_FRAMES;
         gMain.state++;
@@ -4191,6 +4338,7 @@ void Task_SwitchScreensFromInfoScreen(u8 taskId)
 {
     if (!gPaletteFade.active)
     {
+        ODex_HideAreaMap();
         ODex_DestroyUiSprites();
         ODex_DestroyPic();
         switch (sPokedexView->screenSwitchState)
@@ -4357,6 +4505,7 @@ static void ODex_LoadTabFrame(u8 tab)
     sPokedexView->odexTab = tab;
     sPokedexView->odexTypeSpriteIds[0] = sPokedexView->odexTypeSpriteIds[1] = SPRITE_NONE;
     sPokedexView->odexArrowSpriteIds[0] = sPokedexView->odexArrowSpriteIds[1] = SPRITE_NONE;
+    memset(sPokedexView->odexGlowSpriteIds, SPRITE_NONE, sizeof(sPokedexView->odexGlowSpriteIds));
     sPokedexView->odexPicSpriteId = SPRITE_NONE;
     DecompressAndLoadBgGfxUsingHeap(3, gOrchidDexEntry_Gfx, ODEX_ENTRY_NUM_TILES * TILE_SIZE_4BPP, 0, 0);
     ODex_FillGridMap(1);
@@ -4753,11 +4902,91 @@ u32 Pokedex_CreateCaughtMonSprite(enum Species species, s32 x, s32 y)
     return spriteId;
 }
 
+// ---------------------------------------------------------------- Orchid post-catch page
+// The INFO body on the Orchid frame; the header has no tabs, just a gold NEW pill (pulsing where
+// vanilla flickered its header) and "Registered to the POKéDEX!". Runs inside the battle
+// (BattleMainCB2), so: no sPokedexView, the grid map is written straight to VRAM (no heap
+// buffer), and the type icon palettes go one slot down as HGSS does (the caught mon may use 15).
+#define tTypeSpriteId0 data[4]
+#define tTypeSpriteId1 data[5]
+#define REG_TYPE_PAL_OFFSET (-1)
+
+static const struct BgTemplate sODexReg_BgTemplate[] =
+{
+    {.bg = 1, .charBaseIndex = 1, .mapBaseIndex = 13, .screenSize = 0, .paletteMode = 0, .priority = 3, .baseTile = 0},
+    {.bg = 2, .charBaseIndex = 2, .mapBaseIndex = 14, .screenSize = 0, .paletteMode = 0, .priority = 1, .baseTile = 0},
+    {.bg = 3, .charBaseIndex = 1, .mapBaseIndex = 15, .screenSize = 0, .paletteMode = 0, .priority = 2, .baseTile = 0},
+};
+
+static const u8 sODexText_RegTitle[] = _("Registered to the POKéDEX!");
+static const u8 sODexText_RegNew[] = _("NEW");
+
+static void ODex_FillGridMapVram(u32 mapBase)
+{
+    u16 *map = (u16 *)BG_SCREEN_ADDR(mapBase);
+    u32 x, y;
+
+    for (y = 0; y < 32; y++)
+    {
+        for (x = 0; x < 32; x++)
+            map[y * 32 + x] = (ODEX_GRID_TILE_BASE + (x & 1) + (y & 1) * 2) | (ODEX_PAL_GRID << 12);
+    }
+}
+
+static void ODex_PrintRegistered(enum Species species)
+{
+    enum NationalDexOrder dexNum = SpeciesToNationalPokedexNum(species);
+    u32 num = IsNationalPokedexEnabled() ? dexNum : NationalToRegionalOrder(dexNum);
+    u32 titleX = ODEX_REG_NEW_X + ODEX_REG_NEW_W;
+    u8 str[8];
+
+    FillWindowPixelBuffer(WIN_INFO, PIXEL_FILL(0));
+    ODex_PrintCentered(WIN_INFO, FONT_NORMAL, sODexText_RegNew, ODEX_REG_NEW_X, ODEX_REG_NEW_W, 0, sODexText_TabOn);
+    ODex_PrintCentered(WIN_INFO, FONT_NORMAL, sODexText_RegTitle, titleX, DISPLAY_WIDTH - titleX, 0, sODexText_Label);
+    ConvertIntToDecimalStringN(str, num, STR_CONV_MODE_LEADING_ZEROS, num > 999 ? 4 : 3);
+    ODex_PrintCentered(WIN_INFO, FONT_NORMAL, str, ODEX_E_X + 1, ODEX_E_NUM_CAP, ODEX_E_NAME_Y - 1, sODexText_Label);
+    ODex_Print(WIN_INFO, FONT_NORMAL, GetSpeciesName(species), ODEX_E_X + ODEX_E_NUM_CAP + 6, ODEX_E_NAME_Y - 1, sODexText_Ink);
+    BlitBitmapToWindow(WIN_INFO, gOrchidDexBall_Gfx, ODEX_E_X + ODEX_E_W - 15, ODEX_E_NAME_Y + 3, 8, 8);
+    ODex_PrintInfoTab(species, TRUE);
+}
+
+static void ODex_RegTypeIcons(u8 taskId, enum Species species)
+{
+    enum Type types[2] = {GetSpeciesType(species, 0), GetSpeciesType(species, 1)};
+    u32 i;
+
+    if (GetSpriteTileStartByTag(gSpriteSheet_MoveTypes.tag) == 0xFFFF)
+        LoadCompressedSpriteSheet(&gSpriteSheet_MoveTypes);
+    LoadPalette(gMoveTypes_Pal, OBJ_PLTT_ID(gTypesInfo[TYPE_NORMAL].palette + REG_TYPE_PAL_OFFSET), 3 * PLTT_SIZE_4BPP);
+    for (i = 0; i < 2; i++)
+    {
+        u8 spriteId = CreateSprite(&gSpriteTemplate_MoveTypes, ODEX_E_X + 2 + 36 * i + 16, ODEX_E_TYPES_Y + 8, 0);
+
+        gTasks[taskId].data[4 + i] = spriteId;
+        StartSpriteAnim(&gSprites[spriteId], types[i]);
+        gSprites[spriteId].oam.paletteNum = gTypesInfo[types[i]].palette + REG_TYPE_PAL_OFFSET;
+        gSprites[spriteId].oam.priority = 0;
+        gSprites[spriteId].invisible = (i == 1 && types[0] == types[1]);
+    }
+}
+
+static void ODex_RegDestroyTypeIcons(u8 taskId)
+{
+    u32 i;
+
+    for (i = 0; i < 2; i++)
+    {
+        if (gTasks[taskId].data[4 + i] != SPRITE_NONE)
+            DestroySprite(&gSprites[gTasks[taskId].data[4 + i]]);
+        gTasks[taskId].data[4 + i] = SPRITE_NONE;
+    }
+    FreeSpriteTilesByTag(gSpriteSheet_MoveTypes.tag);
+}
+
 static void Task_DisplayCaughtMonDexPage(u8 taskId)
 {
     u8 spriteId;
     enum Species species = gTasks[taskId].tSpecies;
-    enum NationalDexOrder dexNum = SpeciesToNationalPokedexNum(species);
 
     switch (gTasks[taskId].tState)
     {
@@ -4765,35 +4994,38 @@ static void Task_DisplayCaughtMonDexPage(u8 taskId)
     default:
         if (!gPaletteFade.active)
         {
+            // The battle's Mode 7 floor would keep driving BG2 (affine, DMA0) and re-load its
+            // floor into charblock 2 under this page; a catch ends the battle, so drop it here.
+            BattleMode7_End();
             gPokedexVBlankCB = gMain.vblankCallback;
             SetVBlankCallback(NULL);
             ResetOtherVideoRegisters(DISPCNT_BG0_ON);
             ResetBgsAndClearDma3BusyFlags(0);
-            InitBgsFromTemplates(0, sNewEntryInfoScreen_BgTemplate, ARRAY_COUNT(sNewEntryInfoScreen_BgTemplate));
+            InitBgsFromTemplates(0, sODexReg_BgTemplate, ARRAY_COUNT(sODexReg_BgTemplate));
             SetBgTilemapBuffer(3, AllocZeroed(BG_SCREEN_SIZE));
             SetBgTilemapBuffer(2, AllocZeroed(BG_SCREEN_SIZE));
             InitWindows(sNewEntryInfoScreen_WindowTemplates);
             DeactivateAllTextPrinters();
+            gTasks[taskId].tTypeSpriteId0 = gTasks[taskId].tTypeSpriteId1 = SPRITE_NONE;
             gTasks[taskId].tState = 1;
         }
         break;
     case 1:
-        DecompressAndLoadBgGfxUsingHeap(3, gPokedexMenu_Gfx, 0x2000, 0, 0);
-        CopyToBgTilemapBuffer(3, gPokedexInfoScreen_Tilemap, 0, 0);
+        DecompressAndLoadBgGfxUsingHeap(3, gOrchidDexEntry_Gfx, ODEX_ENTRY_NUM_TILES * TILE_SIZE_4BPP, 0, 0);
+        CopyToBgTilemapBuffer(3, gOrchidDexRegistered_Tilemap, 0, 0);
+        ODex_SetCellPalette(3, ODEX_REG_NEW_X / 8, 0, (ODEX_REG_NEW_X + ODEX_REG_NEW_W + 7) / 8 - ODEX_REG_NEW_X / 8, 2, ODEX_PAL_SELECTED);
+        ODex_FillGridMapVram(13);
         FillWindowPixelBuffer(WIN_INFO, PIXEL_FILL(0));
         PutWindowTilemap(WIN_INFO);
-        PutWindowTilemap(WIN_FOOTPRINT);
-        DrawFootprint(WIN_FOOTPRINT, species);
-        CopyWindowToVram(WIN_FOOTPRINT, COPYWIN_GFX);
         ResetPaletteFade();
-        LoadPokedexBgPalette(FALSE);
+        LoadPalette(gOrchidDexScreen_Pal, BG_PLTT_ID(0), 3 * PLTT_SIZE_4BPP);
         gTasks[taskId].tState++;
         break;
     case 2:
         gTasks[taskId].tState++;
         break;
     case 3:
-        PrintMonInfo(dexNum, IsNationalPokedexEnabled(), 1, 1);
+        ODex_PrintRegistered(species);
         CopyWindowToVram(WIN_INFO, COPYWIN_FULL);
         CopyBgTilemapBufferToVram(2);
         CopyBgTilemapBufferToVram(3);
@@ -4801,10 +5033,11 @@ static void Task_DisplayCaughtMonDexPage(u8 taskId)
         break;
     case 4:
         // We're using a different mon sprite creation method, because we don't have enough memory to safely use CreateMonPicSprite.
-        spriteId = Pokedex_CreateCaughtMonSprite(species, MON_PAGE_X, MON_PAGE_Y);
+        spriteId = Pokedex_CreateCaughtMonSprite(species, ODEX_E_DAIS_X, ODex_PicY(species, ODEX_E_DAIS_STAGE_Y));
         gTasks[taskId].tMonSpriteId = spriteId;
         LoadDexMonPalette(taskId, FALSE);
         gSprites[spriteId].oam.priority = 0;
+        ODex_RegTypeIcons(taskId, species);
         BeginNormalPaletteFade(PALETTES_ALL, 0, 0x10, 0, RGB_BLACK);
         SetVBlankCallback(gPokedexVBlankCB);
         gTasks[taskId].tState++;
@@ -4813,7 +5046,10 @@ static void Task_DisplayCaughtMonDexPage(u8 taskId)
         SetGpuReg(REG_OFFSET_BLDCNT, 0);
         SetGpuReg(REG_OFFSET_BLDALPHA, 0);
         SetGpuReg(REG_OFFSET_BLDY, 0);
+        SetGpuReg(REG_OFFSET_BG1HOFS, 0);
+        SetGpuReg(REG_OFFSET_BG1VOFS, 0);
         SetGpuReg(REG_OFFSET_DISPCNT, DISPCNT_OBJ_1D_MAP | DISPCNT_OBJ_ON);
+        ShowBg(1);
         ShowBg(2);
         ShowBg(3);
         gTasks[taskId].tState++;
@@ -4831,26 +5067,24 @@ static void Task_DisplayCaughtMonDexPage(u8 taskId)
 
 void Task_HandleCaughtMonPageInput(u8 taskId)
 {
+    u16 color;
+
     if (JOY_NEW(A_BUTTON | B_BUTTON))
     {
+        // BG darkens to black (OBJ untouched) while the pic glides to the centre
         BeginNormalPaletteFade(PALETTES_BG, 0, 0, 16, RGB_BLACK);
         gSprites[gTasks[taskId].tMonSpriteId].callback = SpriteCB_SlideCaughtMonToCenter;
+        ODex_RegDestroyTypeIcons(taskId);
         gTasks[taskId].func = Task_ExitCaughtMonPage;
         HandleCaughtMonPageTypeIcons_HGSS();
-    }
-    else if (TryHandleCaughtMonPageFlicker_HGSS(taskId))
-    {
         return;
     }
-    // Flicker caught screen color
-    else if (++gTasks[taskId].tPalTimer & 16)
-    {
-        LoadPalette(gPokedexBgHoenn_Pal + 1, BG_PLTT_ID(3) + 1, PLTT_SIZEOF(7));
-    }
-    else
-    {
-        LoadPalette(gPokedexBgHoenn_Pal + 49, BG_PLTT_ID(3) + 1, PLTT_SIZEOF(7));
-    }
+    if (TryHandleCaughtMonPageFlicker_HGSS(taskId))
+        return;
+
+    // The NEW pill pulses: its face (pal 1 PANEL) swaps SELECT <-> SELECT_LIGHT every 16 frames
+    color = gOrchidDexScreen_Pal[16 + ((++gTasks[taskId].tPalTimer & 16) ? ODEX_C_SELECT_LIGHT : ODEX_C_PANEL)];
+    LoadPalette(&color, BG_PLTT_ID(ODEX_PAL_SELECTED) + ODEX_C_PANEL, PLTT_SIZEOF(1));
 }
 
 static void Task_ExitCaughtMonPage(u8 taskId)
@@ -4881,6 +5115,10 @@ static void Task_ExitCaughtMonPage(u8 taskId)
     }
 }
 
+#undef tTypeSpriteId0
+#undef tTypeSpriteId1
+#undef REG_TYPE_PAL_OFFSET
+
 static void SpriteCB_SlideCaughtMonToCenter(struct Sprite *sprite)
 {
     if (sprite->x < DISPLAY_WIDTH / 2)
@@ -4902,51 +5140,6 @@ static void SpriteCB_SlideCaughtMonToCenter(struct Sprite *sprite)
 #undef tOtIdHi
 #undef tPersonalityLo
 #undef tPersonalityHi
-
-// u32 value is re-used, but passed as a bool that's TRUE if national dex is enabled
-static void PrintMonInfo(u32 num, u32 value, u32 owned, u32 newEntry)
-{
-    u8 str[0x10];
-    u8 str2[0x30];
-    enum Species species;
-    const u8 *name;
-    const u8 *category;
-    const u8 *description;
-    u8 digitCount = (NATIONAL_DEX_COUNT > 999 && IsNationalPokedexEnabled()) ? 4 : 3;
-
-    if (newEntry)
-        PrintInfoScreenText(sText_PokedexRegistration, GetStringCenterAlignXOffset(FONT_NORMAL, sText_PokedexRegistration, DISPLAY_WIDTH), 0);
-    if (value == 0)
-        value = NationalToRegionalOrder(num);
-    else
-        value = num;
-
-    ConvertIntToDecimalStringN(StringCopy(str, gText_NumberClear01), value, STR_CONV_MODE_LEADING_ZEROS, digitCount);
-    PrintInfoScreenText(str, 0x60, 0x19);
-    species = NationalPokedexNumToSpeciesForm(num);
-    if (species)
-        name = GetSpeciesName(species);
-    else
-        name = sText_TenDashes2;
-    PrintInfoScreenText(name, 114 + (6 * digitCount), 0x19);
-
-    if (owned)
-    {
-        CopyMonCategoryText(species, str2);
-        category = str2;
-    }
-    else
-    {
-        category = gText_5MarksPokemon;
-    }
-    PrintInfoScreenText(category, 0x64, 0x29);
-    PrintMonMeasurements(species,owned);
-    if (owned)
-        description = GetSpeciesPokedexDescription(species);
-    else
-        description = sExpandedPlaceholder_PokedexDescription;
-    PrintInfoScreenText(description, GetStringCenterAlignXOffset(FONT_NORMAL, description, DISPLAY_WIDTH), 95);
-}
 
 void PrintMonMeasurements(enum Species species, u32 owned)
 {
