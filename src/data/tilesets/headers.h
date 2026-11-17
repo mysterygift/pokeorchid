@@ -283,6 +283,19 @@ const struct Tileset gTileset_HawkerCentre =
     .callback = NULL,
 };
 
+// Tosa Port's own copy of gTileset_Slateport (same metatile IDs, Cold Storage included) with the
+// ferry jetty added; see dev_scripts/ferry_jetty. Shares Slateport's tile animation.
+const struct Tileset gTileset_TosaPort =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_TosaPort,
+    .palettes = gTilesetPalettes_TosaPort,
+    .metatiles = gMetatiles_TosaPort,
+    .metatileAttributes = gMetatileAttributes_TosaPort,
+    .callback = InitTilesetAnim_Slateport,
+};
+
 const struct Tileset gTileset_ColdStorage =
 {
     .isCompressed = TRUE,

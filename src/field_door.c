@@ -697,6 +697,31 @@ static const struct DoorGraphics sDoorAnimGraphicsTable[] =
         .tiles = sDoorAnimTiles_ColdStorage,
         .palettes = sDoorAnimPalettes_ColdStorage
     },
+    // Tosa Port uses a copy of Slateport (gTileset_TosaPort) with the same metatile IDs
+    {
+        .metatileNum = METATILE_Slateport_Door,
+        .tileset = &gTileset_TosaPort,
+        .sound = DOOR_SOUND_NORMAL,
+        .size = DOOR_SIZE_1x2,
+        .tiles = sDoorAnimTiles_Slateport,
+        .palettes = sDoorAnimPalettes_Slateport
+    },
+    {
+        .metatileNum = METATILE_Slateport_Door_BattleTent,
+        .tileset = &gTileset_TosaPort,
+        .sound = DOOR_SOUND_SLIDING,
+        .size = DOOR_SIZE_1x2,
+        .tiles = sDoorAnimTiles_BattleTent,
+        .palettes = sDoorAnimPalettes_BattleTent
+    },
+    {
+        .metatileNum = METATILE_Slateport_ColdStorage_Door,
+        .tileset = &gTileset_TosaPort,
+        .sound = DOOR_SOUND_SLIDING,
+        .size = DOOR_SIZE_1x2,
+        .tiles = sDoorAnimTiles_ColdStorage,
+        .palettes = sDoorAnimPalettes_ColdStorage
+    },
     {
         .metatileNum = METATILE_Mauville_Door_BattleTent,
         .tileset = &gTileset_Mauville,
