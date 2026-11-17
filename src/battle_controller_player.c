@@ -339,8 +339,17 @@ static void OrchidCreateActionIcons(void)
     if (GetSpriteTileStartByTag(TAG_ORCHID_ACTION_TILE) != 0xFFFF)
         return;
 
-    memcpy(buffer, gOrchidActionFight_Gfx, 16 * TILE_SIZE_4BPP);
-    memcpy(buffer + 16 * TILE_SIZE_4BPP, gOrchidActionSide_Gfx, 12 * TILE_SIZE_4BPP);
+    // Safari battles get their own pictograms (Poké Ball / PokéBlock / footprints / RUN)
+    if (gBattleTypeFlags & BATTLE_TYPE_SAFARI)
+    {
+        memcpy(buffer, gOrchidActionSafariBall_Gfx, 16 * TILE_SIZE_4BPP);
+        memcpy(buffer + 16 * TILE_SIZE_4BPP, gOrchidActionSafariSide_Gfx, 12 * TILE_SIZE_4BPP);
+    }
+    else
+    {
+        memcpy(buffer, gOrchidActionFight_Gfx, 16 * TILE_SIZE_4BPP);
+        memcpy(buffer + 16 * TILE_SIZE_4BPP, gOrchidActionSide_Gfx, 12 * TILE_SIZE_4BPP);
+    }
     sheet.data = buffer;
     sheet.size = sizeof(buffer);
     sheet.tag = TAG_ORCHID_ACTION_TILE;

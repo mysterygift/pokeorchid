@@ -223,6 +223,16 @@ def export_tray():
         M.draw_field(Canvas(side), 0, i * 16, M.SIDE_FIELD_W, 14, M.BTN_COL[i + 1], M.BTN_ICON[i + 1])
     save_indexed(side, os.path.join(gi, "orchid_action_side.png"), M.BTN_PAL)
 
+    # Safari: approved pictograms (mock_battle_more.safari_icons_sheet) on the same palette
+    import mock_battle_more as MB
+    fight = M.p_sheet(32, 32, M.BTN_PAL)
+    MB._safari_field(Canvas(fight), 0, 0, 32, 22, MB.SAFARI_COL[0], "ball2x", r=4)
+    save_indexed(fight, os.path.join(gi, "orchid_action_safari_ball.png"), M.BTN_PAL)
+    side = M.p_sheet(16, 48, M.BTN_PAL)
+    for i, icon in enumerate(("block", "go_near", "run")):
+        MB._safari_field(Canvas(side), 0, i * 16, M.SIDE_FIELD_W, 14, MB.SAFARI_COL[i + 1], icon)
+    save_indexed(side, os.path.join(gi, "orchid_action_safari_side.png"), M.BTN_PAL)
+
     def entries(tm, rect):
         x, y, w, h = rect
         out = []

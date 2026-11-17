@@ -1823,6 +1823,8 @@ extern const u32 gOrchidYesNoPanels_Gfx[];
 extern const u32 gOrchidActionFight_Gfx[];
 extern const u32 gOrchidActionSide_Gfx[];
 extern const u16 gOrchidActionIcons_Pal[];
+extern const u32 gOrchidActionSafariBall_Gfx[];
+extern const u32 gOrchidActionSafariSide_Gfx[];
 extern const u32 gOrchidLineupBars_Gfx[];
 extern const u32 gOrchidLineupBalls_Gfx[];
 extern const u16 gOrchidLineupBalls_Pal[];

@@ -410,18 +410,20 @@ SAFARI_SILHOUETTES = {
         ".XXX..XXX.",
         "...X..X...",
     ],
-    "go_near": [          # two footprints, stepping forward (up-right)
-        "......XX.",
-        ".....XXXX",
-        ".....XXXX",
-        "XX...XXXX",
-        "XXX...XX.",
-        "XXX......",
-        "XXX...XX.",
-        ".X....XX.",
-        "XX.......",
-        "XX.......",
+    "go_near": [          # two footprints stepping up-right, 2 px apart (8 px wide, nothing clipped)
+        "......XX",
+        ".....XXX",
+        ".....XXX",
+        "XX...XX.",
+        "XXX.....",
+        "XXX..XX.",
+        ".XX..XX.",
+        "........",
+        ".XX.....",
+        ".XX.....",
     ],
+    # BALL: the POKéMON button's Poké Ball pictogram at an integer 2x
+    "ball2x": [row.replace("X", "XX").replace(".", "..") for row in BX.SILHOUETTES["pokemon"] for _ in (0, 1)],
 }
 SAFARI_COL = ["green", "yellow", "red", "blue"]      # BALL / BLOCK / GO NEAR / RUN (same 4 ramps)
 
@@ -458,7 +460,7 @@ def safari_tray(cursor, proposed):
     if proposed:
         im = M.p_sheet(W, H, M.BTN_PAL)
         fc = Canvas(im)
-        _safari_field(fc, *M.FIGHT_FIELD, "green", "safari_ball", r=4)
+        _safari_field(fc, *M.FIGHT_FIELD, "green", "ball2x", r=4)
         icons = ["block", "go_near", "run"]
         for i in range(3):
             x, y, w, h = M.side_rect(i)
@@ -475,7 +477,7 @@ def safari_icons_sheet():
     S = 4
     th = H - (M.TRAY - 2)
     rows = [("current (FIGHT / BAG / POKéMON pictograms)", [safari_tray(c, False) for c in (0, 1)]),
-            ("proposed: Safari Ball (green), PokéBlock cube (yellow), footprints (red), RUN shoe kept (blue)",
+            ("approved: Poké Ball pictogram at 2x (green), PokéBlock cube (yellow), footprints closer together (red), RUN shoe (blue)",
              [safari_tray(c, True) for c in (0, 1)]),
             ("proposed, GO NEAR / RUN selected", [safari_tray(c, True) for c in (2, 3)])]
     sheet = Image.new("RGBA", (16 + 2 * (W + 16) + 2 * (120 * S + 16), 16 + len(rows) * (th * S + 30)), (28, 28, 36, 255))
