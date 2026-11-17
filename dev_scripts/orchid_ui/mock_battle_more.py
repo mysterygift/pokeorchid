@@ -410,17 +410,17 @@ SAFARI_SILHOUETTES = {
         ".XXX..XXX.",
         "...X..X...",
     ],
-    "go_near": [          # two footprints stepping up-right, 2 px apart (8 px wide, nothing clipped)
-        "......XX",
-        ".....XXX",
-        ".....XXX",
-        "XX...XX.",
+    "go_near": [          # two footprints, left foot on the left, right foot on the right, 2 px apart
+        "XX......",
         "XXX.....",
-        "XXX..XX.",
+        "XXX.....",
+        ".XX...XX",
+        ".....XXX",
+        ".XX..XXX",
         ".XX..XX.",
         "........",
-        ".XX.....",
-        ".XX.....",
+        ".....XX.",
+        ".....XX.",
     ],
     # BALL: the POKéMON button's Poké Ball pictogram at an integer 2x
     "ball2x": [row.replace("X", "XX").replace(".", "..") for row in BX.SILHOUETTES["pokemon"] for _ in (0, 1)],
@@ -491,6 +491,59 @@ def safari_icons_sheet():
         y += th * S + 30
     d.text((16, y - 10), "Same 32x32 / 16x16 icon-field OBJ and the same BTN_PAL ramps (no extra palette); Safari loads its own 28-tile sheet instead of the standard one.", fill=(200, 200, 210))
     return sheet
+
+
+# ================================================================== Move Info (L in the move menu), proposal
+# The info opens IN the tray: the four pills step aside for one panel, so nothing covers the
+# healthboxes. Header = the BACK tab's dark grid strip (type icon, name, category icon, PWR / ACC
+# values in the gold ramp); body = a light panel with the description at the bag's 14 px pitch.
+MI_HDR = (2, 113, 236, 15)      # x, y, w, h
+MI_BODY = (2, 129, 236, 30)
+
+
+def category_rgba(cat):
+    return K.sprite_rgba(K.G("interface", "category_icons.png"), {"physical": 0, "special": 1, "status": 2}[cat], 16)
+
+
+def moveinfo_frame(name, typ, cat, power, acc, desc, player=None):
+    player = player or M.default_player()
+    out = BX.scene("grovyle", "zigzagoon")
+    M.healthboxes(out, player, M.default_enemy())
+    bg = M.p_sheet(W, H, M.UI_PAL)
+    cv = Canvas(bg)
+    M.draw_tray(cv)
+    M.draw_back_tab(cv)
+    x, y, w, h = MI_HDR
+    rounded_box(cv, x, y, w, h, 3, M.GRID_BG, INK, M.GRID_LINE, M.GRID_BG)
+    draw_text(cv, x + 38, y - 2, name, WHITE, INK)
+    vx = x + w - 6
+    for label, val in (("ACC", acc), ("PWR", power)):
+        v = "-" if not val else str(val)
+        vw = text_width(v, "small")
+        draw_text(cv, vx - vw, y - 1, v, SELECT_LIGHT, SELECT_DARK, font="small")
+        lw = text_width(label + " ", "small")
+        draw_text(cv, vx - vw - lw, y - 1, label, PANEL_DARK, None, font="small")
+        vx -= vw + lw + 8
+    cat_x = vx - 14
+    bx, by, bw, bh = MI_BODY
+    rounded_box(cv, bx, by, bw, bh, 3, PANEL, INK, WHITE, PANEL_SHADE)
+    lines = M.wrap(desc.replace("\n", " "), bw - 14)
+    for i, ln in enumerate(lines[:2]):
+        draw_text(cv, bx + 7, by + 1 + 14 * i, ln, INK, PANEL_SHADE)
+    M.comp(out, bg)
+    out.alpha_composite(K.type_icon(typ), (x + 3, y - 1))
+    out.alpha_composite(category_rgba(cat), (cat_x, y))
+    inf = K.sprite_rgba(K.G("battle_interface", "move_info_window_l.png"), 0, 32)
+    out.alpha_composite(inf, (14 - 16, 92 - 16 - 3))
+    return out
+
+
+MOVEINFO_SAMPLES = [
+    ("Tackle", "normal", "physical", 40, 100, "Charges the foe with a full-body tackle."),
+    ("Tail Whip", "normal", "status", 0, 100, "Wags the tail to lower the foes' Defense."),
+    ("Weather Ball", "normal", "special", 50, 100, "The move's type and power change with the weather."),
+    ("Max Knuckle", "fight", "physical", 90, 0, "Fighting Dynamax attack. Raises allies' Attack."),
+]
 
 
 if __name__ == "__main__":
