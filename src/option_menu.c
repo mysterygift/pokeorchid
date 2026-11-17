@@ -740,6 +740,8 @@ static void DrawPreview(u8 taskId)
 {
     s16 *data = gTasks[taskId].data;
 
+    // stop a TEXT SPEED sample still printing (only the preview ever prints over time on this screen)
+    DeactivateAllTextPrinters();
     FillWindowPixelBuffer(WIN_PREVIEW, PIXEL_FILL(0));
     gSprites[sOptions->arrowSpriteId].invisible = TRUE;
     sOptions->samplePrinting = FALSE;

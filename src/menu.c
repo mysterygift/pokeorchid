@@ -431,7 +431,7 @@ u8 AddStartMenuWindow(u8 numActions)
 {
     if (sStartMenuWindowId == WINDOW_NONE)
         // Orchid start menu (mock_system.start_menu): tiles 20-28, Orchid field window palette
-        sStartMenuWindowId = AddWindowParameterized(0, 20, 1, 9, (numActions * 2) + 2, ORCHID_YESNO_FIELD_PAL, 0x139);
+        sStartMenuWindowId = AddWindowParameterized(0, 20, 1, 9, numActions * 2, ORCHID_YESNO_FIELD_PAL, 0x139);
     return sStartMenuWindowId;
 }
 
