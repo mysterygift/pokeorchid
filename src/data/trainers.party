@@ -16890,3 +16890,171 @@ AI: Basic Trainer
 Axew (M) @ Oran Berry
 Level: 3
 IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+
+=== TRAINER_COLD_STORAGE_GRUNT_1 ===
+Name: Grunt
+Class: Team Aqua
+Pic: Aqua Grunt M
+Gender: Male
+Music: Aqua
+Double Battle: No
+AI: Basic Trainer
+
+Zubat
+Level: 21
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+- Poison Fang
+- Astonish
+- Supersonic
+- Absorb
+
+Mightyena
+Level: 22
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+- Snarl
+- Bite
+- Howl
+- Roar
+
+=== TRAINER_COLD_STORAGE_GRUNT_2 ===
+Name: Grunt
+Class: Team Aqua
+Pic: Aqua Grunt F
+Gender: Female
+Music: Aqua
+Double Battle: No
+AI: Basic Trainer
+
+Koffing
+Level: 22
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+- Sludge
+- Assurance
+- Smokescreen
+- Clear Smog
+
+Carvanha
+Level: 23
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+- Aqua Jet
+- Bite
+- Ice Fang
+- Poison Fang
+
+=== TRAINER_COLD_STORAGE_GRUNT_3 ===
+Name: Grunt
+Class: Team Aqua
+Pic: Aqua Grunt M
+Gender: Male
+Music: Aqua
+Double Battle: No
+AI: Basic Trainer
+
+Houndour
+Level: 23
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+- Bite
+- Incinerate
+- Smog
+- Howl
+
+Grimer
+Level: 24
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+- Sludge
+- Mud Shot
+- Disable
+- Minimize
+
+=== TRAINER_COLD_STORAGE_GRUNT_4 ===
+Name: Grunt
+Class: Team Aqua
+Pic: Aqua Grunt F
+Gender: Female
+Music: Aqua
+Double Battle: No
+AI: Basic Trainer
+
+Vanillite
+Level: 25
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+- Icicle Spear
+- Avalanche
+- Icy Wind
+- Taunt
+
+Sneasel
+Level: 26
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+- Icy Wind
+- Metal Claw
+- Quick Attack
+- Taunt
+
+=== TRAINER_COLD_STORAGE_ADMIN ===
+Name: Shelly
+Class: Aqua Admin
+Pic: Aqua Admin F
+Gender: Female
+Music: Aqua
+Double Battle: No
+AI: Basic Trainer
+Multi Party: Half
+
+Golbat
+Level: 27
+IVs: 18 HP / 18 Atk / 18 Def / 18 SpA / 18 SpD / 18 Spe
+- Air Cutter
+- Poison Fang
+- Astonish
+- Supersonic
+
+Carvanha
+Level: 27
+IVs: 18 HP / 18 Atk / 18 Def / 18 SpA / 18 SpD / 18 Spe
+- Aqua Jet
+- Bite
+- Ice Fang
+- Screech
+
+Mightyena @ Oran Berry
+Level: 28
+IVs: 18 HP / 18 Atk / 18 Def / 18 SpA / 18 SpD / 18 Spe
+- Snarl
+- Bite
+- Thunder Fang
+- Scary Face
+
+=== TRAINER_COLD_STORAGE_LEADER ===
+Name: Archie
+Class: Aqua Leader
+Pic: Aqua Leader Archie
+Gender: Male
+Music: Aqua
+Double Battle: No
+AI: Basic Trainer
+Multi Party: Half
+
+Cloyster
+Level: 29
+IVs: 24 HP / 24 Atk / 24 Def / 24 SpA / 24 SpD / 24 Spe
+- Icicle Spear
+- Razor Shell
+- Aurora Beam
+- Protect
+
+Houndoom
+Level: 29
+IVs: 24 HP / 24 Atk / 24 Def / 24 SpA / 24 SpD / 24 Spe
+- Bite
+- Incinerate
+- Beat Up
+- Thunder Fang
+
+Sharpedo @ Sitrus Berry
+Level: 30
+IVs: 24 HP / 24 Atk / 24 Def / 24 SpA / 24 SpD / 24 Spe
+- Slash
+- Aqua Jet
+- Ice Fang
+- Bite

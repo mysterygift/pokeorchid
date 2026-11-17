@@ -42,3 +42,35 @@ EVs: 252 Atk / 252 SpA / 6 SpD
 - Protect
 - Solar Beam
 - Dragon Claw
+
+=== PARTNER_HARU ===
+Name: Haru
+Class: Pkmn Trainer 1
+Pic: Wally
+Gender: Male
+Music: Male
+AI: Basic Trainer
+
+Pinguin
+Level: 27
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Ice Shard
+- Wing Attack
+- Icy Wind
+- Pluck
+
+Torpesquid
+Level: 27
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Waterfall
+- Rock Smash
+- Aqua Jet
+- Bulk Up
+
+Axew (M) @ Oran Berry
+Level: 28
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Dragon Claw
+- Crunch
+- Slash
+- Dragon Dance
