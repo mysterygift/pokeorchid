@@ -1439,7 +1439,7 @@ static void DrawCancelConfirmButtons(void)
 {
     FillBgTilemapBufferRect(1, 0, 24, 16, 6, 4, 0);
     CopyToBgTilemapBufferRect_ChangePalette(1, sOrchidConfirmButton, 24, 16, 6, 2, ORCHID_PAL_BUTTON);
-    CopyToBgTilemapBufferRect_ChangePalette(1, sOrchidCancelButton, 24, 18, 6, 2, ORCHID_PAL_BUTTON);
+    CopyToBgTilemapBufferRect_ChangePalette(1, sOrchidCancelButtonLow, 24, 18, 6, 2, ORCHID_PAL_BUTTON);
     ScheduleBgCopyTilemapToVram(1);
 }
 
@@ -2701,13 +2701,19 @@ static void DisplayPartyPokemonHPCheck(struct Pokemon *mon, struct PartyMenuBox 
     }
 }
 
-// HP reads "hp/maxhp", right-aligned to the slot's HP edge with digit-wide padding (ROM style " 29/ 35").
+// HP reads "hp/maxhp", right-aligned to the slot's HP edge with digit-wide padding (ROM style " 29/ 35"),
+// in FONT_SMALL_NARROWER so 3-digit HP keeps clear of the HP tag.
+static void PrintPartyHPText(struct PartyMenuBox *menuBox, const u8 *str, const u8 *align)
+{
+    AddTextPrinterParameterized3(menuBox->windowId, FONT_SMALL_NARROWER, align[0], align[1], sOrchidTextInk, 0, str);
+}
+
 static s32 GetPartyHPTextLeft(u16 maxhp, struct PartyMenuBox *menuBox, u32 *digits)
 {
     s32 right = IsLeadPartyBox(menuBox) ? ORCHID_LEAD_HPNUM_R : ORCHID_WIDE_HPNUM_R;
 
     *digits = (maxhp >= 1000) ? 4 : 3;
-    return right - (2 * (*digits) * ORCHID_SMALL_DIGIT_W + ORCHID_SMALL_SLASH_W);
+    return right - (2 * (*digits) * ORCHID_HP_DIGIT_W + ORCHID_HP_SLASH_W);
 }
 
 static void PrintPartyHPNumber(struct PartyMenuBox *menuBox, u16 value, s32 fieldLeft, u32 digits)
@@ -2715,9 +2721,9 @@ static void PrintPartyHPNumber(struct PartyMenuBox *menuBox, u16 value, s32 fiel
     u8 align[2];
 
     ConvertIntToDecimalStringN(gStringVar1, value, STR_CONV_MODE_LEFT_ALIGN, digits);
-    align[0] = fieldLeft + (digits - StringLength(gStringVar1)) * ORCHID_SMALL_DIGIT_W;
+    align[0] = fieldLeft + (digits - StringLength(gStringVar1)) * ORCHID_HP_DIGIT_W;
     align[1] = IsLeadPartyBox(menuBox) ? ORCHID_LEAD_HPNUM_Y : ORCHID_WIDE_HPNUM_Y;
-    DisplayPartyPokemonBarDetail(menuBox->windowId, gStringVar1, 0, align);
+    PrintPartyHPText(menuBox, gStringVar1, align);
 }
 
 static void DisplayPartyPokemonHP(u16 hp, u16 maxhp, struct PartyMenuBox *menuBox)
@@ -2727,9 +2733,9 @@ static void DisplayPartyPokemonHP(u16 hp, u16 maxhp, struct PartyMenuBox *menuBo
     u8 align[2];
 
     PrintPartyHPNumber(menuBox, hp, left, digits);
-    align[0] = left + digits * ORCHID_SMALL_DIGIT_W;
+    align[0] = left + digits * ORCHID_HP_DIGIT_W;
     align[1] = IsLeadPartyBox(menuBox) ? ORCHID_LEAD_HPNUM_Y : ORCHID_WIDE_HPNUM_Y;
-    DisplayPartyPokemonBarDetail(menuBox->windowId, gText_Slash, 0, align);
+    PrintPartyHPText(menuBox, gText_Slash, align);
 }
 
 static void DisplayPartyPokemonMaxHPCheck(struct Pokemon *mon, struct PartyMenuBox *menuBox, u8 c)
@@ -2748,7 +2754,7 @@ static void DisplayPartyPokemonMaxHP(u16 maxhp, struct PartyMenuBox *menuBox)
     u32 digits;
     s32 left = GetPartyHPTextLeft(maxhp, menuBox, &digits);
 
-    PrintPartyHPNumber(menuBox, maxhp, left + digits * ORCHID_SMALL_DIGIT_W + ORCHID_SMALL_SLASH_W, digits);
+    PrintPartyHPNumber(menuBox, maxhp, left + digits * ORCHID_HP_DIGIT_W + ORCHID_HP_SLASH_W, digits);
 }
 
 static void DisplayPartyPokemonHPBarCheck(struct Pokemon *mon, struct PartyMenuBox *menuBox)
