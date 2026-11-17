@@ -77,6 +77,15 @@ static EWRAM_DATA struct {
     bool8 active;
     u8 windowId;
 } sOrchidYesNo = {0};
+// Orchid pill menu: like the YES/NO, but for any list of MenuAction texts (PC menus). Gold pill on the
+// selected row, no ▶. Window palette = the Orchid window palette layout (export_yesno.py).
+static EWRAM_DATA struct {
+    bool8 pending; // set by InitOrchidPillMenu, consumed by the next InitMenu
+    bool8 active;
+    u8 windowId;
+    u8 count;
+    const struct MenuAction *items;
+} sOrchidPillMenu = {0};
 static EWRAM_DATA u8 sHofPCTopBarWindowId = 0;
 static EWRAM_DATA bool8 sScheduledBgCopiesToVram[4] = {FALSE};
 static EWRAM_DATA u16 sTempTileDataBufferIdx = 0;
@@ -663,6 +672,8 @@ static void OrchidYesNo_OnMenuInit(u8 windowId)
 {
     sOrchidYesNo.active = sOrchidYesNo.pending && windowId == sOrchidYesNo.windowId;
     sOrchidYesNo.pending = FALSE;
+    sOrchidPillMenu.active = sOrchidPillMenu.pending && windowId == sOrchidPillMenu.windowId;
+    sOrchidPillMenu.pending = FALSE;
 }
 
 static u8 InitMenu(u8 windowId, u8 fontId, u8 left, u8 top, u8 cursorHeight, u8 numChoices, u8 initialCursorPos, bool8 muteAPress)
@@ -703,6 +714,7 @@ static u8 UNUSED InitMenuDefaultCursorHeight(u8 windowId, u8 fontId, u8 left, u8
 }
 
 static void OrchidYesNo_DrawRows(u8 selected);
+static void OrchidPillMenu_DrawRows(u8 selected);
 
 void RedrawMenuCursor(u8 oldPos, u8 newPos)
 {
@@ -711,6 +723,11 @@ void RedrawMenuCursor(u8 oldPos, u8 newPos)
     if (sOrchidYesNo.active && sMenu.windowId == sOrchidYesNo.windowId)
     {
         OrchidYesNo_DrawRows(newPos);
+        return;
+    }
+    if (sOrchidPillMenu.active && sMenu.windowId == sOrchidPillMenu.windowId)
+    {
+        OrchidPillMenu_DrawRows(newPos);
         return;
     }
 
@@ -1125,6 +1142,54 @@ void CreateOrchidYesNoMenu(const struct WindowTemplate *window, u16 frameTile, u
     sOrchidYesNo.windowId = sYesNoWindowId;
     sOrchidYesNo.pending = TRUE;
     InitMenuInUpperLeftCornerNormal(sYesNoWindowId, 2, initialCursorPos);
+}
+
+// Pill menu rows (mock_pc.menu): white rows, the selected one a gold pill 1 px inside the window with its
+// text shadow in SELECT_DARK; text 5 px from the left. Rows are 16 px.
+static void OrchidPillMenu_DrawRows(u8 selected)
+{
+    u8 windowId = sOrchidPillMenu.windowId;
+    u32 width = GetWindowAttribute(windowId, WINDOW_WIDTH) * 8;
+    u32 row;
+    u8 colors[3] = {TEXT_COLOR_TRANSPARENT, TEXT_COLOR_DARK_GRAY, TEXT_COLOR_LIGHT_GRAY};
+
+    for (row = 0; row < sOrchidPillMenu.count; row++)
+    {
+        FillWindowPixelRect(windowId, PIXEL_FILL(TEXT_COLOR_WHITE), 0, row * 16, width, 16);
+        colors[2] = TEXT_COLOR_LIGHT_GRAY;
+        if (row == selected)
+        {
+            OrchidDrawRoundedBox(windowId, 1, row * 16 + 1, width - 2, 14, 4, ORCHID_PILL_FACE, TEXT_COLOR_DARK_GRAY, ORCHID_PILL_LIGHT, ORCHID_PILL_SHADE);
+            colors[2] = ORCHID_PILL_SHADE;
+        }
+        AddTextPrinterParameterized4(windowId, FONT_NORMAL, 5, row * 16, 0, 0, colors, TEXT_SKIP_DRAW, sOrchidPillMenu.items[row].text);
+    }
+    CopyWindowToVram(windowId, COPYWIN_GFX);
+}
+
+// A menu in an Orchid window (frame already drawn by the caller): the rows are drawn by the cursor routine,
+// so there is no need to print them first. Input works as for any InitMenu menu (Menu_ProcessInput ...).
+u8 InitOrchidPillMenu(u8 windowId, u8 numItems, const struct MenuAction *items, u8 initialCursorPos)
+{
+    sOrchidPillMenu.windowId = windowId;
+    sOrchidPillMenu.count = numItems;
+    sOrchidPillMenu.items = items;
+    sOrchidPillMenu.pending = TRUE;
+    return InitMenuInUpperLeftCornerNormal(windowId, numItems, initialCursorPos);
+}
+
+// Pixel width of the widest text, in tiles, the way the pill menu mockups size their windows.
+u32 GetOrchidPillMenuWidth(const struct MenuAction *items, u32 numItems)
+{
+    u32 i, w, maxWidth = 0;
+
+    for (i = 0; i < numItems; i++)
+    {
+        w = GetStringWidth(FONT_NORMAL, items[i].text, 0);
+        if (w > maxWidth)
+            maxWidth = w;
+    }
+    return (maxWidth + 7) / 8 + 1;
 }
 
 // Field version: loads the Orchid frame + window palette into the field's free slots (0x21D / BG pal 13).

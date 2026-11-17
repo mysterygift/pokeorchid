@@ -1907,6 +1907,15 @@ extern const u16 gOrchidSummaryCategory_Pal[];
 extern const u32 gOrchidSummaryShinyStar_Gfx[];
 extern const u16 gOrchidSummaryShinyStar_Pal[];
 
+// Orchid UI: PC storage
+extern const u8 gOrchidPcBg1_Gfx[];
+extern const u8 gOrchidPcBox_Gfx[];
+extern const u8 gOrchidPcSwatch_Gfx[];
+extern const u16 gOrchidPc_Pal[];
+extern const u16 gOrchidPcBoxColours_Pal[];
+extern const u8 gOrchidPcObj_Gfx[];
+extern const u16 gOrchidPcObj_Pal[];
+
 // item menu icons graphics
 extern const u32 gBagMaleTiles[];
 extern const u32 gBagFemaleTiles[];
