@@ -1928,6 +1928,40 @@ extern const u8 gOrchidShopCoin_Gfx[];
 extern const u16 gOrchidShopObj_Pal[];
 extern const u8 gOrchidShopTmDiscs_Gfx[];
 
+// Orchid UI: options
+extern const u32 gOrchidOptionsBg_Gfx[];
+extern const u32 gOrchidOptionsBg_Tilemap[];
+extern const u16 gOrchidOptionsBg_Pal[];
+extern const u8 gOrchidOptionsDone_Gfx[];
+extern const u8 gOrchidOptionsKeypad_Gfx[];
+extern const u8 gOrchidOptionsChevron_Gfx[];
+extern const u16 gOrchidOptionsChevron_Pal[];
+extern const u8 gOrchidFrame1_Gfx[];
+extern const u8 gOrchidFrame2_Gfx[];
+extern const u8 gOrchidFrame3_Gfx[];
+extern const u8 gOrchidFrame4_Gfx[];
+extern const u8 gOrchidFrame5_Gfx[];
+extern const u8 gOrchidFrame6_Gfx[];
+extern const u8 gOrchidFrame7_Gfx[];
+extern const u8 gOrchidFrame8_Gfx[];
+extern const u16 gOrchidFrame1_Pal[];
+extern const u16 gOrchidFrame2_Pal[];
+extern const u16 gOrchidFrame3_Pal[];
+extern const u16 gOrchidFrame4_Pal[];
+extern const u16 gOrchidFrame5_Pal[];
+extern const u16 gOrchidFrame6_Pal[];
+extern const u16 gOrchidFrame7_Pal[];
+extern const u16 gOrchidFrame8_Pal[];
+
+// Orchid UI: system
+extern const u8 gOrchidStartMenuIcons_Gfx[];
+extern const u16 gOrchidStartMenuIcons_Pal[];
+extern const u16 gOrchidStartMenuIconsMuted_Pal[];
+extern const u8 gOrchidSaveBall_Gfx[];
+extern const u8 gOrchidSaveSparkles_Gfx[];
+extern const u8 gOrchidSaveCard_Gfx[];
+extern const u8 gOrchidStartChips_Gfx[];
+
 // item menu icons graphics
 extern const u32 gBagMaleTiles[];
 extern const u32 gBagFemaleTiles[];

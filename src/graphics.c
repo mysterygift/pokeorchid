@@ -1846,6 +1846,40 @@ const u8 gOrchidShopCoin_Gfx[] = INCGFX_U8("graphics/shop/orchid/coin.png", ".4b
 const u16 gOrchidShopObj_Pal[] = INCGFX_U16("graphics/shop/orchid/obj.pal", ".gbapal");
 const u8 gOrchidShopTmDiscs_Gfx[] = INCGFX_U8("graphics/shop/orchid/tm_discs.png", ".4bpp");
 
+// Orchid UI: options (dev_scripts/orchid_ui/export_options.py)
+const u32 gOrchidOptionsBg_Gfx[] = INCGFX_U32("graphics/option_menu/orchid/bg_tiles.png", ".4bpp.smol");
+const u32 gOrchidOptionsBg_Tilemap[] = INCGFX_U32("graphics/option_menu/orchid/bg.bin", ".smolTM");
+const u16 gOrchidOptionsBg_Pal[] = INCGFX_U16("graphics/option_menu/orchid/bg.pal", ".gbapal");
+const u8 gOrchidOptionsDone_Gfx[] = INCGFX_U8("graphics/option_menu/orchid/done.png", ".4bpp");
+const u8 gOrchidOptionsKeypad_Gfx[] = INCGFX_U8("graphics/option_menu/orchid/keypad.png", ".4bpp");
+const u8 gOrchidOptionsChevron_Gfx[] = INCGFX_U8("graphics/option_menu/orchid/chevron.png", ".4bpp");
+const u16 gOrchidOptionsChevron_Pal[] = INCGFX_U16("graphics/option_menu/orchid/chevron.pal", ".gbapal");
+const u8 gOrchidFrame1_Gfx[] = INCGFX_U8("graphics/text_window/orchid_frame_1.png", ".4bpp");
+const u8 gOrchidFrame2_Gfx[] = INCGFX_U8("graphics/text_window/orchid_frame_2.png", ".4bpp");
+const u8 gOrchidFrame3_Gfx[] = INCGFX_U8("graphics/text_window/orchid_frame_3.png", ".4bpp");
+const u8 gOrchidFrame4_Gfx[] = INCGFX_U8("graphics/text_window/orchid_frame_4.png", ".4bpp");
+const u8 gOrchidFrame5_Gfx[] = INCGFX_U8("graphics/text_window/orchid_frame_5.png", ".4bpp");
+const u8 gOrchidFrame6_Gfx[] = INCGFX_U8("graphics/text_window/orchid_frame_6.png", ".4bpp");
+const u8 gOrchidFrame7_Gfx[] = INCGFX_U8("graphics/text_window/orchid_frame_7.png", ".4bpp");
+const u8 gOrchidFrame8_Gfx[] = INCGFX_U8("graphics/text_window/orchid_frame_8.png", ".4bpp");
+const u16 gOrchidFrame1_Pal[] = INCGFX_U16("graphics/text_window/orchid_frame_1.png", ".gbapal");
+const u16 gOrchidFrame2_Pal[] = INCGFX_U16("graphics/text_window/orchid_frame_2.png", ".gbapal");
+const u16 gOrchidFrame3_Pal[] = INCGFX_U16("graphics/text_window/orchid_frame_3.png", ".gbapal");
+const u16 gOrchidFrame4_Pal[] = INCGFX_U16("graphics/text_window/orchid_frame_4.png", ".gbapal");
+const u16 gOrchidFrame5_Pal[] = INCGFX_U16("graphics/text_window/orchid_frame_5.png", ".gbapal");
+const u16 gOrchidFrame6_Pal[] = INCGFX_U16("graphics/text_window/orchid_frame_6.png", ".gbapal");
+const u16 gOrchidFrame7_Pal[] = INCGFX_U16("graphics/text_window/orchid_frame_7.png", ".gbapal");
+const u16 gOrchidFrame8_Pal[] = INCGFX_U16("graphics/text_window/orchid_frame_8.png", ".gbapal");
+
+// Orchid UI: system (dev_scripts/orchid_ui/export_system.py; start menu icons from menu_icons.py)
+const u8 gOrchidStartMenuIcons_Gfx[] = INCGFX_U8("graphics/start_menu/menu_icons.png", ".4bpp");
+const u16 gOrchidStartMenuIcons_Pal[] = INCGFX_U16("graphics/start_menu/menu_icons.png", ".gbapal");
+const u16 gOrchidStartMenuIconsMuted_Pal[] = INCGFX_U16("graphics/start_menu/menu_icons_muted.pal", ".gbapal");
+const u8 gOrchidSaveBall_Gfx[] = INCGFX_U8("graphics/start_menu/saving_ball.png", ".4bpp");
+const u8 gOrchidSaveSparkles_Gfx[] = INCGFX_U8("graphics/start_menu/sparkles.png", ".4bpp");
+const u8 gOrchidSaveCard_Gfx[] = INCGFX_U8("graphics/start_menu/save_card.png", ".4bpp");
+const u8 gOrchidStartChips_Gfx[] = INCGFX_U8("graphics/start_menu/chips.png", ".4bpp");
+
 const u32 gBattlePyramidBag_Gfx[]          = INCGFX_U32("graphics/bag/bag_pyramid.png", ".4bpp.smol");
 const u16 gBattlePyramidBag_Pal[]          = INCGFX_U16("graphics/bag/bag_pyramid.pal", ".gbapal"); // female palette is first and male is second.
 const u32 gBattlePyramidBagTilemap[]       = INCGFX_U32("graphics/bag/menu_pyramid.bin", ".smolTM");
