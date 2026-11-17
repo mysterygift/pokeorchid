@@ -306,7 +306,7 @@ LINEUP_FRAMES = ["ok", "empty", "fnt", "psn", "par", "slp", "frz", "brn"]
 
 def export_lineup():
     gi = P("graphics", "battle_interface")
-    bars = M.p_sheet(96, 32, BX.HB_PAL)
+    bars = M.p_sheet(96, 48, BX.HB_PAL)    # row 2, first 32x16 block: socket-free filler (exit drift)
     # player bar: left edge at LU_POS x; opponent bar: drawn from x-6, the sprite starts at -4
     big = M.p_sheet(W + 16, H, BX.HB_PAL)
     px, py = M.LU_POS["plr"]
@@ -316,6 +316,9 @@ def export_lineup():
     ox, oy = M.LU_POS["opp"]
     BX.lineup_bar(Canvas(big), ox + 8, oy, "opp")          # +8: keep the off-screen part on the canvas
     bars.paste(big.crop((ox + 4, oy, ox + 4 + 96, oy + 16)), (0, 16))
+    long = M.p_sheet(200, 16, BX.HB_PAL)
+    BX.mask_box(Canvas(long), 0, 0, BX.chamfer_mask(200, 16), BX.FRAME, INK, BX.BRASS, BX.FRAME_DARK)
+    bars.paste(long.crop((80, 0, 112, 16)), (0, 32))
     save_indexed(bars, os.path.join(gi, "orchid_lineup_bars.png"), BX.HB_PAL)
 
     balls = M.p_sheet(16, 16 * len(LINEUP_FRAMES), BX.LINEUP_PAL)

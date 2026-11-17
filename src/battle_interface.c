@@ -399,9 +399,37 @@ static const struct SubspriteTable sStatusSummaryBar_SubspriteTables[] =
     {ARRAY_COUNT(sStatusSummaryBar_Subsprites_Opponent), sStatusSummaryBar_Subsprites_Opponent},
 };
 
+// Exit: the bar drifts towards the screen centre, so two socket-free filler segments (tile 48)
+// extend its off-screen end and the open end never shows while it fades.
+#define LINEUP_FILLER(xPos) \
+{ \
+    .x = (xPos), \
+    .y = 0, \
+    .shape = SPRITE_SHAPE(32x16), \
+    .size = SPRITE_SIZE(32x16), \
+    .tileOffset = 48, \
+    .priority = 1 \
+}
+
+static const struct Subsprite sStatusSummaryBar_Subsprites_PlayerExit[] =
+{
+    LINEUP_SUBSPRITE(0, 0), LINEUP_SUBSPRITE(1, 0), LINEUP_SUBSPRITE(2, 0), LINEUP_FILLER(96), LINEUP_FILLER(128),
+};
+
+static const struct Subsprite sStatusSummaryBar_Subsprites_OpponentExit[] =
+{
+    LINEUP_SUBSPRITE(0, 1), LINEUP_SUBSPRITE(1, 1), LINEUP_SUBSPRITE(2, 1), LINEUP_FILLER(-32), LINEUP_FILLER(-64),
+};
+
+static const struct SubspriteTable sStatusSummaryBar_SubspriteTables_Exit[] =
+{
+    {ARRAY_COUNT(sStatusSummaryBar_Subsprites_PlayerExit), sStatusSummaryBar_Subsprites_PlayerExit},
+    {ARRAY_COUNT(sStatusSummaryBar_Subsprites_OpponentExit), sStatusSummaryBar_Subsprites_OpponentExit},
+};
+
 static const struct SpriteSheet sStatusSummaryBarSpriteSheet =
 {
-    gOrchidLineupBars_Gfx, 48 * TILE_SIZE_4BPP, TAG_STATUS_SUMMARY_BAR_TILE
+    gOrchidLineupBars_Gfx, 56 * TILE_SIZE_4BPP, TAG_STATUS_SUMMARY_BAR_TILE
 };
 
 static const struct SpritePalette sStatusSummaryBarSpritePal =
@@ -2029,6 +2057,8 @@ void Task_HidePartyStatusSummary(u8 taskId)
         gSprites[summaryBarSpriteId].data[0] /= 2;
         gSprites[summaryBarSpriteId].data[1] = 0;
         gSprites[summaryBarSpriteId].callback = SpriteCB_StatusSummaryBar_Exit;
+        SetSubspriteTables(&gSprites[summaryBarSpriteId],
+                           &sStatusSummaryBar_SubspriteTables_Exit[gSprites[summaryBarSpriteId].subspriteTables == &sStatusSummaryBar_SubspriteTables[1]]);
         gTasks[taskId].func = Task_HidePartyStatusSummary_BattleStart_1;
     }
     else
