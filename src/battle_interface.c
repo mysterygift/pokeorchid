@@ -1804,8 +1804,11 @@ u8 CreatePartyStatusSummarySprites(enum BattlerId battler, struct HpAndStatus *p
         bar_data0 = 5;
     }
 
-    LoadSpriteSheet(&sStatusSummaryBarSpriteSheet);
-    LoadSpriteSheet(&sStatusSummaryBallsSpriteSheet);
+    // Orchid UI: the sheets are shared by every lineup on screen (multi battles show four); load once
+    if (GetSpriteTileStartByTag(TAG_STATUS_SUMMARY_BAR_TILE) == 0xFFFF)
+        LoadSpriteSheet(&sStatusSummaryBarSpriteSheet);
+    if (GetSpriteTileStartByTag(TAG_STATUS_SUMMARY_BALLS_TILE) == 0xFFFF)
+        LoadSpriteSheet(&sStatusSummaryBallsSpriteSheet);
     LoadSpritePalette(&sStatusSummaryBarSpritePal);
     LoadSpritePalette(&sStatusSummaryBallsSpritePal);
 
