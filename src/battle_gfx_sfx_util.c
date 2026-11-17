@@ -733,17 +733,23 @@ bool8 BattleLoadAllHealthBoxesGfx(u8 state)
         return FALSE;
     }
 
-    // Orchid UI: singles-layout battlers get the Orchid healthbox (uncompressed, text drawn at runtime)
+    // Orchid UI: every battler gets an Orchid healthbox (singles, compact doubles or the Safari
+    // ball counter); the art is uncompressed because the text is drawn into it at runtime
+    if (!B_HP_PERCENTAGE_DISPLAY)
     {
+        static const u8 sDoublesBoxPositions[] = {B_POSITION_PLAYER_LEFT, B_POSITION_PLAYER_RIGHT, B_POSITION_OPPONENT_LEFT, B_POSITION_OPPONENT_RIGHT};
+        static const u16 sBoxTags[MAX_BATTLERS_COUNT] =
+        {
+            [B_POSITION_PLAYER_LEFT] = TAG_HEALTHBOX_PLAYER1_TILE, [B_POSITION_OPPONENT_LEFT] = TAG_HEALTHBOX_OPPONENT1_TILE,
+            [B_POSITION_PLAYER_RIGHT] = TAG_HEALTHBOX_PLAYER2_TILE, [B_POSITION_OPPONENT_RIGHT] = TAG_HEALTHBOX_OPPONENT2_TILE,
+        };
         enum BattlerId orchidBattler = MAX_BATTLERS_COUNT;
         bool32 orchidBar = FALSE;
 
         if (IsDoubleBattle())
         {
-            if (state == 2)
-                orchidBattler = GetBattlerAtPosition(B_POSITION_PLAYER_LEFT);
-            else if (state == 4)
-                orchidBattler = GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT);
+            if (state >= 2 && state <= 5)
+                orchidBattler = GetBattlerAtPosition(sDoublesBoxPositions[state - 2]);
             else if (state >= 6 && state <= 9)
                 orchidBattler = state - 6, orchidBar = TRUE;
         }
@@ -757,22 +763,23 @@ bool8 BattleLoadAllHealthBoxesGfx(u8 state)
                 orchidBattler = state - 4, orchidBar = TRUE;
         }
 
-        if (orchidBattler < gBattlersCount && IsOrchidHealthboxBattler(orchidBattler))
+        if (orchidBattler < MAX_BATTLERS_COUNT && GetOrchidHealthboxGfx(orchidBattler, orchidBar) != NULL)
         {
             struct SpriteSheet sheet;
-            bool32 isPlayer = IsOnPlayerSide(orchidBattler);
 
+            sheet.data = GetOrchidHealthboxGfx(orchidBattler, orchidBar);
             if (orchidBar)
             {
-                sheet.data = isPlayer ? gOrchidHealthbarPlayer_Gfx : gOrchidHealthbarOpponent_Gfx;
                 sheet.size = 16 * TILE_SIZE_4BPP;
                 sheet.tag = sSpriteSheets_HealthBar[GetBattlerPosition(orchidBattler)].tag;
             }
             else
             {
-                sheet.data = isPlayer ? gOrchidHealthboxPlayer_Gfx : gOrchidHealthboxOpponent_Gfx;
                 sheet.size = 64 * TILE_SIZE_4BPP;
-                sheet.tag = isPlayer ? TAG_HEALTHBOX_PLAYER1_TILE : TAG_HEALTHBOX_OPPONENT1_TILE;
+                if ((gBattleTypeFlags & BATTLE_TYPE_SAFARI) && IsOnPlayerSide(orchidBattler))
+                    sheet.tag = TAG_HEALTHBOX_SAFARI_TILE;
+                else
+                    sheet.tag = sBoxTags[GetBattlerPosition(orchidBattler)];
             }
             LoadSpriteSheet(&sheet);
             return FALSE;

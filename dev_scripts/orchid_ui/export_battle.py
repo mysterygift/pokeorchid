@@ -21,7 +21,7 @@ import kit_ext as K
 import battle_ext as BX
 import mock_battle as M
 import windows as Wn
-from gamefont import text_width, _font
+from gamefont import text_width, _font, draw_text
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 P = lambda *p: os.path.join(ROOT, *p)
@@ -350,6 +350,95 @@ def lineup_header_lines(lu):
     return L
 
 
+# ------------------------------------------------------------------ doubles / multi + Safari boxes (phase 2)
+import mock_battle_more as MB
+
+
+def _no_text_more(fn):
+    saved = (MB.draw_text,)
+    MB.draw_text = lambda *a, **k: 0
+    try:
+        return _no_text(fn)
+    finally:
+        (MB.draw_text,) = saved
+
+
+def export_more_boxes():
+    """Compact doubles boxes (player / opponent) and the Safari player box."""
+    info = {}
+    for side, mon in (("plr", M.default_player()), ("opp", M.default_enemy())):
+        sheet = M.p_sheet(W + 16, H, BX.HB_PAL)
+        an = _no_text_more(lambda: MB.hb_compact(Canvas(sheet), mon, side, 0, 0))
+        name = "player" if side == "plr" else "opponent"
+        save_indexed(sheet.crop((0, 0, 128, 32)), P("graphics", "battle_interface", "orchid_healthbox_doubles_%s.png" % name), BX.HB_PAL)
+        bars = M.p_sheet(W, H, M.HBAR_PAL)
+        M.draw_bars(Canvas(bars), mon, an, hp=0, exp=0.0)
+        bx, by = 24, 18
+        save_indexed(bars.crop((bx, by, bx + 128, by + 8)), P("graphics", "battle_interface", "orchid_healthbar_doubles_%s.png" % name), M.HBAR_PAL)
+        px0, py0 = an["status"][0] + 18, MB.C_BODY_Y + 1
+        d = dict(status=an["status"], pill=(px0, py0, MB.CW - 5 - px0, 10), name=(px0 + 4, py0 - 2),
+                 tab=(MB.CW - MB.C_TAB_W, MB.C_TAB_W, MB.C_TAB_H), right=MB.CW - 5,
+                 strip=(bx, by), bar=(an["bar"][0] - bx, an["bar"][1] - by), exp=None)
+        if an["exp"]:
+            ex0, ex1, ey, _ = an["exp"]
+            d["exp"] = (ex0 - bx, ey - by, ex1 - ex0 + 1)
+        info["d" + side] = d
+
+    # Safari: player box B frame, SAFARI BALLS baked into the pill, no HP / EXP
+    x, y, w, h = BX.hb_rect("B", "plr")
+    sheet = M.p_sheet(W, H, BX.HB_PAL)
+    real_rect = BX.hb_rect
+    BX.hb_rect = lambda v, side: real_rect(v, "plr")
+    try:
+        _no_text(lambda: BX.hb_B(Canvas(sheet), M.default_player(), "safari"))
+    finally:
+        BX.hb_rect = real_rect
+    px0, py0 = x + 7 + 19, y + 8 + 2
+    draw_text(Canvas(sheet), px0 + 5, py0 - 1, "SAFARI BALLS", INK, PANEL_SHADE, font="small")
+    save_indexed(sheet.crop((x, y, x + 128, y + 32)), P("graphics", "battle_interface", "orchid_healthbox_safari.png"), BX.HB_PAL)
+    return info
+
+
+def more_header_lines(info):
+    L = ["// ---- per-layout healthbox geometry (box px; bar strip px for BAR / EXP)",
+         "struct OrchidBoxLayout",
+         "{",
+         "    u8 statusX, statusY;",
+         "    u8 pillX, pillY, pillW, pillH, nameDX; s8 nameDY;",
+         "    u8 tabX, tabW, tabH, textRight;",
+         "    u8 stripDX, stripDY, barX, barY;",
+         "    u8 expX, expY, expW;",
+         "};",
+         "enum { ORCHID_LAYOUT_PLR, ORCHID_LAYOUT_OPP, ORCHID_LAYOUT_DPLR, ORCHID_LAYOUT_DOPP, ORCHID_LAYOUT_SAFARI, ORCHID_LAYOUT_COUNT };",
+         "UNUSED static const struct OrchidBoxLayout sOrchidBoxLayouts[ORCHID_LAYOUT_COUNT] =",
+         "{"]
+    def row(name, st, pill, ndx, ndy, tab, right, strip, bar, exp):
+        e = exp or (0, 0, 0)
+        L.append("    [%s] = {%d, %d,  %d, %d, %d, %d, %d, %d,  %d, %d, %d, %d,  %d, %d, %d, %d,  %d, %d, %d}," %
+                 ((name,) + tuple(st) + tuple(pill) + (ndx, ndy) + tuple(tab) + (right,) + tuple(strip) + tuple(bar) + tuple(e)))
+    for side, name in (("plr", "ORCHID_LAYOUT_PLR"), ("opp", "ORCHID_LAYOUT_OPP")):
+        d = info["s" + side]
+        row(name, d["status"], d["pill"], 5, -1, (d["tab"][0], d["tab"][2], d["tab"][3]), 123, (24, 23), d["bar"], d.get("exp"))
+    for side, name in (("plr", "ORCHID_LAYOUT_DPLR"), ("opp", "ORCHID_LAYOUT_DOPP")):
+        d = info["d" + side]
+        row(name, d["status"], d["pill"], d["name"][0] - d["pill"][0], d["name"][1] - d["pill"][1], d["tab"], d["right"], d["strip"], d["bar"], d["exp"])
+    d = info["splr"]
+    row("ORCHID_LAYOUT_SAFARI", d["status"], d["pill"], 5, -1, (d["tab"][0], d["tab"][2], d["tab"][3]), 123, (24, 23), d["bar"], None)
+    L.append("};")
+    L.append("// doubles box top-left per B_POSITION (player left / opp left / player right / opp right)")
+    pos = MB.C_POS
+    L.append("UNUSED static const s16 sOrchidDoublesBoxPos[4][2] = {{%d, %d}, {%d, %d}, {%d, %d}, {%d, %d}};" %
+             (pos["plr"][0] + pos["opp"][0] + pos["plr"][1] + pos["opp"][1]))
+    L.append("// Safari Ball stamp before the ball count (mock_battle_more.SAFARI_BALL), healthbox palette")
+    cmap = {"I": INK, "G": BX.BRASS, "g": BX.BRASS_DARK, "W": WHITE, ".": 0}
+    L.append("UNUSED static const u8 sOrchidSafariBall[7][7] = {")
+    for r in MB.SAFARI_BALL:
+        L.append("    {" + ", ".join(str(cmap[c]) for c in r) + "},")
+    L.append("};")
+    L.append("")
+    return L
+
+
 def write_header(info, tray, lineup):
     L = ["// GENERATED by dev_scripts/orchid_ui/export_battle.py — do not edit by hand.",
          "// Orchid battle UI layout (healthbox direction B; see dev_scripts/orchid_ui/mock_battle.py).",
@@ -401,6 +490,7 @@ def write_header(info, tray, lineup):
     L.append("")
     L += tray_header_lines(tray)
     L += lineup_header_lines(lineup)
+    L += more_header_lines(dict(info, **{"s" + k: v for k, v in info.items() if k in ("plr", "opp")}))
     L.append("#endif // GUARD_DATA_BATTLE_ORCHID_UI_H")
     with open(P("src", "data", "battle_orchid_ui.h"), "w") as f:
         f.write("\n".join(L) + "\n")
@@ -408,8 +498,9 @@ def write_header(info, tray, lineup):
 
 if __name__ == "__main__":
     info = export_healthboxes()
+    info.update(export_more_boxes())
     tray = export_tray()
     lineup = export_lineup()
     write_header(info, tray, lineup)
     print("tray tiles:", tray["n_tiles"])
-    print("healthboxes:", {k: (v["x"], v["y"]) for k, v in info.items()})
+    print("healthboxes:", sorted(info))

@@ -177,4 +177,35 @@ UNUSED static const u16 sOrchidFrameTiles[9] = {0x05B, 0x05C, 0x05D, 0x05E, 0x00
 #define ORCHID_BALL_FRZ    6
 #define ORCHID_BALL_BRN    7
 
+// ---- per-layout healthbox geometry (box px; bar strip px for BAR / EXP)
+struct OrchidBoxLayout
+{
+    u8 statusX, statusY;
+    u8 pillX, pillY, pillW, pillH, nameDX; s8 nameDY;
+    u8 tabX, tabW, tabH, textRight;
+    u8 stripDX, stripDY, barX, barY;
+    u8 expX, expY, expW;
+};
+enum { ORCHID_LAYOUT_PLR, ORCHID_LAYOUT_OPP, ORCHID_LAYOUT_DPLR, ORCHID_LAYOUT_DOPP, ORCHID_LAYOUT_SAFARI, ORCHID_LAYOUT_COUNT };
+UNUSED static const struct OrchidBoxLayout sOrchidBoxLayouts[ORCHID_LAYOUT_COUNT] =
+{
+    [ORCHID_LAYOUT_PLR] = {7, 12,  26, 10, 97, 13, 5, -1,  56, 72, 12, 123,  24, 23, 18, 1,  2, 6, 97},
+    [ORCHID_LAYOUT_OPP] = {7, 11,  26, 10, 97, 13, 5, -1,  56, 72, 12, 123,  24, 23, 18, 1,  0, 0, 0},
+    [ORCHID_LAYOUT_DPLR] = {6, 9,  24, 8, 87, 10, 4, -2,  44, 72, 11, 111,  24, 18, 16, 1,  0, 6, 87},
+    [ORCHID_LAYOUT_DOPP] = {6, 8,  24, 8, 87, 10, 4, -2,  44, 72, 11, 111,  24, 18, 16, 1,  0, 0, 0},
+    [ORCHID_LAYOUT_SAFARI] = {7, 12,  26, 10, 97, 13, 5, -1,  56, 72, 12, 123,  24, 23, 18, 1,  0, 0, 0},
+};
+// doubles box top-left per B_POSITION (player left / opp left / player right / opp right)
+UNUSED static const s16 sOrchidDoublesBoxPos[4][2] = {{112, 57}, {12, 3}, {124, 84}, {0, 28}};
+// Safari Ball stamp before the ball count (mock_battle_more.SAFARI_BALL), healthbox palette
+UNUSED static const u8 sOrchidSafariBall[7][7] = {
+    {0, 0, 1, 1, 1, 0, 0},
+    {0, 1, 12, 12, 12, 1, 0},
+    {1, 12, 11, 12, 11, 12, 1},
+    {1, 1, 1, 3, 1, 1, 1},
+    {1, 3, 3, 3, 3, 3, 1},
+    {0, 1, 3, 3, 3, 1, 0},
+    {0, 0, 1, 1, 1, 0, 0},
+};
+
 #endif // GUARD_DATA_BATTLE_ORCHID_UI_H

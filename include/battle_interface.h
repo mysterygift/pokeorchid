@@ -155,6 +155,8 @@ void CreateItemPopUp(enum BattlerId battlerId);
 void FreeAbilityPopUpGfx(void);
 bool32 IsOrchidHealthboxBattler(enum BattlerId battler);
 bool32 IsOrchidHealthbox(u8 healthboxSpriteId);
+bool32 IsOrchidStyleHealthbox(u8 healthboxSpriteId);
+const u32 *GetOrchidHealthboxGfx(enum BattlerId battler, bool32 bar);
 void LoadOrchidHealthboxGfx(void);
 
 #endif // GUARD_BATTLE_INTERFACE_H
