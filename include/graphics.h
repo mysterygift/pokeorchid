@@ -1071,6 +1071,14 @@ extern const u16 gItemIconPalette_Tatsugirinite[];
 extern const u32 gItemIcon_Glimmoranite[];
 extern const u16 gItemIconPalette_Glimmoranite[];
 
+// Tosa cafe items (Pokemon Orchid)
+extern const u32 gItemIcon_Kopi[];
+extern const u16 gItemIconPalette_Kopi[];
+extern const u32 gItemIcon_SteamedBao[];
+extern const u16 gItemIconPalette_SteamedBao[];
+extern const u32 gItemIcon_KayaToast[];
+extern const u16 gItemIconPalette_KayaToast[];
+
 // Gems
 extern const u32 gItemIcon_TypeGem[];
 extern const u16 gItemIconPalette_NormalGem[];

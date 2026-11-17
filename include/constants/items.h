@@ -1052,6 +1052,11 @@ enum __attribute__((packed)) Item
     ITEM_TATSUGIRINITE = 872,
     ITEM_GLIMMORANITE = 873,
 
+    // Tosa cafe items (Pokemon Orchid)
+    ITEM_KOPI = 874,
+    ITEM_STEAMED_BAO = 875,
+    ITEM_KAYA_TOAST = 876,
+
     ITEMS_COUNT,
     ITEM_FIELD_ARROW = ITEMS_COUNT,
 };

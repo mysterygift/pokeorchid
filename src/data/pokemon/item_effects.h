@@ -87,6 +87,15 @@ const u8 gItemEffect_EnergyPowder[10] = {
     [9] = -10, // Friendship change, high
 };
 
+const u8 gItemEffect_KayaToast[10] = {
+    [4] = ITEM4_HEAL_HP,
+    [5] = ITEM5_FRIENDSHIP_ALL,
+    [6] = 60, // Amount of HP to recover
+    [7] = 3, // Friendship change, low
+    [8] = 2, // Friendship change, mid
+    [9] = 1, // Friendship change, high
+};
+
 const u8 gItemEffect_EnergyRoot[10] = {
     [4] = ITEM4_HEAL_HP,
     [5] = ITEM5_FRIENDSHIP_ALL,
