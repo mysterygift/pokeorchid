@@ -1897,6 +1897,14 @@ extern const u8 gSatchelHMIcon_Gfx[];
 extern const u8 gTextWindowFrameOrchid_Gfx[];
 extern const u16 gTextWindowFrameOrchid_Pal[];
 
+// Orchid UI: summary
+extern const u32 gOrchidSummaryTiles_Gfx[];
+extern const u8 gOrchidSummaryBars_Gfx[];
+extern const u16 gOrchidSummaryMale_Pal[];
+extern const u16 gOrchidSummaryFemale_Pal[];
+extern const u32 gOrchidSummaryCategory_Gfx[];
+extern const u16 gOrchidSummaryCategory_Pal[];
+
 // item menu icons graphics
 extern const u32 gBagMaleTiles[];
 extern const u32 gBagFemaleTiles[];
