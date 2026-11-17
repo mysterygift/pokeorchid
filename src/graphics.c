@@ -1825,6 +1825,15 @@ const u16 gOrchidSummaryCategory_Pal[] = INCGFX_U16("graphics/summary_screen/orc
 const u32 gOrchidSummaryShinyStar_Gfx[] = INCGFX_U32("graphics/summary_screen/orchid/shiny_star.png", ".4bpp");
 const u16 gOrchidSummaryShinyStar_Pal[] = INCGFX_U16("graphics/summary_screen/orchid/shiny_star.png", ".gbapal");
 
+// Orchid UI: PC storage (dev_scripts/orchid_ui/export_pc.py)
+const u8 gOrchidPcBg1_Gfx[] = INCGFX_U8("graphics/pokemon_storage/orchid/bg1_tiles.png", ".4bpp");
+const u8 gOrchidPcBox_Gfx[] = INCGFX_U8("graphics/pokemon_storage/orchid/box_tiles.png", ".4bpp");
+const u8 gOrchidPcSwatch_Gfx[] = INCGFX_U8("graphics/pokemon_storage/orchid/swatch_tiles.png", ".4bpp");
+const u16 gOrchidPc_Pal[] = INCGFX_U16("graphics/pokemon_storage/orchid/bg.pal", ".gbapal");
+const u16 gOrchidPcBoxColours_Pal[] = INCGFX_U16("graphics/pokemon_storage/orchid/box_colours.pal", ".gbapal");
+const u8 gOrchidPcObj_Gfx[] = INCGFX_U8("graphics/pokemon_storage/orchid/ui_obj.png", ".4bpp");
+const u16 gOrchidPcObj_Pal[] = INCGFX_U16("graphics/pokemon_storage/orchid/ui_obj.png", ".gbapal");
+
 const u32 gBattlePyramidBag_Gfx[]          = INCGFX_U32("graphics/bag/bag_pyramid.png", ".4bpp.smol");
 const u16 gBattlePyramidBag_Pal[]          = INCGFX_U16("graphics/bag/bag_pyramid.pal", ".gbapal"); // female palette is first and male is second.
 const u32 gBattlePyramidBagTilemap[]       = INCGFX_U32("graphics/bag/menu_pyramid.bin", ".smolTM");
