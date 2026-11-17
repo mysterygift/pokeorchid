@@ -90,6 +90,8 @@ UNUSED static const u8 sOrchidCaughtBall[7][7] = {
 #define ORCHID_COL_SHADE      5
 #define ORCHID_COL_PANEL_DARK 6
 #define ORCHID_COL_SELECT     12
+#define ORCHID_COL_SELECT_LIGHT 13
+#define ORCHID_COL_SELECT_DARK  11
 #define ORCHID_COL_PP_YELLOW  7
 #define ORCHID_COL_PP_ORANGE  8
 #define ORCHID_COL_PP_RED     9
@@ -133,6 +135,23 @@ UNUSED static const u8 sOrchidMovePillScreen[4][2] = {{3, 114}, {121, 114}, {3, 
 #define ORCHID_MOVE_NAME_MAX 74  // wider names use FONT_NARROW
 #define ORCHID_MOVE_ICON_DX 3   // type icon top-left in the pill
 #define ORCHID_MOVE_ICON_DY 3
+
+// Move Info panel (window = page-2 tiles 0,14 30x6; px in window coords)
+#define ORCHID_MOVEINFO_WIN_X 0
+#define ORCHID_MOVEINFO_WIN_Y 14   // tile row within the page
+#define ORCHID_MOVEINFO_WIN_W 30
+#define ORCHID_MOVEINFO_WIN_H 6
+#define ORCHID_MI_NAME_X      40   // move name cell (FONT_NORMAL, white / ink)
+#define ORCHID_MI_NAME_Y      0
+#define ORCHID_MI_VALUES_RIGHT 232  // ACC value right edge; PWR before it (FONT_SMALL)
+#define ORCHID_MI_VALUES_Y    0
+#define ORCHID_MI_VALUE_GAP   8
+#define ORCHID_MI_TYPE_X      5   // type icon top-left, screen
+#define ORCHID_MI_TYPE_Y      112
+#define ORCHID_MI_CAT_Y       113   // category icon top, screen (x = left of PWR - 14)
+#define ORCHID_MI_DESC_X      9   // description, FONT_NORMAL at a 14 px pitch
+#define ORCHID_MI_DESC_Y      18
+#define ORCHID_MI_DESC_W      222
 
 // YES/NO text (window px)
 #define ORCHID_YESNO_TEXT_X 8

@@ -370,14 +370,14 @@ static const struct WindowTemplate sStandardBattleWindowTemplates[] =
         .paletteNum = 0,
         .baseBlock = 0x00b0,
     },
-    [B_WIN_MOVE_DESCRIPTION] = {
+    [B_WIN_MOVE_DESCRIPTION] = { // Orchid UI: Move Info panel over the move pills
         .bg = 0,
-        .tilemapLeft = 1,
-        .tilemapTop = 47,
-        .width = 18,
-        .height = 6,
-        .paletteNum = 5,
-        .baseBlock = 0x0350,
+        .tilemapLeft = ORCHID_MOVEINFO_WIN_X,
+        .tilemapTop = 40 + ORCHID_MOVEINFO_WIN_Y,
+        .width = ORCHID_MOVEINFO_WIN_W,
+        .height = ORCHID_MOVEINFO_WIN_H,
+        .paletteNum = ORCHID_MOVES_BG_PAL,
+        .baseBlock = 0x0285,
     },
     [B_CATCH_OR_NOT] = {
         .bg = 0,
@@ -609,14 +609,14 @@ static const struct WindowTemplate sKantoTutorialBattleWindowTemplates[] =
         .paletteNum = 0,
         .baseBlock = 0x00b0,
     },
-    [B_WIN_MOVE_DESCRIPTION] = {
+    [B_WIN_MOVE_DESCRIPTION] = { // Orchid UI: Move Info panel over the move pills
         .bg = 0,
-        .tilemapLeft = 1,
-        .tilemapTop = 47,
-        .width = 18,
-        .height = 6,
-        .paletteNum = 5,
-        .baseBlock = 0x0350,
+        .tilemapLeft = ORCHID_MOVEINFO_WIN_X,
+        .tilemapTop = 40 + ORCHID_MOVEINFO_WIN_Y,
+        .width = ORCHID_MOVEINFO_WIN_W,
+        .height = ORCHID_MOVEINFO_WIN_H,
+        .paletteNum = ORCHID_MOVES_BG_PAL,
+        .baseBlock = 0x0285,
     },
     [B_WIN_OAK_OLD_MAN] = {
         .bg = 0,
@@ -839,14 +839,14 @@ static const struct WindowTemplate sBattleArenaWindowTemplates[] =
         .paletteNum = 7,
         .baseBlock = 0x0090,
     },
-    [B_WIN_MOVE_DESCRIPTION] = {
+    [B_WIN_MOVE_DESCRIPTION] = { // Orchid UI: Move Info panel over the move pills
         .bg = 0,
-        .tilemapLeft = 1,
-        .tilemapTop = 47,
-        .width = 18,
-        .height = 6,
-        .paletteNum = 5,
-        .baseBlock = 0x0350,
+        .tilemapLeft = ORCHID_MOVEINFO_WIN_X,
+        .tilemapTop = 40 + ORCHID_MOVEINFO_WIN_Y,
+        .width = ORCHID_MOVEINFO_WIN_W,
+        .height = ORCHID_MOVEINFO_WIN_H,
+        .paletteNum = ORCHID_MOVES_BG_PAL,
+        .baseBlock = 0x0285,
     },
     DUMMY_WIN_TEMPLATE
 };

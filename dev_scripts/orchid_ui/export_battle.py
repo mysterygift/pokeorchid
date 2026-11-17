@@ -97,6 +97,7 @@ PROMPT_WIN = (2, 15, 13, 4)     # "What will X do?"
 MOVE_WIN = [(0, 14, 15, 3), (15, 14, 15, 3), (0, 17, 15, 3), (15, 17, 15, 3)]
 YESNO_WIN = (25, 15, 4, 4)
 YESNO_DOCK = (23, 14, 7, 6)     # cells replaced while the YES/NO is docked
+MOVEINFO_WIN = (0, 14, 30, 6)   # Move Info panel (page 2), over the four pills
 
 
 def page_base(mode):
@@ -242,6 +243,19 @@ def export_tray():
                 out.append(idx | (hf << 10) | (vf << 11))
         return out
 
+    # Move Info (L in the move menu): tray-wide panel window replacing the four pills
+    import mock_battle_more as MB
+    mi = M.p_sheet(W, H, M.UI_PAL)
+    mcv = Canvas(mi)
+    M.draw_tray(mcv)
+    x, y, w, h = MB.MI_HDR
+    rounded_box(mcv, x, y, w, h, 3, M.GRID_BG, INK, M.GRID_LINE, M.GRID_BG)
+    bx, by, bw, bh = MB.MI_BODY
+    rounded_box(mcv, bx, by, bw, bh, 3, PANEL, INK, WHITE, PANEL_SHADE)
+    panel = crop_cells(mi, MOVEINFO_WIN)
+    assert not set(panel.getdata()) & {ACCENT_DARK, ACCENT, ACCENT_LIGHT}
+    save_indexed(panel, os.path.join(gi, "orchid_moveinfo_panel.png"), move_pal)
+
     return dict(n_tiles=len(tiles), dock=entries(tmy, YESNO_DOCK), dock_base=entries(tm0, YESNO_DOCK),
                 frame=[(i | (hf << 10) | (vf << 11)) for (i, hf, vf) in tmf])
 
@@ -257,6 +271,8 @@ def tray_header_lines(t):
          "#define ORCHID_COL_SHADE      %d" % PANEL_SHADE,
          "#define ORCHID_COL_PANEL_DARK %d" % PANEL_DARK,
          "#define ORCHID_COL_SELECT     %d" % SELECT,
+         "#define ORCHID_COL_SELECT_LIGHT %d" % SELECT_LIGHT,
+         "#define ORCHID_COL_SELECT_DARK  %d" % SELECT_DARK,
          "#define ORCHID_COL_PP_YELLOW  %d" % ACCENT_DARK,
          "#define ORCHID_COL_PP_ORANGE  %d" % ACCENT,
          "#define ORCHID_COL_PP_RED     %d" % ACCENT_LIGHT, ""]
@@ -292,6 +308,27 @@ def tray_header_lines(t):
     L.append("#define ORCHID_MOVE_NAME_MAX %d  // wider names use FONT_NARROW" % (M.MOVE_W - 42))
     L.append("#define ORCHID_MOVE_ICON_DX 3   // type icon top-left in the pill")
     L.append("#define ORCHID_MOVE_ICON_DY 3")
+    L.append("")
+    import mock_battle_more as MB
+    hx, hy, hw, hh = MB.MI_HDR
+    bx, by, bw, bh = MB.MI_BODY
+    wy = MOVEINFO_WIN[1] * 8
+    L.append("// Move Info panel (window = page-2 tiles %d,%d %dx%d; px in window coords)" % MOVEINFO_WIN)
+    L.append("#define ORCHID_MOVEINFO_WIN_X %d" % MOVEINFO_WIN[0])
+    L.append("#define ORCHID_MOVEINFO_WIN_Y %d   // tile row within the page" % MOVEINFO_WIN[1])
+    L.append("#define ORCHID_MOVEINFO_WIN_W %d" % MOVEINFO_WIN[2])
+    L.append("#define ORCHID_MOVEINFO_WIN_H %d" % MOVEINFO_WIN[3])
+    L.append("#define ORCHID_MI_NAME_X      %d   // move name cell (FONT_NORMAL, white / ink)" % (hx + 38))
+    L.append("#define ORCHID_MI_NAME_Y      %d" % max(0, hy - 2 - wy))
+    L.append("#define ORCHID_MI_VALUES_RIGHT %d  // ACC value right edge; PWR before it (FONT_SMALL)" % (hx + hw - 6))
+    L.append("#define ORCHID_MI_VALUES_Y    %d" % (hy - 1 - wy))
+    L.append("#define ORCHID_MI_VALUE_GAP   8")
+    L.append("#define ORCHID_MI_TYPE_X      %d   // type icon top-left, screen" % (hx + 3))
+    L.append("#define ORCHID_MI_TYPE_Y      %d" % (hy - 1))
+    L.append("#define ORCHID_MI_CAT_Y       %d   // category icon top, screen (x = left of PWR - 14)" % hy)
+    L.append("#define ORCHID_MI_DESC_X      %d   // description, FONT_NORMAL at a 14 px pitch" % (bx + 7))
+    L.append("#define ORCHID_MI_DESC_Y      %d" % (by + 1 - wy))
+    L.append("#define ORCHID_MI_DESC_W      %d" % (bw - 14))
     L.append("")
     L.append("// YES/NO text (window px)")
     L.append("#define ORCHID_YESNO_TEXT_X 8")

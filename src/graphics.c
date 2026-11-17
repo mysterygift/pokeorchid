@@ -1779,6 +1779,7 @@ const u32 gOrchidActionSide_Gfx[] = INCGFX_U32("graphics/battle_interface/orchid
 const u16 gOrchidActionIcons_Pal[] = INCGFX_U16("graphics/battle_interface/orchid_action_fight.png", ".gbapal");
 const u32 gOrchidActionSafariBall_Gfx[] = INCGFX_U32("graphics/battle_interface/orchid_action_safari_ball.png", ".4bpp");
 const u32 gOrchidActionSafariSide_Gfx[] = INCGFX_U32("graphics/battle_interface/orchid_action_safari_side.png", ".4bpp");
+const u32 gOrchidMoveInfoPanel_Gfx[] = INCGFX_U32("graphics/battle_interface/orchid_moveinfo_panel.png", ".4bpp");
 const u32 gOrchidLineupBars_Gfx[] = INCGFX_U32("graphics/battle_interface/orchid_lineup_bars.png", ".4bpp", "-mwidth 4 -mheight 2");
 const u32 gOrchidLineupBalls_Gfx[] = INCGFX_U32("graphics/battle_interface/orchid_lineup_balls.png", ".4bpp");
 const u16 gOrchidLineupBalls_Pal[] = INCGFX_U16("graphics/battle_interface/orchid_lineup_balls.png", ".gbapal");
