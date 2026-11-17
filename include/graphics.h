@@ -1879,6 +1879,7 @@ extern const u32 gOrchidDexArea_Tilemap[];
 extern const u32 gOrchidDexSearch_Tilemap[];
 extern const u32 gOrchidDexCry_Tilemap[];
 extern const u32 gOrchidDexSize_Tilemap[];
+extern const u32 gOrchidDexRegistered_Tilemap[];
 extern const u16 gOrchidDexScreen_Pal[];
 extern const u8 gOrchidDexRow_Gfx[];
 extern const u8 gOrchidDexBall_Gfx[];
