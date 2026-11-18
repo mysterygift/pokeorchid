@@ -104,10 +104,15 @@ def frame_image(fly):
     return im
 
 
-def export(sq, cells):
-    """sq = {n: (cx, cy)}, cells = {(cx, cy): 'land'|'sea'} route cells (nodes excluded)."""
+def export(sq, cells, info=None):
+    """sq = {node key: (cx, cy)}, cells = {(cx, cy): 'land'|'sea'} route cells (nodes excluded).
+    info = {node key: (mapsec, is_landmark, label)} in node order (region_tags.Tags.nodes); without it,
+    keys are the user's square numbers and mapsec_of / MM.LANDMARKS decide (the pre-tagger behaviour)."""
     os.makedirs(RM(), exist_ok=True)
     nodes = dict(sq)
+    if info is None:
+        info = {n: (mapsec_of(n), n in MM.LANDMARKS, "#%d" % n) for n in sorted(nodes)}
+    assert len(info) <= 32, "sOrchidMapComponents is a u32 bitmask: at most 32 nodes"
     # ---- tiles: frame (map), frame (fly), then tubes
     fr_map, fr_fly = frame_image(False), frame_image(True)
     tiles, tm_map = to_tiles(fr_map)
@@ -148,7 +153,7 @@ def export(sq, cells):
         idx, hf, vf = tm_tube[(GY // 8 + cy) * 30 + GX // 8 + cx]
         tube_cells.append((cx, cy, idx | (hf << 10) | (vf << 11), kind == "sea", comp_ids[touched]))
     node_cells = []
-    for n in sorted(nodes):
+    for n in info:
         cx, cy = nodes[n]
         idx, hf, vf = tm_tube[(GY // 8 + cy) * 30 + GX // 8 + cx]
         node_cells.append((n, cx, cy, idx | (hf << 10) | (vf << 11)))
@@ -208,8 +213,9 @@ def export(sq, cells):
          "struct OrchidMapTube { u8 x, y; bool8 sea; u8 component; u16 tile; };", "",
          "static const struct OrchidMapNode sOrchidMapNodes[] =", "{"]
     for n, cx, cy, t in node_cells:
-        L.append("    { %2d, %2d, %-6s %-23s 0x%03X }, // #%d" % (cx, cy, "TRUE," if n in MM.LANDMARKS else "FALSE,",
-                                                                 mapsec_of(n) + ",", t, n))
+        mapsec, landmark, label = info[n]
+        L.append("    { %2d, %2d, %-6s %-31s 0x%03X }, // %s" % (cx, cy, "TRUE," if landmark else "FALSE,",
+                                                                 mapsec + ",", t, label))
     L += ["};", "", "// bit i = sOrchidMapNodes[i]; a route is gold once every node it touches is visited",
           "static const u32 sOrchidMapComponents[] =", "{"]
     order = [n for n, _, _, _ in node_cells]
@@ -217,7 +223,7 @@ def export(sq, cells):
         m = 0
         for n in touched:
             m |= 1 << order.index(n)
-        L.append("    0x%05X, // %s" % (m, ", ".join("#%d" % n for n in sorted(touched)) or "(no node)"))
+        L.append("    0x%08X, // %s" % (m, ", ".join(info[n][2] for n in order if n in touched) or "(no node)"))
     L += ["};", "", "static const struct OrchidMapTube sOrchidMapTubes[] =", "{"]
     for cx, cy, t, sea, ci in tube_cells:
         L.append("    { %2d, %2d, %-6s %2d, 0x%03X }," % (cx, cy, "TRUE," if sea else "FALSE,", ci, t))

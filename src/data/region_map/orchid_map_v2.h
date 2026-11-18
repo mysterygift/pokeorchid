@@ -7,48 +7,52 @@ struct OrchidMapTube { u8 x, y; bool8 sea; u8 component; u16 tile; };
 
 static const struct OrchidMapNode sOrchidMapNodes[] =
 {
-    { 15, 14, FALSE, MAPSEC_TOSA_PH_01,      0x019 }, // #1
-    { 23, 12, FALSE, MAPSEC_TOSA_PH_02,      0x020 }, // #2
-    {  9, 12, TRUE,  MAPSEC_TOSA_PH_03,      0xC10 }, // #3
-    {  7, 12, FALSE, MAPSEC_TOSA_PORT,       0x810 }, // #4
-    { 17, 10, FALSE, MAPSEC_TOSA_PH_05,      0xC10 }, // #5
-    { 15, 10, TRUE,  MAPSEC_TOSA_PH_06,      0x810 }, // #6
-    {  9, 10, TRUE,  MAPSEC_TOSA_PH_07,      0x010 }, // #7
-    { 21,  8, FALSE, MAPSEC_TOSA_PH_08,      0x016 }, // #8
-    { 15,  8, FALSE, MAPSEC_TOSA_PH_09,      0x010 }, // #9
-    {  7,  8, FALSE, MAPSEC_OLDALE_TOWN,     0x816 }, // #10
-    {  5,  8, TRUE,  MAPSEC_TOSA_PH_11,      0x012 }, // #11
-    {  3,  8, FALSE, MAPSEC_TOSA_PH_12,      0x010 }, // #12
-    { 27,  6, FALSE, MAPSEC_TOSA_PH_13,      0x019 }, // #13
-    { 17,  6, FALSE, MAPSEC_TOSA_PH_14,      0x01E }, // #14
-    { 23,  4, TRUE,  MAPSEC_TOSA_PH_15,      0x019 }, // #15
-    { 21,  4, TRUE,  MAPSEC_TOSA_PH_16,      0x018 }, // #16
-    { 15,  4, FALSE, MAPSEC_TOSA_PH_17,      0x016 }, // #17
-    { 11,  4, TRUE,  MAPSEC_TOSA_PH_18,      0x010 }, // #18
-    { 17,  2, FALSE, MAPSEC_TOSA_PH_19,      0x012 }, // #19
-    { 15,  2, TRUE,  MAPSEC_TOSA_PH_20,      0x010 }, // #20
+    { 15,  2, TRUE,  MAPSEC_KANTU_FALLS,             0x010 }, // Kantu Falls
+    { 17,  2, TRUE,  MAPSEC_GALANGAL_FOREST,         0x012 }, // Galangal Forest
+    { 11,  4, FALSE, MAPSEC_TIMAH_CITY,              0x010 }, // Timah City
+    { 15,  4, FALSE, MAPSEC_FABER_TOWN,              0x016 }, // Faber Town
+    { 21,  4, FALSE, MAPSEC_CHALLENGER_GATE,         0x018 }, // Challenger Gate
+    { 22,  4, TRUE,  MAPSEC_CHALLENGERS_TRAIL,       0x000 }, // Challenger's Trail
+    { 23,  4, TRUE,  MAPSEC_PKMN_LEAGUE,             0x000 }, // Pokémon League
+    { 17,  6, FALSE, MAPSEC_PINESTAMP_TOWN,          0x01D }, // Pinestamp Town
+    { 27,  6, FALSE, MAPSEC_SENOKO_CITY,             0x01E }, // Senoko City
+    { 27,  7, TRUE,  MAPSEC_TOSA_POWER_PLANT,        0x000 }, // Power Plant
+    {  3,  8, FALSE, MAPSEC_WAVEBREAK_TOWN,          0x010 }, // Wavebreak Town
+    {  5,  8, TRUE,  MAPSEC_DAMP_PATH,               0x012 }, // Damp Path
+    {  7,  8, FALSE, MAPSEC_OLDALE_TOWN,             0x816 }, // Telok Town
+    { 15,  8, FALSE, MAPSEC_CHANGU_CITY,             0x010 }, // Changu City
+    { 21,  8, FALSE, MAPSEC_BURA_CITY,               0x016 }, // Bura City
+    {  9, 10, TRUE,  MAPSEC_ABANDONED_HOUSE,         0x010 }, // Abandoned House
+    { 15, 10, TRUE,  MAPSEC_CHANGU_AIRPORT,          0x810 }, // Changu Airport
+    { 17, 10, TRUE,  MAPSEC_INDUSTRIAL_PARK,         0xC10 }, // Industrial Park
+    {  7, 12, FALSE, MAPSEC_TOSA_PORT,               0x020 }, // Tosa Port
+    {  8, 12, TRUE,  MAPSEC_RAILWAY_TUNNELS,         0x000 }, // Railway Tunnels
+    {  9, 12, FALSE, MAPSEC_MOONGROVE_CITY,          0x020 }, // Moongrove City
+    { 10, 12, TRUE,  MAPSEC_MOONGROVE_MARSH,         0x000 }, // Moongrove Marsh
+    { 23, 12, FALSE, MAPSEC_JURAN_CITY,              0x020 }, // Juran City
+    { 15, 14, FALSE, MAPSEC_INKA_CITY,               0x01E }, // Inka City
+    { 26, 14, TRUE,  MAPSEC_POKETOPIA_GATE,          0x000 }, // Pokétopia Gate
+    { 27, 14, FALSE, MAPSEC_CORRAL_CITY,             0x000 }, // Corral City
 };
 
 // bit i = sOrchidMapNodes[i]; a route is gold once every node it touches is visited
 static const u32 sOrchidMapComponents[] =
 {
-    0xC0000, // #19, #20
-    0x48000, // #16, #19
-    0x90000, // #17, #20
-    0x30240, // #7, #10, #17, #18
-    0x12000, // #14, #17
-    0x08080, // #8, #16
-    0x0C000, // #15, #16
-    0x01082, // #2, #8, #13
-    0x02190, // #5, #8, #9, #14
-    0x00C00, // #11, #12
-    0x00600, // #10, #11
-    0x00801, // #1, #12
-    0x00208, // #4, #10
-    0x00120, // #6, #9
-    0x00030, // #5, #6
-    0x00044, // #3, #7
-    0x0000C, // #3, #4
+    0x00000003, // Kantu Falls, Galangal Forest
+    0x00000012, // Galangal Forest, Challenger Gate
+    0x00000009, // Kantu Falls, Faber Town
+    0x0000900C, // Timah City, Faber Town, Telok Town, Abandoned House
+    0x00000088, // Faber Town, Pinestamp Town
+    0x00004010, // Challenger Gate, Bura City
+    0x00404100, // Senoko City, Bura City, Juran City
+    0x00026080, // Pinestamp Town, Changu City, Bura City, Industrial Park
+    0x00000C00, // Wavebreak Town, Damp Path
+    0x00001800, // Damp Path, Telok Town
+    0x00800400, // Wavebreak Town, Inka City
+    0x00041000, // Telok Town, Tosa Port
+    0x00012000, // Changu City, Changu Airport
+    0x00030000, // Changu Airport, Industrial Park
+    0x00108000, // Abandoned House, Moongrove City
 };
 
 static const struct OrchidMapTube sOrchidMapTubes[] =
@@ -67,65 +71,63 @@ static const struct OrchidMapTube sOrchidMapTubes[] =
     { 17,  4, FALSE,  4, 0x013 },
     { 19,  4, FALSE,  5, 0x017 },
     { 20,  4, FALSE,  5, 0x015 },
-    { 22,  4, FALSE,  6, 0x011 },
-    { 11,  5, FALSE,  3, 0x01A },
-    { 12,  5, FALSE,  3, 0x01B },
+    { 11,  5, FALSE,  3, 0x019 },
+    { 12,  5, FALSE,  3, 0x01A },
     { 17,  5, FALSE,  4, 0x014 },
     { 19,  5, FALSE,  5, 0xC13 },
-    { 20,  5, FALSE,  5, 0x01C },
-    { 21,  5, FALSE,  5, 0x01D },
+    { 20,  5, FALSE,  5, 0x01B },
+    { 21,  5, FALSE,  5, 0x01C },
     { 11,  6, FALSE,  3, 0x014 },
     { 21,  6, FALSE,  5, 0x014 },
-    { 23,  6, FALSE,  7, 0x017 },
-    { 24,  6, FALSE,  7, 0x011 },
-    { 25,  6, FALSE,  7, 0x011 },
-    { 26,  6, FALSE,  7, 0x011 },
+    { 23,  6, FALSE,  6, 0x017 },
+    { 24,  6, FALSE,  6, 0x011 },
+    { 25,  6, FALSE,  6, 0x011 },
+    { 26,  6, FALSE,  6, 0x011 },
     { 11,  7, FALSE,  3, 0x014 },
-    { 17,  7, FALSE,  8, 0x014 },
+    { 17,  7, FALSE,  7, 0x014 },
     { 21,  7, FALSE,  5, 0x014 },
-    { 23,  7, FALSE,  7, 0x014 },
-    {  4,  8, FALSE,  9, 0x011 },
-    {  6,  8, FALSE, 10, 0x011 },
+    { 23,  7, FALSE,  6, 0x014 },
+    {  4,  8, FALSE,  8, 0x011 },
+    {  6,  8, FALSE,  9, 0x011 },
     {  8,  8, FALSE,  3, 0x011 },
     {  9,  8, FALSE,  3, 0x011 },
     { 10,  8, FALSE,  3, 0x011 },
-    { 11,  8, FALSE,  3, 0x01D },
-    { 16,  8, FALSE,  8, 0x011 },
-    { 17,  8, FALSE,  8, 0x01F },
-    { 18,  8, FALSE,  8, 0x011 },
-    { 19,  8, FALSE,  8, 0x011 },
-    { 20,  8, FALSE,  8, 0x011 },
-    { 22,  8, FALSE,  7, 0x011 },
-    { 23,  8, FALSE,  7, 0x01D },
-    {  3,  9, TRUE,  11, 0x014 },
-    {  7,  9, FALSE, 12, 0x014 },
+    { 11,  8, FALSE,  3, 0x01C },
+    { 16,  8, FALSE,  7, 0x011 },
+    { 17,  8, FALSE,  7, 0x01F },
+    { 18,  8, FALSE,  7, 0x011 },
+    { 19,  8, FALSE,  7, 0x011 },
+    { 20,  8, FALSE,  7, 0x011 },
+    { 22,  8, FALSE,  6, 0x011 },
+    { 23,  8, FALSE,  6, 0x01C },
+    {  3,  9, TRUE,  10, 0x014 },
+    {  7,  9, FALSE, 11, 0x014 },
     { 11,  9, FALSE,  3, 0x014 },
-    { 15,  9, FALSE, 13, 0x014 },
-    { 17,  9, FALSE,  8, 0x014 },
-    { 23,  9, FALSE,  7, 0x014 },
-    {  3, 10, TRUE,  11, 0x014 },
-    {  7, 10, FALSE, 12, 0x014 },
+    { 15,  9, FALSE, 12, 0x014 },
+    { 17,  9, FALSE,  7, 0x014 },
+    { 23,  9, FALSE,  6, 0x014 },
+    {  3, 10, TRUE,  10, 0x014 },
+    {  7, 10, FALSE, 11, 0x014 },
     { 10, 10, FALSE,  3, 0x011 },
-    { 11, 10, FALSE,  3, 0x01B },
-    { 16, 10, FALSE, 14, 0x011 },
-    { 23, 10, FALSE,  7, 0x014 },
-    {  3, 11, TRUE,  11, 0x014 },
-    {  7, 11, FALSE, 12, 0x014 },
-    {  9, 11, FALSE, 15, 0x014 },
-    { 23, 11, FALSE,  7, 0x014 },
-    {  3, 12, TRUE,  11, 0x014 },
-    {  8, 12, FALSE, 16, 0x011 },
-    {  3, 13, TRUE,  11, 0x014 },
-    {  3, 14, TRUE,  11, 0xC13 },
-    {  4, 14, TRUE,  11, 0x011 },
-    {  5, 14, TRUE,  11, 0x011 },
-    {  6, 14, TRUE,  11, 0x011 },
-    {  7, 14, TRUE,  11, 0x011 },
-    {  8, 14, TRUE,  11, 0x011 },
-    {  9, 14, TRUE,  11, 0x011 },
-    { 10, 14, TRUE,  11, 0x011 },
-    { 11, 14, FALSE, 11, 0x011 },
-    { 12, 14, FALSE, 11, 0x011 },
-    { 13, 14, FALSE, 11, 0x011 },
-    { 14, 14, FALSE, 11, 0x011 },
+    { 11, 10, FALSE,  3, 0x01A },
+    { 16, 10, FALSE, 13, 0x011 },
+    { 23, 10, FALSE,  6, 0x014 },
+    {  3, 11, TRUE,  10, 0x014 },
+    {  7, 11, FALSE, 11, 0x014 },
+    {  9, 11, FALSE, 14, 0x014 },
+    { 23, 11, FALSE,  6, 0x014 },
+    {  3, 12, TRUE,  10, 0x014 },
+    {  3, 13, TRUE,  10, 0x014 },
+    {  3, 14, TRUE,  10, 0xC13 },
+    {  4, 14, TRUE,  10, 0x011 },
+    {  5, 14, TRUE,  10, 0x011 },
+    {  6, 14, TRUE,  10, 0x011 },
+    {  7, 14, TRUE,  10, 0x011 },
+    {  8, 14, TRUE,  10, 0x011 },
+    {  9, 14, TRUE,  10, 0x011 },
+    { 10, 14, TRUE,  10, 0x011 },
+    { 11, 14, FALSE, 10, 0x011 },
+    { 12, 14, FALSE, 10, 0x011 },
+    { 13, 14, FALSE, 10, 0x011 },
+    { 14, 14, FALSE, 10, 0x011 },
 };

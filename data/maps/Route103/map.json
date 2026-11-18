@@ -4,7 +4,7 @@
   "layout": "LAYOUT_ROUTE103",
   "music": "MUS_SOUTHTOSARESERVE",
   "region": "REGION_HOENN",
-  "region_map_section": "MAPSEC_ROUTE_103",
+  "region_map_section": "MAPSEC_ROUTE_303",
   "requires_flash": false,
   "weather": "WEATHER_SUNNY",
   "map_type": "MAP_TYPE_ROUTE",

@@ -4,7 +4,7 @@
   "layout": "LAYOUT_PETALBURG_CITY",
   "music": "MUS_PETALBURG",
   "region": "REGION_HOENN",
-  "region_map_section": "MAPSEC_PETALBURG_CITY",
+  "region_map_section": "MAPSEC_TIMAH_CITY",
   "requires_flash": false,
   "weather": "WEATHER_SUNNY",
   "map_type": "MAP_TYPE_CITY",

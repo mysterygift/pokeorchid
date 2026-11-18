@@ -1,0 +1,698 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Region Map Tagger</title>
+<style>
+  :root {
+    --bg: #15171c; --panel: #1d2027; --panel2: #252933; --line: #343a46;
+    --text: #e6e8ee; --muted: #9098a8; --accent: #e5a3d0; --warn: #f0b35a; --bad: #ef6b6b; --ok: #6bd18f;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 13px/1.4 system-ui, -apple-system, sans-serif; height: 100vh; display: flex; flex-direction: column; }
+  header { display: flex; align-items: center; gap: 12px; padding: 8px 14px; border-bottom: 1px solid var(--line); background: var(--panel); flex-wrap: wrap; }
+  header h1 { font-size: 15px; margin: 0 8px 0 0; }
+  header label { color: var(--muted); display: flex; gap: 4px; align-items: center; cursor: pointer; }
+  .spacer { flex: 1; }
+  button { background: var(--panel2); color: var(--text); border: 1px solid var(--line); border-radius: 6px; padding: 5px 10px; cursor: pointer; font: inherit; }
+  button:hover { border-color: var(--muted); }
+  button.primary { background: var(--accent); color: #241520; border-color: var(--accent); font-weight: 600; }
+  button.on { border-color: var(--accent); color: var(--accent); }
+  button:disabled { opacity: .4; cursor: default; }
+  input, select, textarea { background: var(--bg); color: var(--text); border: 1px solid var(--line); border-radius: 5px; padding: 5px 7px; font: inherit; width: 100%; }
+  textarea { resize: vertical; min-height: 48px; }
+  #status { color: var(--muted); min-width: 120px; }
+  #status.dirty { color: var(--warn); }
+  main { flex: 1; display: flex; min-height: 0; }
+  #stage { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding: 14px; overflow: auto; gap: 8px; }
+  #tools { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+  canvas#map { image-rendering: pixelated; cursor: crosshair; border: 1px solid var(--line); background: #000; max-width: 100%; }
+  #hover { color: var(--muted); height: 18px; font-family: ui-monospace, monospace; font-size: 12px; }
+  .hint { color: var(--muted); font-size: 12px; text-align: center; max-width: 720px; }
+  kbd { background: var(--panel2); border: 1px solid var(--line); border-radius: 3px; padding: 0 4px; font-size: 11px; }
+  aside { width: 400px; border-left: 1px solid var(--line); background: var(--panel); display: flex; flex-direction: column; min-height: 0; }
+  .tabs { display: flex; border-bottom: 1px solid var(--line); }
+  .tabs button { flex: 1; border: 0; border-radius: 0; background: transparent; padding: 9px; color: var(--muted); border-bottom: 2px solid transparent; }
+  .tabs button.on { color: var(--text); border-bottom-color: var(--accent); }
+  .pane { display: none; flex: 1; flex-direction: column; min-height: 0; }
+  .pane.on { display: flex; }
+  .filters { padding: 8px; display: flex; gap: 6px; align-items: center; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+  .filters input[type=search] { flex: 1; min-width: 140px; }
+  .filters label { color: var(--muted); display: flex; gap: 4px; align-items: center; white-space: nowrap; cursor: pointer; }
+  .filters input[type=checkbox] { width: auto; }
+  .list { flex: 1; overflow: auto; }
+  .area { display: flex; align-items: center; gap: 8px; padding: 5px 10px; cursor: pointer; border-bottom: 1px solid #22262e; }
+  .area:hover { background: var(--panel2); }
+  .area.sel { background: #3a2a36; }
+  .sw { width: 14px; height: 14px; border-radius: 3px; flex: none; border: 1px solid #0006; }
+  .area .nm { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .area .id { color: var(--muted); font-size: 11px; font-family: ui-monospace, monospace; }
+  .badge { font-size: 10px; padding: 1px 5px; border-radius: 8px; background: var(--panel2); color: var(--muted); white-space: nowrap; }
+  .badge.chg { background: #4a3a1c; color: var(--warn); }
+  .badge.new { background: #1c3a2a; color: var(--ok); }
+  #detail { border-top: 1px solid var(--line); padding: 10px; display: grid; grid-template-columns: 74px 1fr; gap: 6px 8px; align-items: center; max-height: 50%; overflow: auto; }
+  #detail .full { grid-column: 1 / -1; }
+  #detail .lab { color: var(--muted); }
+  #detail .warn { color: var(--warn); font-size: 11px; }
+  .maplist { display: flex; flex-wrap: wrap; gap: 4px; }
+  .chip { font-size: 11px; font-family: ui-monospace, monospace; background: var(--panel2); border: 1px solid var(--line); border-radius: 10px; padding: 1px 7px; cursor: pointer; }
+  .chip:hover { border-color: var(--bad); text-decoration: line-through; }
+  table { width: 100%; border-collapse: collapse; }
+  td, th { padding: 4px 8px; border-bottom: 1px solid #22262e; text-align: left; vertical-align: middle; }
+  th { position: sticky; top: 0; background: var(--panel); color: var(--muted); font-weight: 500; z-index: 1; }
+  td.f { font-family: ui-monospace, monospace; font-size: 11px; }
+  td .sec { cursor: pointer; font-size: 12px; }
+  td .sec:hover { color: var(--accent); }
+  tr.chg td .sec { color: var(--warn); }
+  td input[type=checkbox] { width: auto; }
+  .line { padding: 8px 10px; border-bottom: 1px solid #22262e; cursor: pointer; display: grid; grid-template-columns: 34px 1fr auto; gap: 6px; align-items: center; }
+  .line.sel { background: #3a2a36; }
+  .line input[type=color] { width: 34px; height: 26px; padding: 1px; }
+  .line .stops { grid-column: 1 / -1; color: var(--muted); font-size: 12px; }
+  .line .acts { grid-column: 1 / -1; display: flex; gap: 6px; }
+  .line .acts button { padding: 2px 8px; font-size: 12px; }
+  h3 { font-size: 12px; color: var(--muted); font-weight: 500; margin: 12px 10px 4px; text-transform: uppercase; letter-spacing: .05em; }
+  .empty { padding: 20px; color: var(--muted); text-align: center; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Region Map Tagger</h1>
+  <label><input type="checkbox" id="optGrid" checked> grid</label>
+  <label><input type="checkbox" id="optLabels" checked> labels</label>
+  <label><input type="checkbox" id="optFocus"> dim others</label>
+  <label><input type="checkbox" id="optRail" checked> rail</label>
+  <label id="optRoutesL" title="Your ref/tosa_routes.png, rotated 180° like export_region_map.py does"><input type="checkbox" id="optRoutes" checked> route art</label>
+  <span class="spacer"></span>
+  <button id="btnUndo" title="Ctrl/Cmd+Z">Undo</button>
+  <button id="btnRedo" title="Ctrl/Cmd+Shift+Z">Redo</button>
+  <button id="btnReset" title="Discard tags.json edits and reload from the repo">Reset to repo</button>
+  <span id="status">loading…</span>
+  <button id="btnSave" class="primary" title="Ctrl/Cmd+S">Save tags.json</button>
+</header>
+<main>
+  <section id="stage">
+    <div id="tools">
+      <button data-tool="paint" class="on">Paint <kbd>B</kbd></button>
+      <button data-tool="erase">Erase <kbd>E</kbd></button>
+      <button data-tool="pick">Pick <kbd>I</kbd></button>
+      <button data-tool="fill">Fill <kbd>G</kbd></button>
+      <button data-tool="station" title="Click a cell to put the selected/clicked area's station there; click it again to remove">Station <kbd>S</kbd></button>
+      <button data-tool="line" title="Click stations (or empty cells for bends) to extend the selected line; right-click removes the last point">Line <kbd>L</kbd></button>
+      <span style="width:12px"></span>
+      <label style="color:var(--muted)">zoom <select id="zoom" style="width:auto"><option>2</option><option>3</option><option selected>4</option><option>5</option></select></label>
+    </div>
+    <canvas id="map"></canvas>
+    <div id="hover"></div>
+    <div class="hint">Select an area on the right, then drag on the map to paint its cells. Right-drag erases, <kbd>Alt</kbd>-click picks the area under the cursor.
+      <b>Station</b> tool drops/moves an area's station marker; <b>Line</b> tool extends the line selected in the <b>Rail</b> tab.
+      Each cell is one region-map cursor square (28 × 15 grid). Use the <b>Maps</b> tab to choose which game maps belong to which area.</div>
+  </section>
+  <aside>
+    <div class="tabs"><button data-tab="areas" class="on">Areas</button><button data-tab="maps">Maps</button><button data-tab="lines">Rail</button></div>
+    <div class="pane on" id="pane-areas">
+      <div class="filters">
+        <input type="search" id="areaSearch" placeholder="Search areas…">
+        <button id="btnNew">+ New area</button>
+        <label><input type="checkbox" id="optOnMap"> on map only</label>
+        <label id="optKantoL"><input type="checkbox" id="optKanto"> show Kanto/Sevii</label>
+        <label><input type="checkbox" id="optStations"> stations only</label>
+      </div>
+      <div class="list" id="areaList"></div>
+      <div id="detail"></div>
+    </div>
+    <div class="pane" id="pane-maps">
+      <div class="filters">
+        <input type="search" id="mapSearch" placeholder="Search maps / mapsecs…">
+        <label><input type="checkbox" id="optMapsSel"> selected area only</label>
+        <label><input type="checkbox" id="optMapsChg"> changed only</label>
+        <label><input type="checkbox" id="optMapsOut" checked> outdoor only</label>
+      </div>
+      <div class="filters"><button id="btnAssign" disabled>Assign checked → selected area</button><span id="assignTarget" style="color:var(--muted)"></span></div>
+      <div class="list" id="mapList"></div>
+    </div>
+    <div class="pane" id="pane-lines">
+      <div class="filters"><button id="btnNewLine">+ New line</button><span style="color:var(--muted)">Select a line, then use the <b>Line</b> tool: click stations in order, click empty cells for bends, right-click to undo a point.</span></div>
+      <div class="list" id="lineList"></div>
+    </div>
+  </aside>
+</main>
+
+<script>
+"use strict";
+const $ = (s) => document.querySelector(s);
+const NAME_MAX = 16; // MAP_NAME_LENGTH
+const KINDS = ["town", "city", "route", "landmark", "dungeon", "water", "other"];
+const OUTDOOR = new Set(["MAP_TYPE_TOWN", "MAP_TYPE_CITY", "MAP_TYPE_ROUTE", "MAP_TYPE_OCEAN_ROUTE", "MAP_TYPE_UNDERWATER"]);
+
+let repo, img, routeImg = null;
+// state = { areas: [{key,id,originalId,name,origName,kind,notes,kanto}], grid: [[key|null]], mapAssign: {folder: key} }
+let S;
+let sel = null, selLine = null, tool = "paint", zoom = 4, hoverCell = null, dirty = false;
+const undo = [], redo = [];
+
+// ---------- load ----------
+async function load(fromRepoOnly) {
+  repo = await (await fetch("/api/repo")).json();
+  img = await new Promise((res) => { const i = new Image(); i.onload = () => res(i); i.src = "/map.png?" + Date.now(); });
+  routeImg = repo.routeArt ? await new Promise((res) => { const i = new Image(); i.onload = () => res(i); i.onerror = () => res(null); i.src = "/ref/" + repo.routeArt + "?" + Date.now(); }) : null;
+  document.title = "Region Map Tagger — " + (repo.region === "tiksi" ? "Tiksi" : "Tosa");
+  $("h1").textContent = document.title;
+  if ($("#optKantoL")) $("#optKantoL").style.display = repo.region === "tiksi" ? "none" : ""; // Tiksi lists only the Kanto block
+  $("#optRoutesL").style.display = routeImg ? "" : "none";
+  const saved = fromRepoOnly ? null : await (await fetch("/api/tags")).json();
+  S = saved ? mergeSaved(saved) : fromRepo();
+  undo.length = redo.length = 0;
+  setDirty(false, saved ? "loaded tags.json" : "loaded from repo");
+  buildBaseCanvas();
+  renderAll();
+}
+
+function guessKind(id) {
+  if (/_ROUTE_|ROUTE_\d/.test(id)) return "route";
+  if (/_CITY$/.test(id)) return "city";
+  if (/_TOWN$/.test(id)) return "town";
+  if (/CAVE|TUNNEL|HIDEOUT|TOWER|ROAD|PILLAR|CHAMBER|MOUNTAIN|MT_|FOREST|RUINS/.test(id)) return "dungeon";
+  if (/SEA|OCEAN|UNDERWATER|ISLAND/.test(id)) return "water";
+  return "landmark";
+}
+
+function fromRepo() {
+  const kantoStart = repo.sections.findIndex((s) => s.id === "MAPSEC_PALLET_TOWN");
+  const kantoEnd = repo.sections.findIndex((s) => s.id === "MAPSEC_SPECIAL_AREA");
+  const areas = repo.sections.map((s, i) => ({
+    key: s.id, id: s.id, originalId: s.id, name: s.name || "", origName: s.name || "",
+    kind: /^(Tiksi )?Site \d/.test(s.name || "") ? "landmark" : /^(Tiksi )?Town \d/.test(s.name || "") ? "town" : /^Tiksi Route \d/.test(s.name || "") ? "route" : guessKind(s.id), notes: "", kanto: kantoStart >= 0 && i >= kantoStart && (kantoEnd < 0 || i <= kantoEnd),
+  }));
+  const known = new Set(areas.map((a) => a.key));
+  const grid = repo.grid.map((row) => row.map((c) => (c === "MAPSEC_NONE" || !known.has(c) ? null : c)));
+  const mapAssign = {};
+  for (const m of repo.maps) mapAssign[m.folder] = m.mapsec;
+  // Tosa Port already has a working station on engine-dev
+  const tp = repo.region === "tiksi" ? null : areas.find((a) => a.key === "MAPSEC_TOSA_PORT"); if (tp) tp.station = true;
+  return { areas, grid, mapAssign, lines: [] };
+}
+
+function mergeSaved(saved) {
+  const base = fromRepo();
+  const areas = saved.areas.map(({ cells, bbox, maps, changes, stationPos, ...a }) => a); // drop derived export fields
+  const repoIds = new Set(base.areas.map((a) => a.key));
+  for (const a of areas) // an older tags.json whose renames have since been applied: they're the repo now
+    if (a.originalId && !repoIds.has(a.originalId) && repoIds.has(a.id)) { a.originalId = a.id; a.origName = a.name; }
+  const keys = new Set(areas.flatMap((a) => [a.key, a.id]));
+  for (const a of base.areas) if (!keys.has(a.key)) areas.push(a); // sections added to the repo since
+  const mapAssign = { ...base.mapAssign, ...saved.mapAssign };
+  for (const f of Object.keys(mapAssign)) if (!(f in base.mapAssign)) delete mapAssign[f]; // deleted maps
+  return { areas, grid: saved.grid, mapAssign, lines: saved.lines || [] };
+}
+
+// ---------- helpers ----------
+const areaByKey = (k) => S.areas.find((a) => a.key === k);
+function color(key, alpha) {
+  let h = 0; for (const ch of key) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
+  return `hsla(${(h * 137.508) % 360}, 75%, 58%, ${alpha})`;
+}
+function cellsOf(key) {
+  const out = [];
+  S.grid.forEach((row, y) => row.forEach((c, x) => { if (c === key) out.push([x, y]); }));
+  return out;
+}
+function bbox(cells) {
+  if (!cells.length) return null;
+  const xs = cells.map((c) => c[0]), ys = cells.map((c) => c[1]);
+  const x = Math.min(...xs), y = Math.min(...ys);
+  return { x, y, width: Math.max(...xs) - x + 1, height: Math.max(...ys) - y + 1 };
+}
+// cell the station marker sits on: chosen cell if still in the area, else the area cell nearest its centroid
+function stationCell(a) {
+  const cells = cellsOf(a.key);
+  if (!cells.length) return null;
+  if (a.stationCell && S.grid[a.stationCell[1]]?.[a.stationCell[0]] === a.key) return a.stationCell;
+  const cx = cells.reduce((s, c) => s + c[0], 0) / cells.length, cy = cells.reduce((s, c) => s + c[1], 0) / cells.length;
+  return cells.reduce((b, c) => (Math.hypot(c[0] - cx, c[1] - cy) < Math.hypot(b[0] - cx, b[1] - cy) ? c : b));
+}
+function pointCell(p) { return p.area ? (areaByKey(p.area) ? stationCell(areaByKey(p.area)) : null) : [p.x, p.y]; }
+const lineByKey = (k) => S.lines.find((l) => l.key === k);
+function origMapsec(folder) { return repo.maps.find((m) => m.folder === folder)?.mapsec; }
+function snapshot() { undo.push(JSON.stringify(S)); if (undo.length > 200) undo.shift(); redo.length = 0; }
+function setDirty(d, msg) {
+  dirty = d;
+  const st = $("#status");
+  st.textContent = msg || (d ? "unsaved changes" : "saved");
+  st.className = d ? "dirty" : "";
+}
+function changed() { setDirty(true); renderAll(); }
+function toId(name) { return "MAPSEC_" + name.toUpperCase().replace(/['’.]/g, "").replace(/[^A-Z0-9]+/g, "_").replace(/^_|_$/g, ""); }
+
+// ---------- canvas ----------
+const base = document.createElement("canvas");
+const VIEW_W = 30, VIEW_H = 20; // 240x160 screen in tiles
+function buildBaseCanvas() {
+  base.width = VIEW_W * 8; base.height = VIEW_H * 8;
+  const g = base.getContext("2d");
+  g.imageSmoothingEnabled = false;
+  const perRow = img.width / 8;
+  for (let ty = 0; ty < VIEW_H; ty++)
+    for (let tx = 0; tx < VIEW_W; tx++) {
+      const t = repo.tilemap[ty * 64 + tx];
+      g.drawImage(img, (t % perRow) * 8, Math.floor(t / perRow) * 8, 8, 8, tx * 8, ty * 8, 8, 8);
+    }
+}
+
+const cv = $("#map"), ctx = cv.getContext("2d");
+function drawMap() {
+  const Z = zoom, [ox, oy] = repo.gridOrigin, [W, H] = repo.size, C = 8 * Z;
+  cv.width = base.width * Z; cv.height = base.height * Z;
+  ctx.imageSmoothingEnabled = false;
+  ctx.drawImage(base, 0, 0, cv.width, cv.height);
+  if (routeImg && $("#optRoutes").checked) { // Tosa's source art is upside down relative to the ROM (rotated 180°)
+    ctx.save(); ctx.globalAlpha = 0.6;
+    if (repo.routeRotated) { ctx.translate(cv.width, cv.height); ctx.rotate(Math.PI); }
+    ctx.drawImage(routeImg, 0, 0, cv.width, cv.height); ctx.restore();
+  }
+  const focus = $("#optFocus").checked && sel;
+  const px = (x) => (x + ox) * C, py = (y) => (y + oy) * C;
+
+  for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
+    const k = S.grid[y][x]; if (!k) continue;
+    const a = k === sel ? 0.55 : focus ? 0.12 : 0.38;
+    ctx.fillStyle = color(k, a);
+    ctx.fillRect(px(x), py(y), C, C);
+  }
+  if ($("#optGrid").checked) {
+    ctx.strokeStyle = "rgba(255,255,255,0.13)"; ctx.lineWidth = 1;
+    ctx.beginPath();
+    for (let x = 0; x <= W; x++) { ctx.moveTo(px(x) + 0.5, py(0)); ctx.lineTo(px(x) + 0.5, py(H)); }
+    for (let y = 0; y <= H; y++) { ctx.moveTo(px(0), py(y) + 0.5); ctx.lineTo(px(W), py(y) + 0.5); }
+    ctx.stroke();
+  }
+  // borders between different areas
+  ctx.lineWidth = Math.max(2, Z / 2);
+  for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
+    const k = S.grid[y][x]; if (!k) continue;
+    ctx.strokeStyle = k === sel ? "#fff" : color(k, focus ? 0.3 : 0.95);
+    const edge = (nx, ny) => (S.grid[ny]?.[nx] ?? null) !== k;
+    ctx.beginPath();
+    if (edge(x, y - 1)) { ctx.moveTo(px(x), py(y)); ctx.lineTo(px(x + 1), py(y)); }
+    if (edge(x, y + 1)) { ctx.moveTo(px(x), py(y + 1)); ctx.lineTo(px(x + 1), py(y + 1)); }
+    if (edge(x - 1, y)) { ctx.moveTo(px(x), py(y)); ctx.lineTo(px(x), py(y + 1)); }
+    if (edge(x + 1, y)) { ctx.moveTo(px(x + 1), py(y)); ctx.lineTo(px(x + 1), py(y + 1)); }
+    ctx.stroke();
+  }
+  if ($("#optRail").checked) drawRail(px, py, C);
+  if ($("#optLabels").checked) {
+    ctx.font = `600 ${Math.max(9, Z * 2.6)}px system-ui, sans-serif`;
+    ctx.textAlign = "center"; ctx.textBaseline = "middle";
+    ctx.lineJoin = "round";
+    const seen = new Set(S.grid.flat().filter(Boolean));
+    for (const k of seen) {
+      const cells = cellsOf(k);
+      const cx = cells.reduce((s, c) => s + c[0], 0) / cells.length, cy = cells.reduce((s, c) => s + c[1], 0) / cells.length;
+      const label = areaByKey(k)?.name || k.replace("MAPSEC_", "");
+      ctx.lineWidth = 3; ctx.strokeStyle = "rgba(0,0,0,0.85)";
+      ctx.strokeText(label, px(cx) + C / 2, py(cy) + C / 2);
+      ctx.fillStyle = focus && k !== sel ? "rgba(255,255,255,0.35)" : "#fff";
+      ctx.fillText(label, px(cx) + C / 2, py(cy) + C / 2);
+    }
+  }
+  if (hoverCell) {
+    ctx.strokeStyle = "#ffe066"; ctx.lineWidth = 2;
+    ctx.strokeRect(px(hoverCell[0]) + 1, py(hoverCell[1]) + 1, C - 2, C - 2);
+  }
+}
+
+function drawRail(px, py, C) {
+  const mid = (c) => [px(c[0]) + C / 2, py(c[1]) + C / 2];
+  ctx.lineCap = "round"; ctx.lineJoin = "round";
+  for (const l of S.lines) {
+    const pts = l.points.map(pointCell).filter(Boolean).map(mid);
+    if (pts.length < 2) continue;
+    const dim = selLine && l.key !== selLine;
+    for (const [w, col] of [[C * 0.42, "rgba(0,0,0,0.75)"], [C * 0.28, l.color]]) {
+      ctx.globalAlpha = dim ? 0.35 : 1;
+      ctx.lineWidth = w; ctx.strokeStyle = col;
+      ctx.beginPath(); pts.forEach((p, i) => (i ? ctx.lineTo(...p) : ctx.moveTo(...p))); ctx.stroke();
+    }
+    ctx.globalAlpha = 1;
+    if (l.key === selLine) { // bend handles
+      ctx.fillStyle = "#fff";
+      l.points.forEach((p) => { if (!p.area) { const [x, y] = mid([p.x, p.y]); ctx.fillRect(x - 2, y - 2, 4, 4); } });
+    }
+  }
+  for (const a of S.areas) {
+    if (!a.station) continue;
+    const c = stationCell(a); if (!c) continue;
+    const [x, y] = mid(c), r = C * 0.3;
+    ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2);
+    ctx.fillStyle = "#fff"; ctx.fill();
+    ctx.lineWidth = Math.max(2, C * 0.1); ctx.strokeStyle = "#111"; ctx.stroke();
+  }
+}
+
+function cellAt(ev) {
+  const r = cv.getBoundingClientRect();
+  const sx = (ev.clientX - r.left) * (cv.width / r.width), sy = (ev.clientY - r.top) * (cv.height / r.height);
+  const C = 8 * zoom, [ox, oy] = repo.gridOrigin, [W, H] = repo.size;
+  const x = Math.floor(sx / C) - ox, y = Math.floor(sy / C) - oy;
+  return x >= 0 && y >= 0 && x < W && y < H ? [x, y] : null;
+}
+
+let stroke = null; // {mode, touched}
+function applyCell(c, mode) {
+  const [x, y] = c;
+  const v = mode === "erase" ? null : sel;
+  if (S.grid[y][x] === v) return false;
+  S.grid[y][x] = v; return true;
+}
+function floodFill(c) {
+  const [W, H] = repo.size, from = S.grid[c[1]][c[0]];
+  if (from === sel) return false;
+  const st = [c];
+  while (st.length) {
+    const [x, y] = st.pop();
+    if (x < 0 || y < 0 || x >= W || y >= H || S.grid[y][x] !== from) continue;
+    S.grid[y][x] = sel; st.push([x + 1, y], [x - 1, y], [x, y + 1], [x, y - 1]);
+  }
+  return true;
+}
+cv.addEventListener("contextmenu", (e) => e.preventDefault());
+cv.addEventListener("mousedown", (e) => {
+  const c = cellAt(e); if (!c) return;
+  const mode = e.altKey ? "pick" : e.button === 2 ? "erase" : tool;
+  if (mode === "pick") { const k = S.grid[c[1]][c[0]]; if (k) selectArea(k, true); return; }
+  if (tool === "line" && !e.altKey) { lineClick(c, e.button === 2); return; }
+  if (tool === "station" && e.button === 0) {
+    const k = S.grid[c[1]][c[0]] || null, a = k && areaByKey(k);
+    if (!a) { setDirty(dirty, "paint an area there first"); return; }
+    snapshot();
+    const cur = stationCell(a);
+    if (a.station && cur && cur[0] === c[0] && cur[1] === c[1]) a.station = false;
+    else { a.station = true; a.stationCell = c; }
+    sel = k; changed(); return;
+  }
+  if (!sel && mode !== "erase") { setDirty(dirty, "select an area first"); return; }
+  snapshot();
+  if (mode === "fill") { if (floodFill(c)) changed(); else undo.pop(); return; }
+  stroke = { mode, touched: applyCell(c, mode) };
+  drawMap();
+});
+window.addEventListener("mouseup", () => {
+  if (!stroke) return;
+  if (stroke.touched) changed(); else undo.pop();
+  stroke = null;
+});
+cv.addEventListener("mousemove", (e) => {
+  const c = cellAt(e);
+  hoverCell = c;
+  if (stroke && c && applyCell(c, stroke.mode)) stroke.touched = true;
+  if (c) {
+    const k = S.grid[c[1]][c[0]], a = k && areaByKey(k);
+    $("#hover").textContent = `(${c[0]}, ${c[1]})  ` + (a ? `${a.id} — ${a.name || "(no name)"}` : "MAPSEC_NONE");
+  } else $("#hover").textContent = "";
+  drawMap();
+});
+cv.addEventListener("mouseleave", () => { hoverCell = null; $("#hover").textContent = ""; drawMap(); });
+
+function lineClick(c, removeLast) {
+  const l = selLine && lineByKey(selLine);
+  if (!l) { setDirty(dirty, "select or create a line in the Rail tab first"); return; }
+  snapshot();
+  if (removeLast) { if (!l.points.pop()) { undo.pop(); return; } changed(); return; }
+  const k = S.grid[c[1]][c[0]], a = k && areaByKey(k);
+  const p = a && a.station ? { area: k } : { x: c[0], y: c[1] };
+  const last = l.points[l.points.length - 1];
+  if (last && JSON.stringify(last) === JSON.stringify(p)) { undo.pop(); return; }
+  l.points.push(p); changed();
+}
+
+// ---------- areas pane ----------
+function areaChanges(a) {
+  const tags = [];
+  if (!a.originalId) tags.push(["new", "new"]);
+  else {
+    if (a.id !== a.originalId) tags.push(["chg", "id"]);
+    if (a.name !== a.origName) tags.push(["chg", "name"]);
+    const now = JSON.stringify(cellsOf(a.key));
+    const was = JSON.stringify(repo.grid.flatMap((r, y) => r.map((c, x) => (c === a.originalId ? [x, y] : null))).filter(Boolean));
+    if (now !== was) tags.push(["chg", "cells"]);
+  }
+  return tags;
+}
+function renderAreas() {
+  const q = $("#areaSearch").value.trim().toLowerCase();
+  const onMap = $("#optOnMap").checked, kanto = $("#optKanto").checked;
+  const placed = new Set(S.grid.flat().filter(Boolean));
+  const list = S.areas.filter((a) =>
+    (repo.region === "tiksi" ? (a.kanto || a.key === sel) : (kanto || !a.kanto || a.key === sel)) &&
+    (!onMap || placed.has(a.key) || a.key === sel) &&
+    (!$("#optStations").checked || a.station) &&
+    (!q || (a.id + " " + a.name).toLowerCase().includes(q)));
+  // placed areas first, then the rest, each in enum order
+  list.sort((a, b) => (placed.has(b.key) - placed.has(a.key)));
+  $("#areaList").innerHTML = list.length ? "" : `<div class="empty">No areas match.</div>`;
+  const frag = document.createDocumentFragment();
+  for (const a of list) {
+    const d = document.createElement("div");
+    d.className = "area" + (a.key === sel ? " sel" : "");
+    const n = placed.has(a.key) ? cellsOf(a.key).length : 0;
+    const badges = areaChanges(a).map(([c, t]) => `<span class="badge ${c}">${t}</span>`).join("");
+    d.innerHTML = `<span class="sw" style="background:${n ? color(a.key, 1) : "transparent"}"></span>
+      <span class="nm">${esc(a.name || "(no name)")}<br><span class="id">${esc(a.id)}</span></span>
+      ${badges}${a.station ? `<span class="badge" style="background:#fff;color:#111">station</span>` : ""}<span class="badge">${n ? n + " cell" + (n > 1 ? "s" : "") : "off map"}</span>`;
+    d.onclick = () => selectArea(a.key);
+    frag.appendChild(d);
+  }
+  $("#areaList").appendChild(frag);
+  renderDetail();
+}
+function esc(s) { return String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c])); }
+
+function renderDetail() {
+  const el = $("#detail"), a = sel && areaByKey(sel);
+  if (!a) { el.innerHTML = `<div class="full lab">Select an area to edit its name and see its maps.</div>`; return; }
+  const maps = Object.entries(S.mapAssign).filter(([, k]) => k === a.key).map(([f]) => f).sort();
+  const bb = bbox(cellsOf(a.key));
+  const dupId = S.areas.some((o) => o !== a && o.id === a.id);
+  el.innerHTML = `
+    <span class="lab">Name</span><input id="dName" value="${esc(a.name)}" maxlength="40" placeholder="In-game name">
+    ${a.name.length > NAME_MAX ? `<span></span><span class="warn">${a.name.length}/${NAME_MAX} chars — longer than MAP_NAME_LENGTH, may overflow the name box</span>` : ""}
+    <span class="lab">ID</span><div style="display:flex;gap:4px"><input id="dId" value="${esc(a.id)}" spellcheck="false"><button id="dIdAuto" title="Derive ID from name">↺</button></div>
+    ${dupId ? `<span></span><span class="warn" style="color:var(--bad)">another area already uses this ID</span>` : ""}
+    ${a.originalId && a.id !== a.originalId ? `<span></span><span class="warn">renamed from ${esc(a.originalId)}</span>` : ""}
+    <span class="lab">Station</span><label style="display:flex;gap:6px;align-items:center;cursor:pointer"><input type="checkbox" id="dStation" style="width:auto" ${a.station ? "checked" : ""}> has a train station
+      ${a.station ? `<span class="lab" style="font-size:11px">— ${linesServing(a.key).map((l) => esc(l.name)).join(", ") || "no lines yet"}</span>` : ""}</label>
+    <span class="lab">Kind</span><select id="dKind">${KINDS.map((k) => `<option ${k === a.kind ? "selected" : ""}>${k}</option>`).join("")}</select>
+    <span class="lab">Notes</span><textarea id="dNotes" placeholder="Anything I should know when applying this (landmark, connections, music…)">${esc(a.notes || "")}</textarea>
+    <span class="lab">Cells</span><span>${bb ? `${cellsOf(a.key).length} — box x${bb.x} y${bb.y} ${bb.width}×${bb.height}` : "not on the map"}
+      ${bb ? ` <button id="dClear" style="padding:1px 6px">clear</button>` : ""}</span>
+    <span class="lab">Maps</span><div class="maplist">${maps.map((f) => `<span class="chip" data-f="${esc(f)}" title="Click to unassign (→ MAPSEC_NONE)">${esc(f)}</span>`).join("") || `<span class="lab">none — assign in the Maps tab</span>`}</div>
+    ${!a.originalId ? `<span></span><button id="dDel" style="color:var(--bad)">Delete new area</button>` : ""}`;
+  const commitText = (field, input) => {
+    input.addEventListener("focus", () => snapshot(), { once: true });
+    input.addEventListener("input", () => { a[field] = input.value; setDirty(true); drawMap(); });
+    input.addEventListener("change", () => renderAreas());
+  };
+  commitText("name", $("#dName"));
+  commitText("notes", $("#dNotes"));
+  const idIn = $("#dId");
+  idIn.addEventListener("focus", () => snapshot(), { once: true });
+  idIn.addEventListener("change", () => { a.id = idIn.value.trim().toUpperCase(); if (!a.id.startsWith("MAPSEC_")) a.id = "MAPSEC_" + a.id; changed(); });
+  $("#dIdAuto").onclick = () => { if (!a.name) return; snapshot(); a.id = toId(a.name); changed(); };
+  $("#dStation").onchange = (e) => { snapshot(); a.station = e.target.checked; changed(); };
+  $("#dKind").onchange = (e) => { snapshot(); a.kind = e.target.value; changed(); };
+  if ($("#dClear")) $("#dClear").onclick = () => { snapshot(); S.grid = S.grid.map((r) => r.map((c) => (c === a.key ? null : c))); changed(); };
+  el.querySelectorAll(".chip").forEach((c) => c.onclick = () => { snapshot(); S.mapAssign[c.dataset.f] = "MAPSEC_NONE"; changed(); });
+  if ($("#dDel")) $("#dDel").onclick = () => {
+    snapshot();
+    S.areas = S.areas.filter((o) => o !== a);
+    S.grid = S.grid.map((r) => r.map((c) => (c === a.key ? null : c)));
+    for (const f in S.mapAssign) if (S.mapAssign[f] === a.key) S.mapAssign[f] = "MAPSEC_NONE";
+    sel = null; changed();
+  };
+}
+
+function linesServing(k) { return S.lines.filter((l) => l.points.some((p) => p.area === k)); }
+
+// ---------- rail pane ----------
+const LINE_COLORS = ["#c060d0", "#30b0b0", "#50b050", "#e08030", "#d04050", "#4070e0"];
+function renderLines() {
+  const el = $("#lineList");
+  el.innerHTML = "";
+  if (!S.lines.length) el.innerHTML = `<div class="empty">No lines yet.</div>`;
+  for (const l of S.lines) {
+    const d = document.createElement("div");
+    d.className = "line" + (l.key === selLine ? " sel" : "");
+    const stops = l.points.filter((p) => p.area).map((p) => {
+      const a = areaByKey(p.area);
+      return a ? (a.station ? esc(a.name || a.id) : `<span style="color:var(--bad)">${esc(a.name || a.id)} (not a station)</span>`) : `<span style="color:var(--bad)">missing area</span>`;
+    });
+    d.innerHTML = `<input type="color" value="${l.color}"><input class="ln" value="${esc(l.name)}" placeholder="Line name"><span class="badge">${stops.length} stops</span>
+      <div class="stops">${stops.join(" → ") || "click stations on the map with the Line tool"}</div>
+      ${l.key === selLine ? `<div class="acts"><button data-a="pop">Remove last point</button><button data-a="rev">Reverse</button><button data-a="clear">Clear</button><button data-a="del" style="color:var(--bad)">Delete line</button></div>` : ""}`;
+    d.onclick = (e) => { if (e.target.closest("input,button")) return; selLine = l.key; setTool("line"); renderAll(); };
+    const [colIn, nameIn] = d.querySelectorAll("input");
+    colIn.onfocus = nameIn.onfocus = () => { selLine = l.key; };
+    colIn.oninput = () => { l.color = colIn.value; setDirty(true); drawMap(); };
+    colIn.onchange = () => { snapshot(); changed(); };
+    nameIn.addEventListener("focus", () => snapshot(), { once: true });
+    nameIn.oninput = () => { l.name = nameIn.value; setDirty(true); };
+    d.querySelectorAll("[data-a]").forEach((b) => b.onclick = () => {
+      snapshot();
+      if (b.dataset.a === "pop") l.points.pop();
+      if (b.dataset.a === "rev") l.points.reverse();
+      if (b.dataset.a === "clear") l.points = [];
+      if (b.dataset.a === "del") { S.lines = S.lines.filter((o) => o !== l); selLine = null; }
+      changed();
+    });
+    el.appendChild(d);
+  }
+  const stations = S.areas.filter((a) => a.station);
+  const h = document.createElement("div");
+  h.innerHTML = `<h3>Stations (${stations.length})</h3>` + (stations.map((a) => {
+    const ls = linesServing(a.key);
+    return `<div class="area" data-k="${esc(a.key)}"><span class="sw" style="background:#fff;border-radius:50%"></span><span class="nm">${esc(a.name || a.id)}</span>
+      ${ls.map((l) => `<span class="badge" style="background:${l.color};color:#111">${esc(l.name)}</span>`).join("") || `<span class="badge chg">unconnected</span>`}</div>`;
+  }).join("") || `<div class="empty">Tick “has a train station” on an area, or use the Station tool.</div>`);
+  h.querySelectorAll("[data-k]").forEach((r) => r.onclick = () => selectArea(r.dataset.k));
+  el.appendChild(h);
+}
+$("#btnNewLine").onclick = () => {
+  snapshot();
+  let n = 1; while (lineByKey("line_" + n)) n++;
+  S.lines.push({ key: "line_" + n, name: "Line " + n, color: LINE_COLORS[(n - 1) % LINE_COLORS.length], points: [] });
+  selLine = "line_" + n; setTool("line"); changed();
+};
+
+function selectArea(k, scroll) {
+  sel = k;
+  const a = areaByKey(k);
+  if (a?.kanto) $("#optKanto").checked = true;
+  renderAll();
+  if (scroll) $("#areaList .area.sel")?.scrollIntoView({ block: "nearest" });
+}
+
+$("#btnNew").onclick = () => {
+  const name = prompt("Name of the new area (as shown in game):");
+  if (!name) return;
+  snapshot();
+  let n = 1; while (areaByKey("NEW_" + n)) n++;
+  const key = "NEW_" + n;
+  S.areas.push({ key, id: toId(name), originalId: null, name, origName: "", kind: guessKind(toId(name)), notes: "", kanto: false });
+  sel = key; changed();
+  $("#areaList .area.sel")?.scrollIntoView({ block: "nearest" });
+};
+
+// ---------- maps pane ----------
+const checked = new Set();
+function renderMaps() {
+  const q = $("#mapSearch").value.trim().toLowerCase();
+  const onlySel = $("#optMapsSel").checked, onlyChg = $("#optMapsChg").checked, outdoor = $("#optMapsOut").checked;
+  const rows = repo.maps.filter((m) => {
+    const cur = S.mapAssign[m.folder];
+    if (onlySel && cur !== sel) return false;
+    if (onlyChg && cur === m.mapsec) return false;
+    if (outdoor && !OUTDOOR.has(m.type)) return false;
+    const a = areaByKey(cur);
+    return !q || (m.folder + " " + cur + " " + (a?.id || "") + " " + (a?.name || "")).toLowerCase().includes(q);
+  });
+  const a = sel && areaByKey(sel);
+  $("#btnAssign").disabled = !a || !checked.size;
+  $("#assignTarget").textContent = a ? `${checked.size} checked → ${a.name || a.id}` : "select an area first";
+  if (!rows.length) { $("#mapList").innerHTML = `<div class="empty">No maps match.</div>`; return; }
+  $("#mapList").innerHTML = `<table><thead><tr><th><input type="checkbox" id="chkAll"></th><th>Map</th><th>Area</th></tr></thead><tbody>${rows.map((m) => {
+    const cur = S.mapAssign[m.folder], ca = areaByKey(cur);
+    return `<tr class="${cur !== m.mapsec ? "chg" : ""}"><td><input type="checkbox" data-f="${esc(m.folder)}" ${checked.has(m.folder) ? "checked" : ""}></td>
+      <td class="f">${esc(m.folder)}<br><span style="color:var(--muted)">${esc((m.type || "").replace("MAP_TYPE_", "").toLowerCase())}</span></td>
+      <td><span class="sec" data-f="${esc(m.folder)}" title="Click to select this area">${ca ? `<span class="sw" style="display:inline-block;vertical-align:-2px;background:${color(cur, 1)}"></span> ${esc(ca.name || ca.id)}` : esc(cur)}</span>
+      ${cur !== m.mapsec ? `<br><span style="color:var(--muted);font-size:11px">was ${esc(areaByKey(m.mapsec)?.name || m.mapsec)}</span>` : ""}</td></tr>`;
+  }).join("")}</tbody></table>`;
+  $("#chkAll").onchange = (e) => { rows.forEach((m) => e.target.checked ? checked.add(m.folder) : checked.delete(m.folder)); renderMaps(); };
+  $("#mapList").querySelectorAll("input[data-f]").forEach((c) => c.onchange = () => { c.checked ? checked.add(c.dataset.f) : checked.delete(c.dataset.f); renderMaps(); });
+  $("#mapList").querySelectorAll(".sec").forEach((s) => s.onclick = () => { const k = S.mapAssign[s.dataset.f]; if (areaByKey(k)) selectArea(k); });
+}
+$("#btnAssign").onclick = () => {
+  if (!sel || !checked.size) return;
+  snapshot();
+  for (const f of checked) S.mapAssign[f] = sel;
+  checked.clear(); changed();
+};
+
+// ---------- save ----------
+function exportTags() {
+  return {
+    version: 1,
+    note: "Generated by dev_scripts/region_map_tagger. grid is [y][x] of area keys over the 28x15 region map grid.",
+    areas: S.areas.map((a) => {
+      const cells = cellsOf(a.key);
+      return {
+        ...a, cells, bbox: bbox(cells),
+        stationPos: a.station ? stationCell(a) : undefined,
+        maps: Object.entries(S.mapAssign).filter(([, k]) => k === a.key).map(([f]) => f).sort(),
+        changes: areaChanges(a).map((t) => t[1]),
+      };
+    }),
+    grid: S.grid,
+    mapAssign: S.mapAssign,
+    lines: S.lines,
+    // network.json-style view: station-to-station edges with bend cells in between
+    railEdges: S.lines.flatMap((l) => {
+      const out = []; let from = null, via = [];
+      for (const p of l.points) {
+        if (p.area) { if (from) out.push({ a: areaByKey(from)?.id, b: areaByKey(p.area)?.id, line: l.name, via }); from = p.area; via = []; }
+        else via.push([p.x, p.y]);
+      }
+      return out;
+    }),
+    mapChanges: repo.maps.filter((m) => S.mapAssign[m.folder] !== m.mapsec)
+      .map((m) => ({ folder: m.folder, from: m.mapsec, to: S.mapAssign[m.folder] })),
+  };
+}
+async function save() {
+  const ids = S.areas.map((a) => a.id), dup = ids.find((id, i) => ids.indexOf(id) !== i);
+  if (dup && !confirm(`Two areas share ${dup}. Save anyway?`)) return;
+  const r = await fetch("/api/tags", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(exportTags()) });
+  const j = await r.json();
+  setDirty(false, j.ok ? `saved ${new Date().toLocaleTimeString()}` : "save failed");
+}
+$("#btnSave").onclick = save;
+$("#btnReset").onclick = () => { if (confirm("Discard all tagging and reload from the repo's current region map? (tags.json is only overwritten when you save.)")) { sel = null; load(true).then(() => setDirty(true, "reset — save to overwrite tags.json")); } };
+
+function doUndo(from, to) { if (!from.length) return; to.push(JSON.stringify(S)); S = JSON.parse(from.pop()); if (sel && !areaByKey(sel)) sel = null; if (selLine && !lineByKey(selLine)) selLine = null; changed(); }
+$("#btnUndo").onclick = () => doUndo(undo, redo);
+$("#btnRedo").onclick = () => doUndo(redo, undo);
+
+// ---------- wiring ----------
+function setTool(t) { tool = t; document.querySelectorAll("[data-tool]").forEach((b) => b.classList.toggle("on", b.dataset.tool === t)); }
+document.querySelectorAll("[data-tool]").forEach((b) => b.onclick = () => setTool(b.dataset.tool));
+document.querySelectorAll("[data-tab]").forEach((b) => b.onclick = () => {
+  document.querySelectorAll("[data-tab]").forEach((x) => x.classList.toggle("on", x === b));
+  document.querySelectorAll(".pane").forEach((p) => p.classList.toggle("on", p.id === "pane-" + b.dataset.tab));
+  renderAll();
+});
+["#optGrid", "#optLabels", "#optFocus", "#optRail", "#optRoutes"].forEach((s) => $(s).onchange = drawMap);
+["#optOnMap", "#optKanto", "#optStations"].forEach((s) => $(s).onchange = renderAreas);
+$("#areaSearch").oninput = renderAreas;
+["#optMapsSel", "#optMapsChg", "#optMapsOut"].forEach((s) => $(s).onchange = renderMaps);
+$("#mapSearch").oninput = renderMaps;
+$("#zoom").onchange = (e) => { zoom = +e.target.value; drawMap(); };
+window.addEventListener("keydown", (e) => {
+  const mod = e.metaKey || e.ctrlKey;
+  if (mod && e.key.toLowerCase() === "s") { e.preventDefault(); save(); return; }
+  if (e.target.matches("input, textarea, select")) return;
+  if (mod && e.key.toLowerCase() === "z") { e.preventDefault(); e.shiftKey ? doUndo(redo, undo) : doUndo(undo, redo); return; }
+  const t = { b: "paint", e: "erase", i: "pick", g: "fill", s: "station", l: "line" }[e.key.toLowerCase()];
+  if (t && !mod) setTool(t);
+  if (e.key === "Escape") { sel = null; renderAll(); }
+});
+window.addEventListener("beforeunload", (e) => { if (dirty) { e.preventDefault(); e.returnValue = ""; } });
+
+function renderAll() {
+  drawMap(); renderAreas();
+  if ($("#pane-maps").classList.contains("on")) renderMaps();
+  if ($("#pane-lines").classList.contains("on")) renderLines();
+}
+load(false).catch((err) => { $("#status").textContent = "load failed: " + err; });
+</script>
+</body>
+</html>
