@@ -96,100 +96,124 @@ Geodude
 Level: 21
 IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 
-=== TRAINER_GRUNT_AQUA_HIDEOUT_1 ===
-Name: GRUNT
-Class: Team Aqua
-Pic: Aqua Grunt M
+=== TRAINER_AH_HUAT ===
+Name: AH HUAT
+Class: Fisherman
+Pic: Fisherman
 Gender: Male
-Music: Aqua
+Music: Hiker
 Double Battle: No
 AI: Check Bad Move
+
+Magikarp
+Level: 3
+IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+
+Corphish
+Level: 4
+IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+
+=== TRAINER_DARREN ===
+Name: DARREN
+Class: Camper
+Pic: Camper
+Gender: Male
+Music: Male
+Double Battle: No
+AI: Check Bad Move
+
+Starly
+Level: 4
+IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 
 Poochyena
-Level: 32
+Level: 3
 IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 
-=== TRAINER_GRUNT_AQUA_HIDEOUT_2 ===
-Name: GRUNT
-Class: Team Aqua
-Pic: Aqua Grunt M
-Gender: Male
-Music: Aqua
+=== TRAINER_MEI_LING ===
+Name: MEI LING
+Class: Picnicker
+Pic: Picnicker
+Gender: Female
+Music: Girl
 Double Battle: No
 AI: Check Bad Move
 
-Zubat
-Level: 31
-IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+Flaaffy
+Level: 24
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
 
-Carvanha
-Level: 31
-IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+Staravia
+Level: 24
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
 
-=== TRAINER_GRUNT_AQUA_HIDEOUT_3 ===
-Name: GRUNT
-Class: Team Aqua
-Pic: Aqua Grunt M
+=== TRAINER_RIZAL ===
+Name: RIZAL
+Class: Hiker
+Pic: Hiker
 Gender: Male
-Music: Aqua
+Music: Hiker
 Double Battle: No
 AI: Check Bad Move
 
-Zubat
-Level: 32
-IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+Geodude
+Level: 24
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
 
-=== TRAINER_GRUNT_AQUA_HIDEOUT_4 ===
-Name: GRUNT
-Class: Team Aqua
-Pic: Aqua Grunt M
+Boldore
+Level: 25
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+=== TRAINER_JUN_JIE ===
+Name: JUN JIE
+Class: Triathlete
+Pic: Cycling Triathlete M
 Gender: Male
-Music: Aqua
+Music: Male
 Double Battle: No
 AI: Check Bad Move
 
-Carvanha
-Level: 32
-IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+Linoone
+Level: 25
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
 
-=== TRAINER_GRUNT_SEAFLOOR_CAVERN_1 ===
-Name: GRUNT
-Class: Team Aqua
-Pic: Aqua Grunt M
-Gender: Male
-Music: Aqua
+Zebstrika
+Level: 27
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+=== TRAINER_PRIYA ===
+Name: PRIYA
+Class: Picnicker
+Pic: Picnicker
+Gender: Female
+Music: Girl
 Double Battle: No
 AI: Check Bad Move
 
-Poochyena
-Level: 36
-IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+Lombre
+Level: 25
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
 
-=== TRAINER_GRUNT_SEAFLOOR_CAVERN_2 ===
-Name: GRUNT
-Class: Team Aqua
-Pic: Aqua Grunt M
+Masquerain
+Level: 26
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+=== TRAINER_RAVI ===
+Name: RAVI
+Class: Hiker
+Pic: Hiker
 Gender: Male
-Music: Aqua
+Music: Hiker
 Double Battle: No
 AI: Check Bad Move
 
-Carvanha
-Level: 36
-IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+Onix
+Level: 25
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
 
-=== TRAINER_GRUNT_SEAFLOOR_CAVERN_3 ===
-Name: GRUNT
-Class: Team Aqua
-Pic: Aqua Grunt M
-Gender: Male
-Music: Aqua
-Double Battle: No
-AI: Check Bad Move
-
-Zubat
-Level: 36
-IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+Graveler
+Level: 26
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
 
 === TRAINER_GABRIELLE_1 ===
 Name: GABRIELLE

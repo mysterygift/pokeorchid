@@ -39,9 +39,9 @@
       "movement_type": "MOVEMENT_TYPE_NONE",
       "movement_range_x": 0,
       "movement_range_y": 0,
-      "trainer_type": "TRAINER_TYPE_NORMAL",
+      "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
-      "script": "NULL",
+      "script": "SouthTosaReserve_EventScript_FieldNurse",
       "flag": "0"
     },
     {
@@ -54,7 +54,7 @@
       "movement_range_y": 0,
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
-      "script": "NULL",
+      "script": "SouthTosaReserve_EventScript_Ranger",
       "flag": "0"
     },
     {
@@ -66,8 +66,8 @@
       "movement_range_x": 0,
       "movement_range_y": 0,
       "trainer_type": "TRAINER_TYPE_NORMAL",
-      "trainer_sight_or_berry_tree_id": "0",
-      "script": "NULL",
+      "trainer_sight_or_berry_tree_id": "2",
+      "script": "SouthTosaReserve_EventScript_AhHuat",
       "flag": "0"
     },
     {
@@ -80,7 +80,7 @@
       "movement_range_y": 0,
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
-      "script": "NULL",
+      "script": "SouthTosaReserve_EventScript_FishermanRiver",
       "flag": "0"
     },
     {
@@ -93,7 +93,7 @@
       "movement_range_y": 0,
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
-      "script": "NULL",
+      "script": "SouthTosaReserve_EventScript_GirlByTent",
       "flag": "0"
     },
     {
@@ -130,9 +130,9 @@
       "movement_type": "MOVEMENT_TYPE_FACE_DOWN_AND_RIGHT",
       "movement_range_x": 0,
       "movement_range_y": 0,
-      "trainer_type": "TRAINER_TYPE_NORMAL",
+      "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
-      "script": "NULL",
+      "script": "SouthTosaReserve_EventScript_WomanByFlowers",
       "flag": "0"
     },
     {
@@ -144,8 +144,8 @@
       "movement_range_x": 0,
       "movement_range_y": 0,
       "trainer_type": "TRAINER_TYPE_NORMAL",
-      "trainer_sight_or_berry_tree_id": "0",
-      "script": "NULL",
+      "trainer_sight_or_berry_tree_id": "4",
+      "script": "SouthTosaReserve_EventScript_Darren",
       "flag": "0"
     },
     {
@@ -183,8 +183,8 @@
       "movement_range_x": 3,
       "movement_range_y": 0,
       "trainer_type": "TRAINER_TYPE_NORMAL",
-      "trainer_sight_or_berry_tree_id": "0",
-      "script": "NULL",
+      "trainer_sight_or_berry_tree_id": "3",
+      "script": "SouthTosaReserve_EventScript_JunJie",
       "flag": "0"
     },
     {
@@ -196,8 +196,8 @@
       "movement_range_x": 0,
       "movement_range_y": 0,
       "trainer_type": "TRAINER_TYPE_NORMAL",
-      "trainer_sight_or_berry_tree_id": "0",
-      "script": "NULL",
+      "trainer_sight_or_berry_tree_id": "3",
+      "script": "SouthTosaReserve_EventScript_Priya",
       "flag": "0"
     },
     {
@@ -210,7 +210,7 @@
       "movement_range_y": 0,
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
-      "script": "NULL",
+      "script": "SouthTosaReserve_EventScript_HikerLookout",
       "flag": "0"
     },
     {
@@ -222,8 +222,8 @@
       "movement_range_x": 0,
       "movement_range_y": 0,
       "trainer_type": "TRAINER_TYPE_NORMAL",
-      "trainer_sight_or_berry_tree_id": "0",
-      "script": "NULL",
+      "trainer_sight_or_berry_tree_id": "4",
+      "script": "SouthTosaReserve_EventScript_Rizal",
       "flag": "0"
     },
     {
@@ -235,8 +235,8 @@
       "movement_range_x": 0,
       "movement_range_y": 0,
       "trainer_type": "TRAINER_TYPE_NORMAL",
-      "trainer_sight_or_berry_tree_id": "0",
-      "script": "NULL",
+      "trainer_sight_or_berry_tree_id": "4",
+      "script": "SouthTosaReserve_EventScript_Ravi",
       "flag": "0"
     },
     {
@@ -248,8 +248,8 @@
       "movement_range_x": 0,
       "movement_range_y": 0,
       "trainer_type": "TRAINER_TYPE_NORMAL",
-      "trainer_sight_or_berry_tree_id": "0",
-      "script": "NULL",
+      "trainer_sight_or_berry_tree_id": "4",
+      "script": "SouthTosaReserve_EventScript_MeiLing",
       "flag": "0"
     },
     {

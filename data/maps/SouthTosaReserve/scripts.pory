@@ -42,3 +42,181 @@ SouthTosaReserve_Text_RouteSign:
 	.string "{DOWN_ARROW} Tosa Port$"
 
 `
+
+// ---------------------------------------------------------------------------
+// West bank: the walk from Tosa Port up to Telok Town. The player has only
+// their Lv5 starter here (no Poké Balls yet), so trainers sit at Lv3-4.
+// ---------------------------------------------------------------------------
+
+script SouthTosaReserve_EventScript_Ranger {
+	msgbox(format("Welcome to the Tosa Reserve! I'm one of the Pokémon Rangers who look after it.\pWe've had all sorts of Pokémon turning up lately that don't belong here, so keep your eyes peeled.\pIf your Pokémon get worn out, our Field Nurse has a tent just up the path.\pUs rangers are here if you need any help."), MSGBOX_NPC)
+	end
+}
+
+script SouthTosaReserve_EventScript_FieldNurse {
+	lock
+	faceplayer
+	msgbox(format("Hello there! I'm the Field Nurse for this part of the reserve.\pWould you like me to look after your Pokémon?"), MSGBOX_YESNO)
+	if (var(VAR_RESULT) == NO) {
+		msgbox(format("All right. Take care out there!"))
+		release
+		end
+	}
+	msgbox(format("Leave it to me!"))
+	closemessage
+	call(Common_EventScript_OutOfCenterPartyHeal)
+	msgbox(format("There we go, all patched up! Come back any time you need me."))
+	release
+	end
+}
+
+script SouthTosaReserve_EventScript_GirlByTent {
+	msgbox(format("I came all the way to Tosa to see wild Pokémon. The Starly here are so cute!"), MSGBOX_NPC)
+	end
+}
+
+script SouthTosaReserve_EventScript_FishermanRiver {
+	msgbox(format("Used to be you'd only reel in Magikarp on this river.\pNow it's Corphish this, Corphish that. Somebody must have let them loose."), MSGBOX_NPC)
+	end
+}
+
+script SouthTosaReserve_EventScript_WomanByFlowers {
+	msgbox(format("A wild Mareep jumped out of the grass and paralysed my Pokémon!\pI'm so thankful there's a Field Nurse close by. She had them back on their feet in no time."), MSGBOX_NPC)
+	end
+}
+
+script SouthTosaReserve_EventScript_AhHuat {
+	trainerbattle_single(TRAINER_AH_HUAT, SouthTosaReserve_Text_AhHuatIntro, SouthTosaReserve_Text_AhHuatDefeat)
+	msgbox(SouthTosaReserve_Text_AhHuatPostBattle, MSGBOX_AUTOCLOSE)
+	end
+}
+
+script SouthTosaReserve_EventScript_Darren {
+	trainerbattle_single(TRAINER_DARREN, SouthTosaReserve_Text_DarrenIntro, SouthTosaReserve_Text_DarrenDefeat)
+	msgbox(SouthTosaReserve_Text_DarrenPostBattle, MSGBOX_AUTOCLOSE)
+	end
+}
+
+text SouthTosaReserve_Text_AhHuatIntro {
+	format("Nothing's biting today... Except this Corphish! Let's see how it does against you!")
+}
+
+text SouthTosaReserve_Text_AhHuatDefeat {
+	format("Aiyo, wiped out!")
+}
+
+text SouthTosaReserve_Text_AhHuatPostBattle {
+	format("Corphish never used to live in this river. Now I catch more of them than anything else.")
+}
+
+text SouthTosaReserve_Text_DarrenIntro {
+	format("I've been camping out here all week! My Pokémon are raring to go!")
+}
+
+text SouthTosaReserve_Text_DarrenDefeat {
+	format("Guess we need more training...")
+}
+
+text SouthTosaReserve_Text_DarrenPostBattle {
+	format("Telok Town is just up north. Watch out for the long grass on the way!")
+}
+
+// ---------------------------------------------------------------------------
+// East bank: only reachable by crossing the river with Surf, so these
+// trainers are around 20 levels above the west bank (Lv24-27).
+// ---------------------------------------------------------------------------
+
+script SouthTosaReserve_EventScript_HikerLookout {
+	msgbox(format("I've hiked these hills for thirty years. There are Pokémon around now that I never used to see."), MSGBOX_NPC)
+	end
+}
+
+script SouthTosaReserve_EventScript_MeiLing {
+	trainerbattle_single(TRAINER_MEI_LING, SouthTosaReserve_Text_MeiLingIntro, SouthTosaReserve_Text_MeiLingDefeat)
+	msgbox(SouthTosaReserve_Text_MeiLingPostBattle, MSGBOX_AUTOCLOSE)
+	end
+}
+
+script SouthTosaReserve_EventScript_Rizal {
+	trainerbattle_single(TRAINER_RIZAL, SouthTosaReserve_Text_RizalIntro, SouthTosaReserve_Text_RizalDefeat)
+	msgbox(SouthTosaReserve_Text_RizalPostBattle, MSGBOX_AUTOCLOSE)
+	end
+}
+
+script SouthTosaReserve_EventScript_JunJie {
+	trainerbattle_single(TRAINER_JUN_JIE, SouthTosaReserve_Text_JunJieIntro, SouthTosaReserve_Text_JunJieDefeat)
+	msgbox(SouthTosaReserve_Text_JunJiePostBattle, MSGBOX_AUTOCLOSE)
+	end
+}
+
+script SouthTosaReserve_EventScript_Priya {
+	trainerbattle_single(TRAINER_PRIYA, SouthTosaReserve_Text_PriyaIntro, SouthTosaReserve_Text_PriyaDefeat)
+	msgbox(SouthTosaReserve_Text_PriyaPostBattle, MSGBOX_AUTOCLOSE)
+	end
+}
+
+script SouthTosaReserve_EventScript_Ravi {
+	trainerbattle_single(TRAINER_RAVI, SouthTosaReserve_Text_RaviIntro, SouthTosaReserve_Text_RaviDefeat)
+	msgbox(SouthTosaReserve_Text_RaviPostBattle, MSGBOX_AUTOCLOSE)
+	end
+}
+
+text SouthTosaReserve_Text_MeiLingIntro {
+	format("I raised my Pokémon right here on the reserve. They've grown up so strong!")
+}
+
+text SouthTosaReserve_Text_MeiLingDefeat {
+	format("We'll have to try harder next picnic!")
+}
+
+text SouthTosaReserve_Text_MeiLingPostBattle {
+	format("My Flaaffy was just a little Mareep when I caught it. It zapped my whole team the first time we met!")
+}
+
+text SouthTosaReserve_Text_RizalIntro {
+	format("Climbing these rocks every day builds strength! Same goes for my Pokémon!")
+}
+
+text SouthTosaReserve_Text_RizalDefeat {
+	format("Ha! You're as tough as a boulder!")
+}
+
+text SouthTosaReserve_Text_RizalPostBattle {
+	format("The rangers keep telling me to stay off the cliffs. Where's the fun in that?")
+}
+
+text SouthTosaReserve_Text_JunJieIntro {
+	format("I cycle this loop every morning. Think you can keep pace?")
+}
+
+text SouthTosaReserve_Text_JunJieDefeat {
+	format("Outpaced and out-battled...")
+}
+
+text SouthTosaReserve_Text_JunJiePostBattle {
+	format("Lap twelve... Wait, or was it thirteen?")
+}
+
+text SouthTosaReserve_Text_PriyaIntro {
+	format("The river Pokémon are my favourite. Let me show you why!")
+}
+
+text SouthTosaReserve_Text_PriyaDefeat {
+	format("Oh no, my picnic's ruined!")
+}
+
+text SouthTosaReserve_Text_PriyaPostBattle {
+	format("The Lotad in the river grow into Lombre if you train them. Mine loves the shade up here.")
+}
+
+text SouthTosaReserve_Text_RaviIntro {
+	format("You made it all the way up here? Then you're ready for a real battle!")
+}
+
+text SouthTosaReserve_Text_RaviDefeat {
+	format("Crumbled like gravel...")
+}
+
+text SouthTosaReserve_Text_RaviPostBattle {
+	format("From the top of the plateau you can see the whole reserve. It's worth the climb.")
+}

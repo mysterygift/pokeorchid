@@ -6,13 +6,13 @@
 
 #define TRAINER_NONE                          0
 #define TRAINER_SAWYER_1                      1
-#define TRAINER_GRUNT_AQUA_HIDEOUT_1          2
-#define TRAINER_GRUNT_AQUA_HIDEOUT_2          3
-#define TRAINER_GRUNT_AQUA_HIDEOUT_3          4
-#define TRAINER_GRUNT_AQUA_HIDEOUT_4          5
-#define TRAINER_GRUNT_SEAFLOOR_CAVERN_1       6
-#define TRAINER_GRUNT_SEAFLOOR_CAVERN_2       7
-#define TRAINER_GRUNT_SEAFLOOR_CAVERN_3       8
+#define TRAINER_AH_HUAT                       2
+#define TRAINER_DARREN                        3
+#define TRAINER_MEI_LING                      4
+#define TRAINER_RIZAL                         5
+#define TRAINER_JUN_JIE                       6
+#define TRAINER_PRIYA                         7
+#define TRAINER_RAVI                          8
 #define TRAINER_GABRIELLE_1                   9
 #define TRAINER_GRUNT_PETALBURG_WOODS        10
 #define TRAINER_MARCEL                       11
@@ -866,6 +866,16 @@
 #define TRAINER_COLD_STORAGE_GRUNT_4        859
 #define TRAINER_COLD_STORAGE_ADMIN          860
 #define TRAINER_COLD_STORAGE_LEADER         861
+
+// Orchid: vanilla slots 2-8 were reused for South Tosa Reserve trainers. These aliases keep
+// the unused Hoenn maps that still reference the old names building.
+#define TRAINER_GRUNT_AQUA_HIDEOUT_1          TRAINER_AH_HUAT
+#define TRAINER_GRUNT_AQUA_HIDEOUT_2          TRAINER_DARREN
+#define TRAINER_GRUNT_AQUA_HIDEOUT_3          TRAINER_MEI_LING
+#define TRAINER_GRUNT_AQUA_HIDEOUT_4          TRAINER_RIZAL
+#define TRAINER_GRUNT_SEAFLOOR_CAVERN_1       TRAINER_JUN_JIE
+#define TRAINER_GRUNT_SEAFLOOR_CAVERN_2       TRAINER_PRIYA
+#define TRAINER_GRUNT_SEAFLOOR_CAVERN_3       TRAINER_RAVI
 
 // NOTE: Because each Trainer uses a flag to determine when they are defeated, there is only space for 2 additional trainers before trainer flag space overflows
 //       More space can be made by shifting flags around in constants/flags.h or changing how trainer flags are handled
