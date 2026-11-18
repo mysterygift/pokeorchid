@@ -62,10 +62,10 @@
 #define FLAG_ITEM_COLD_STORAGE_SUPER_POTION      0x28 // Cold Storage item ball
 #define FLAG_HIDE_COLD_STORAGE_GRUNTS            0x29 // Cold Storage: the four grunts leave with the leader and admin
 #define FLAG_HIDE_COLD_STORAGE_HARU              0x2A // Cold Storage: Haru is gone once the player has left after the multi battle
-#define FLAG_UNUSED_0x02B    0x2B // Unused Flag
-#define FLAG_UNUSED_0x02C    0x2C // Unused Flag
-#define FLAG_UNUSED_0x02D    0x2D // Unused Flag
-#define FLAG_UNUSED_0x02E    0x2E // Unused Flag
+#define FLAG_ITEM_SOUTH_TOSA_RESERVE_POTION        0x2B // South Tosa Reserve item ball (west bank)
+#define FLAG_ITEM_SOUTH_TOSA_RESERVE_PARALYZE_HEAL 0x2C // South Tosa Reserve item ball (west bank)
+#define FLAG_ITEM_SOUTH_TOSA_RESERVE_SUPER_POTION  0x2D // South Tosa Reserve item ball (river pocket, needs Surf)
+#define FLAG_ITEM_SOUTH_TOSA_RESERVE_REVIVE        0x2E // South Tosa Reserve item ball (east bank, needs Surf)
 #define FLAG_UNUSED_0x02F    0x2F // Unused Flag
 #define FLAG_UNUSED_0x030    0x30 // Unused Flag
 #define FLAG_UNUSED_0x031    0x31 // Unused Flag
