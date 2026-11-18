@@ -38,6 +38,7 @@ DECO = palette(
     y=(176, 232, 128), g=(112, 200, 104), v=(64, 152, 88), V=(40, 104, 72),
     U=(64, 112, 200), t=(240, 208, 144), T=(208, 160, 104),
     B=(168, 112, 72), b=(112, 72, 56), o=(184, 104, 208), r=(224, 72, 64),
+    m=(168, 176, 192),                                                   # marble table edge
 )
 PALETTES = {"centre_floor": FLOOR, "centre_wall": WALL, "centre_furniture": FURN, "centre_decor": DECO}
 SHADE = {FLOOR["F1"]: FLOOR["S1"], FLOOR["F2"]: FLOOR["S2"], FLOOR["F3"]: FLOOR["S3"]}
@@ -393,32 +394,34 @@ vgygvvgyvgvvgygv
 .....KKKKKK.....
 """
 TABLE = """
-..KKKKKKKKKKKK..
-.KWWWWWWWWWWWWK.
-KWWWWWWWWWWWWWWK
-KWWWWWWWWWWWWWWK
-KWWWWWWWWWWWWWWK
+...KKKKKKKKKK...
+..KWWWWWWWWWWK..
+.KWWWWWWWWWWWlK.
 KWWWWWWWWWWWWWlK
-KlWWWWWWWWWWWllK
-.KllllllllllllK.
+KWWWWWWWWWWWWWlK
+KWWWWWWWWWWWWllK
+KlWWWWWWWWWWlllK
+KmmmmmmmmmmmmmmK
+.KmmmmmmmmmmmmK.
 ..KKKKKKKKKKKK..
-......KbbK......
 ......KbbK......
 ....KKKbbKKK....
 ....KbbbbbbK....
 ....KKKKKKKK....
 """
 STOOL = """
-....KKKKKKKK....
-..KKBBBBBBBBKK..
-.KBBtTttTttTBBK.
-.KBtTttTttTttBK.
-.KBBtTttTttTBBK.
-..KKBBBBBBBBKK..
-..KbKKKKKKKKbK..
-..KbK......KbK..
-..KbK......KbK..
-..KKK......KKK..
+....KKKKKK....
+..KKtttttTKK..
+.KtttTttTttTK.
+.KtTttTttTtTK.
+.KTtTTtTTtTTK.
+.KBTTTTTTTTbK.
+.KBBBBBBBBBbK.
+.KBBBBBBBBbbK.
+..KbbbbbbbbK..
+...KKKKKKKK...
+...Kb....bK...
+...KK....KK...
 """
 CUP = """
 .KKKK........
@@ -447,13 +450,14 @@ ORCHID = """
 """
 SIDE_TABLE = """
 ..KKKKKKKKKKKK..
-.KBBBBBBBBBBBBK.
+.KTTTTTTTTTTTBK.
+.KTTTTTTTTTTTBK.
+.KTTTTTTTTTTBBK.
 .KBBBBBBBBBBBbK.
+.KbbbbbbbbbbbbK.
 ..KKKKKKKKKKKK..
-....KbK..KbK....
-....KbK..KbK....
-....KbK..KbK....
-....KKK..KKK....
+...Kb......bK...
+...KK......KK...
 """
 
 
@@ -618,7 +622,7 @@ def build(back_door=False):
     plant(top, 13, 9)
     bench(top, 1 * 16, 5 * 16 + 9)
     stamp_bottom(top, legend, SIDE_TABLE, 3, 6, dy=-1)
-    top.stamp(legend, ORCHID, 3 * 16, 5 * 16 + 8)
+    top.stamp(legend, ORCHID, 3 * 16, 5 * 16 + 9)        # vase stands mid-way on the table top
 
     # baked floor shadows
     shade(base, 0, 32, W_PX - 1, 35)                    # under the wall
