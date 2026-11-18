@@ -121,7 +121,7 @@
   "warp_events": [
     {
       "x": 5,
-      "y": 6,
+      "y": 5,
       "elevation": 0,
       "dest_map": "MAP_FORTREE_CITY_POKEMON_CENTER_1F",
       "dest_warp_id": "0"

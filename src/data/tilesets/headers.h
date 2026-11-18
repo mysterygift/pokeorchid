@@ -1587,3 +1587,25 @@ const struct Tileset gTileset_HallOfFame =
 };
 
 #endif // IS_FRLG
+
+const struct Tileset gTileset_OrchidCentre =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_OrchidCentre,
+    .palettes = gTilesetPalettes_OrchidCentre,
+    .metatiles = gMetatiles_OrchidCentre,
+    .metatileAttributes = gMetatileAttributes_OrchidCentre,
+    .callback = NULL,
+};
+
+const struct Tileset gTileset_OrchidMart =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_OrchidMart,
+    .palettes = gTilesetPalettes_OrchidMart,
+    .metatiles = gMetatiles_OrchidMart,
+    .metatileAttributes = gMetatileAttributes_OrchidMart,
+    .callback = NULL,
+};

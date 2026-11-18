@@ -532,7 +532,16 @@ def cafe(t, x0):
     t.stamp(c, URN, x1 - 15, 33)
 
 
-def build():
+def back_doorway(t, x0):
+    """A plain timber-framed doorway in the back wall (Lavaridge: out to the hot springs)."""
+    c = WALL
+    t.rect(x0, 4, x0 + 15, 31, c["b2"])
+    t.rect(x0 + 1, 5, x0 + 14, 31, c["b1"])
+    t.rect(x0 + 3, 7, x0 + 12, 31, c["K"])
+    t.hline(x0 + 3, x0 + 12, 31, c["c2"])
+
+
+def build(back_door=False):
     base, top = Art(W_PX, H_PX), Art(W_PX, H_PX)
     floor(base)
     wall(base)
@@ -541,8 +550,11 @@ def build():
     cafe_x = 11 * 16
 
     # wall decor
-    window(top, 15, 4)
-    scroll(top, 3, 2)
+    if back_door:
+        back_doorway(top, 32)
+    else:
+        window(top, 15, 4)
+        scroll(top, 3, 2)
     crest(top, 115, 5)
     region_map(top, 131, 3)
 

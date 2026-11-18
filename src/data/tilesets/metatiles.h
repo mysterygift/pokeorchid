@@ -420,3 +420,9 @@ const u16 gMetatiles_HallOfFame[] = INCBIN_U16("data/tilesets/secondary/hall_of_
 const u16 gMetatileAttributes_HallOfFame[] = INCBIN_U16("data/tilesets/secondary/hall_of_fame_frlg/metatile_attributes.bin");
 
 #endif // IS_FRLG
+
+const u16 gMetatiles_OrchidCentre[] = INCBIN_U16("data/tilesets/secondary/orchid_centre/metatiles.bin");
+const u16 gMetatileAttributes_OrchidCentre[] = INCBIN_U16("data/tilesets/secondary/orchid_centre/metatile_attributes.bin");
+
+const u16 gMetatiles_OrchidMart[] = INCBIN_U16("data/tilesets/secondary/orchid_mart/metatiles.bin");
+const u16 gMetatileAttributes_OrchidMart[] = INCBIN_U16("data/tilesets/secondary/orchid_mart/metatile_attributes.bin");
