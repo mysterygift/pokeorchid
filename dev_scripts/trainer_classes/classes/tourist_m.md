@@ -1,0 +1,15 @@
+# TOURIST (tourist_m)
+- Class name: TOURIST (pairs with tourist_f).
+- Bases: the front is now `hiker`, not `collector`. Its hat, short sleeves, arms, hands, face and portly build are kept pixel-for-pixel, and every new part is placed from axes measured in the script (HEAD_CX/BODY_CX 33, EYE_Y 11, CHIN_Y 18, STERNUM_Y 24, HEM_Y 50). The OW is `fat_man` with the `hiker` bucket hat transplanted onto it.
+- OW palette: `npc_2` (golden straw, red shirt, brown shorts/hair). It is the same shared palette as tourist_f.
+- Design:
+  - The hiker hat is recoloured to straw, the feather is removed and a red band runs along the crown seam.
+  - Sunglasses sit on the closed-eye row, with the bridge on the nose line.
+  - The bandana becomes an open camp collar on a red aloha shirt with white hibiscus. The sleeves stay inside the vanilla arm outline.
+  - A camera hangs on the sternum from a symmetric strap.
+  - The trousers become khaki cargo shorts with symmetric thigh pockets and a folded map in the right pocket. The boots become calves and red-strap sandals.
+  - The walking stick becomes a closed red umbrella, for Singapore's showers. The khaki daypack stays.
+- Silhouette check: `out/tourist_m_overlay.png` draws the vanilla outline (cyan) over the new sprite at x6. No body pixel falls outside it; the hat area above y14 is exempt.
+- Weak spots: the shirt is very busy (pocket seams plus print), and the sleeves read as the same red mass as the torso.
+- Dropped from v1: the bum bag (the hiker has no belt line) and the hand-held map (it moved to the pocket).
+- Open question: keep the umbrella, or go back to a plain walking stick?

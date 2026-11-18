@@ -1,0 +1,5 @@
+# BLACK BELT edit (edit_black_belt)
+
+- **Chosen colour:** a deep navy gi. The black belt is kept, because the class is called Black Belt. The red headband is gone: the hair mass now continues to row 15 and his forehead shows on rows 16-17. On the OW, the white band became black hair with a grey highlight, on `npc_4` (5-7 navy gi, B-D + F hair/belt). The front pic's shouting mouth is still red. That red is the original mouth, not band pixels.
+- **Alternatives** (rendered side by side in `out/edit_black_belt_options.png`, switch with `CHOICE`): maroon (strong, but it fights the red mouth, and the only OW match is the brighter red on `npc_2`); teal (most tropical, but reads like scrubs, and no shared NPC palette has a teal ramp); black with a red belt (reads well, but loses the "black belt" read).
+- **Weak spots:** on the front pic, the belt is lower-contrast against navy than it was against white. On the OW, his hair is now black to match the front pic (vanilla OW hair was red-brown), and the bottom edge of the hair is flat where the band used to be.

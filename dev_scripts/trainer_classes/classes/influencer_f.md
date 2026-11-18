@@ -1,0 +1,14 @@
+# INFLUENCER (influencer_f)
+- Class name: INFLUENCER (11 chars).
+- Bases: front `cool_trainer_f_frlg`, keeping its pose, the hand at her chin, the face and the legs. OW `cooltrainer_f`, keeping the ponytail with its hair tie.
+- OW palette: `npc_pink`. The sweatshirt uses pink 5-7, the near-black hair the blue/grey ramps, the shorts navy, the sneakers white.
+- Design:
+  - Oversized pink sweatshirt with a small white heart; the zip and collar are removed.
+  - Black bike shorts, chunky white "dad" sneakers with a pink flash, and a pink scrunchie.
+  - The camera-left hand stays in the vanilla pose at her chin, with no prop; the bubble tea was removed after review.
+  - The other hand grips a selfie stick. The stick runs unbroken from her fist to a grey clamp holding a pink phone (we see its back and camera), with the darker edge turned toward her.
+- OW: the stick arm is copied from the stand frame into the walk frames, so it does not swing. A light-grey pole runs unbroken from the hand to the phone in every frame:
+  - Front and back views: the phone is held above her head.
+  - Side views: a pole across her face read as a scar, so she holds the phone out in front at chest height, seen edge-on.
+- Weak spots: on OW the pole is only 1px of light grey, and over the hair highlights on the front view it is faint. The side-view phone is a 2x4 sliver.
+- Open questions: should she wear a crop top instead of the long-sleeve sweatshirt? Would a peace sign at her chin read better than the vanilla fist?
