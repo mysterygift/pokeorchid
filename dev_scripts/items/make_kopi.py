@@ -25,6 +25,8 @@ for y, row in H.items():
         if ch != ".":
             px[19 + i, y] = int(ch, 16)
 os.makedirs(out, exist_ok=True)
+# embed the coffee palette too, so the PNG looks like the game (the ROM uses kopi.pal)
+im.putpalette([c for rgb in pal for c in rgb] + [0] * (768 - 48))
 im.save(os.path.join(out, "kopi.png"), transparency=0)
 with open(os.path.join(out, "kopi.pal"), "w", newline="\r\n") as f:
     f.write("JASC-PAL\n0100\n16\n" + "".join("%d %d %d\n" % c for c in pal))
