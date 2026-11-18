@@ -6,6 +6,7 @@
 #include "field_camera.h"
 #include "field_control_avatar.h"
 #include "field_effect.h"
+#include "tilesets.h"
 #include "field_effect_helpers.h"
 #include "field_player_avatar.h"
 #include "field_screen_effect.h"
@@ -1150,14 +1151,20 @@ static void PokecenterHealEffect_Init(struct Task *task)
 {
     task->tState++;
     task->tBallSpriteId = CreateGlowingPokeballsEffect(task->tNumMons, task->tFirstBallX, task->tFirstBallY, TRUE);
-    task->tMonitorSpriteId = CreatePokecenterMonitorSprite(task->tMonitorX, task->tMonitorY);
+    // Orchid Centres have no wall monitor beside the machine (the vanilla one sat at
+    // tMonitorX/Y), so its flashing sprite would blink over the wall decor.
+    if (gMapHeader.mapLayout->secondaryTileset == &gTileset_OrchidCentre)
+        task->tMonitorSpriteId = MAX_SPRITES;
+    else
+        task->tMonitorSpriteId = CreatePokecenterMonitorSprite(task->tMonitorX, task->tMonitorY);
 }
 
 static void PokecenterHealEffect_WaitForBallPlacement(struct Task *task)
 {
     if (gSprites[task->tBallSpriteId].sState > 1)
     {
-        gSprites[task->tMonitorSpriteId].data[0]++;
+        if (task->tMonitorSpriteId != MAX_SPRITES)
+            gSprites[task->tMonitorSpriteId].data[0]++;
         task->tState++;
     }
 }

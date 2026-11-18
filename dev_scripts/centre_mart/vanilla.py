@@ -85,7 +85,24 @@ class Scene:
         return under, over
 
 
-def layout(layout_id):
+def _git(ref, path):
+    import subprocess
+    return subprocess.run(["git", "-C", ROOT, "show", f"{ref}:{path}"], capture_output=True, check=True).stdout
+
+
+def layout(layout_id, ref=None):
+    """ref: read the layout from a git ref (e.g. "upstream/master") instead of the working tree,
+    for art lifted from vanilla maps that Orchid has since rebuilt."""
+    if ref:
+        js = json.loads(_git(ref, "data/layouts/layouts.json"))
+        for entry in js["layouts"]:
+            if entry.get("id") == layout_id:
+                w, h = entry["width"], entry["height"]
+                blocks = struct.unpack(f"<{w * h}H", _git(ref, entry["blockdata_filepath"])[:2 * w * h])
+                grid = [[blocks[y * w + x] & 0x3FF for x in range(w)] for y in range(h)]
+                border = struct.unpack("<4H", _git(ref, entry["border_filepath"])[:8])
+                return entry, grid, [b & 0x3FF for b in border]
+        raise KeyError(layout_id)
     js = json.load(open(os.path.join(ROOT, "data", "layouts", "layouts.json")))
     for entry in js["layouts"]:
         if entry.get("id") == layout_id:

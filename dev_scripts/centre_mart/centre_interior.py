@@ -262,7 +262,7 @@ def vanilla_machine():
     """The existing healing machine, lifted pixel-for-pixel from gTileset_PokemonCenter (the four
     metatiles at (5..6, 1..2) of PokemonCenter_1F, without the wall and counter around them)."""
     import vanilla
-    e, g, _ = vanilla.layout("LAYOUT_POKEMON_CENTER_1F")
+    e, g, _ = vanilla.layout("LAYOUT_POKEMON_CENTER_1F", ref="upstream/master")
     sc = vanilla.Scene(e["primary_tileset"], e["secondary_tileset"])
     a = Art(32, 32)
     for ty in (1, 2):
@@ -281,6 +281,38 @@ def vanilla_machine():
                             a.put((tx - 5) * 16 + (q & 1) * 8 + x, (ty - 1) * 16 + (q >> 1) * 8 + y,
                                   sc.pals[pal][ci])
     return a
+
+
+def vanilla_plant():
+    """The existing potted fern from the vanilla Pokemon Center (metatiles at (1, 0..1) of the
+    untouched PokemonCenter_1F), lifted pixel-for-pixel from its top layer: Gen 3 3/4 view with the
+    pot rim seen from above. Returns (art 16x32, bottom row of the pot)."""
+    import vanilla
+    e, g, _ = vanilla.layout("LAYOUT_POKEMON_CENTER_1F", ref="upstream/master")
+    sc = vanilla.Scene(e["primary_tileset"], e["secondary_tileset"])
+    a = Art(16, 32)
+    bottom = 0
+    for ty in (0, 1):
+        ent, _ = sc._meta(g[ty][1])
+        for k in (4, 5, 6, 7):
+            en = ent[k]
+            tl, hf, vf, pal = en & 0x3FF, (en >> 10) & 1, (en >> 11) & 1, en >> 12
+            ts, ti = (sc.p, tl) if tl < 512 else (sc.s, tl - 512)
+            tile, q = ts.tile(ti), k & 3
+            for y in range(8):
+                for x in range(8):
+                    ci = tile[7 - y if vf else y][7 - x if hf else x]
+                    if ci:
+                        py = ty * 16 + (q >> 1) * 8 + y
+                        a.put((q & 1) * 8 + x, py, sc.pals[pal][ci])
+                        bottom = max(bottom, py)
+    return a, bottom
+
+
+def plant(t, tx, ty):
+    """Vanilla potted fern standing on the bottom edge of tile (tx, ty)."""
+    art, bottom = vanilla_plant()
+    t.blit(art, tx * 16, ty * 16 + 14 - bottom)
 
 
 BALL = """
@@ -398,11 +430,11 @@ ORCHID = """
 ......v...oWoo..
 ......v....oo...
 .....gv..v......
-....gvvgvg......
 ....KKKKKKK.....
-....KWUWUWK.....
+...KWVvgvVlK....
+...KlWWWWWlK....
+...KWUWUWUlK....
 ....KUWUWlK.....
-.....KWUlK......
 .....KKKKK......
 """
 SIDE_TABLE = """
@@ -556,7 +588,7 @@ def build(back_door=False):
         window(top, 15, 4)
         scroll(top, 3, 2)
     crest(top, 115, 5)
-    region_map(top, 131, 3)
+    # (the wall region map was removed 2026-11-18: it looked interactive but isn't)
 
     # service area: vanilla healing machine, counter, medicine cabinet, tablet terminal
     top.blit(vanilla_machine(), 80, 16)
@@ -574,8 +606,8 @@ def build(back_door=False):
     stamp_bottom(top, legend, STOOL, 12, 7, dy=-2)
 
     # waiting area, left
-    stamp_bottom(top, legend, PALM, 0, 2, dy=-1)
-    stamp_bottom(top, legend, PALM, 13, 9, dy=-1)
+    plant(top, 0, 2)
+    plant(top, 13, 9)
     bench(top, 1 * 16, 5 * 16 + 9)
     stamp_bottom(top, legend, SIDE_TABLE, 3, 6, dy=-1)
     top.stamp(legend, ORCHID, 3 * 16, 5 * 16 + 8)
@@ -597,7 +629,8 @@ def build(back_door=False):
 
 def palettes_with_machine():
     """Our four palettes plus the existing gTileset_PokemonCenter palette the machine uses."""
-    cols = list(dict.fromkeys(c for r in vanilla_machine().px for c in r if c))
+    cols = list(dict.fromkeys(c for art in (vanilla_machine(), vanilla_plant()[0]) for r in art.px for c in r if c))
+    assert len(cols) <= 15, len(cols)
     pals = dict(PALETTES)
     pals["vanilla_pokemon_center"] = palette(**{f"c{i}": c for i, c in enumerate(cols)})
     return pals
