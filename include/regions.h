@@ -6,11 +6,21 @@
 
 enum KantoSubRegion GetKantoSubregion(u32 mapSecId);
 
+// Orchid: Tosa is REGION_HOENN (vanilla Hoenn sections, renamed). Tiksi reuses the vanilla Kanto/Sevii
+// sections (Orchid has no Kanto), so REGION_KANTO never comes up and Kanto-only behaviour (FRLG battle
+// music, Kanto/Sevii region maps) stays off.
+#define REGION_TOSA REGION_HOENN
+
+static inline bool32 IsTiksiMapSec(u32 sectionId)
+{
+    return sectionId >= KANTO_MAPSEC_START && sectionId < MAPSEC_SPECIAL_AREA;
+}
+
 static inline enum Region GetRegionForSectionId(u32 sectionId)
 {
-    if (sectionId >= KANTO_MAPSEC_START && sectionId < MAPSEC_SPECIAL_AREA)
-        return REGION_KANTO;
-    return REGION_HOENN;
+    if (IsTiksiMapSec(sectionId))
+        return REGION_TIKSI;
+    return REGION_TOSA;
 }
 
 static inline enum Region GetCurrentRegion(void)

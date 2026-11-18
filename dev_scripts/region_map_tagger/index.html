@@ -179,7 +179,7 @@ function guessKind(id) {
 }
 
 function fromRepo() {
-  const kantoStart = repo.sections.findIndex((s) => s.id === "MAPSEC_PALLET_TOWN");
+  const kantoStart = repo.sections.findIndex((s) => s.id === (repo.kantoStartId || "MAPSEC_PALLET_TOWN"));
   const kantoEnd = repo.sections.findIndex((s) => s.id === "MAPSEC_SPECIAL_AREA");
   const areas = repo.sections.map((s, i) => ({
     key: s.id, id: s.id, originalId: s.id, name: s.name || "", origName: s.name || "",
@@ -578,7 +578,7 @@ $("#btnNew").onclick = () => {
   snapshot();
   let n = 1; while (areaByKey("NEW_" + n)) n++;
   const key = "NEW_" + n;
-  S.areas.push({ key, id: toId(name), originalId: null, name, origName: "", kind: guessKind(toId(name)), notes: "", kanto: false });
+  S.areas.push({ key, id: toId(name), originalId: null, name, origName: "", kind: guessKind(toId(name)), notes: "", kanto: repo.region === "tiksi" });
   sel = key; changed();
   $("#areaList .area.sel")?.scrollIntoView({ block: "nearest" });
 };

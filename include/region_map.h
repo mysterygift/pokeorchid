@@ -12,7 +12,8 @@ enum RegionMapType
     REGION_MAP_KANTO,
     REGION_MAP_SEVII123,
     REGION_MAP_SEVII45,
-    REGION_MAP_SEVII67
+    REGION_MAP_SEVII67,
+    REGION_MAP_TIKSI,   // Orchid: second region (export_region_map_tiksi.py); REGION_MAP_HOENN = Tosa
 };
 
 enum
@@ -136,6 +137,12 @@ void TrySetPlayerIconBlink(void);
 void BlendRegionMap(u16 color, u32 coeff);
 void SetRegionMapDataForZoom(void);
 enum RegionMapType GetRegionMapType(u32 mapSecId);
+const u8 *GetRegionMapRegionName(void);
+void RegionMap_SetViewedRegionMapType(enum RegionMapType type);
+void RegionMap_ClearViewedRegionMapType(void);
+enum RegionMapType RegionMap_GetViewedRegionMapType(void);
+bool32 RegionMap_IsViewingOtherRegion(void);
+void RegionMap_BlitOrchidSwitchHint(u8 windowId, u16 x, u16 y);
 
 //Pokenav Fly funcs
 u32 FilterFlyDestination(struct RegionMap* regionMap);

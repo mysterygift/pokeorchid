@@ -22,6 +22,7 @@
 #include "overworld.h"
 #include "palette.h"
 #include "random.h"
+#include "region_map.h"
 #include "rtc.h"
 #include "scanline_effect.h"
 #include "sound.h"
@@ -621,7 +622,8 @@ static void PrintRotomLine(void)
 
 static void RotomText_Map(u8 *dest)
 {
-    StringCopy(dest, COMPOUND_STRING("Bzzt! Where to? I'll pull\nup the TOSA map!"));
+    StringCopy(gStringVar1, GetRegionMapRegionName());
+    StringExpandPlaceholders(dest, COMPOUND_STRING("Bzzt! Where to? I'll pull\nup the {STR_VAR_1} map!"));
 }
 
 static void RotomText_Call(u8 *dest)

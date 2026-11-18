@@ -68,6 +68,21 @@ def load_maps():
     return maps
 
 
+def kanto_start_id():
+    """First section of the Kanto/Sevii block (= Tiksi), following renames in region_map_section_aliases.h."""
+    aliases = {}
+    path = ROOT / "include/constants/region_map_section_aliases.h"
+    if path.is_file():
+        for line in path.read_text().splitlines():
+            parts = line.split()
+            if len(parts) == 3 and parts[0] == "#define" and parts[1].startswith("MAPSEC_"):
+                aliases[parts[1]] = parts[2]
+    sid = "MAPSEC_PALLET_TOWN"
+    while sid in aliases:
+        sid = aliases[sid]
+    return sid
+
+
 def repo_state():
     return {
         "grid": parse_layout(),
@@ -79,6 +94,7 @@ def repo_state():
         "routeArt": R["routes"] if (REF / R["routes"]).is_file() else None,
         "routeRotated": R["rotated"],
         "region": REGION,
+        "kantoStartId": kanto_start_id(),
     }
 
 

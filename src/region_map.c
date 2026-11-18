@@ -73,11 +73,29 @@ struct MultiNameFlyDest
 };
 
 #include "data/region_map/orchid_map_v2.h"
+#include "data/region_map/orchid_map_v2_tiksi.h"
+
+// MAP v2 data per region: Tosa (export_map_v2.py) and Tiksi (export_region_map_tiksi.py)
+struct OrchidRegionMapV2
+{
+    const struct OrchidMapNode *nodes;
+    const struct OrchidMapTube *tubes;
+    const u32 *components;
+    const u32 *frameGfx;    // frame tiles (shared layout) + this region's tube tiles
+    u8 nodeCount;
+    u16 tubeCount;
+};
+
+#define ORCHID_MAP_MAX_NODES max(ARRAY_COUNT(sOrchidMapNodes), ARRAY_COUNT(sOrchidMapNodes_Tiksi))
+STATIC_ASSERT(ORCHID_MAP_MAX_NODES <= 32, OrchidMapNodesFitVisitedMask);
 
 static EWRAM_DATA struct RegionMap *sRegionMap = NULL;
 // MAP v2 (export_map_v2.py): set by RegionMap_LoadOrchidMapV2 for the Town Map / Fly map / phone MAP app
 static EWRAM_DATA bool8 sOrchidMapV2 = FALSE;
-static EWRAM_DATA u8 sOrchidNodeSpriteIds[ARRAY_COUNT(sOrchidMapNodes)] = {0};
+static EWRAM_DATA const struct OrchidRegionMapV2 *sOrchidRegion = NULL;
+// Orchid: the region map shown instead of the player's own (phone MAP L/R); 0 = none, else type + 1
+static EWRAM_DATA u8 sViewedRegionMapType = 0;
+static EWRAM_DATA u8 sOrchidNodeSpriteIds[ORCHID_MAP_MAX_NODES] = {0};
 static EWRAM_DATA u8 sOrchidRailChipSpriteId = 0;
 #define ORCHID_MAP_HEAD_RAISE 11
 
@@ -148,6 +166,7 @@ static const u8 sRegionMapPlayerIcon_LeafGfx[] = INCGFX_U8("graphics/pokenav/reg
 #include "data/region_map/region_map_layout_sevii123.h"
 #include "data/region_map/region_map_layout_sevii45.h"
 #include "data/region_map/region_map_layout_sevii67.h"
+#include "data/region_map/region_map_layout_tiksi.h"
 #include "data/region_map/region_map_entries.h"
 
 static const mapsec_u16_t sRegionMap_SpecialPlaceLocations[][2] =
@@ -333,6 +352,15 @@ static const u16 ALIGNED(4) sRegionMapSevii67_Pal[] = INCGFX_U16("graphics/poken
 static const u32 sRegionMapSevii67_Gfx[] = INCGFX_U32("graphics/pokenav/region_map/map_sevii_67.png", ".8bpp.smol");
 static const u32 sRegionMapSevii67_Tilemap[] = INCGFX_U32("graphics/pokenav/region_map/map_sevii_67.bin", ".smolTM");
 
+// Orchid: Tiksi (export_region_map_tiksi.py). -num_tiles must match the exporter's "terrain tiles" /
+// "dex tiles" counts (the sheets are padded to 16 tiles per row).
+static const u16 ALIGNED(4) sPokedexAreaMapTiksi_Pal[] = INCGFX_U16("graphics/pokedex/region_map_tiksi.pal", ".gbapal");
+static const u32 sPokedexAreaMapTiksi_Gfx[] = INCGFX_U32("graphics/pokedex/region_map_tiksi.png", ".8bpp.smol", "-num_tiles 217 -Wnum_tiles");
+static const u32 sPokedexAreaMapTiksi_Tilemap[] = INCGFX_U32("graphics/pokedex/region_map_tiksi.bin", ".smolTM");
+static const u16 ALIGNED(4) sRegionMapTiksi_Pal[] = INCGFX_U16("graphics/pokenav/region_map/map_tiksi.pal", ".gbapal");
+static const u32 sRegionMapTiksi_Gfx[] = INCGFX_U32("graphics/pokenav/region_map/map_tiksi.png", ".8bpp.smol", "-num_tiles 219 -Wnum_tiles");
+static const u32 sRegionMapTiksi_Tilemap[] = INCGFX_U32("graphics/pokenav/region_map/map_tiksi.bin", ".smolTM");
+
 const struct RegionMapInfo gRegionMapInfos[] =
 {
     [REGION_MAP_HOENN]    =
@@ -384,6 +412,16 @@ const struct RegionMapInfo gRegionMapInfos[] =
         .regionMapPalette = sRegionMapSevii67_Pal,
         .regionMapGfx = sRegionMapSevii67_Gfx,
         .regionMapTilemap = sRegionMapSevii67_Tilemap,
+    },
+    [REGION_MAP_TIKSI]    =
+    {
+        .dexMapPalette = sPokedexAreaMapTiksi_Pal,
+        .dexMapGfx = sPokedexAreaMapTiksi_Gfx,
+        .dexMapTilemap = sPokedexAreaMapTiksi_Tilemap,
+        .dexMapPaletteSize = sizeof(sPokedexAreaMapTiksi_Pal),
+        .regionMapPalette = sRegionMapTiksi_Pal,
+        .regionMapGfx = sRegionMapTiksi_Gfx,
+        .regionMapTilemap = sRegionMapTiksi_Tilemap,
     },
 };
 
@@ -726,20 +764,49 @@ void ShowRegionMapForPokedexAreaScreen(struct RegionMap *regionMap)
     sRegionMap->playerIconSpritePosY = sRegionMap->cursorPosY;
 }
 
+// Orchid: phone MAP L/R shows the other region. The override only changes what is drawn and which
+// cursor grid / places are used; the player's own region (GetCurrentRegion) is untouched.
+static enum RegionMapType GetViewedRegionMapType(void)
+{
+    if (sViewedRegionMapType != 0)
+        return sViewedRegionMapType - 1;
+    return GetRegionMapType(gMapHeader.regionMapSectionId);
+}
+
+void RegionMap_SetViewedRegionMapType(enum RegionMapType type)
+{
+    sViewedRegionMapType = type + 1;
+}
+
+void RegionMap_ClearViewedRegionMapType(void)
+{
+    sViewedRegionMapType = 0;
+}
+
+enum RegionMapType RegionMap_GetViewedRegionMapType(void)
+{
+    return GetViewedRegionMapType();
+}
+
+bool32 RegionMap_IsViewingOtherRegion(void)
+{
+    return GetViewedRegionMapType() != GetRegionMapType(gMapHeader.regionMapSectionId);
+}
+
 bool8 LoadRegionMapGfx(void)
 {
     enum RegionMapType regionMapType;
     switch (sRegionMap->initStep)
     {
     case 0:
-        regionMapType = GetRegionMapType(gMapHeader.regionMapSectionId);
+        regionMapType = GetViewedRegionMapType();
         if (sRegionMap->bgManaged)
             DecompressAndCopyTileDataToVram(sRegionMap->bgNum, gRegionMapInfos[regionMapType].regionMapGfx, 0, 0, 0);
         else
             DecompressDataWithHeaderVram(gRegionMapInfos[regionMapType].regionMapGfx, (u16 *)BG_CHAR_ADDR(2));
         break;
     case 1:
-        regionMapType = GetRegionMapType(gMapHeader.regionMapSectionId);
+        regionMapType = GetViewedRegionMapType();
         if (sRegionMap->bgManaged)
         {
             if (!FreeTempTileDataBuffersIfPossible())
@@ -751,7 +818,7 @@ bool8 LoadRegionMapGfx(void)
         }
         break;
     case 2:
-        regionMapType = GetRegionMapType(gMapHeader.regionMapSectionId);
+        regionMapType = GetViewedRegionMapType();
         if (!FreeTempTileDataBuffersIfPossible())
             LoadPalette(gRegionMapInfos[regionMapType].regionMapPalette, BG_PLTT_ID(7), 3 * PLTT_SIZE_4BPP);
         break;
@@ -1156,6 +1223,8 @@ enum RegionMapType GetRegionMapType(u32 mapSecId)
 {
     switch (GetRegionForSectionId(mapSecId))
     {
+    case REGION_TIKSI:
+        return REGION_MAP_TIKSI;
     case REGION_KANTO:
         switch (GetKantoSubregion(mapSecId))
         {
@@ -1184,25 +1253,38 @@ static mapsec_u16_t GetMapSecIdAt(u16 x, u16 y)
     y -= MAPCURSOR_Y_MIN;
     x -= MAPCURSOR_X_MIN;
 
-    switch (GetCurrentRegion())
+    switch (GetViewedRegionMapType())
     {
-    case REGION_KANTO:
-        switch (GetKantoSubregion(gMapHeader.regionMapSectionId))
-        {
-        case KANTO_SUBREGION_SEVII123:
-                return sRegionMapSections_Sevii123[y][x];
-        case KANTO_SUBREGION_SEVII45:
-                return sRegionMapSections_Sevii45[y][x];
-        case KANTO_SUBREGION_SEVII67:
-                return sRegionMapSections_Sevii67[y][x];
-        case KANTO_SUBREGION_KANTO:
-        default:
-                return sRegionMapSections_Kanto[y][x];
-        }
-    case REGION_HOENN:
+    case REGION_MAP_TIKSI:
+        return sRegionMapSections_Tiksi[y][x];
+    case REGION_MAP_SEVII123:
+        return sRegionMapSections_Sevii123[y][x];
+    case REGION_MAP_SEVII45:
+        return sRegionMapSections_Sevii45[y][x];
+    case REGION_MAP_SEVII67:
+        return sRegionMapSections_Sevii67[y][x];
+    case REGION_MAP_KANTO:
+        return sRegionMapSections_Kanto[y][x];
+    case REGION_MAP_HOENN:
     default:
-            return sRegionMap_MapSectionLayout[y][x];
+        return sRegionMap_MapSectionLayout[y][x];
     }
+}
+
+// Orchid: the name of the region the player is in, for map headers and the Rotom Phone
+const u8 *GetRegionMapRegionName(void)
+{
+    if (GetViewedRegionMapType() == REGION_MAP_TIKSI)
+        return COMPOUND_STRING("TIKSI");
+    return COMPOUND_STRING("TOSA");
+}
+
+// Orchid: where the cursor / player head goes when the current section has no cell on its region's map
+static mapsec_u16_t GetRegionMapFallbackMapSec(void)
+{
+    if (GetViewedRegionMapType() == REGION_MAP_TIKSI)
+        return MAPSEC_FURONG_VILLAGE;   // where the ferry from Tosa lands (export_region_map_tiksi.py FALLBACK)
+    return MAPSEC_TOSA_PORT;
 }
 
 static void InitMapBasedOnPlayerLocation(void)
@@ -1215,6 +1297,14 @@ static void InitMapBasedOnPlayerLocation(void)
     u16 dimensionScale;
     u16 xOnMap;
     struct WarpData *warp;
+
+    if (RegionMap_IsViewingOtherRegion())
+    {
+        sRegionMap->mapSecId = GetRegionMapFallbackMapSec();
+        sRegionMap->cursorPosX = gRegionMapEntries[sRegionMap->mapSecId].x + MAPCURSOR_X_MIN;
+        sRegionMap->cursorPosY = gRegionMapEntries[sRegionMap->mapSecId].y + MAPCURSOR_Y_MIN;
+        return;
+    }
 
     if (gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(MAP_SS_TIDAL_CORRIDOR)
         && (gSaveBlock1Ptr->location.mapNum == MAP_NUM(MAP_SS_TIDAL_CORRIDOR)
@@ -1301,11 +1391,11 @@ static void InitMapBasedOnPlayerLocation(void)
 
     xOnMap = x;
 
-    // Orchid: vanilla Hoenn sections have no cell on the Tosa map (width/height 0, see
-    // dev_scripts/orchid_ui/export_region_map.py); show the cursor on Tosa Port instead.
+    // Orchid: vanilla Hoenn / unused Kanto sections have no cell on the Tosa / Tiksi map (width/height 0,
+    // see dev_scripts/orchid_ui/export_region_map*.py); show the cursor on the region's fallback place.
     if (gRegionMapEntries[sRegionMap->mapSecId].width == 0 || gRegionMapEntries[sRegionMap->mapSecId].height == 0)
     {
-        sRegionMap->mapSecId = MAPSEC_TOSA_PORT;
+        sRegionMap->mapSecId = GetRegionMapFallbackMapSec();
         mapWidth = mapHeight = 1;
         x = y = 0;
     }
@@ -1402,7 +1492,7 @@ static void RegionMap_InitializeStateBasedOnSSTidalLocation(void)
 
         sRegionMap->mapSecId = mapHeader->regionMapSectionId;
         if (gRegionMapEntries[sRegionMap->mapSecId].width == 0 || gRegionMapEntries[sRegionMap->mapSecId].height == 0)
-            sRegionMap->mapSecId = MAPSEC_TOSA_PORT; // Orchid: no cell on the Tosa map
+            sRegionMap->mapSecId = GetRegionMapFallbackMapSec(); // Orchid: no cell on this region's map
         dimensionScale = mapHeader->mapLayout->width / gRegionMapEntries[sRegionMap->mapSecId].width;
         if (dimensionScale == 0)
             dimensionScale = 1;
@@ -1744,9 +1834,9 @@ void CreateRegionMapPlayerIcon(u16 tileTag, u16 paletteTag)
     struct SpritePalette palette = {sRegionMapPlayerIcon_BrendanPal, paletteTag};
     struct SpriteTemplate template = {tileTag, paletteTag, &sRegionMapPlayerIconOam, sRegionMapPlayerIconAnimTable, NULL, gDummySpriteAffineAnimTable, SpriteCallbackDummy};
 
-    if (IsEventIslandMapSecId(gMapHeader.regionMapSectionId))
+    if (IsEventIslandMapSecId(gMapHeader.regionMapSectionId) || RegionMap_IsViewingOtherRegion())
     {
-        sRegionMap->playerIconSprite = NULL;
+        sRegionMap->playerIconSprite = NULL;    // Orchid: the player is not on the region being viewed
         return;
     }
     if (IS_FRLG && gSaveBlock2Ptr->playerGender == FEMALE)
@@ -2529,12 +2619,14 @@ void SetFlyDestination(struct RegionMap* regionMap)
 // (charblock 3, screenblock 30) holds the header + tray frame and the route tubes (gold once every place
 // the route touches is visited, grey before, blue for sea routes); places are OBJ discs / diamonds.
 static const u32 sOrchidMapFrame_Gfx[] = INCGFX_U32("graphics/pokenav/region_map/orchid_frame.png", ".4bpp.smol");
+static const u32 sOrchidMapFrameTiksi_Gfx[] = INCGFX_U32("graphics/pokenav/region_map/orchid_frame_tiksi.png", ".4bpp.smol");
 static const u32 sOrchidMapFrame_Tilemap[] = INCGFX_U32("graphics/pokenav/region_map/orchid_frame.bin", ".smolTM");
 static const u32 sOrchidMapFrameFly_Tilemap[] = INCGFX_U32("graphics/pokenav/region_map/orchid_frame_fly.bin", ".smolTM");
 static const u16 sOrchidMapFrame_Pal[] = INCGFX_U16("graphics/pokenav/region_map/orchid_frame.pal", ".gbapal");
 static const u8 sOrchidMapNodes_Gfx[] = INCGFX_U8("graphics/pokenav/region_map/orchid_nodes.png", ".4bpp");
 static const u8 sOrchidMapRailChip_Gfx[] = INCGFX_U8("graphics/pokenav/region_map/orchid_rail_chip.png", ".4bpp");
 static const u8 sOrchidMapKeypadA_Gfx[] = INCGFX_U8("graphics/pokenav/region_map/orchid_keypad_a.png", ".4bpp");
+static const u8 sOrchidMapSwitchHint_Gfx[] = INCGFX_U8("graphics/pokenav/region_map/orchid_switch_hint.png", ".4bpp");
 
 #define TAG_ORCHID_MAP_NODES    0x7A30
 #define TAG_ORCHID_MAP_CHIP     0x7A31
@@ -2567,6 +2659,31 @@ static const struct SpriteTemplate sOrchidMapChipTemplate =
     .callback = SpriteCallbackDummy,
 };
 
+static const struct OrchidRegionMapV2 sOrchidRegionMapsV2[] =
+{
+    [REGION_MAP_HOENN] =
+    {
+        .nodes = sOrchidMapNodes, .nodeCount = ARRAY_COUNT(sOrchidMapNodes),
+        .tubes = sOrchidMapTubes, .tubeCount = ARRAY_COUNT(sOrchidMapTubes),
+        .components = sOrchidMapComponents, .frameGfx = sOrchidMapFrame_Gfx,
+    },
+    [REGION_MAP_TIKSI] =
+    {
+        .nodes = sOrchidMapNodes_Tiksi, .nodeCount = ARRAY_COUNT(sOrchidMapNodes_Tiksi),
+        .tubes = sOrchidMapTubes_Tiksi, .tubeCount = ARRAY_COUNT(sOrchidMapTubes_Tiksi),
+        .components = sOrchidMapComponents_Tiksi, .frameGfx = sOrchidMapFrameTiksi_Gfx,
+    },
+};
+
+static const struct OrchidRegionMapV2 *GetOrchidRegionMapV2(void)
+{
+    enum RegionMapType type = GetViewedRegionMapType();
+
+    if (type >= ARRAY_COUNT(sOrchidRegionMapsV2) || sOrchidRegionMapsV2[type].nodes == NULL)
+        type = REGION_MAP_HOENN;
+    return &sOrchidRegionMapsV2[type];
+}
+
 static bool32 OrchidMapPlaceVisited(mapsec_u16_t mapSecId)
 {
     // TODO: Tosa places added by the region map tagger (Bura City, Faber Town, ...) have no visited flags yet, so they stay grey
@@ -2585,30 +2702,33 @@ void RegionMap_LoadOrchidMapV2(bool32 fly)
     };
     static const struct SpritePalette pal = { sRegionMapCursorPal, TAG_ORCHID_MAP_PAL };
 
+    const struct OrchidRegionMapV2 *region = GetOrchidRegionMapV2();
+
     sOrchidMapV2 = TRUE;
-    for (i = 0; i < ARRAY_COUNT(sOrchidMapNodes); i++)
+    sOrchidRegion = region;
+    for (i = 0; i < region->nodeCount; i++)
     {
-        if (OrchidMapPlaceVisited(sOrchidMapNodes[i].mapsec))
+        if (OrchidMapPlaceVisited(region->nodes[i].mapsec))
             visited |= 1u << i;
     }
 
-    DecompressDataWithHeaderVram(sOrchidMapFrame_Gfx, (void *)BG_CHAR_ADDR(3));
+    DecompressDataWithHeaderVram(region->frameGfx, (void *)BG_CHAR_ADDR(3));
     if (tilemap != NULL)
     {
         DecompressDataWithHeaderWram(fly ? sOrchidMapFrameFly_Tilemap : sOrchidMapFrame_Tilemap, tilemap);
-        for (i = 0; i < ARRAY_COUNT(sOrchidMapTubes); i++)
+        for (i = 0; i < region->tubeCount; i++)
         {
-            const struct OrchidMapTube *t = &sOrchidMapTubes[i];
-            u32 mask = sOrchidMapComponents[t->component];
+            const struct OrchidMapTube *t = &region->tubes[i];
+            u32 mask = region->components[t->component];
             u32 pal = ORCHID_MAP_PAL_GREY;
 
             if (mask != 0 && (mask & ~visited) == 0)
                 pal = t->sea ? ORCHID_MAP_PAL_SEA : ORCHID_MAP_PAL_GOLD;
             tilemap[(t->y + MAPCURSOR_Y_MIN) * 32 + t->x + MAPCURSOR_X_MIN] = t->tile | (pal << 12);
         }
-        for (i = 0; i < ARRAY_COUNT(sOrchidMapNodes); i++)
+        for (i = 0; i < region->nodeCount; i++)
         {
-            const struct OrchidMapNode *n = &sOrchidMapNodes[i];
+            const struct OrchidMapNode *n = &region->nodes[i];
             u32 pal = (visited & (1u << i)) ? ORCHID_MAP_PAL_GOLD : ORCHID_MAP_PAL_GREY;
             tilemap[(n->y + MAPCURSOR_Y_MIN) * 32 + n->x + MAPCURSOR_X_MIN] = n->tube | (pal << 12);
         }
@@ -2620,9 +2740,9 @@ void RegionMap_LoadOrchidMapV2(bool32 fly)
 
     LoadSpriteSheets(sheets);
     LoadSpritePalette(&pal);
-    for (i = 0; i < ARRAY_COUNT(sOrchidMapNodes); i++)
+    for (i = 0; i < region->nodeCount; i++)
     {
-        const struct OrchidMapNode *n = &sOrchidMapNodes[i];
+        const struct OrchidMapNode *n = &region->nodes[i];
         u8 id = CreateSprite(&sOrchidMapNodeTemplate, (n->x + MAPCURSOR_X_MIN) * 8 + 4, (n->y + MAPCURSOR_Y_MIN) * 8 + 4, 3);
         sOrchidNodeSpriteIds[i] = id;
         if (id != MAX_SPRITES)
@@ -2656,13 +2776,19 @@ void RegionMap_BlitOrchidKeypadA(u8 windowId, u16 x, u16 y)
     BlitBitmapToWindow(windowId, sOrchidMapKeypadA_Gfx, x, y, 8, 8);
 }
 
+// The phone MAP's region-switch hint (Ⓡ + folded map + swap arrows, 40x8, export_region_map_tiksi.py)
+void RegionMap_BlitOrchidSwitchHint(u8 windowId, u16 x, u16 y)
+{
+    BlitBitmapToWindow(windowId, sOrchidMapSwitchHint_Gfx, x, y, 40, 8);
+}
+
 void RegionMap_FreeOrchidMapV2(void)
 {
     u32 i;
 
     if (!sOrchidMapV2)
         return;
-    for (i = 0; i < ARRAY_COUNT(sOrchidMapNodes); i++)
+    for (i = 0; sOrchidRegion != NULL && i < sOrchidRegion->nodeCount; i++)
     {
         if (sOrchidNodeSpriteIds[i] != MAX_SPRITES)
             DestroySprite(&gSprites[sOrchidNodeSpriteIds[i]]);

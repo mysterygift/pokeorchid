@@ -55,6 +55,7 @@ static void MCB2_FieldUpdateRegionMap(void);
 static void FieldUpdateRegionMap(void);
 static void PrintRegionMapSecName();
 static bool32 CanFlyFromMap(void);
+static bool32 CanSwitchRegionFromMap(void);
 static void PrintTitleWindowText();
 
 static const struct BgTemplate sFieldRegionMapBgTemplates[] = {
@@ -104,6 +105,7 @@ void FieldInitRegionMap(MainCallback callback)
     sFieldRegionMapHandler = Alloc(sizeof(*sFieldRegionMapHandler));
     sFieldRegionMapHandler->state = 0;
     sFieldRegionMapHandler->callback = callback;
+    RegionMap_ClearViewedRegionMapType();
     SetMainCallback2(MCB2_InitRegionMapRegisters);
 }
 
@@ -180,6 +182,16 @@ static void FieldUpdateRegionMap(void)
         }
         break;
     case 4:
+        if (JOY_NEW(R_BUTTON) && CanSwitchRegionFromMap())
+        {
+            // Orchid: phone MAP R flips between Tosa and Tiksi (once FLAG_VISITED_TIKSI is set)
+            PlaySE(SE_SELECT);
+            RegionMap_SetViewedRegionMapType(RegionMap_GetViewedRegionMapType() == REGION_MAP_TIKSI
+                                             ? REGION_MAP_HOENN : REGION_MAP_TIKSI);
+            BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK);
+            sFieldRegionMapHandler->state = 7;
+            break;
+        }
         switch (DoRegionMapInputCallback())
         {
         case MAP_INPUT_MOVE_END:
@@ -209,12 +221,26 @@ static void FieldUpdateRegionMap(void)
         if (!gPaletteFade.active)
         {
             FreeRegionMapIconResources();
+            RegionMap_ClearViewedRegionMapType();
             SetMainCallback2(sFieldRegionMapHandler->callback);
             TRY_FREE_AND_SET_NULL(sFieldRegionMapHandler);
             FreeAllWindowBuffers();
         }
         break;
+    case 7: // switching region: rebuild the map (state 0) behind the fade
+        if (!gPaletteFade.active)
+        {
+            FreeRegionMapIconResources();
+            sFieldRegionMapHandler->state = 0;
+        }
+        break;
     }
+}
+
+// Orchid: Tosa <-> Tiksi on R, only in the Rotom Phone's MAP app and once Tiksi has been visited
+static bool32 CanSwitchRegionFromMap(void)
+{
+    return sFieldRegionMapHandler->callback == CB2_ReturnToRotomPhone && FlagGet(FLAG_VISITED_TIKSI);
 }
 
 // R = Fly (expansion's Poké Rider). Never from the Rotom Phone's MAP app: Orchid wants players on
@@ -238,15 +264,17 @@ static void PrintRegionMapSecName(void)
     CopyWindowToVram(WIN_MAPSEC_NAME, COPYWIN_GFX);
 }
 
-// Orchid MAP v2: "TOSA" in the header after the map pictogram; the R FLY prompt (when allowed) in the tray
+// Orchid MAP v2: the region ("TOSA" / "TIKSI") in the header after the map pictogram; the R FLY prompt
+// (when allowed) in the tray
 static void PrintTitleWindowText(void)
 {
     static const u8 FlyPromptText[] = _("{R_BUTTON} FLY");
-    static const u8 sText_Tosa[] = _("TOSA");
-    const u8 *region = IS_FRLG ? gText_Kanto : sText_Tosa;
+    const u8 *region = IS_FRLG ? gText_Kanto : GetRegionMapRegionName();
 
     FillWindowPixelBuffer(WIN_TITLE, PIXEL_FILL(0));
     AddTextPrinterParameterized4(WIN_TITLE, FONT_NORMAL, 23, 0, 0, 0, sOrchidMapText_Label, TEXT_SKIP_DRAW, region);
+    if (CanSwitchRegionFromMap())
+        RegionMap_BlitOrchidSwitchHint(WIN_TITLE, DISPLAY_WIDTH - 40, 4);   // header top-right: R = switch map
     CopyWindowToVram(WIN_TITLE, COPYWIN_GFX);
 
     FillWindowPixelBuffer(WIN_PROMPT, PIXEL_FILL(0));

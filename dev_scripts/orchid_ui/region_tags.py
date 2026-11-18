@@ -58,18 +58,41 @@ class Area:
         return min(self.cells, key=lambda c: ((c[0] - cx) ** 2 + (c[1] - cy) ** 2, c[1], c[0]))
 
 
+ALIASES = os.path.join(ROOT, "include", "constants", "region_map_section_aliases.h")
+
+
+def resolve_alias(section_id):
+    """The current id of a section that may have been renamed (follows region_map_section_aliases.h)."""
+    aliases = {}
+    if os.path.exists(ALIASES):
+        for line in open(ALIASES):
+            parts = line.split()
+            if len(parts) == 3 and parts[0] == "#define" and parts[1].startswith("MAPSEC_"):
+                aliases[parts[1]] = parts[2]
+    while section_id in aliases:
+        section_id = aliases[section_id]
+    return section_id
+
+
 class Tags:
-    def __init__(self, path=TAGS):
+    def __init__(self, path=TAGS, region=None):
+        """region: None = every area; "tosa" = all but the Kanto/Sevii block; "tiksi" = only that block
+        (Tiksi reuses it, tags_tiksi.json). The other region's areas, cells and map assignments are ignored,
+        so each exporter only ever renames / places / reassigns its own sections."""
         d = json.load(open(path))
         cells = {}
         for y, row in enumerate(d["grid"]):
             for x, key in enumerate(row):
                 if key:
                     cells.setdefault(key, []).append((x, y))
-        self.areas = [Area(a, sorted(cells.get(a["key"], []), key=lambda c: (c[1], c[0]))) for a in d["areas"]]
+        areas = d["areas"]
+        if region is not None:
+            areas = [a for a in areas if bool(a.get("kanto")) == (region == "tiksi")]
+        self.areas = [Area(a, sorted(cells.get(a["key"], []), key=lambda c: (c[1], c[0]))) for a in areas]
         self.by_key = {a.key: a for a in self.areas}
-        self.grid = [[self.by_key[k].id if k else "MAPSEC_NONE" for k in row] for row in d["grid"]]
-        self.map_assign = dict(d.get("mapAssign", {}))       # map folder -> area key
+        self.grid = [[self.by_key[k].id if k in self.by_key else "MAPSEC_NONE" for k in row] for row in d["grid"]]
+        self.map_assign = {f: k for f, k in d.get("mapAssign", {}).items()       # map folder -> area key
+                           if region is None or k in self.by_key}
         self.lines = d.get("lines", [])
         ids = [a.id for a in self.areas]
         dup = {i for i in ids if ids.count(i) > 1}

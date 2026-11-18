@@ -203,7 +203,8 @@ def update_sections(tags):
     data = json.load(open(path))
     secs = data["map_sections"]
     ids = [s["id"] for s in secs]
-    kanto0, kanto1 = ids.index("MAPSEC_PALLET_TOWN"), ids.index("MAPSEC_SPECIAL_AREA")
+    # Kanto/Sevii block = Tiksi (export_region_map_tiksi.py renames its first entry, so resolve the alias)
+    kanto0, kanto1 = ids.index(RT.resolve_alias("MAPSEC_PALLET_TOWN")), ids.index("MAPSEC_SPECIAL_AREA")
     # match by the original id (first run) or the current one (reruns: already renamed / appended)
     by_id = {a.original_id: a for a in tags.areas if a.original_id}
     by_id.update({a.id: a for a in tags.areas})
@@ -370,7 +371,7 @@ def frame_art():
 
 
 def export():
-    tags = RT.Tags()
+    tags = RT.Tags(region="tosa")     # Kanto/Sevii-block areas belong to Tiksi (export_region_map_tiksi.py)
     # --- affine map (Town Map / Fly / Rotom Phone MAP): MAP v2 = the user's terrain only; routes are
     #     tubes on BG1 and places are OBJs (export_map_v2.py)
     ttiles, tcells = build_tiles(load("tosa_terrain.png"))

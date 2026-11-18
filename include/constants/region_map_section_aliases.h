@@ -3,14 +3,23 @@
 #ifndef GUARD_CONSTANTS_REGION_MAP_SECTION_ALIASES_H
 #define GUARD_CONSTANTS_REGION_MAP_SECTION_ALIASES_H
 
+#define MAPSEC_CELADON_CITY                  MAPSEC_FURONG_VILLAGE
+#define MAPSEC_CERULEAN_CITY                 MAPSEC_FRIGO_CAVE
+#define MAPSEC_CINNABAR_ISLAND               MAPSEC_TANOBY_DELTA
 #define MAPSEC_EVER_GRANDE_CITY              MAPSEC_CHALLENGER_GATE
+#define MAPSEC_FUCHSIA_CITY                  MAPSEC_GAVANI_PATH
+#define MAPSEC_LAVENDER_TOWN                 MAPSEC_FERRUM_SHRINE
 #define MAPSEC_LILYCOVE_CITY                 MAPSEC_JURAN_CITY
 #define MAPSEC_MAUVILLE_CITY                 MAPSEC_SENOKO_CITY
 #define MAPSEC_MOSSDEEP_CITY                 MAPSEC_MOONGROVE_CITY
 #define MAPSEC_MT_CHIMNEY                    MAPSEC_MT_BATOK
 #define MAPSEC_NEW_MAUVILLE                  MAPSEC_TOSA_POWER_PLANT
+#define MAPSEC_PALLET_TOWN                   MAPSEC_REGOLIS_SHRINE
 #define MAPSEC_PETALBURG_CITY                MAPSEC_TIMAH_CITY
 #define MAPSEC_PETALBURG_WOODS               MAPSEC_MOONGROVE_MARSH
+#define MAPSEC_PEWTER_CITY                   MAPSEC_DRAKE_BASE_CAMP
+#define MAPSEC_ROUTE_1                       MAPSEC_ROUTE_401
+#define MAPSEC_ROUTE_10                      MAPSEC_ROUTE_409
 #define MAPSEC_ROUTE_102                     MAPSEC_ROUTE_302
 #define MAPSEC_ROUTE_103                     MAPSEC_ROUTE_303
 #define MAPSEC_ROUTE_104                     MAPSEC_ROUTE_304
@@ -19,15 +28,26 @@
 #define MAPSEC_ROUTE_107                     MAPSEC_ROUTE_307
 #define MAPSEC_ROUTE_108                     MAPSEC_ROUTE_308
 #define MAPSEC_ROUTE_109                     MAPSEC_ROUTE_309
+#define MAPSEC_ROUTE_11                      MAPSEC_ROUTE_410
 #define MAPSEC_ROUTE_110                     MAPSEC_ROUTE_310
 #define MAPSEC_ROUTE_111                     MAPSEC_ROUTE_311
 #define MAPSEC_ROUTE_112                     MAPSEC_ROUTE_312
 #define MAPSEC_ROUTE_113                     MAPSEC_ROUTE_313
 #define MAPSEC_ROUTE_114                     MAPSEC_ROUTE_314
+#define MAPSEC_ROUTE_2                       MAPSEC_ROUTE_402
+#define MAPSEC_ROUTE_3                       MAPSEC_ROUTE_403
+#define MAPSEC_ROUTE_4                       MAPSEC_MT_DRAKE
+#define MAPSEC_ROUTE_5                       MAPSEC_ROUTE_404
+#define MAPSEC_ROUTE_6                       MAPSEC_ROUTE_405
+#define MAPSEC_ROUTE_7                       MAPSEC_ROUTE_406
+#define MAPSEC_ROUTE_8                       MAPSEC_ROUTE_407
+#define MAPSEC_ROUTE_9                       MAPSEC_ROUTE_408
 #define MAPSEC_RUSTBORO_CITY                 MAPSEC_INKA_CITY
 #define MAPSEC_SLATEPORT_CITY                MAPSEC_CHANGU_CITY
 #define MAPSEC_SOOTOPOLIS_CITY               MAPSEC_CORRAL_CITY
 #define MAPSEC_SOUTH_TOSA_RESERVE            MAPSEC_SOUTH_TOSA_RESERVE_1
+#define MAPSEC_VERMILION_CITY                MAPSEC_UBE_CITY
 #define MAPSEC_VICTORY_ROAD                  MAPSEC_CHALLENGERS_TRAIL
+#define MAPSEC_VIRIDIAN_CITY                 MAPSEC_TANGLYN_TOWN
 
 #endif // GUARD_CONSTANTS_REGION_MAP_SECTION_ALIASES_H
