@@ -72,6 +72,9 @@ const u16 gMetatileAttributes_PokemonSchool[] = INCBIN_U16("data/tilesets/second
 const u16 gMetatiles_UrbanInterior[] = INCBIN_U16("data/tilesets/secondary/urban_interior/metatiles.bin");
 const u16 gMetatileAttributes_UrbanInterior[] = INCBIN_U16("data/tilesets/secondary/urban_interior/metatile_attributes.bin");
 
+const u16 gMetatiles_UrbanPlatform[] = INCBIN_U16("data/tilesets/secondary/urban_platform/metatiles.bin");
+const u16 gMetatileAttributes_UrbanPlatform[] = INCBIN_U16("data/tilesets/secondary/urban_platform/metatile_attributes.bin");
+
 const u16 gMetatiles_HawkerCentre[] = INCBIN_U16("data/tilesets/secondary/hawker_centre/metatiles.bin");
 const u16 gMetatileAttributes_HawkerCentre[] = INCBIN_U16("data/tilesets/secondary/hawker_centre/metatile_attributes.bin");
 

@@ -34,7 +34,8 @@
     "gMapGroup_IndoorRoute123",
     "gMapGroup_IndoorRoute119",
     "gMapGroup_IndoorRoute124",
-    "gMapGroup_TrainTest"
+    "gMapGroup_TrainTest",
+    "gMapGroup_TosaRail"
   ],
   "gMapGroup_TownsAndRoutes": [
     "PetalburgCity",
@@ -628,5 +629,43 @@
     "HawkerCentreTest",
     "ColdStorageTest",
     "ColdStorageTestOutside"
+  ],
+  "gMapGroup_TosaRail": [
+    "MoongroveCity",
+    "MoongroveCity_Station",
+    "MoongroveCity_StationPlatform",
+    "TimahCity",
+    "TimahCity_Station",
+    "TimahCity_StationPlatform",
+    "FaberTown",
+    "FaberTown_Station",
+    "FaberTown_StationPlatform",
+    "ChanguCity",
+    "ChanguCity_Station",
+    "ChanguCity_StationPlatform",
+    "ChanguAirport",
+    "ChanguAirport_Station",
+    "ChanguAirport_StationPlatform",
+    "InkaCity",
+    "InkaCity_Station",
+    "InkaCity_StationPlatform",
+    "BuraCity",
+    "BuraCity_Station",
+    "BuraCity_StationPlatform",
+    "JuranCity",
+    "JuranCity_Station",
+    "JuranCity_StationPlatform",
+    "SenokoCity",
+    "SenokoCity_Station",
+    "SenokoCity_StationPlatform",
+    "PokemonLeague",
+    "PokemonLeague_Station",
+    "PokemonLeague_StationPlatform",
+    "PoketopiaGate",
+    "PoketopiaGate_Station",
+    "PoketopiaGate_StationPlatform",
+    "CorralCity",
+    "CorralCity_Station",
+    "CorralCity_StationPlatform"
   ]
 }

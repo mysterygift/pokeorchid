@@ -1,16 +1,13 @@
 TrainTestEast_MapScripts::
 	.byte 0
 
-@ Shared by the Tosa Rail test stations (TrainTestEast/North). The West test map became the
-@ Tosa Port platform (TosaPort_BrendansHouse_2F), so the station master now lives here.
+@ Debug room for Tosa Rail (TrainTestEast/North, debug warp group gMapGroup_TrainTest). These maps
+@ are no longer stations: the station master flips access on the real network so the greyed /
+@ closed / open states can be tested from any station.
 TrainTest_EventScript_Attendant::
-	lock
-	faceplayer
-	usetrain
-	release
+	msgbox TrainTest_Text_NotAStation, MSGBOX_NPC
 	end
 
-@ Debug helper: flips station access so the greyed / closed / open states can be tested.
 TrainTest_EventScript_StationMaster::
 	lock
 	faceplayer
@@ -20,30 +17,22 @@ TrainTest_EventScript_StationMaster::
 TrainTest_EventScript_StationMasterMenu::
 	message TrainTest_Text_StationMaster
 	waitmessage
-	dynmultichoice 0, 0, FALSE, 6, 0, DYN_MULTICHOICE_CB_NONE, TrainTest_Text_OpenEast, TrainTest_Text_LockEast, TrainTest_Text_OpenNorth, TrainTest_Text_CloseNorth, TrainTest_Text_LockNorth
+	dynmultichoice 0, 0, FALSE, 6, 0, DYN_MULTICHOICE_CB_NONE, TrainTest_Text_OpenAll, TrainTest_Text_LockAll, TrainTest_Text_CloseChangu
 	switch VAR_RESULT
-	case 0, TrainTest_EventScript_OpenEast
-	case 1, TrainTest_EventScript_LockEast
-	case 2, TrainTest_EventScript_OpenNorth
-	case 3, TrainTest_EventScript_CloseNorth
-	case 4, TrainTest_EventScript_LockNorth
+	case 0, TrainTest_EventScript_OpenAll
+	case 1, TrainTest_EventScript_LockAll
+	case 2, TrainTest_EventScript_CloseChangu
 	release
 	end
 
-TrainTest_EventScript_OpenEast::
-	settrainstation TRAIN_STATION_TEST_EAST, TRAIN_ACCESS_OPEN
+TrainTest_EventScript_OpenAll::
+	call TosaRail_EventScript_OpenAllStations
 	goto TrainTest_EventScript_Done
-TrainTest_EventScript_LockEast::
-	settrainstation TRAIN_STATION_TEST_EAST, TRAIN_ACCESS_LOCKED
+TrainTest_EventScript_LockAll::
+	call TosaRail_EventScript_LockAllStations
 	goto TrainTest_EventScript_Done
-TrainTest_EventScript_OpenNorth::
-	settrainstation TRAIN_STATION_TEST_NORTH, TRAIN_ACCESS_OPEN
-	goto TrainTest_EventScript_Done
-TrainTest_EventScript_CloseNorth::
-	settrainstation TRAIN_STATION_TEST_NORTH, TRAIN_ACCESS_CLOSED
-	goto TrainTest_EventScript_Done
-TrainTest_EventScript_LockNorth::
-	settrainstation TRAIN_STATION_TEST_NORTH, TRAIN_ACCESS_LOCKED
+TrainTest_EventScript_CloseChangu::
+	settrainstation TRAIN_STATION_CHANGU_CITY, TRAIN_ACCESS_CLOSED
 	goto TrainTest_EventScript_Done
 
 TrainTest_EventScript_Done::
@@ -52,17 +41,16 @@ TrainTest_EventScript_Done::
 	end
 
 TrainTest_Text_StationMaster:
-	.string "STATION MASTER: Which line should\n"
-	.string "I change?$"
-TrainTest_Text_OpenEast:
-	.string "OPEN EAST$"
-TrainTest_Text_LockEast:
-	.string "LOCK EAST$"
-TrainTest_Text_OpenNorth:
-	.string "OPEN NORTH$"
-TrainTest_Text_CloseNorth:
-	.string "CLOSE NORTH$"
-TrainTest_Text_LockNorth:
-	.string "LOCK NORTH$"
+	.string "STATION MASTER: What should I do\n"
+	.string "with the stations?$"
+TrainTest_Text_OpenAll:
+	.string "OPEN ALL$"
+TrainTest_Text_LockAll:
+	.string "LOCK ALL$"
+TrainTest_Text_CloseChangu:
+	.string "CLOSE CHANGU$"
 TrainTest_Text_Done:
-	.string "Done! Ask the attendant.$"
+	.string "Done! Ride from any station.$"
+TrainTest_Text_NotAStation:
+	.string "This test room isn't a station any\n"
+	.string "more. Board at a real platform.$"

@@ -214,7 +214,6 @@ static const u8 sText_Confirm[] = _("Take the train to\n{STR_VAR_1}?");
 static const u8 sText_NotVisited[] = _("You haven't been to {STR_VAR_1}\nyet. Visit it on foot first.");
 static const u8 sText_Closed[] = _("{STR_VAR_1} station is\nclosed right now.");
 static const u8 sText_Line[] = _(" LINE");
-static const u8 sText_Lines[] = _(" LINES");
 static const u8 sText_Plus[] = _(" + ");
 
 // ---------------------------------------------------------------------------------------------
@@ -655,7 +654,8 @@ static void PrintTray(void)
             StringAppend(str, sText_Plus);
         StringAppend(str, sTrainMapLineNames[i]);
     }
-    StringAppend(str, lines > 1 ? sText_Lines : sText_Line);
+    if (lines == 1)        // interchanges list names only, so three lines fit the window
+        StringAppend(str, sText_Line);
     FillWindowPixelBuffer(WIN_LINE, PIXEL_FILL(0));
     AddTextPrinterParameterized3(WIN_LINE, FONT_SMALL, 2, 0, sTextColor_Line, TEXT_SKIP_DRAW, str);
     CopyWindowToVram(WIN_LINE, COPYWIN_GFX);
