@@ -493,6 +493,8 @@ const u32 gObjectEventPic_Orchidist[] = INCGFX_U32("graphics/object_events/pics/
 const u32 gObjectEventPic_Recruit[] = INCGFX_U32("graphics/object_events/pics/people/recruit.png", ".4bpp", "-mwidth 2 -mheight 4");
 const u32 gObjectEventPic_PortWorker[] = INCGFX_U32("graphics/object_events/pics/people/port_worker.png", ".4bpp", "-mwidth 2 -mheight 4");
 const u32 gObjectEventPic_SchoolKidF[] = INCGFX_U32("graphics/object_events/pics/people/school_kid_f.png", ".4bpp", "-mwidth 2 -mheight 4");
+const u32 gObjectEventPic_PokemonRangerM[] = INCGFX_U32("graphics/object_events/pics/people/pokemon_ranger_m.png", ".4bpp", "-mwidth 2 -mheight 4");
+const u32 gObjectEventPic_PokemonRangerF[] = INCGFX_U32("graphics/object_events/pics/people/pokemon_ranger_f.png", ".4bpp", "-mwidth 2 -mheight 4");
 
 #if IS_FRLG
 

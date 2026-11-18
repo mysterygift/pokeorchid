@@ -43,8 +43,13 @@ SPRITES = [
     ('edit_school_kid_m', 'school_kid_m', 'replace', 'npc_1'),
     # front pic replaces vanilla; the OW is new (vanilla has no School Kid F overworld)
     ('edit_school_kid_f', 'school_kid_f', 'replace', 'npc_school_kid_f'),
+    # OW only: the Pkmn Ranger class + front pics are vanilla; vanilla reused the Camper/Picnicker OWs
+    ('ranger_m',          'pokemon_ranger_m', 'ow',  'npc_white'),
+    ('ranger_f',          'pokemon_ranger_f', 'ow',  'npc_white'),
 ]
 OWN_PALETTES = {'npc_school_kid_f'}
+# 'replace' entries whose OW is new (no vanilla OW to back up as -og)
+NEW_OW = {'edit_school_kid_f'}
 
 
 def npc_palette(name):
@@ -82,21 +87,22 @@ def main():
     errors = []
     for sid, name, mode, npc in SPRITES:
         print(sid, '->', name, f'({mode})')
-        # front pic
-        px, pal = load16(os.path.join(OUT, sid + '_front.png'), (64, 64))
-        dst = os.path.join(FRONT_DIR, name + '.png')
-        if mode == 'replace':
-            if not os.path.exists(dst):
-                errors.append(f'{name}: no vanilla front pic to replace')
-            backup(dst)
-        write16(dst, (64, 64), px, pal)
+        # front pic ('ow' entries keep the vanilla front pic and only add an overworld)
+        if mode != 'ow':
+            px, pal = load16(os.path.join(OUT, sid + '_front.png'), (64, 64))
+            dst = os.path.join(FRONT_DIR, name + '.png')
+            if mode == 'replace':
+                if not os.path.exists(dst):
+                    errors.append(f'{name}: no vanilla front pic to replace')
+                backup(dst)
+            write16(dst, (64, 64), px, pal)
         # overworld
         px, pal = load16(os.path.join(OUT, sid + '_ow.png'), (144, 32))
         want = npc_palette(npc)
         if pal != want:
             errors.append(f'{sid}: OW palette differs from {npc}')
         dst = os.path.join(OW_DIR, name + '.png')
-        if mode == 'replace' and os.path.exists(dst):
+        if mode == 'replace' and sid not in NEW_OW and os.path.exists(dst):
             backup(dst)
             van = Image.open(dst.replace('.png', '-og.png'))
             if van.size != (144, 32):

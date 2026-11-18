@@ -1412,6 +1412,14 @@ static const struct SpriteFrameImage sPicTable_SchoolKidF[] = {
     overworld_ascending_frames(gObjectEventPic_SchoolKidF, 2, 4),
 };
 
+static const struct SpriteFrameImage sPicTable_PokemonRangerM[] = {
+    overworld_ascending_frames(gObjectEventPic_PokemonRangerM, 2, 4),
+};
+
+static const struct SpriteFrameImage sPicTable_PokemonRangerF[] = {
+    overworld_ascending_frames(gObjectEventPic_PokemonRangerF, 2, 4),
+};
+
 #if IS_FRLG
 
 static const struct SpriteFrameImage sPicTable_RedNormal[] = {

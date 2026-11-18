@@ -53,6 +53,8 @@ WIRING = {
     'edit_black_belt':   ('BLACK_BELT',   'BLACK_BELT',  'BLACK BELT',  'BLACK_BELT'),
     'edit_school_kid_m': ('SCHOOL_KID_M', 'SCHOOL_KID',  'SCHOOL KID',  'SCHOOL_KID_M'),
     'edit_school_kid_f': ('SCHOOL_KID_F', 'SCHOOL_KID',  'SCHOOL KID',  'SCHOOL_KID_F'),
+    'ranger_m':          ('POKEMON_RANGER_M', 'PKMN_RANGER', 'PKMN RANGER', 'POKEMON_RANGER_M'),
+    'ranger_f':          ('POKEMON_RANGER_F', 'PKMN_RANGER', 'PKMN RANGER', 'POKEMON_RANGER_F'),
 }
 PAL_TAG_NONE = 0x11FF
 
@@ -186,7 +188,10 @@ def main():
         sym, data = smol_decompress(img_ptr)
         fpx = tiles_to_px(data, 8, 8)
         fpal = palette(pal_ptr)
-        spx, spal_src = load_src(os.path.join(OUT, sid + '_front.png'))
+        # 'ow' entries keep the vanilla front pic, so compare against graphics/ instead of out/
+        front_src = (os.path.join(ROOT, 'graphics/trainers/front_pics', name + '.png') if mode == 'ow'
+                     else os.path.join(OUT, sid + '_front.png'))
+        spx, spal_src = load_src(front_src)
         ok_px, ok_pal = fpx == spx, fpal == spal_src
         rep.append(f'front {sym} px={"ok" if ok_px else "DIFF"} pal={"ok" if ok_pal else "DIFF"}')
         if not (ok_px and ok_pal):
