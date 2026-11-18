@@ -40,7 +40,7 @@ PAL = [
 PALETTE = [kit.snap(c) for _, _, c, _ in PAL]
 CMAP = {ch: i for i, ch, _, _ in PAL}
 
-NAMES = ["POKéDEX", "POKéMON", "BAG", "POKéNAV", "PLAYER", "SAVE",
+NAMES = ["POKéDEX", "POKéMON", "BAG", "PHONE", "PLAYER", "SAVE",
          "OPTION", "EXIT", "RETIRE", "REST", "DEXNAV", "DEBUG"]
 
 ICONS = {}
@@ -102,22 +102,23 @@ ICONS["BAG"] = [
     "................",
 ]
 
-ICONS["POKéNAV"] = [
-    "................",
-    "...kkkkkkkkkk...",
-    "..kwwwwwwwwwlk..",
-    "..kwkkkkkkkkmk..",
-    "..kwkwcgggkkmk..",
-    "..kwkcgggbbkmk..",
-    "..kwkggrgbbkmk..",
-    "..kwkgggbbbkmk..",
-    "..kwkkkkkkkkmk..",
-    "..klllllllllmk..",
-    "..kllllkklllmk..",
-    "..klllkorkllmk..",
-    "..klllkrRkllmk..",
-    "..kmmmmkkmmmmk..",
-    "...kkkkkkkkkk...",
+# Rotom Phone (replaces the PokéNav; approved in mock_phone.py PHONE_ICON)
+ICONS["PHONE"] = [
+    ".........kk.....",
+    "........kok.....",
+    ".......kork.....",
+    "..kkkkkkrkkkkk..",
+    ".koooooooooooRk.",
+    ".kokkkkkkkkkkRk.",
+    "kkkkdddddddmkRk.",
+    "kmkkddddddmdkRk.",
+    "kkkkdddddmddkRk.",
+    ".kokddddmdddkRk.",
+    ".kokkkkkkkkkkRk.",
+    ".krRRRRRRRRRRRk.",
+    "..kkkkkkkRkkkk..",
+    ".........kRk....",
+    "..........k.....",
     "................",
 ]
 

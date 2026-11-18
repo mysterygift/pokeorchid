@@ -1,4 +1,4 @@
-"""Minimal GBA mode-0 renderer (text BGs + regular/affine-as-regular OBJs, priorities, no blending/windows)."""
+"""Minimal GBA mode-0 renderer (text BGs + regular/affine-as-regular OBJs, priorities, WIN0 layer masks, no blending)."""
 import struct
 from PIL import Image
 
@@ -123,9 +123,20 @@ def render(io, reg, vram, pal, oam):
     layers.sort(key=lambda l: (-l[0], -l[1], -l[2]))  # draw back to front
     img = Image.new('RGB', (W, H), back)
     data = list(img.getdata())
-    for _, _, _, px in layers:
+    win0 = dispcnt & 0x2000
+    if win0:
+        w0h, w0v, winin, winout = h16(reg, 0x40), h16(reg, 0x44), h16(reg, 0x48), h16(reg, 0x4A)
+        l, r, t, b = w0h >> 8, w0h & 255, w0v >> 8, w0v & 255
+    for _, _, bg, px in layers:
+        bit = 1 << (4 if bg < 0 else bg)
         for i, c in enumerate(px):
-            if c is not None:
-                data[i] = c
+            if c is None:
+                continue
+            if win0:
+                x, y = i % W, i // W
+                m = winin if (l <= x < r and t <= y < b) else winout
+                if not m & bit:
+                    continue
+            data[i] = c
     img.putdata(data)
     return img
