@@ -3,15 +3,12 @@ mapscripts TosaPort_BrendansHouse_2F_MapScripts {}
 // Tosa Port station platform (under the gatehouse). Layout painted by
 // dev_scripts/station_tileset/export_tileset.py --paint-tosa-port.
 //
-// TEMP (testing): the attendant hands out a Rail Card and opens EAST TEST so the ride works before
-// the real network and story exist. Remove the checkitem/giveitem and settrainstation lines then.
+// TEMP (testing): the attendant opens EAST TEST so the ride works before the real network and
+// story exist (the Rail Card comes from the gatehouse ticket booth for now). Remove the
+// settrainstation line then.
 script TosaPortStation_Attendant {
     lock
     faceplayer
-    checkitem(ITEM_RAIL_CARD)
-    if (var(VAR_RESULT) == FALSE) {
-        giveitem(ITEM_RAIL_CARD)
-    }
     settrainstation(TRAIN_STATION_TEST_EAST, TRAIN_ACCESS_OPEN)
     usetrain
     release

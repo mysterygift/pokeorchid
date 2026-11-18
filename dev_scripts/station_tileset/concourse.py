@@ -2,12 +2,13 @@
 Station concourse kit for gTileset_UrbanInterior (imported by export_tileset.py).
 
 Adds, from metatile 0x2B0 on (after the escalator block):
-  * concourse back wall (2 rows), granite floor (A/B), tactile guide strips (V, H, blister pad)
-  * fare gates for a north-south gate line: cabinet, gate passage (walk east-west), and a glass
-    fence for an east-west run
+  * concourse back wall (2 rows), tactile guide strips (V, H, blister pad); the floor itself is
+    the platform paving (Paving_A on even rows, Paving_B on odd rows)
+  * fare gates for a north-south gate line: cabinet, gate passage closed / open (the player walks
+    through east-west, see TosaGateway_FareGate), and a glass fence for an east-west run
   * ticket booth 3x4 (a building in the building): roof L/M/R over the lower wall row, roof
     front + fascia L/M/R, facade L/M/R (service window in the middle), counter L/M/R
-  * waiting seat (the Battle Tent seat art, top layer, on the granite floor)
+  * waiting seat (the Battle Tent seat art, top layer, on paving)
   * 2-wide exit mat (south arrow warp)
   * rear exit arch, 2 wide x 2 rows (north arrow warps on the bottom row)
   * station sign (single tile, train front on a navy plate, upper wall row)
@@ -15,11 +16,12 @@ Adds, from metatile 0x2B0 on (after the escalator block):
 Props follow Gen 3's 3/4 view: a tall lit top surface, a 2-3 row front band one shade darker,
 blue-grey outline (80,80,104), and a 2-row floor shadow baked in.
 
-The paid side of the gate line is floored with platform paving so the stock escalator metatiles
-(0x280-0x2AD, also on the platform) sit on matching floor.
+Everything on the floor is drawn over the platform's staggered paving, whose brick joints are
+offset on alternate rows. So each floor prop comes in two versions: `_A` for even map rows (over
+Paving_A) and `_B` for odd rows (over Paving_B). The painter picks the right one by row.
 
 Palettes: 11 = wall fixtures (wall + steel + navy/amber/white), 12 = floor fixtures
-(granite + tactile yellow + steel + seat blue + green). Plain concourse wall uses palette 6.
+(paving + tactile yellow + steel + seat blue + green). Plain concourse wall uses palette 6.
 """
 
 INK = (40, 40, 56)
@@ -30,14 +32,14 @@ AMBER, WHITE, NAVY = (248, 200, 72), (248, 248, 248), (40, 56, 112)
 GREEN = (72, 176, 96)
 OUT = (80, 80, 104)                                  # vanilla interior outline
 S1, S2, S3 = (120, 128, 144), (160, 168, 184), (208, 216, 224)   # steel: dark / mid / lit top
-FHI, FL, FD, GROUT = (224, 224, 216), (200, 200, 192), (176, 176, 168), (144, 144, 136)
-SHADOW = (160, 160, 152)
+P_HI, P0, P1, P2 = (248, 248, 232), (224, 216, 192), (200, 192, 168), (176, 168, 144)  # platform paving
+SHADOW = (168, 160, 136)
 YEL, YEL_D = (248, 216, 80), (216, 168, 48)
 BLUE, BLUE_D = (112, 184, 240), (96, 160, 216)       # Battle Tent seat blue (also acrylic/glass)
 
 BLACK = (0, 0, 0)
 PAL_FIXTURE = [BLACK, INK, CDD, CD, WD, W, WL, SDK, SMD, SLT, AMBER, WHITE, NAVY, OUT]
-PAL_CONCOURSE = [BLACK, OUT, FHI, FL, FD, GROUT, YEL, YEL_D, S1, S2, S3, WHITE, GREEN, BLUE, BLUE_D,
+PAL_CONCOURSE = [BLACK, OUT, P_HI, P0, P1, P2, YEL, YEL_D, S1, S2, S3, WHITE, GREEN, BLUE, BLUE_D,
                  SHADOW]
 
 MB_NORMAL = 0x00
@@ -140,25 +142,24 @@ def arch_piece(Block, side, row):
 
 
 # ------------------------------------------------------------------ floor
-SPECKS = {
-    "A": {(4, 5), (11, 3), (7, 11), (2, 12), (13, 9)},
-    "B": {(6, 3), (12, 12), (3, 8), (9, 7), (13, 4)},
-}
-
-
-def floor_px(x, y, v="A"):
-    if y == 15 or x == 15:
-        return GROUT
-    if y == 0 or x == 0:
-        return FHI
-    return FD if (x, y) in SPECKS[v] else FL
+def pave_px(x, py):
+    """Same staggered paving as export_tileset.pave_px (py = 0 at a brick row's top line)."""
+    row, ly = py // 16, py % 16
+    if ly == 15:
+        return P2
+    c = P_HI if ly == 0 else P0
+    if x % 16 == (7 if row % 2 else 15):
+        c = P1
+    return c
 
 
 def floor(Block, v="A"):
+    """Paving_A (even map rows) or Paving_B (odd map rows), as export_tileset.draw_paving."""
     b = Block()
+    py0 = 20 if v == "B" else 4
     for y in range(16):
         for x in range(16):
-            b.put(x, y, floor_px(x, y, v))
+            b.put(x, y, pave_px(x, py0 + y))
     return b
 
 
@@ -166,32 +167,39 @@ def shade(b, x0, y0, x1, y1):
     """Baked floor shadow: darken whatever floor tone is there."""
     for y in range(y0, y1 + 1):
         for x in range(x0, x1 + 1):
-            if b.px[y][x] in (FHI, FL, FD):
+            if b.px[y][x] in (P_HI, P0, P1):
                 b.put(x, y, SHADOW)
 
 
-def guide(Block, vertical):
-    b = floor(Block)
+def guide(Block, v, vertical):
+    """Guide strip x 4-11 (rotated for H), set into the paving with a mortar-tone line either side."""
+    b = floor(Block, v)
     for y in range(16):
-        for x in range(4, 12):
+        for x in range(3, 13):
             a, c = (x, y) if vertical else (y, x)
-            b.put(a, c, YEL_D if x in (4, 6, 9, 11) else YEL)
+            if x in (3, 12):
+                b.put(a, c, P2)                            # edging: the paving's joint tone
+            else:
+                b.put(a, c, YEL_D if x in (4, 6, 9, 11) else YEL)
     return b
 
 
 def blister(Block):
-    """Warning pad: fills the whole tile so pads and strips run together; dots tile seamlessly."""
+    """Warning pad: a whole-tile square laid like a paving slab (mortar-tone border), dotted inside."""
     b = Block()
     for y in range(16):
         for x in range(16):
-            b.put(x, y, YEL_D if (x % 4 in (1, 2) and y % 4 == 1) else YEL)
+            if x in (0, 15) or y in (0, 15):
+                b.put(x, y, P2)
+            else:
+                b.put(x, y, YEL_D if (x % 4 in (1, 2) and y % 4 == 1) else YEL)
     return b
 
 
 # ------------------------------------------------------------------ fare gates
-def gate_cabinet(Block):
+def gate_cabinet(Block, v):
     """Waist-high gate cabinet, 3/4 view: 9-row lit top, 3-row front band, floor shadow."""
-    b = floor(Block)
+    b = floor(Block, v)
     shade(b, 2, 14, 12, 15)                                # shadow falls straight down
     # silhouette x2..12, y0..13
     b.rect(3, 0, 11, 0, OUT)
@@ -211,10 +219,10 @@ def gate_cabinet(Block):
     return b
 
 
-def gate_passage(Block):
+def gate_passage(Block, v):
     """Gate between two cabinets stacked north-south; the player walks through east-west.
     Acrylic flaps reach in from the cabinets above and below (seen from above)."""
-    b = floor(Block)
+    b = floor(Block, v)
     for y0, y1 in ((0, 4), (11, 14)):
         b.rect(5, y0, 9, y1, BLUE)
         b.rect(5, y0, 5, y1, WHITE)
@@ -224,9 +232,20 @@ def gate_passage(Block):
     return b
 
 
-def fence_h(Block):
+def gate_open(Block, v):
+    """The same gate with its flaps folded back into the cabinets (swapped in by the gate script)."""
+    b = floor(Block, v)
+    for y0, y1 in ((0, 1), (14, 15)):
+        b.rect(5, y0, 9, y1, BLUE)
+        b.rect(5, y0, 5, y1, WHITE)
+        b.rect(10, y0, 10, y1, OUT)
+    b.rect(5, 2, 10, 2, SHADOW)
+    return b
+
+
+def fence_h(Block, v):
     """Glass barrier running east-west: lit rail on top, glass front, base, shadow."""
-    b = floor(Block)
+    b = floor(Block, v)
     b.rect(0, 0, 15, 0, OUT)
     b.rect(0, 1, 15, 2, S3)                                # rail top
     b.rect(0, 1, 15, 1, WHITE)
@@ -320,9 +339,9 @@ def booth_facade(Block, part):
     return b
 
 
-def booth_counter(Block, part):
+def booth_counter(Block, part, v):
     """Counter facing the concourse: tall lit top, lip, 2-row front band, floor shadow."""
-    b = floor(Block)
+    b = floor(Block, v)
     b.rect(0, 0, 15, 0, OUT)
     b.rect(0, 1, 15, 8, S3)                                # top surface
     b.rect(0, 1, 15, 1, WHITE)
@@ -375,8 +394,8 @@ def seat_top(Block):
     return b
 
 
-def exit_mat(Block, part):
-    b = floor(Block)
+def exit_mat(Block, part, v):
+    b = floor(Block, v)
     x0, x1 = (1, 15) if part == "L" else (0, 14)
     b.rect(x0, 1, x1, 14, OUT)
     b.rect(x0 + (1 if part == "L" else 0), 2, x1 - (0 if part == "L" else 1), 13, S1)
@@ -389,6 +408,27 @@ def exit_mat(Block, part):
 
 
 # ------------------------------------------------------------------ list
+# Floor props: one metatile per paving parity (suffix _A = even rows, _B = odd rows).
+def floor_prop_defs(Block, F):
+    defs = []
+    for v in "AB":
+        defs += [
+            ("Concourse_Guide_V_" + v, F, lambda v=v: guide(Block, v, True), None, MB_NORMAL, LAYER_NORMAL),
+            ("Concourse_Guide_H_" + v, F, lambda v=v: guide(Block, v, False), None, MB_NORMAL, LAYER_NORMAL),
+            ("Concourse_Seat_" + v, F, lambda v=v: floor(Block, v), lambda: seat_top(Block), MB_NORMAL, LAYER_COVERED),
+            ("FareGate_Cabinet_" + v, F, lambda v=v: gate_cabinet(Block, v), None, MB_NORMAL, LAYER_COVERED),
+            ("FareGate_Gate_" + v, F, lambda v=v: gate_passage(Block, v), None, MB_NORMAL, LAYER_COVERED),
+            ("FareGate_Gate_Open_" + v, F, lambda v=v: gate_open(Block, v), None, MB_NORMAL, LAYER_COVERED),
+            ("FareGate_Fence_H_" + v, F, lambda v=v: fence_h(Block, v), None, MB_NORMAL, LAYER_COVERED),
+            ("Concourse_ExitMat_L_" + v, F, lambda v=v: exit_mat(Block, "L", v), None, MB_SOUTH_ARROW_WARP, LAYER_NORMAL),
+            ("Concourse_ExitMat_R_" + v, F, lambda v=v: exit_mat(Block, "R", v), None, MB_SOUTH_ARROW_WARP, LAYER_NORMAL),
+            ("Booth_Counter_L_" + v, F, lambda v=v: booth_counter(Block, "L", v), None, MB_COUNTER, LAYER_COVERED),
+            ("Booth_Counter_M_" + v, F, lambda v=v: booth_counter(Block, "M", v), None, MB_COUNTER, LAYER_COVERED),
+            ("Booth_Counter_R_" + v, F, lambda v=v: booth_counter(Block, "R", v), None, MB_COUNTER, LAYER_COVERED),
+        ]
+    return defs
+
+
 def concourse_defs(Block):
     """(label, palettes, bottom(), top() or None, behaviour, layer). Order = id from FIRST_ID."""
     F, X = (12,), (11,)
@@ -397,17 +437,7 @@ def concourse_defs(Block):
     return [
         ("Concourse_Wall_Upper", wallp, lambda: wt.half(Block, 0), None, MB_NORMAL, LAYER_COVERED),
         ("Concourse_Wall_Lower", wallp, lambda: wt.half(Block, 1), None, MB_NORMAL, LAYER_COVERED),
-        ("Concourse_Floor_A", F, lambda: floor(Block, "A"), None, MB_NORMAL, LAYER_NORMAL),
-        ("Concourse_Floor_B", F, lambda: floor(Block, "B"), None, MB_NORMAL, LAYER_NORMAL),
-        ("Concourse_Guide_V", F, lambda: guide(Block, True), None, MB_NORMAL, LAYER_NORMAL),
-        ("Concourse_Guide_H", F, lambda: guide(Block, False), None, MB_NORMAL, LAYER_NORMAL),
         ("Concourse_Guide_Blister", F, lambda: blister(Block), None, MB_NORMAL, LAYER_NORMAL),
-        ("Concourse_Seat", F, lambda: floor(Block, "A"), lambda: seat_top(Block), MB_NORMAL, LAYER_COVERED),
-        ("FareGate_Cabinet", F, lambda: gate_cabinet(Block), None, MB_NORMAL, LAYER_COVERED),
-        ("FareGate_Gate", F, lambda: gate_passage(Block), None, MB_NORMAL, LAYER_COVERED),
-        ("FareGate_Fence_H", F, lambda: fence_h(Block), None, MB_NORMAL, LAYER_COVERED),
-        ("Concourse_ExitMat_L", F, lambda: exit_mat(Block, "L"), None, MB_SOUTH_ARROW_WARP, LAYER_NORMAL),
-        ("Concourse_ExitMat_R", F, lambda: exit_mat(Block, "R"), None, MB_SOUTH_ARROW_WARP, LAYER_NORMAL),
         ("Concourse_Arch_Top_L", X, lambda: arch_piece(Block, "L", 0), None, MB_NORMAL, LAYER_COVERED),
         ("Concourse_Arch_Top_R", X, lambda: arch_piece(Block, "R", 0), None, MB_NORMAL, LAYER_COVERED),
         ("Concourse_Arch_Exit_L", X, lambda: arch_piece(Block, "L", 1), None, MB_NORTH_ARROW_WARP, LAYER_COVERED),
@@ -421,8 +451,5 @@ def concourse_defs(Block):
         ("Booth_Facade_L", F, lambda: booth_facade(Block, "L"), None, MB_NORMAL, LAYER_COVERED),
         ("Booth_Facade_M", F, lambda: booth_facade(Block, "M"), None, MB_NORMAL, LAYER_COVERED),
         ("Booth_Facade_R", F, lambda: booth_facade(Block, "R"), None, MB_NORMAL, LAYER_COVERED),
-        ("Booth_Counter_L", F, lambda: booth_counter(Block, "L"), None, MB_COUNTER, LAYER_COVERED),
-        ("Booth_Counter_M", F, lambda: booth_counter(Block, "M"), None, MB_COUNTER, LAYER_COVERED),
-        ("Booth_Counter_R", F, lambda: booth_counter(Block, "R"), None, MB_COUNTER, LAYER_COVERED),
         ("StationSign", X, lambda: sign_upper(Block), None, MB_NORMAL, LAYER_COVERED),
-    ]
+    ] + floor_prop_defs(Block, F)

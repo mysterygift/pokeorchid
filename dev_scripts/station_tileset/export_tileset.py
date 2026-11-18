@@ -643,7 +643,8 @@ def paint_test_layout(labels, brick=False):
 WALK, BLOCK = 0x3000, 0x0400        # walkable: elevation 3; blocked: collision 1
 
 # Tosa Port gatehouse (LAYOUT_TOSA_PORT_BRENDANS_HOUSE_1F), 14x11. One character per tile.
-# Paid area at the back left (platform paving, x 0-3 rows 2-5) behind a north-south gate line at
+# Floored with platform paving throughout. Paid area at the back left (x 0-3 rows 2-5) behind a
+# north-south gate line at
 # x 4 and a glass fence along row 6; a 2F-style DOWN escalator on the left wall (x 0-1, rows 3-5,
 # warp tile (1,4)) leads to the platform's UP escalator. The escalator metatiles expect paving B on
 # odd rows and A on even rows, hence rows 3-5.
@@ -666,13 +667,13 @@ TILE_KEY = {  # char -> (metatile label, walkable)
     "A": ("Concourse_Arch_Top_L", False), "B": ("Concourse_Arch_Top_R", False),
     "E": ("Concourse_Arch_Exit_L", True), "F": ("Concourse_Arch_Exit_R", True),
     "S": ("StationSign", False),
-    "v": ("Concourse_Guide_V", True), "h": ("Concourse_Guide_H", True),
+    "v": ("Concourse_Guide_V", True), "h": ("Concourse_Guide_H", True),  # floor props: +_A/_B by row
     "o": ("Concourse_Guide_Blister", True),
     "(": ("Booth_Roof_L", False), "{": ("Booth_Roof_M", False), ")": ("Booth_Roof_R", False),
     "[": ("Booth_Fascia_L", False), "^": ("Booth_Fascia_M", False), "]": ("Booth_Fascia_R", False),
     "<": ("Booth_Facade_L", False), "=": ("Booth_Facade_M", False), ">": ("Booth_Facade_R", False),
     "c": ("Booth_Counter_L", False), "_": ("Booth_Counter_M", False), "C": ("Booth_Counter_R", False),
-    "T": ("FareGate_Cabinet", False), "G": ("FareGate_Gate", True), "f": ("FareGate_Fence_H", False),
+    "T": ("FareGate_Cabinet", False), "G": ("FareGate_Gate", False), "f": ("FareGate_Fence_H", False),
     "s": ("Concourse_Seat", True),
     "M": ("Concourse_ExitMat_L", True), "N": ("Concourse_ExitMat_R", True),
 }
@@ -696,14 +697,14 @@ def paint_gatehouse(labels):
         for x, ch in enumerate(row):
             if ch == "e":
                 grid.append(ESC_DOWN[y - GATEHOUSE_ESC_TOP][x])
-            elif ch == "p":
+            elif ch in "p.":
                 grid.append(paving_id(labels, y) | WALK)
             elif ch == "q":                        # beside the escalator: elevation 0 (3 -> 0 -> 4)
                 grid.append(paving_id(labels, y))
-            elif ch == ".":
-                grid.append(mid(labels, "Concourse_Floor_A" if (x + y) % 2 == 0 else "Concourse_Floor_B") | WALK)
             else:
                 name, walk = TILE_KEY[ch]
+                if name + "_A" in labels:              # floor prop: pick the paving parity of this row
+                    name += "_B" if y % 2 else "_A"
                 grid.append(mid(labels, name) | (WALK if walk else BLOCK))
     write_layout("TosaPort_BrendansHouse_1F", grid, 14, 11, labels)
 
