@@ -17,7 +17,7 @@ void PhoneApp_LaunchQuests(void)
 
 void PhoneApp_LaunchRadio(void)
 {
-    SetMainCallback2(CB2_ReturnToRotomPhone);   // TODO: RADIO app
+    CB2_InitPhoneRadio();
 }
 
 u32 PhoneApp_CountContacts(void)
@@ -28,9 +28,4 @@ u32 PhoneApp_CountContacts(void)
 u32 PhoneApp_CountQuestRewards(void)
 {
     return Quests_CountInState(FLAG_GET_REWARD);
-}
-
-void PhoneApp_RadioRotomText(u8 *dest)
-{
-    StringCopy(dest, COMPOUND_STRING("Tune in to TOSA FM!\nNew hits every hour!"));
 }

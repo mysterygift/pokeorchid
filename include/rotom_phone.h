@@ -28,4 +28,7 @@ void PhoneApp_RadioRotomText(u8 *dest);
 void CB2_InitPhoneCall(void);
 u32 PhoneCall_CountContacts(void);
 
+// src/rotom_phone_radio.c
+void CB2_InitPhoneRadio(void);
+
 #endif // GUARD_ROTOM_PHONE_H

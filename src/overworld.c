@@ -1,5 +1,6 @@
 #include "global.h"
 #include "overworld.h"
+#include "radio.h"
 #include "battle_pyramid.h"
 #include "battle_setup.h"
 #include "battle_util.h"
@@ -1285,17 +1286,10 @@ void Overworld_ResetMapMusic(void)
     ResetMapMusic();
 }
 
-void Overworld_PlaySpecialMapMusic(void)
+// The music the field plays here now (map / saved / underwater / surf / night, then the Rotom Phone radio)
+u16 Overworld_GetFieldMusic(void)
 {
     u16 music = GetCurrLocationDefaultMusic();
-
-    if (gDisableMapMusicChangeOnMapLoad == MUSIC_DISABLE_STOP)
-    {
-        StopMapMusic();
-        return;
-    }
-    if (gDisableMapMusicChangeOnMapLoad == MUSIC_DISABLE_KEEP)
-        return;
 
     if (music != MUS_ABNORMAL_WEATHER && music != MUS_NONE)
     {
@@ -1308,7 +1302,22 @@ void Overworld_PlaySpecialMapMusic(void)
     }
 
     music = GetNightMusicFromTrack(music);
+    return Radio_FieldMusic(music, &gMapHeader, FALSE);
+}
 
+void Overworld_PlaySpecialMapMusic(void)
+{
+    u16 music;
+
+    if (gDisableMapMusicChangeOnMapLoad == MUSIC_DISABLE_STOP)
+    {
+        StopMapMusic();
+        return;
+    }
+    if (gDisableMapMusicChangeOnMapLoad == MUSIC_DISABLE_KEEP)
+        return;
+
+    music = Overworld_GetFieldMusic();
     if (music != GetCurrentMapMusic())
         PlayNewMapMusic(music);
 }
@@ -1345,6 +1354,7 @@ static void TransitionMapMusic(void)
                 newMusic = (IS_FRLG ? MUS_RG_SURF : MUS_SURF);
         }
         newMusic = GetNightMusicFromTrack(newMusic);
+        newMusic = Radio_FieldMusic(newMusic, GetDestinationWarpMapHeader(), TRUE);
         if (newMusic != currentMusic)
         {
             if (TestPlayerAvatarFlags(PLAYER_AVATAR_FLAG_MACH_BIKE | PLAYER_AVATAR_FLAG_ACRO_BIKE))
@@ -1358,8 +1368,9 @@ static void TransitionMapMusic(void)
 void Overworld_ChangeMusicToDefault(void)
 {
     u16 currentMusic = GetCurrentMapMusic();
-    if (currentMusic != GetCurrLocationDefaultMusic())
-        FadeOutAndPlayNewMapMusic(GetCurrLocationDefaultMusic(), 8);
+    u16 music = Radio_FieldMusic(GetCurrLocationDefaultMusic(), &gMapHeader, FALSE);
+    if (currentMusic != music)
+        FadeOutAndPlayNewMapMusic(music, 8);
 }
 
 void Overworld_ChangeMusicTo(u16 newMusic)
@@ -1381,7 +1392,7 @@ u8 GetMapMusicFadeoutSpeed(void)
 void TryFadeOutOldMapMusic(void)
 {
     u16 currentMusic = GetCurrentMapMusic();
-    u16 warpMusic = GetNightMusicFromTrack(GetWarpDestinationMusic());
+    u16 warpMusic = Radio_FieldMusic(GetNightMusicFromTrack(GetWarpDestinationMusic()), GetDestinationWarpMapHeader(), FALSE);
     if (FlagGet(FLAG_DONT_TRANSITION_MUSIC) != TRUE && warpMusic != GetCurrentMapMusic())
     {
         if (currentMusic == MUS_SURF
@@ -1849,6 +1860,7 @@ u8 UpdateSpritePaletteWithTime(u8 paletteNum)
 static void OverworldBasic(void)
 {
     ScriptContext_RunScript();
+    Radio_Update();
     RunTasks();
     AnimateSprites();
     CameraUpdate();
