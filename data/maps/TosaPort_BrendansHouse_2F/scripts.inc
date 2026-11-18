@@ -3,15 +3,17 @@ TosaPort_BrendansHouse_2F_MapScripts::
 
 
 TosaPortStation_Attendant::
-# 10 "data/maps/TosaPort_BrendansHouse_2F/scripts.pory"
-	lock
 # 11 "data/maps/TosaPort_BrendansHouse_2F/scripts.pory"
-	faceplayer
+	lock
 # 12 "data/maps/TosaPort_BrendansHouse_2F/scripts.pory"
-	settrainstation TRAIN_STATION_TEST_EAST, TRAIN_ACCESS_OPEN
+	faceplayer
 # 13 "data/maps/TosaPort_BrendansHouse_2F/scripts.pory"
-	usetrain
+	call TosaRail_EventScript_OpenAllStations
 # 14 "data/maps/TosaPort_BrendansHouse_2F/scripts.pory"
+	giveitem ITEM_RAIL_CARD
+# 15 "data/maps/TosaPort_BrendansHouse_2F/scripts.pory"
+	usetrain
+# 16 "data/maps/TosaPort_BrendansHouse_2F/scripts.pory"
 	release
 	end
 

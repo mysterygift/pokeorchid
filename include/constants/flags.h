@@ -67,16 +67,16 @@
 #define FLAG_UNUSED_0x02D    0x2D // Unused Flag
 #define FLAG_UNUSED_0x02E    0x2E // Unused Flag
 #define FLAG_UNUSED_0x02F    0x2F // Unused Flag
-#define FLAG_UNUSED_0x030    0x30 // Unused Flag
-#define FLAG_UNUSED_0x031    0x31 // Unused Flag
-#define FLAG_UNUSED_0x032    0x32 // Unused Flag
-#define FLAG_UNUSED_0x033    0x33 // Unused Flag
-#define FLAG_UNUSED_0x034    0x34 // Unused Flag
-#define FLAG_UNUSED_0x035    0x35 // Unused Flag
-#define FLAG_UNUSED_0x036    0x36 // Unused Flag
-#define FLAG_UNUSED_0x037    0x37 // Unused Flag
-#define FLAG_UNUSED_0x038    0x38 // Unused Flag
-#define FLAG_UNUSED_0x039    0x39 // Unused Flag
+#define FLAG_TRAIN_UNLOCK_JURAN_CITY         0x30
+#define FLAG_TRAIN_CLOSED_JURAN_CITY         0x31
+#define FLAG_TRAIN_UNLOCK_SENOKO_CITY        0x32
+#define FLAG_TRAIN_CLOSED_SENOKO_CITY        0x33
+#define FLAG_TRAIN_UNLOCK_POKEMON_LEAGUE     0x34
+#define FLAG_TRAIN_CLOSED_POKEMON_LEAGUE     0x35
+#define FLAG_TRAIN_UNLOCK_POKETOPIA_GATE     0x36
+#define FLAG_TRAIN_CLOSED_POKETOPIA_GATE     0x37
+#define FLAG_TRAIN_UNLOCK_CORRAL_CITY        0x38
+#define FLAG_TRAIN_CLOSED_CORRAL_CITY        0x39
 #define FLAG_UNUSED_0x03A    0x3A // Unused Flag
 #define FLAG_UNUSED_0x03B    0x3B // Unused Flag
 #define FLAG_UNUSED_0x03C    0x3C // Unused Flag
@@ -84,23 +84,23 @@
 #define FLAG_UNUSED_0x03E    0x3E // Unused Flag
 #define FLAG_UNUSED_0x03F    0x3F // Unused Flag
 // Tosa Rail (src/train_travel.c). UNLOCK opens a station without visiting it; CLOSED greys it out
-// even when visited. Rename the spare STATION_n pairs when real stations are added.
-#define FLAG_TRAIN_UNLOCK_TOSA_PORT    0x40
-#define FLAG_TRAIN_CLOSED_TOSA_PORT    0x41
-#define FLAG_TRAIN_UNLOCK_TEST_EAST    0x42
-#define FLAG_TRAIN_CLOSED_TEST_EAST    0x43
-#define FLAG_TRAIN_UNLOCK_TEST_NORTH   0x44
-#define FLAG_TRAIN_CLOSED_TEST_NORTH   0x45
-#define FLAG_TRAIN_UNLOCK_STATION_3    0x46
-#define FLAG_TRAIN_CLOSED_STATION_3    0x47
-#define FLAG_TRAIN_UNLOCK_STATION_4    0x48
-#define FLAG_TRAIN_CLOSED_STATION_4    0x49
-#define FLAG_TRAIN_UNLOCK_STATION_5    0x4A
-#define FLAG_TRAIN_CLOSED_STATION_5    0x4B
-#define FLAG_TRAIN_UNLOCK_STATION_6    0x4C
-#define FLAG_TRAIN_CLOSED_STATION_6    0x4D
-#define FLAG_TRAIN_UNLOCK_STATION_7    0x4E
-#define FLAG_TRAIN_CLOSED_STATION_7    0x4F
+// even when visited. Pairs are written by dev_scripts/train_ui/tosa_stations.py (station order).
+#define FLAG_TRAIN_UNLOCK_TOSA_PORT          0x40
+#define FLAG_TRAIN_CLOSED_TOSA_PORT          0x41
+#define FLAG_TRAIN_UNLOCK_MOONGROVE_CITY     0x42
+#define FLAG_TRAIN_CLOSED_MOONGROVE_CITY     0x43
+#define FLAG_TRAIN_UNLOCK_TIMAH_CITY         0x44
+#define FLAG_TRAIN_CLOSED_TIMAH_CITY         0x45
+#define FLAG_TRAIN_UNLOCK_FABER_TOWN         0x46
+#define FLAG_TRAIN_CLOSED_FABER_TOWN         0x47
+#define FLAG_TRAIN_UNLOCK_CHANGU_CITY        0x48
+#define FLAG_TRAIN_CLOSED_CHANGU_CITY        0x49
+#define FLAG_TRAIN_UNLOCK_CHANGU_AIRPORT     0x4A
+#define FLAG_TRAIN_CLOSED_CHANGU_AIRPORT     0x4B
+#define FLAG_TRAIN_UNLOCK_INKA_CITY          0x4C
+#define FLAG_TRAIN_CLOSED_INKA_CITY          0x4D
+#define FLAG_TRAIN_UNLOCK_BURA_CITY          0x4E
+#define FLAG_TRAIN_CLOSED_BURA_CITY          0x4F
 
 // Scripts
 #define FLAG_HIDE_SKY_PILLAR_TOP_RAYQUAZA_STILL  0x50

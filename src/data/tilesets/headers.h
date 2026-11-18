@@ -272,6 +272,18 @@ const struct Tileset gTileset_UrbanInterior =
     .callback = NULL,
 };
 
+// Tosa Rail platforms, wall colour-coded by line (dev_scripts/station_tileset/platform_tileset.py)
+const struct Tileset gTileset_UrbanPlatform =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_UrbanPlatform,
+    .palettes = gTilesetPalettes_UrbanPlatform,
+    .metatiles = gMetatiles_UrbanPlatform,
+    .metatileAttributes = gMetatileAttributes_UrbanPlatform,
+    .callback = NULL,
+};
+
 const struct Tileset gTileset_HawkerCentre =
 {
     .isCompressed = TRUE,
