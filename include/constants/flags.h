@@ -62,10 +62,10 @@
 #define FLAG_ITEM_COLD_STORAGE_SUPER_POTION      0x28 // Cold Storage item ball
 #define FLAG_HIDE_COLD_STORAGE_GRUNTS            0x29 // Cold Storage: the four grunts leave with the leader and admin
 #define FLAG_HIDE_COLD_STORAGE_HARU              0x2A // Cold Storage: Haru is gone once the player has left after the multi battle
-#define FLAG_ITEM_SOUTH_TOSA_RESERVE_POTION        0x2B // South Tosa Reserve item ball (west bank)
-#define FLAG_ITEM_SOUTH_TOSA_RESERVE_PARALYZE_HEAL 0x2C // South Tosa Reserve item ball (west bank)
-#define FLAG_ITEM_SOUTH_TOSA_RESERVE_SUPER_POTION  0x2D // South Tosa Reserve item ball (river pocket, needs Surf)
-#define FLAG_ITEM_SOUTH_TOSA_RESERVE_REVIVE        0x2E // South Tosa Reserve item ball (east bank, needs Surf)
+#define FLAG_UNUSED_0x02B    0x2B // Unused Flag
+#define FLAG_UNUSED_0x02C    0x2C // Unused Flag
+#define FLAG_UNUSED_0x02D    0x2D // Unused Flag
+#define FLAG_UNUSED_0x02E    0x2E // Unused Flag
 #define FLAG_UNUSED_0x02F    0x2F // Unused Flag
 #define FLAG_UNUSED_0x030    0x30 // Unused Flag
 #define FLAG_UNUSED_0x031    0x31 // Unused Flag
@@ -1052,7 +1052,7 @@
 #define FLAG_HIDE_RUSTBORO_CITY_POKEMON_SCHOOL_SCOTT                0x3E7
 
 // Item Ball Flags
-#define FLAG_ITEM_ROUTE_102_POTION                                  0x3E8
+#define FLAG_ITEM_SOUTH_TOSA_RESERVE_POTION                         0x3E8 // South Tosa Reserve item ball (west bank)
 #define FLAG_ITEM_ROUTE_116_X_SPECIAL                               0x3E9
 #define FLAG_ITEM_ROUTE_104_PP_UP                                   0x3EA
 #define FLAG_ITEM_ROUTE_105_IRON                                    0x3EB
@@ -1068,14 +1068,14 @@
 #define FLAG_ITEM_ROUTE_113_SUPER_REPEL                             0x3F5
 #define FLAG_ITEM_ROUTE_114_RARE_CANDY                              0x3F6
 #define FLAG_ITEM_ROUTE_114_PROTEIN                                 0x3F7
-#define FLAG_ITEM_ROUTE_115_SUPER_POTION                            0x3F8
+#define FLAG_ITEM_SOUTH_TOSA_RESERVE_SUPER_POTION                   0x3F8 // South Tosa Reserve item ball (river pocket, needs Surf)
 #define FLAG_ITEM_ROUTE_115_TM_FOCUS_PUNCH                          0x3F9
 #define FLAG_ITEM_ROUTE_115_IRON                                    0x3FA
 #define FLAG_ITEM_ROUTE_116_ETHER                                   0x3FB
 #define FLAG_ITEM_ROUTE_116_REPEL                                   0x3FC
 #define FLAG_ITEM_ROUTE_116_HP_UP                                   0x3FD
 #define FLAG_ITEM_ROUTE_117_GREAT_BALL                              0x3FE
-#define FLAG_ITEM_ROUTE_117_REVIVE                                  0x3FF
+#define FLAG_ITEM_SOUTH_TOSA_RESERVE_REVIVE                         0x3FF // South Tosa Reserve item ball (east bank, needs Surf)
 #define FLAG_ITEM_ROUTE_119_SUPER_REPEL                             0x400
 #define FLAG_ITEM_ROUTE_119_ZINC                                    0x401
 #define FLAG_ITEM_ROUTE_119_ELIXIR_1                                0x402
@@ -1169,7 +1169,7 @@
 #define FLAG_ITEM_ROUTE_103_GUARD_SPEC                              0x45A
 #define FLAG_ITEM_ROUTE_104_X_ACCURACY                              0x45B
 #define FLAG_ITEM_MAUVILLE_CITY_X_SPEED                             0x45C
-#define FLAG_ITEM_PETALBURG_WOODS_PARALYZE_HEAL                     0x45D
+#define FLAG_ITEM_SOUTH_TOSA_RESERVE_PARALYZE_HEAL                  0x45D // South Tosa Reserve item ball (west bank)
 #define FLAG_ITEM_ROUTE_115_GREAT_BALL                              0x45E
 #define FLAG_ITEM_SAFARI_ZONE_NORTH_CALCIUM                         0x45F
 #define FLAG_ITEM_MT_PYRE_3F_SUPER_REPEL                            0x460
@@ -1223,6 +1223,13 @@
 #define FLAG_ITEM_MAGMA_HIDEOUT_4F_MAX_REVIVE                       0x490
 #define FLAG_ITEM_SAFARI_ZONE_NORTH_EAST_NUGGET                     0x491
 #define FLAG_ITEM_SAFARI_ZONE_SOUTH_EAST_BIG_PEARL                  0x492
+
+// Orchid: these vanilla item flags were reused for South Tosa Reserve item balls. Their maps can't be
+// reached in Orchid; the aliases keep those maps building.
+#define FLAG_ITEM_ROUTE_102_POTION               FLAG_ITEM_SOUTH_TOSA_RESERVE_POTION
+#define FLAG_ITEM_PETALBURG_WOODS_PARALYZE_HEAL  FLAG_ITEM_SOUTH_TOSA_RESERVE_PARALYZE_HEAL
+#define FLAG_ITEM_ROUTE_115_SUPER_POTION         FLAG_ITEM_SOUTH_TOSA_RESERVE_SUPER_POTION
+#define FLAG_ITEM_ROUTE_117_REVIVE               FLAG_ITEM_SOUTH_TOSA_RESERVE_REVIVE
 
 #define FLAG_UNUSED_0x493                                           0x493 // Unused Flag
 #define FLAG_UNUSED_0x494                                           0x494 // Unused Flag
