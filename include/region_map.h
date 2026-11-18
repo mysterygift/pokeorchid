@@ -141,6 +141,12 @@ enum RegionMapType GetRegionMapType(u32 mapSecId);
 u32 FilterFlyDestination(struct RegionMap* regionMap);
 void SetFlyDestination(struct RegionMap* regionMap);
 
+// Orchid MAP v2 (Town Map / Fly map / Rotom Phone MAP): call after InitRegionMap, before the cursor/player icon
+void RegionMap_LoadOrchidMapV2(bool32 fly);
+void RegionMap_UpdateOrchidTray(void);
+void RegionMap_BlitOrchidKeypadA(u8 windowId, u16 x, u16 y);
+void RegionMap_FreeOrchidMapV2(void);
+
 extern const struct RegionMapLocation gRegionMapEntries[];
 extern const struct RegionMapInfo gRegionMapInfos[];
 

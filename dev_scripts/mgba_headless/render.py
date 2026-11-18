@@ -36,7 +36,27 @@ def render(io, reg, vram, pal, oam):
         affine = (mode == 1 and bg == 2) or (mode == 2)
         px = [None] * (W * H)
         if affine:
-            continue  # not rendered
+            # unrotated affine BG (8bpp, byte map): screen (x, y) -> texture (x*pa + refx, y*pd + refy)
+            s32 = lambda o: struct.unpack_from('<i', reg, o)[0]
+            pa, pd = struct.unpack_from('<h', reg, 0x20 + (bg - 2) * 0x10)[0], struct.unpack_from('<h', reg, 0x26 + (bg - 2) * 0x10)[0]
+            refx, refy = s32(0x28 + (bg - 2) * 0x10), s32(0x2C + (bg - 2) * 0x10)
+            refx = (refx << 4) >> 4
+            refy = (refy << 4) >> 4
+            side = 128 << size
+            wrap = (cnt >> 13) & 1
+            for y in range(H):
+                for x in range(W):
+                    tx, ty = (refx + x * pa) >> 8, (refy + y * pd) >> 8
+                    if wrap:
+                        tx, ty = tx % side, ty % side
+                    elif not (0 <= tx < side and 0 <= ty < side):
+                        continue
+                    t = vram[sbase + (ty // 8) * (side // 8) + tx // 8]
+                    c = vram[cbase + t * 64 + (ty & 7) * 8 + (tx & 7)]
+                    if c:
+                        px[y * W + x] = col(pal, c)
+            layers.append((prio, 1, bg, px))
+            continue
         tw = 512 if size & 1 else 256
         th = 512 if size & 2 else 256
         for y in range(H):

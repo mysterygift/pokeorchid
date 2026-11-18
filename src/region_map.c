@@ -29,6 +29,8 @@
 #include "constants/heal_locations.h"
 #include "constants/rgb.h"
 #include "constants/weather.h"
+#include "constants/train_stations.h"
+#include "train_travel.h"
 
 /*
  *  This file handles region maps generally, and the map used when selecting a fly destination.
@@ -70,7 +72,14 @@ struct MultiNameFlyDest
     u16 flag;
 };
 
+#include "data/region_map/orchid_map_v2.h"
+
 static EWRAM_DATA struct RegionMap *sRegionMap = NULL;
+// MAP v2 (export_map_v2.py): set by RegionMap_LoadOrchidMapV2 for the Town Map / Fly map / phone MAP app
+static EWRAM_DATA bool8 sOrchidMapV2 = FALSE;
+static EWRAM_DATA u8 sOrchidNodeSpriteIds[ARRAY_COUNT(sOrchidMapNodes)] = {0};
+static EWRAM_DATA u8 sOrchidRailChipSpriteId = 0;
+#define ORCHID_MAP_HEAD_RAISE 11
 
 static EWRAM_DATA struct {
     void (*callback)(void);
@@ -111,7 +120,7 @@ static void VBlankCB_FlyMap(void);
 static void CB2_FlyMap(void);
 static void SetFlyMapCallback(void callback(void));
 static void DrawFlyDestTextWindow(void);
-static void LoadFlyDestIcons(void);
+static void UNUSED LoadFlyDestIcons(void);
 static void CreateFlyDestIcons(void);
 static void TryCreateRedOutlineFlyDestIcons(void);
 static void SpriteCB_FlyDestIcon(struct Sprite *sprite);
@@ -123,7 +132,7 @@ static const u16 sRegionMapCursorPal[] = INCGFX_U16("graphics/pokenav/region_map
 static const u32 sRegionMapCursorSmallGfxLZ[] = INCGFX_U32("graphics/pokenav/region_map/cursor_small.png", ".4bpp.smol");
 static const u32 sRegionMapCursorLargeGfxLZ[] = INCGFX_U32("graphics/pokenav/region_map/cursor_large.png", ".4bpp.smol");
 static const u16 sRegionMapBg_Pal[] = INCGFX_U16("graphics/pokenav/region_map/map.pal", ".gbapal");
-static const u32 sRegionMapBg_GfxLZ[] = INCGFX_U32("graphics/pokenav/region_map/map.png", ".8bpp.smol", "-num_tiles 249 -Wnum_tiles"); // Orchid: Tosa (export_region_map.py)
+static const u32 sRegionMapBg_GfxLZ[] = INCGFX_U32("graphics/pokenav/region_map/map.png", ".8bpp.smol", "-num_tiles 250 -Wnum_tiles"); // Orchid: Tosa terrain (export_region_map.py, MAP v2)
 static const u32 sRegionMapBg_TilemapLZ[] = INCGFX_U32("graphics/pokenav/region_map/map.bin", ".smolTM");
 static const u16 sRegionMapPlayerIcon_BrendanPal[] = INCGFX_U16("graphics/pokenav/region_map/brendan_icon.png", ".gbapal");
 static const u8 sRegionMapPlayerIcon_BrendanGfx[] = INCGFX_U8("graphics/pokenav/region_map/brendan_icon.png", ".4bpp");
@@ -591,6 +600,7 @@ static const struct WindowTemplate sFlyMapWindowTemplates[] =
 
 static const u8 sFlyMapText_Ink[3] = {TEXT_COLOR_TRANSPARENT, 1, 5};    // INK on PANEL_SHADE
 static const u8 sFlyMapText_Label[3] = {TEXT_COLOR_TRANSPARENT, 3, 7};  // WHITE on ACCENT_DARK
+static const u8 sFlyMapText_Soft[3] = {TEXT_COLOR_TRANSPARENT, 2, 5};   // INK_SOFT on PANEL_SHADE
 
 static const struct SpritePalette sFlyTargetIconsSpritePalette =
 {
@@ -688,6 +698,7 @@ void InitRegionMap(struct RegionMap *regionMap, bool8 zoomed)
 void InitRegionMapData(struct RegionMap *regionMap, const struct BgTemplate *template, bool8 zoomed)
 {
     sRegionMap = regionMap;
+    sOrchidMapV2 = FALSE;
     sRegionMap->initStep = 0;
     sRegionMap->zoomed = zoomed;
     sRegionMap->inputCallback = zoomed == TRUE ? ProcessRegionMapInput_Zoomed : ProcessRegionMapInput_Full;
@@ -804,6 +815,7 @@ void BlendRegionMap(u16 color, u32 coeff)
 
 void FreeRegionMapIconResources(void)
 {
+    RegionMap_FreeOrchidMapV2();
     if (sRegionMap->cursorSprite != NULL)
     {
         DestroySprite(sRegionMap->cursorSprite);
@@ -1694,6 +1706,8 @@ void CreateRegionMapCursor(u16 tileTag, u16 paletteTag)
         else
         {
             sRegionMap->cursorSprite->oam.size = SPRITE_SIZE(16x16);
+            if (sOrchidMapV2)
+                sRegionMap->cursorSprite->subpriority = 2;  // gold ring: over the nodes, under the head
             sRegionMap->cursorSprite->x = 8 * sRegionMap->cursorPosX + 4;
             sRegionMap->cursorSprite->y = 8 * sRegionMap->cursorPosY + 4;
         }
@@ -1758,6 +1772,11 @@ void CreateRegionMapPlayerIcon(u16 tileTag, u16 paletteTag)
     {
         sRegionMap->playerIconSprite->x = sRegionMap->playerIconSpritePosX * 8 + 4;
         sRegionMap->playerIconSprite->y = sRegionMap->playerIconSpritePosY * 8 + 4;
+        if (sOrchidMapV2)
+        {
+            sRegionMap->playerIconSprite->y -= ORCHID_MAP_HEAD_RAISE;   // the head sits on top of its node
+            sRegionMap->playerIconSprite->oam.priority = 1;            // over the tube layer (BG1)
+        }
         sRegionMap->playerIconSprite->callback = SpriteCB_PlayerIconMapFull;
     }
     else
@@ -1978,6 +1997,7 @@ void CB2_OpenFlyMap(void)
         break;
     case 4:
         InitRegionMap(&sFlyMap->regionMap, FALSE);
+        RegionMap_LoadOrchidMapV2(TRUE);    // MAP v2: FLY frame, route tubes, place nodes
         CreateRegionMapCursor(TAG_CURSOR, TAG_CURSOR);
         CreateRegionMapPlayerIcon(TAG_PLAYER_ICON, TAG_PLAYER_ICON);
         sFlyMap->mapSecId = sFlyMap->regionMap.mapSecId;
@@ -1987,22 +2007,16 @@ void CB2_OpenFlyMap(void)
         gMain.state++;
         break;
     case 5:
-        DecompressDataWithHeaderVram(gOrchidRegionMapFrame_Gfx, (u16 *)BG_CHAR_ADDR(3));
-        gMain.state++;
-        break;
     case 6:
-        DecompressDataWithHeaderVram(gOrchidRegionMapFrame_Tilemap, (u16 *)BG_SCREEN_ADDR(30));
         gMain.state++;
         break;
     case 7:
         {
             static const u8 sText_Fly[] = _("FLY");
 
-            LoadPalette(gOrchidDexScreen_Pal, BG_PLTT_ID(1), PLTT_SIZE_4BPP);
             PutWindowTilemap(WIN_FLY_TITLE);
             FillWindowPixelBuffer(WIN_FLY_TITLE, PIXEL_FILL(0));
-            AddTextPrinterParameterized4(WIN_FLY_TITLE, FONT_NORMAL, GetStringCenterAlignXOffset(FONT_NORMAL, sText_Fly, DISPLAY_WIDTH), 0,
-                                         0, 0, sFlyMapText_Label, TEXT_SKIP_DRAW, sText_Fly);
+            AddTextPrinterParameterized4(WIN_FLY_TITLE, FONT_NORMAL, 23, 0, 0, 0, sFlyMapText_Label, TEXT_SKIP_DRAW, sText_Fly);
             CopyWindowToVram(WIN_FLY_TITLE, COPYWIN_GFX);
             sDrawFlyDestTextWindow = TRUE;
             DrawFlyDestTextWindow();
@@ -2011,7 +2025,7 @@ void CB2_OpenFlyMap(void)
         gMain.state++;
         break;
     case 8:
-        LoadFlyDestIcons();
+        // MAP v2: the place nodes replace the fly destination icons (LoadFlyDestIcons)
         gMain.state++;
         break;
     case 9:
@@ -2057,7 +2071,7 @@ static void SetFlyMapCallback(void callback(void))
 // right: "Fly here?" on a town you can fly to, "FLY to where?" anywhere else.
 static void DrawFlyDestTextWindow(void)
 {
-    static const u8 sText_FlyHere[] = _("Fly here?");
+    static const u8 sText_FlyHere[] = _("Fly here");
     const u8 *name = sFlyMap->regionMap.mapSecName;
     u32 i;
 
@@ -2077,18 +2091,23 @@ static void DrawFlyDestTextWindow(void)
             if (sFlyMap->regionMap.mapSecId == sMultiNameFlyDestinations[i].mapSecId && FlagGet(sMultiNameFlyDestinations[i].flag))
                 name = sMultiNameFlyDestinations[i].name[sFlyMap->regionMap.posWithinMapSec];
         }
-        AddTextPrinterParameterized4(WIN_MAPSEC_NAME, GetFontIdToFit(name, FONT_NORMAL, 0, 104), 4, 3, 0, 0,
+        AddTextPrinterParameterized4(WIN_MAPSEC_NAME, GetFontIdToFit(name, FONT_NORMAL, 0, 116), 0, 2, 0, 0,
                                      sFlyMapText_Ink, TEXT_SKIP_DRAW, name);
     }
-    AddTextPrinterParameterized4(WIN_FLY_TO_WHERE, FONT_NORMAL, 4, 3, 0, 0, sFlyMapText_Ink, TEXT_SKIP_DRAW,
-                                 sFlyMap->regionMap.mapSecType == MAPSECTYPE_CITY_CANFLY ? sText_FlyHere : gText_FlyToWhere);
+    // MAP v2 (mock_map.py): "Ⓐ Fly here" in the tray, only on a place you can fly to
+    if (sFlyMap->regionMap.mapSecType == MAPSECTYPE_CITY_CANFLY || sFlyMap->regionMap.mapSecType == MAPSECTYPE_BATTLE_FRONTIER)
+    {
+        RegionMap_BlitOrchidKeypadA(WIN_FLY_TO_WHERE, 50, 10);
+        AddTextPrinterParameterized4(WIN_FLY_TO_WHERE, FONT_NARROW, 62, 5, 0, 0, sFlyMapText_Soft, TEXT_SKIP_DRAW, sText_FlyHere);
+    }
+    RegionMap_UpdateOrchidTray();
     CopyWindowToVram(WIN_MAPSEC_NAME, COPYWIN_GFX);
     CopyWindowToVram(WIN_FLY_TO_WHERE, COPYWIN_GFX);
     ScheduleBgCopyTilemapToVram(0);
 }
 
 
-static void LoadFlyDestIcons(void)
+static void UNUSED LoadFlyDestIcons(void)
 {
     struct SpriteSheet sheet;
 
@@ -2503,4 +2522,155 @@ void SetFlyDestination(struct RegionMap* regionMap)
         SetWarpDestinationToHealLocation(flyDestination);
     else
         SetWarpDestinationToMapWarp(sMapHealLocations[regionMap->mapSecId][0], sMapHealLocations[regionMap->mapSecId][1], WARP_ID_NONE);
+}
+
+// ---------------------------------------------------------------- Orchid MAP v2
+// dev_scripts/orchid_ui/export_map_v2.py, approved mock mock_map.py. The user's terrain stays on BG2; BG1
+// (charblock 3, screenblock 30) holds the header + tray frame and the route tubes (gold once every place
+// the route touches is visited, grey before, blue for sea routes); places are OBJ discs / diamonds.
+static const u32 sOrchidMapFrame_Gfx[] = INCGFX_U32("graphics/pokenav/region_map/orchid_frame.png", ".4bpp.smol");
+static const u32 sOrchidMapFrame_Tilemap[] = INCGFX_U32("graphics/pokenav/region_map/orchid_frame.bin", ".smolTM");
+static const u32 sOrchidMapFrameFly_Tilemap[] = INCGFX_U32("graphics/pokenav/region_map/orchid_frame_fly.bin", ".smolTM");
+static const u16 sOrchidMapFrame_Pal[] = INCGFX_U16("graphics/pokenav/region_map/orchid_frame.pal", ".gbapal");
+static const u8 sOrchidMapNodes_Gfx[] = INCGFX_U8("graphics/pokenav/region_map/orchid_nodes.png", ".4bpp");
+static const u8 sOrchidMapRailChip_Gfx[] = INCGFX_U8("graphics/pokenav/region_map/orchid_rail_chip.png", ".4bpp");
+static const u8 sOrchidMapKeypadA_Gfx[] = INCGFX_U8("graphics/pokenav/region_map/orchid_keypad_a.png", ".4bpp");
+
+#define TAG_ORCHID_MAP_NODES    0x7A30
+#define TAG_ORCHID_MAP_CHIP     0x7A31
+#define TAG_ORCHID_MAP_PAL      0x7A32
+#define ORCHID_MAP_PAL_FRAME    1
+#define ORCHID_MAP_PAL_GOLD     4
+#define ORCHID_MAP_PAL_GREY     5
+#define ORCHID_MAP_PAL_SEA      6
+
+static const struct OamData sOrchidMapNodeOam = { .shape = SPRITE_SHAPE(16x16), .size = SPRITE_SIZE(16x16), .priority = 1 };
+static const struct OamData sOrchidMapChipOam = { .shape = SPRITE_SHAPE(32x16), .size = SPRITE_SIZE(32x16), .priority = 0 };
+static const union AnimCmd sOrchidMapNode_Town[] = { ANIMCMD_FRAME(0, 0), ANIMCMD_END };
+static const union AnimCmd sOrchidMapNode_TownGrey[] = { ANIMCMD_FRAME(4, 0), ANIMCMD_END };
+static const union AnimCmd sOrchidMapNode_Landmark[] = { ANIMCMD_FRAME(8, 0), ANIMCMD_END };
+static const union AnimCmd sOrchidMapNode_LandmarkGrey[] = { ANIMCMD_FRAME(12, 0), ANIMCMD_END };
+static const union AnimCmd *const sOrchidMapNodeAnims[] =
+{
+    sOrchidMapNode_Town, sOrchidMapNode_TownGrey, sOrchidMapNode_Landmark, sOrchidMapNode_LandmarkGrey,
+};
+static const struct SpriteTemplate sOrchidMapNodeTemplate =
+{
+    .tileTag = TAG_ORCHID_MAP_NODES, .paletteTag = TAG_ORCHID_MAP_PAL, .oam = &sOrchidMapNodeOam,
+    .anims = sOrchidMapNodeAnims, .images = NULL, .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallbackDummy,
+};
+static const struct SpriteTemplate sOrchidMapChipTemplate =
+{
+    .tileTag = TAG_ORCHID_MAP_CHIP, .paletteTag = TAG_ORCHID_MAP_PAL, .oam = &sOrchidMapChipOam,
+    .anims = gDummySpriteAnimTable, .images = NULL, .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallbackDummy,
+};
+
+static bool32 OrchidMapPlaceVisited(mapsec_u16_t mapSecId)
+{
+    // TODO: the placeholder places (MAPSEC_TOSA_PH_*) have no visited flags yet, so they stay grey
+    return GetMapsecType(mapSecId) == MAPSECTYPE_CITY_CANFLY || mapSecId == gMapHeader.regionMapSectionId;
+}
+
+void RegionMap_LoadOrchidMapV2(bool32 fly)
+{
+    u32 i, visited = 0;
+    u16 *tilemap = Alloc(BG_SCREEN_SIZE);
+    static const struct SpriteSheet sheets[] =
+    {
+        { sOrchidMapNodes_Gfx, 16 * 16 / 2 * 4, TAG_ORCHID_MAP_NODES },
+        { sOrchidMapRailChip_Gfx, 32 * 16 / 2, TAG_ORCHID_MAP_CHIP },
+        {}
+    };
+    static const struct SpritePalette pal = { sRegionMapCursorPal, TAG_ORCHID_MAP_PAL };
+
+    sOrchidMapV2 = TRUE;
+    for (i = 0; i < ARRAY_COUNT(sOrchidMapNodes); i++)
+    {
+        if (OrchidMapPlaceVisited(sOrchidMapNodes[i].mapsec))
+            visited |= 1u << i;
+    }
+
+    DecompressDataWithHeaderVram(sOrchidMapFrame_Gfx, (void *)BG_CHAR_ADDR(3));
+    if (tilemap != NULL)
+    {
+        DecompressDataWithHeaderWram(fly ? sOrchidMapFrameFly_Tilemap : sOrchidMapFrame_Tilemap, tilemap);
+        for (i = 0; i < ARRAY_COUNT(sOrchidMapTubes); i++)
+        {
+            const struct OrchidMapTube *t = &sOrchidMapTubes[i];
+            u32 mask = sOrchidMapComponents[t->component];
+            u32 pal = ORCHID_MAP_PAL_GREY;
+
+            if (mask != 0 && (mask & ~visited) == 0)
+                pal = t->sea ? ORCHID_MAP_PAL_SEA : ORCHID_MAP_PAL_GOLD;
+            tilemap[(t->y + MAPCURSOR_Y_MIN) * 32 + t->x + MAPCURSOR_X_MIN] = t->tile | (pal << 12);
+        }
+        for (i = 0; i < ARRAY_COUNT(sOrchidMapNodes); i++)
+        {
+            const struct OrchidMapNode *n = &sOrchidMapNodes[i];
+            u32 pal = (visited & (1u << i)) ? ORCHID_MAP_PAL_GOLD : ORCHID_MAP_PAL_GREY;
+            tilemap[(n->y + MAPCURSOR_Y_MIN) * 32 + n->x + MAPCURSOR_X_MIN] = n->tube | (pal << 12);
+        }
+        CpuCopy16(tilemap, (void *)BG_SCREEN_ADDR(30), BG_SCREEN_SIZE);
+        Free(tilemap);
+    }
+    LoadPalette(sOrchidMapFrame_Pal, BG_PLTT_ID(ORCHID_MAP_PAL_FRAME), PLTT_SIZE_4BPP);
+    LoadPalette(sOrchidMapFrame_Pal + 16, BG_PLTT_ID(ORCHID_MAP_PAL_GOLD), 3 * PLTT_SIZE_4BPP);
+
+    LoadSpriteSheets(sheets);
+    LoadSpritePalette(&pal);
+    for (i = 0; i < ARRAY_COUNT(sOrchidMapNodes); i++)
+    {
+        const struct OrchidMapNode *n = &sOrchidMapNodes[i];
+        u8 id = CreateSprite(&sOrchidMapNodeTemplate, (n->x + MAPCURSOR_X_MIN) * 8 + 4, (n->y + MAPCURSOR_Y_MIN) * 8 + 4, 3);
+        sOrchidNodeSpriteIds[i] = id;
+        if (id != MAX_SPRITES)
+            StartSpriteAnim(&gSprites[id], (n->landmark ? 2 : 0) + ((visited & (1u << i)) ? 0 : 1));
+    }
+    // tray chip (mock: 18x14 box at x 216, y 141)
+    sOrchidRailChipSpriteId = CreateSprite(&sOrchidMapChipTemplate, 216 + 16, 141 + 8, 0);
+    RegionMap_UpdateOrchidTray();
+}
+
+void RegionMap_UpdateOrchidTray(void)
+{
+    u32 i;
+    bool32 station = FALSE;
+
+    if (!sOrchidMapV2 || sOrchidRailChipSpriteId == MAX_SPRITES)
+        return;
+    for (i = 0; i < TRAIN_STATION_COUNT; i++)
+    {
+        const struct TrainStation *st = GetTrainStation(i);
+        if (Overworld_GetMapHeaderByGroupAndId(st->mapGroup, st->mapNum)->regionMapSectionId == sRegionMap->mapSecId
+         && sRegionMap->mapSecId != MAPSEC_NONE)
+            station = TRUE;
+    }
+    gSprites[sOrchidRailChipSpriteId].invisible = !station;
+}
+
+// The tray's "Ⓐ" keypad glyph in kit colours (the ROM font's glyph uses text colours 1/2)
+void RegionMap_BlitOrchidKeypadA(u8 windowId, u16 x, u16 y)
+{
+    BlitBitmapToWindow(windowId, sOrchidMapKeypadA_Gfx, x, y, 8, 8);
+}
+
+void RegionMap_FreeOrchidMapV2(void)
+{
+    u32 i;
+
+    if (!sOrchidMapV2)
+        return;
+    for (i = 0; i < ARRAY_COUNT(sOrchidMapNodes); i++)
+    {
+        if (sOrchidNodeSpriteIds[i] != MAX_SPRITES)
+            DestroySprite(&gSprites[sOrchidNodeSpriteIds[i]]);
+    }
+    if (sOrchidRailChipSpriteId != MAX_SPRITES)
+        DestroySprite(&gSprites[sOrchidRailChipSpriteId]);
+    FreeSpriteTilesByTag(TAG_ORCHID_MAP_NODES);
+    FreeSpriteTilesByTag(TAG_ORCHID_MAP_CHIP);
+    FreeSpritePaletteByTag(TAG_ORCHID_MAP_PAL);
+    sOrchidMapV2 = FALSE;
 }

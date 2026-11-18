@@ -122,9 +122,6 @@ static void MCB2_InitRegionMapRegisters(void)
     InitBgsFromTemplates(1, sFieldRegionMapBgTemplates, ARRAY_COUNT(sFieldRegionMapBgTemplates));
     InitWindows(sFieldRegionMapWindowTemplates);
     DeactivateAllTextPrinters();
-    DecompressDataWithHeaderVram(gOrchidRegionMapFrame_Gfx, (void *)BG_CHAR_ADDR(3));
-    DecompressDataWithHeaderVram(gOrchidRegionMapFrame_Tilemap, (void *)BG_SCREEN_ADDR(30));
-    LoadPalette(gOrchidDexScreen_Pal, BG_PLTT_ID(1), PLTT_SIZE_4BPP);
     ClearScheduledBgCopiesToVram();
     SetMainCallback2(MCB2_FieldUpdateRegionMap);
     SetVBlankCallback(VBCB_FieldUpdateRegionMap);
@@ -152,6 +149,7 @@ static void FieldUpdateRegionMap(void)
     {
     case 0:
         InitRegionMap(&sFieldRegionMapHandler->regionMap, FALSE);
+        RegionMap_LoadOrchidMapV2(FALSE);   // MAP v2 frame, route tubes, place nodes (BG1 + OBJ)
         CreateRegionMapPlayerIcon(TAG_PLAYER_ICON, TAG_PLAYER_ICON);
         CreateRegionMapCursor(TAG_CURSOR, TAG_CURSOR);
         sFieldRegionMapHandler->state++;
@@ -185,6 +183,7 @@ static void FieldUpdateRegionMap(void)
         case MAP_INPUT_MOVE_END:
                 PrintRegionMapSecName();
                 PrintTitleWindowText();
+                RegionMap_UpdateOrchidTray();
                 break;
         case MAP_INPUT_A_BUTTON:
         case MAP_INPUT_B_BUTTON:
@@ -217,19 +216,19 @@ static void FieldUpdateRegionMap(void)
     }
 }
 
-// Orchid: the name sits in the tray's pill (sized for the longest Tosa name, narrow font beyond)
+// Orchid MAP v2: the place name sits on the tray (mock_map.py: x 8, y 138); a rail chip OBJ follows it
 static void PrintRegionMapSecName(void)
 {
     const u8 *name = sFieldRegionMapHandler->regionMap.mapSecName;
 
     FillWindowPixelBuffer(WIN_MAPSEC_NAME, PIXEL_FILL(0));
     if (sFieldRegionMapHandler->regionMap.mapSecType != MAPSECTYPE_NONE)
-        AddTextPrinterParameterized4(WIN_MAPSEC_NAME, GetFontIdToFit(name, FONT_NORMAL, 0, 104), 4, 3, 0, 0,
+        AddTextPrinterParameterized4(WIN_MAPSEC_NAME, GetFontIdToFit(name, FONT_NORMAL, 0, 116), 0, 2, 0, 0,
                                      sOrchidMapText_Ink, TEXT_SKIP_DRAW, name);
     CopyWindowToVram(WIN_MAPSEC_NAME, COPYWIN_GFX);
 }
 
-// Orchid: "TOSA" in the header; the R FLY prompt (when allowed) at the tray's right
+// Orchid MAP v2: "TOSA" in the header after the map pictogram; the R FLY prompt (when allowed) in the tray
 static void PrintTitleWindowText(void)
 {
     static const u8 FlyPromptText[] = _("{R_BUTTON} FLY");
@@ -237,8 +236,7 @@ static void PrintTitleWindowText(void)
     const u8 *region = IS_FRLG ? gText_Kanto : sText_Tosa;
 
     FillWindowPixelBuffer(WIN_TITLE, PIXEL_FILL(0));
-    AddTextPrinterParameterized4(WIN_TITLE, FONT_NORMAL, GetStringCenterAlignXOffset(FONT_NORMAL, region, DISPLAY_WIDTH), 0, 0, 0,
-                                 sOrchidMapText_Label, TEXT_SKIP_DRAW, region);
+    AddTextPrinterParameterized4(WIN_TITLE, FONT_NORMAL, 23, 0, 0, 0, sOrchidMapText_Label, TEXT_SKIP_DRAW, region);
     CopyWindowToVram(WIN_TITLE, COPYWIN_GFX);
 
     FillWindowPixelBuffer(WIN_PROMPT, PIXEL_FILL(0));

@@ -328,17 +328,23 @@ def frame_art():
 def export():
     sq = squares()
     reserve = route_cells_between(sq[TOSA_PORT], sq[TELOK])
+    # --- affine map (Town Map / Fly / Rotom Phone MAP): MAP v2 = the user's terrain only; routes are
+    #     tubes on BG1 and places are OBJs (export_map_v2.py)
+    ttiles, tcells = build_tiles(load("tosa_terrain.png"))
+    assert len(ttiles) <= 256, len(ttiles)
+    tcols = palette_of(ttiles)
+    write_png8(P("graphics", "pokenav", "region_map", "map.png"), ttiles, tcols)
+    write_jasc48(P("graphics", "pokenav", "region_map", "map.pal"), tcols)
+    amap = bytearray(64 * 64)
+    for i, t in enumerate(tcells):
+        amap[(i // 30) * 64 + i % 30] = t
+    open(P("graphics", "pokenav", "region_map", "map.bin"), "wb").write(bytes(amap))
+    print("map v2 terrain tiles", len(ttiles))
+    # --- dex AREA copy keeps the v1 look (routes + red squares baked in)
     art = map_art()
     tiles, cells = build_tiles(art)
     assert len(tiles) <= 256, len(tiles)
     cols = palette_of(tiles)
-    # --- affine map (Town Map / Fly / PokeNav): 64x64 bytes
-    write_png8(P("graphics", "pokenav", "region_map", "map.png"), tiles, cols)
-    write_jasc48(P("graphics", "pokenav", "region_map", "map.pal"), cols)
-    amap = bytearray(64 * 64)
-    for i, t in enumerate(cells):
-        amap[(i // 30) * 64 + i % 30] = t
-    open(P("graphics", "pokenav", "region_map", "map.bin"), "wb").write(bytes(amap))
     # --- dex AREA copy: text mode, 32x32 u16 entries (no flips used), same tiles / palette
     write_png8(P("graphics", "pokedex", "region_map.png"), tiles, cols)
     write_jasc48(P("graphics", "pokedex", "region_map.pal"), cols)
@@ -349,7 +355,12 @@ def export():
             tmap += struct.pack("<H", t)
     open(P("graphics", "pokedex", "region_map.bin"), "wb").write(bytes(tmap))
     player_heads()
-    print("frame tiles", frame_art())
+    import mock_map
+    import export_map_v2
+    route_cells = mock_map.classify()
+    for c in sq.values():
+        route_cells.pop(c, None)
+    print("map v2 (frame tiles, all tiles, tube cells, components)", export_map_v2.export(sq, route_cells))
     secs = update_sections(sq, reserve)
     write_layout(secs)
     write_places_md(sq, reserve)
