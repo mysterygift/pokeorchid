@@ -247,6 +247,10 @@ def main(write):
                     break
             bottom[q] = ground if ground is not None else GRASS[q]
             top[q] = entry(u) if u else 0
+        # Rows a sprite can stand behind draw over it: the Mart roof row stays walkable where the
+        # vanilla roof overhang was, and the Centre storey row sits over the head of a player in the door.
+        if (kind == "mart" and cy == 0) or (kind == "centre" and cy == 1):
+            top = [top[q] or bottom[q] for q in range(4)]
         beh = 0
         if kind == "centre" and (cx, cy) == (1, 2):
             beh = MB["MB_NON_ANIMATED_DOOR"]
