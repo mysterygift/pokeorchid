@@ -534,7 +534,7 @@ const struct BattleEnvironment gBattleEnvironmentInfo[BATTLE_ENVIRONMENT_COUNT] 
         .camouflageBlend = DEFAULT_CAMOUFLAGE_BLEND,
     },
 
-    // Orchid locations. Floors: tools/orchid/battle_envs.py
+    // Orchid locations (flat backgrounds; placeholders until new art is drawn)
     [BATTLE_ENVIRONMENT_RUINS] =
     {
         .name = _("Ruins"),

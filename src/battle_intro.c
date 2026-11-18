@@ -3,7 +3,6 @@
 #include "battle_anim.h"
 #include "battle_environment.h"
 #include "battle_main.h"
-#include "battle_mode7.h"
 #include "battle_setup.h"
 #include "bg.h"
 #include "gpu_regs.h"
@@ -25,17 +24,11 @@ static void BattleIntroNoSlide(u8);
 #define tState data[0]
 #define tEnvironment data[1]
 
-static void BattleIntroMode7(u8 taskId);
-
 void HandleIntroSlide(u8 environment)
 {
     u8 taskId;
 
-    if (IsBattleIntroMode7())
-    {
-        taskId = CreateTask(BattleIntroMode7, 0);
-    }
-    else if ((gBattleTypeFlags & BATTLE_TYPE_INGAME_PARTNER) && gPartnerTrainerId < TRAINER_PARTNER(PARTNER_NONE))
+    if ((gBattleTypeFlags & BATTLE_TYPE_INGAME_PARTNER) && gPartnerTrainerId < TRAINER_PARTNER(PARTNER_NONE))
     {
         taskId = CreateTask(BattleIntroSlidePartner, 0);
     }
@@ -76,50 +69,6 @@ static void BattleIntroSlideEnd(u8 taskId)
     SetGpuReg(REG_OFFSET_BLDY, 0);
     SetGpuReg(REG_OFFSET_WININ, WININ_WIN0_BG_ALL | WININ_WIN0_OBJ | WININ_WIN0_CLR | WININ_WIN1_BG_ALL | WININ_WIN1_OBJ | WININ_WIN1_CLR);
     SetGpuReg(REG_OFFSET_WINOUT, WINOUT_WIN01_BG_ALL | WINOUT_WIN01_OBJ | WINOUT_WIN01_CLR | WINOUT_WINOBJ_BG_ALL | WINOUT_WINOBJ_OBJ | WINOUT_WINOBJ_CLR);
-    BattleMode7_Start();
-}
-
-// Orchid: instead of the split-screen slide, the Mode 7 camera flies into
-// place while the letterbox opens. Trainers and wild Pokemon wait on their
-// platforms as dark silhouettes and fade in once the camera lands.
-static void BattleIntroMode7(u8 taskId)
-{
-    switch (gTasks[taskId].tState)
-    {
-    case 0:
-        gScanlineEffect.state = 3; // the classic BG3 split set up in CB2_InitBattleInternal
-        CpuFill32(0, (void *)BG_SCREEN_ADDR(28), BG_SCREEN_SIZE);
-        SetBgAttribute(1, BG_ATTR_CHARBASEINDEX, 0);
-        SetBgAttribute(2, BG_ATTR_CHARBASEINDEX, 0);
-        SetGpuReg(REG_OFFSET_BG1CNT, BGCNT_PRIORITY(0) | BGCNT_CHARBASE(0) | BGCNT_16COLOR | BGCNT_SCREENBASE(28) | BGCNT_TXT256x512);
-        SetGpuReg(REG_OFFSET_BG2CNT, BGCNT_PRIORITY(0) | BGCNT_CHARBASE(0) | BGCNT_16COLOR | BGCNT_SCREENBASE(30) | BGCNT_TXT512x256);
-        BattleMode7_StartIntro();
-        gTasks[taskId].data[2] = 1;
-        gTasks[taskId].tState++;
-        break;
-    case 1:
-        if (--gTasks[taskId].data[2] == 0)
-        {
-            gTasks[taskId].tState++;
-            SetGpuReg(REG_OFFSET_WININ, WININ_WIN0_BG_ALL | WININ_WIN0_OBJ | WININ_WIN0_CLR);
-        }
-        break;
-    case 2:
-        gBattle_WIN0V -= 0xFF * 2; // open the letterbox
-        if ((gBattle_WIN0V & 0xFF00) == 0)
-            gTasks[taskId].tState++;
-        break;
-    case 3:
-        if (BattleMode7_IntroDone())
-        {
-            gIntroSlideFlags &= ~1; // camera has landed: silhouettes fade in
-            gTasks[taskId].tState++;
-        }
-        break;
-    case 4:
-        BattleIntroSlideEnd(taskId);
-        break;
-    }
 }
 
 static void BattleIntroNoSlide(u8 taskId)

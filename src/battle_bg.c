@@ -3,7 +3,6 @@
 #include "battle_anim.h"
 #include "battle_bg.h"
 #include "battle_main.h"
-#include "battle_mode7.h"
 #include "battle_message.h"
 #include "battle_setup.h"
 #include "battle_environment.h"
@@ -926,7 +925,7 @@ static void LoadBattleEnvironmentEntryGfx(u16 environment)
     DecompressDataWithHeaderVram(gBattleEnvironmentInfo[environment].entry.tilemap, (void *)BG_SCREEN_ADDR(28));
 }
 
-u8 GetBattleEnvironmentOverride(void)
+static u8 GetBattleEnvironmentOverride(void)
 {
     u8 battleScene = GetCurrentMapBattleScene();
 
@@ -1398,7 +1397,6 @@ bool8 LoadChosenBattleElement(u8 caseId)
 
 void DrawTerrainTypeBattleBackground(void)
 {
-    BattleMode7_SuspendForMoveBg();
     if (gFieldTimers.terrain != B_TERRAIN_NONE)
         LoadMoveBg(gBattleTerrainInfo[gFieldTimers.terrain].battleBackground);
     else

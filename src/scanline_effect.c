@@ -4,7 +4,6 @@
 #include "task.h"
 #include "trig.h"
 #include "scanline_effect.h"
-#include "battle_mode7.h"
 
 static void CopyValue16Bit(void);
 static void CopyValue32Bit(void);
@@ -44,8 +43,6 @@ void ScanlineEffect_Clear(void)
 
 void ScanlineEffect_SetParams(struct ScanlineEffectParams params)
 {
-    if (gMain.inBattle)
-        BattleMode7_Suspend(); // the Mode 7 floor also needs DMA0
     if (params.dmaControl == SCANLINE_EFFECT_DMACNT_16BIT)  // 16-bit
     {
         // Set the DMA src to the value for the second scanline because the

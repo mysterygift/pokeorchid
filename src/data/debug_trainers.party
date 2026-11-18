@@ -9,11 +9,10 @@ or the Start Debug Battle action is selected.
 The debug menu will start a battle against DEBUG_TRAINER_AI when the
 Start Debug Battle action is selected.
 
-Orchid: this is a showcase battle for the Mode 7 battle camera. Between them
+Orchid: this is a showcase battle for battle animations and backgrounds. Between them
 the parties cover physical and special attacks from both sides, status moves
 (burn, paralysis, sleep, poison), stat changes, weather, a screen-shake move
-(Earthquake), a scanline-effect move (Surf, which uses the flat-background
-fallback), and an opponent at a lower level so faints and forced switches
+(Earthquake), a scanline-effect move (Surf), and an opponent at a lower level so faints and forced switches
 happen within a few turns.
 
 */

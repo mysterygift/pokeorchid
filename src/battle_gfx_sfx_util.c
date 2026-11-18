@@ -1,6 +1,5 @@
 #include "global.h"
 #include "battle.h"
-#include "battle_mode7.h"
 #include "battle_controllers.h"
 #include "battle_ai_main.h"
 #include "battle_anim.h"
@@ -456,46 +455,6 @@ void SpriteCB_TrainerSpawn(struct Sprite *sprite)
             sprite->callback = SpriteCallbackDummy;
     }
 }
-
-// Orchid Mode 7 intro: the opponent trainer waits on its platform as a dark
-// silhouette (like the Gen 3 slide-in) and fades in once the camera lands.
-#define sDarkened   data[1]
-#define sFading     data[2]
-void SpriteCB_TrainerMode7Intro(struct Sprite *sprite)
-{
-    if (!sprite->sDarkened)
-    {
-        BlendPalette(OBJ_PLTT_ID(sprite->oam.paletteNum), 16, 10, RGB(8, 8, 8));
-        sprite->sDarkened = TRUE;
-    }
-    if (!sprite->sFading)
-    {
-        if (!(gIntroSlideFlags & 1) && !gPaletteFade.active)
-        {
-            // fade every waiting opponent trainer together (one palette fade at a time)
-            u32 i, mask = 0;
-            for (i = 0; i < MAX_SPRITES; i++)
-            {
-                if (gSprites[i].inUse && gSprites[i].callback == SpriteCB_TrainerMode7Intro)
-                {
-                    mask |= 0x10000 << gSprites[i].oam.paletteNum;
-                    gSprites[i].sFading = TRUE;
-                }
-            }
-            BeginNormalPaletteFade(mask, 0, 10, 0, RGB(8, 8, 8));
-        }
-    }
-    else if (!gPaletteFade.active)
-    {
-        sprite->x2 = 0;
-        if (sprite->y2 != 0)
-            sprite->callback = SpriteCB_TrainerSlideVertical;
-        else
-            sprite->callback = SpriteCallbackDummy;
-    }
-}
-#undef sDarkened
-#undef sFading
 
 // Slide up to 0 if necessary (used by multi battle intro)
 static void SpriteCB_TrainerSlideVertical(struct Sprite *sprite)

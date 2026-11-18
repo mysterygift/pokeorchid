@@ -1,7 +1,6 @@
 #include "global.h"
 #include "battle.h"
 #include "battle_anim.h"
-#include "battle_mode7.h"
 #include "battle_anim_scripts.h"
 #include "battle_controllers.h"
 #include "battle_environment.h"
@@ -337,8 +336,6 @@ static void Nop(void)
 void LaunchBattleAnimation(u32 animType, u32 animId)
 {
     s32 i;
-
-    BattleMode7_ClearFocus(); // Orchid: back to the wide shot for the animation
 
     if (gTestRunnerEnabled)
     {
@@ -1250,9 +1247,6 @@ void MoveBattlerSpriteToBG(enum BattlerId battler, bool8 toBG_2, bool8 setSprite
     struct BattleAnimBgData animBg;
     u8 battlerSpriteId;
 
-    if (toBG_2)
-        BattleMode7_Suspend();
-
     if (!toBG_2)
     {
         enum BattlerPosition battlerPosition;
@@ -1736,8 +1730,7 @@ static void Task_FadeToBg(u8 taskId)
 {
     if (gTasks[taskId].tState == 0)
     {
-        // Orchid: with the Mode 7 floor on BG2, fade it too (0xE8 only covers BG3 + backdrop)
-        BeginHardwarePaletteFade(BattleMode7_IsActive() ? (0xE8 | BLDCNT_TGT1_BG2) : 0xE8, 0, 0, 16, 0);
+        BeginHardwarePaletteFade(0xE8, 0, 0, 16, 0);
         gTasks[taskId].tState++;
         return;
     }
@@ -1772,7 +1765,6 @@ static void Task_FadeToBg(u8 taskId)
 
 void LoadMoveBg(u16 bgId)
 {
-    BattleMode7_SuspendForMoveBg();
     if (IsContest())
     {
         void *decompressionBuffer = malloc_and_decompress(gBattleAnimBackgroundTable[bgId].tilemap, NULL);
@@ -1787,7 +1779,6 @@ void LoadMoveBg(u16 bgId)
         DecompressDataWithHeaderVram(gBattleAnimBackgroundTable[bgId].tilemap, (void *)BG_SCREEN_ADDR(26));
         DecompressDataWithHeaderVram(gBattleAnimBackgroundTable[bgId].image, (void *)BG_CHAR_ADDR(2));
         LoadPalette(gBattleAnimBackgroundTable[bgId].palette, BG_PLTT_ID(2), PLTT_SIZE_4BPP);
-        BattleMode7_FinishBgLoad(); // Orchid: BG3 reappears only once it is fully loaded
     }
 }
 
