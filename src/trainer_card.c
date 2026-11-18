@@ -91,8 +91,9 @@ struct TrainerCardData
     u16 bgTilemapBuffer[0x1000];
     u16 cardTop;
     u8 language;
-    // Orchid card (export_card.py): the player's own card outside the Union Room
+    // Orchid card (export_card.py): every card except FRLG-format link cards
     bool8 orchid;
+    bool8 ownCard; // ShowPlayerTrainerCard (local stats available), not a received link card
     u8 gridTimer;
     u8 orchidNumRows;
     u8 orchidRows[OCARD_BACK_MAX_ROWS];
@@ -180,6 +181,7 @@ static void OrchidCard_BufferBackRows(void);
 static bool8 OrchidCard_PrintFront(void);
 static bool8 OrchidCard_PrintBack(void);
 static void OrchidCard_PrintTime(void);
+static void OrchidCard_PrintLinkProfile(void);
 static void OrchidCard_DrawGrid(void);
 static void OrchidCard_DrawBadges(void);
 static void FillCardTilemapBuffer(u16 *ptr);
@@ -856,6 +858,12 @@ static void SetPlayerCardData(struct TrainerCard *trainerCard, u8 cardType)
 
     trainerCard->money = GetMoney(&gSaveBlock1Ptr->money);
     trainerCard->stars = CountPlayerTrainerStars();
+    trainerCard->badgeCount = 0;
+    for (i = 0; i < NUM_BADGES; i++)
+    {
+        if (FlagGet(FLAG_BADGE01_GET + i))
+            trainerCard->badgeCount++;
+    }
 
     for (i = 0; i < TRAINER_CARD_PROFILE_LENGTH; i++)
         trainerCard->easyChatProfile[i] = gSaveBlock1Ptr->easyChatProfile[i];
@@ -2044,6 +2052,7 @@ void ShowPlayerTrainerCard(void (*callback)(void))
         sData->isLink = FALSE;
 
     sData->language = GAME_LANGUAGE;
+    sData->ownCard = TRUE;
     TrainerCard_GenerateCardForPlayer(&sData->trainerCard);
     SetMainCallback2(CB2_InitTrainerCard);
 }
@@ -2068,7 +2077,9 @@ static void InitTrainerCardData(void)
     sData->onBack = FALSE;
     sData->flipBlendY = 0;
     sData->cardType = GetSetCardType();
-    sData->orchid = (sData->cardType != CARD_TYPE_FRLG && !sData->isLink);
+    // Orchid art for the player's card in either format and for Emerald / R/S link cards;
+    // FRLG-format cards keep the vanilla Kanto card
+    sData->orchid = (sData->cardType != CARD_TYPE_FRLG);
     for (i = 0; i < TRAINER_CARD_PROFILE_LENGTH; i++)
         CopyEasyChatWord(sData->easyChatProfile[i], sData->trainerCard.easyChatProfile[i]);
 }
@@ -2158,8 +2169,9 @@ static void OrchidCard_InitRows(void)
     show[OCARD_ROW_HOF] = sData->hasHofResult;
     show[OCARD_ROW_LINK] = sData->hasLinkResults;
     show[OCARD_ROW_TRADES] = sData->hasTrades;
-    show[OCARD_ROW_UNION] = (GetGameStat(GAME_STAT_NUM_UNION_ROOM_BATTLES) != 0);
-    show[OCARD_ROW_BERRY_CRUSH] = (GetGameStat(GAME_STAT_PLAYED_BERRY_CRUSH) != 0);
+    // Union Room / Berry Crush counts are not in the Hoenn link card data: own card only
+    show[OCARD_ROW_UNION] = sData->ownCard && GetGameStat(GAME_STAT_NUM_UNION_ROOM_BATTLES) != 0;
+    show[OCARD_ROW_BERRY_CRUSH] = sData->ownCard && GetGameStat(GAME_STAT_PLAYED_BERRY_CRUSH) != 0;
     show[OCARD_ROW_CONTESTS] = (sData->trainerCard.contestsWithFriends != 0);
     show[OCARD_ROW_POKEBLOCKS] = (sData->trainerCard.pokeblocksWithFriends != 0);
     show[OCARD_ROW_BATTLE_POINTS] = (sData->trainerCard.frontierBP != 0);
@@ -2212,7 +2224,8 @@ static void OrchidCard_BufferBackRows(void)
     }
 }
 
-// BG0 maps: base front / back + star pips, earned sockets and the back-row strips
+// BG0 maps: base front / back + star pips, earned sockets and the back-row strips.
+// Link / Union Room front: the badge case is replaced by the profile-phrase well + badge-count pill.
 static void OrchidCard_BuildTilemaps(void)
 {
     u32 i, j, k;
@@ -2220,7 +2233,10 @@ static void OrchidCard_BuildTilemaps(void)
     u16 *front = sData->frontTilemap;
     u16 *back = sData->backTilemap;
 
-    CpuCopy16(sData->hasPokedex ? sOrchidCardFrontDex : sOrchidCardFrontNoDex, front, sizeof(sOrchidCardFrontDex));
+    if (sData->isLink)
+        CpuCopy16(sData->hasPokedex ? sOrchidCardLinkFrontDex : sOrchidCardLinkFrontNoDex, front, sizeof(sOrchidCardFrontDex));
+    else
+        CpuCopy16(sData->hasPokedex ? sOrchidCardFrontDex : sOrchidCardFrontNoDex, front, sizeof(sOrchidCardFrontDex));
     CpuCopy16(sOrchidCardBack, back, sizeof(sOrchidCardBack));
 
     for (j = 0; j < OCARD_PIP_H; j++)
@@ -2235,7 +2251,7 @@ static void OrchidCard_BuildTilemaps(void)
     for (k = 0; k < NUM_BADGES; k++)
     {
         const struct OrchidCardPatch *p = &sOrchidCardSockets[k];
-        if (!sData->badgeCount[k])
+        if (sData->isLink || !sData->badgeCount[k])
             continue;
         for (j = 0; j < p->h; j++)
         {
@@ -2306,6 +2322,10 @@ static bool8 OrchidCard_PrintFront(void)
     case 4:
         OrchidCard_PrintTime();
         break;
+    case 5:
+        if (sData->isLink)
+            OrchidCard_PrintLinkProfile();
+        break;
     default:
         sData->printState = 0;
         return TRUE;
@@ -2314,12 +2334,33 @@ static bool8 OrchidCard_PrintFront(void)
     return FALSE;
 }
 
+// Link front: the easy-chat profile phrase in the well (2 words per line, as vanilla) and the
+// badge count in the pill (the individual badges are not part of the link card)
+static void OrchidCard_PrintLinkProfile(void)
+{
+    u32 i;
+    s32 x;
+    u8 buffer[4];
+
+    for (i = 0; i < 2; i++)
+    {
+        const u8 *first = sData->easyChatProfile[i * 2];
+        AddTextPrinterParameterized3(WIN_CARD_TEXT, FONT_NORMAL, OCARD_PHRASE_X, sOrchidCardPhraseY[i],
+                                     sOrchidCardInkColors, TEXT_SKIP_DRAW, first);
+        AddTextPrinterParameterized3(WIN_CARD_TEXT, FONT_NORMAL, OCARD_PHRASE_X + GetStringWidth(FONT_NORMAL, first, 0) + OCARD_PHRASE_GAP,
+                                     sOrchidCardPhraseY[i], sOrchidCardInkColors, TEXT_SKIP_DRAW, sData->easyChatProfile[i * 2 + 1]);
+    }
+    ConvertIntToDecimalStringN(buffer, min(sData->trainerCard.badgeCount, NUM_BADGES), STR_CONV_MODE_LEFT_ALIGN, 2);
+    x = OCARD_LINK_BADGES_X + (OCARD_LINK_BADGES_W - GetStringWidth(FONT_NORMAL, buffer, 0)) / 2;
+    AddTextPrinterParameterized3(WIN_CARD_TEXT, FONT_NORMAL, x, OCARD_LINK_BADGES_Y, sOrchidCardInkColors, TEXT_SKIP_DRAW, buffer);
+}
+
 // TIME: the colon blinks every 61 frames (BlinkTimeColon); the width stays fixed
 static void OrchidCard_PrintTime(void)
 {
     u8 hours[8], minutes[4];
-    u32 h = gSaveBlock2Ptr->playTimeHours;
-    u32 m = gSaveBlock2Ptr->playTimeMinutes;
+    u32 h = sData->isLink ? sData->trainerCard.playTimeHours : gSaveBlock2Ptr->playTimeHours;
+    u32 m = sData->isLink ? sData->trainerCard.playTimeMinutes : gSaveBlock2Ptr->playTimeMinutes;
     s32 x, wHours, wColon, wMinutes;
     u32 y = sOrchidCardRowY[sData->hasPokedex ? 2 : 1];
 
@@ -2397,7 +2438,7 @@ static void OrchidCard_DrawBadges(void)
     for (k = 0; k < NUM_BADGES; k++)
     {
         const struct OrchidCardPatch *p = &sOrchidCardBadges[k];
-        if (!sData->badgeCount[k])
+        if (sData->isLink || !sData->badgeCount[k])
             continue;
         for (j = 0; j < p->h; j++)
         {

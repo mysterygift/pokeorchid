@@ -36,7 +36,7 @@ struct TrainerCard
              } linkPoints; // This field is used differently by FRLG vs Emerald
     /*0x40*/ u32 unionRoomNum;
     /*0x4C*/ bool8 shouldDrawStickers; // FRLG only
-    /*0x4D*/ u8 unused;
+    /*0x4D*/ u8 badgeCount; // Orchid link card: number of badges (vanilla games send 0)
     /*0x4E*/ u8 monIconTint; // FRLG only
     /*0x4F*/ u8 unionRoomClass;
     /*0x50*/ u8 stickers[TRAINER_CARD_STICKER_TYPES]; // FRLG only
