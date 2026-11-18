@@ -8,12 +8,19 @@ The Tosa Port gatehouse `TosaPort_BrendansHouse_1F` has the paid area at the bac
 gates (x 4), then the down escalator (warp (1,4)) to the platform's up escalator (warp (1,7)).
 
 Concourse kit (gTileset_UrbanInterior 0x2B0+, `dev_scripts/station_tileset/concourse.py`): concourse wall,
-granite floor, tactile guide strips, fare gate cabinet + gate (for a north-south gate line) + glass fence
-(east-west run), 3x3 ticket booth (counter = MB_COUNTER), seats, exit mats, north exit arch and the 2-wide
-train `StationSign_L/_R`. The paid side is floored with platform paving because the escalators (stock PC
-escalator ids, so `fldeff_escalator.c` animates them) carry paving under them: paving B on odd rows,
-A on even rows, on a left wall. `export_tileset.py --paint-tosa-port` repaints the gatehouse and the
-Tosa Port platform (overwrites Porymap edits to those two layouts).
+tactile guide strips and blister pads, fare gate cabinet + gate closed/open (for a north-south gate line)
++ glass fence (east-west run), ticket booth (a small building: roof, fascia drawn over sprites, facade,
+counter = MB_COUNTER), seats, exit mats, 2-wide rear exit arch and the train `StationSign`. The floor is
+the platform's staggered paving (Paving_A on even rows, Paving_B on odd rows; the stock PC escalator
+metatiles assume the same), so every floor prop has an `_A` and a `_B` version; the painter picks by row.
+`export_tileset.py --paint-tosa-port` repaints the gatehouse and the Tosa Port platform (overwrites
+Porymap edits to those two layouts).
+
+Fare gates: the gate tiles are solid. Their bg events (`TosaGateway_FareGateNorth/South`) set the gate's
+x/y in `VAR_0x8004/5` and run `TosaGateway_FareGate`: no Rail Card → refusal message; otherwise it swaps
+in `FareGate_Gate_Open_B`, hides the follower, walks the player two tiles in the direction they face and
+swaps `FareGate_Gate_B` back. A new gate on an even row needs the `_A` ids instead. TEMP: the ticket
+booth clerk gives a Rail Card if you have none.
 
 ## Macros (`asm/macros/event.inc`)
 
