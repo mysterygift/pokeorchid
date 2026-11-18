@@ -29,6 +29,7 @@
 #include "constants/orchid_ui.h"
 #include "constants/rgb.h"
 #include "constants/songs.h"
+#include "data/msgbox_orchid.h"
 
 struct MenuInfoIcon
 {
@@ -58,6 +59,8 @@ static void WindowFunc_DrawStandardFrame(u8, u8, u8, u8, u8, u8);
 static void WindowFunc_DrawSignFrame(u8, u8, u8, u8, u8, u8);
 static inline void *GetWindowFunc_DialogueFrame(void);
 static void WindowFunc_DrawDialogueFrame(u8, u8, u8, u8, u8, u8);
+static void WindowFunc_DrawDialogueFrameRightEdge(u8, u8, u8, u8, u8, u8);
+static void DrawDialogueFrameRightEdge(u8 windowId);
 static void WindowFunc_ClearStdWindowAndFrame(u8, u8, u8, u8, u8, u8);
 static void WindowFunc_ClearDialogWindowAndFrame(u8, u8, u8, u8, u8, u8);
 static void WindowFunc_ClearDialogWindowAndFrameNullPalette(u8, u8, u8, u8, u8, u8);
@@ -282,6 +285,8 @@ void DrawDialogueFrame(u8 windowId, bool8 copyToVram)
     CallWindowFunction(windowId, GetWindowFunc_DialogueFrame());
     FillWindowPixelBuffer(windowId, PIXEL_FILL(1));
     PutWindowTilemap(windowId);
+    if (!gMsgIsSignPost)
+        DrawDialogueFrameRightEdge(windowId);
     if (copyToVram == TRUE)
         CopyWindowToVram(windowId, COPYWIN_FULL);
 }
@@ -345,21 +350,37 @@ static void WindowFunc_DrawStandardFrame(u8 bg, u8 left, u8 top, u8 width, u8 he
     FillMenuTilemapBufferRect(bg, 8, left + width, top + height, 1,          1);
 }
 
+// Orchid message box (dev_scripts/orchid_ui/export_msgbox.py): the box is not vertically symmetric, so the
+// bottom row has its own tiles (vanilla v-flipped the top row), and the right end-cap reaches 1px into the
+// window's last column, which DrawDialogueFrameRightEdge turns back into frame art after PutWindowTilemap.
 static void WindowFunc_DrawDialogueFrame(u8 bg, u8 left, u8 top, u8 width, u8 height, u8 paletteNum)
 {
-    FillMenuTilemapBufferRect(bg,  1, left - 2,         top - 1,         1, 1);
-    FillMenuTilemapBufferRect(bg,  3, left - 1,         top - 1,         1, 1);
-    FillMenuTilemapBufferRect(bg,  4, left,             top - 1, width - 1, 1);
-    FillMenuTilemapBufferRect(bg,  5, left + width - 1, top - 1,         1, 1);
-    FillMenuTilemapBufferRect(bg,  6, left + width,     top - 1,         1, 1);
-    FillMenuTilemapBufferRect(bg,  7, left - 2,         top,             1, 5);
-    FillMenuTilemapBufferRect(bg,  9, left - 1,         top,     width + 1, 5);
-    FillMenuTilemapBufferRect(bg, 10, left + width,     top,             1, 5);
-    FillMenuTilemapBufferRect(bg, BG_TILE_V_FLIP(1), left - 2,         top + height,         1, 1);
-    FillMenuTilemapBufferRect(bg, BG_TILE_V_FLIP(3), left - 1,         top + height,         1, 1);
-    FillMenuTilemapBufferRect(bg, BG_TILE_V_FLIP(4), left,             top + height, width - 1, 1);
-    FillMenuTilemapBufferRect(bg, BG_TILE_V_FLIP(5), left + width - 1, top + height,         1, 1);
-    FillMenuTilemapBufferRect(bg, BG_TILE_V_FLIP(6), left + width,     top + height,         1, 1);
+    FillMenuTilemapBufferRect(bg, MSGBOX_TILE_TOP_L2,   left - 2,         top - 1,         1, 1);
+    FillMenuTilemapBufferRect(bg, MSGBOX_TILE_TOP_L1,   left - 1,         top - 1,         1, 1);
+    FillMenuTilemapBufferRect(bg, MSGBOX_TILE_TOP_EDGE, left,             top - 1, width - 1, 1);
+    FillMenuTilemapBufferRect(bg, MSGBOX_TILE_TOP_R1,   left + width - 1, top - 1,         1, 1);
+    FillMenuTilemapBufferRect(bg, MSGBOX_TILE_TOP_R,    left + width,     top - 1,         1, 1);
+    FillMenuTilemapBufferRect(bg, MSGBOX_TILE_MID_L2,   left - 2,         top,             1, 5);
+    FillMenuTilemapBufferRect(bg, MSGBOX_TILE_MID_L1,   left - 1,         top,         width, 5);
+    FillMenuTilemapBufferRect(bg, MSGBOX_TILE_MID_R1,   left + width - 1, top,             1, 5);
+    FillMenuTilemapBufferRect(bg, MSGBOX_TILE_MID_R,    left + width,     top,             1, 5);
+    FillMenuTilemapBufferRect(bg, MSGBOX_TILE_BOT_L2,   left - 2,         top + height,         1, 1);
+    FillMenuTilemapBufferRect(bg, MSGBOX_TILE_BOT_L1,   left - 1,         top + height,         1, 1);
+    FillMenuTilemapBufferRect(bg, MSGBOX_TILE_BOT_EDGE, left,             top + height, width - 1, 1);
+    FillMenuTilemapBufferRect(bg, MSGBOX_TILE_BOT_R1,   left + width - 1, top + height,         1, 1);
+    FillMenuTilemapBufferRect(bg, MSGBOX_TILE_BOT_R,    left + width,     top + height,         1, 1);
+}
+
+static void WindowFunc_DrawDialogueFrameRightEdge(u8 bg, u8 left, u8 top, u8 width, u8 height, u8 paletteNum)
+{
+    FillMenuTilemapBufferRect(bg, MSGBOX_TILE_MID_R1, left + width - 1, top, 1, height);
+}
+
+// After PutWindowTilemap: the window's last column shows the end-cap's outline (text there is hidden; field
+// text is formatted to 208 px, i.e. 26 columns).
+static void DrawDialogueFrameRightEdge(u8 windowId)
+{
+    CallWindowFunction(windowId, WindowFunc_DrawDialogueFrameRightEdge);
 }
 
 static void WindowFunc_ClearStdWindowAndFrame(u8 bg, u8 tilemapLeft, u8 tilemapTop, u8 width, u8 height, u8 paletteNum)
@@ -495,6 +516,7 @@ void DrawDialogFrameWithCustomTileAndPalette(u8 windowId, bool8 copyToVram, u16 
     CallWindowFunction(windowId, WindowFunc_DrawDialogueFrame);
     FillWindowPixelBuffer(windowId, PIXEL_FILL(1));
     PutWindowTilemap(windowId);
+    DrawDialogueFrameRightEdge(windowId);
     if (copyToVram == TRUE)
         CopyWindowToVram(windowId, COPYWIN_FULL);
 }
@@ -506,6 +528,7 @@ void DrawDialogFrameWithCustomTile(u8 windowId, bool8 copyToVram, u16 tileNum)
     CallWindowFunction(windowId, WindowFunc_DrawDialogueFrame);
     FillWindowPixelBuffer(windowId, PIXEL_FILL(1));
     PutWindowTilemap(windowId);
+    DrawDialogueFrameRightEdge(windowId);
     if (copyToVram == TRUE)
         CopyWindowToVram(windowId, COPYWIN_FULL);
 }
