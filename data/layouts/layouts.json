@@ -589,8 +589,8 @@
       "name": "TosaPort_BrendansHouse_1F_Layout",
       "width": 14,
       "height": 11,
-      "primary_tileset": "gTileset_General",
-      "secondary_tileset": "gTileset_BattleTent",
+      "primary_tileset": "gTileset_Building",
+      "secondary_tileset": "gTileset_UrbanInterior",
       "border_filepath": "data/layouts/TosaPort_BrendansHouse_1F/border.bin",
       "blockdata_filepath": "data/layouts/TosaPort_BrendansHouse_1F/map.bin",
       "layout_version": "emerald"
@@ -598,10 +598,10 @@
     {
       "id": "LAYOUT_TOSA_PORT_BRENDANS_HOUSE_2F",
       "name": "TosaPort_BrendansHouse_2F_Layout",
-      "width": 56,
-      "height": 50,
-      "primary_tileset": "gTileset_General",
-      "secondary_tileset": "gTileset_BattleFactory",
+      "width": 20,
+      "height": 12,
+      "primary_tileset": "gTileset_Building",
+      "secondary_tileset": "gTileset_UrbanInterior",
       "border_filepath": "data/layouts/TosaPort_BrendansHouse_2F/border.bin",
       "blockdata_filepath": "data/layouts/TosaPort_BrendansHouse_2F/map.bin",
       "layout_version": "emerald"

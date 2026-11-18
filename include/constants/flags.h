@@ -85,8 +85,8 @@
 #define FLAG_UNUSED_0x03F    0x3F // Unused Flag
 // Tosa Rail (src/train_travel.c). UNLOCK opens a station without visiting it; CLOSED greys it out
 // even when visited. Rename the spare STATION_n pairs when real stations are added.
-#define FLAG_TRAIN_UNLOCK_TEST_WEST    0x40
-#define FLAG_TRAIN_CLOSED_TEST_WEST    0x41
+#define FLAG_TRAIN_UNLOCK_TOSA_PORT    0x40
+#define FLAG_TRAIN_CLOSED_TOSA_PORT    0x41
 #define FLAG_TRAIN_UNLOCK_TEST_EAST    0x42
 #define FLAG_TRAIN_CLOSED_TEST_EAST    0x43
 #define FLAG_TRAIN_UNLOCK_TEST_NORTH   0x44

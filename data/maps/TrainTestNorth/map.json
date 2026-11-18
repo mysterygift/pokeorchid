@@ -34,7 +34,7 @@
       "x": 1,
       "y": 7,
       "elevation": 4,
-      "dest_map": "MAP_TRAIN_TEST_WEST",
+      "dest_map": "MAP_TRAIN_TEST_EAST",
       "dest_warp_id": "1"
     },
     {

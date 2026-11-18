@@ -13,23 +13,23 @@ static const u8 *const sTrainMapLineNames[TRAIN_MAP_LINE_COUNT] = { (const u8[])
 
 static const struct TrainMapStation sTrainMapStations[TRAIN_STATION_COUNT] =
 {
-    [TRAIN_STATION_TEST_WEST] = { .x = 36, .y = 196, .lineMask = 0x03, .interchange = TRUE, .labelX = 8, .labelY = 201, .labelW = 56, .labelCellsStart = 0, .labelCellsCount = 10 },
-    [TRAIN_STATION_TEST_EAST] = { .x = 476, .y = 196, .lineMask = 0x01, .interchange = FALSE, .labelX = 448, .labelY = 201, .labelW = 56, .labelCellsStart = 10, .labelCellsCount = 10 },
-    [TRAIN_STATION_TEST_NORTH] = { .x = 252, .y = 44, .lineMask = 0x02, .interchange = FALSE, .labelX = 225, .labelY = 49, .labelW = 56, .labelCellsStart = 20, .labelCellsCount = 14 },
+    [TRAIN_STATION_TOSA_PORT] = { .x = 36, .y = 196, .lineMask = 0x03, .interchange = TRUE, .labelX = 9, .labelY = 201, .labelW = 56, .labelCellsStart = 0, .labelCellsCount = 11 },
+    [TRAIN_STATION_TEST_EAST] = { .x = 476, .y = 196, .lineMask = 0x01, .interchange = FALSE, .labelX = 448, .labelY = 201, .labelW = 56, .labelCellsStart = 11, .labelCellsCount = 10 },
+    [TRAIN_STATION_TEST_NORTH] = { .x = 252, .y = 44, .lineMask = 0x02, .interchange = FALSE, .labelX = 225, .labelY = 49, .labelW = 56, .labelCellsStart = 21, .labelCellsCount = 14 },
 };
 
 // tilemap cell index = y*64 + x (canvas tile coords, NOT screenblock order)
 static const u16 sTrainMapLabelCells[] =
 {
-    1602, 1603, 1604, 1605, 1606, 1666, 1667, 1668, 1669, 1670, 1657, 1658, 1659, 1660, 1661, 1721,
-    1722, 1723, 1724, 1725, 412, 413, 414, 415, 416, 417, 418, 476, 477, 478, 479, 480,
-    481, 482,
+    1602, 1603, 1604, 1605, 1606, 1607, 1666, 1667, 1668, 1669, 1670, 1657, 1658, 1659, 1660, 1661,
+    1721, 1722, 1723, 1724, 1725, 412, 413, 414, 415, 416, 417, 418, 476, 477, 478, 479,
+    480, 481, 482,
 };
 
 static const struct TrainMapEdge sTrainMapEdges[TRAIN_MAP_EDGE_COUNT] =
 {
-    { .a = TRAIN_STATION_TEST_WEST, .b = TRAIN_STATION_TEST_EAST, .line = 0, .cellsStart = 0, .cellsCount = 56 },
-    { .a = TRAIN_STATION_TEST_WEST, .b = TRAIN_STATION_TEST_NORTH, .line = 1, .cellsStart = 56, .cellsCount = 51 },
+    { .a = TRAIN_STATION_TOSA_PORT, .b = TRAIN_STATION_TEST_EAST, .line = 0, .cellsStart = 0, .cellsCount = 56 },
+    { .a = TRAIN_STATION_TOSA_PORT, .b = TRAIN_STATION_TEST_NORTH, .line = 1, .cellsStart = 56, .cellsCount = 51 },
 };
 
 // tube cells for each edge, same indexing

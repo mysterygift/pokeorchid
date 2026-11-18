@@ -11,22 +11,23 @@
 //   closedFlag   script override: greyed out even if visited (settrainstation ..., TRAIN_ACCESS_CLOSED)
 //   (station map positions and lines live in dev_scripts/train_ui/network.json → src/data/train_station_map.h)
 
-static const u8 sStationName_TestWest[]  = _("WEST TEST");
+static const u8 sStationName_TosaPort[]  = _("TOSA PORT");
 static const u8 sStationName_TestEast[]  = _("EAST TEST");
 static const u8 sStationName_TestNorth[] = _("NORTH TEST");
 
 static const struct TrainStation sTrainStations[TRAIN_STATION_COUNT] =
 {
-    [TRAIN_STATION_TEST_WEST] =
+    // Platform under the Tosa Port gatehouse (MAP_TOSA_PORT_BRENDANS_HOUSE_2F, lifts from _1F)
+    [TRAIN_STATION_TOSA_PORT] =
     {
-        .name = sStationName_TestWest,
-        .mapGroup = MAP_GROUP(MAP_TRAIN_TEST_WEST),
-        .mapNum = MAP_NUM(MAP_TRAIN_TEST_WEST),
+        .name = sStationName_TosaPort,
+        .mapGroup = MAP_GROUP(MAP_TOSA_PORT_BRENDANS_HOUSE_2F),
+        .mapNum = MAP_NUM(MAP_TOSA_PORT_BRENDANS_HOUSE_2F),
         .trackX = 9,
         .trackY = 4,
-        .visitedFlag = 0,
-        .unlockFlag = FLAG_TRAIN_UNLOCK_TEST_WEST,
-        .closedFlag = FLAG_TRAIN_CLOSED_TEST_WEST,
+        .visitedFlag = FLAG_VISITED_TOSA_PORT,
+        .unlockFlag = FLAG_TRAIN_UNLOCK_TOSA_PORT,
+        .closedFlag = FLAG_TRAIN_CLOSED_TOSA_PORT,
     },
     [TRAIN_STATION_TEST_EAST] =
     {

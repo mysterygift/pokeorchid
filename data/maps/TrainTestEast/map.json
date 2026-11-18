@@ -27,6 +27,19 @@
       "trainer_sight_or_berry_tree_id": "0",
       "script": "TrainTest_EventScript_Attendant",
       "flag": "0"
+    },
+    {
+      "graphics_id": "OBJ_EVENT_GFX_SCIENTIST_1",
+      "x": 5,
+      "y": 8,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
+      "movement_range_x": 0,
+      "movement_range_y": 0,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "TrainTest_EventScript_StationMaster",
+      "flag": "0"
     }
   ],
   "warp_events": [
@@ -41,7 +54,7 @@
       "x": 1,
       "y": 10,
       "elevation": 4,
-      "dest_map": "MAP_TRAIN_TEST_WEST",
+      "dest_map": "MAP_TRAIN_TEST_NORTH",
       "dest_warp_id": "0"
     }
   ],

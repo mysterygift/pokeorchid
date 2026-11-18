@@ -663,12 +663,12 @@ def main():
     open(HDR, "w", newline="\n").write(c_header(st, lines, net, D, legend_xs))
     # checks rendered back from the exported files
     ensure_out()
-    acc = {"TRAIN_STATION_TEST_WEST", "TRAIN_STATION_TEST_EAST"}
+    acc = {"TRAIN_STATION_TOSA_PORT", "TRAIN_STATION_TEST_EAST"}
 
     def centre(sid):
         s = byid[sid]
         return (max(0, min(512 - 240, s["x"] - 120)), max(0, min(256 - 112, s["y"] - 56)))
-    export_check(st, lines, net, D, legend_xs, centre("TRAIN_STATION_TEST_WEST"), "TRAIN_STATION_TEST_WEST", acc,
+    export_check(st, lines, net, D, legend_xs, centre("TRAIN_STATION_TOSA_PORT"), "TRAIN_STATION_TOSA_PORT", acc,
                  os.path.join(OUT, "export_check_west_3x.png"))
     export_check(st, lines, net, D, legend_xs, centre("TRAIN_STATION_TEST_EAST"), "TRAIN_STATION_TEST_EAST", acc,
                  os.path.join(OUT, "export_check_east_3x.png"))

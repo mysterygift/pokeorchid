@@ -4,7 +4,7 @@
 // Tosa Rail stations. Order = order in src/data/train_stations.h.
 // Adding a station: add an id here, a row in src/data/train_stations.h, and a pair of
 // FLAG_TRAIN_UNLOCK_* / FLAG_TRAIN_CLOSED_* flags in include/constants/flags.h.
-#define TRAIN_STATION_TEST_WEST     0
+#define TRAIN_STATION_TOSA_PORT     0
 #define TRAIN_STATION_TEST_EAST     1
 #define TRAIN_STATION_TEST_NORTH    2
 #define TRAIN_STATION_COUNT         3
