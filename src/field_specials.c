@@ -1137,6 +1137,18 @@ static void PCTurnOnEffect(struct Task *task)
     task->tTimer++;
 }
 
+// Orchid Centres (gTileset_OrchidCentre) have a tablet terminal with no on/off frames, so keep the
+// tablet instead of drawing the vanilla Building PC monitor over it.
+#define METATILE_OrchidCentre_Tablet 0x21E
+
+static u16 OrchidCentre_PCMetatile(u16 metatileId)
+{
+    if (gSpecialVar_0x8004 == PC_LOCATION_OTHER
+     && gMapHeader.mapLayout->secondaryTileset == &gTileset_OrchidCentre)
+        return METATILE_OrchidCentre_Tablet;
+    return metatileId;
+}
+
 static void PCTurnOnEffect_SetMetatile(s16 isScreenOn, s8 dx, s8 dy)
 {
     u16 metatileId = 0;
@@ -1164,6 +1176,7 @@ static void PCTurnOnEffect_SetMetatile(s16 isScreenOn, s8 dx, s8 dy)
         else if (gSpecialVar_0x8004 == PC_LOCATION_PLAYER_HOUSE_FRLG)
             metatileId = METATILE_GenericBuilding1_PlayersPCOn;
     }
+    metatileId = OrchidCentre_PCMetatile(metatileId);
     MapGridSetMetatileIdAt(gSaveBlock1Ptr->pos.x + dx + MAP_OFFSET, gSaveBlock1Ptr->pos.y + dy + MAP_OFFSET, metatileId | MAPGRID_IMPASSABLE);
 }
 
@@ -1211,6 +1224,7 @@ static void PCTurnOffEffect(void)
     else if (gSpecialVar_0x8004 == PC_LOCATION_PLAYER_HOUSE_FRLG)
         metatileId = METATILE_GenericBuilding1_PlayersPCOff;
 
+    metatileId = OrchidCentre_PCMetatile(metatileId);
     MapGridSetMetatileIdAt(gSaveBlock1Ptr->pos.x + dx + MAP_OFFSET, gSaveBlock1Ptr->pos.y + dy + MAP_OFFSET, metatileId | MAPGRID_IMPASSABLE);
     DrawWholeMapView();
 }

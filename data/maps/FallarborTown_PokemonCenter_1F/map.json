@@ -58,8 +58,8 @@
     {
       "local_id": "LOCALID_FALLARBOR_LANETTE",
       "graphics_id": "OBJ_EVENT_GFX_WOMAN_2",
-      "x": 10,
-      "y": 3,
+      "x": 9,
+      "y": 4,
       "elevation": 3,
       "movement_type": "MOVEMENT_TYPE_FACE_UP",
       "movement_range_x": 0,

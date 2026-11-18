@@ -314,7 +314,11 @@ def main(write):
     changed_layouts, warp_moves = set(), []
     for o, cells in plans:
         lid, kind, g = o["layout"], o["kind"], grids[o["layout"]]
-        door_bits = g[o["y"]][o["x"]] & 0xFC00
+        # The Centre door is MB_NON_ANIMATED_DOOR: the player has to step ONTO it, so the door and the
+        # walkway under the arches must be walkable (collision 0) at the ground's elevation. Copying the
+        # vanilla door's bits blocked the way in, because vanilla animated doors are solid (bump-to-warp).
+        elev = (g[min(o["by"] + 4, len(g) - 1)][o["x"]] >> 12) & 0xF
+        door_bits = (elev if elev not in (0, 15) else 3) << 12
         for (cx, cy), content in cells.items():
             x, y = o["bx"] + cx, o["by"] + cy
             mid = ids[kind][cy][cx] if content == canonical[(kind, cx, cy)] else variant_need[o["secondary"]][content]
