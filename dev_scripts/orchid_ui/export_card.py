@@ -40,10 +40,11 @@ HEADER = os.path.join(ROOT, "src", "data", "trainer_card_orchid.h")
 COLS, ROWS = 30, 20
 
 # back-row icon strips, in the order trainer_card.c uses them (ORCHID_CARD_ROW_*)
-ROW_ICONS = ["hof", "link", "trade", "union", "berry", "contest"]
+ROW_ICONS = ["hof", "link", "trade", "union", "berry", "contest", "block", "bp"]
 ROW_KEYS = {"hof": ("hof", (31, 9, 46)), "link": ("link", (12, 5)), "trade": ("trades", 8),
-            "union": ("union", 23), "berry": ("berry", 1250), "contest": ("contests", 3)}
-NO_ROWS = dict(hof=None, link=None, trades=0, union=0, berry=0, contests=0)
+            "union": ("union", 23), "berry": ("berry", 1250), "contest": ("contests", 3),
+            "block": ("blocks", 14), "bp": ("bp", 120)}
+NO_ROWS = dict(hof=None, link=None, trades=0, union=0, berry=0, contests=0, blocks=0, bp=0)
 
 # BG3: trainer pic window (tiles) - covers the pic of either gender (asserted below)
 PIC_WIN = (18, 2, 9, 10)          # left, top, w, h
@@ -184,10 +185,14 @@ def export_bg0():
         for i in diff_cells(tm, b_base):
             assert row0 <= i // COLS < row0 + 2, "row %s spills outside its strip" % ic
         strips.append([[tm[(row0 + j) * COLS + c] for c in range(COLS)] for j in range(2)])
-    champ = T.tilemap(back(**{k: v for k, v in ROW_KEYS.values()}))
-    for k, ic in enumerate(ROW_ICONS):
-        for j in range(2):
-            assert [champ[(row0 + 2 * k + j) * COLS + c] for c in range(COLS)] == strips[k][j], "slot %d" % k
+    # every icon in every slot it can reach (6 visible rows out of len(ROW_ICONS))
+    for first in range(len(ROW_ICONS) - 5):
+        six = ROW_ICONS[first:first + 6]
+        full = T.tilemap(back(**dict(ROW_KEYS[ic] for ic in six)))
+        for k, ic in enumerate(six):
+            for j in range(2):
+                assert [full[(row0 + 2 * k + j) * COLS + c] for c in range(COLS)] == strips[ROW_ICONS.index(ic)][j], \
+                    "%s in slot %d" % (ic, k)
     # 6 rows end above the signature well
     assert row0 + 12 <= M.SIG[1] // 8
 

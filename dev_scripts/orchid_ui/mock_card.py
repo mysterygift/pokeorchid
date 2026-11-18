@@ -95,7 +95,11 @@ def back_rows(d):
         rows.append(("berry", "BERRY CRUSH", str(d["berry"])))
     if d.get("contests"):
         rows.append(("contest", "CONTESTS W/FRIENDS", str(d["contests"])))
-    return rows
+    if d.get("blocks"):
+        rows.append(("block", "POKéBLOCKS W/FRIENDS", str(d["blocks"])))
+    if d.get("bp"):
+        rows.append(("bp", "BATTLE POINTS WON", "%dBP" % d["bp"]))
+    return rows[:6]                # trainer_card.c: OCARD_BACK_MAX_ROWS
 
 
 def draw_back_art(cv, d):
@@ -106,6 +110,43 @@ def draw_back_art(cv, d):
     x, y, w, h = SIG
     C.sig_well(cv, x, y, w, h)
     C.icon(cv, x + 6, y + 3, "pen", INK_SOFT, PANEL_SHADE)
+
+
+# ------------------------------------------------------------------ link / Union Room front
+# Approved variant B (mock_card_extras.py): someone else's card (or the player's own in link
+# format). The badge case becomes a signature well holding the two-line easy-chat profile
+# phrase; a small icon pill to its right holds the badge count (only the count travels).
+LINK_PILL_W, LINK_PILL_CAP = 38, 18
+LINK_WELL = (CASE[0], CASE[1], CASE[2] - LINK_PILL_W - 4, CASE[3])
+LINK_PILL = (LINK_WELL[0] + LINK_WELL[2] + 4, CASE[1] + 6)
+PHRASE_X, PHRASE_Y = CASE[0] + 8, (CASE[1] - 1, CASE[1] + 11)
+PHRASE_GAP = 6                     # between the two words of a line (vanilla: 8 -> width + 14)
+PHRASE = (("HELLO", "POKéMON"), ("BATTLE", "AWESOME"))
+
+
+def draw_link_front_art(cv, d, pill=True):
+    C.card_shell(cv, *CARD, HEAD_H)
+    draw_header(cv, d["stars"])
+    C.nameplate(cv, COL_X + 2, NAME_Y, COL_W - 4, ROW_H)
+    rows = ["money", "dex", "time"] if d["has_dex"] else ["money", "time"]
+    for name, y in zip(rows, ROWS_Y):
+        C.icon_pill(cv, COL_X, y, COL_W, name, 20, ROW_H)
+    C.dais(cv, DAIS_C[0], DAIS_C[1], DAIS_R, DAIS_IN)
+    x, y, w, h = LINK_WELL if pill else CASE
+    C.sig_well(cv, x, y, w, h)
+    if pill:
+        C.icon_pill(cv, LINK_PILL[0], LINK_PILL[1], LINK_PILL_W, "badge", LINK_PILL_CAP, 16)
+
+
+def draw_link_front_text(tc, d, pill=True):
+    draw_front_text(tc, d)
+    for (w0, w1), y in zip(d.get("phrase", PHRASE), PHRASE_Y):
+        draw_text(tc, PHRASE_X, y, w0, INK, PANEL_SHADE)
+        draw_text(tc, PHRASE_X + text_width(w0) + PHRASE_GAP, y, w1, INK, PANEL_SHADE)
+    if pill:
+        s = str(d["badges"])
+        vw = LINK_PILL_W - LINK_PILL_CAP
+        draw_text(tc, LINK_PILL[0] + LINK_PILL_CAP + (vw - text_width(s)) // 2, LINK_PILL[1] - 1, s, INK, PANEL_SHADE)
 
 
 # ------------------------------------------------------------------ text (BG1)

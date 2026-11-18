@@ -413,8 +413,7 @@ static const u8 *const sOrchidCardRowLabels[OCARD_ROW_COUNT] =
     [OCARD_ROW_BATTLE_POINTS] = gText_BattlePtsWon,
 };
 
-// Pokéblocks and Battle Points have no icon of their own in the approved mock yet: they borrow
-// the berry and the trophy.
+// PokéBlocks = the Safari PokéBlock cube, Battle Points = the BP medal (mock_card_extras.py)
 static const u8 sOrchidCardRowIcons[OCARD_ROW_COUNT] =
 {
     [OCARD_ROW_HOF]           = OCARD_ICON_HOF,
@@ -423,8 +422,8 @@ static const u8 sOrchidCardRowIcons[OCARD_ROW_COUNT] =
     [OCARD_ROW_UNION]         = OCARD_ICON_UNION,
     [OCARD_ROW_BERRY_CRUSH]   = OCARD_ICON_BERRY,
     [OCARD_ROW_CONTESTS]      = OCARD_ICON_CONTEST,
-    [OCARD_ROW_POKEBLOCKS]    = OCARD_ICON_BERRY,
-    [OCARD_ROW_BATTLE_POINTS] = OCARD_ICON_HOF,
+    [OCARD_ROW_POKEBLOCKS]    = OCARD_ICON_BLOCK,
+    [OCARD_ROW_BATTLE_POINTS] = OCARD_ICON_BP,
 };
 
 static bool8 (*const sTrainerCardFlipTasks[])(struct Task *) =

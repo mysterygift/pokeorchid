@@ -136,6 +136,24 @@ ICONS = {
                 "..XX.XX..",
                 ".XX...XX.",
                 ".X.....X."],
+    "bp": ["XXX....XXX",             # medal on a V ribbon (Battle Points), distinct from the HoF trophy
+           ".XXX..XXX.",
+           "..XXXXXX..",
+           "..XXXXXX..",
+           ".XXXXXXXX.",
+           ".XXX..XXX.",
+           ".XXX..XXX.",
+           ".XXXXXXXX.",
+           "..XXXXXX.."],
+    "badge": ["....X....",           # gym badge (link card: the badge count pill)
+              "...XXX...",
+              "..XX.XX..",
+              ".XX...XX.",
+              "XX..X..XX",
+              ".XX...XX.",
+              "..XX.XX..",
+              "...XXX...",
+              "....X...."],
     "pen": ["........XX",            # signature nib
             ".......XXX",
             "......XXX.",
@@ -147,6 +165,11 @@ ICONS = {
             "X.........",
             "XXXXXXXXXX"],
 }
+
+
+# PokéBlocks with friends: the Safari PokéBlock cube (one silhouette for both screens)
+from mock_battle_more import SAFARI_SILHOUETTES  # noqa: E402
+ICONS["block"] = SAFARI_SILHOUETTES["block"]
 
 
 def icon(cv, x, y, name, fg=WHITE, shadow=ACCENT_DARK):
