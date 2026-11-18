@@ -385,6 +385,7 @@ static const u8 sOrchidCardNameColors[] = {TEXT_COLOR_TRANSPARENT, 14, 15};
 static const u8 sText_OrchidTrainerCard[] = _("TRAINER CARD");
 static const u8 sText_OrchidUnionRoom[] = _("UNION ROOM");
 static const u8 sText_OrchidContestsWFriends[] = _("CONTESTS W/FRIENDS");
+static const u8 sText_OrchidPokeblocksWFriends[] = _("POKéBLOCKS W/FRIENDS"); // plain letters, not the {POKEBLOCK} glyphs
 static const u8 sText_OrchidWinsLosses[] = _("W:{STR_VAR_1}  L:{STR_VAR_2}");
 static const u8 sText_OrchidNumBP[] = _("{STR_VAR_1}BP");
 
@@ -409,7 +410,7 @@ static const u8 *const sOrchidCardRowLabels[OCARD_ROW_COUNT] =
     [OCARD_ROW_UNION]         = sText_OrchidUnionRoom,
     [OCARD_ROW_BERRY_CRUSH]   = gText_BerryCrush,
     [OCARD_ROW_CONTESTS]      = sText_OrchidContestsWFriends,
-    [OCARD_ROW_POKEBLOCKS]    = gText_PokeblocksWithFriends,
+    [OCARD_ROW_POKEBLOCKS]    = sText_OrchidPokeblocksWFriends,
     [OCARD_ROW_BATTLE_POINTS] = gText_BattlePtsWon,
 };
 
