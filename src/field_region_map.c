@@ -12,6 +12,7 @@
 #include "overworld.h"
 #include "palette.h"
 #include "region_map.h"
+#include "rotom_phone.h"
 #include "sound.h"
 #include "strings.h"
 #include "text.h"
@@ -53,6 +54,7 @@ static void VBCB_FieldUpdateRegionMap(void);
 static void MCB2_FieldUpdateRegionMap(void);
 static void FieldUpdateRegionMap(void);
 static void PrintRegionMapSecName();
+static bool32 CanFlyFromMap(void);
 static void PrintTitleWindowText();
 
 static const struct BgTemplate sFieldRegionMapBgTemplates[] = {
@@ -190,8 +192,7 @@ static void FieldUpdateRegionMap(void)
                 sFieldRegionMapHandler->state++;
                 break;
         case MAP_INPUT_R_BUTTON:
-                if (sFieldRegionMapHandler->regionMap.mapSecType == MAPSECTYPE_CITY_CANFLY
-                    && FlagGet(OW_FLAG_POKE_RIDER) && Overworld_MapTypeAllowsTeleportAndFly(gMapHeader.mapType) == TRUE)
+                if (CanFlyFromMap())
                 {
                     PlaySE(SE_SELECT);
                     SetFlyDestination(&sFieldRegionMapHandler->regionMap);
@@ -214,6 +215,15 @@ static void FieldUpdateRegionMap(void)
         }
         break;
     }
+}
+
+// R = Fly (expansion's Poké Rider). Never from the Rotom Phone's MAP app: Orchid wants players on
+// Tosa Rail and the ferries (user, 2026-11-18). The wall Town Map keeps it.
+static bool32 CanFlyFromMap(void)
+{
+    return sFieldRegionMapHandler->callback != CB2_ReturnToRotomPhone
+        && sFieldRegionMapHandler->regionMap.mapSecType == MAPSECTYPE_CITY_CANFLY
+        && FlagGet(OW_FLAG_POKE_RIDER) && Overworld_MapTypeAllowsTeleportAndFly(gMapHeader.mapType) == TRUE;
 }
 
 // Orchid MAP v2: the place name sits on the tray (mock_map.py: x 8, y 138); a rail chip OBJ follows it
@@ -240,8 +250,7 @@ static void PrintTitleWindowText(void)
     CopyWindowToVram(WIN_TITLE, COPYWIN_GFX);
 
     FillWindowPixelBuffer(WIN_PROMPT, PIXEL_FILL(0));
-    if (sFieldRegionMapHandler->regionMap.mapSecType == MAPSECTYPE_CITY_CANFLY
-        && FlagGet(OW_FLAG_POKE_RIDER) && Overworld_MapTypeAllowsTeleportAndFly(gMapHeader.mapType) == TRUE)
+    if (CanFlyFromMap())
         AddTextPrinterParameterized4(WIN_PROMPT, FONT_NORMAL, 4, 3, 0, 0, sOrchidMapText_Ink, TEXT_SKIP_DRAW, FlyPromptText);
     CopyWindowToVram(WIN_PROMPT, COPYWIN_GFX);
 }
