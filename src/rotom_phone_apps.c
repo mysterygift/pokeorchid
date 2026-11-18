@@ -6,7 +6,7 @@
 
 void PhoneApp_LaunchCall(void)
 {
-    SetMainCallback2(CB2_ReturnToRotomPhone);   // TODO: CALL app
+    CB2_InitPhoneCall();
 }
 
 void PhoneApp_LaunchQuests(void)
@@ -21,7 +21,7 @@ void PhoneApp_LaunchRadio(void)
 
 u32 PhoneApp_CountContacts(void)
 {
-    return 0;
+    return PhoneCall_CountContacts();
 }
 
 u32 PhoneApp_CountQuestRewards(void)

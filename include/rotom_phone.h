@@ -24,4 +24,8 @@ u32 PhoneApp_CountContacts(void);
 u32 PhoneApp_CountQuestRewards(void);   // quests in the REWARD state = home-screen badge
 void PhoneApp_RadioRotomText(u8 *dest);
 
+// src/rotom_phone_call.c
+void CB2_InitPhoneCall(void);
+u32 PhoneCall_CountContacts(void);
+
 #endif // GUARD_ROTOM_PHONE_H
