@@ -415,6 +415,19 @@ const struct TrainerClass gTrainerClasses[TRAINER_CLASS_COUNT] =
     [TRAINER_CLASS_RUIN_MANIAC_FRLG] =     { _("RUIN MANIAC"), 12 },
     [TRAINER_CLASS_LADY_FRLG] =            { _("LADY"), 50 },
     [TRAINER_CLASS_PAINTER_FRLG] =         { _("PAINTER"), 4 },
+
+    // Orchid (Tosa)
+    [TRAINER_CLASS_TOURIST] =              { _("TOURIST"), 15 },
+    [TRAINER_CLASS_HAWKER] =               { _("HAWKER"), 8 },
+    [TRAINER_CLASS_RIDER] =                { _("RIDER"), 10 },
+    [TRAINER_CLASS_EXECUTIVE] =            { _("EXECUTIVE"), 20, BALL_LUXURY },
+    [TRAINER_CLASS_INFLUENCER] =           { _("INFLUENCER"), 12 },
+    [TRAINER_CLASS_SINGER] =               { _("SINGER"), 10 },
+    [TRAINER_CLASS_NYONYA] =               { _("NYONYA"), 20 },
+    [TRAINER_CLASS_DANCER] =               { _("DANCER"), 10 },
+    [TRAINER_CLASS_ORCHIDIST] =            { _("ORCHIDIST"), 10 },
+    [TRAINER_CLASS_RECRUIT] =              { _("RECRUIT"), 6 },
+    [TRAINER_CLASS_PORT_WORKER] =          { _("PORT WORKER"), 8 },
 };
 
 static void (*const sTurnActionsFuncsTable[])(void) =

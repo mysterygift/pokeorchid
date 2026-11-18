@@ -1355,6 +1355,63 @@ static const struct SpriteFrameImage sPicTable_ApricornTree[] = {
     overworld_frame(gObjectEventPic_ApricornTree, 2, 2, 0),
 };
 
+// Orchid (Tosa) trainer classes
+static const struct SpriteFrameImage sPicTable_TouristM[] = {
+    overworld_ascending_frames(gObjectEventPic_TouristM, 2, 4),
+};
+
+static const struct SpriteFrameImage sPicTable_TouristF[] = {
+    overworld_ascending_frames(gObjectEventPic_TouristF, 2, 4),
+};
+
+static const struct SpriteFrameImage sPicTable_HawkerM[] = {
+    overworld_ascending_frames(gObjectEventPic_HawkerM, 2, 4),
+};
+
+static const struct SpriteFrameImage sPicTable_HawkerF[] = {
+    overworld_ascending_frames(gObjectEventPic_HawkerF, 2, 4),
+};
+
+static const struct SpriteFrameImage sPicTable_Rider[] = {
+    overworld_ascending_frames(gObjectEventPic_Rider, 2, 4),
+};
+
+static const struct SpriteFrameImage sPicTable_Executive[] = {
+    overworld_ascending_frames(gObjectEventPic_Executive, 2, 4),
+};
+
+static const struct SpriteFrameImage sPicTable_Influencer[] = {
+    overworld_ascending_frames(gObjectEventPic_Influencer, 2, 4),
+};
+
+static const struct SpriteFrameImage sPicTable_Singer[] = {
+    overworld_ascending_frames(gObjectEventPic_Singer, 2, 4),
+};
+
+static const struct SpriteFrameImage sPicTable_Nyonya[] = {
+    overworld_ascending_frames(gObjectEventPic_Nyonya, 2, 4),
+};
+
+static const struct SpriteFrameImage sPicTable_Dancer[] = {
+    overworld_ascending_frames(gObjectEventPic_Dancer, 2, 4),
+};
+
+static const struct SpriteFrameImage sPicTable_Orchidist[] = {
+    overworld_ascending_frames(gObjectEventPic_Orchidist, 2, 4),
+};
+
+static const struct SpriteFrameImage sPicTable_Recruit[] = {
+    overworld_ascending_frames(gObjectEventPic_Recruit, 2, 4),
+};
+
+static const struct SpriteFrameImage sPicTable_PortWorker[] = {
+    overworld_ascending_frames(gObjectEventPic_PortWorker, 2, 4),
+};
+
+static const struct SpriteFrameImage sPicTable_SchoolKidF[] = {
+    overworld_ascending_frames(gObjectEventPic_SchoolKidF, 2, 4),
+};
+
 #if IS_FRLG
 
 static const struct SpriteFrameImage sPicTable_RedNormal[] = {

@@ -466,6 +466,34 @@ const u32 gObjectEventPic_ApricornTree[] = INCGFX_U32("graphics/object_events/pi
 
 const u32 gFieldEffectObjectPic_ShinySparkle[] = INCGFX_U32("graphics/field_effects/pics/shiny_sparkle.png", ".4bpp", "-mwidth 2 -mheight 4");
 
+// Orchid: the FRLG shared NPC palettes (blue/pink/green/white) are built in Emerald mode too, so Emerald-mode
+// object events (the Orchid trainer classes) can use them.
+const u16 gObjectEventPal_NpcBlue[] = INCGFX_U16("graphics/object_events/palettes/npc_blue.pal", ".gbapal");
+const u16 gObjectEventPal_NpcPink[] = INCGFX_U16("graphics/object_events/palettes/npc_pink.pal", ".gbapal");
+const u16 gObjectEventPal_NpcGreen[] = INCGFX_U16("graphics/object_events/palettes/npc_green.pal", ".gbapal");
+const u16 gObjectEventPal_NpcWhite[] = INCGFX_U16("graphics/object_events/palettes/npc_white.pal", ".gbapal");
+const u16 gObjectEventPal_NpcBlueReflection[] = INCGFX_U16("graphics/object_events/palettes/npc_blue_reflection.pal", ".gbapal");
+const u16 gObjectEventPal_NpcPinkReflection[] = INCGFX_U16("graphics/object_events/palettes/npc_pink_reflection.pal", ".gbapal");
+const u16 gObjectEventPal_NpcGreenReflection[] = INCGFX_U16("graphics/object_events/palettes/npc_green_reflection.pal", ".gbapal");
+const u16 gObjectEventPal_NpcWhiteReflection[] = INCGFX_U16("graphics/object_events/palettes/npc_white_reflection.pal", ".gbapal");
+const u16 gObjectEventPal_NpcSchoolKidF[] = INCGFX_U16("graphics/object_events/palettes/npc_school_kid_f.pal", ".gbapal");
+
+// Orchid (Tosa) trainer classes
+const u32 gObjectEventPic_TouristM[] = INCGFX_U32("graphics/object_events/pics/people/tourist_m.png", ".4bpp", "-mwidth 2 -mheight 4");
+const u32 gObjectEventPic_TouristF[] = INCGFX_U32("graphics/object_events/pics/people/tourist_f.png", ".4bpp", "-mwidth 2 -mheight 4");
+const u32 gObjectEventPic_HawkerM[] = INCGFX_U32("graphics/object_events/pics/people/hawker_m.png", ".4bpp", "-mwidth 2 -mheight 4");
+const u32 gObjectEventPic_HawkerF[] = INCGFX_U32("graphics/object_events/pics/people/hawker_f.png", ".4bpp", "-mwidth 2 -mheight 4");
+const u32 gObjectEventPic_Rider[] = INCGFX_U32("graphics/object_events/pics/people/rider.png", ".4bpp", "-mwidth 2 -mheight 4");
+const u32 gObjectEventPic_Executive[] = INCGFX_U32("graphics/object_events/pics/people/executive.png", ".4bpp", "-mwidth 2 -mheight 4");
+const u32 gObjectEventPic_Influencer[] = INCGFX_U32("graphics/object_events/pics/people/influencer.png", ".4bpp", "-mwidth 2 -mheight 4");
+const u32 gObjectEventPic_Singer[] = INCGFX_U32("graphics/object_events/pics/people/singer.png", ".4bpp", "-mwidth 2 -mheight 4");
+const u32 gObjectEventPic_Nyonya[] = INCGFX_U32("graphics/object_events/pics/people/nyonya.png", ".4bpp", "-mwidth 2 -mheight 4");
+const u32 gObjectEventPic_Dancer[] = INCGFX_U32("graphics/object_events/pics/people/dancer.png", ".4bpp", "-mwidth 2 -mheight 4");
+const u32 gObjectEventPic_Orchidist[] = INCGFX_U32("graphics/object_events/pics/people/orchidist.png", ".4bpp", "-mwidth 2 -mheight 4");
+const u32 gObjectEventPic_Recruit[] = INCGFX_U32("graphics/object_events/pics/people/recruit.png", ".4bpp", "-mwidth 2 -mheight 4");
+const u32 gObjectEventPic_PortWorker[] = INCGFX_U32("graphics/object_events/pics/people/port_worker.png", ".4bpp", "-mwidth 2 -mheight 4");
+const u32 gObjectEventPic_SchoolKidF[] = INCGFX_U32("graphics/object_events/pics/people/school_kid_f.png", ".4bpp", "-mwidth 2 -mheight 4");
+
 #if IS_FRLG
 
 const u16 gObjectEventPic_RedNormal[] = INCGFX_U16("graphics/object_events/pics/people/red/red_normal.png", ".4bpp", "-mwidth 2 -mheight 4");
@@ -485,14 +513,6 @@ const u16 gObjectEventPic_GreenVSSeekerBike[] = INCGFX_U16("graphics/object_even
 
 const u16 gObjectEventPal_PlayerFrlg[] = INCGFX_U16("graphics/object_events/palettes/player_frlg.pal", ".gbapal");
 const u16 gObjectEventPal_PlayerReflectionFrlg[] = INCGFX_U16("graphics/object_events/palettes/player_reflection_frlg.pal", ".gbapal");
-const u16 gObjectEventPal_NpcBlue[] = INCGFX_U16("graphics/object_events/palettes/npc_blue.pal", ".gbapal");
-const u16 gObjectEventPal_NpcPink[] = INCGFX_U16("graphics/object_events/palettes/npc_pink.pal", ".gbapal");
-const u16 gObjectEventPal_NpcGreen[] = INCGFX_U16("graphics/object_events/palettes/npc_green.pal", ".gbapal");
-const u16 gObjectEventPal_NpcWhite[] = INCGFX_U16("graphics/object_events/palettes/npc_white.pal", ".gbapal");
-const u16 gObjectEventPal_NpcBlueReflection[] = INCGFX_U16("graphics/object_events/palettes/npc_blue_reflection.pal", ".gbapal");
-const u16 gObjectEventPal_NpcPinkReflection[] = INCGFX_U16("graphics/object_events/palettes/npc_pink_reflection.pal", ".gbapal");
-const u16 gObjectEventPal_NpcGreenReflection[] = INCGFX_U16("graphics/object_events/palettes/npc_green_reflection.pal", ".gbapal");
-const u16 gObjectEventPal_NpcWhiteReflection[] = INCGFX_U16("graphics/object_events/palettes/npc_white_reflection.pal", ".gbapal");
 
 const u16 gObjectEventPic_Pokedex[] = INCGFX_U16("graphics/object_events/pics/misc/pokedex.png", ".4bpp");
 const u16 gObjectEventPic_TownMap[] = INCGFX_U16("graphics/object_events/pics/misc/town_map.png", ".4bpp", "-mwidth 2 -mheight 2");

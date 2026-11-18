@@ -387,6 +387,21 @@ extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_DeoxysD;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_DeoxysA;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_DeoxysN;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_SSAnne;
+// Orchid (Tosa) trainer classes
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_TouristM;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_TouristF;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_HawkerM;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_HawkerF;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Rider;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Executive;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Influencer;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Singer;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Nyonya;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Dancer;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Orchidist;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Recruit;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_PortWorker;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_SchoolKidF;
 // Begin Pokémon event objects
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_PokeBall;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Follower;
@@ -791,6 +806,21 @@ const struct ObjectEventGraphicsInfo *const gObjectEventGraphicsInfoPointers[NUM
     [OBJ_EVENT_GFX_DEOXYS_N]                 = &gObjectEventGraphicsInfo_DeoxysN,
     [OBJ_EVENT_GFX_SS_ANNE]                  = &gObjectEventGraphicsInfo_SSAnne,
 #endif // IS_FRLG
+    // Orchid (Tosa) trainer classes
+    [OBJ_EVENT_GFX_TOURIST_M] = &gObjectEventGraphicsInfo_TouristM,
+    [OBJ_EVENT_GFX_TOURIST_F] = &gObjectEventGraphicsInfo_TouristF,
+    [OBJ_EVENT_GFX_HAWKER_M] = &gObjectEventGraphicsInfo_HawkerM,
+    [OBJ_EVENT_GFX_HAWKER_F] = &gObjectEventGraphicsInfo_HawkerF,
+    [OBJ_EVENT_GFX_RIDER] = &gObjectEventGraphicsInfo_Rider,
+    [OBJ_EVENT_GFX_EXECUTIVE] = &gObjectEventGraphicsInfo_Executive,
+    [OBJ_EVENT_GFX_INFLUENCER] = &gObjectEventGraphicsInfo_Influencer,
+    [OBJ_EVENT_GFX_SINGER] = &gObjectEventGraphicsInfo_Singer,
+    [OBJ_EVENT_GFX_NYONYA] = &gObjectEventGraphicsInfo_Nyonya,
+    [OBJ_EVENT_GFX_DANCER] = &gObjectEventGraphicsInfo_Dancer,
+    [OBJ_EVENT_GFX_ORCHIDIST] = &gObjectEventGraphicsInfo_Orchidist,
+    [OBJ_EVENT_GFX_RECRUIT] = &gObjectEventGraphicsInfo_Recruit,
+    [OBJ_EVENT_GFX_PORT_WORKER] = &gObjectEventGraphicsInfo_PortWorker,
+    [OBJ_EVENT_GFX_SCHOOL_KID_F] = &gObjectEventGraphicsInfo_SchoolKidF,
 };
 
 const struct ObjectEventGraphicsInfo *const gMauvilleOldManGraphicsInfoPointers[] = {
