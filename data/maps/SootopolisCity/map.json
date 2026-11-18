@@ -270,7 +270,7 @@
   "warp_events": [
     {
       "x": 43,
-      "y": 31,
+      "y": 30,
       "elevation": 0,
       "dest_map": "MAP_SOOTOPOLIS_CITY_POKEMON_CENTER_1F",
       "dest_warp_id": "0"

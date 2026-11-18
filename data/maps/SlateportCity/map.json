@@ -511,7 +511,7 @@
   "warp_events": [
     {
       "x": 19,
-      "y": 19,
+      "y": 18,
       "elevation": 0,
       "dest_map": "MAP_SLATEPORT_CITY_POKEMON_CENTER_1F",
       "dest_warp_id": "0"

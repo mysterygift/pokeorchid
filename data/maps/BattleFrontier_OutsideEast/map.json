@@ -448,7 +448,7 @@
     },
     {
       "x": 3,
-      "y": 51,
+      "y": 50,
       "elevation": 0,
       "dest_map": "MAP_BATTLE_FRONTIER_POKEMON_CENTER_1F",
       "dest_warp_id": "0"
