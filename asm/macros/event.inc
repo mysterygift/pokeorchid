@@ -3023,3 +3023,156 @@
 	setvar VAR_0x8005, \mode
 	special TrainStation_SetAccess
 	.endm
+
+    @ ---- Quests (PSF Unbound Quest Menu port, src/quests.c; shown in the Rotom Phone QUESTS app)
+    .macro questmenu case:req, questId:req
+    .byte SCR_OP_QUESTMENU
+    .byte \case
+    .byte \questId
+    .endm
+
+    .macro subquestmenu case:req, parentId:req, childId:req
+    .byte SCR_OP_SUBQUESTMENU
+    .byte \case
+    .2byte \parentId
+    .2byte \childId
+    .endm
+
+    @ Check the quest state and return a number associated with quest state
+    .macro returnqueststate questId:req
+    .byte SCR_OP_RETURNQUESTSTATE
+    .byte \questId
+    .endm
+
+    .macro openquestmenu
+    questmenu 0 0
+    .endm
+
+    @ Starts the specified quest. Orchid: Rotom buzzes on the field instead of PSF's message box.
+    .macro startquest quest:req
+    questmenu QUEST_MENU_SET_ACTIVE, \quest
+    questmenu QUEST_MENU_BUZZ, \quest
+    .endm
+
+    @ Marks the specified quest ready for its reward (counts on the phone's QUESTS badge).
+    .macro rewardquest quest:req
+    questmenu QUEST_MENU_SET_REWARD, \quest
+    questmenu QUEST_MENU_BUZZ, \quest
+    .endm
+
+    @ Completes the specified quest.
+    .macro completequest quest:req
+    questmenu QUEST_MENU_COMPLETE_QUEST, \quest
+    questmenu QUEST_MENU_BUZZ, \quest
+    .endm
+
+    @ Unlocks the specified quest (it shows in the list as New).
+    .macro unlockquest quest:req
+    questmenu QUEST_MENU_UNLOCK_QUEST, \quest
+    questmenu QUEST_MENU_BUZZ, \quest
+    .endm
+
+    .macro goto_if_quest_inactive quest:req, dest:req
+    questmenu QUEST_MENU_CHECK_INACTIVE \quest
+    goto_if_eq VAR_RESULT, TRUE, \dest
+    .endm
+
+    .macro goto_if_quest_active quest:req, dest:req
+    questmenu QUEST_MENU_CHECK_ACTIVE \quest
+    goto_if_eq VAR_RESULT, TRUE, \dest
+    .endm
+
+    .macro goto_if_quest_reward quest:req, dest:req
+    questmenu QUEST_MENU_CHECK_REWARD \quest
+    goto_if_eq VAR_RESULT, TRUE, \dest
+    .endm
+
+    .macro goto_if_quest_complete quest:req, dest:req
+    questmenu QUEST_MENU_CHECK_COMPLETE \quest
+    goto_if_eq VAR_RESULT, TRUE, \dest
+    .endm
+
+    .macro goto_if_quest_not_inactive quest:req, dest:req
+    questmenu QUEST_MENU_CHECK_INACTIVE \quest
+    goto_if_eq VAR_RESULT, FALSE, \dest
+    .endm
+
+    .macro goto_if_quest_not_active quest:req, dest:req
+    questmenu QUEST_MENU_CHECK_ACTIVE \quest
+    goto_if_eq VAR_RESULT, FALSE, \dest
+    .endm
+
+    .macro goto_if_quest_not_reward quest:req, dest:req
+    questmenu QUEST_MENU_CHECK_REWARD \quest
+    goto_if_eq VAR_RESULT, FALSE, \dest
+    .endm
+
+    .macro goto_if_quest_not_complete quest:req, dest:req
+    questmenu QUEST_MENU_CHECK_COMPLETE \quest
+    goto_if_eq VAR_RESULT, FALSE, \dest
+    .endm
+
+    .macro call_if_quest_inactive quest:req, dest:req
+    questmenu QUEST_MENU_CHECK_INACTIVE \quest
+    call_if_eq VAR_RESULT, TRUE, \dest
+    .endm
+
+    .macro call_if_quest_active quest:req, dest:req
+    questmenu QUEST_MENU_CHECK_ACTIVE \quest
+    call_if_eq VAR_RESULT, TRUE, \dest
+    .endm
+
+    .macro call_if_quest_reward quest:req, dest:req
+    questmenu QUEST_MENU_CHECK_REWARD \quest
+    call_if_eq VAR_RESULT, TRUE, \dest
+    .endm
+
+    .macro call_if_quest_complete quest:req, dest:req
+    questmenu QUEST_MENU_CHECK_COMPLETE \quest
+    call_if_eq VAR_RESULT, TRUE, \dest
+    .endm
+
+    .macro call_if_quest_not_inactive quest:req, dest:req
+    questmenu QUEST_MENU_CHECK_INACTIVE \quest
+    call_if_eq VAR_RESULT, FALSE, \dest
+    .endm
+
+    .macro call_if_quest_not_active quest:req, dest:req
+    questmenu QUEST_MENU_CHECK_ACTIVE \quest
+    call_if_eq VAR_RESULT, FALSE, \dest
+    .endm
+
+    .macro call_if_quest_not_reward quest:req, dest:req
+    questmenu QUEST_MENU_CHECK_REWARD \quest
+    call_if_eq VAR_RESULT, FALSE, \dest
+    .endm
+
+    .macro call_if_quest_not_complete quest:req, dest:req
+    questmenu QUEST_MENU_CHECK_COMPLETE \quest
+    call_if_eq VAR_RESULT, FALSE, \dest
+    .endm
+
+    .macro completesubquest quest:req, subquest:req
+    subquestmenu QUEST_MENU_COMPLETE_QUEST, \quest, \subquest
+    questmenu QUEST_MENU_BUZZ, \quest
+    .endm
+
+    .macro goto_if_subquest_complete parent:req,child:req, dest:req
+    subquestmenu QUEST_MENU_CHECK_COMPLETE \parent \child
+    goto_if_eq VAR_RESULT, TRUE, \dest
+    .endm
+
+    .macro call_if_subquest_complete parent:req,child:req, dest:req
+    subquestmenu QUEST_MENU_CHECK_COMPLETE \parent \child
+    call_if_eq VAR_RESULT, TRUE, \dest
+    .endm
+
+    .macro goto_if_subquest_not_complete parent:req,child:req, dest:req
+    subquestmenu QUEST_MENU_CHECK_COMPLETE \parent \child
+    goto_if_eq VAR_RESULT, FALSE, \dest
+    .endm
+
+    .macro call_if_subquest_not_complete parent:req,child:req, dest:req
+    subquestmenu QUEST_MENU_CHECK_COMPLETE \parent \child
+    call_if_eq VAR_RESULT, FALSE, \dest
+    .endm

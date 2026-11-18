@@ -2,6 +2,7 @@
 #include "global.h"
 #include "rotom_phone.h"
 #include "main.h"
+#include "quests.h"
 #include "string_util.h"
 
 void PhoneApp_LaunchCall(void)
@@ -11,7 +12,7 @@ void PhoneApp_LaunchCall(void)
 
 void PhoneApp_LaunchQuests(void)
 {
-    SetMainCallback2(CB2_ReturnToRotomPhone);   // TODO: QUESTS app
+    QuestMenu_Init(0, CB2_ReturnToRotomPhone);
 }
 
 void PhoneApp_LaunchRadio(void)
@@ -26,7 +27,7 @@ u32 PhoneApp_CountContacts(void)
 
 u32 PhoneApp_CountQuestRewards(void)
 {
-    return 0;
+    return Quests_CountInState(FLAG_GET_REWARD);
 }
 
 void PhoneApp_RadioRotomText(u8 *dest)
