@@ -283,28 +283,36 @@ def vanilla_machine():
     return a
 
 
+# The fern + machine share one 15-colour palette slot; the pot's pale grey is one colour too many,
+# so it snaps to the machine's near-identical grey (12 pixels, distance 16 in one channel).
+PLANT_SNAP = {(200, 184, 192): (200, 200, 192)}
+
+
 def vanilla_plant():
-    """The existing potted fern from the vanilla Pokemon Center (metatiles at (1, 0..1) of the
+    """The existing potted fern from the vanilla Pokemon Center (metatiles at (1, 0..2) of the
     untouched PokemonCenter_1F), lifted pixel-for-pixel from its top layer: Gen 3 3/4 view with the
-    pot rim seen from above. Returns (art 16x32, bottom row of the pot)."""
+    pot rim seen from above. Returns (art 16x48, bottom row of the pot)."""
     import vanilla
     e, g, _ = vanilla.layout("LAYOUT_POKEMON_CENTER_1F", ref="upstream/master")
     sc = vanilla.Scene(e["primary_tileset"], e["secondary_tileset"])
-    a = Art(16, 32)
+    a = Art(16, 48)
     bottom = 0
-    for ty in (0, 1):
+    for ty in (0, 1, 2):                    # leaves on the wall rows, pot base on the floor row
         ent, _ = sc._meta(g[ty][1])
         for k in (4, 5, 6, 7):
             en = ent[k]
             tl, hf, vf, pal = en & 0x3FF, (en >> 10) & 1, (en >> 11) & 1, en >> 12
             ts, ti = (sc.p, tl) if tl < 512 else (sc.s, tl - 512)
+            if pal < 6:
+                continue                    # primary-palette tiles here are the vanilla wall trim, not the plant
             tile, q = ts.tile(ti), k & 3
             for y in range(8):
                 for x in range(8):
                     ci = tile[7 - y if vf else y][7 - x if hf else x]
                     if ci:
                         py = ty * 16 + (q >> 1) * 8 + y
-                        a.put((q & 1) * 8 + x, py, sc.pals[pal][ci])
+                        col = sc.pals[pal][ci]
+                        a.put((q & 1) * 8 + x, py, PLANT_SNAP.get(col, col))
                         bottom = max(bottom, py)
     return a, bottom
 
@@ -585,8 +593,8 @@ def build(back_door=False):
     if back_door:
         back_doorway(top, 32)
     else:
-        window(top, 15, 4)
-        scroll(top, 3, 2)
+        window(top, 17, 4)           # x17 keeps its sill (1px wider) out of the fern's 8x8 column
+        scroll(top, 141, 2)          # was x3, now behind the vanilla fern; moved to the old map spot
     crest(top, 115, 5)
     # (the wall region map was removed 2026-11-18: it looked interactive but isn't)
 
