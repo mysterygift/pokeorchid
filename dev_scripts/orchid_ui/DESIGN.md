@@ -59,3 +59,71 @@ Screens: `bag_screen.py` (satchel bag BG). Mockups: `mock_bag.py`, `mock_review.
   pill rows wipe in over 16 frames, then text returns.
 - New assets get new symbols — `menu.png`/`gBagScreen_Gfx` is shared with the Battle
   Pyramid bag and must stay.
+
+## Rotom Phone (replaces the PokéNav) — approved 2026-11-17
+Review page: https://claude.ai/artifact/VMCa72HNxA8greGsRFMW2a · mockups: `mock_phone.py`, `mock_quests.py`.
+
+Home screen
+- Start-menu entry **PHONE** takes POKéNAV's slot (new 16x16 Rotom Phone icon in `menu_icons.py`).
+- Landscape Rotom phone over the BG3 grid; **always Rotom coral** (an object, not a gender-themed panel):
+  bolt fin on top, tail spike below, Rotom-eye notch on the left bezel, diagonal screen glare.
+- Status bar (location, signal, clock), 4 app tiles (32x32, colour field + white pictogram), gold pill
+  around the selected tile + label, Rotom "Bzzt!" line in a bottom strip (normal font, 12px pitch).
+- Apps: **MAP** (v1 = `FieldInitRegionMap`, no zoom), **CALL** (PokéNav Match Call via a new pokenav
+  launch mode that returns to the phone), **QUESTS**, slot 4 = **RADIO** (see below).
+- **Locked apps show a dimmed "?" tile** with a Rotom line; the grid stays 4 wide.
+- Badge on QUESTS = number of quests in REWARD state; Rotom's eye glows/blinks while > 0.
+- Rotom keeps its voice in the bottom strip.
+- Contest Condition / Ribbons are dropped with the PokéNav main menu.
+
+QUESTS app (PSF Unbound Quest Menu, branch `unbound-quest-menu`, reskinned)
+- Bag-style pill rows; selected row = gold palette swap; ★ favourite (Select); steps progress "2/5".
+- State tags are pictograms, never words: ? new (PSF INACTIVE) / ! active / gift reward / ✓ done / padlock locked.
+- Filter tabs under the header, L/R cycle All / New / Active / Reward / Done; Start = hidden A–Z toggle.
+- Header count = completed / **unlocked** quests (don't reveal the total).
+- **Locked quests are hidden** in the list; ?????? only for unreached steps inside a started quest.
+- Tray: sprite in the icon well (item / mon / object), pin location pill, 2 description lines, Ⓐ Steps
+  only on quests with subquests. Steps view: quest name header, segmented progress bar, B = back.
+- Scrollbar hidden when everything fits.
+- **New/updated quests: Rotom buzzes on the field** (phone icon + jingle) instead of PSF's message box.
+- Gift pictogram: keep; redraw at 9x8 if it doesn't read in mGBA.
+- Strings say Quests, not Missions; PSF/Skeli background art is not used.
+
+RADIO app (slot 4) — approved 2026-11-17 · mockups: `mock_radio.py`
+- Teal theme. LCD tuner (frequency, 88–108 scale, station markers, Gen 3 red needle OBJ), station card
+  (region plate + name + tagline), now-playing tray with EQ bars. ←/→ tune (eased needle, crossfade), A on/off, B back.
+- Stations play random songs from a region in the Gen 3 soundfont: TOSA FM 88.4, HOENN FM 91.3, KANTO GOLD 98.1,
+  RADIO UNOVA 105.2, ABSOLUTE GALAR 107.7. **Town/route themes only** (no battle themes).
+- Unlocks: Tosa, Hoenn, Kanto from the start; Unova and Galar unlock through quests.
+- Music priority: battles/fanfares/cutscenes > script music (playbgm / fadenewbgm / savebgm / savedMusic; radio yields
+  until fadedefaultbgm or the next map change with nothing saved) > radio (overrides map, night, surf, bike) > map music.
+- **No signal** on underground and underwater map types: Rotom says "No signal…", map music plays.
+- Rotation: each song plays its loop **twice**, ~1s fade, next from a shuffle bag (no repeats until all played);
+  timer only runs while the radio song is playing; after a battle the next song starts.
+- Field toast top-left (map-popup slot, station colour + station name + song title) when a song starts; queued behind
+  the map-name popup.
+- State = `VAR_RADIO_STATION` (0 = off), no save-block change. Loop lengths generated from MIDI loop markers.
+- No quick toggle outside the phone for now.
+- Hoenn + Kanto songs are already in the ROM; Unova/Galar need MIDI imports (on dev).
+
+CALL app — approved 2026-11-17 · mockups: `mock_call.py`
+- Blue header (app header = the app's tile colour; QUESTS orchid, RADIO teal, MAP green — recommendation, not yet
+  confirmed explicitly).
+- Contact list: pill rows with the contact's OW head (people sheets: head at y 10–26 of the 16x32 frame), name,
+  location; pictogram tags: home (Mom), Poké Ball = rematch, ! = new. Tray: location pill, status, profile.
+- A opens the contact card (replaces PokéNav Call/Check/Cancel): trainer front pic on a dais (OW sprite at 2x for
+  NPCs without one), name, location, profile, red "Wants a rematch!" strip; CALL / BACK buttons, CALL pre-selected.
+- Ringing: round portrait, pulsing rings, "Calling…", B hangs up. Talking: standard Orchid dialogue box, header timer.
+- Match-call data, rematch logic and messages unchanged; field interruptions stay, with a Rotom ringing icon.
+
+MAP (region map) — v2, approved 2026-11-17
+- User's terrain art unchanged; routes as 6px Gen 3 tubes on BG1 (gold visited, grey unvisited, blue sea);
+  towns = disc nodes, landmarks = diamonds (OBJs, grey until visited); cursor = train-map gold ring; player head.
+- **No rail view / no SELECT toggle. No name pill on the map. No "Town/City" type label** — the tray shows only the
+  place name + a rail pictogram if the place has a Tosa Rail station (no Pokémon Center / Mart marks). Fly map = same screen, FLY header, "Ⓐ Fly here".
+- Unvisited places shown greyed (nodes + routes), not hidden. User's Tosa terrain art kept exactly as is.
+
+### Rotom Phone home: news ticker (approved 2026-11-17)
+- The status-bar location text is removed. A newspaper pictogram is followed by a right-to-left scrolling headline strip, clipped at x 49–148 before the signal pips. Gold dots separate the headlines. The clock and signal are unchanged.
+- Headlines come from a table `{ text, minBadges, maxBadges, flag, flagState }`. The eligible pool is built and shuffled once per phone open. The fallback line is "No news today, bzzt!".
+- On hardware the strip is a wide text window on its own BG, scrolled with HOFS at 1px per frame and clipped with WIN0.
