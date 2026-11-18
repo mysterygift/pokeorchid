@@ -1403,6 +1403,36 @@
 #define METATILE_UrbanInterior_Escalator2F_BottomRight_Frame1 0x2AB
 #define METATILE_UrbanInterior_Escalator2F_Tile2_Frame2       0x2AC
 #define METATILE_UrbanInterior_Escalator2F_BottomRight_Frame2 0x2AD
+#define METATILE_UrbanInterior_Concourse_Wall_Upper           0x2B0
+#define METATILE_UrbanInterior_Concourse_Wall_Lower           0x2B1
+#define METATILE_UrbanInterior_Concourse_Floor_A              0x2B2
+#define METATILE_UrbanInterior_Concourse_Floor_B              0x2B3
+#define METATILE_UrbanInterior_Concourse_Guide_V              0x2B4
+#define METATILE_UrbanInterior_Concourse_Guide_H              0x2B5
+#define METATILE_UrbanInterior_Concourse_Guide_Blister        0x2B6
+#define METATILE_UrbanInterior_Concourse_Seat                 0x2B7
+#define METATILE_UrbanInterior_FareGate_Cabinet               0x2B8
+#define METATILE_UrbanInterior_FareGate_Gate                  0x2B9
+#define METATILE_UrbanInterior_FareGate_Fence_H               0x2BA
+#define METATILE_UrbanInterior_Concourse_ExitMat_L            0x2BB
+#define METATILE_UrbanInterior_Concourse_ExitMat_R            0x2BC
+#define METATILE_UrbanInterior_Concourse_Arch_Top_L           0x2BD
+#define METATILE_UrbanInterior_Concourse_Arch_Top_R           0x2BE
+#define METATILE_UrbanInterior_Concourse_Arch_Exit_L          0x2BF
+#define METATILE_UrbanInterior_Concourse_Arch_Exit_R          0x2C0
+#define METATILE_UrbanInterior_Booth_Roof_L                   0x2C1
+#define METATILE_UrbanInterior_Booth_Roof_M                   0x2C2
+#define METATILE_UrbanInterior_Booth_Roof_R                   0x2C3
+#define METATILE_UrbanInterior_Booth_Fascia_L                 0x2C4
+#define METATILE_UrbanInterior_Booth_Fascia_M                 0x2C5
+#define METATILE_UrbanInterior_Booth_Fascia_R                 0x2C6
+#define METATILE_UrbanInterior_Booth_Facade_L                 0x2C7
+#define METATILE_UrbanInterior_Booth_Facade_M                 0x2C8
+#define METATILE_UrbanInterior_Booth_Facade_R                 0x2C9
+#define METATILE_UrbanInterior_Booth_Counter_L                0x2CA
+#define METATILE_UrbanInterior_Booth_Counter_M                0x2CB
+#define METATILE_UrbanInterior_Booth_Counter_R                0x2CC
+#define METATILE_UrbanInterior_StationSign                    0x2CD
 
 // gTileset_VermilionCity
 #define METATILE_VermilionCity_Door        0x29E

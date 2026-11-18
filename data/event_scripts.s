@@ -195,7 +195,6 @@ gStdScripts_End::
 	.include "data/maps/TosaPort_MaysHouse_2F/scripts.inc"
 	.include "data/maps/TosaPort_ProfessorBirchsLab/scripts.inc"
 	.include "data/maps/TelokTown_House1/scripts.inc"
-	.include "data/maps/TrainTestWest/scripts.inc"
 	.include "data/maps/TrainTestEast/scripts.inc"
 	.include "data/maps/TrainTestNorth/scripts.inc"
 	.include "data/maps/HawkerCentreTest/scripts.inc"

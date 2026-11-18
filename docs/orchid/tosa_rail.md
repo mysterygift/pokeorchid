@@ -2,7 +2,18 @@
 
 Code: `src/train_travel.c` (access rules, journey cutscene), `src/train_station_map.c` (station picker),
 `data/scripts/train.inc` (shared script), station table `src/data/train_stations.h`.
-Example maps: `TrainTestWest/East/North` (`data/maps/TrainTestWest/scripts.inc`).
+Stations: `TRAIN_STATION_TOSA_PORT` (platform `TosaPort_BrendansHouse_2F`) plus the test stations
+`TrainTestEast/North` (shared attendant + debug station master in `data/maps/TrainTestEast/scripts.inc`).
+The Tosa Port gatehouse `TosaPort_BrendansHouse_1F` has the paid area at the back left: through the fare
+gates (x 4), then the down escalator (warp (1,4)) to the platform's up escalator (warp (1,7)).
+
+Concourse kit (gTileset_UrbanInterior 0x2B0+, `dev_scripts/station_tileset/concourse.py`): concourse wall,
+granite floor, tactile guide strips, fare gate cabinet + gate (for a north-south gate line) + glass fence
+(east-west run), 3x3 ticket booth (counter = MB_COUNTER), seats, exit mats, north exit arch and the 2-wide
+train `StationSign_L/_R`. The paid side is floored with platform paving because the escalators (stock PC
+escalator ids, so `fldeff_escalator.c` animates them) carry paving under them: paving B on odd rows,
+A on even rows, on a left wall. `export_tileset.py --paint-tosa-port` repaints the gatehouse and the
+Tosa Port platform (overwrites Porymap edits to those two layouts).
 
 ## Macros (`asm/macros/event.inc`)
 
