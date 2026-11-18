@@ -1,0 +1,119 @@
+<title>Orchid Trainer Classes</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Silkscreen&display=swap">
+<style>
+/* Layout: one review column; each class is a sheet with the battle mock left, sprite parts right, notes below. */
+:root {
+  --bg: #eeedf3;
+  --surface: #ffffff;
+  --sprite-bg: #dcdbe6;
+  --ink: #1d1b26;
+  --muted: #5d5a6e;
+  --line: #cfcddb;
+  --accent: #7a3fa0;
+  --accent-soft: #efe4f6;
+  --display: "Silkscreen", "Courier New", monospace;
+  --body: "IBM Plex Sans", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #15141b; --surface: #1f1d28; --sprite-bg: #2c2a38; --ink: #ecebf2; --muted: #a29fb4;
+    --line: #34313f; --accent: #c99be6; --accent-soft: #2e2339; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #15141b; --surface: #1f1d28; --sprite-bg: #2c2a38; --ink: #ecebf2; --muted: #a29fb4;
+  --line: #34313f; --accent: #c99be6; --accent-soft: #2e2339; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font: 15px/1.55 var(--body); }
+.wrap { max-width: 1080px; margin: 0 auto; padding-block: 32px 64px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: grid; gap: 28px; }
+h1, h2, h3 { font-family: var(--display); font-weight: 400; text-wrap: balance; margin: 0; letter-spacing: .02em; }
+h1 { font-size: clamp(26px, 5vw, 38px); }
+h2 { font-size: 22px; margin-top: 12px; }
+h3 { font-size: 17px; }
+p { margin: 0; max-width: 68ch; }
+.lede { display: grid; gap: 10px; }
+.lede p { color: var(--muted); }
+.tag { display: inline-block; font: 500 12px var(--mono); color: var(--accent); background: var(--accent-soft);
+  padding: 2px 8px; border-radius: 4px; letter-spacing: .04em; }
+.px { width: calc(var(--w) * var(--s, 2)); max-width: 100%; image-rendering: pixelated; display: block; }
+.pxg { image-rendering: pixelated; display: block; max-width: 100%; }
+figure { margin: 0; display: grid; gap: 6px; justify-items: start; }
+figcaption { font: 12px var(--mono); color: var(--muted); }
+.strip { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 18px; display: grid; gap: 16px; }
+.strip .scroll { overflow-x: auto; background: var(--sprite-bg); border-radius: 6px; padding: 12px; }
+.strip .lf .px { --s: 2; }
+.strip .lo .px { --s: 3; }
+.cards { display: grid; gap: 22px; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 18px; display: grid; gap: 14px; scroll-margin-top: 16px; }
+.card header { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.card .id { font: 12px var(--mono); color: var(--muted); }
+.cols { display: flex; gap: 20px; flex-wrap: wrap; align-items: flex-start; }
+.battle .px { --s: 2; border-radius: 4px; }
+.battle.sm .px { --s: 1.5; }
+.side { display: grid; gap: 14px; background: var(--sprite-bg); border-radius: 6px; padding: 14px; min-width: 0; }
+.front .px { --s: 3; }
+.ow .px { --s: 4; }
+.pair { display: flex; gap: 16px; flex-wrap: wrap; background: var(--sprite-bg); border-radius: 6px; padding: 14px; align-items: flex-end; }
+.pair .px { --s: 3; }
+.notes { font-size: 14px; color: var(--ink); display: grid; gap: 6px; min-width: 0; max-width: 80ch; }
+.notes ul { margin: 0; padding-left: 20px; display: grid; gap: 3px; }
+code { font: 13px var(--mono); background: var(--accent-soft); padding: 0 4px; border-radius: 3px; }
+.missing { opacity: .6; }
+.land { font: 500 12px var(--mono); padding: 2px 8px; border-radius: 4px; letter-spacing: .03em; border: 1px solid var(--line); color: var(--muted); }
+.land.new { color: var(--accent); background: var(--accent-soft); border-color: transparent; }
+.why { font-size: 13px; color: var(--muted); }
+td:last-child { white-space: nowrap; font: 13px var(--mono); }
+.toc { display: flex; flex-wrap: wrap; gap: 6px 14px; font: 13px var(--mono); }
+.toc a { color: var(--accent); text-decoration: none; }
+.toc a:hover, .toc a:focus-visible { text-decoration: underline; }
+table { border-collapse: collapse; width: 100%; font-size: 14px; }
+.tbl { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; }
+th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font: 500 12px var(--mono); color: var(--muted); letter-spacing: .04em; text-transform: uppercase; }
+tr:last-child td { border-bottom: 0; }
+td:first-child { white-space: nowrap; font-weight: 600; }
+ol.q { margin: 0; padding-left: 22px; display: grid; gap: 8px; max-width: 80ch; }
+@media (max-width: 560px) { .battle .px { --s: 1.4; } }
+</style>
+
+<div class="wrap">
+  <section class="lede">
+    <span class="tag">ROUND 1 · DESIGN REVIEW · NOT IN ROM YET</span>
+    <h1>Orchid Trainer Classes</h1>
+    {{INTRO}}
+  </section>
+
+  <section class="strip">
+    <h2>Line-up</h2>
+    <figure class="lf"><div class="scroll">{{LINEUP_FRONTS}}</div><figcaption>All new front pics, 2×</figcaption></figure>
+    <figure class="lo"><div class="scroll">{{LINEUP_OW}}</div><figcaption>Overworld scale check, 3×: player + vanilla Youngster, Lass, Man, Woman, then the new NPCs</figcaption></figure>
+  </section>
+
+  <section class="cards">
+    <h2>New classes</h2>
+    {{TOC}}
+    {{CLASSES}}
+  </section>
+
+  <section class="cards">
+    <h2>Edits to existing classes (mocked)</h2>
+    <p>Small changes that keep the vanilla sprite recognisable but move it to Tosa.</p>
+    {{EDITS}}
+  </section>
+
+  <section class="cards">
+    <h2>More edit ideas (not mocked)</h2>
+    {{SUGGESTIONS}}
+  </section>
+
+  <section class="cards">
+    <h2>Open questions</h2>
+    {{QUESTIONS}}
+  </section>
+</div>
