@@ -26,6 +26,7 @@ WALL = palette(
     r2=(224, 72, 64), r3=(176, 40, 48), p=(248, 184, 176),
     j1=(152, 224, 192), j2=(72, 168, 136), j3=(40, 112, 96),
     y=(248, 224, 136), b1=(168, 112, 72), b2=(112, 72, 56), s=(168, 224, 248),
+    L=(208, 152, 104),                                                   # lit wood top (cabinet)
 )
 FURN = palette(
     K=INK, W=(248, 248, 248), l=(224, 228, 236), m=(184, 192, 208), d=(136, 144, 168),
@@ -192,11 +193,13 @@ def region_map(t, x0, y0):
 
 
 CABINET = """
-.KKK..KKK..KKK..
-.KWK..KjK..KrK..
-.KWK..KjK..KrK..
-KKKKKKKKKKKKKKKK
-KBBBBBBBBBBBBBBK
+..KKK.KKK.KKK...
+..KWK.KjK.KrK...
+KKKWKKKjKKKrKKKK
+KLKWKLKjKLKrKLbK
+KLKKKLKKKLKKKLbK
+KLLLLLLLLLLLLLbK
+KLLLLLLLLLLLLbbK
 KbbbbbbbbbbbbbbK
 KBBBKBBBBKBBBBbK
 KByBKBByBKBByBbK
@@ -210,8 +213,7 @@ KBBBKBBBBKBBBBbK
 KByBKBByBKBByBbK
 KBBBKBBBBKBBBBbK
 KbbbbbbbbbbbbbbK
-KBBBBBBBBBBBBBBK
-KBBBBBByyBBBBBBK
+KBBBBBByyBBBBBbK
 KBBBBBBBBBBBBBbK
 KbbbbbbbbbbbbbbK
 KKKKKKKKKKKKKKKK
@@ -219,9 +221,11 @@ KKKKKKKKKKKKKKKK
 
 
 def cabinet(t, x0, ybot):
-    """Medicine-hall drawer cabinet with jars on top."""
+    """Medicine-hall drawer cabinet, Gen 3 3/4 view: lit wood top with jars standing on it, a dark
+    front lip, then three rows of drawers and a plinth (16x24; the jars overlap the wall rail)."""
     c = WALL
-    leg = {"K": c["K"], "B": c["b1"], "b": c["b2"], "y": c["y"], "W": c["W"], "j": c["j2"], "r": c["r2"]}
+    leg = {"K": c["K"], "B": c["b1"], "b": c["b2"], "y": c["y"], "W": c["W"], "j": c["j2"], "r": c["r2"],
+           "L": c["L"]}
     rows = [r for r in CABINET.split("\n") if r.strip()]
     t.stamp(leg, CABINET, x0, ybot - len(rows) + 1)
 
