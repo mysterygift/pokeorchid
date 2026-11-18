@@ -127,3 +127,21 @@ MAP (region map) — v2, approved 2026-11-17
 - The status-bar location text is removed. A newspaper pictogram is followed by a right-to-left scrolling headline strip, clipped at x 49–148 before the signal pips. Gold dots separate the headlines. The clock and signal are unchanged.
 - Headlines come from a table `{ text, minBadges, maxBadges, flag, flagState }`. The eligible pool is built and shuffled once per phone open. The fallback line is "No news today, bzzt!".
 - On hardware the strip is a wide text window on its own BG, scrolled with HOFS at 1px per frame and clipped with WIN0.
+
+### Rotom Phone: implementation (2026-11-18, branch rotom-phone-impl)
+- **Offline state (user request 2026-11-18):** until `FLAG_SYS_PHONE_ACTIVE` (was unused system flag 0x863) is set,
+  the phone opens to an X-eyed Rotom face with empty signal bars and the clock only (no ticker, apps or strip).
+  Mock: `mock_phone.py` 06_offline.png. Set the flag from the story script that switches the phone on.
+- Home: `src/rotom_phone.c` (export_phone.py). The gold pill is an OBJ under the app tiles rather than a BG2 palette
+  swap (the glare band crosses the slots, which would need more than 16 colours); it looks the same.
+- CALL: `src/rotom_phone_call.c` is a standalone kit screen over the unchanged match-call data/logic (not a PokéNav
+  mode). Contact heads come from a trainer-pic → overworld-sprite table (no data links trainers to OW sprites).
+  No "new message" tag yet (there is no save data for it). Field calls show a buzzing Rotom Phone icon.
+- QUESTS: `src/quests.c` (PSF port: data, save bits, script commands 0xe8-0xea, macros) + `src/rotom_phone_quests.c`.
+  `startquest` / `rewardquest` / `completequest` / `unlockquest` / `completesubquest` buzz Rotom on the field.
+  Quest content is placeholder (mockup samples + numbered quests) until real quests are written on dev.
+- RADIO: `src/radio.c` + `src/rotom_phone_radio.c`; song lengths from `dev_scripts/radio/song_lengths.py`.
+  Unova / Galar are stubbed (no songs, locked).
+- MAP v2: `export_map_v2.py` + `RegionMap_LoadOrchidMapV2` in region_map.c. Placeholder places have no visited
+  flags yet, so they stay grey. The Fly map cursor still moves freely (A only works on places you can fly to).
+- PokéNav Condition / Ribbons retired behind `ORCHID_RETIRE_POKENAV_CONDITION_RIBBONS` (include/config/general.h).
