@@ -140,8 +140,9 @@ CW, CH = 14, 10
 C_COUNTER = {(x, 3) for x in range(4, 10)} | {(x, 3) for x in range(11, 14)}
 C_BLOCK = ({(x, y) for x in range(14) for y in (0, 1)} | C_COUNTER
            | {(0, 2), (3, 2), (4, 2), (5, 2), (6, 2), (9, 2), (10, 2), (11, 2), (13, 2)}
-           | {(11, 4), (13, 4), (1, 6), (2, 6), (3, 6), (10, 7), (11, 7), (12, 7), (13, 9)})
-C_OVER = {(1, 5), (2, 5), (3, 5), (13, 8)}     # tops of the bench, orchid and palm: drawn over the player
+           | {(11, 4), (13, 4), (1, 6), (2, 6), (3, 6), (10, 7), (11, 7), (12, 7), (13, 9)}
+           | {(1, 5), (2, 5), (3, 5), (13, 8)})   # bench back, orchid, plant top: solid, so nobody stands "inside" them
+C_OVER = set()                                 # nothing walkable is drawn over the player
 C_MATS = {(6, 9), (7, 9)}
 C_KEEP_FREE = {(7, 4), (10, 3), (12, 4), (6, 8), (7, 8)} | C_MATS
 C_BEHIND_COUNTER = {(7, 2), (8, 2), (12, 2)}   # staff only
