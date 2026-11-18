@@ -1091,6 +1091,9 @@ static void OrchidShop_DrawMessageFrame(void)
             map[(OSHOP_MSG_FRAME_TOP + r) * 32 + c] = e ? ((e & 0xC00) | ((e & 0x3FF) + OSHOP_MSG_FRAME_BASE) | (OSHOP_WINDOW_PAL << 12)) : 0;
         }
     }
+    // the std routine turns the window's last column into message-box frame art (DrawDialogueFrameRightEdge);
+    // this window is narrower and keeps its own cells
+    PutWindowTilemap(WIN_MESSAGE);
 }
 
 static const u8 sOrchidShopMessageColors[3] = {TEXT_COLOR_WHITE, TEXT_COLOR_DARK_GRAY, TEXT_COLOR_LIGHT_GRAY};
