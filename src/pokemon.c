@@ -5163,7 +5163,7 @@ u16 GetBattleBGM(void)
             if (GetCurrentRegion() == REGION_KANTO)
                 return MUS_RG_VS_TRAINER;
             else
-                return MUS_VS_TRAINER;
+                return MUS_ORCHID_VS_TRAINER;
         }
     }
     else
