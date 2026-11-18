@@ -2,7 +2,7 @@
 Export the Orchid Trainer Card (approved, mock_card.py / card_ext.py) to game assets.
 Every piece is drawn with the mockup's own code, so ROM art == mock art.
 
-BG layout (src/trainer_card.c, Orchid path = the player's own card outside the Union Room):
+BG layout (src/trainer_card.c, Orchid path = every card except FRLG-format link cards):
   BG0  card art: shell, header tab + star pips, ID pill, nameplate, icon pills, dais,
        badge case + sockets / back rows + signature well          charblock 0   prio 2
   BG1  one text window over the card (card palette)                charblock 2   prio 0
@@ -11,8 +11,9 @@ BG layout (src/trainer_card.c, Orchid path = the player's own card outside the U
 The flip writes the same per-scanline VOFS to BG0, BG1 and BG3, so the whole card folds.
 
 The BG0 tilemaps are composed at runtime from:
-  * a full front map (with / without the POKéDEX row) and a full back map (no stat rows),
-    all drawn with 0 stars and no badges,
+  * a full front map (with / without the POKéDEX row), the same for the link / Union Room
+    front (signature well with the profile phrase + badge-count pill, mock_card_extras.py B)
+    and a full back map (no stat rows), all drawn with 0 stars and no badges,
   * the header pip patch for 0-4 stars (same cells on both sides),
   * one "earned" patch per badge socket (the inner shadow ring goes away),
   * one 2-tile-row strip per back-row icon, placed at row slot k (tile rows 4 + 2k, 5 + 2k).
@@ -40,10 +41,11 @@ HEADER = os.path.join(ROOT, "src", "data", "trainer_card_orchid.h")
 COLS, ROWS = 30, 20
 
 # back-row icon strips, in the order trainer_card.c uses them (ORCHID_CARD_ROW_*)
-ROW_ICONS = ["hof", "link", "trade", "union", "berry", "contest"]
+ROW_ICONS = ["hof", "link", "trade", "union", "berry", "contest", "block", "bp"]
 ROW_KEYS = {"hof": ("hof", (31, 9, 46)), "link": ("link", (12, 5)), "trade": ("trades", 8),
-            "union": ("union", 23), "berry": ("berry", 1250), "contest": ("contests", 3)}
-NO_ROWS = dict(hof=None, link=None, trades=0, union=0, berry=0, contests=0)
+            "union": ("union", 23), "berry": ("berry", 1250), "contest": ("contests", 3),
+            "block": ("blocks", 14), "bp": ("bp", 120)}
+NO_ROWS = dict(hof=None, link=None, trades=0, union=0, berry=0, contests=0, blocks=0, bp=0)
 
 # BG3: trainer pic window (tiles) - covers the pic of either gender (asserted below)
 PIC_WIN = (18, 2, 9, 10)          # left, top, w, h
@@ -106,6 +108,12 @@ def front(**kw):
     return im
 
 
+def link_front(**kw):
+    im = C.card_sheet(M.W, M.H)
+    M.draw_link_front_art(Canvas(im), dict(M.HERO, **dict(dict(stars=0, badges=0), **kw)))
+    return im
+
+
 def back(**kw):
     im = C.card_sheet(M.W, M.H)
     M.draw_back_art(Canvas(im), dict(M.HERO, **dict(NO_ROWS, **dict(dict(stars=0), **kw))))
@@ -136,6 +144,8 @@ def export_bg0():
     T = Tiler()
     f_dex = T.tilemap(front(has_dex=True))
     f_nodex = T.tilemap(front(has_dex=False))
+    l_dex = T.tilemap(link_front(has_dex=True))
+    l_nodex = T.tilemap(link_front(has_dex=False))
     b_base = T.tilemap(back())
 
     # star pips (header): one rect, an entry set per star count, identical on the back
@@ -148,7 +158,9 @@ def export_bg0():
     for s in range(5):
         bm = T.tilemap(back(stars=s))
         nd = T.tilemap(front(has_dex=False, stars=s))
-        for other, base in ((bm, b_base), (nd, f_nodex)):
+        ld = T.tilemap(link_front(has_dex=True, stars=s))
+        lnd = T.tilemap(link_front(has_dex=False, stars=s))
+        for other, base in ((bm, b_base), (nd, f_nodex), (ld, l_dex), (lnd, l_nodex)):
             for i in diff_cells(other, base):
                 assert in_rect(i, pip_rect), "star change outside the pip rect"
             assert rect_entries(other, pip_rect) == rect_entries(star_maps[s], pip_rect)
@@ -184,10 +196,14 @@ def export_bg0():
         for i in diff_cells(tm, b_base):
             assert row0 <= i // COLS < row0 + 2, "row %s spills outside its strip" % ic
         strips.append([[tm[(row0 + j) * COLS + c] for c in range(COLS)] for j in range(2)])
-    champ = T.tilemap(back(**{k: v for k, v in ROW_KEYS.values()}))
-    for k, ic in enumerate(ROW_ICONS):
-        for j in range(2):
-            assert [champ[(row0 + 2 * k + j) * COLS + c] for c in range(COLS)] == strips[k][j], "slot %d" % k
+    # every icon in every slot it can reach (6 visible rows out of len(ROW_ICONS))
+    for first in range(len(ROW_ICONS) - 5):
+        six = ROW_ICONS[first:first + 6]
+        full = T.tilemap(back(**dict(ROW_KEYS[ic] for ic in six)))
+        for k, ic in enumerate(six):
+            for j in range(2):
+                assert [full[(row0 + 2 * k + j) * COLS + c] for c in range(COLS)] == strips[ROW_ICONS.index(ic)][j], \
+                    "%s in slot %d" % (ic, k)
     # 6 rows end above the signature well
     assert row0 + 12 <= M.SIG[1] // 8
 
@@ -199,7 +215,7 @@ def export_bg0():
             T.tiles.append(tuple(g[tx * 8 + x, ty * 8 + y] for y in range(8) for x in range(8)))
     assert len(T.tiles) <= 512, "BG0 + grid must fit charblock 0"
     save_indexed(T.tiles, os.path.join(OUT, "tiles.png"), C.card_palette("male", 0))
-    return dict(f_dex=f_dex, f_nodex=f_nodex, back=b_base, pip_rect=pip_rect, pips=pips,
+    return dict(f_dex=f_dex, f_nodex=f_nodex, l_dex=l_dex, l_nodex=l_nodex, back=b_base, pip_rect=pip_rect, pips=pips,
                 sockets=sockets, row0=row0, strips=strips, n_art=n_art, grid_base=grid_base,
                 n_tiles=len(T.tiles))
 
@@ -324,9 +340,17 @@ def write_header(bg, badges, n_badge_tiles, pics):
     A("#define OCARD_BACK_MAX_ROWS   6")
     A("#define OCARD_SIG_NAME_X      %d" % (M.SIG[0] + 26 - ox))
     A("#define OCARD_SIG_NAME_Y      %d" % (M.SIG[1] - 1 - oy))
+    A("// link / Union Room front: profile phrase (2 lines of 2 words) and the badge-count pill")
+    A("#define OCARD_PHRASE_X        %d" % (M.PHRASE_X - ox))
+    A("#define OCARD_PHRASE_GAP      %d   // second word starts at x + width(first) + gap" % M.PHRASE_GAP)
+    A("static const u8 sOrchidCardPhraseY[2] = {%s};" % ", ".join(str(v - oy) for v in M.PHRASE_Y))
+    A("#define OCARD_LINK_BADGES_X   %d   // value area of the pill (after the cap)" % (M.LINK_PILL[0] + M.LINK_PILL_CAP - ox))
+    A("#define OCARD_LINK_BADGES_W   %d   // count centred in it" % (M.LINK_PILL_W - M.LINK_PILL_CAP))
+    A("#define OCARD_LINK_BADGES_Y   %d" % (M.LINK_PILL[1] - 1 - oy))
     A("")
     A("// BG0 full maps (30x20), 0 stars, no badges")
     for name, tm in (("sOrchidCardFrontDex", bg["f_dex"]), ("sOrchidCardFrontNoDex", bg["f_nodex"]),
+                     ("sOrchidCardLinkFrontDex", bg["l_dex"]), ("sOrchidCardLinkFrontNoDex", bg["l_nodex"]),
                      ("sOrchidCardBack", bg["back"])):
         A("static const u16 %s[20 * 30] = {" % name)
         for r in range(ROWS):
