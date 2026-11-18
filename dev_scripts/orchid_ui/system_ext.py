@@ -180,6 +180,8 @@ _ICON_SHEET = os.path.join(K.ROOT, "graphics", "start_menu", "menu_icons.png")
 
 def menu_icon(name, muted=0.0):
     """16x16 start-menu icon (real asset if present, else built from menu_icons.py)."""
+    if name == "POKéNAV":          # retired; the Rotom Phone took its slot
+        name = "PHONE"
     k = MI.NAMES.index(name)
     if os.path.exists(_ICON_SHEET):
         im = Image.open(_ICON_SHEET).crop((0, k * 16, 16, k * 16 + 16))

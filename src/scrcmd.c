@@ -48,6 +48,7 @@
 #include "rotating_tile_puzzle.h"
 #include "rtc.h"
 #include "script.h"
+#include "radio.h"
 #include "script_menu.h"
 #include "script_movement.h"
 #include "script_pokemon_util.h"
@@ -1205,6 +1206,7 @@ bool8 ScrCmd_playbgm(struct ScriptContext *ctx)
 
     if (save == TRUE)
         Overworld_SetSavedMusic(songId);
+    Radio_YieldToScript();
     PlayNewMapMusic(songId);
     return FALSE;
 }
@@ -1214,6 +1216,7 @@ bool8 ScrCmd_savebgm(struct ScriptContext *ctx)
     Script_RequestEffects(SCREFF_V1 | SCREFF_SAVE);
 
     Overworld_SetSavedMusic(ScriptReadHalfword(ctx));
+    Radio_YieldToScript();
     return FALSE;
 }
 
@@ -1221,6 +1224,7 @@ bool8 ScrCmd_fadedefaultbgm(struct ScriptContext *ctx)
 {
     Script_RequestEffects(SCREFF_V1 | SCREFF_HARDWARE);
 
+    Radio_ScriptDone();
     Overworld_ChangeMusicToDefault();
     return FALSE;
 }
@@ -1229,6 +1233,7 @@ bool8 ScrCmd_fadenewbgm(struct ScriptContext *ctx)
 {
     Script_RequestEffects(SCREFF_V1 | SCREFF_SAVE | SCREFF_HARDWARE);
 
+    Radio_YieldToScript();
     Overworld_ChangeMusicTo(ScriptReadHalfword(ctx));
     return FALSE;
 }

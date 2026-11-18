@@ -1,0 +1,134 @@
+"""
+Export the Rotom Phone RADIO app (mock_radio.py, approved 2026-11-17) to game assets.
+
+Static BG2 art from the mock's drawing code; per-station parts (frequency, names, marker dots, region
+plate colour, EQ bars, switch) are drawn at runtime in src/rotom_phone_radio.c. Three palettes:
+  pal 0  kit teal (header, card, tray)
+  pal 1  LCD tuner (screen darks, scale greys, LCD greens; index 13 = selected station's marker colour)
+  pal 3  kit teal with the ACCENT roles = the station's ramp (region plate, EQ, note) - set at runtime
+  pal 2  grid
+Writes graphics/rotom_phone/radio_bg.png / radio_bg.bin / radio_bg.pal, radio_needle.png (OBJ 8x32),
+src/data/rotom_phone_radio_layout.h
+"""
+import os
+import sys
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, HERE)
+from PIL import Image
+import kit
+from kit import *
+import dex_ext as D
+import system_ext as X
+from backdrop import GRID_PAL, grid_tile_image
+from gamefont import draw_text, text_width
+import mock_radio as MR
+
+ROOT = os.path.abspath(os.path.join(HERE, "..", ".."))
+P = lambda *p: os.path.join(ROOT, *p)
+OUT = P("graphics", "rotom_phone")
+W, H = 240, 160
+TEAL = kit.palette("teal")
+
+# LCD palette (pal 1)
+LCD_PAL = [(0, 0, 0), MR.SCR, MR.SCR_GLARE, MR.SCR_DEEP, (40, 40, 64), (88, 96, 112), (120, 128, 144),
+           MR.LCD, (88, 160, 128), (88, 96, 104), (72, 80, 88), (248, 248, 248), (120, 120, 136), (64, 128, 200)]
+L_SCR, L_GLARE, L_DEEP, L_INK, L_TICK, L_LABEL = 1, 2, 3, 4, 5, 6
+LCD_ROWS = range(2, 10)               # tile rows 2-9 (y 16-79) use pal 1
+PLATE = (range(1, 7), range(10, 14))   # tile cols 1-6, rows 10-13 use pal 3
+
+
+def pad16(p):
+    return [snap(c) for c in p] + [(0, 0, 0)] * (16 - len(p))
+
+
+def save(im, path, pal):
+    flat = [c for rgb in pad16(pal) for c in rgb]
+    out = im.copy()
+    out.putpalette(flat + [0] * (768 - len(flat)))
+    out.save(path, transparency=0)
+
+
+def kit_art():
+    im = kit.new_sheet(W, H, "teal")
+    cv = Canvas(im)
+    D.header_band(cv, 0, 239, round_left=False)
+    rounded_box(cv, 4, 2, 14, 12, 3, ACCENT_LIGHT, INK, WHITE, ACCENT)
+    stamp(cv, 7, 4, ["....X.", "...X..", "XXXXXX", "X.X.XX", "XX.XXX", "XXXXXX", "X....X"], {"X": ACCENT_DARK})
+    # station card + region plate (plate face drawn in the accent roles; pal 3 recolours it per station)
+    rounded_box(cv, 4, 82, 232, 30, 4, PANEL, INK, WHITE, PANEL_SHADE)
+    rounded_box(cv, 8, 86, 48, 22, 3, ACCENT, INK, ACCENT_LIGHT, ACCENT_DARK)
+    # now-playing tray
+    D.tray(cv, 116)
+    disc(cv, 20, 139, 16, PANEL_SHADE, None)
+    disc(cv, 20, 139, 15, WHITE, INK)
+    disc(cv, 20.5, 139.5, 13, PANEL, None)
+    cv.vline(40, 122, 154, PANEL_SHADE)
+    cv.vline(41, 122, 154, WHITE)
+    return im
+
+
+def lcd_art():
+    im = Image.new("P", (W, H), 0)
+    cv = Canvas(im)
+    rounded_box(cv, 4, 20, 232, 58, 4, L_SCR, L_INK, L_GLARE, L_DEEP)
+    for k in range(0, 42):
+        fr = MR.F_MIN + k * 0.5
+        x = MR.fx(fr)
+        tall = abs(fr - round(fr)) < 0.01 and int(round(fr)) % 4 == 0
+        cv.vline(x, 60 - (6 if tall else 3), 60, L_TICK)
+    cv.hline(10, 229, 61, L_TICK)
+    for fr in (88, 92, 96, 100, 104, 108):
+        lab = str(fr)
+        draw_text(cv, MR.fx(fr) - text_width(lab, "small") // 2, 61, lab, L_LABEL, None, font="small")
+    return im
+
+
+def export_bg():
+    k, l = kit_art(), lcd_art()
+    # one combined index image: LCD rows from the LCD art, the rest from the kit art
+    comb = k.copy()
+    cp, lp = comb.load(), l.load()
+    for ty in LCD_ROWS:
+        for y in range(ty * 8, ty * 8 + 8):
+            for x in range(W):
+                cp[x, y] = lp[x, y]
+    tiles, tm = to_tiles(comb)
+    n = len(tiles)
+    g = grid_tile_image().load()
+    for ty in range(2):
+        for tx in range(2):
+            tiles.append(tuple(g[tx * 8 + x, ty * 8 + y] for y in range(8) for x in range(8)))
+    save(tiles_to_image(tiles, k), os.path.join(OUT, "radio_bg.png"), TEAL)
+    cells = [None] * (32 * 32)
+    for i, item in enumerate(tm):
+        cy, cx = divmod(i, 30)
+        if not item[0]:
+            continue
+        pal = 1 if cy in LCD_ROWS else (3 if (cx in PLATE[0] and cy in PLATE[1]) else 0)
+        cells[cy * 32 + cx] = item + (pal,)
+    write_tilemap(os.path.join(OUT, "radio_bg.bin"), cells)
+    write_jasc(os.path.join(OUT, "radio_bg.pal"), pad16(TEAL) + pad16(LCD_PAL) + pad16(GRID_PAL) + pad16(TEAL))
+    # needle OBJ: mock rect (nx-1..nx+2, 38..40) + 2px shaft to y 63; sprite x = nx - 3, y = 32
+    im = Image.new("P", (8, 32), 0)
+    cv = Canvas(im)
+    nx = 3
+    cv.vline(nx, 40 - 32, 63 - 32, 1)
+    cv.vline(nx + 1, 40 - 32, 63 - 32, 2)
+    cv.rect(nx - 1, 38 - 32, nx + 2, 40 - 32, 1)
+    save(im, os.path.join(OUT, "radio_needle.png"), [(0, 0, 0), MR.NEEDLE[0], MR.NEEDLE[1]])
+    return n
+
+
+def main():
+    os.makedirs(OUT, exist_ok=True)
+    n = export_bg()
+    with open(P("src", "data", "rotom_phone_radio_layout.h"), "w") as f:
+        f.write("// Generated by dev_scripts/orchid_ui/export_radio.py - do not edit.\n")
+        f.write("#define RADIO_BG_TILES %d   // grid tiles (2x2) follow\n" % n)
+        f.write("#define RADIO_FX(tenths) (14 + (((tenths) - 875) * 422 + 205) / 410)   // mock_radio.fx (rounded)\n")
+    print("radio tiles", n)
+
+
+if __name__ == "__main__":
+    main()

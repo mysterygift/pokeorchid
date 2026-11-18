@@ -87,4 +87,8 @@
 // Naming Screen
 #define AUTO_LOWERCASE_KEYBOARD      GEN_LATEST  // Starting in GEN_6, after entering the first uppercase character, the keyboard switches to lowercase letters.
 
+// Orchid: the Rotom Phone (src/rotom_phone.c) replaced the PokéNav. With this on, the PokéNav main menu
+// (no longer opened from anywhere) drops its Condition and Ribbons entries. Set FALSE to bring them back.
+#define ORCHID_RETIRE_POKENAV_CONDITION_RIBBONS TRUE
+
 #endif // GUARD_CONFIG_GENERAL_H
