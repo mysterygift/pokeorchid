@@ -33,6 +33,7 @@ FallarborTown_PokemonCenter_1F_EventScript_Lanette::
 	switch VAR_FACING
 	case DIR_NORTH, FallarborTown_PokemonCenter_1F_EventScript_LanetteExitNorth
 	case DIR_WEST, FallarborTown_PokemonCenter_1F_EventScript_LanetteExitWest
+	case DIR_EAST, FallarborTown_PokemonCenter_1F_EventScript_LanetteExitWest
 	end
 
 FallarborTown_PokemonCenter_1F_EventScript_LanetteExitNorth::
@@ -54,30 +55,27 @@ FallarborTown_PokemonCenter_1F_EventScript_LanetteExited::
 	release
 	end
 
+@ Orchid Centre: Lanette stands at the counter (9,4), the exit mats are at (6,9)/(7,9).
+@ Player below her (facing north): sidestep left, then down to the mat.
 FallarborTown_PokemonCenter_1F_Movement_LanetteExitNorth:
-	walk_right
-	walk_down
-	walk_down
-	walk_left
-	walk_left
-	walk_left
 	walk_left
 	walk_down
 	walk_down
 	walk_down
+	walk_down
+	walk_left
 	walk_down
 	delay_8
 	step_end
 
+@ Player beside her (facing west or east): straight down, then left to the mat.
 FallarborTown_PokemonCenter_1F_Movement_LanetteExitWest:
 	walk_down
 	walk_down
-	walk_left
-	walk_left
-	walk_left
 	walk_down
 	walk_down
-	walk_down
+	walk_left
+	walk_left
 	walk_down
 	delay_8
 	step_end

@@ -31,8 +31,8 @@
     },
     {
       "graphics_id": "OBJ_EVENT_GFX_GENTLEMAN",
-      "x": 12,
-      "y": 5,
+      "x": 9,
+      "y": 6,
       "elevation": 3,
       "movement_type": "MOVEMENT_TYPE_WANDER_AROUND",
       "movement_range_x": 1,
