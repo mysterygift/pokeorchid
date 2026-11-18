@@ -26,15 +26,14 @@ def std_frame_tiles(theme="orchid"):
 
 
 def dialogue_box(cv, tx, ty, tw, th, fill=WHITE):
-    """Speech box: chunkier rounded panel with accent end-caps (Gen 3 message box shape)."""
+    """Speech box: chunkier rounded panel with an accent bar on the left (Gen 3 message box shape).
+    The user dropped the right-hand bar (2026-11-18): only the left accent bar is drawn."""
     # Gen 3 dialogue frames take 2 tiles on the left and 1 on the right
     x0, y0 = tx * 8 - 16, ty * 8 - 8
     w, h = tw * 8 + 24, th * 8 + 16
     rounded_box(cv, x0 + 2, y0 + 2, w - 4, h - 4, 4, fill, INK, WHITE, PANEL_SHADE)
-    # accent end-caps
-    for side in (0, 1):
-        cx = x0 + 5 if side == 0 else x0 + w - 9
-        rounded_box(cv, cx, y0 + 6, 6 if side == 0 else 4, h - 12, 2 if side == 0 else 1, ACCENT, INK, ACCENT_LIGHT, ACCENT_DARK)
+    # left accent bar
+    rounded_box(cv, x0 + 5, y0 + 6, 6, h - 12, 2, ACCENT, INK, ACCENT_LIGHT, ACCENT_DARK)
     # inner hairline
     cv.hline(x0 + 12, x0 + w - 13, y0 + h - 5, PANEL_SHADE)
 
