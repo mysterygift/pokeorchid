@@ -4,7 +4,7 @@
   "layout": "LAYOUT_MOSSDEEP_CITY_STEVENS_HOUSE",
   "music": "MUS_RUSTBORO",
   "region": "REGION_HOENN",
-  "region_map_section": "MAPSEC_MOSSDEEP_CITY",
+  "region_map_section": "MAPSEC_MOONGROVE_CITY",
   "requires_flash": false,
   "weather": "WEATHER_NONE",
   "map_type": "MAP_TYPE_INDOOR",

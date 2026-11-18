@@ -1,5 +1,7 @@
 """
-Tosa region map: ROM art + map data from the USER's art (dev_scripts/orchid_ui/ref/tosa_*.png).
+Tosa region map: ROM art + map data from the USER's art (dev_scripts/orchid_ui/ref/tosa_*.png) and
+the region map tagger (dev_scripts/region_map_tagger/tags.json, read by region_tags.py), which decides
+every section's cells, id, name and kind.
 
 The three 240x160 sources are rotated 180 deg (user request) before anything else. Square numbers
 (from tosa_towns.png, numbered top-to-bottom / left-to-right on the ORIGINAL image) are kept, so
@@ -10,9 +12,13 @@ Writes:
   graphics/pokenav/region_map/map.png / map.pal / map.bin   Town Map, Fly map, PokeNav (affine,
         8bpp, 64x64-byte map, <= 256 tiles, no flips); pixel values 112+ (BG palettes 7-9)
   graphics/pokedex/region_map.png / .pal / .bin             dex AREA copy (text 8bpp, 32x32)
-  src/data/region_map/region_map_layout.h                   cursor grid (Tosa sections only)
-  src/data/region_map/region_map_sections.json               Tosa cells, placeholders, Hoenn off-grid
-  dev_scripts/orchid_ui/ref/tosa_places.md                   placeholder table for renaming
+  src/data/region_map/region_map_layout.h                   cursor grid (from tags.json)
+  src/data/region_map/region_map_sections.json               tagged sections renamed in place (vanilla
+        slots keep their enum value), new ones appended, unused placeholders dropped, untagged Hoenn
+        sections off-grid; the Kanto/Sevii block is never touched (Tiksi uses it)
+  include/constants/region_map_section_aliases.h             old ids of renamed sections -> new ids
+  data/maps/*/map.json                                       region_map_section from the tagger's Maps tab
+  dev_scripts/orchid_ui/ref/tosa_places.md                   table of the places
   graphics/pokenav/region_map/brendan_icon.png, may_icon.png  map heads cut from the player OW sprites
   graphics/pokenav/region_map/orchid_frame.png / .bin        Orchid frame (header, map rim, tray + name pill)
 
@@ -28,6 +34,7 @@ import json
 import os
 import struct
 from PIL import Image
+import region_tags as RT
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.abspath(os.path.join(HERE, "..", ".."))
@@ -112,12 +119,12 @@ def landmark_tile():
     return t
 
 
-def map_art():
+def map_art(tags):
+    """dex AREA map (v1 look): the routes layer with a marker on every tagged node."""
     im = load("tosa_routes.png")
     px = im.load()
-    sq = squares()
-    for n, (cx, cy) in sq.items():
-        t = landmark_tile() if n in LANDMARKS else city_tile()
+    for area, (cx, cy), landmark in tags.nodes():
+        t = landmark_tile() if landmark else city_tile()
         x0, y0 = GX + cx * 8, GY + cy * 8
         for y in range(8):
             for x in range(8):
@@ -188,89 +195,126 @@ def write_jasc48(path, cols):
             f.write("%d %d %d\n" % c)
 
 
-PLACE_NAMES = {}
+SECTION_KEYS = ("id", "name", "x", "y", "width", "height")
 
 
-def place_name(n):
-    return ("Site %02d" if n in LANDMARKS else "Town %02d") % n
-
-
-def update_sections(sq, reserve):
+def update_sections(tags):
     path = P("src", "data", "region_map", "region_map_sections.json")
     data = json.load(open(path))
     secs = data["map_sections"]
     ids = [s["id"] for s in secs]
     kanto0, kanto1 = ids.index("MAPSEC_PALLET_TOWN"), ids.index("MAPSEC_SPECIAL_AREA")
-    tosa = {
-        "MAPSEC_TOSA_PORT": (sq[TOSA_PORT], 1, 1),
-        "MAPSEC_OLDALE_TOWN": (sq[TELOK], 1, 1),
-        "MAPSEC_SOUTH_TOSA_RESERVE": (min(reserve), 1 + max(c[1] for c in reserve) - min(c[1] for c in reserve)
-                                      if reserve[0][0] == reserve[-1][0] else 1, None),
-    }
-    rx, ry = min(reserve)
-    rw = max(c[0] for c in reserve) - rx + 1
-    rh = max(c[1] for c in reserve) - ry + 1
+    # match by the original id (first run) or the current one (reruns: already renamed / appended)
+    by_id = {a.original_id: a for a in tags.areas if a.original_id}
+    by_id.update({a.id: a for a in tags.areas})
+
+    def placed(a, old=None):
+        assert '"' not in a.name, a.name
+        x, y, w, h = a.bbox
+        s = {"id": a.id, "name": a.name, "x": x, "y": y, "width": w, "height": h}
+        for k, v in (old or {}).items():          # keep any other fields (none in vanilla)
+            if k not in SECTION_KEYS:
+                s[k] = v
+        return s
+
+    out = []
     for i, s in enumerate(secs):
-        if s["id"].startswith("MAPSEC_TOSA_PH_"):
-            continue
-        if s["id"] == "MAPSEC_TOSA_PORT":
-            s.update(x=sq[TOSA_PORT][0], y=sq[TOSA_PORT][1], width=1, height=1)
-        elif s["id"] == "MAPSEC_OLDALE_TOWN":
-            s.update(x=sq[TELOK][0], y=sq[TELOK][1], width=1, height=1)
-        elif s["id"] == "MAPSEC_SOUTH_TOSA_RESERVE":
-            s.update(x=rx, y=ry, width=rw, height=rh)
-        elif not (kanto0 <= i < kanto1) and "x" in s:
-            # vanilla Hoenn section: off the Tosa grid (no cell, nothing drawn or highlighted)
-            s.pop("x", None)
-            s.pop("y", None)
-            s["width"] = 0
-            s["height"] = 0
-    secs[:] = [s for s in secs if not s["id"].startswith("MAPSEC_TOSA_PH_")]
-    for n in sorted(sq):
-        if n in (TOSA_PORT, TELOK):
-            continue
-        cx, cy = sq[n]
-        secs.append({"id": "MAPSEC_TOSA_PH_%02d" % n, "name": place_name(n), "x": cx, "y": cy, "width": 1, "height": 1})
+        a = by_id.get(s["id"])
+        if kanto0 <= i <= kanto1:
+            out.append(s)                          # Kanto/Sevii: reserved for the Tiksi region
+        elif a is not None and a.cells:
+            out.append(placed(a, s))
+        elif s["id"].startswith("MAPSEC_TOSA_PH_"):
+            continue                               # placeholder the user didn't use
+        else:
+            if a is not None and a.id != s["id"]:  # renamed but not on the map
+                s = dict(s, id=a.id, name=a.name)
+            if "x" in s:                           # untagged Hoenn section: off the Tosa grid
+                s.pop("x", None)
+                s.pop("y", None)
+                s["width"] = 0
+                s["height"] = 0
+            out.append(s)
+    have = {s["id"] for s in out}
+    out += [placed(a) for a in tags.areas if a.original_id is None and a.cells and a.id not in have]
+    assert len(out) + 1 <= 0xFD, "MAPSEC_NONE must stay below METLOC_SPECIAL_EGG (0xFD): %d" % len(out)
+    secs[:] = out
     with open(path, "w") as f:
         json.dump(data, f, indent=2)
         f.write("\n")
-    return secs
+    return out
 
 
-def write_layout(secs):
-    grid = [["MAPSEC_NONE"] * 28 for _ in range(15)]
-    for s in secs:
-        if s["id"] in ("MAPSEC_TOSA_PORT", "MAPSEC_OLDALE_TOWN", "MAPSEC_SOUTH_TOSA_RESERVE") or s["id"].startswith("MAPSEC_TOSA_PH_"):
-            for y in range(s["y"], s["y"] + s["height"]):
-                for x in range(s["x"], s["x"] + s["width"]):
-                    grid[y][x] = s["id"]
-    L = ["// GENERATED by dev_scripts/orchid_ui/export_region_map.py (Tosa, from the user's art).",
+def write_layout(tags):
+    L = ["// GENERATED by dev_scripts/orchid_ui/export_region_map.py from the region map tagger (tags.json).",
          "static const mapsec_u8_t sRegionMap_MapSectionLayout[MAP_HEIGHT][MAP_WIDTH] = {"]
-    for row in grid:
+    for row in tags.grid:
         L.append("    {" + ", ".join(row) + "},")
     L.append("};")
     open(P("src", "data", "region_map", "region_map_layout.h"), "w").write("\n".join(L) + "\n")
 
 
-def write_places_md(sq, reserve):
+def write_aliases(tags):
+    """Old ids of renamed sections stay usable (vanilla code keeps compiling, upstream merges stay small)."""
+    L = ["// GENERATED by dev_scripts/orchid_ui/export_region_map.py from the region map tagger - do not edit.",
+         "// Renamed map sections keep their enum slot; their old names point at the new ones.",
+         "#ifndef GUARD_CONSTANTS_REGION_MAP_SECTION_ALIASES_H",
+         "#define GUARD_CONSTANTS_REGION_MAP_SECTION_ALIASES_H", ""]
+    path = P("include", "constants", "region_map_section_aliases.h")
+    aliases = {}
+    if os.path.exists(path):                       # keep earlier renames (tags.json is rebased after export)
+        for line in open(path):
+            parts = line.split()
+            if len(parts) == 3 and parts[0] == "#define" and parts[1].startswith("MAPSEC_"):
+                aliases[parts[1]] = parts[2]
+    renames = {old: new for old, new in tags.renames().items() if not old.startswith("MAPSEC_TOSA_PH_")}
+    for old, new in list(aliases.items()):         # chains: A -> B, then B renamed to C => A -> C
+        aliases[old] = renames.get(new, new)
+    aliases.update(renames)
+    current = {a.id for a in tags.areas}
+    for old, new in sorted(aliases.items()):
+        if old not in current:                     # an id that is a section again can't be an alias
+            L.append("#define %-36s %s" % (old, new))
+    L += ["", "#endif // GUARD_CONSTANTS_REGION_MAP_SECTION_ALIASES_H"]
+    open(path, "w").write("\n".join(L) + "\n")
+
+
+def update_map_jsons(tags):
+    """Point every map at its tagged section (the tagger's Maps tab), renaming ids as needed."""
+    want, renames, changed = tags.map_sections(), tags.renames(), []
+    for folder in sorted(os.listdir(P("data", "maps"))):
+        path = P("data", "maps", folder, "map.json")
+        if not os.path.isfile(path):
+            continue
+        text = open(path).read()
+        cur = json.loads(text).get("region_map_section")
+        new = want.get(folder, renames.get(cur, cur))
+        if cur is None or new == cur:
+            continue
+        old_line = '"region_map_section": "%s"' % cur
+        assert text.count(old_line) == 1, path
+        open(path, "w").write(text.replace(old_line, '"region_map_section": "%s"' % new))
+        changed.append((folder, cur, new))
+    return changed
+
+
+def write_places_md(tags):
     L = ["# Tosa region map places", "",
-         "Generated by `dev_scripts/orchid_ui/export_region_map.py` from the user's art (`ref/tosa_*.png`,",
-         "rotated 180 deg). Square numbers are the user's (original image order). Cells are on the 28x15",
-         "region-map cursor grid. Rename a placeholder by editing its `name` in",
-         "`src/data/region_map/region_map_sections.json` (and here).", "",
-         "| # | Cell | MAPSEC | Name | Kind |", "|---|---|---|---|---|"]
-    for n in sorted(sq):
-        cx, cy = sq[n]
-        if n == TOSA_PORT:
-            row = (n, cx, cy, "MAPSEC_TOSA_PORT", "Tosa Port", "town")
-        elif n == TELOK:
-            row = (n, cx, cy, "MAPSEC_OLDALE_TOWN", "Telok Town", "town")
-        else:
-            row = (n, cx, cy, "MAPSEC_TOSA_PH_%02d" % n, place_name(n) + " (placeholder)", "landmark" if n in LANDMARKS else "city/town")
-        L.append("| %d | (%d,%d) | `%s` | %s | %s |" % row)
-    L += ["", "South Tosa Reserve (`MAPSEC_SOUTH_TOSA_RESERVE`): route cells %s, between #%d and #%d." %
-          (", ".join("(%d,%d)" % c for c in reserve), TOSA_PORT, TELOK), "",
-          "Markers: towns / cities = full-cell red block; landmarks = small red dot on a route-yellow cell."]
+         "Generated by `dev_scripts/orchid_ui/export_region_map.py` from the region map tagger",
+         "(`dev_scripts/region_map_tagger/tags.json`). To rename or move a place, edit it in the tagger",
+         "(`python3 dev_scripts/region_map_tagger/server.py`), save, and rerun the exporter.", "",
+         "| Section | Name | Kind | Node | Station | Cells | Was |", "|---|---|---|---|---|---|---|"]
+    for a in sorted(tags.placed(), key=lambda a: (a.cells[0][1], a.cells[0][0])):
+        L.append("| `%s` | %s | %s | %s | %s | %s | %s |" % (
+            a.id, a.name, a.kind, a.node_kind or "", "yes" if a.station else "",
+            " ".join("(%d,%d)" % c for c in a.cells),
+            "" if a.original_id in (None, a.id) else "`%s`" % a.original_id))
+    edges = tags.rail_edges()
+    if edges:
+        L += ["", "## Tosa Rail (planned)", "", "| Line | From | To |", "|---|---|---|"]
+        L += ["| %s | `%s` | `%s` |" % (line, a, b) for line, _, a, b, _ in edges]
+    L += ["", "Nodes: towns / cities = disc, single-cell landmarks / dungeons = diamond (MAP v2);",
+          "the dex AREA map marks them with a red block / dot."]
     open(os.path.join(REF, "tosa_places.md"), "w").write("\n".join(L) + "\n")
 
 
@@ -326,8 +370,7 @@ def frame_art():
 
 
 def export():
-    sq = squares()
-    reserve = route_cells_between(sq[TOSA_PORT], sq[TELOK])
+    tags = RT.Tags()
     # --- affine map (Town Map / Fly / Rotom Phone MAP): MAP v2 = the user's terrain only; routes are
     #     tubes on BG1 and places are OBJs (export_map_v2.py)
     ttiles, tcells = build_tiles(load("tosa_terrain.png"))
@@ -340,8 +383,8 @@ def export():
         amap[(i // 30) * 64 + i % 30] = t
     open(P("graphics", "pokenav", "region_map", "map.bin"), "wb").write(bytes(amap))
     print("map v2 terrain tiles", len(ttiles))
-    # --- dex AREA copy keeps the v1 look (routes + red squares baked in)
-    art = map_art()
+    # --- dex AREA copy keeps the v1 look (routes + markers baked in)
+    art = map_art(tags)
     tiles, cells = build_tiles(art)
     assert len(tiles) <= 256, len(tiles)
     cols = palette_of(tiles)
@@ -358,17 +401,23 @@ def export():
     import mock_map
     import export_map_v2
     route_cells = mock_map.classify()
-    for c in sq.values():
+    nodes = tags.nodes()
+    for _, c, _ in nodes:
         route_cells.pop(c, None)
-    print("map v2 (frame tiles, all tiles, tube cells, components)", export_map_v2.export(sq, route_cells))
-    secs = update_sections(sq, reserve)
-    write_layout(secs)
-    write_places_md(sq, reserve)
-    return sq, reserve, len(tiles), len(cols)
+    print("map v2 (frame tiles, all tiles, tube cells, components)", export_map_v2.export(
+        {a.id: c for a, c, _ in nodes}, route_cells, {a.id: (a.id, lm, a.name) for a, _, lm in nodes}))
+    secs = update_sections(tags)
+    write_layout(tags)
+    write_aliases(tags)
+    changed = update_map_jsons(tags)
+    write_places_md(tags)
+    RT.rebase(section_ids={s["id"] for s in secs})
+    return tags, secs, changed, len(tiles), len(cols)
 
 
 if __name__ == "__main__":
-    sq, reserve, nt, nc = export()
-    print("tiles", nt, "colours", nc, "reserve", reserve)
-    for n in sorted(sq):
-        print(n, sq[n])
+    tags, secs, changed, nt, nc = export()
+    print("dex tiles", nt, "colours", nc, "| sections", len(secs), "| nodes", len(tags.nodes()),
+          "| renamed", len(tags.renames()), "| map.json updated", len(changed))
+    for folder, old, new in changed:
+        print("  %-40s %s -> %s" % (folder, old, new))

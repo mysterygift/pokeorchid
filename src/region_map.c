@@ -2569,7 +2569,7 @@ static const struct SpriteTemplate sOrchidMapChipTemplate =
 
 static bool32 OrchidMapPlaceVisited(mapsec_u16_t mapSecId)
 {
-    // TODO: the placeholder places (MAPSEC_TOSA_PH_*) have no visited flags yet, so they stay grey
+    // TODO: Tosa places added by the region map tagger (Bura City, Faber Town, ...) have no visited flags yet, so they stay grey
     return GetMapsecType(mapSecId) == MAPSECTYPE_CITY_CANFLY || mapSecId == gMapHeader.regionMapSectionId;
 }
 

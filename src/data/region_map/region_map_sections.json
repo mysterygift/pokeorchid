@@ -47,28 +47,36 @@
       "height": 0
     },
     {
-      "id": "MAPSEC_PETALBURG_CITY",
-      "name": "PETALBURG CITY",
-      "width": 0,
-      "height": 0
+      "id": "MAPSEC_TIMAH_CITY",
+      "name": "Timah City",
+      "x": 11,
+      "y": 4,
+      "width": 1,
+      "height": 1
     },
     {
-      "id": "MAPSEC_SLATEPORT_CITY",
-      "name": "SLATEPORT CITY",
-      "width": 0,
-      "height": 0
+      "id": "MAPSEC_CHANGU_CITY",
+      "name": "Changu City",
+      "x": 15,
+      "y": 8,
+      "width": 1,
+      "height": 1
     },
     {
-      "id": "MAPSEC_MAUVILLE_CITY",
-      "name": "MAUVILLE CITY",
-      "width": 0,
-      "height": 0
+      "id": "MAPSEC_SENOKO_CITY",
+      "name": "Senoko City",
+      "x": 27,
+      "y": 6,
+      "width": 1,
+      "height": 1
     },
     {
-      "id": "MAPSEC_RUSTBORO_CITY",
-      "name": "RUSTBORO CITY",
-      "width": 0,
-      "height": 0
+      "id": "MAPSEC_INKA_CITY",
+      "name": "Inka City",
+      "x": 15,
+      "y": 14,
+      "width": 1,
+      "height": 1
     },
     {
       "id": "MAPSEC_FORTREE_CITY",
@@ -77,31 +85,39 @@
       "height": 0
     },
     {
-      "id": "MAPSEC_LILYCOVE_CITY",
-      "name": "LILYCOVE CITY",
-      "width": 0,
-      "height": 0
+      "id": "MAPSEC_JURAN_CITY",
+      "name": "Juran City",
+      "x": 23,
+      "y": 12,
+      "width": 1,
+      "height": 1
     },
     {
-      "id": "MAPSEC_MOSSDEEP_CITY",
-      "name": "MOSSDEEP CITY",
-      "width": 0,
-      "height": 0
+      "id": "MAPSEC_MOONGROVE_CITY",
+      "name": "Moongrove City",
+      "x": 9,
+      "y": 12,
+      "width": 1,
+      "height": 1
     },
     {
-      "id": "MAPSEC_SOOTOPOLIS_CITY",
-      "name": "SOOTOPOLIS CITY",
-      "width": 0,
-      "height": 0
+      "id": "MAPSEC_CORRAL_CITY",
+      "name": "Corral City",
+      "x": 27,
+      "y": 14,
+      "width": 1,
+      "height": 1
     },
     {
-      "id": "MAPSEC_EVER_GRANDE_CITY",
-      "name": "EVER GRANDE CITY",
-      "width": 0,
-      "height": 0
+      "id": "MAPSEC_CHALLENGER_GATE",
+      "name": "Challenger Gate",
+      "x": 21,
+      "y": 4,
+      "width": 1,
+      "height": 1
     },
     {
-      "id": "MAPSEC_SOUTH_TOSA_RESERVE",
+      "id": "MAPSEC_SOUTH_TOSA_RESERVE_1",
       "name": "South Tosa Reserve",
       "x": 7,
       "y": 9,
@@ -109,82 +125,108 @@
       "height": 3
     },
     {
-      "id": "MAPSEC_ROUTE_102",
-      "name": "ROUTE 102",
-      "width": 0,
-      "height": 0
+      "id": "MAPSEC_ROUTE_302",
+      "name": "Route 302",
+      "x": 12,
+      "y": 4,
+      "width": 1,
+      "height": 1
     },
     {
-      "id": "MAPSEC_ROUTE_103",
-      "name": "ROUTE 103",
-      "width": 0,
-      "height": 0
+      "id": "MAPSEC_ROUTE_303",
+      "name": "Route 303",
+      "x": 15,
+      "y": 3,
+      "width": 1,
+      "height": 1
     },
     {
-      "id": "MAPSEC_ROUTE_104",
-      "name": "ROUTE 104",
-      "width": 0,
-      "height": 0
+      "id": "MAPSEC_ROUTE_304",
+      "name": "Route 304",
+      "x": 16,
+      "y": 2,
+      "width": 1,
+      "height": 1
     },
     {
-      "id": "MAPSEC_ROUTE_105",
-      "name": "ROUTE 105",
-      "width": 0,
-      "height": 0
+      "id": "MAPSEC_ROUTE_305",
+      "name": "Route 305",
+      "x": 18,
+      "y": 2,
+      "width": 4,
+      "height": 2
     },
     {
-      "id": "MAPSEC_ROUTE_106",
-      "name": "ROUTE 106",
-      "width": 0,
-      "height": 0
+      "id": "MAPSEC_ROUTE_306",
+      "name": "Route 306",
+      "x": 15,
+      "y": 9,
+      "width": 1,
+      "height": 1
     },
     {
-      "id": "MAPSEC_ROUTE_107",
-      "name": "ROUTE 107",
-      "width": 0,
-      "height": 0
+      "id": "MAPSEC_ROUTE_307",
+      "name": "Route 307",
+      "x": 17,
+      "y": 5,
+      "width": 1,
+      "height": 1
     },
     {
-      "id": "MAPSEC_ROUTE_108",
-      "name": "ROUTE 108",
-      "width": 0,
-      "height": 0
+      "id": "MAPSEC_ROUTE_308",
+      "name": "Route 308",
+      "x": 16,
+      "y": 7,
+      "width": 2,
+      "height": 3
     },
     {
-      "id": "MAPSEC_ROUTE_109",
-      "name": "ROUTE 109",
-      "width": 0,
-      "height": 0
+      "id": "MAPSEC_ROUTE_309",
+      "name": "Route 309",
+      "x": 18,
+      "y": 8,
+      "width": 3,
+      "height": 1
     },
     {
-      "id": "MAPSEC_ROUTE_110",
-      "name": "ROUTE 110",
-      "width": 0,
-      "height": 0
+      "id": "MAPSEC_ROUTE_310",
+      "name": "Route 310",
+      "x": 23,
+      "y": 9,
+      "width": 1,
+      "height": 3
     },
     {
-      "id": "MAPSEC_ROUTE_111",
-      "name": "ROUTE 111",
-      "width": 0,
-      "height": 0
+      "id": "MAPSEC_ROUTE_311",
+      "name": "Route 311",
+      "x": 4,
+      "y": 8,
+      "width": 3,
+      "height": 1
     },
     {
-      "id": "MAPSEC_ROUTE_112",
-      "name": "ROUTE 112",
-      "width": 0,
-      "height": 0
+      "id": "MAPSEC_ROUTE_312",
+      "name": "Route 312",
+      "x": 3,
+      "y": 9,
+      "width": 1,
+      "height": 4
     },
     {
-      "id": "MAPSEC_ROUTE_113",
-      "name": "ROUTE 113",
-      "width": 0,
-      "height": 0
+      "id": "MAPSEC_ROUTE_313",
+      "name": "Route 313",
+      "x": 3,
+      "y": 13,
+      "width": 5,
+      "height": 2
     },
     {
-      "id": "MAPSEC_ROUTE_114",
-      "name": "ROUTE 114",
-      "width": 0,
-      "height": 0
+      "id": "MAPSEC_ROUTE_314",
+      "name": "Route 314",
+      "x": 8,
+      "y": 14,
+      "width": 7,
+      "height": 1
     },
     {
       "id": "MAPSEC_ROUTE_115",
@@ -343,10 +385,12 @@
       "height": 0
     },
     {
-      "id": "MAPSEC_MT_CHIMNEY",
-      "name": "MT. CHIMNEY",
-      "width": 0,
-      "height": 0
+      "id": "MAPSEC_MT_BATOK",
+      "name": "Mt. Batok",
+      "x": 13,
+      "y": 4,
+      "width": 5,
+      "height": 1
     },
     {
       "id": "MAPSEC_SAFARI_ZONE",
@@ -361,10 +405,12 @@
       "height": 0
     },
     {
-      "id": "MAPSEC_PETALBURG_WOODS",
-      "name": "PETALBURG WOODS",
-      "width": 0,
-      "height": 0
+      "id": "MAPSEC_MOONGROVE_MARSH",
+      "name": "Moongrove Marsh",
+      "x": 10,
+      "y": 12,
+      "width": 1,
+      "height": 1
     },
     {
       "id": "MAPSEC_RUSTURF_TUNNEL",
@@ -379,10 +425,12 @@
       "height": 0
     },
     {
-      "id": "MAPSEC_NEW_MAUVILLE",
-      "name": "NEW MAUVILLE",
-      "width": 0,
-      "height": 0
+      "id": "MAPSEC_TOSA_POWER_PLANT",
+      "name": "Power Plant",
+      "x": 27,
+      "y": 7,
+      "width": 1,
+      "height": 1
     },
     {
       "id": "MAPSEC_METEOR_FALLS",
@@ -427,10 +475,12 @@
       "height": 0
     },
     {
-      "id": "MAPSEC_VICTORY_ROAD",
-      "name": "VICTORY ROAD",
-      "width": 0,
-      "height": 0
+      "id": "MAPSEC_CHALLENGERS_TRAIL",
+      "name": "Challenger's Trail",
+      "x": 22,
+      "y": 4,
+      "width": 1,
+      "height": 1
     },
     {
       "id": "MAPSEC_MIRAGE_ISLAND",
@@ -1444,148 +1494,140 @@
       "height": 0
     },
     {
-      "id": "MAPSEC_TOSA_PH_01",
-      "name": "Town 01",
-      "x": 15,
-      "y": 14,
-      "width": 1,
-      "height": 1
-    },
-    {
-      "id": "MAPSEC_TOSA_PH_02",
-      "name": "Town 02",
+      "id": "MAPSEC_PKMN_LEAGUE",
+      "name": "Pok\u00e9mon League",
       "x": 23,
-      "y": 12,
+      "y": 4,
       "width": 1,
       "height": 1
     },
     {
-      "id": "MAPSEC_TOSA_PH_03",
-      "name": "Site 03",
-      "x": 9,
-      "y": 12,
-      "width": 1,
-      "height": 1
-    },
-    {
-      "id": "MAPSEC_TOSA_PH_05",
-      "name": "Town 05",
+      "id": "MAPSEC_INDUSTRIAL_PARK",
+      "name": "Industrial Park",
       "x": 17,
       "y": 10,
       "width": 1,
       "height": 1
     },
     {
-      "id": "MAPSEC_TOSA_PH_06",
-      "name": "Site 06",
+      "id": "MAPSEC_CHANGU_AIRPORT",
+      "name": "Changu Airport",
       "x": 15,
       "y": 10,
       "width": 1,
       "height": 1
     },
     {
-      "id": "MAPSEC_TOSA_PH_07",
-      "name": "Site 07",
+      "id": "MAPSEC_ABANDONED_HOUSE",
+      "name": "Abandoned House",
       "x": 9,
       "y": 10,
       "width": 1,
       "height": 1
     },
     {
-      "id": "MAPSEC_TOSA_PH_08",
-      "name": "Town 08",
+      "id": "MAPSEC_BURA_CITY",
+      "name": "Bura City",
       "x": 21,
       "y": 8,
       "width": 1,
       "height": 1
     },
     {
-      "id": "MAPSEC_TOSA_PH_09",
-      "name": "Town 09",
-      "x": 15,
-      "y": 8,
-      "width": 1,
-      "height": 1
-    },
-    {
-      "id": "MAPSEC_TOSA_PH_11",
-      "name": "Site 11",
+      "id": "MAPSEC_DAMP_PATH",
+      "name": "Damp Path",
       "x": 5,
       "y": 8,
       "width": 1,
       "height": 1
     },
     {
-      "id": "MAPSEC_TOSA_PH_12",
-      "name": "Town 12",
+      "id": "MAPSEC_WAVEBREAK_TOWN",
+      "name": "Wavebreak Town",
       "x": 3,
       "y": 8,
       "width": 1,
       "height": 1
     },
     {
-      "id": "MAPSEC_TOSA_PH_13",
-      "name": "Town 13",
-      "x": 27,
-      "y": 6,
-      "width": 1,
-      "height": 1
-    },
-    {
-      "id": "MAPSEC_TOSA_PH_14",
-      "name": "Town 14",
+      "id": "MAPSEC_PINESTAMP_TOWN",
+      "name": "Pinestamp Town",
       "x": 17,
       "y": 6,
       "width": 1,
       "height": 1
     },
     {
-      "id": "MAPSEC_TOSA_PH_15",
-      "name": "Site 15",
-      "x": 23,
-      "y": 4,
-      "width": 1,
-      "height": 1
-    },
-    {
-      "id": "MAPSEC_TOSA_PH_16",
-      "name": "Site 16",
-      "x": 21,
-      "y": 4,
-      "width": 1,
-      "height": 1
-    },
-    {
-      "id": "MAPSEC_TOSA_PH_17",
-      "name": "Town 17",
+      "id": "MAPSEC_FABER_TOWN",
+      "name": "Faber Town",
       "x": 15,
       "y": 4,
       "width": 1,
       "height": 1
     },
     {
-      "id": "MAPSEC_TOSA_PH_18",
-      "name": "Site 18",
+      "id": "MAPSEC_GALANGAL_FOREST",
+      "name": "Galangal Forest",
+      "x": 17,
+      "y": 2,
+      "width": 1,
+      "height": 1
+    },
+    {
+      "id": "MAPSEC_KANTU_FALLS",
+      "name": "Kantu Falls",
+      "x": 15,
+      "y": 2,
+      "width": 1,
+      "height": 1
+    },
+    {
+      "id": "MAPSEC_POKETOPIA_GATE",
+      "name": "Pok\u00e9topia Gate",
+      "x": 26,
+      "y": 14,
+      "width": 1,
+      "height": 1
+    },
+    {
+      "id": "MAPSEC_RAILWAY_TUNNELS",
+      "name": "Railway Tunnels",
+      "x": 8,
+      "y": 12,
+      "width": 1,
+      "height": 1
+    },
+    {
+      "id": "MAPSEC_SOUTH_TOSA_RESERVE_2",
+      "name": "South Tosa Reserve",
+      "x": 8,
+      "y": 8,
+      "width": 3,
+      "height": 1
+    },
+    {
+      "id": "MAPSEC_SOUTH_TOSA_RESERVE_3",
+      "name": "South Tosa Reserve",
+      "x": 9,
+      "y": 8,
+      "width": 3,
+      "height": 4
+    },
+    {
+      "id": "MAPSEC_NORTH_TOSA_RESERVE",
+      "name": "North Tosa Reserve",
       "x": 11,
-      "y": 4,
+      "y": 5,
       "width": 1,
-      "height": 1
+      "height": 3
     },
     {
-      "id": "MAPSEC_TOSA_PH_19",
-      "name": "Town 19",
-      "x": 17,
-      "y": 2,
-      "width": 1,
-      "height": 1
-    },
-    {
-      "id": "MAPSEC_TOSA_PH_20",
-      "name": "Site 20",
-      "x": 15,
-      "y": 2,
-      "width": 1,
-      "height": 1
+      "id": "MAPSEC_EAST_TOSA_RESERVE",
+      "name": "East Tosa Reserve",
+      "x": 21,
+      "y": 5,
+      "width": 6,
+      "height": 4
     }
   ]
 }

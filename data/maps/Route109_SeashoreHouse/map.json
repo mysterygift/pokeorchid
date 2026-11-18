@@ -4,7 +4,7 @@
   "layout": "LAYOUT_ROUTE109_SEASHORE_HOUSE",
   "music": "MUS_DEWFORD",
   "region": "REGION_HOENN",
-  "region_map_section": "MAPSEC_ROUTE_109",
+  "region_map_section": "MAPSEC_ROUTE_309",
   "requires_flash": false,
   "weather": "WEATHER_NONE",
   "map_type": "MAP_TYPE_INDOOR",
