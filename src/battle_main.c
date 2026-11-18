@@ -9,7 +9,6 @@
 #include "battle_hold_effects.h"
 #include "battle_interface.h"
 #include "battle_main.h"
-#include "battle_mode7.h"
 #include "battle_message.h"
 #include "battle_pyramid.h"
 #include "battle_scripts.h"
@@ -585,7 +584,7 @@ static void CB2_InitBattleInternal(void)
     LoadBattleTextboxAndBackground();
     ResetSpriteData();
     ResetTasks();
-    if (B_FAST_INTRO_NO_SLIDE == FALSE && !gTestRunnerHeadless && !IsBattleIntroMode7())
+    if (B_FAST_INTRO_NO_SLIDE == FALSE && !gTestRunnerHeadless)
         DrawBattleEntryBackground();
     FreeAllSpritePalettes();
     gReservedSpritePaletteCount = MAX_BATTLERS_COUNT;
@@ -1743,7 +1742,6 @@ static void CB2_HandleStartMultiBattle(void)
 
 void BattleMainCB2(void)
 {
-    BattleMode7_Update(); // before BuildOamBuffer: sprites and floor use the same camera frame
     AnimateSprites();
     BuildOamBuffer();
     RunTextPrinters();
@@ -1824,7 +1822,6 @@ void VBlankCB_Battle(void)
     ProcessSpriteCopyRequests();
     TransferPlttBuffer();
     ScanlineEffect_InitHBlankDmaTransfer();
-    BattleMode7_VBlank();
 }
 
 void SpriteCB_VsLetterDummy(struct Sprite *sprite)
@@ -2390,8 +2387,6 @@ void SpriteCB_WildMon(struct Sprite *sprite)
 {
     sprite->callback = SpriteCB_MoveWildMonToRight;
     StartSpriteAnimIfDifferent(sprite, 0);
-    if (IsBattleIntroMode7())
-        sprite->x2 = 0; // waits on its platform as a silhouette while the camera flies in
     if (B_FAST_INTRO_NO_SLIDE == FALSE && !gTestRunnerHeadless)
     {
         if (WILD_DOUBLE_BATTLE)
@@ -2405,7 +2400,7 @@ static void SpriteCB_MoveWildMonToRight(struct Sprite *sprite)
 {
     if ((gIntroSlideFlags & 1) == 0)
     {
-        if (B_FAST_INTRO_NO_SLIDE == FALSE && !gTestRunnerHeadless && !IsBattleIntroMode7())
+        if (B_FAST_INTRO_NO_SLIDE == FALSE && !gTestRunnerHeadless)
             sprite->x2 += 2;
         else
             sprite->x2 = 0;
@@ -3802,11 +3797,6 @@ enum
     STATE_WAIT_SET_BEFORE_ACTION,
     STATE_SELECTION_SCRIPT_MAY_RUN
 };
-
-bool32 IsBattleInActionSelection(void)
-{
-    return gBattleMainFunc == HandleTurnActionSelectionState;
-}
 
 static void HandleTurnActionSelectionState(void)
 {

@@ -1,6 +1,5 @@
 #include "global.h"
 #include "battle_main.h"
-#include "battle_mode7.h"
 #include "battle_script_commands.h"
 #include "bg.h"
 #include "data.h"
@@ -4994,9 +4993,6 @@ static void Task_DisplayCaughtMonDexPage(u8 taskId)
     default:
         if (!gPaletteFade.active)
         {
-            // The battle's Mode 7 floor would keep driving BG2 (affine, DMA0) and re-load its
-            // floor into charblock 2 under this page; a catch ends the battle, so drop it here.
-            BattleMode7_End();
             gPokedexVBlankCB = gMain.vblankCallback;
             SetVBlankCallback(NULL);
             ResetOtherVideoRegisters(DISPCNT_BG0_ON);

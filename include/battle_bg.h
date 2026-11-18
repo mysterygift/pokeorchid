@@ -22,7 +22,6 @@ void InitLinkBattleVsScreen(u8 taskId);
 void DrawBattleEntryBackground(void);
 bool8 LoadChosenBattleElement(u8 caseId);
 void DrawTerrainTypeBattleBackground(void);
-u8 GetBattleEnvironmentOverride(void);
 u32 GetBattleEnvironmentForMapScene(u32 mapBattleScene);
 bool32 IsBattleNight(void);
 const u16 *GetBattleEnvironmentPalette(u32 environment);
