@@ -212,8 +212,30 @@ def save(im, path, pal):
     out.save(path, transparency=0)
 
 
+# Field match-call window: the PokéNav's spinning icon becomes a buzzing Rotom Phone (start-menu PHONE icon,
+# shaking with buzz arcs). 32x32 x 8 frames on the call window's white (index 8, as the vanilla icon).
+RING_PAL = [(255, 255, 255), M.INK, (248, 144, 56), (224, 88, 56), (176, 72, 56), (96, 96, 120), (160, 160, 184),
+            (112, 112, 136), (255, 255, 255)]
+RING_CMAP = {"k": 1, "o": 2, "r": 3, "R": 4, "d": 5, "m": 6}
+BUZZ = [".#.", "#..", "#..", "#..", ".#."]
+
+
+def export_ring_icon():
+    im = Image.new("P", (32, 256), 8)
+    cv = Canvas(im)
+    shake = [0, -1, 1, -1, 1, 0, 0, 0]
+    for f in range(8):
+        dx = shake[f]
+        kit.stamp(cv, 8 + dx, f * 32 + 8, M.PHONE_ICON, RING_CMAP)
+        if 1 <= f <= 4:
+            kit.stamp(cv, 4 + dx, f * 32 + 12, BUZZ, {"#": 7})
+            kit.stamp(cv, 25 + dx, f * 32 + 12, BUZZ, {"#": 7}, hflip=True)
+    save(im, P("graphics", "pokenav", "match_call", "nav_icon.png"), pad16(RING_PAL))
+
+
 def main():
     os.makedirs(OUT, exist_ok=True)
+    export_ring_icon()
     n_shell = export_shell()
     export_apps()
     export_ui()
