@@ -1401,8 +1401,8 @@
 #define FLAG_VISITED_DRAKE_BASE_CAMP                (SYSTEM_FLAGS + 0x23) // Orchid: Tiksi fly point (set by the town map script)
 #define FLAG_VISITED_UBE_CITY                       (SYSTEM_FLAGS + 0x24) // Orchid: Tiksi fly point (set by the town map script)
 #define FLAG_VISITED_FURONG_VILLAGE                 (SYSTEM_FLAGS + 0x25) // Orchid: Tiksi fly point (set by the town map script)
-#define FLAG_UNUSED_0x886                           (SYSTEM_FLAGS + 0x26) // Unused Flag
-#define FLAG_UNUSED_0x887                           (SYSTEM_FLAGS + 0x27) // Unused Flag
+#define FLAG_HIDE_REGIELEKI                         (SYSTEM_FLAGS + 0x26) // Orchid: Tiksi Regi cave (gen_tiksi_maps.py)
+#define FLAG_HIDE_REGIDRAGO                         (SYSTEM_FLAGS + 0x27) // Orchid: Tiksi Regi cave (gen_tiksi_maps.py)
 
 #define FLAG_SYS_USE_FLASH                          (SYSTEM_FLAGS + 0x28)
 #define FLAG_SYS_USE_STRENGTH                       (SYSTEM_FLAGS + 0x29)
@@ -1412,8 +1412,8 @@
 #define FLAG_SYS_SAFARI_MODE                        (SYSTEM_FLAGS + 0x2C)
 #define FLAG_SYS_CRUISE_MODE                        (SYSTEM_FLAGS + 0x2D)
 
-#define FLAG_UNUSED_0x88E                           (SYSTEM_FLAGS + 0x2E) // Unused Flag
-#define FLAG_UNUSED_0x88F                           (SYSTEM_FLAGS + 0x2F) // Unused Flag
+#define FLAG_DEFEATED_REGIELEKI                     (SYSTEM_FLAGS + 0x2E) // Orchid: Tiksi Regi cave (gen_tiksi_maps.py)
+#define FLAG_DEFEATED_REGIDRAGO                     (SYSTEM_FLAGS + 0x2F) // Orchid: Tiksi Regi cave (gen_tiksi_maps.py)
 
 #define FLAG_SYS_TV_HOME                            (SYSTEM_FLAGS + 0x30)
 #define FLAG_SYS_TV_WATCH                           (SYSTEM_FLAGS + 0x31)

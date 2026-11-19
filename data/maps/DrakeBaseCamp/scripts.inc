@@ -17,15 +17,15 @@ DrakeBaseCamp_OnTransition:
 # 9 "data/maps/DrakeBaseCamp/scripts.pory"
 
 # 10 "data/maps/DrakeBaseCamp/scripts.pory"
-DrakeBaseCamp_EventScript_TownSign::
+DrakeBaseCamp_EventScript_Sign0::
 # 11 "data/maps/DrakeBaseCamp/scripts.pory"
-	msgbox DrakeBaseCamp_Text_TownSign, MSGBOX_SIGN
+	msgbox DrakeBaseCamp_Text_Sign0, MSGBOX_SIGN
 # 12 "data/maps/DrakeBaseCamp/scripts.pory"
 	end
 # 13 "data/maps/DrakeBaseCamp/scripts.pory"
 
 # 14 "data/maps/DrakeBaseCamp/scripts.pory"
-DrakeBaseCamp_Text_TownSign:
+DrakeBaseCamp_Text_Sign0:
 # 15 "data/maps/DrakeBaseCamp/scripts.pory"
 	.string "DRAKE BASE CAMP\n"
 # 16 "data/maps/DrakeBaseCamp/scripts.pory"

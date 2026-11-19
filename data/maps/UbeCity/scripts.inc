@@ -17,32 +17,32 @@ UbeCity_OnTransition:
 # 9 "data/maps/UbeCity/scripts.pory"
 
 # 10 "data/maps/UbeCity/scripts.pory"
-UbeCity_EventScript_TownSign::
+UbeCity_EventScript_Sign0::
 # 11 "data/maps/UbeCity/scripts.pory"
-	msgbox UbeCity_Text_TownSign, MSGBOX_SIGN
+	msgbox UbeCity_Text_Sign0, MSGBOX_SIGN
 # 12 "data/maps/UbeCity/scripts.pory"
 	end
 # 13 "data/maps/UbeCity/scripts.pory"
 
 # 14 "data/maps/UbeCity/scripts.pory"
-UbeCity_EventScript_Sign0::
+UbeCity_EventScript_Sign1::
 # 15 "data/maps/UbeCity/scripts.pory"
-	msgbox UbeCity_Text_Sign0, MSGBOX_SIGN
+	msgbox UbeCity_Text_Sign1, MSGBOX_SIGN
 # 16 "data/maps/UbeCity/scripts.pory"
 	end
 # 17 "data/maps/UbeCity/scripts.pory"
 
 # 18 "data/maps/UbeCity/scripts.pory"
-UbeCity_Text_TownSign:
+UbeCity_Text_Sign0:
 # 19 "data/maps/UbeCity/scripts.pory"
 	.string "UBE CITY\n"
 # 20 "data/maps/UbeCity/scripts.pory"
-	.string "Home of SILPH CO.'s TIKSI branch.$"
+	.string "TIKSI's only city.$"
 # 21 "data/maps/UbeCity/scripts.pory"
 
 # 22 "data/maps/UbeCity/scripts.pory"
-UbeCity_Text_Sign0:
+UbeCity_Text_Sign1:
 # 23 "data/maps/UbeCity/scripts.pory"
-	.string "SILPH CO. TIKSI BRANCH\n"
+	.string "SILPH CO. TIKSI SALES OFFICE\n"
 # 24 "data/maps/UbeCity/scripts.pory"
-	.string "Closed to visitors.$"
+	.string "Closed today.$"

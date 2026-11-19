@@ -7,11 +7,11 @@ FurongVillage_OnTransition:
 	setflag FLAG_VISITED_FURONG_VILLAGE
 	end
 
-FurongVillage_EventScript_TownSign::
-	msgbox FurongVillage_Text_TownSign, MSGBOX_SIGN
+FurongVillage_EventScript_Sign0::
+	msgbox FurongVillage_Text_Sign0, MSGBOX_SIGN
 	end
 
-FurongVillage_Text_TownSign:
+FurongVillage_Text_Sign0:
 	.string "FURONG VILLAGE\n"
 	.string "A fishing village on TIKSI's shore.$"
 

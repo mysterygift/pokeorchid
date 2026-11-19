@@ -17,23 +17,23 @@ TanglynTown_OnTransition:
 # 9 "data/maps/TanglynTown/scripts.pory"
 
 # 10 "data/maps/TanglynTown/scripts.pory"
-TanglynTown_EventScript_TownSign::
+TanglynTown_EventScript_Sign0::
 # 11 "data/maps/TanglynTown/scripts.pory"
-	msgbox TanglynTown_Text_TownSign, MSGBOX_SIGN
+	msgbox TanglynTown_Text_Sign0, MSGBOX_SIGN
 # 12 "data/maps/TanglynTown/scripts.pory"
 	end
 # 13 "data/maps/TanglynTown/scripts.pory"
 
 # 14 "data/maps/TanglynTown/scripts.pory"
-TanglynTown_EventScript_Sign0::
+TanglynTown_EventScript_Sign1::
 # 15 "data/maps/TanglynTown/scripts.pory"
-	msgbox TanglynTown_Text_Sign0, MSGBOX_SIGN
+	msgbox TanglynTown_Text_Sign1, MSGBOX_SIGN
 # 16 "data/maps/TanglynTown/scripts.pory"
 	end
 # 17 "data/maps/TanglynTown/scripts.pory"
 
 # 18 "data/maps/TanglynTown/scripts.pory"
-TanglynTown_Text_TownSign:
+TanglynTown_Text_Sign0:
 # 19 "data/maps/TanglynTown/scripts.pory"
 	.string "TANGLYN TOWN\n"
 # 20 "data/maps/TanglynTown/scripts.pory"
@@ -43,7 +43,7 @@ TanglynTown_Text_TownSign:
 # 22 "data/maps/TanglynTown/scripts.pory"
 
 # 23 "data/maps/TanglynTown/scripts.pory"
-TanglynTown_Text_Sign0:
+TanglynTown_Text_Sign1:
 # 24 "data/maps/TanglynTown/scripts.pory"
 	.string "TANGLYN MURAL HALL\n"
 # 25 "data/maps/TanglynTown/scripts.pory"

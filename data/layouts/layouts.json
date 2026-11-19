@@ -9985,7 +9985,7 @@
     {
       "id": "LAYOUT_FURONG_VILLAGE",
       "name": "FurongVillage_Layout",
-      "width": 20,
+      "width": 26,
       "height": 20,
       "primary_tileset": "gTileset_General",
       "secondary_tileset": "gTileset_Dewford",
@@ -9996,8 +9996,8 @@
     {
       "id": "LAYOUT_DRAKE_BASE_CAMP",
       "name": "DrakeBaseCamp_Layout",
-      "width": 20,
-      "height": 20,
+      "width": 30,
+      "height": 24,
       "primary_tileset": "gTileset_General",
       "secondary_tileset": "gTileset_Lavaridge",
       "border_filepath": "data/layouts/DrakeBaseCamp/border.bin",
@@ -10007,8 +10007,8 @@
     {
       "id": "LAYOUT_UBE_CITY",
       "name": "UbeCity_Layout",
-      "width": 35,
-      "height": 46,
+      "width": 32,
+      "height": 28,
       "primary_tileset": "gTileset_General",
       "secondary_tileset": "gTileset_Rustboro",
       "border_filepath": "data/layouts/UbeCity/border.bin",
@@ -10018,12 +10018,67 @@
     {
       "id": "LAYOUT_TANGLYN_TOWN",
       "name": "TanglynTown_Layout",
-      "width": 24,
-      "height": 27,
+      "width": 33,
+      "height": 28,
       "primary_tileset": "gTileset_General",
-      "secondary_tileset": "gTileset_Slateport",
+      "secondary_tileset": "gTileset_Lilycove",
       "border_filepath": "data/layouts/TanglynTown/border.bin",
       "blockdata_filepath": "data/layouts/TanglynTown/map.bin",
+      "layout_version": "emerald"
+    },
+    {
+      "id": "LAYOUT_REGOLIS_SHRINE",
+      "name": "RegolisShrine_Layout",
+      "width": 17,
+      "height": 14,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_Cave",
+      "border_filepath": "data/layouts/RegolisShrine/border.bin",
+      "blockdata_filepath": "data/layouts/RegolisShrine/map.bin",
+      "layout_version": "emerald"
+    },
+    {
+      "id": "LAYOUT_FRIGO_CAVE",
+      "name": "FrigoCave_Layout",
+      "width": 15,
+      "height": 15,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_Cave",
+      "border_filepath": "data/layouts/FrigoCave/border.bin",
+      "blockdata_filepath": "data/layouts/FrigoCave/map.bin",
+      "layout_version": "emerald"
+    },
+    {
+      "id": "LAYOUT_FERRUM_SHRINE",
+      "name": "FerrumShrine_Layout",
+      "width": 17,
+      "height": 15,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_Cave",
+      "border_filepath": "data/layouts/FerrumShrine/border.bin",
+      "blockdata_filepath": "data/layouts/FerrumShrine/map.bin",
+      "layout_version": "emerald"
+    },
+    {
+      "id": "LAYOUT_GAVANI_PATH",
+      "name": "GavaniPath_Layout",
+      "width": 17,
+      "height": 16,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_Cave",
+      "border_filepath": "data/layouts/GavaniPath/border.bin",
+      "blockdata_filepath": "data/layouts/GavaniPath/map.bin",
+      "layout_version": "emerald"
+    },
+    {
+      "id": "LAYOUT_MT_DRAKE_SUMMIT",
+      "name": "MtDrakeSummit_Layout",
+      "width": 17,
+      "height": 16,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_MeteorFalls",
+      "border_filepath": "data/layouts/MtDrakeSummit/border.bin",
+      "blockdata_filepath": "data/layouts/MtDrakeSummit/map.bin",
       "layout_version": "emerald"
     }
   ]

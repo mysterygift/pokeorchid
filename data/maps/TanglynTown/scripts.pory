@@ -7,20 +7,20 @@ TanglynTown_OnTransition:
 	setflag FLAG_VISITED_TANGLYN_TOWN
 	end
 
-TanglynTown_EventScript_TownSign::
-	msgbox TanglynTown_Text_TownSign, MSGBOX_SIGN
-	end
-
 TanglynTown_EventScript_Sign0::
 	msgbox TanglynTown_Text_Sign0, MSGBOX_SIGN
 	end
 
-TanglynTown_Text_TownSign:
+TanglynTown_EventScript_Sign1::
+	msgbox TanglynTown_Text_Sign1, MSGBOX_SIGN
+	end
+
+TanglynTown_Text_Sign0:
 	.string "TANGLYN TOWN\n"
 	.string "A quiet coastal town filled\l"
 	.string "with ancient murals.$"
 
-TanglynTown_Text_Sign0:
+TanglynTown_Text_Sign1:
 	.string "TANGLYN MURAL HALL\n"
 	.string "Home of TIKSI's ancient murals.\l"
 	.string "(Closed for restoration.)$"

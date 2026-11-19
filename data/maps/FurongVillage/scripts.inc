@@ -17,15 +17,15 @@ FurongVillage_OnTransition:
 # 9 "data/maps/FurongVillage/scripts.pory"
 
 # 10 "data/maps/FurongVillage/scripts.pory"
-FurongVillage_EventScript_TownSign::
+FurongVillage_EventScript_Sign0::
 # 11 "data/maps/FurongVillage/scripts.pory"
-	msgbox FurongVillage_Text_TownSign, MSGBOX_SIGN
+	msgbox FurongVillage_Text_Sign0, MSGBOX_SIGN
 # 12 "data/maps/FurongVillage/scripts.pory"
 	end
 # 13 "data/maps/FurongVillage/scripts.pory"
 
 # 14 "data/maps/FurongVillage/scripts.pory"
-FurongVillage_Text_TownSign:
+FurongVillage_Text_Sign0:
 # 15 "data/maps/FurongVillage/scripts.pory"
 	.string "FURONG VILLAGE\n"
 # 16 "data/maps/FurongVillage/scripts.pory"
