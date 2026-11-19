@@ -8877,7 +8877,7 @@
       "width": 32,
       "height": 28,
       "primary_tileset": "gTileset_General",
-      "secondary_tileset": "gTileset_Rustboro",
+      "secondary_tileset": "gTileset_UbeCity",
       "border_filepath": "data/layouts/UbeCity/border.bin",
       "blockdata_filepath": "data/layouts/UbeCity/map.bin",
       "layout_version": "emerald"

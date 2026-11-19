@@ -34,7 +34,7 @@ STATE = os.path.join(HERE, "tiksi_people.json")
 JAGGED_MOUND = [[0x0668, 0x0669, 0x066A], [0x0678, 0x0256, 0x067A], [0x0674, 0x025E, 0x0674]]   # Jagged Pass (16,18)
 MOUND_DOOR = (1, 2)
 MOUTH_DOOR = (1, 3)
-CLOSED = {"UbeCity": [(20, 7)], "TanglynTown": [(5, 5), (6, 5)]}     # Silph office, Mural Hall (approved)
+CLOSED = {"UbeCity": [(22, 9)], "TanglynTown": [(5, 5), (6, 5)]}     # Silph office, Mural Hall (approved)
 MART_DOOR = 0x041
 # mouths moved elsewhere: where they were, and the approved map's blocks there (aefd62456c)
 GONE = {("DrakeBaseCamp", "MtDrakeSummit"): ((9, 7), [[12913, 12913, 12913], [12913, 12913, 12913], [1657, 1657, 1657]]),

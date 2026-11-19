@@ -81,6 +81,9 @@ const u16 gMetatileAttributes_HawkerCentre[] = INCBIN_U16("data/tilesets/seconda
 const u16 gMetatiles_TanobyDelta[] = INCBIN_U16("data/tilesets/secondary/tanoby_delta/metatiles.bin");
 const u16 gMetatileAttributes_TanobyDelta[] = INCBIN_U16("data/tilesets/secondary/tanoby_delta/metatile_attributes.bin");
 
+const u16 gMetatiles_UbeCity[] = INCBIN_U16("data/tilesets/secondary/ube_city/metatiles.bin");
+const u16 gMetatileAttributes_UbeCity[] = INCBIN_U16("data/tilesets/secondary/ube_city/metatile_attributes.bin");
+
 const u16 gMetatiles_TosaPort[] = INCBIN_U16("data/tilesets/secondary/tosa_port/metatiles.bin");
 const u16 gMetatileAttributes_TosaPort[] = INCBIN_U16("data/tilesets/secondary/tosa_port/metatile_attributes.bin");
 
