@@ -4837,8 +4837,22 @@ Level: 12
 Oddish
 Level: 12
 
-Roselia
+Bellsprout
+Level: 12
+
+Petilil
+Level: 13
+
+Iyepure
+Level: 13
+
+Roselia @ Miracle Seed
 Level: 14
+Ability: Natural Cure
+- Mega Drain
+- Leech Seed
+- Stun Spore
+- Poison Sting
 
 === TRAINER_LEADER_MERU ===
 Name: Meru
@@ -4855,8 +4869,22 @@ Level: 28
 Meditite
 Level: 28
 
-Hariyama
+Mienfoo
+Level: 28
+
+Crabrawler
+Level: 29
+
+Hawlucha
+Level: 29
+
+Hariyama @ Black Belt
 Level: 30
+Ability: Thick Fat
+- Fake Out
+- Force Palm
+- Knock Off
+- Bulk Up
 
 === TRAINER_LEADER_MO ===
 Name: Mo
@@ -4870,14 +4898,29 @@ AI: Basic Trainer
 Manectric
 Level: 46
 
-Magneton
-Level: 46
-
 Electabuzz
 Level: 46
 
 Raichu
+Level: 47
+
+Kilowattrel
+Level: 47
+
+SPECIES_ROTOM_FAN
+Level: 47
+- Air Slash
+- Thunderbolt
+- Confuse Ray
+- Substitute
+
+Magnezone @ Magnet
 Level: 48
+Ability: Sturdy
+- Thunderbolt
+- Flash Cannon
+- Thunder Wave
+- Tri Attack
 
 === TRAINER_LEADER_MARIA ===
 Name: Maria
@@ -4926,8 +4969,26 @@ Level: 23
 Vigoroth
 Level: 23
 
-Swellow
+Oinkologne
+Level: 24
+
+Dunsparce
+Level: 24
+
+Komala @ Sitrus Berry
+Level: 24
+- Slam
+- Yawn
+- Defense Curl
+- Rollout
+
+Swellow @ Silk Scarf
 Level: 25
+Ability: Guts
+- Facade
+- Aerial Ace
+- Quick Attack
+- Double Team
 
 === TRAINER_LEADER_MARINA ===
 Name: Marina
@@ -4938,14 +4999,28 @@ Music: Female
 Double Battle: No
 AI: Basic Trainer
 
-Marill
-Level: 18
-
 Wingull
 Level: 18
 
-Lombre
+Marill
+Level: 18
+
+Tentacool
+Level: 18
+
+Finizen
+Level: 19
+
+Torpesquid
+Level: 19
+
+Wishiwashi @ Mystic Water
 Level: 20
+Ability: Schooling
+- Brine
+- Water Pulse
+- Tearful Look
+- Beat Up
 
 === TRAINER_LEADER_TORK ===
 Name: Tork
@@ -4956,14 +5031,28 @@ Music: Male
 Double Battle: No
 AI: Basic Trainer
 
-Whiscash
-Level: 33
-
 Gligar
 Level: 33
 
+Stunfisk
+Level: 33
+
+Gastrodon
+Level: 34
+
+Krokorok
+Level: 34
+
 Quagsire
+Level: 34
+
+Whiscash @ Soft Sand
 Level: 35
+Ability: Oblivious
+- Earthquake
+- Muddy Water
+- Zen Headbutt
+- Amnesia
 
 === TRAINER_LEADER_FREA ===
 Name: Frea
@@ -4974,14 +5063,32 @@ Music: Female
 Double Battle: No
 AI: Basic Trainer
 
-Snorunt
-Level: 38
-
 Sneasel
 Level: 38
 
+Vanillish
+Level: 38
+
+Delibird
+Level: 38
+- Present
+- Drill Peck
+- Ice Punch
+- Icy Wind
+
+Pinguin
+Level: 39
+
 Sealeo
+Level: 39
+
+Avalugg @ Never-Melt Ice
 Level: 40
+Ability: Sturdy
+- Avalanche
+- Crunch
+- Iron Defense
+- Recover
 
 === TRAINER_JERRY_1 ===
 Name: Jerry
