@@ -770,6 +770,43 @@
 #define METATILE_Petalburg_Door_Littleroot  0x248
 #define METATILE_Petalburg_Door_Oldale      0x287
 
+// gTileset_Petalburg: rail + level-crossing kit (dev_scripts/rail_tileset/install_area_kit.py)
+#define METATILE_Petalburg_CrossingSign_Top                0x2B0
+#define METATILE_Petalburg_CrossingBarrierE_RaisedTop      0x2B2
+#define METATILE_Petalburg_CrossingBarrierW_RaisedTop      0x2B5
+#define METATILE_Petalburg_CrossingSign_Bottom             0x2B8
+#define METATILE_Petalburg_CrossingBarrierE_RaisedMid      0x2BA
+#define METATILE_Petalburg_CrossingBarrierW_RaisedMid      0x2BD
+#define METATILE_Petalburg_CrossingBarrierE_Up             0x2C2
+#define METATILE_Petalburg_CrossingBarrierW_Up             0x2C5
+#define METATILE_Petalburg_CrossingBarrierE_Down           0x2C8
+#define METATILE_Petalburg_CrossingBarrierE_Arm1_Grass     0x2C9
+#define METATILE_Petalburg_CrossingBarrierE_Arm2_Grass     0x2CA
+#define METATILE_Petalburg_CrossingBarrierE_Arm3_Grass     0x2CB
+#define METATILE_Petalburg_CrossingBarrierW_Arm3_Grass     0x2CC
+#define METATILE_Petalburg_CrossingBarrierW_Arm2_Grass     0x2CD
+#define METATILE_Petalburg_CrossingBarrierW_Arm1_Grass     0x2CE
+#define METATILE_Petalburg_CrossingBarrierW_Down           0x2CF
+#define METATILE_Petalburg_CrossingBarrierE_Arm1_PathLeft  0x2D1
+#define METATILE_Petalburg_CrossingBarrierE_Arm2_PathLeft  0x2D2
+#define METATILE_Petalburg_CrossingBarrierE_Arm3_PathLeft  0x2D3
+#define METATILE_Petalburg_CrossingBarrierW_Arm3_PathLeft  0x2D4
+#define METATILE_Petalburg_CrossingBarrierW_Arm2_PathLeft  0x2D5
+#define METATILE_Petalburg_CrossingBarrierW_Arm1_PathLeft  0x2D6
+#define METATILE_Petalburg_CrossingBarrierE_Arm1_PathMid   0x2D9
+#define METATILE_Petalburg_CrossingBarrierE_Arm2_PathMid   0x2DA
+#define METATILE_Petalburg_CrossingBarrierE_Arm3_PathMid   0x2DB
+#define METATILE_Petalburg_CrossingBarrierW_Arm3_PathMid   0x2DC
+#define METATILE_Petalburg_CrossingBarrierW_Arm2_PathMid   0x2DD
+#define METATILE_Petalburg_CrossingBarrierW_Arm1_PathMid   0x2DE
+#define METATILE_Petalburg_CrossingBarrierE_Arm1_PathRight 0x2E1
+#define METATILE_Petalburg_CrossingBarrierE_Arm2_PathRight 0x2E2
+#define METATILE_Petalburg_CrossingBarrierE_Arm3_PathRight 0x2E3
+#define METATILE_Petalburg_CrossingBarrierW_Arm3_PathRight 0x2E4
+#define METATILE_Petalburg_CrossingBarrierW_Arm2_PathRight 0x2E5
+#define METATILE_Petalburg_CrossingBarrierW_Arm1_PathRight 0x2E6
+// end Petalburg rail kit
+
 // gTileset_PetalburgGym
 #define METATILE_PetalburgGym_Door                0x224
 #define METATILE_PetalburgGym_RoomEntrance_Left   0x210

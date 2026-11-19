@@ -404,6 +404,11 @@ def preview(tiles_im, meta, outdir, scale=3):
 
 def main(argv):
     dry = "--dry-run" in argv
+    if not dry and "--force-general" not in argv:
+        raise SystemExit("Retired: the Centre/Mart rebuild (ba72603f61) reused TILE_SLOTS and the METATILES slots in "
+                         "gTileset_General, so installing here would overwrite those buildings. Use "
+                         "install_area_kit.py (rails + crossing signs in an area tileset). The pieces "
+                         "defined here are still the art source for it.")
     P = build_pieces()
     bank, packed = pack(P)
     tiles_im, meta, attr = install(bank, packed, dry)
