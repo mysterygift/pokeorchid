@@ -230,6 +230,7 @@ gStdScripts_End::
 	.include "data/maps/DampPath/scripts.inc"
 	.include "data/maps/SouthTosaReserve2/scripts.inc"
 	.include "data/maps/SouthTosaReserve3/scripts.inc"
+	.include "data/maps/SouthTosaReserve4/scripts.inc"
 	.include "data/maps/NorthTosaReserve/scripts.inc"
 	.include "data/maps/EastTosaReserve/scripts.inc"
 	.include "data/maps/MtBatok_1F/scripts.inc"
