@@ -1,0 +1,5 @@
+mapscripts JuranCity_House2_MapScripts {}
+
+script JuranCity_House2_EventScript_Npc1 {
+    msgbox(format("The hotels look lovely from the outside. I clean the rooms, so I know better."), MSGBOX_NPC)
+}

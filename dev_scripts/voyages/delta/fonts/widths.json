@@ -1,0 +1,14 @@
+{
+ "code": "0x18",
+ "widths": {
+  "latin_normal": 6,
+  "latin_short": 6,
+  "latin_narrow": 5,
+  "latin_narrower": 4,
+  "latin_small": 5,
+  "latin_small_narrow": 5,
+  "latin_small_narrower": 4,
+  "latin_short_narrow": 5,
+  "latin_short_narrower": 4
+ }
+}

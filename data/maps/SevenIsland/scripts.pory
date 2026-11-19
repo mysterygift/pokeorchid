@@ -1,0 +1,22 @@
+mapscripts SevenIsland_MapScripts {
+    MAP_SCRIPT_ON_TRANSITION {
+        setflag(FLAG_VISITED_SEVEN_ISLAND)
+    }
+}
+
+script SevenIsland_EventScript_SwordsDanceTutor {
+    msgbox(format("Seven Island is the last stop. Past the canyon, there are only the old ruins."), MSGBOX_NPC)
+}
+
+script SevenIsland_EventScript_OldWoman {
+    msgbox(format("Tanoby Ruins hold chambers older than anyone remembers. They're all sealed now."), MSGBOX_NPC)
+}
+
+script SevenIsland_EventScript_Scientist {
+    msgbox(format("I study the Unown that live in the ruins. They're shy around visitors."), MSGBOX_NPC)
+}
+
+script SevenIsland_EventScript_IslandSign {
+    msgbox(format("SEVEN ISLAND\n"
+        "Quest Island. Sevault Canyon to the south."), MSGBOX_SIGN)
+}

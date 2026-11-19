@@ -1,0 +1,939 @@
+{
+ "OneIsland": {
+  "kind": "outdoor",
+  "layout": "LAYOUT_ONE_ISLAND",
+  "pair": [
+   "gTileset_General",
+   "gTileset_SeviiIslands"
+  ],
+  "size": [
+   24,
+   20
+  ],
+  "notes": [
+   "warps to maps not in this export (Centres/Marts = TelokTown clones, or out of scope): MAP_ONE_ISLAND_POKEMON_CENTER_1F"
+  ]
+ },
+ "OneIsland_KindleRoad": {
+  "kind": "outdoor",
+  "layout": "LAYOUT_ONE_ISLAND_KINDLE_ROAD",
+  "pair": [
+   "gTileset_General",
+   "gTileset_SeviiIslands"
+  ],
+  "size": [
+   24,
+   140
+  ],
+  "notes": []
+ },
+ "OneIsland_TreasureBeach": {
+  "kind": "outdoor",
+  "layout": "LAYOUT_ONE_ISLAND_TREASURE_BEACH",
+  "pair": [
+   "gTileset_General",
+   "gTileset_SeviiIslands"
+  ],
+  "size": [
+   24,
+   40
+  ],
+  "notes": []
+ },
+ "MtEmber_Exterior": {
+  "kind": "outdoor",
+  "layout": "LAYOUT_MT_EMBER_EXTERIOR",
+  "pair": [
+   "gTileset_General",
+   "gTileset_Lavaridge"
+  ],
+  "size": [
+   57,
+   54
+  ],
+  "notes": []
+ },
+ "MtEmber_Summit": {
+  "kind": "outdoor",
+  "layout": "LAYOUT_MT_EMBER_SUMMIT",
+  "pair": [
+   "gTileset_General",
+   "gTileset_Lavaridge"
+  ],
+  "size": [
+   19,
+   22
+  ],
+  "notes": []
+ },
+ "TwoIsland": {
+  "kind": "outdoor",
+  "layout": "LAYOUT_TWO_ISLAND",
+  "pair": [
+   "gTileset_General",
+   "gTileset_SeviiIslands"
+  ],
+  "size": [
+   48,
+   20
+  ],
+  "notes": [
+   "warps to maps not in this export (Centres/Marts = TelokTown clones, or out of scope): MAP_TWO_ISLAND_JOYFUL_GAME_CORNER, MAP_TWO_ISLAND_POKEMON_CENTER_1F"
+  ]
+ },
+ "TwoIsland_CapeBrink": {
+  "kind": "outdoor",
+  "layout": "LAYOUT_TWO_ISLAND_CAPE_BRINK",
+  "pair": [
+   "gTileset_General",
+   "gTileset_SeviiIslands"
+  ],
+  "size": [
+   24,
+   40
+  ],
+  "notes": []
+ },
+ "ThreeIsland": {
+  "kind": "outdoor",
+  "layout": "LAYOUT_THREE_ISLAND",
+  "pair": [
+   "gTileset_General",
+   "gTileset_SeviiIslands"
+  ],
+  "size": [
+   24,
+   40
+  ],
+  "notes": [
+   "warps to maps not in this export (Centres/Marts = TelokTown clones, or out of scope): MAP_THREE_ISLAND_MART, MAP_THREE_ISLAND_POKEMON_CENTER_1F"
+  ]
+ },
+ "ThreeIsland_BondBridge": {
+  "kind": "outdoor",
+  "layout": "LAYOUT_THREE_ISLAND_BOND_BRIDGE",
+  "pair": [
+   "gTileset_General",
+   "gTileset_SeviiIslands"
+  ],
+  "size": [
+   96,
+   20
+  ],
+  "notes": []
+ },
+ "ThreeIsland_Port": {
+  "kind": "outdoor",
+  "layout": "LAYOUT_THREE_ISLAND_PORT",
+  "pair": [
+   "gTileset_General",
+   "gTileset_SeviiIslands"
+  ],
+  "size": [
+   48,
+   20
+  ],
+  "notes": []
+ },
+ "ThreeIsland_BerryForest": {
+  "kind": "outdoor",
+  "layout": "LAYOUT_THREE_ISLAND_BERRY_FOREST",
+  "pair": [
+   "gTileset_General",
+   "gTileset_SeviiIslands"
+  ],
+  "size": [
+   57,
+   47
+  ],
+  "notes": []
+ },
+ "FourIsland": {
+  "kind": "outdoor",
+  "layout": "LAYOUT_FOUR_ISLAND",
+  "pair": [
+   "gTileset_General",
+   "gTileset_SeviiIslands"
+  ],
+  "size": [
+   48,
+   40
+  ],
+  "notes": [
+   "FRLG-only graphics left (invisible in Emerald, pick a stand-in): OBJ_EVENT_GFX_BLUE at (8,25)",
+   "warps to maps not in this export (Centres/Marts = TelokTown clones, or out of scope): MAP_FOUR_ISLAND_MART, MAP_FOUR_ISLAND_POKEMON_CENTER_1F"
+  ]
+ },
+ "FiveIsland": {
+  "kind": "outdoor",
+  "layout": "LAYOUT_FIVE_ISLAND",
+  "pair": [
+   "gTileset_General",
+   "gTileset_SeviiIslands"
+  ],
+  "size": [
+   24,
+   20
+  ],
+  "notes": [
+   "connections dropped (map not built yet): MAP_FIVE_ISLAND_WATER_LABYRINTH",
+   "warps to maps not in this export (Centres/Marts = TelokTown clones, or out of scope): MAP_FIVE_ISLAND_POKEMON_CENTER_1F"
+  ]
+ },
+ "FiveIsland_Meadow": {
+  "kind": "outdoor",
+  "layout": "LAYOUT_FIVE_ISLAND_MEADOW",
+  "pair": [
+   "gTileset_General",
+   "gTileset_SeviiIslands"
+  ],
+  "size": [
+   24,
+   40
+  ],
+  "notes": []
+ },
+ "FiveIsland_MemorialPillar": {
+  "kind": "outdoor",
+  "layout": "LAYOUT_FIVE_ISLAND_MEMORIAL_PILLAR",
+  "pair": [
+   "gTileset_General",
+   "gTileset_SeviiIslands"
+  ],
+  "size": [
+   24,
+   60
+  ],
+  "notes": []
+ },
+ "SixIsland": {
+  "kind": "outdoor",
+  "layout": "LAYOUT_SIX_ISLAND",
+  "pair": [
+   "gTileset_General",
+   "gTileset_SeviiIslands"
+  ],
+  "size": [
+   24,
+   30
+  ],
+  "notes": [
+   "warps to maps not in this export (Centres/Marts = TelokTown clones, or out of scope): MAP_SIX_ISLAND_MART, MAP_SIX_ISLAND_POKEMON_CENTER_1F"
+  ]
+ },
+ "SixIsland_WaterPath": {
+  "kind": "outdoor",
+  "layout": "LAYOUT_SIX_ISLAND_WATER_PATH",
+  "pair": [
+   "gTileset_General",
+   "gTileset_SeviiIslands"
+  ],
+  "size": [
+   24,
+   100
+  ],
+  "notes": [
+   "connections dropped (map not built yet): MAP_SIX_ISLAND_GREEN_PATH"
+  ]
+ },
+ "SixIsland_RuinValley": {
+  "kind": "outdoor",
+  "layout": "LAYOUT_SIX_ISLAND_RUIN_VALLEY",
+  "pair": [
+   "gTileset_General",
+   "gTileset_SeviiIslands"
+  ],
+  "size": [
+   48,
+   40
+  ],
+  "notes": []
+ },
+ "SevenIsland": {
+  "kind": "outdoor",
+  "layout": "LAYOUT_SEVEN_ISLAND",
+  "pair": [
+   "gTileset_General",
+   "gTileset_SeviiIslands"
+  ],
+  "size": [
+   24,
+   20
+  ],
+  "notes": [
+   "connections dropped (map not built yet): MAP_SEVEN_ISLAND_TRAINER_TOWER",
+   "warps to maps not in this export (Centres/Marts = TelokTown clones, or out of scope): MAP_SEVEN_ISLAND_MART, MAP_SEVEN_ISLAND_POKEMON_CENTER_1F"
+  ]
+ },
+ "SevenIsland_SevaultCanyon_Entrance": {
+  "kind": "outdoor",
+  "layout": "LAYOUT_SEVEN_ISLAND_SEVAULT_CANYON_ENTRANCE",
+  "pair": [
+   "gTileset_General",
+   "gTileset_SeviiIslands"
+  ],
+  "size": [
+   24,
+   40
+  ],
+  "notes": []
+ },
+ "SevenIsland_SevaultCanyon": {
+  "kind": "outdoor",
+  "layout": "LAYOUT_SEVEN_ISLAND_SEVAULT_CANYON",
+  "pair": [
+   "gTileset_General",
+   "gTileset_SeviiIslands"
+  ],
+  "size": [
+   24,
+   80
+  ],
+  "notes": []
+ },
+ "SevenIsland_TanobyRuins": {
+  "kind": "outdoor",
+  "layout": "LAYOUT_SEVEN_ISLAND_TANOBY_RUINS",
+  "pair": [
+   "gTileset_General",
+   "gTileset_TanobyDelta"
+  ],
+  "size": [
+   144,
+   20
+  ],
+  "notes": []
+ },
+ "SeviiSeaRouteA": {
+  "kind": "sea route (new)",
+  "layout": "LAYOUT_SEVII_SEA_ROUTE_A",
+  "pair": [
+   "gTileset_General",
+   "gTileset_SeviiIslands"
+  ],
+  "notes": [
+   "invented Surf route (user decision); MAPSEC_SEVII_SEA_ROUTE_A is a NEW region-map section to add; item flags are placeholders (reuse unreachable vanilla item flags, see memory)"
+  ]
+ },
+ "SeviiSeaRouteB": {
+  "kind": "sea route (new)",
+  "layout": "LAYOUT_SEVII_SEA_ROUTE_B",
+  "pair": [
+   "gTileset_General",
+   "gTileset_SeviiIslands"
+  ],
+  "notes": [
+   "invented Surf route (user decision); MAPSEC_SEVII_SEA_ROUTE_B is a NEW region-map section to add; item flags are placeholders (reuse unreachable vanilla item flags, see memory)"
+  ]
+ },
+ "SeviiSeaRouteC": {
+  "kind": "sea route (new)",
+  "layout": "LAYOUT_SEVII_SEA_ROUTE_C",
+  "pair": [
+   "gTileset_General",
+   "gTileset_SeviiIslands"
+  ],
+  "notes": [
+   "invented Surf route (user decision); MAPSEC_SEVII_SEA_ROUTE_C is a NEW region-map section to add; item flags are placeholders (reuse unreachable vanilla item flags, see memory)"
+  ]
+ },
+ "SeviiSeaRouteD": {
+  "kind": "sea route (new)",
+  "layout": "LAYOUT_SEVII_SEA_ROUTE_D",
+  "pair": [
+   "gTileset_General",
+   "gTileset_SeviiIslands"
+  ],
+  "notes": [
+   "invented Surf route (user decision); MAPSEC_SEVII_SEA_ROUTE_D is a NEW region-map section to add; item flags are placeholders (reuse unreachable vanilla item flags, see memory)"
+  ]
+ },
+ "FourIsland_IcefallCave_Entrance": {
+  "kind": "cave (icefall_translate)",
+  "layout": "LAYOUT_FOUR_ISLAND_ICEFALL_CAVE_ENTRANCE",
+  "pair": [
+   "gTileset_General",
+   "gTileset_Cave"
+  ],
+  "notes": []
+ },
+ "FourIsland_IcefallCave_1F": {
+  "kind": "cave (icefall_translate)",
+  "layout": "LAYOUT_FOUR_ISLAND_ICEFALL_CAVE_1F",
+  "pair": [
+   "gTileset_General",
+   "gTileset_Cave"
+  ],
+  "notes": []
+ },
+ "FourIsland_IcefallCave_B1F": {
+  "kind": "cave (icefall_translate)",
+  "layout": "LAYOUT_FOUR_ISLAND_ICEFALL_CAVE_B1F",
+  "pair": [
+   "gTileset_General",
+   "gTileset_Cave"
+  ],
+  "notes": []
+ },
+ "FourIsland_IcefallCave_Back": {
+  "kind": "cave (icefall_translate)",
+  "layout": "LAYOUT_FOUR_ISLAND_ICEFALL_CAVE_BACK",
+  "pair": [
+   "gTileset_General",
+   "gTileset_Cave"
+  ],
+  "notes": []
+ },
+ "OneIsland_House1": {
+  "kind": "interior (frlg_interiors)",
+  "layout": "LAYOUT_HOUSE3_FRLG",
+  "pair": [
+   "gTileset_Building",
+   "gTileset_GenericBuilding"
+  ],
+  "notes": [
+   "Emerald exit mat is 2 wide: add a 2nd warp on the other mat half (see out/interiors/sevii_house3_spec.json)"
+  ]
+ },
+ "OneIsland_House2": {
+  "kind": "interior (frlg_interiors)",
+  "layout": "LAYOUT_HOUSE3_FRLG",
+  "pair": [
+   "gTileset_Building",
+   "gTileset_GenericBuilding"
+  ],
+  "notes": [
+   "Emerald exit mat is 2 wide: add a 2nd warp on the other mat half (see out/interiors/sevii_house3_spec.json)"
+  ]
+ },
+ "TwoIsland_House": {
+  "kind": "interior (frlg_interiors)",
+  "layout": "LAYOUT_HOUSE3_FRLG",
+  "pair": [
+   "gTileset_Building",
+   "gTileset_GenericBuilding"
+  ],
+  "notes": [
+   "Emerald exit mat is 2 wide: add a 2nd warp on the other mat half (see out/interiors/sevii_house3_spec.json)"
+  ]
+ },
+ "TwoIsland_CapeBrink_House": {
+  "kind": "interior (frlg_interiors)",
+  "layout": "LAYOUT_HOUSE3_FRLG",
+  "pair": [
+   "gTileset_Building",
+   "gTileset_GenericBuilding"
+  ],
+  "notes": [
+   "Emerald exit mat is 2 wide: add a 2nd warp on the other mat half (see out/interiors/sevii_house3_spec.json)"
+  ]
+ },
+ "ThreeIsland_House2": {
+  "kind": "interior (frlg_interiors)",
+  "layout": "LAYOUT_HOUSE3_FRLG",
+  "pair": [
+   "gTileset_Building",
+   "gTileset_GenericBuilding"
+  ],
+  "notes": [
+   "Emerald exit mat is 2 wide: add a 2nd warp on the other mat half (see out/interiors/sevii_house3_spec.json)"
+  ]
+ },
+ "ThreeIsland_House3": {
+  "kind": "interior (frlg_interiors)",
+  "layout": "LAYOUT_HOUSE3_FRLG",
+  "pair": [
+   "gTileset_Building",
+   "gTileset_GenericBuilding"
+  ],
+  "notes": [
+   "Emerald exit mat is 2 wide: add a 2nd warp on the other mat half (see out/interiors/sevii_house3_spec.json)"
+  ]
+ },
+ "ThreeIsland_House4": {
+  "kind": "interior (frlg_interiors)",
+  "layout": "LAYOUT_HOUSE3_FRLG",
+  "pair": [
+   "gTileset_Building",
+   "gTileset_GenericBuilding"
+  ],
+  "notes": [
+   "Emerald exit mat is 2 wide: add a 2nd warp on the other mat half (see out/interiors/sevii_house3_spec.json)"
+  ]
+ },
+ "ThreeIsland_House5": {
+  "kind": "interior (frlg_interiors)",
+  "layout": "LAYOUT_HOUSE3_FRLG",
+  "pair": [
+   "gTileset_Building",
+   "gTileset_GenericBuilding"
+  ],
+  "notes": [
+   "Emerald exit mat is 2 wide: add a 2nd warp on the other mat half (see out/interiors/sevii_house3_spec.json)"
+  ]
+ },
+ "FourIsland_House1": {
+  "kind": "interior (frlg_interiors)",
+  "layout": "LAYOUT_HOUSE3_FRLG",
+  "pair": [
+   "gTileset_Building",
+   "gTileset_GenericBuilding"
+  ],
+  "notes": [
+   "Emerald exit mat is 2 wide: add a 2nd warp on the other mat half (see out/interiors/sevii_house3_spec.json)"
+  ]
+ },
+ "FourIsland_House2": {
+  "kind": "interior (frlg_interiors)",
+  "layout": "LAYOUT_HOUSE3_FRLG",
+  "pair": [
+   "gTileset_Building",
+   "gTileset_GenericBuilding"
+  ],
+  "notes": [
+   "Emerald exit mat is 2 wide: add a 2nd warp on the other mat half (see out/interiors/sevii_house3_spec.json)"
+  ]
+ },
+ "FiveIsland_House1": {
+  "kind": "interior (frlg_interiors)",
+  "layout": "LAYOUT_HOUSE3_FRLG",
+  "pair": [
+   "gTileset_Building",
+   "gTileset_GenericBuilding"
+  ],
+  "notes": [
+   "Emerald exit mat is 2 wide: add a 2nd warp on the other mat half (see out/interiors/sevii_house3_spec.json)"
+  ]
+ },
+ "FiveIsland_House2": {
+  "kind": "interior (frlg_interiors)",
+  "layout": "LAYOUT_HOUSE3_FRLG",
+  "pair": [
+   "gTileset_Building",
+   "gTileset_GenericBuilding"
+  ],
+  "notes": [
+   "Emerald exit mat is 2 wide: add a 2nd warp on the other mat half (see out/interiors/sevii_house3_spec.json)"
+  ]
+ },
+ "SixIsland_House": {
+  "kind": "interior (frlg_interiors)",
+  "layout": "LAYOUT_HOUSE3_FRLG",
+  "pair": [
+   "gTileset_Building",
+   "gTileset_GenericBuilding"
+  ],
+  "notes": [
+   "Emerald exit mat is 2 wide: add a 2nd warp on the other mat half (see out/interiors/sevii_house3_spec.json)"
+  ]
+ },
+ "SixIsland_WaterPath_House2": {
+  "kind": "interior (frlg_interiors)",
+  "layout": "LAYOUT_HOUSE3_FRLG",
+  "pair": [
+   "gTileset_Building",
+   "gTileset_GenericBuilding"
+  ],
+  "notes": [
+   "Emerald exit mat is 2 wide: add a 2nd warp on the other mat half (see out/interiors/sevii_house3_spec.json)"
+  ]
+ },
+ "SevenIsland_SevaultCanyon_House": {
+  "kind": "interior (frlg_interiors)",
+  "layout": "LAYOUT_HOUSE3_FRLG",
+  "pair": [
+   "gTileset_Building",
+   "gTileset_GenericBuilding"
+  ],
+  "notes": [
+   "Emerald exit mat is 2 wide: add a 2nd warp on the other mat half (see out/interiors/sevii_house3_spec.json)"
+  ]
+ },
+ "SixIsland_WaterPath_House1": {
+  "kind": "interior (frlg_interiors)",
+  "layout": "LAYOUT_HOUSE4_FRLG",
+  "pair": [
+   "gTileset_Building",
+   "gTileset_GenericBuilding"
+  ],
+  "notes": [
+   "Emerald exit mat is 2 wide: add a 2nd warp on the other mat half (see out/interiors/six_island_water_path_house1_spec.json)"
+  ]
+ },
+ "ThreeIsland_House1": {
+  "kind": "interior (frlg_interiors)",
+  "layout": "LAYOUT_THREE_ISLAND_HOUSE1",
+  "pair": [
+   "gTileset_Building",
+   "gTileset_GenericBuilding"
+  ],
+  "notes": [
+   "Emerald exit mat is 2 wide: add a 2nd warp on the other mat half (see out/interiors/three_island_house1_spec.json)"
+  ]
+ },
+ "FourIsland_LoreleisHouse": {
+  "kind": "interior (frlg_interiors)",
+  "layout": "LAYOUT_FOUR_ISLAND_LORELEIS_HOUSE",
+  "pair": [
+   "gTileset_Building",
+   "gTileset_GenericBuilding"
+  ],
+  "notes": [
+   "Emerald exit mat is 2 wide: add a 2nd warp on the other mat half (see out/interiors/four_island_loreleis_house_spec.json)"
+  ]
+ },
+ "FourIsland_PokemonDayCare": {
+  "kind": "interior (frlg_interiors)",
+  "layout": "LAYOUT_FOUR_ISLAND_POKEMON_DAY_CARE",
+  "pair": [
+   "gTileset_Building",
+   "gTileset_PokemonDayCare"
+  ],
+  "notes": [
+   "Emerald exit mat is 2 wide: add a 2nd warp on the other mat half (see out/interiors/four_island_pokemon_day_care_spec.json)"
+  ]
+ },
+ "SevenIsland_House_Room1": {
+  "kind": "interior (frlg_interiors)",
+  "layout": "LAYOUT_SEVEN_ISLAND_HOUSE_ROOM1",
+  "pair": [
+   "gTileset_Building",
+   "gTileset_GenericBuilding"
+  ],
+  "notes": [
+   "Emerald exit mat is 2 wide: add a 2nd warp on the other mat half (see out/interiors/seven_island_house_room1_spec.json)"
+  ]
+ },
+ "SevenIsland_House_Room2": {
+  "kind": "interior (frlg_interiors)",
+  "layout": "LAYOUT_SEVEN_ISLAND_HOUSE_ROOM2",
+  "pair": [
+   "gTileset_Building",
+   "gTileset_GenericBuilding"
+  ],
+  "notes": []
+ },
+ "OneIsland_KindleRoad_EmberSpa": {
+  "kind": "cave (frlg_interiors)",
+  "layout": "LAYOUT_ONE_ISLAND_KINDLE_ROAD_EMBER_SPA",
+  "pair": [
+   "gTileset_General",
+   "gTileset_Lavaridge"
+  ],
+  "notes": []
+ },
+ "MtEmber_SummitPath_1F": {
+  "kind": "cave (frlg_interiors)",
+  "layout": "LAYOUT_MT_EMBER_SUMMIT_PATH_1F",
+  "pair": [
+   "gTileset_General",
+   "gTileset_Lavaridge"
+  ],
+  "notes": []
+ },
+ "MtEmber_SummitPath_2F": {
+  "kind": "cave (frlg_interiors)",
+  "layout": "LAYOUT_MT_EMBER_SUMMIT_PATH_2F",
+  "pair": [
+   "gTileset_General",
+   "gTileset_Lavaridge"
+  ],
+  "notes": []
+ },
+ "MtEmber_SummitPath_3F": {
+  "kind": "cave (frlg_interiors)",
+  "layout": "LAYOUT_MT_EMBER_SUMMIT_PATH_3F",
+  "pair": [
+   "gTileset_General",
+   "gTileset_Lavaridge"
+  ],
+  "notes": []
+ },
+ "MtEmber_RubyPath_1F": {
+  "kind": "cave (frlg_interiors)",
+  "layout": "LAYOUT_MT_EMBER_RUBY_PATH_1F",
+  "pair": [
+   "gTileset_General",
+   "gTileset_Lavaridge"
+  ],
+  "notes": []
+ },
+ "MtEmber_RubyPath_B1F": {
+  "kind": "cave (frlg_interiors)",
+  "layout": "LAYOUT_MT_EMBER_RUBY_PATH_B1F",
+  "pair": [
+   "gTileset_General",
+   "gTileset_Lavaridge"
+  ],
+  "notes": []
+ },
+ "MtEmber_RubyPath_B1F_Stairs": {
+  "kind": "cave (frlg_interiors)",
+  "layout": "LAYOUT_MT_EMBER_RUBY_PATH_B1F_STAIRS",
+  "pair": [
+   "gTileset_General",
+   "gTileset_Lavaridge"
+  ],
+  "notes": []
+ },
+ "MtEmber_RubyPath_B2F": {
+  "kind": "cave (frlg_interiors)",
+  "layout": "LAYOUT_MT_EMBER_RUBY_PATH_B2F",
+  "pair": [
+   "gTileset_General",
+   "gTileset_Lavaridge"
+  ],
+  "notes": []
+ },
+ "MtEmber_RubyPath_B2F_Stairs": {
+  "kind": "cave (frlg_interiors)",
+  "layout": "LAYOUT_MT_EMBER_RUBY_PATH_B2F_STAIRS",
+  "pair": [
+   "gTileset_General",
+   "gTileset_Lavaridge"
+  ],
+  "notes": []
+ },
+ "MtEmber_RubyPath_B3F": {
+  "kind": "cave (frlg_interiors)",
+  "layout": "LAYOUT_MT_EMBER_RUBY_PATH_B3F",
+  "pair": [
+   "gTileset_General",
+   "gTileset_Lavaridge"
+  ],
+  "notes": []
+ },
+ "MtEmber_RubyPath_B4F": {
+  "kind": "cave (frlg_interiors)",
+  "layout": "LAYOUT_MT_EMBER_RUBY_PATH_B4F",
+  "pair": [
+   "gTileset_General",
+   "gTileset_Lavaridge"
+  ],
+  "notes": []
+ },
+ "MtEmber_RubyPath_B5F": {
+  "kind": "cave (frlg_interiors)",
+  "layout": "LAYOUT_MT_EMBER_RUBY_PATH_B5F",
+  "pair": [
+   "gTileset_General",
+   "gTileset_Lavaridge"
+  ],
+  "notes": []
+ },
+ "ThreeIsland_DunsparceTunnel": {
+  "kind": "cave (frlg_interiors)",
+  "layout": "LAYOUT_THREE_ISLAND_DUNSPARCE_TUNNEL",
+  "pair": [
+   "gTileset_General",
+   "gTileset_Cave"
+  ],
+  "notes": []
+ },
+ "ThreeIsland_DunsparceTunnel_DugOut": {
+  "kind": "cave (frlg_interiors)",
+  "layout": "LAYOUT_THREE_ISLAND_DUNSPARCE_TUNNEL_DUG_OUT",
+  "pair": [
+   "gTileset_General",
+   "gTileset_Cave"
+  ]
+ },
+ "three_island_dunsparce_tunnel_dug_out_alt_rusturf": {
+  "kind": "alternative look, not exported",
+  "source": "dunsparce_dug_rusturf"
+ },
+ "SixIsland_DottedHole_1F": {
+  "kind": "cave (frlg_interiors)",
+  "layout": "LAYOUT_SIX_ISLAND_DOTTED_HOLE_1F",
+  "pair": [
+   "gTileset_General",
+   "gTileset_NavelRock"
+  ],
+  "notes": []
+ },
+ "SixIsland_DottedHole_B1F": {
+  "kind": "cave (frlg_interiors)",
+  "layout": "LAYOUT_SIX_ISLAND_DOTTED_HOLE_B1F",
+  "pair": [
+   "gTileset_General",
+   "gTileset_NavelRock"
+  ],
+  "notes": []
+ },
+ "SixIsland_DottedHole_B2F": {
+  "kind": "cave (frlg_interiors)",
+  "layout": "LAYOUT_SIX_ISLAND_DOTTED_HOLE_B2F",
+  "pair": [
+   "gTileset_General",
+   "gTileset_NavelRock"
+  ],
+  "notes": []
+ },
+ "SixIsland_DottedHole_B3F": {
+  "kind": "cave (frlg_interiors)",
+  "layout": "LAYOUT_SIX_ISLAND_DOTTED_HOLE_B3F",
+  "pair": [
+   "gTileset_General",
+   "gTileset_NavelRock"
+  ],
+  "notes": []
+ },
+ "SixIsland_DottedHole_B4F": {
+  "kind": "cave (frlg_interiors)",
+  "layout": "LAYOUT_SIX_ISLAND_DOTTED_HOLE_B4F",
+  "pair": [
+   "gTileset_General",
+   "gTileset_NavelRock"
+  ],
+  "notes": []
+ },
+ "SixIsland_DottedHole_SapphireRoom": {
+  "kind": "cave (frlg_interiors)",
+  "layout": "LAYOUT_SIX_ISLAND_DOTTED_HOLE_SAPPHIRE_ROOM",
+  "pair": [
+   "gTileset_General",
+   "gTileset_NavelRock"
+  ],
+  "notes": []
+ },
+ "SevenIsland_SevaultCanyon_TanobyKey": {
+  "kind": "cave (frlg_interiors)",
+  "layout": "LAYOUT_SEVEN_ISLAND_SEVAULT_CANYON_TANOBY_KEY",
+  "pair": [
+   "gTileset_General",
+   "gTileset_Cave"
+  ],
+  "notes": []
+ },
+ "seven_island_sevault_canyon_tanoby_key_alt_rusturf": {
+  "kind": "alternative look, not exported",
+  "source": "tanoby_key_rusturf"
+ },
+ "SevenIsland_TanobyRuins_MoneanChamber": {
+  "kind": "cave (frlg_interiors)",
+  "layout": "LAYOUT_SEVEN_ISLAND_TANOBY_RUINS_MONEAN_CHAMBER",
+  "pair": [
+   "gTileset_General",
+   "gTileset_Cave"
+  ],
+  "notes": []
+ },
+ "seven_island_tanoby_ruins_monean_chamber_alt_ruins": {
+  "kind": "alternative look, not exported",
+  "source": "tanoby_monean_ruins"
+ },
+ "SevenIsland_TanobyRuins_LiptooChamber": {
+  "kind": "cave (frlg_interiors)",
+  "layout": "LAYOUT_SEVEN_ISLAND_TANOBY_RUINS_LIPTOO_CHAMBER",
+  "pair": [
+   "gTileset_General",
+   "gTileset_Cave"
+  ],
+  "notes": []
+ },
+ "SevenIsland_TanobyRuins_WeepthChamber": {
+  "kind": "cave (frlg_interiors)",
+  "layout": "LAYOUT_SEVEN_ISLAND_TANOBY_RUINS_WEEPTH_CHAMBER",
+  "pair": [
+   "gTileset_General",
+   "gTileset_Cave"
+  ],
+  "notes": []
+ },
+ "SevenIsland_TanobyRuins_DilfordChamber": {
+  "kind": "cave (frlg_interiors)",
+  "layout": "LAYOUT_SEVEN_ISLAND_TANOBY_RUINS_DILFORD_CHAMBER",
+  "pair": [
+   "gTileset_General",
+   "gTileset_Cave"
+  ],
+  "notes": []
+ },
+ "SevenIsland_TanobyRuins_ScufibChamber": {
+  "kind": "cave (frlg_interiors)",
+  "layout": "LAYOUT_SEVEN_ISLAND_TANOBY_RUINS_SCUFIB_CHAMBER",
+  "pair": [
+   "gTileset_General",
+   "gTileset_Cave"
+  ],
+  "notes": []
+ },
+ "SevenIsland_TanobyRuins_RixyChamber": {
+  "kind": "cave (frlg_interiors)",
+  "layout": "LAYOUT_SEVEN_ISLAND_TANOBY_RUINS_RIXY_CHAMBER",
+  "pair": [
+   "gTileset_General",
+   "gTileset_Cave"
+  ],
+  "notes": []
+ },
+ "SevenIsland_TanobyRuins_ViapoisChamber": {
+  "kind": "cave (frlg_interiors)",
+  "layout": "LAYOUT_SEVEN_ISLAND_TANOBY_RUINS_VIAPOIS_CHAMBER",
+  "pair": [
+   "gTileset_General",
+   "gTileset_Cave"
+  ],
+  "notes": []
+ },
+ "OneIsland_Harbor": {
+  "kind": "harbour (existing LAYOUT_ISLAND_HARBOR)",
+  "layout": "LAYOUT_ISLAND_HARBOR",
+  "notes": [
+   "boat = Mr. Briney's boat (decision 1)"
+  ]
+ },
+ "TwoIsland_Harbor": {
+  "kind": "harbour (existing LAYOUT_ISLAND_HARBOR)",
+  "layout": "LAYOUT_ISLAND_HARBOR",
+  "notes": [
+   "boat = Mr. Briney's boat (decision 1)"
+  ]
+ },
+ "ThreeIsland_Harbor": {
+  "kind": "harbour (existing LAYOUT_ISLAND_HARBOR)",
+  "layout": "LAYOUT_ISLAND_HARBOR",
+  "notes": [
+   "boat = Mr. Briney's boat (decision 1)"
+  ]
+ },
+ "FourIsland_Harbor": {
+  "kind": "harbour (existing LAYOUT_ISLAND_HARBOR)",
+  "layout": "LAYOUT_ISLAND_HARBOR",
+  "notes": [
+   "boat = Mr. Briney's boat (decision 1)"
+  ]
+ },
+ "FiveIsland_Harbor": {
+  "kind": "harbour (existing LAYOUT_ISLAND_HARBOR)",
+  "layout": "LAYOUT_ISLAND_HARBOR",
+  "notes": [
+   "boat = Mr. Briney's boat (decision 1)"
+  ]
+ },
+ "SixIsland_Harbor": {
+  "kind": "harbour (existing LAYOUT_ISLAND_HARBOR)",
+  "layout": "LAYOUT_ISLAND_HARBOR",
+  "notes": [
+   "boat = Mr. Briney's boat (decision 1)"
+  ]
+ },
+ "SevenIsland_Harbor": {
+  "kind": "harbour (existing LAYOUT_ISLAND_HARBOR)",
+  "layout": "LAYOUT_ISLAND_HARBOR",
+  "notes": [
+   "boat = Mr. Briney's boat (decision 1)"
+  ]
+ },
+ "FiveIsland_RocketWarehouse": {
+  "kind": "interior (New Mauville tiles)",
+  "layout": "LAYOUT_FIVE_ISLAND_ROCKET_WAREHOUSE",
+  "pair": [
+   "gTileset_General",
+   "gTileset_BikeShop"
+  ],
+  "notes": [
+   "room is 30x28 (FRLG 29x27): exit mat moved to (24,27)/(25,27); Admin 2 moved to (26,11); see out/batch3/five_island_rocket_warehouse_spec.json"
+  ]
+ }
+}

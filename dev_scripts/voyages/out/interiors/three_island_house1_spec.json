@@ -1,0 +1,226 @@
+{
+ "size": [
+  11,
+  9
+ ],
+ "tileset": [
+  "gTileset_Building",
+  "gTileset_GenericBuilding"
+ ],
+ "ground": [
+  "raw",
+  1646
+ ],
+ "marks": [
+  [
+   4,
+   7,
+   "ISLAND",
+   "warp"
+  ],
+  [
+   3,
+   7,
+   "ISLAND",
+   "warp"
+  ],
+  [
+   3,
+   4,
+   "Lostelle",
+   "npc",
+   "lass"
+  ],
+  [
+   2,
+   1,
+   "DisplayC",
+   "sign"
+  ]
+ ],
+ "grid_raw": [
+  "066E 066F 0686 0687 0606 0605 0605 0605 0605 0605 0678",
+  "0676 0677 068E 068F 060E 060D 060D 060D 066C 066D 0680",
+  "327E 327F 3296 3297 3224 3224 3224 3224 3274 3275 3288",
+  "3239 3223 3223 3223 3223 3223 3223 3223 3223 3223 3223",
+  "3291 3223 3223 3223 322B 064A 064B 3223 3223 3223 3223",
+  "0699 3223 3223 3223 322B 0652 0653 3223 3223 3223 3223",
+  "3291 3223 3223 3223 3223 3223 3223 3223 3223 3223 3223",
+  "0699 3223 3223 0208 0209 3223 3223 3223 3223 3223 3223",
+  "0401 0401 0401 0401 0401 0401 0401 0401 0401 0401 0401"
+ ],
+ "report": {
+  "frlg_map": "ThreeIsland_House1",
+  "frlg_layout": "LAYOUT_THREE_ISLAND_HOUSE1",
+  "frlg_pair": [
+   "gTileset_BuildingFrlg",
+   "gTileset_Lab_Frlg"
+  ],
+  "maps": [
+   "THREE_ISLAND_HOUSE1"
+  ],
+  "pair": [
+   "gTileset_Building",
+   "gTileset_GenericBuilding"
+  ],
+  "size": [
+   11,
+   9
+  ],
+  "method": "hand class map; FRLG Lab_Frlg display case -> yellow glass cabinet (same walk cells)",
+  "warps": [
+   {
+    "x": 4,
+    "y": 7,
+    "dest_map": "MAP_THREE_ISLAND",
+    "dest_warp_id": "0",
+    "frlg": true
+   },
+   {
+    "x": 3,
+    "y": 7,
+    "dest_map": "MAP_THREE_ISLAND",
+    "dest_warp_id": "0",
+    "frlg": false,
+    "note": "2nd half of the Emerald exit mat"
+   }
+  ],
+  "objects": [
+   {
+    "x": 3,
+    "y": 4,
+    "frlg_gfx": "OBJ_EVENT_GFX_LITTLE_GIRL_FRLG",
+    "emerald_gfx": "OBJ_EVENT_GFX_LITTLE_GIRL",
+    "movement": "MOVEMENT_TYPE_FACE_RIGHT",
+    "script": "ThreeIsland_House1_EventScript_Lostelle"
+   }
+  ],
+  "bg_events": [
+   {
+    "type": "sign",
+    "x": 2,
+    "y": 1,
+    "elevation": 0,
+    "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+    "script": "ThreeIsland_House1_EventScript_DisplayCase"
+   }
+  ],
+  "coord_events": [],
+  "walk_diff": [],
+  "seams": [
+   [
+    1,
+    0,
+    "E",
+    "0x26F",
+    "0x286"
+   ],
+   [
+    3,
+    0,
+    "E",
+    "0x287",
+    "0x206"
+   ],
+   [
+    1,
+    1,
+    "E",
+    "0x277",
+    "0x28E"
+   ],
+   [
+    3,
+    1,
+    "E",
+    "0x28F",
+    "0x20E"
+   ],
+   [
+    7,
+    1,
+    "E",
+    "0x20D",
+    "0x26C"
+   ],
+   [
+    1,
+    2,
+    "E",
+    "0x27F",
+    "0x296"
+   ],
+   [
+    7,
+    2,
+    "E",
+    "0x224",
+    "0x274"
+   ],
+   [
+    0,
+    5,
+    "S",
+    "0x299",
+    "0x291"
+   ]
+  ],
+  "secondary_users": [
+   "LAYOUT_HOUSE1",
+   "LAYOUT_HOUSE2",
+   "LAYOUT_HOUSE3",
+   "LAYOUT_DEWFORD_TOWN_HALL",
+   "LAYOUT_HOUSE4",
+   "LAYOUT_VERDANTURF_TOWN_WANDAS_HOUSE",
+   "LAYOUT_PACIFIDLOG_TOWN_HOUSE1",
+   "LAYOUT_PACIFIDLOG_TOWN_HOUSE2",
+   "LAYOUT_FORTREE_CITY_HOUSE1",
+   "LAYOUT_FORTREE_CITY_HOUSE2",
+   "LAYOUT_ROUTE116_TUNNELERS_REST_HOUSE",
+   "LAYOUT_FORTREE_CITY_DECORATION_SHOP",
+   "LAYOUT_ROUTE124_DIVING_TREASURE_HUNTERS_HOUSE",
+   "LAYOUT_SAFARI_ZONE_REST_HOUSE"
+  ],
+  "notes": [
+   "Lostelle's display case (sign (2,1)) -> the yellow glass-front cabinet x2-3; FRLG x3 was wall (solid rows 0-1, open base row) so the walk cells are unchanged."
+  ],
+  "metatiles": [
+   "0x001",
+   "0x205",
+   "0x206",
+   "0x208",
+   "0x209",
+   "0x20D",
+   "0x20E",
+   "0x223",
+   "0x224",
+   "0x22B",
+   "0x239",
+   "0x24A",
+   "0x24B",
+   "0x252",
+   "0x253",
+   "0x26C",
+   "0x26D",
+   "0x26E",
+   "0x26F",
+   "0x274",
+   "0x275",
+   "0x276",
+   "0x277",
+   "0x278",
+   "0x27E",
+   "0x27F",
+   "0x280",
+   "0x286",
+   "0x287",
+   "0x288",
+   "0x28E",
+   "0x28F",
+   "0x291",
+   "0x296",
+   "0x297",
+   "0x299"
+  ]
+ }
+}

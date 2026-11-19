@@ -1,0 +1,69 @@
+mapscripts SevenIsland_SevaultCanyon_Entrance_MapScripts {}
+
+script SevenIsland_SevaultCanyon_Entrance_EventScript_Miah {
+    trainerbattle_single(TRAINER_SEVII_MIAH, SevenIsland_SevaultCanyon_Entrance_Text_MiahIntro, SevenIsland_SevaultCanyon_Entrance_Text_MiahDefeat)
+    msgbox(SevenIsland_SevaultCanyon_Entrance_Text_MiahPost, MSGBOX_AUTOCLOSE)
+}
+
+text SevenIsland_SevaultCanyon_Entrance_Text_MiahIntro {
+    format("A sweet scent drifts through the canyon...")
+}
+
+text SevenIsland_SevaultCanyon_Entrance_Text_MiahDefeat {
+    format("How bitter...")
+}
+
+text SevenIsland_SevaultCanyon_Entrance_Text_MiahPost {
+    format("The sunsets out here are something special.")
+}
+
+script SevenIsland_SevaultCanyon_Entrance_EventScript_Eve {
+    msgbox(format("The canyon ahead is steep. Get ready for a climb!"), MSGBOX_NPC)
+}
+
+script SevenIsland_SevaultCanyon_Entrance_EventScript_Jon {
+    msgbox(format("The Sevii Islands are so peaceful. I could stay here forever."), MSGBOX_NPC)
+}
+
+script SevenIsland_SevaultCanyon_Entrance_EventScript_Nicolas {
+    trainerbattle_single(TRAINER_SEVII_NICOLAS, SevenIsland_SevaultCanyon_Entrance_Text_NicolasIntro, SevenIsland_SevaultCanyon_Entrance_Text_NicolasDefeat)
+    msgbox(SevenIsland_SevaultCanyon_Entrance_Text_NicolasPost, MSGBOX_AUTOCLOSE)
+}
+
+text SevenIsland_SevaultCanyon_Entrance_Text_NicolasIntro {
+    format("Sevault Canyon is tough. Prove you're ready!")
+}
+
+text SevenIsland_SevaultCanyon_Entrance_Text_NicolasDefeat {
+    format("You'll do fine in there.")
+}
+
+text SevenIsland_SevaultCanyon_Entrance_Text_NicolasPost {
+    format("The canyon ahead is steep. Get ready for a climb!")
+}
+
+script SevenIsland_SevaultCanyon_Entrance_EventScript_Madeline {
+    trainerbattle_single(TRAINER_SEVII_MADELINE, SevenIsland_SevaultCanyon_Entrance_Text_MadelineIntro, SevenIsland_SevaultCanyon_Entrance_Text_MadelineDefeat)
+    msgbox(SevenIsland_SevaultCanyon_Entrance_Text_MadelinePost, MSGBOX_AUTOCLOSE)
+}
+
+text SevenIsland_SevaultCanyon_Entrance_Text_MadelineIntro {
+    format("Rangers patrol here. Let's see your skill!")
+}
+
+text SevenIsland_SevaultCanyon_Entrance_Text_MadelineDefeat {
+    format("Impressive work.")
+}
+
+text SevenIsland_SevaultCanyon_Entrance_Text_MadelinePost {
+    format("Hiking all day is tiring, but the views make it worth it.")
+}
+
+script SevenIsland_SevaultCanyon_Entrance_EventScript_Mason {
+    msgbox(format("The canyon ahead is steep. Get ready for a climb!"), MSGBOX_NPC)
+}
+
+script SevenIsland_SevaultCanyon_Entrance_EventScript_RouteSign {
+    msgbox(format("SEVAULT CANYON ENTRANCE\n"
+        "Tanoby Ruins lie beyond the canyon."), MSGBOX_SIGN)
+}

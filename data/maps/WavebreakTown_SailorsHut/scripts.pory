@@ -1,0 +1,19 @@
+mapscripts WavebreakTown_SailorsHut_MapScripts {
+    // After the Champion the Sailor waits at the dock with his boat (WavebreakTown), so he isn't home.
+    MAP_SCRIPT_ON_TRANSITION {
+        if (flag(FLAG_SYS_GAME_CLEAR)) {
+            setflag(FLAG_TEMP_1)
+        }
+    }
+}
+
+script WavebreakTown_SailorsHut_EventScript_Son {
+    lock
+    faceplayer
+    if (flag(FLAG_SYS_GAME_CLEAR)) {
+        msgbox(format("Dad's down at the dock with the boat. He says you know the secret words now!"))
+    } else {
+        msgbox(format("My dad sailed to islands nobody's ever heard of. He says they only open up if you know the secret words."))
+    }
+    release
+}

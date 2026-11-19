@@ -1,0 +1,6 @@
+newmoon (10, 7, 23, 1)
+  shot sinnoh_newmoon (10, 7, 23, 1)
+sinnoh_newmoon ok True {'mapsec': 170, 'cursor': (6, 4), 'head': (6, 4)}
+fullmoon (20, 7, 23, 3)
+  shot sinnoh_fullmoon (20, 7, 23, 3)
+sinnoh_fullmoon ok True {'mapsec': 183, 'cursor': (8, 3), 'head': (8, 3)}

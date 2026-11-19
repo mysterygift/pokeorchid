@@ -343,18 +343,24 @@ def metatile_defs():
 
 
 # ------------------------------------------------------------------ conversion
-def quadrant_to_tile(b, qx, qy, theme):
+def quadrant_to_tile(b, qx, qy, theme, transparent=False):
+    """theme: a THEME_PALS name or a tuple of palette slots to try in order.
+    transparent=True (top layers): undrawn pixels become index 0."""
     cols = {b.px[qy * 8 + y][qx * 8 + x] for y in range(8) for x in range(8)}
     if None in cols:
-        raise ValueError("undrawn pixel")
-    for slot in THEME_PALS[theme]:
+        if not transparent:
+            raise ValueError("undrawn pixel")
+        cols.discard(None)
+    slots = THEME_PALS[theme] if isinstance(theme, str) else theme
+    for slot in slots:
         pal = PALETTES[slot]
         if all(c in pal[1:] for c in cols):
             # index 0 is transparent: look colours up from index 1
-            tile = tuple(tuple(pal.index(b.px[qy * 8 + y][qx * 8 + x], 1) for x in range(8))
+            tile = tuple(tuple(0 if b.px[qy * 8 + y][qx * 8 + x] is None
+                               else pal.index(b.px[qy * 8 + y][qx * 8 + x], 1) for x in range(8))
                          for y in range(8))
             return slot, tile
-    raise ValueError(f"no palette holds {sorted(cols)}")
+    raise ValueError(f"no palette in {slots} holds {sorted(cols)}")
 
 
 def flips(tile):
@@ -396,7 +402,45 @@ def build():
         attrs.append((behaviour & 0xFF) | (layer << 12))
         labels.append(label)
     add_escalators(bank, metatiles, attrs, labels)
+    add_concourse(bank, metatiles, attrs, labels)
     return bank, metatiles, attrs, labels
+
+
+# ------------------------------------------------------------------ concourse kit (concourse.py)
+sys.path.insert(0, HERE)
+import concourse as CC  # noqa: E402
+
+PALETTES[11] = CC.PAL_FIXTURE
+PALETTES[12] = CC.PAL_CONCOURSE
+
+
+def encode(b, slots, transparent=False):
+    out = []
+    for qy in range(2):
+        for qx in range(2):
+            slot, tile = quadrant_to_tile(b, qx, qy, slots, transparent)
+            if transparent and not any(any(r) for r in tile):
+                out.append(0)
+                continue
+            idx, hf, vf = BANK.add(tile)
+            out.append((SECONDARY_TILE_BASE + idx) | (hf << 10) | (vf << 11) | (slot << 12))
+    return out
+
+
+def add_concourse(bank, metatiles, attrs, labels):
+    global BANK
+    BANK = bank
+    void_m, void_a = metatiles[0], attrs[0]
+    while SECONDARY_METATILE_BASE + len(metatiles) < CC.FIRST_ID:
+        metatiles.append(list(void_m))
+        attrs.append(void_a)
+        labels.append(None)
+    for label, slots, bottom_fn, top_fn, behaviour, layer in CC.concourse_defs(Block):
+        bottom = encode(bottom_fn(), slots)
+        top = encode(top_fn(), slots, transparent=True) if top_fn else [0, 0, 0, 0]
+        metatiles.append(bottom + top)
+        attrs.append((behaviour & 0xFF) | (layer << 12))
+        labels.append(label)
 
 
 # ------------------------------------------------------------------ escalators (Pokemon Center)
@@ -595,6 +639,87 @@ def paint_test_layout(labels, brick=False):
         f.write(struct.pack("<4H", *([void] * 4)))
 
 
+# ------------------------------------------------------------------ Tosa Port station layouts
+WALK, BLOCK = 0x3000, 0x0400        # walkable: elevation 3; blocked: collision 1
+
+# Tosa Port gatehouse (LAYOUT_TOSA_PORT_BRENDANS_HOUSE_1F), 14x11. One character per tile.
+# Floored with platform paving throughout. Paid area at the back left (x 0-3 rows 2-5) behind a
+# north-south gate line at
+# x 4 and a glass fence along row 6; a 2F-style DOWN escalator on the left wall (x 0-1, rows 3-5,
+# warp tile (1,4)) leads to the platform's UP escalator. The escalator metatiles expect paving B on
+# odd rows and A on even rows, hence rows 3-5.
+GATEHOUSE = [
+    "uuSuuABuuuuuuu",
+    "lllllEF({)llll",
+    "ppppT..[^]....",
+    "eeppGo.<=>....",
+    "eeqpTv.c_C....",
+    "eeppGooho.....",
+    "ffffT.v.......",
+    ".ss...v...ss..",
+    "......v.......",
+    ".ss...v...ss..",
+    "......MN......",
+]
+GATEHOUSE_ESC_TOP = 3
+TILE_KEY = {  # char -> (metatile label, walkable)
+    "u": ("Concourse_Wall_Upper", False), "l": ("Concourse_Wall_Lower", False),
+    "A": ("Concourse_Arch_Top_L", False), "B": ("Concourse_Arch_Top_R", False),
+    "E": ("Concourse_Arch_Exit_L", True), "F": ("Concourse_Arch_Exit_R", True),
+    "S": ("StationSign", False),
+    "v": ("Concourse_Guide_V", True), "h": ("Concourse_Guide_H", True),  # floor props: +_A/_B by row
+    "o": ("Concourse_Guide_Blister", True),
+    "(": ("Booth_Roof_L", False), "{": ("Booth_Roof_M", False), ")": ("Booth_Roof_R", False),
+    "[": ("Booth_Fascia_L", False), "^": ("Booth_Fascia_M", False), "]": ("Booth_Fascia_R", False),
+    "<": ("Booth_Facade_L", False), "=": ("Booth_Facade_M", False), ">": ("Booth_Facade_R", False),
+    "c": ("Booth_Counter_L", False), "_": ("Booth_Counter_M", False), "C": ("Booth_Counter_R", False),
+    "T": ("FareGate_Cabinet", False), "G": ("FareGate_Gate", False), "f": ("FareGate_Fence_H", False),
+    "s": ("Concourse_Seat", True),
+    "M": ("Concourse_ExitMat_L", True), "N": ("Concourse_ExitMat_R", True),
+}
+
+
+def write_layout(name, grid, w, h, labels):
+    d = os.path.join(ROOT, "data", "layouts", name)
+    with open(os.path.join(d, "map.bin"), "wb") as f:
+        f.write(struct.pack(f"<{w * h}H", *grid))
+    with open(os.path.join(d, "border.bin"), "wb") as f:
+        f.write(struct.pack("<4H", *([mid(labels, "Void") | BLOCK] * 4)))
+
+
+def paving_id(labels, y):
+    return mid(labels, "Paving_A" if y % 2 == 0 else "Paving_B")
+
+
+def paint_gatehouse(labels):
+    grid = []
+    for y, row in enumerate(GATEHOUSE):
+        for x, ch in enumerate(row):
+            if ch == "e":
+                grid.append(ESC_DOWN[y - GATEHOUSE_ESC_TOP][x])
+            elif ch in "p.":
+                grid.append(paving_id(labels, y) | WALK)
+            elif ch == "q":                        # beside the escalator: elevation 0 (3 -> 0 -> 4)
+                grid.append(paving_id(labels, y))
+            else:
+                name, walk = TILE_KEY[ch]
+                if name + "_A" in labels:              # floor prop: pick the paving parity of this row
+                    name += "_B" if y % 2 else "_A"
+                grid.append(mid(labels, name) | (WALK if walk else BLOCK))
+    write_layout("TosaPort_BrendansHouse_1F", grid, 14, 11, labels)
+
+
+def paint_tosa_port_platform(labels):
+    """LAYOUT_TOSA_PORT_BRENDANS_HOUSE_2F: the test platform with only the UP escalator (x 0-1,
+    rows 6-8, warp tile (1,7)); the down escalator's rows become paving."""
+    W, H = 20, 12
+    grid = list(struct.unpack(f"<{W * H}H", open(os.path.join(LAYOUT_DIR, "map.bin"), "rb").read()))
+    for y in range(ESC_DOWN_TOP, ESC_DOWN_TOP + 3):
+        for x in range(3):
+            grid[y * W + x] = paving_id(labels, y) | WALK
+    write_layout("TosaPort_BrendansHouse_2F", grid, W, H, labels)
+
+
 # ------------------------------------------------------------------ previews
 def sheet(metatiles, labels, scale=3):
     """Every metatile at `scale`x, straight from the generated data (round-trip check)."""
@@ -713,6 +838,10 @@ def main(argv):
     if "--paint-test-layout" in argv:
         paint_test_layout(labels, brick="--brick" in argv)
         print("painted LAYOUT_TRAIN_TEST_STATION")
+    if "--paint-tosa-port" in argv:
+        paint_gatehouse(labels)
+        paint_tosa_port_platform(labels)
+        print("painted LAYOUT_TOSA_PORT_BRENDANS_HOUSE_1F (gatehouse) and _2F (platform)")
     if "--previews" in argv:
         os.makedirs(OUT, exist_ok=True)
         sheet(metatiles, labels).save(os.path.join(OUT, "metatile_sheet_3x.png"))

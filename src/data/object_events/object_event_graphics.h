@@ -493,8 +493,15 @@ const u32 gObjectEventPic_Orchidist[] = INCGFX_U32("graphics/object_events/pics/
 const u32 gObjectEventPic_Recruit[] = INCGFX_U32("graphics/object_events/pics/people/recruit.png", ".4bpp", "-mwidth 2 -mheight 4");
 const u32 gObjectEventPic_PortWorker[] = INCGFX_U32("graphics/object_events/pics/people/port_worker.png", ".4bpp", "-mwidth 2 -mheight 4");
 const u32 gObjectEventPic_SchoolKidF[] = INCGFX_U32("graphics/object_events/pics/people/school_kid_f.png", ".4bpp", "-mwidth 2 -mheight 4");
+// Orchid Holon: Holon Lake stone sphere (the glowing palette is swapped in by Holon_SetSphereGlow)
+const u32 gObjectEventPic_HolonSphere[] = INCGFX_U32("graphics/object_events/pics/misc/holon_sphere.png", ".4bpp", "-mwidth 4 -mheight 4");
+const u16 gObjectEventPal_HolonSphere[] = INCGFX_U16("graphics/object_events/palettes/holon_sphere.pal", ".gbapal");
 const u32 gObjectEventPic_PokemonRangerM[] = INCGFX_U32("graphics/object_events/pics/people/pokemon_ranger_m.png", ".4bpp", "-mwidth 2 -mheight 4");
 const u32 gObjectEventPic_PokemonRangerF[] = INCGFX_U32("graphics/object_events/pics/people/pokemon_ranger_f.png", ".4bpp", "-mwidth 2 -mheight 4");
+const u32 gObjectEventPic_MartSign[] = INCGFX_U32("graphics/object_events/pics/misc/mart_sign.png", ".4bpp", "-mwidth 2 -mheight 4");
+const u32 gObjectEventPic_HolonResearcher[] = INCGFX_U32("graphics/object_events/pics/people/holon_researcher.png", ".4bpp", "-mwidth 2 -mheight 4");
+const u32 gObjectEventPic_Cynthia[] = INCGFX_U32("graphics/object_events/pics/people/cynthia.png", ".4bpp", "-mwidth 2 -mheight 4");
+const u32 gObjectEventPic_Faba[] = INCGFX_U32("graphics/object_events/pics/people/faba.png", ".4bpp", "-mwidth 2 -mheight 4");
 
 #if IS_FRLG
 

@@ -3829,7 +3829,8 @@ static void PrintEvolutionTargetSpeciesAndMethod(u8 taskId, enum Species species
                         break;
                     case REGION_KANTO: StringAppend(gStringVar4, COMPOUND_STRING("Kanto")); break;
                     case REGION_JOHTO: StringAppend(gStringVar4, COMPOUND_STRING("Johto")); break;
-                    case REGION_HOENN: StringAppend(gStringVar4, COMPOUND_STRING("Hoenn")); break;
+                    case REGION_HOENN: StringAppend(gStringVar4, COMPOUND_STRING("Tosa")); break;   // Orchid: REGION_TOSA
+                    case REGION_TIKSI: StringAppend(gStringVar4, COMPOUND_STRING("Tiksi")); break;
                     case REGION_SINNOH: StringAppend(gStringVar4, COMPOUND_STRING("Sinnoh")); break;
                     case REGION_UNOVA: StringAppend(gStringVar4, COMPOUND_STRING("Unova")); break;
                     case REGION_KALOS: StringAppend(gStringVar4, COMPOUND_STRING("Kalos")); break;

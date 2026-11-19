@@ -1,0 +1,12 @@
+mapscripts Route310_MapScripts {}
+
+script Route310_EventScript_PlaceholderSign {
+    msgbox(format("Route 310 Placeholder map."), MSGBOX_SIGN)
+}
+
+// --- route_people.py (generated) ---
+
+script Route310_EventScript_Route1 {
+    msgbox(format("I run this route every morning. Builds the legs!"), MSGBOX_NPC)
+}
+// --- end route_people.py ---

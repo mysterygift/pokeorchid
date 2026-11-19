@@ -676,9 +676,15 @@ string generate_map_constants_text(string groups_filepath, Json groups_data, vec
         old_map_group = current_map_group;
     }
 
-    for ( const auto &[map_value, map_id]: filtered_map_defines) {
-        text << "#define " << map_id << string(max_length - map_id.length(), ' ')
-             << "  " << map_value << "\n";
+    // Orchid: an enum rather than #defines, so preproc turns them into asm symbols and the `map`
+    // macro's .ifdef check accepts scripts that still name a deleted map (dead paths).
+    if (!filtered_map_defines.empty()) {
+        text << "enum\n{\n";
+        for ( const auto &[map_value, map_id]: filtered_map_defines) {
+            text << "    " << map_id << string(max_length - map_id.length(), ' ')
+                 << " = " << map_value << ",\n";
+        }
+        text << "};\n";
     }
 
     text << "\n#define MAP_GROUPS_COUNT " << group_num << "\n\n";
@@ -707,10 +713,11 @@ void clean_heal_locations(vector<string> &valid_map_ids)
     string line;
     while (std::getline(infile, line))
     {
-        if (std::regex_search(line, map_match, map_regex) && !deleted_flag) {
+        // Orchid fix: decide per entry. Before, an excluded respawn map whose respawn_npc was already "0"
+        // left the flag set, so the NEXT entry's LOCALID was zeroed (one more per build).
+        if (std::regex_search(line, map_match, map_regex)) {
             auto it = find(valid_map_ids.begin(), valid_map_ids.end(), map_match[1]);
-            if (it == valid_map_ids.end())
-                deleted_flag = true;
+            deleted_flag = (it == valid_map_ids.end());
         }
         if (deleted_flag && std::regex_search(line, npc_regex)) {
             deleted_flag = false;

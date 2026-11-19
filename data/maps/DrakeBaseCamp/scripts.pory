@@ -1,0 +1,33 @@
+raw `
+DrakeBaseCamp_MapScripts::
+	map_script MAP_SCRIPT_ON_TRANSITION, DrakeBaseCamp_OnTransition
+	.byte 0
+
+DrakeBaseCamp_OnTransition:
+	setflag FLAG_VISITED_DRAKE_BASE_CAMP
+	end
+
+DrakeBaseCamp_EventScript_Sign0::
+	msgbox DrakeBaseCamp_Text_Sign0, MSGBOX_SIGN
+	end
+
+DrakeBaseCamp_Text_Sign0:
+	.string "DRAKE BASE CAMP\n"
+	.string "The last stop before MT. DRAKE.$"
+
+`
+
+// --- tiksi_people.py (generated) ---
+
+script DrakeBaseCamp_EventScript_TiksiNpc1 {
+    msgbox(format("The peak of Mt. Drake is said to be home to an ancient dragon Pokémon. Nobody's climbed high enough to check."), MSGBOX_NPC)
+}
+
+script DrakeBaseCamp_EventScript_TiksiNpc2 {
+    msgbox(format("The old stories say this mountain was carved by beams of light from the maw of an ancient Pokémon."), MSGBOX_NPC)
+}
+
+script DrakeBaseCamp_EventScript_TiksiNpc3 {
+    msgbox(format("Some strangers in blue came through last week, heading up the mountain. Didn't say hello."), MSGBOX_NPC)
+}
+// --- end tiksi_people.py ---

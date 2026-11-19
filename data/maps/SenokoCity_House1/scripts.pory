@@ -1,0 +1,5 @@
+mapscripts SenokoCity_House1_MapScripts {}
+
+script SenokoCity_House1_EventScript_Npc1 {
+    msgbox(format("I climb turbines for a living. Magnemite keep sticking to my hard hat."), MSGBOX_NPC)
+}

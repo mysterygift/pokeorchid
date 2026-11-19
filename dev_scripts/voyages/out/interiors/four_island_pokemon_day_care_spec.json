@@ -1,0 +1,344 @@
+{
+ "size": [
+  12,
+  9
+ ],
+ "tileset": [
+  "gTileset_Building",
+  "gTileset_PokemonDayCare"
+ ],
+ "ground": [
+  "raw",
+  1544
+ ],
+ "marks": [
+  [
+   4,
+   7,
+   "ISLAND",
+   "warp"
+  ],
+  [
+   3,
+   7,
+   "ISLAND",
+   "warp"
+  ],
+  [
+   2,
+   2,
+   "DaycareWom",
+   "npc",
+   "old_woman"
+  ]
+ ],
+ "grid_raw": [
+  "0608 0635 0636 0637 0609 0609 060C 060D 0609 0609 060A 060F",
+  "0610 063D 063E 063F 0613 061C 0624 0615 0611 0611 0404 0617",
+  "3218 3226 3219 3226 061B 3207 3206 3206 3206 3206 320B 321F",
+  "0620 062E 0621 062E 0623 3207 3206 321E 3201 3201 3201 3201",
+  "361D 3206 3228 3206 3206 3233 3204 3230 0629 062A 3230 3204",
+  "0625 3201 3201 3201 3201 3201 3204 3230 0631 0632 3230 3204",
+  "361D 3201 3201 3201 3201 3201 3204 3204 3204 3204 3204 3204",
+  "0625 3201 3201 023B 023C 3201 3201 3201 3201 3201 3201 3201",
+  "F401 F401 F401 F401 F401 F401 F401 F401 F401 F401 F401 F401"
+ ],
+ "report": {
+  "frlg_map": "FourIsland_PokemonDayCare",
+  "frlg_layout": "LAYOUT_FOUR_ISLAND_POKEMON_DAY_CARE",
+  "frlg_pair": [
+   "gTileset_BuildingFrlg",
+   "gTileset_FanClubDaycare"
+  ],
+  "maps": [
+   "FOUR_ISLAND_POKEMON_DAY_CARE"
+  ],
+  "pair": [
+   "gTileset_Building",
+   "gTileset_PokemonDayCare"
+  ],
+  "size": [
+   12,
+   9
+  ],
+  "method": "vanilla LAYOUT_ROUTE117_POKEMON_DAY_CARE (same 12x9 room) rows 0-3 + FRLG's lower half: rug zone -> Emerald's indoor lawn with the vanilla table + stools",
+  "warps": [
+   {
+    "x": 4,
+    "y": 7,
+    "dest_map": "MAP_FOUR_ISLAND",
+    "dest_warp_id": "1",
+    "frlg": true
+   },
+   {
+    "x": 3,
+    "y": 7,
+    "dest_map": "MAP_FOUR_ISLAND",
+    "dest_warp_id": "1",
+    "frlg": false,
+    "note": "2nd half of the Emerald exit mat"
+   }
+  ],
+  "objects": [
+   {
+    "x": 2,
+    "y": 2,
+    "frlg_gfx": "OBJ_EVENT_GFX_OLD_WOMAN_FRLG",
+    "emerald_gfx": "OBJ_EVENT_GFX_OLD_WOMAN",
+    "movement": "MOVEMENT_TYPE_FACE_DOWN",
+    "script": "FourIsland_PokemonDayCare_EventScript_DaycareWoman"
+   }
+  ],
+  "bg_events": [],
+  "coord_events": [],
+  "walk_diff": [],
+  "seams": [
+   [
+    5,
+    1,
+    "S",
+    "0x21C",
+    "0x207"
+   ],
+   [
+    6,
+    1,
+    "S",
+    "0x224",
+    "0x206"
+   ],
+   [
+    7,
+    1,
+    "S",
+    "0x215",
+    "0x206"
+   ],
+   [
+    4,
+    2,
+    "E",
+    "0x21B",
+    "0x207"
+   ],
+   [
+    7,
+    2,
+    "S",
+    "0x206",
+    "0x21E"
+   ],
+   [
+    0,
+    3,
+    "S",
+    "0x220",
+    "0x21D"
+   ],
+   [
+    6,
+    3,
+    "S",
+    "0x206",
+    "0x204"
+   ],
+   [
+    7,
+    3,
+    "S",
+    "0x21E",
+    "0x230"
+   ],
+   [
+    8,
+    3,
+    "S",
+    "0x201",
+    "0x229"
+   ],
+   [
+    9,
+    3,
+    "S",
+    "0x201",
+    "0x22A"
+   ],
+   [
+    0,
+    4,
+    "E",
+    "0x21D",
+    "0x206"
+   ],
+   [
+    5,
+    4,
+    "E",
+    "0x233",
+    "0x204"
+   ],
+   [
+    6,
+    4,
+    "E",
+    "0x204",
+    "0x230"
+   ],
+   [
+    7,
+    4,
+    "E",
+    "0x230",
+    "0x229"
+   ],
+   [
+    9,
+    4,
+    "E",
+    "0x22A",
+    "0x230"
+   ],
+   [
+    10,
+    4,
+    "E",
+    "0x230",
+    "0x204"
+   ],
+   [
+    6,
+    5,
+    "E",
+    "0x204",
+    "0x230"
+   ],
+   [
+    8,
+    5,
+    "S",
+    "0x231",
+    "0x204"
+   ],
+   [
+    9,
+    5,
+    "E",
+    "0x232",
+    "0x230"
+   ],
+   [
+    9,
+    5,
+    "S",
+    "0x232",
+    "0x204"
+   ],
+   [
+    10,
+    5,
+    "E",
+    "0x230",
+    "0x204"
+   ],
+   [
+    6,
+    6,
+    "S",
+    "0x204",
+    "0x201"
+   ],
+   [
+    7,
+    6,
+    "S",
+    "0x204",
+    "0x201"
+   ],
+   [
+    8,
+    6,
+    "S",
+    "0x204",
+    "0x201"
+   ],
+   [
+    9,
+    6,
+    "S",
+    "0x204",
+    "0x201"
+   ],
+   [
+    10,
+    6,
+    "S",
+    "0x204",
+    "0x201"
+   ],
+   [
+    11,
+    6,
+    "S",
+    "0x204",
+    "0x201"
+   ]
+  ],
+  "secondary_users": [
+   "LAYOUT_ROUTE117_POKEMON_DAY_CARE"
+  ],
+  "notes": [
+   "Back door x2 (rows 0-1), counter L x0-4 rows 2-3, window x6-7, PC x10: Emerald's Route 117 Day Care has them on the same cells (copied).",
+   "FRLG purple rug x6-11 rows 3-6 -> Emerald's indoor lawn (204) which is where the vanilla Day Care puts its table and stools; FRLG egg-incubator shelves x0 -> Emerald's potted plants (same cells).",
+   "Back door (2,1) and plant tops forced solid as in FRLG (FRLG blocks the whole shelf / door cell)."
+  ],
+  "metatiles": [
+   "0x001",
+   "0x004",
+   "0x201",
+   "0x204",
+   "0x206",
+   "0x207",
+   "0x208",
+   "0x209",
+   "0x20A",
+   "0x20B",
+   "0x20C",
+   "0x20D",
+   "0x20F",
+   "0x210",
+   "0x211",
+   "0x213",
+   "0x215",
+   "0x217",
+   "0x218",
+   "0x219",
+   "0x21B",
+   "0x21C",
+   "0x21D",
+   "0x21E",
+   "0x21F",
+   "0x220",
+   "0x221",
+   "0x223",
+   "0x224",
+   "0x225",
+   "0x226",
+   "0x228",
+   "0x229",
+   "0x22A",
+   "0x22E",
+   "0x230",
+   "0x231",
+   "0x232",
+   "0x233",
+   "0x235",
+   "0x236",
+   "0x237",
+   "0x23B",
+   "0x23C",
+   "0x23D",
+   "0x23E",
+   "0x23F"
+  ]
+ }
+}

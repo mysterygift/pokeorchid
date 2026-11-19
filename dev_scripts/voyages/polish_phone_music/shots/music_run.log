@@ -1,0 +1,16 @@
+boot at (10, 11, 22, 0) mapsec 94
+  wild battle, boot map (control)                expect MUS_VS_WILD                          got MUS_VS_WILD                          OK
+warped (14, 6, 25, 0) mapsec 143
+  shot 20_one_island (14, 6, 25, 0)
+  wild battle, One Island                        expect MUS_ORCHID_SEVII_VS_WILD             got MUS_ORCHID_SEVII_VS_WILD             OK
+  shot 21_sevii_wild_battle (14, 6, 25, 0)
+  after win: MUS_RG_SEVII_123 (14, 6, 25, 0)
+warped (14, 6, 25, 0) mapsec 143
+  Try Battle 26, One Island                      expect MUS_ORCHID_SEVII_VS_TRAINER          got MUS_ORCHID_SEVII_VS_TRAINER          OK
+  shot 22_sevii_try_battle (14, 6, 25, 0)
+  approach music TRAINER_CALVIN_1, boot map (control) expect MUS_ENCOUNTER_MALE                   got MUS_ENCOUNTER_MALE                   OK
+warped (14, 6, 25, 0) mapsec 143
+  approach music TRAINER_CALVIN_1, One Island    expect MUS_ORCHID_SEVII_ENCOUNTER_BOY       got MUS_ORCHID_SEVII_ENCOUNTER_BOY       OK
+  approach music TRAINER_GABRIELLE_1, One Island expect MUS_ORCHID_SEVII_ENCOUNTER_GIRL      got MUS_ORCHID_SEVII_ENCOUNTER_GIRL      OK
+  approach music TRAINER_SHELLY_WEATHER_INSTITUTE, One Island expect MUS_ORCHID_SEVII_ENCOUNTER_ROCKET    got MUS_ORCHID_SEVII_ENCOUNTER_ROCKET    OK
+RESULT 7 / 7 passed

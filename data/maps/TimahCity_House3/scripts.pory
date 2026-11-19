@@ -1,0 +1,9 @@
+mapscripts TimahCity_House3_MapScripts {}
+
+script TimahCity_House3_EventScript_Npc1 {
+    msgbox(format("When I grow up I'm going to be a Pokémon Ranger and live in a tree house!"), MSGBOX_NPC)
+}
+
+script TimahCity_House3_EventScript_Npc2 {
+    msgbox(format("The Rangers say the Reserve is changing faster than they can keep up with. It's worrying."), MSGBOX_NPC)
+}

@@ -1,0 +1,21 @@
+wavebreak (13, 30, 21, 21)
+  shot 01_wavebreak_menu_locked (5, 29, 21, 21)
+code SOULDEW True "Eon Island…\nNow that's a course I know!"
+code seagallop True "Sevii Islands…\nNow that's a course I know!"
+code Delta True "Holon…\nNow that's a course I know!"
+code NIGHTMARE True "Newmoon Island…\nNow that's a course I know!"
+code LunarWing True "Fullmoon Island…\nNow that's a course I know!"
+unlocked {'EON': 1, 'SEVII': 1, 'HOLON': 1, 'NEWMOON': 1, 'FULLMOON': 1}
+  shot 02_wavebreak_menu_all_unlocked (5, 29, 21, 21)
+  shot 03_wavebreak_phone_map_tosa (5, 29, 21, 21)
+  shot 04_to_eon_menu (5, 29, 21, 21)
+  shot 04_to_eon_scene (5, 29, 21, 21)
+-> eon (14, 23, 15, 9)
+  shot 05_eon_arrival (14, 23, 15, 9)
+FLAG_VISITED_TIKSI 1
+  shot 06_eon_phone_map (14, 23, 15, 9)
+map {'ok': True, 'viewed': 0}
+  shot 07_eon_home_menu (14, 23, 15, 9)
+  shot 07_eon_home_scene (14, 23, 15, 9)
+-> home (5, 29, 21, 21)
+  shot 08_back_wavebreak (5, 29, 21, 21)

@@ -12,6 +12,7 @@
 #include "overworld.h"
 #include "palette.h"
 #include "region_map.h"
+#include "rotom_phone.h"
 #include "sound.h"
 #include "strings.h"
 #include "text.h"
@@ -53,6 +54,8 @@ static void VBCB_FieldUpdateRegionMap(void);
 static void MCB2_FieldUpdateRegionMap(void);
 static void FieldUpdateRegionMap(void);
 static void PrintRegionMapSecName();
+static bool32 CanFlyFromMap(void);
+static bool32 CanSwitchRegionFromMap(void);
 static void PrintTitleWindowText();
 
 static const struct BgTemplate sFieldRegionMapBgTemplates[] = {
@@ -102,6 +105,7 @@ void FieldInitRegionMap(MainCallback callback)
     sFieldRegionMapHandler = Alloc(sizeof(*sFieldRegionMapHandler));
     sFieldRegionMapHandler->state = 0;
     sFieldRegionMapHandler->callback = callback;
+    RegionMap_ClearViewedRegionMapType();
     SetMainCallback2(MCB2_InitRegionMapRegisters);
 }
 
@@ -122,9 +126,6 @@ static void MCB2_InitRegionMapRegisters(void)
     InitBgsFromTemplates(1, sFieldRegionMapBgTemplates, ARRAY_COUNT(sFieldRegionMapBgTemplates));
     InitWindows(sFieldRegionMapWindowTemplates);
     DeactivateAllTextPrinters();
-    DecompressDataWithHeaderVram(gOrchidRegionMapFrame_Gfx, (void *)BG_CHAR_ADDR(3));
-    DecompressDataWithHeaderVram(gOrchidRegionMapFrame_Tilemap, (void *)BG_SCREEN_ADDR(30));
-    LoadPalette(gOrchidDexScreen_Pal, BG_PLTT_ID(1), PLTT_SIZE_4BPP);
     ClearScheduledBgCopiesToVram();
     SetMainCallback2(MCB2_FieldUpdateRegionMap);
     SetVBlankCallback(VBCB_FieldUpdateRegionMap);
@@ -152,6 +153,7 @@ static void FieldUpdateRegionMap(void)
     {
     case 0:
         InitRegionMap(&sFieldRegionMapHandler->regionMap, FALSE);
+        RegionMap_LoadOrchidMapV2(FALSE);   // MAP v2 frame, route tubes, place nodes (BG1 + OBJ)
         CreateRegionMapPlayerIcon(TAG_PLAYER_ICON, TAG_PLAYER_ICON);
         CreateRegionMapCursor(TAG_CURSOR, TAG_CURSOR);
         sFieldRegionMapHandler->state++;
@@ -180,19 +182,29 @@ static void FieldUpdateRegionMap(void)
         }
         break;
     case 4:
+        if (JOY_NEW(R_BUTTON) && CanSwitchRegionFromMap())
+        {
+            // Orchid: phone MAP R flips between Tosa and Tiksi (once FLAG_VISITED_TIKSI is set)
+            PlaySE(SE_SELECT);
+            RegionMap_SetViewedRegionMapType(RegionMap_GetViewedRegionMapType() == REGION_MAP_TIKSI
+                                             ? REGION_MAP_HOENN : REGION_MAP_TIKSI);
+            BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK);
+            sFieldRegionMapHandler->state = 7;
+            break;
+        }
         switch (DoRegionMapInputCallback())
         {
         case MAP_INPUT_MOVE_END:
                 PrintRegionMapSecName();
                 PrintTitleWindowText();
+                RegionMap_UpdateOrchidTray();
                 break;
         case MAP_INPUT_A_BUTTON:
         case MAP_INPUT_B_BUTTON:
                 sFieldRegionMapHandler->state++;
                 break;
         case MAP_INPUT_R_BUTTON:
-                if (sFieldRegionMapHandler->regionMap.mapSecType == MAPSECTYPE_CITY_CANFLY
-                    && FlagGet(OW_FLAG_POKE_RIDER) && Overworld_MapTypeAllowsTeleportAndFly(gMapHeader.mapType) == TRUE)
+                if (CanFlyFromMap())
                 {
                     PlaySE(SE_SELECT);
                     SetFlyDestination(&sFieldRegionMapHandler->regionMap);
@@ -209,41 +221,70 @@ static void FieldUpdateRegionMap(void)
         if (!gPaletteFade.active)
         {
             FreeRegionMapIconResources();
+            RegionMap_ClearViewedRegionMapType();
             SetMainCallback2(sFieldRegionMapHandler->callback);
             TRY_FREE_AND_SET_NULL(sFieldRegionMapHandler);
             FreeAllWindowBuffers();
         }
         break;
+    case 7: // switching region: rebuild the map (state 0) behind the fade
+        if (!gPaletteFade.active)
+        {
+            FreeRegionMapIconResources();
+            sFieldRegionMapHandler->state = 0;
+        }
+        break;
     }
 }
 
-// Orchid: the name sits in the tray's pill (sized for the longest Tosa name, narrow font beyond)
+// Orchid: Tosa <-> Tiksi on R, only in the Rotom Phone's MAP app and once Tiksi has been visited
+static bool32 CanSwitchRegionFromMap(void)
+{
+    // Wavebreak Voyages: on a voyage the map shows only where you are (no switch, no hint)
+    return sFieldRegionMapHandler->callback == CB2_ReturnToRotomPhone && FlagGet(FLAG_VISITED_TIKSI)
+        && !IsVoyageRegionMapType(GetRegionMapType(gMapHeader.regionMapSectionId));
+}
+
+// R = Fly (expansion's Poké Rider). Never from the Rotom Phone's MAP app: Orchid wants players on
+// Tosa Rail and the ferries (user, 2026-11-18). The wall Town Map keeps it.
+static bool32 CanFlyFromMap(void)
+{
+    return sFieldRegionMapHandler->callback != CB2_ReturnToRotomPhone
+        && sFieldRegionMapHandler->regionMap.mapSecType == MAPSECTYPE_CITY_CANFLY
+        && FlagGet(OW_FLAG_POKE_RIDER) && Overworld_MapTypeAllowsTeleportAndFly(gMapHeader.mapType) == TRUE;
+}
+
+// Orchid MAP v2: the place name sits on the tray (mock_map.py: x 8, y 138); a rail chip OBJ follows it
 static void PrintRegionMapSecName(void)
 {
     const u8 *name = sFieldRegionMapHandler->regionMap.mapSecName;
 
     FillWindowPixelBuffer(WIN_MAPSEC_NAME, PIXEL_FILL(0));
     if (sFieldRegionMapHandler->regionMap.mapSecType != MAPSECTYPE_NONE)
-        AddTextPrinterParameterized4(WIN_MAPSEC_NAME, GetFontIdToFit(name, FONT_NORMAL, 0, 104), 4, 3, 0, 0,
+        AddTextPrinterParameterized4(WIN_MAPSEC_NAME, GetFontIdToFit(name, FONT_NORMAL, 0, 116), 0, 2, 0, 0,
                                      sOrchidMapText_Ink, TEXT_SKIP_DRAW, name);
     CopyWindowToVram(WIN_MAPSEC_NAME, COPYWIN_GFX);
 }
 
-// Orchid: "TOSA" in the header; the R FLY prompt (when allowed) at the tray's right
+// Orchid MAP v2: the region ("TOSA" / "TIKSI") in the header after the map pictogram; the R FLY prompt
+// (when allowed) in the tray
 static void PrintTitleWindowText(void)
 {
     static const u8 FlyPromptText[] = _("{R_BUTTON} FLY");
-    static const u8 sText_Tosa[] = _("TOSA");
-    const u8 *region = IS_FRLG ? gText_Kanto : sText_Tosa;
+    const u8 *region = IS_FRLG ? gText_Kanto : GetRegionMapRegionName();
+    const u8 *subArea;
 
     FillWindowPixelBuffer(WIN_TITLE, PIXEL_FILL(0));
-    AddTextPrinterParameterized4(WIN_TITLE, FONT_NORMAL, GetStringCenterAlignXOffset(FONT_NORMAL, region, DISPLAY_WIDTH), 0, 0, 0,
-                                 sOrchidMapText_Label, TEXT_SKIP_DRAW, region);
+    AddTextPrinterParameterized4(WIN_TITLE, FONT_NORMAL, 23, 0, 0, 0, sOrchidMapText_Label, TEXT_SKIP_DRAW, region);
+    if (CanSwitchRegionFromMap())
+        RegionMap_BlitOrchidSwitchHint(WIN_TITLE, DISPLAY_WIDTH - 40, 4);   // header top-right: R = switch map
+    else if ((subArea = GetRegionMapSubAreaName()) != NULL)   // voyages: "ISLES 1-3" right-aligned
+        AddTextPrinterParameterized4(WIN_TITLE, FONT_NARROW, DISPLAY_WIDTH - 6 - GetStringWidth(FONT_NARROW, subArea, 0), 1,
+                                     0, 0, sOrchidMapText_Label, TEXT_SKIP_DRAW, subArea);
     CopyWindowToVram(WIN_TITLE, COPYWIN_GFX);
 
     FillWindowPixelBuffer(WIN_PROMPT, PIXEL_FILL(0));
-    if (sFieldRegionMapHandler->regionMap.mapSecType == MAPSECTYPE_CITY_CANFLY
-        && FlagGet(OW_FLAG_POKE_RIDER) && Overworld_MapTypeAllowsTeleportAndFly(gMapHeader.mapType) == TRUE)
+    if (CanFlyFromMap())
         AddTextPrinterParameterized4(WIN_PROMPT, FONT_NORMAL, 4, 3, 0, 0, sOrchidMapText_Ink, TEXT_SKIP_DRAW, FlyPromptText);
     CopyWindowToVram(WIN_PROMPT, COPYWIN_GFX);
 }

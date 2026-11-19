@@ -1,0 +1,5 @@
+mapscripts PinestampTown_House2_MapScripts {}
+
+script PinestampTown_House2_EventScript_Npc1 {
+    msgbox(format("My family has lived in Pinestamp for five generations. It's never changed, and that suits me fine."), MSGBOX_NPC)
+}

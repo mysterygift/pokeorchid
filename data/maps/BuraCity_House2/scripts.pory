@@ -1,0 +1,5 @@
+mapscripts BuraCity_House2_MapScripts {}
+
+script BuraCity_House2_EventScript_Npc1 {
+    msgbox(format("My wife won't let me go to Juran with Maria any more. Something about “the rent money”."), MSGBOX_NPC)
+}

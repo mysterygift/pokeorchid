@@ -1,0 +1,51 @@
+mapscripts MtEmber_RubyPath_B4F_MapScripts {}
+
+script MtEmber_RubyPath_B4F_EventScript_BrailleABC {
+    msgbox(format("Rows of raised dots are carved into the rock.\n"
+        "You can't make sense of them."), MSGBOX_SIGN)
+}
+
+script MtEmber_RubyPath_B4F_EventScript_BrailleGHI {
+    msgbox(format("Rows of raised dots are carved into the rock.\n"
+        "You can't make sense of them."), MSGBOX_SIGN)
+}
+
+script MtEmber_RubyPath_B4F_EventScript_BrailleMNO {
+    msgbox(format("Rows of raised dots are carved into the rock.\n"
+        "You can't make sense of them."), MSGBOX_SIGN)
+}
+
+script MtEmber_RubyPath_B4F_EventScript_BrailleTUV {
+    msgbox(format("Rows of raised dots are carved into the rock.\n"
+        "You can't make sense of them."), MSGBOX_SIGN)
+}
+
+script MtEmber_RubyPath_B4F_EventScript_BrailleDEF {
+    msgbox(format("Rows of raised dots are carved into the rock.\n"
+        "You can't make sense of them."), MSGBOX_SIGN)
+}
+
+script MtEmber_RubyPath_B4F_EventScript_BrailleJKL {
+    msgbox(format("Rows of raised dots are carved into the rock.\n"
+        "You can't make sense of them."), MSGBOX_SIGN)
+}
+
+script MtEmber_RubyPath_B4F_EventScript_BraillePQRS {
+    msgbox(format("Rows of raised dots are carved into the rock.\n"
+        "You can't make sense of them."), MSGBOX_SIGN)
+}
+
+script MtEmber_RubyPath_B4F_EventScript_BraillePeriod {
+    msgbox(format("Rows of raised dots are carved into the rock.\n"
+        "You can't make sense of them."), MSGBOX_SIGN)
+}
+
+script MtEmber_RubyPath_B4F_EventScript_BrailleComma {
+    msgbox(format("Rows of raised dots are carved into the rock.\n"
+        "You can't make sense of them."), MSGBOX_SIGN)
+}
+
+script MtEmber_RubyPath_B4F_EventScript_BrailleWXYZ {
+    msgbox(format("Rows of raised dots are carved into the rock.\n"
+        "You can't make sense of them."), MSGBOX_SIGN)
+}

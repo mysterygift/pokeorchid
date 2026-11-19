@@ -1,0 +1,10 @@
+mapscripts MtDrake_SouthFace_MapScripts {}
+
+
+script MtDrake_SouthFace_EventScript_Sign {
+    msgbox(format("Mt. Drake\nSouth Face. The trail into the mountain starts here."), MSGBOX_SIGN)
+}
+
+script MtDrake_SouthFace_EventScript_Npc1 {
+    msgbox(format("Mt. Drake's peaks were carved by beams of light from an ancient Pokémon's maw.\pThat's what my grandmother said, anyway."), MSGBOX_NPC)
+}

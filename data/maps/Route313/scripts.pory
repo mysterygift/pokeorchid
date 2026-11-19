@@ -1,0 +1,8 @@
+mapscripts Route313_MapScripts {}
+
+// --- route_people.py (generated) ---
+
+script Route313_EventScript_Route1 {
+    msgbox(format("I'm swimming all the way to Pokétopia! …Eventually."), MSGBOX_NPC)
+}
+// --- end route_people.py ---

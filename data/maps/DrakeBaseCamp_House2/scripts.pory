@@ -1,0 +1,5 @@
+mapscripts DrakeBaseCamp_House2_MapScripts {}
+
+script DrakeBaseCamp_House2_EventScript_Npc1 {
+    msgbox(format("The shrine guardians have been on edge. They say something woke up inside the mountain."), MSGBOX_NPC)
+}

@@ -1,0 +1,5 @@
+mapscripts TimahCity_House4_MapScripts {}
+
+script TimahCity_House4_EventScript_Npc1 {
+    msgbox(format("Timah is where Tosa keeps its heart. Treat the forest kindly and it will be kind to you."), MSGBOX_NPC)
+}

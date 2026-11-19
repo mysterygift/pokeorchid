@@ -1,0 +1,50 @@
+  shot 01_village_rings_before (35, 38, 24, 1)
+PASS Village before Faba: BG palette 7 = drained foliage (07.pal)
+PASS Tower 2F: Faba object present at (11,6) before his defeat
+  shot 02_tower_2f_faba_ow (11, 4, 24, 13)
+  head: I'm the head of research here. Forgive
+me, I can't think about anything but
+those machines right now.
+
+Faba is draining 
+  shot 03_head_not_now (3, 6, 24, 13)
+PASS Head of research before Faba: 'not now' line, no Eevee-delta
+  shot 04_tobias_1_intro_text (17, 6, 24, 13)
+  shot 04_tobias_2_holon_transition (BG0 only)
+PASS 04_tobias: B_TRANSITION_HOLON task ran
+PASS 04_tobias: battle vs trainer 29 (want 29)
+  battle text: You are challenged by Holon?Researcher?Tobias!  
+  shot 04_tobias_3_battle_intro (17, 6, 24, 13)
+PASS 04_tobias: battle environment 36 (want office 36)
+PASS Tobias intro text names the Holon Researcher class
+  shot 05_faba_1_intro_text (11, 7, 24, 13)
+  shot 05_faba_2_holon_transition (BG0 only)
+PASS 05_faba: B_TRANSITION_HOLON task ran
+PASS 05_faba: encounter music [419] during the intro text (want 419)
+PASS 05_faba: battle vs trainer 107 (want 107)
+  battle text: You are challenged by Holon?Leader?Faba!  
+  shot 05_faba_3_battle_intro (11, 7, 24, 13)
+PASS 05_faba: battle environment 36 (want office 36)
+PASS Faba intro text: 'You are challenged by Holon?Leader?Faba!  '
+PASS Faba lead gBattleMons[1].species = SPECIES_HYPNO
+PASS Faba battle music 483 (want 483)
+  shot 06_faba_battle (11, 7, 24, 13)
+  shot 08_faba_gone (11, 7, 24, 13)
+PASS after the win: FLAG_HOLON_FABA_DEFEATED + FLAG_HOLON_POWER_SPOTS_HEALED set
+PASS after the win: Faba removed from (11,6)
+  head: You stopped Faba! Thank you. The Power
+Spots can finally recover.
+
+You've come a long way to see Holon, and
+I have somet
+  shot 09_head_offer (3, 6, 24, 13)
+  shot 09b_received_eevee (3, 6, 24, 13)
+  shot 09b_received_eevee (3, 6, 24, 13)
+PASS Head of research after Faba: Eevee-delta given (FLAG_HOLON_RECEIVED_EEVEE)
+PASS Tower 2F re-entered: Faba stays hidden
+  shot 10_village_rings_after (35, 38, 24, 1)
+PASS Village after Faba: BG palette 7 = General_Holon 02 (healthy)
+  crossed to the lake: True (35, 0, 24, 14)
+  shot 11_lake_island_after (25, 20, 24, 14)
+PASS Lake after Faba: BG palette 7 = General_Holon 02 (healthy)
+20/20 PASS

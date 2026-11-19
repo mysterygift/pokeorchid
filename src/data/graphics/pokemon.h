@@ -27713,3 +27713,21 @@ const u32 gObjectEventPic_Substitute[] = INCGFX_COMP("graphics/pokemon/question_
     const u8 gMonFootprint_Torpesquid[] = INCGFX_U8("graphics/pokemon/torpesquid/footprint.png", ".1bpp");
 #endif //P_FOOTPRINTS
 
+    const u32 gMonFrontPic_Purrchi[] = INCBIN_U32("graphics/pokemon/purrchi/front.4bpp.smol");
+    const u32 gMonBackPic_Purrchi[] = INCBIN_U32("graphics/pokemon/purrchi/back.4bpp.smol");
+    const u16 gMonPalette_Purrchi[] = INCBIN_U16("graphics/pokemon/purrchi/normal.gbapal");
+    const u16 gMonShinyPalette_Purrchi[] = INCBIN_U16("graphics/pokemon/purrchi/shiny.gbapal");
+    const u8 gMonIcon_Purrchi[] = INCBIN_U8("graphics/pokemon/purrchi/icon.4bpp");
+#if P_FOOTPRINTS
+    const u8 gMonFootprint_Purrchi[] = INCBIN_U8("graphics/pokemon/purrchi/footprint.1bpp");
+#endif //P_FOOTPRINTS
+
+    const u32 gMonFrontPic_Laomeow[] = INCBIN_U32("graphics/pokemon/laomeow/front.4bpp.smol");
+    const u32 gMonBackPic_Laomeow[] = INCBIN_U32("graphics/pokemon/laomeow/back.4bpp.smol");
+    const u16 gMonPalette_Laomeow[] = INCBIN_U16("graphics/pokemon/laomeow/normal.gbapal");
+    const u16 gMonShinyPalette_Laomeow[] = INCBIN_U16("graphics/pokemon/laomeow/shiny.gbapal");
+    const u8 gMonIcon_Laomeow[] = INCBIN_U8("graphics/pokemon/laomeow/icon.4bpp");
+#if P_FOOTPRINTS
+    const u8 gMonFootprint_Laomeow[] = INCBIN_U8("graphics/pokemon/laomeow/footprint.1bpp");
+#endif //P_FOOTPRINTS
+

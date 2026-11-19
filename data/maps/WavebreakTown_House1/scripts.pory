@@ -1,0 +1,5 @@
+mapscripts WavebreakTown_House1_MapScripts {}
+
+script WavebreakTown_House1_EventScript_Npc1 {
+    msgbox(format("This house belonged to the old harbourmaster. I kept his bell."), MSGBOX_NPC)
+}

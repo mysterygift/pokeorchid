@@ -1,0 +1,33 @@
+mapscripts JuranCity_MapScripts {
+    MAP_SCRIPT_ON_TRANSITION {
+        setflag(FLAG_VISITED_LILYCOVE_CITY)
+    }
+}
+
+script JuranCity_EventScript_TownSign {
+    msgbox(format("Juran City\n“Shop, stay, play.”"), MSGBOX_SIGN)
+}
+
+script JuranCity_EventScript_Sign2 {
+    msgbox(format("GRAND JURAN HOTEL & CASINO\nOpening soon."), MSGBOX_SIGN)
+}
+
+script JuranCity_EventScript_Npc1 {
+    msgbox(format("Shops, hotels, casinos… Juran has it all. Even its own train line to Pokétopia!"), MSGBOX_NPC)
+}
+
+script JuranCity_EventScript_Npc2 {
+    msgbox(format("I won big at the casino last night. Strange, though. The same fellows seem to win every night."), MSGBOX_NPC)
+}
+
+script JuranCity_EventScript_Npc3 {
+    msgbox(format("Some men in suits came by my stall asking for “protection money”. The big chains never get visits like that."), MSGBOX_NPC)
+}
+
+script JuranCity_EventScript_Npc4 {
+    msgbox(format("I'm taking the train to Pokétopia tomorrow. The night safari is supposed to be amazing!"), MSGBOX_NPC)
+}
+
+script JuranCity_EventScript_Npc5 {
+    msgbox(format("Keep your wallet close in Juran. Not everyone at the tables plays fair."), MSGBOX_NPC)
+}

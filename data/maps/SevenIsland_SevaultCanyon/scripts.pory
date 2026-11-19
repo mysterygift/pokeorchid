@@ -1,0 +1,81 @@
+mapscripts SevenIsland_SevaultCanyon_MapScripts {}
+
+script SevenIsland_SevaultCanyon_EventScript_Cyndy {
+    msgbox(format("The hot springs here are the best for sore muscles."), MSGBOX_NPC)
+}
+
+script SevenIsland_SevaultCanyon_EventScript_Evan {
+    msgbox(format("It's lovely to meet a traveller from Tosa."), MSGBOX_NPC)
+}
+
+script SevenIsland_SevaultCanyon_EventScript_Jackson {
+    trainerbattle_single(TRAINER_SEVII_JACKSON, SevenIsland_SevaultCanyon_Text_JacksonIntro, SevenIsland_SevaultCanyon_Text_JacksonDefeat)
+    msgbox(SevenIsland_SevaultCanyon_Text_JacksonPost, MSGBOX_AUTOCLOSE)
+}
+
+text SevenIsland_SevaultCanyon_Text_JacksonIntro {
+    format("Only the strong make it through Sevault Canyon!")
+}
+
+text SevenIsland_SevaultCanyon_Text_JacksonDefeat {
+    format("You're strong, all right.")
+}
+
+text SevenIsland_SevaultCanyon_Text_JacksonPost {
+    format("I packed so many snacks for this trip!")
+}
+
+script SevenIsland_SevaultCanyon_EventScript_Katelyn {
+    msgbox(format("Hiking all day is tiring, but the views make it worth it."), MSGBOX_NPC)
+}
+
+script SevenIsland_SevaultCanyon_EventScript_Leroy {
+    trainerbattle_single(TRAINER_SEVII_LEROY, SevenIsland_SevaultCanyon_Text_LeroyIntro, SevenIsland_SevaultCanyon_Text_LeroyDefeat)
+    msgbox(SevenIsland_SevaultCanyon_Text_LeroyPost, MSGBOX_AUTOCLOSE)
+}
+
+text SevenIsland_SevaultCanyon_Text_LeroyIntro {
+    format("I came all the way here to train. Face me!")
+}
+
+text SevenIsland_SevaultCanyon_Text_LeroyDefeat {
+    format("My training isn't over.")
+}
+
+text SevenIsland_SevaultCanyon_Text_LeroyPost {
+    format("The sunsets out here are something special.")
+}
+
+script SevenIsland_SevaultCanyon_EventScript_Michelle {
+    trainerbattle_single(TRAINER_SEVII_MICHELLE, SevenIsland_SevaultCanyon_Text_MichelleIntro, SevenIsland_SevaultCanyon_Text_MichelleDefeat)
+    msgbox(SevenIsland_SevaultCanyon_Text_MichellePost, MSGBOX_AUTOCLOSE)
+}
+
+text SevenIsland_SevaultCanyon_Text_MichelleIntro {
+    format("Only elite Trainers come this far. Battle!")
+}
+
+text SevenIsland_SevaultCanyon_Text_MichelleDefeat {
+    format("You're elite too.")
+}
+
+text SevenIsland_SevaultCanyon_Text_MichellePost {
+    format("A ferry hops between the islands from every harbour.")
+}
+
+script SevenIsland_SevaultCanyon_EventScript_Lex {
+    msgbox(format("Each island has its own character. Have you visited them all?"), MSGBOX_NPC)
+}
+
+script SevenIsland_SevaultCanyon_EventScript_Nya {
+    msgbox(format("A ferry hops between the islands from every harbour."), MSGBOX_NPC)
+}
+
+script SevenIsland_SevaultCanyon_EventScript_BlackBelt {
+    msgbox(format("The ruins are south of here, past the canyon."), MSGBOX_NPC)
+}
+
+script SevenIsland_SevaultCanyon_EventScript_RouteSign {
+    msgbox(format("SEVAULT CANYON\n"
+        "Falling rocks. Climb with care."), MSGBOX_SIGN)
+}

@@ -1,0 +1,6 @@
+mapscripts MtDrake_3F_MapScripts {}
+
+
+script MtDrake_3F_EventScript_Npc1 {
+    msgbox(format("Fresh air ahead… the peak is close."), MSGBOX_NPC)
+}

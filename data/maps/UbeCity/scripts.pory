@@ -1,0 +1,45 @@
+raw `
+UbeCity_MapScripts::
+	map_script MAP_SCRIPT_ON_TRANSITION, UbeCity_OnTransition
+	.byte 0
+
+UbeCity_OnTransition:
+	setflag FLAG_VISITED_UBE_CITY
+	end
+
+UbeCity_EventScript_Sign0::
+	msgbox UbeCity_Text_Sign0, MSGBOX_SIGN
+	end
+
+UbeCity_EventScript_Sign1::
+	msgbox UbeCity_Text_Sign1, MSGBOX_SIGN
+	end
+
+UbeCity_Text_Sign0:
+	.string "UBE CITY\n"
+	.string "TIKSI's only city.$"
+
+UbeCity_Text_Sign1:
+	.string "SILPH CO. TIKSI SALES OFFICE\n"
+	.string "Closed today.$"
+
+`
+
+// --- tiksi_people.py (generated) ---
+
+script UbeCity_EventScript_TiksiNpc1 {
+    msgbox(format("Silph Co.'s Tiksi office! Well… it's more of a cupboard. Sales have been slow."), MSGBOX_NPC)
+}
+
+script UbeCity_EventScript_TiksiNpc2 {
+    msgbox(format("Ube's the only city in Tiksi. Which is why it's the only place with a decent cup of tea."), MSGBOX_NPC)
+}
+
+script UbeCity_EventScript_TiksiNpc3 {
+    msgbox(format("The guardians keep watch at the old shrines. If they're standing at the doors, something's very wrong."), MSGBOX_NPC)
+}
+
+script UbeCity_EventScript_TiksiNpc4 {
+    msgbox(format("My dad says Tosa people think we're backward. We've got a fountain! Have they got a fountain?"), MSGBOX_NPC)
+}
+// --- end tiksi_people.py ---

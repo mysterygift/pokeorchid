@@ -1,0 +1,5 @@
+mapscripts CorralCity_House2_MapScripts {}
+
+script CorralCity_House2_EventScript_Npc1 {
+    msgbox(format("I crewed for Marina once. Never met anyone who reads the waves like she does."), MSGBOX_NPC)
+}

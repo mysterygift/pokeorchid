@@ -1,0 +1,225 @@
+LAYOUT_FOUR_ISLAND  48x40  gTileset_General_Frlg + gTileset_SeviiIslands45
+distinct metatiles: 207 (primary 134, secondary 73)
+
+kind        tiles  cells
+water          16    323
+shore edge     15    133
+sand            1    101
+grass           8    275
+tall grass      1      9
+tree           19    111
+rock            7    414
+cliff          17    373
+ledge           5      5
+building       91    136
+path           19     22
+decor           8     18
+
+id   cells solid behaviour  kind
+1A1     1   MB_PUDDLE                    water
+1A8     2   MB_PUDDLE                    water
+1A9     3   MB_PUDDLE                    water
+1AA     1   MB_PUDDLE                    water
+1AE    38   MB_POND_WATER                water
+1B1     2   MB_PUDDLE                    water
+244     8 * MB_FAST_WATER                water
+245     8 * MB_FAST_WATER                water
+257     7 * MB_FAST_WATER                water
+25E     1 * MB_FAST_WATER                water
+25F     1 * MB_FAST_WATER                water
+26F     8 * MB_FAST_WATER                water
+273    49 * MB_FAST_WATER                water
+276   192 * MB_FAST_WATER                water
+29E     1 * MB_OCEAN_WATER               water
+29F     1 * MB_OCEAN_WATER               water
+1A0     5   MB_PUDDLE                    shore edge
+1A2     5   MB_PUDDLE                    shore edge
+1A3     1   MB_POND_WATER                shore edge
+1A5     1   MB_POND_WATER                shore edge
+1A6     9   MB_POND_WATER                shore edge
+1A7     3   MB_POND_WATER                shore edge
+1AD    12   MB_POND_WATER                shore edge
+1AF    11   MB_POND_WATER                shore edge
+1B0     4   MB_PUDDLE                    shore edge
+1B2     5   MB_PUDDLE                    shore edge
+1B3     1   MB_POND_WATER                shore edge
+247     6 * MB_FAST_WATER                shore edge
+24F    33 * MB_FAST_WATER                shore edge
+265    25 * MB_FAST_WATER                shore edge
+26B    12 * MB_FAST_WATER                shore edge
+115   101   MB_SAND                      sand
+008    68   MB_NORMAL                    grass
+009    64   MB_NORMAL                    grass
+00E     7   MB_NORMAL                    grass
+00F     7   MB_NORMAL                    grass
+010    66   MB_NORMAL                    grass
+011    48   MB_NORMAL                    grass
+133    14   MB_NORMAL                    grass
+134     1   MB_NORMAL                    grass
+00D     9   MB_TALL_GRASS                tall grass
+016     6 * MB_NORMAL                    tree
+017     6 * MB_NORMAL                    tree
+01B     6 * MB_NORMAL                    tree
+01E    15 * MB_NORMAL                    tree
+01F    15 * MB_NORMAL                    tree
+023     6 * MB_NORMAL                    tree
+024     5 * MB_NORMAL                    tree
+025     5 * MB_NORMAL                    tree
+026     4 * MB_NORMAL                    tree
+027     4 * MB_NORMAL                    tree
+0E6    14 * MB_NORMAL                    tree
+0E8     1 * MB_NORMAL                    tree
+0E9     1 * MB_NORMAL                    tree
+0EA     1 * MB_NORMAL                    tree
+0F0     7 * MB_NORMAL                    tree
+0F1     6 * MB_NORMAL                    tree
+0F8     1 * MB_NORMAL                    tree
+0F9     2 * MB_NORMAL                    tree
+2BF     6 * MB_NORMAL                    tree
+069     4 * MB_NORMAL                    rock
+071   379 * MB_NORMAL                    rock
+0BA     1 * MB_NORMAL                    rock
+0BB     3 * MB_NORMAL                    rock
+24C     9 * MB_FAST_WATER                rock
+24D     9 * MB_FAST_WATER                rock
+305     9 * MB_NORMAL                    rock
+068     2 * MB_NORMAL                    cliff
+070    16 * MB_NORMAL                    cliff
+072     7 * MB_NORMAL                    cliff
+073    92 * MB_NORMAL                    cliff
+075     9 * MB_NORMAL                    cliff
+079    34 * MB_NORMAL                    cliff
+07A     1 * MB_NORMAL                    cliff
+07B    19 * MB_NORMAL                    cliff
+07C   132 * MB_NORMAL                    cliff
+0A0    26 * MB_NORMAL                    cliff
+0A8     5 * MB_NORMAL                    cliff
+0A9     1   MB_NON_ANIMATED_DOOR         cliff
+0B2     2 * MB_NORMAL                    cliff
+0B3    22 * MB_NORMAL                    cliff
+0B4     2 * MB_NORMAL                    cliff
+0B5     2 * MB_NORMAL                    cliff
+306     1 * MB_NORMAL                    cliff
+17B     1   MB_NORMAL                    ledge
+17C     1   MB_NORMAL                    ledge
+17D     1   MB_NORMAL                    ledge
+17E     1   MB_NORMAL                    ledge
+17F     1   MB_NORMAL                    ledge
+028     1   MB_NORMAL                    building
+029     1   MB_NORMAL                    building
+02A     1   MB_NORMAL                    building
+02B     1   MB_NORMAL                    building
+030     1 * MB_NORMAL                    building
+031     1 * MB_NORMAL                    building
+032     1 * MB_NORMAL                    building
+033     1 * MB_NORMAL                    building
+038     1 * MB_NORMAL                    building
+039     1 * MB_NORMAL                    building
+03A     1 * MB_NORMAL                    building
+03B     1 * MB_NORMAL                    building
+040     1 * MB_POKEMART_SIGN             building
+041     1 * MB_POKEMART_SIGN             building
+048     1 * MB_NORMAL                    building
+049     1 * MB_NORMAL                    building
+04A     1 * MB_NORMAL                    building
+04B     1 * MB_NORMAL                    building
+050     1 * MB_NORMAL                    building
+051     1 * MB_NORMAL                    building
+052     1 * MB_NORMAL                    building
+053     1 * MB_NORMAL                    building
+058     1 * MB_NORMAL                    building
+059     1 * MB_NORMAL                    building
+05A     1 * MB_NORMAL                    building
+05B     1 * MB_NORMAL                    building
+060     1 * MB_POKEMON_CENTER_SIGN       building
+061     1 * MB_POKEMON_CENTER_SIGN       building
+062     2 * MB_ANIMATED_DOOR             building
+063     1 * MB_NORMAL                    building
+186     1 * MB_NORMAL                    building
+187     1 * MB_NORMAL                    building
+18F     1 * MB_NORMAL                    building
+197     1 * MB_NORMAL                    building
+19F     1 * MB_NORMAL                    building
+281     1   MB_NORMAL                    building
+282     3   MB_NORMAL                    building
+285     1   MB_NORMAL                    building
+286     1 * MB_OCEAN_WATER               building
+287     1 * MB_OCEAN_WATER               building
+289     3 * MB_NORMAL                    building
+28A     3 * MB_NORMAL                    building
+28B     3 * MB_NORMAL                    building
+28C     3 * MB_NORMAL                    building
+28D     3 * MB_NORMAL                    building
+28E     1 * MB_OCEAN_WATER               building
+28F     1 * MB_OCEAN_WATER               building
+291     3 * MB_NORMAL                    building
+292     3 * MB_NORMAL                    building
+293     3 * MB_NORMAL                    building
+294     3 * MB_NORMAL                    building
+295     3 * MB_NORMAL                    building
+296     2 * MB_OCEAN_WATER               building
+297     2 * MB_OCEAN_WATER               building
+299     3 * MB_NORMAL                    building
+29A     3 * MB_ANIMATED_DOOR             building
+29B     3 * MB_NORMAL                    building
+29C     3 * MB_NORMAL                    building
+29D     3 * MB_NORMAL                    building
+2A8     1 * MB_NORMAL                    building
+2A9     1 * MB_NORMAL                    building
+2AA     1 * MB_NORMAL                    building
+2AB     1 * MB_NORMAL                    building
+2B0     1 * MB_NORMAL                    building
+2B1     1 * MB_NORMAL                    building
+2B2     1 * MB_NORMAL                    building
+2B3     1 * MB_NORMAL                    building
+2B8     1 * MB_NORMAL                    building
+2B9     1 * MB_ANIMATED_DOOR             building
+2BA     1 * MB_NORMAL                    building
+2BB     1 * MB_NORMAL                    building
+2CB     1 * MB_NORMAL                    building
+2CC     3 * MB_NORMAL                    building
+2CD     1 * MB_NORMAL                    building
+2D3     1 * MB_NORMAL                    building
+2D4     3 * MB_NORMAL                    building
+2D5     1 * MB_NORMAL                    building
+2DB     1 * MB_NORMAL                    building
+2DC     3 * MB_NORMAL                    building
+2DD     1 * MB_NORMAL                    building
+2E3     1 * MB_OCEAN_WATER               building
+2E4     1 * MB_OCEAN_WATER               building
+2E5     1 * MB_OCEAN_WATER               building
+2E6     1 * MB_OCEAN_WATER               building
+2E7     1 * MB_OCEAN_WATER               building
+2E8     1 * MB_NORMAL                    building
+2E9     3 * MB_NORMAL                    building
+2EA     1 * MB_NORMAL                    building
+2F0     1 * MB_NORMAL                    building
+2F1     3 * MB_NORMAL                    building
+2F2     1 * MB_NORMAL                    building
+089     3   MB_ROCK_STAIRS               path
+091     2   MB_ROCK_STAIRS               path
+0C5     1   MB_NORMAL                    path
+0C6     1   MB_NORMAL                    path
+0C7     1   MB_NORMAL                    path
+0CD     1   MB_NORMAL                    path
+0CE     1   MB_NORMAL                    path
+0CF     1   MB_NORMAL                    path
+1BD     1   MB_NORMAL                    path
+1BE     1   MB_NORMAL                    path
+1BF     1   MB_NORMAL                    path
+2F3     1 * MB_OCEAN_WATER               path
+2F4     1 * MB_OCEAN_WATER               path
+2F5     1 * MB_OCEAN_WATER               path
+2F6     1 * MB_OCEAN_WATER               path
+2F7     1 * MB_OCEAN_WATER               path
+2F8     1   MB_NORMAL                    path
+2F9     1   MB_SOUTH_ARROW_WARP          path
+2FA     1   MB_NORMAL                    path
+002     1 * MB_SIGNPOST                  decor
+004    11   MB_NORMAL                    decor
+161     1   MB_NORMAL                    decor
+169     1 * MB_SIGNPOST                  decor
+2A0     1   MB_NORMAL                    decor
+2A1     1   MB_NORMAL                    decor
+2A2     1   MB_NORMAL                    decor
+2A3     1   MB_NORMAL                    decor

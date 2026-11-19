@@ -12,8 +12,19 @@ enum RegionMapType
     REGION_MAP_KANTO,
     REGION_MAP_SEVII123,
     REGION_MAP_SEVII45,
-    REGION_MAP_SEVII67
+    REGION_MAP_SEVII67,
+    REGION_MAP_TIKSI,   // Orchid: second region (export_region_map_tiksi.py); REGION_MAP_HOENN = Tosa
+    REGION_MAP_EON,     // Wavebreak Voyages (dev_scripts/voyages/export_region_maps.py); SEVII* are voyages too
+    REGION_MAP_HOLON,
+    REGION_MAP_SINNOH,  // Newmoon + Fullmoon Islands (one shared map)
+    REGION_MAP_COUNT
 };
+
+// Wavebreak Voyages destinations: Sevii clusters, Eon Island, Holon and the moon islands
+static inline bool32 IsVoyageRegionMapType(enum RegionMapType type)
+{
+    return type >= REGION_MAP_SEVII123 && type != REGION_MAP_TIKSI && type < REGION_MAP_COUNT;
+}
 
 enum
 {
@@ -136,10 +147,24 @@ void TrySetPlayerIconBlink(void);
 void BlendRegionMap(u16 color, u32 coeff);
 void SetRegionMapDataForZoom(void);
 enum RegionMapType GetRegionMapType(u32 mapSecId);
+const u8 *GetRegionMapRegionName(void);
+const u8 *GetRegionMapSubAreaName(void);
+bool32 IsSeviiMapSec(u32 mapSecId);
+void RegionMap_SetViewedRegionMapType(enum RegionMapType type);
+void RegionMap_ClearViewedRegionMapType(void);
+enum RegionMapType RegionMap_GetViewedRegionMapType(void);
+bool32 RegionMap_IsViewingOtherRegion(void);
+void RegionMap_BlitOrchidSwitchHint(u8 windowId, u16 x, u16 y);
 
 //Pokenav Fly funcs
 u32 FilterFlyDestination(struct RegionMap* regionMap);
 void SetFlyDestination(struct RegionMap* regionMap);
+
+// Orchid MAP v2 (Town Map / Fly map / Rotom Phone MAP): call after InitRegionMap, before the cursor/player icon
+void RegionMap_LoadOrchidMapV2(bool32 fly);
+void RegionMap_UpdateOrchidTray(void);
+void RegionMap_BlitOrchidKeypadA(u8 windowId, u16 x, u16 y);
+void RegionMap_FreeOrchidMapV2(void);
 
 extern const struct RegionMapLocation gRegionMapEntries[];
 extern const struct RegionMapInfo gRegionMapInfos[];

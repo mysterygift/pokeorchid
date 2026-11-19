@@ -1,0 +1,5 @@
+mapscripts TimahCity_House2_MapScripts {}
+
+script TimahCity_House2_EventScript_Npc1 {
+    msgbox(format("Invasive species are crowding out the native Pokémon.\pSomebody is bringing them in on purpose. I'm sure of it."), MSGBOX_NPC)
+}

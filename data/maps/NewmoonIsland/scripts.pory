@@ -1,0 +1,18 @@
+raw `
+NewmoonIsland_MapScripts::
+	.byte 0
+
+NewmoonIsland_EventScript_EnterForest::
+	lockall
+	warp MAP_NEWMOON_ISLAND_INTERIOR, 0
+	waitstate
+	releaseall
+	end
+
+NewmoonIsland_EventScript_EnterForest2::
+	lockall
+	warp MAP_NEWMOON_ISLAND_INTERIOR, 1
+	waitstate
+	releaseall
+	end
+`

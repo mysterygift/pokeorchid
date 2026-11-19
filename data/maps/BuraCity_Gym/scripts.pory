@@ -1,0 +1,28 @@
+mapscripts BuraCity_Gym_MapScripts {}
+
+script BuraCity_Gym_EventScript_Leader {
+    trainerbattle_single(TRAINER_LEADER_MARIA, BuraCity_Gym_Text_Intro, BuraCity_Gym_Text_Defeat, BuraCity_Gym_EventScript_Defeated, NO_MUSIC)
+    msgbox(BuraCity_Gym_Text_Post, MSGBOX_AUTOCLOSE)
+}
+
+script BuraCity_Gym_EventScript_Defeated {
+    setflag(FLAG_BADGE07_GET)
+    msgbox(format("{PLAYER} received the Maria Gym Badge!\p(Placeholder Gym: the badge flag is set.)"))
+    release
+}
+
+script BuraCity_Gym_EventScript_Guide {
+    msgbox(format("Hey, Challenger! This is the Gym of Maria, who uses Cat-type Pokémon.\pThe Gym's still being fitted out. For now it's just you, Maria and this empty hall!"), MSGBOX_NPC)
+}
+
+text BuraCity_Gym_Text_Intro {
+    format("Oh, a challenger! I only just got back from Juran. Don't mind the costumes, my darlings love dressing up!")
+}
+
+text BuraCity_Gym_Text_Defeat {
+    format("My poor kitties! Let's call it a draw and go for noodles?")
+}
+
+text BuraCity_Gym_Text_Post {
+    format("Win some, lose some. That's what I always say at the tables!")
+}

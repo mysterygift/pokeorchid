@@ -1,0 +1,37 @@
+raw `
+FurongVillage_MapScripts::
+	map_script MAP_SCRIPT_ON_TRANSITION, FurongVillage_OnTransition
+	.byte 0
+
+FurongVillage_OnTransition:
+	setflag FLAG_VISITED_FURONG_VILLAGE
+	end
+
+FurongVillage_EventScript_Sign0::
+	msgbox FurongVillage_Text_Sign0, MSGBOX_SIGN
+	end
+
+FurongVillage_Text_Sign0:
+	.string "FURONG VILLAGE\n"
+	.string "A fishing village on TIKSI's shore.$"
+
+`
+
+// --- tiksi_people.py (generated) ---
+
+script FurongVillage_EventScript_TiksiNpc1 {
+    msgbox(format("A boat from Tosa? We don't get many of those. Not legal ones, anyhow."), MSGBOX_NPC)
+}
+
+script FurongVillage_EventScript_TiksiNpc2 {
+    msgbox(format("Tiksi is a hard land. The sea feeds us and the mountain watches over us."), MSGBOX_NPC)
+}
+
+script FurongVillage_EventScript_TiksiNpc3 {
+    msgbox(format("Are you from Tosa? Grandpa says Tosa people are soft. You look all right to me."), MSGBOX_NPC)
+}
+
+script FurongVillage_EventScript_TiksiGuardianGavaniPath {
+    msgbox(format("I am the guardian of Gavani Path. The thunder giant has come home to its cave.\pTiksi's elders swore to keep it from the people. Tread carefully in there."), MSGBOX_NPC)
+}
+// --- end tiksi_people.py ---

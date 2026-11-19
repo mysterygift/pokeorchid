@@ -1,0 +1,326 @@
+{
+ "size": [
+  16,
+  15
+ ],
+ "tileset": [
+  "gTileset_General",
+  "gTileset_NavelRock"
+ ],
+ "ground": [
+  "raw",
+  1553
+ ],
+ "marks": [
+  [
+   11,
+   7,
+   "1F",
+   "warp"
+  ],
+  [
+   5,
+   9,
+   "B4F",
+   "warp"
+  ],
+  [
+   7,
+   7,
+   "sapphir",
+   "note"
+  ],
+  [
+   5,
+   9,
+   "0x0",
+   "npc",
+   "scientist"
+  ],
+  [
+   7,
+   2,
+   "BrailleM",
+   "sign"
+  ]
+ ],
+ "grid_raw": [
+  "0611 0611 0611 0611 0611 0611 0611 0611 0611 0611 0611 0611 0611 0611 0611 0611",
+  "0611 0611 0611 0611 0611 0619 0619 0611 0619 0619 0619 0619 0611 0611 0611 0611",
+  "0611 0611 0611 0612 061B 0619 0619 0619 0619 0619 061C 0611 0611 0611 0611 0611",
+  "0611 0611 0612 0612 061F 3211 3211 3201 3211 3211 0610 0611 0611 0611 0611 0611",
+  "0611 0612 0611 0612 0627 3211 3201 3201 3201 3201 0647 0610 0611 0611 0611 0611",
+  "0611 0612 0612 0612 3201 3201 3201 3201 3201 3201 3211 0610 0610 0611 0611 0611",
+  "0611 0612 0612 3211 3201 3201 3201 3211 3211 3201 3201 0610 0610 0611 0611 0611",
+  "0611 0612 0612 3201 3201 3201 3211 0602 3211 3201 3201 3217 0610 0611 0611 0611",
+  "0611 0612 0612 3211 3201 3201 3201 3211 3201 3201 3201 3211 0610 0611 0611 0611",
+  "0611 0611 0623 060A 3201 3201 3201 3201 3201 3201 3201 0608 0624 0624 0611 0611",
+  "0611 0611 0611 0623 060A 3201 3201 3201 3201 3201 0620 0624 0611 0611 0611 0611",
+  "0611 0611 0611 0611 0623 060A 3201 3201 3201 0620 0624 0611 0611 0611 0611 0611",
+  "0611 0611 0611 0611 0611 0623 0611 0611 0609 0609 0611 0611 0611 0611 0611 0611",
+  "0611 0611 0611 0611 0611 0611 0609 0609 0609 0609 0611 0611 0611 0611 0611 0611",
+  "0611 0611 0611 0611 0611 0611 0611 0611 0611 0611 0611 0611 0611 0611 0611 0611"
+ ],
+ "report": {
+  "pair": [
+   "gTileset_General",
+   "gTileset_NavelRock"
+  ],
+  "set": "navel",
+  "look": "Emerald Navel Rock (the R/S/E version of the tileset Dotted Hole uses in FRLG)",
+  "classes": [
+   "################",
+   "################",
+   "################",
+   "#####.....######",
+   "#####.***.######",
+   "####.*****.#####",
+   "###.**...*.#####",
+   "###.**.B.*.U####",
+   "###.**...**.####",
+   "####.*****.#####",
+   "#####.***.######",
+   "######...#######",
+   "################",
+   "################",
+   "################"
+  ],
+  "sig_levels": {
+   "5": 155,
+   "1": 22,
+   "2": 6
+  },
+  "notes": [],
+  "frlg_map": "SixIsland_DottedHole_SapphireRoom",
+  "frlg_layout": "LAYOUT_SIX_ISLAND_DOTTED_HOLE_SAPPHIRE_ROOM",
+  "frlg_pair": [
+   "gTileset_General_Frlg",
+   "gTileset_NavelRock_Frlg"
+  ],
+  "maps": [
+   "MAP_SIX_ISLAND_DOTTED_HOLE_SAPPHIRE_ROOM"
+  ],
+  "size": [
+   16,
+   15
+  ],
+  "method": "learned cave autotiler (interiors_caves.py), set 'navel'",
+  "warps": [
+   {
+    "x": 11,
+    "y": 7,
+    "dest_map": "MAP_SIX_ISLAND_DOTTED_HOLE_1F",
+    "dest_warp_id": "2"
+   },
+   {
+    "x": 5,
+    "y": 9,
+    "dest_map": "MAP_SIX_ISLAND_DOTTED_HOLE_B4F",
+    "dest_warp_id": "3"
+   }
+  ],
+  "objects": [
+   {
+    "x": 7,
+    "y": 7,
+    "frlg_gfx": "OBJ_EVENT_GFX_SAPPHIRE",
+    "emerald_gfx": "OBJ_EVENT_GFX_SAPPHIRE (FRLG-only: needs gfx)",
+    "movement": "MOVEMENT_TYPE_FACE_DOWN",
+    "script": "SixIsland_DottedHole_SapphireRoom_EventScript_Sapphire"
+   },
+   {
+    "x": 5,
+    "y": 9,
+    "frlg_gfx": "OBJ_EVENT_GFX_SCIENTIST",
+    "emerald_gfx": "OBJ_EVENT_GFX_SCIENTIST_1",
+    "movement": "MOVEMENT_TYPE_FACE_DOWN",
+    "script": "0x0"
+   }
+  ],
+  "bg_events": [
+   {
+    "type": "sign",
+    "x": 7,
+    "y": 2,
+    "elevation": 0,
+    "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
+    "script": "SixIsland_DottedHole_SapphireRoom_EventScript_BrailleMessage"
+   }
+  ],
+  "coord_events": [],
+  "walk_diff": [],
+  "seams_before_fix": 125,
+  "seam_cells_repicked": 13,
+  "seams": [
+   [
+    4,
+    2,
+    "S",
+    "0x21B",
+    "0x21F"
+   ],
+   [
+    3,
+    3,
+    "E",
+    "0x212",
+    "0x21F"
+   ],
+   [
+    4,
+    3,
+    "S",
+    "0x21F",
+    "0x227"
+   ],
+   [
+    3,
+    4,
+    "E",
+    "0x212",
+    "0x227"
+   ],
+   [
+    11,
+    6,
+    "S",
+    "0x210",
+    "0x217"
+   ],
+   [
+    11,
+    7,
+    "E",
+    "0x217",
+    "0x210"
+   ],
+   [
+    2,
+    8,
+    "S",
+    "0x212",
+    "0x223"
+   ],
+   [
+    12,
+    8,
+    "S",
+    "0x210",
+    "0x224"
+   ],
+   [
+    2,
+    9,
+    "E",
+    "0x223",
+    "0x20A"
+   ],
+   [
+    3,
+    9,
+    "S",
+    "0x20A",
+    "0x223"
+   ],
+   [
+    11,
+    9,
+    "E",
+    "0x208",
+    "0x224"
+   ],
+   [
+    11,
+    9,
+    "S",
+    "0x208",
+    "0x224"
+   ],
+   [
+    3,
+    10,
+    "E",
+    "0x223",
+    "0x20A"
+   ],
+   [
+    4,
+    10,
+    "S",
+    "0x20A",
+    "0x223"
+   ],
+   [
+    10,
+    10,
+    "E",
+    "0x220",
+    "0x224"
+   ],
+   [
+    10,
+    10,
+    "S",
+    "0x220",
+    "0x224"
+   ],
+   [
+    4,
+    11,
+    "E",
+    "0x223",
+    "0x20A"
+   ],
+   [
+    5,
+    11,
+    "S",
+    "0x20A",
+    "0x223"
+   ],
+   [
+    9,
+    11,
+    "E",
+    "0x220",
+    "0x224"
+   ],
+   [
+    9,
+    11,
+    "S",
+    "0x220",
+    "0x209"
+   ]
+  ],
+  "secondary_users": [
+   "LAYOUT_NAVEL_ROCK_ENTRANCE",
+   "LAYOUT_NAVEL_ROCK_TOP",
+   "LAYOUT_NAVEL_ROCK_BOTTOM",
+   "LAYOUT_NAVEL_ROCK_LADDER_ROOM1",
+   "LAYOUT_NAVEL_ROCK_LADDER_ROOM2",
+   "LAYOUT_NAVEL_ROCK_B1F",
+   "LAYOUT_NAVEL_ROCK_FORK"
+  ],
+  "metatiles": [
+   "0x201",
+   "0x202",
+   "0x208",
+   "0x209",
+   "0x20A",
+   "0x210",
+   "0x211",
+   "0x212",
+   "0x217",
+   "0x219",
+   "0x21B",
+   "0x21C",
+   "0x21F",
+   "0x220",
+   "0x223",
+   "0x224",
+   "0x227",
+   "0x247"
+  ]
+ }
+}

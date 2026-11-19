@@ -41,6 +41,19 @@ const struct Tileset gTileset_General =
     .callback = InitTilesetAnim_General,
 };
 
+// Orchid Holon: a palettes-only copy of gTileset_General (same tiles / metatiles / attributes / animations,
+// greens desaturated in palettes 00-05). Primary of the Holon outdoor maps; field_door.c treats it as General.
+const struct Tileset gTileset_General_Holon =
+{
+    .isCompressed = TRUE,
+    .isSecondary = FALSE,
+    .tiles = gTilesetTiles_General,
+    .palettes = gTilesetPalettes_GeneralHolon,
+    .metatiles = gMetatiles_General,
+    .metatileAttributes = gMetatileAttributes_General,
+    .callback = InitTilesetAnim_General,
+};
+
 const struct Tileset gTileset_Petalburg =
 {
     .isCompressed = TRUE,
@@ -126,6 +139,18 @@ const struct Tileset gTileset_Fortree =
     .palettes = gTilesetPalettes_Fortree,
     .metatiles = gMetatiles_Fortree,
     .metatileAttributes = gMetatileAttributes_Fortree,
+    .callback = InitTilesetAnim_Fortree,
+};
+
+// Orchid Holon: used only by the three Holon outdoor maps, paired with gTileset_General_Holon.
+const struct Tileset gTileset_Holon =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_Holon,
+    .palettes = gTilesetPalettes_Holon,
+    .metatiles = gMetatiles_Holon,
+    .metatileAttributes = gMetatileAttributes_Holon,
     .callback = InitTilesetAnim_Fortree,
 };
 
@@ -272,6 +297,18 @@ const struct Tileset gTileset_UrbanInterior =
     .callback = NULL,
 };
 
+// Tosa Rail platforms, wall colour-coded by line (dev_scripts/station_tileset/platform_tileset.py)
+const struct Tileset gTileset_UrbanPlatform =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_UrbanPlatform,
+    .palettes = gTilesetPalettes_UrbanPlatform,
+    .metatiles = gMetatiles_UrbanPlatform,
+    .metatileAttributes = gMetatileAttributes_UrbanPlatform,
+    .callback = NULL,
+};
+
 const struct Tileset gTileset_HawkerCentre =
 {
     .isCompressed = TRUE,
@@ -280,6 +317,32 @@ const struct Tileset gTileset_HawkerCentre =
     .palettes = gTilesetPalettes_HawkerCentre,
     .metatiles = gMetatiles_HawkerCentre,
     .metatileAttributes = gMetatileAttributes_HawkerCentre,
+    .callback = NULL,
+};
+
+// Ube City (Tiksi): its own copy of gTileset_Rustboro plus the Silph Co. office (Mossdeep's Space Center,
+// roof cleared, recoloured lilac-grey; dev_scripts/tiksi_maps/ube_silph.py). Keeps Rustboro's animations.
+const struct Tileset gTileset_UbeCity =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_UbeCity,
+    .palettes = gTilesetPalettes_UbeCity,
+    .metatiles = gMetatiles_UbeCity,
+    .metatileAttributes = gMetatileAttributes_UbeCity,
+    .callback = InitTilesetAnim_Rustboro,
+};
+
+// Tanoby Delta (Tiksi): the Tanoby Ruins chamber facade ported from FRLG's Sevii Islands 6-7 onto
+// Emerald's General primary (dev_scripts/tiksi_maps/port_tanoby.py). Sea, sand and rock are Emerald's.
+const struct Tileset gTileset_TanobyDelta =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_TanobyDelta,
+    .palettes = gTilesetPalettes_TanobyDelta,
+    .metatiles = gMetatiles_TanobyDelta,
+    .metatileAttributes = gMetatileAttributes_TanobyDelta,
     .callback = NULL,
 };
 
@@ -546,6 +609,19 @@ const struct Tileset gTileset_Lab =
     .palettes = gTilesetPalettes_Lab,
     .metatiles = gMetatiles_Lab,
     .metatileAttributes = gMetatileAttributes_Lab,
+    .callback = NULL,
+};
+
+// Orchid Holon: gTileset_Lab's tiles and palettes with its own metatiles (+ an encounter copy of the
+// lab floor). Only Holon Research Tower 2F uses it; gTileset_Lab stays untouched.
+const struct Tileset gTileset_HolonLab =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_Lab,
+    .palettes = gTilesetPalettes_Lab,
+    .metatiles = gMetatiles_HolonLab,
+    .metatileAttributes = gMetatileAttributes_HolonLab,
     .callback = NULL,
 };
 
@@ -1599,6 +1675,18 @@ const struct Tileset gTileset_OrchidCentre =
     .callback = NULL,
 };
 
+// Wavebreak Voyages: Changu City Battle Cafe (copy of OrchidCentre, deep-red walls + charcoal floor)
+const struct Tileset gTileset_ChanguCafe =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_ChanguCafe,
+    .palettes = gTilesetPalettes_ChanguCafe,
+    .metatiles = gMetatiles_ChanguCafe,
+    .metatileAttributes = gMetatileAttributes_ChanguCafe,
+    .callback = NULL,
+};
+
 const struct Tileset gTileset_OrchidMart =
 {
     .isCompressed = TRUE,
@@ -1609,3 +1697,19 @@ const struct Tileset gTileset_OrchidMart =
     .metatileAttributes = gMetatileAttributes_OrchidMart,
     .callback = NULL,
 };
+
+// Sevii Islands begin
+// Sevii Islands (Wavebreak Voyages): Sevii-only copy of gTileset_Rustboro (same metatile ids, city-only
+// metatiles blanked) plus cottages, market stall, Onix tails, Memorial Pillar, Dotted Hole, Rocket
+// Warehouse and arrow-warp duplicates (dev_scripts/voyages/sevii). Keeps Rustboro's animations.
+const struct Tileset gTileset_SeviiIslands =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_SeviiIslands,
+    .palettes = gTilesetPalettes_SeviiIslands,
+    .metatiles = gMetatiles_SeviiIslands,
+    .metatileAttributes = gMetatileAttributes_SeviiIslands,
+    .callback = InitTilesetAnim_Rustboro,
+};
+// Sevii Islands end

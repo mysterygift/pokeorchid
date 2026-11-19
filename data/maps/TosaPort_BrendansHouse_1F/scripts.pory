@@ -66,6 +66,11 @@ text TosaGateway_Haru_Defeat {
 script TosaGateway_Receptionist {
     lock
     faceplayer
+    // TEMP (testing): hand out a Rail Card so the fare gates open. Remove once the story gives it.
+    checkitem(ITEM_RAIL_CARD)
+    if (var(VAR_RESULT) == FALSE) {
+        giveitem(ITEM_RAIL_CARD)
+    }
     msgbox(format("We apologise, but the train station is currently closed for maintenance."), MSGBOX_NPC)
     release
     end
@@ -100,5 +105,49 @@ script TosaGateway_Kid {
     faceplayer
     msgbox(format("I can't wait to catch a Mareep in the reserve! They're so fluffy!"), MSGBOX_NPC)
     release
+    end
+}
+
+// Fare gates (x 4, rows 3 and 5; bg events on the gate tiles). Face a gate and press A: the Rail
+// Card is tapped, the flaps open, the player walks through in the direction they face (east or west)
+// and the flaps close behind them. Both gates are on odd rows, so they use the _B (Paving_B) art.
+script TosaGateway_FareGateNorth {
+    setvar(VAR_0x8004, 4)
+    setvar(VAR_0x8005, 3)
+    goto(TosaGateway_FareGate)
+}
+
+script TosaGateway_FareGateSouth {
+    setvar(VAR_0x8004, 4)
+    setvar(VAR_0x8005, 5)
+    goto(TosaGateway_FareGate)
+}
+
+script TosaGateway_FareGate {
+    lockall
+    checkitem(ITEM_RAIL_CARD)
+    if (var(VAR_RESULT) == FALSE) {
+        playse(SE_FARE_GATE_DENIED)
+        msgbox(format("The gate won't open. Passengers need a Rail Card to go through."), MSGBOX_DEFAULT)
+        releaseall
+        end
+    }
+    specialvar(VAR_0x8006, GetPlayerFacingDirection)
+    playse(SE_FARE_GATE_TAP)       // sounds: include/constants/train_sounds.h
+    delay(16)
+    hidefollower
+    setmetatile(VAR_0x8004, VAR_0x8005, METATILE_UrbanInterior_FareGate_Gate_Open_B, FALSE)
+    special(DrawWholeMapView)
+    playse(SE_FARE_GATE_OPEN)
+    if (var(VAR_0x8006) == DIR_WEST) {
+        applymovement(OBJ_EVENT_ID_PLAYER, moves(walk_left * 2))
+    } else {
+        applymovement(OBJ_EVENT_ID_PLAYER, moves(walk_right * 2))
+    }
+    waitmovement(0)
+    setmetatile(VAR_0x8004, VAR_0x8005, METATILE_UrbanInterior_FareGate_Gate_B, TRUE)
+    special(DrawWholeMapView)
+    playse(SE_FARE_GATE_SHUT)
+    releaseall
     end
 }

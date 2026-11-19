@@ -31,6 +31,54 @@ static u32 HandleMainMenuInput(struct Pokenav_Menu *);
 static u32 (*GetMainMenuInputHandler(void))(struct Pokenav_Menu *);
 static void SetMenuInputHandler(struct Pokenav_Menu *);
 
+#if ORCHID_RETIRE_POKENAV_CONDITION_RIBBONS
+// Orchid: Condition and Ribbons are retired with the PokéNav (the Rotom Phone has MAP / CALL / QUESTS / RADIO)
+static const u8 sLastCursorPositions[] =
+{
+    [POKENAV_MENU_TYPE_DEFAULT]           = 1,
+    [POKENAV_MENU_TYPE_UNLOCK_MC]         = 2,
+    [POKENAV_MENU_TYPE_UNLOCK_MC_RIBBONS] = 2,
+    [POKENAV_MENU_TYPE_CONDITION]         = 2,
+    [POKENAV_MENU_TYPE_CONDITION_SEARCH]  = 5
+};
+
+static const u8 sMenuItems[][MAX_POKENAV_MENUITEMS] =
+{
+    [POKENAV_MENU_TYPE_DEFAULT] =
+    {
+        POKENAV_MENUITEM_MAP,
+        [1 ... MAX_POKENAV_MENUITEMS - 1] = POKENAV_MENUITEM_SWITCH_OFF
+    },
+    [POKENAV_MENU_TYPE_UNLOCK_MC] =
+    {
+        POKENAV_MENUITEM_MAP,
+        POKENAV_MENUITEM_MATCH_CALL,
+        [2 ... MAX_POKENAV_MENUITEMS - 1] = POKENAV_MENUITEM_SWITCH_OFF
+    },
+    [POKENAV_MENU_TYPE_UNLOCK_MC_RIBBONS] =
+    {
+        POKENAV_MENUITEM_MAP,
+        POKENAV_MENUITEM_MATCH_CALL,
+        [2 ... MAX_POKENAV_MENUITEMS - 1] = POKENAV_MENUITEM_SWITCH_OFF
+    },
+    [POKENAV_MENU_TYPE_CONDITION] =
+    {
+        POKENAV_MENUITEM_CONDITION_PARTY,
+        POKENAV_MENUITEM_CONDITION_SEARCH,
+        POKENAV_MENUITEM_CONDITION_CANCEL,
+        [3 ... MAX_POKENAV_MENUITEMS - 1] = POKENAV_MENUITEM_SWITCH_OFF
+    },
+    [POKENAV_MENU_TYPE_CONDITION_SEARCH] =
+    {
+        POKENAV_MENUITEM_CONDITION_SEARCH_COOL,
+        POKENAV_MENUITEM_CONDITION_SEARCH_BEAUTY,
+        POKENAV_MENUITEM_CONDITION_SEARCH_CUTE,
+        POKENAV_MENUITEM_CONDITION_SEARCH_SMART,
+        POKENAV_MENUITEM_CONDITION_SEARCH_TOUGH,
+        POKENAV_MENUITEM_CONDITION_SEARCH_CANCEL
+    },
+};
+#else
 // Number of entries - 1 for that menu type
 static const u8 sLastCursorPositions[] =
 {
@@ -81,6 +129,8 @@ static const u8 sMenuItems[][MAX_POKENAV_MENUITEMS] =
         POKENAV_MENUITEM_CONDITION_SEARCH_CANCEL
     },
 };
+
+#endif // ORCHID_RETIRE_POKENAV_CONDITION_RIBBONS
 
 static u8 GetPokenavMainMenuType(void)
 {

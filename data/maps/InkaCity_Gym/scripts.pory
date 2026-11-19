@@ -1,0 +1,28 @@
+mapscripts InkaCity_Gym_MapScripts {}
+
+script InkaCity_Gym_EventScript_Leader {
+    trainerbattle_single(TRAINER_LEADER_FREA, InkaCity_Gym_Text_Intro, InkaCity_Gym_Text_Defeat, InkaCity_Gym_EventScript_Defeated, NO_MUSIC)
+    msgbox(InkaCity_Gym_Text_Post, MSGBOX_AUTOCLOSE)
+}
+
+script InkaCity_Gym_EventScript_Defeated {
+    setflag(FLAG_BADGE06_GET)
+    msgbox(format("{PLAYER} received the Frea Gym Badge!\p(Placeholder Gym: the badge flag is set.)"))
+    release
+}
+
+script InkaCity_Gym_EventScript_Guide {
+    msgbox(format("Hey, Challenger! This is the Gym of Frea, who uses Ice-type Pokémon.\pThe Gym's still being fitted out. For now it's just you, Frea and this empty hall!"), MSGBOX_NPC)
+}
+
+text InkaCity_Gym_Text_Intro {
+    format("Every crate in Tosa goes through my cold store, on time and at the right temperature. You're next on my list.")
+}
+
+text InkaCity_Gym_Text_Defeat {
+    format("Hm. I'll have to note that down.")
+}
+
+text InkaCity_Gym_Text_Post {
+    format("Keep cool and stay organised. That's all there is to it.")
+}

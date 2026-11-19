@@ -1,0 +1,10 @@
+mapscripts MtDrake_1F_MapScripts {}
+
+
+script MtDrake_1F_EventScript_Npc1 {
+    msgbox(format("That passage comes out on the west face. Ferrum Shrine is out there, and a drop down to Route 403."), MSGBOX_NPC)
+}
+
+script MtDrake_1F_EventScript_Npc2 {
+    msgbox(format("The way up is steep. Don't push your Pokémon too hard."), MSGBOX_NPC)
+}

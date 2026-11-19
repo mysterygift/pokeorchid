@@ -1,0 +1,12 @@
+mapscripts MtBatok_2F_MapScripts {}
+
+script MtBatok_2F_EventScript_PlaceholderSign {
+    msgbox(format("Mt. Batok 2F. Placeholder map."), MSGBOX_SIGN)
+}
+
+// --- route_people.py (generated) ---
+
+script MtBatok_2F_EventScript_Route1 {
+    msgbox(format("I think I'm lost. Is up this way?"), MSGBOX_NPC)
+}
+// --- end route_people.py ---

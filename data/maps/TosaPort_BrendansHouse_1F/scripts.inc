@@ -107,59 +107,145 @@ TosaGateway_Receptionist::
 	lock
 # 68 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
 	faceplayer
-# 69 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
-	msgbox TosaGateway_Receptionist_Text_0, MSGBOX_NPC
 # 70 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
+	checkitem ITEM_RAIL_CARD
+# 71 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
+	compare VAR_RESULT, FALSE
+	goto_if_eq TosaGateway_Receptionist_2
+TosaGateway_Receptionist_1:
+# 74 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
+	msgbox TosaGateway_Receptionist_Text_0, MSGBOX_NPC
+# 75 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
 	release
 	end
 
+TosaGateway_Receptionist_2:
+# 72 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
+	giveitem ITEM_RAIL_CARD
+	goto TosaGateway_Receptionist_1
+
 
 TosaGateway_RailwayGuard::
-# 75 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
+# 80 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
 	lock
-# 76 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
+# 81 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
 	faceplayer
-# 77 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
+# 82 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
 	msgbox TosaGateway_RailwayGuard_Text_0, MSGBOX_NPC
-# 78 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
+# 83 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
 	release
 	end
 
 
 TosaGateway_Gentleman::
-# 83 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
+# 88 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
 	lock
-# 84 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
+# 89 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
 	faceplayer
-# 85 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
+# 90 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
 	msgbox TosaGateway_Gentleman_Text_0, MSGBOX_NPC
-# 86 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
+# 91 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
 	release
 	end
 
 
 TosaGateway_Mum::
-# 91 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
+# 96 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
 	lock
-# 92 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
+# 97 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
 	faceplayer
-# 93 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
+# 98 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
 	msgbox TosaGateway_Mum_Text_0, MSGBOX_NPC
-# 94 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
+# 99 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
 	release
 	end
 
 
 TosaGateway_Kid::
-# 99 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
+# 104 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
 	lock
-# 100 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
+# 105 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
 	faceplayer
-# 101 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
+# 106 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
 	msgbox TosaGateway_Kid_Text_0, MSGBOX_NPC
-# 102 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
+# 107 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
 	release
 	end
+
+
+TosaGateway_FareGateNorth::
+# 115 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
+	setvar VAR_0x8004, 4
+# 116 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
+	setvar VAR_0x8005, 3
+# 117 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
+	goto TosaGateway_FareGate
+	return
+
+
+TosaGateway_FareGateSouth::
+# 121 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
+	setvar VAR_0x8004, 4
+# 122 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
+	setvar VAR_0x8005, 5
+# 123 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
+	goto TosaGateway_FareGate
+	return
+
+
+TosaGateway_FareGate::
+# 127 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
+	lockall
+# 128 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
+	checkitem ITEM_RAIL_CARD
+# 129 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
+	compare VAR_RESULT, FALSE
+	goto_if_eq TosaGateway_FareGate_2
+# 135 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
+	specialvar VAR_0x8006, GetPlayerFacingDirection
+# 136 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
+	playse SE_FARE_GATE_TAP
+# 137 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
+	delay 16
+# 138 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
+	hidefollower
+# 139 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
+	setmetatile VAR_0x8004, VAR_0x8005, METATILE_UrbanInterior_FareGate_Gate_Open_B, FALSE
+# 140 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
+	special DrawWholeMapView
+# 141 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
+	playse SE_FARE_GATE_OPEN
+# 142 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
+	compare VAR_0x8006, DIR_WEST
+	goto_if_eq TosaGateway_FareGate_5
+# 145 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
+	applymovement OBJ_EVENT_ID_PLAYER, TosaGateway_FareGate_Movement_1
+TosaGateway_FareGate_4:
+# 147 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
+	waitmovement 0
+# 148 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
+	setmetatile VAR_0x8004, VAR_0x8005, METATILE_UrbanInterior_FareGate_Gate_B, TRUE
+# 149 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
+	special DrawWholeMapView
+# 150 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
+	playse SE_FARE_GATE_SHUT
+# 151 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
+	releaseall
+	end
+
+TosaGateway_FareGate_2:
+# 130 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
+	playse SE_FARE_GATE_DENIED
+# 131 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
+	msgbox TosaGateway_FareGate_Text_0, MSGBOX_DEFAULT
+# 132 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
+	releaseall
+	end
+
+TosaGateway_FareGate_5:
+# 143 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
+	applymovement OBJ_EVENT_ID_PLAYER, TosaGateway_FareGate_Movement_0
+	goto TosaGateway_FareGate_4
 
 
 # 28 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
@@ -196,6 +282,22 @@ TosaGateway_Haru_Defeated_Movement_0:
 	walk_up
 # 48 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
 	walk_up
+	step_end
+
+# 143 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
+TosaGateway_FareGate_Movement_0:
+# 143 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
+	walk_left
+# 143 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
+	walk_left
+	step_end
+
+# 145 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
+TosaGateway_FareGate_Movement_1:
+# 145 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
+	walk_right
+# 145 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
+	walk_right
 	step_end
 
 TosaGateway_RivalEncounter_Text_0:
@@ -237,31 +339,36 @@ TosaGateway_Haru_Defeated_Text_0:
 	.string "{PLAYER}. Safe travels!$"
 
 TosaGateway_Receptionist_Text_0:
-# 69 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
+# 74 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
 	.string "We apologise, but the train station is\n"
 	.string "currently closed for maintenance.$"
 
 TosaGateway_RailwayGuard_Text_0:
-# 77 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
+# 82 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
 	.string "The train station's closed. My\n"
 	.string "supervisor mentioned something about\l"
 	.string "Koffing in the tunnels.$"
 
 TosaGateway_Gentleman_Text_0:
-# 85 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
+# 90 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
 	.string "I've re-read this newspaper five times.\n"
 	.string "Maybe I should've bought myself a\l"
 	.string "Rotom Phone after all...$"
 
 TosaGateway_Mum_Text_0:
-# 93 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
+# 98 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
 	.string "We're resting up before going for a walk\n"
 	.string "in the reserve.$"
 
 TosaGateway_Kid_Text_0:
-# 101 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
+# 106 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
 	.string "I can't wait to catch a Mareep in the\n"
 	.string "reserve! They're so fluffy!$"
+
+TosaGateway_FareGate_Text_0:
+# 131 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
+	.string "The gate won't open. Passengers need a\n"
+	.string "Rail Card to go through.$"
 
 TosaGateway_Haru_Intro::
 # 58 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"

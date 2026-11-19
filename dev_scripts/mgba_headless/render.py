@@ -1,4 +1,4 @@
-"""Minimal GBA mode-0 renderer (text BGs + regular/affine-as-regular OBJs, priorities, no blending/windows)."""
+"""Minimal GBA mode-0 renderer (text BGs + regular/affine-as-regular OBJs, priorities, WIN0 layer masks, no blending)."""
 import struct
 from PIL import Image
 
@@ -36,7 +36,27 @@ def render(io, reg, vram, pal, oam):
         affine = (mode == 1 and bg == 2) or (mode == 2)
         px = [None] * (W * H)
         if affine:
-            continue  # not rendered
+            # unrotated affine BG (8bpp, byte map): screen (x, y) -> texture (x*pa + refx, y*pd + refy)
+            s32 = lambda o: struct.unpack_from('<i', reg, o)[0]
+            pa, pd = struct.unpack_from('<h', reg, 0x20 + (bg - 2) * 0x10)[0], struct.unpack_from('<h', reg, 0x26 + (bg - 2) * 0x10)[0]
+            refx, refy = s32(0x28 + (bg - 2) * 0x10), s32(0x2C + (bg - 2) * 0x10)
+            refx = (refx << 4) >> 4
+            refy = (refy << 4) >> 4
+            side = 128 << size
+            wrap = (cnt >> 13) & 1
+            for y in range(H):
+                for x in range(W):
+                    tx, ty = (refx + x * pa) >> 8, (refy + y * pd) >> 8
+                    if wrap:
+                        tx, ty = tx % side, ty % side
+                    elif not (0 <= tx < side and 0 <= ty < side):
+                        continue
+                    t = vram[sbase + (ty // 8) * (side // 8) + tx // 8]
+                    c = vram[cbase + t * 64 + (ty & 7) * 8 + (tx & 7)]
+                    if c:
+                        px[y * W + x] = col(pal, c)
+            layers.append((prio, 1, bg, px))
+            continue
         tw = 512 if size & 1 else 256
         th = 512 if size & 2 else 256
         for y in range(H):
@@ -123,9 +143,20 @@ def render(io, reg, vram, pal, oam):
     layers.sort(key=lambda l: (-l[0], -l[1], -l[2]))  # draw back to front
     img = Image.new('RGB', (W, H), back)
     data = list(img.getdata())
-    for _, _, _, px in layers:
+    win0 = dispcnt & 0x2000
+    if win0:
+        w0h, w0v, winin, winout = h16(reg, 0x40), h16(reg, 0x44), h16(reg, 0x48), h16(reg, 0x4A)
+        l, r, t, b = w0h >> 8, w0h & 255, w0v >> 8, w0v & 255
+    for _, _, bg, px in layers:
+        bit = 1 << (4 if bg < 0 else bg)
         for i, c in enumerate(px):
-            if c is not None:
-                data[i] = c
+            if c is None:
+                continue
+            if win0:
+                x, y = i % W, i // W
+                m = winin if (l <= x < r and t <= y < b) else winout
+                if not m & bit:
+                    continue
+            data[i] = c
     img.putdata(data)
     return img

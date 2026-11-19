@@ -430,6 +430,12 @@ enum
     OBJ_EVENT_GFX_SCHOOL_KID_F,
     OBJ_EVENT_GFX_POKEMON_RANGER_M,
     OBJ_EVENT_GFX_POKEMON_RANGER_F,
+    OBJ_EVENT_GFX_MART_SIGN,
+    // Wavebreak Voyages (Holon)
+    OBJ_EVENT_GFX_HOLON_RESEARCHER,
+    OBJ_EVENT_GFX_CYNTHIA,
+    OBJ_EVENT_GFX_HOLON_SPHERE,   // Orchid Holon: stone sphere at Holon Lake (OBJ palette swap = glow)
+    OBJ_EVENT_GFX_FABA,           // Wavebreak Voyages: Holon Leader Faba (npc_3)
     NUM_OBJ_EVENT_GFX,
 };
 
@@ -586,6 +592,7 @@ enum
 #define OBJ_EVENT_PAL_TAG_SEAGALLOP               0x1132
 #define OBJ_EVENT_PAL_TAG_SS_ANNE                 0x1133
 #define OBJ_EVENT_PAL_TAG_NPC_SCHOOL_KID_F        0x1134 // Orchid: School Kid F has her own OW palette
+#define OBJ_EVENT_PAL_TAG_HOLON_SPHERE            0x113A // Orchid Holon: lake sphere (glow = palette swap)
 
 #if OW_FOLLOWERS_POKEBALLS
 // Vanilla

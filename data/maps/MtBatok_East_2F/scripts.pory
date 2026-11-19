@@ -1,0 +1,12 @@
+mapscripts MtBatok_East_2F_MapScripts {}
+
+script MtBatok_East_2F_EventScript_PlaceholderSign {
+    msgbox(format("Mt. Batok east 2F (from Faber Town). Placeholder map."), MSGBOX_SIGN)
+}
+
+// --- route_people.py (generated) ---
+
+script MtBatok_East_2F_EventScript_Route1 {
+    msgbox(format("I'm training on the mountain like Meru does. Ow, my toes."), MSGBOX_NPC)
+}
+// --- end route_people.py ---

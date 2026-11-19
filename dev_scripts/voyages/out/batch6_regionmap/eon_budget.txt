@@ -1,0 +1,7 @@
+REGION_MAP_EON, intro scene_2 clouds baked into BG2 (affine 8bpp, u8 tilemap, no tile flips)
+  source: graphics/intro/scene_2/clouds.png, 42 distinct cloud tiles used incl. mirrored copies (sheet has 32)
+  placements: 11 BIG, 10 wisps
+  dense: 128 BIG + 9 wisps placed (11 dropped at the window)
+  look 'dense': 125 unique tiles / 256 (vanilla Hoenn 231), 8000 B VRAM; colours 23 of 48 (113,114,116,117,123,124,125,126,127,129,130,131,132,133,134,135,136,138,139,140,141,142,143)
+  look 'sky': 44 unique tiles / 256 (vanilla Hoenn 231), 2816 B VRAM; colours 9 of 48 (113,114,124,125,126,141,142,143,144)
+  chosen (user, round 4): 'dense' = map as-is under dense intro clouds; 'sky' = round 3 for reference

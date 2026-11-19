@@ -427,6 +427,10 @@ const struct TrainerClass gTrainerClasses[TRAINER_CLASS_COUNT] =
     [TRAINER_CLASS_ORCHIDIST] =            { _("Orchidist"), 10 },
     [TRAINER_CLASS_RECRUIT] =              { _("Recruit"), 6 },
     [TRAINER_CLASS_PORT_WORKER] =          { _("Port Worker"), 8 },
+    [TRAINER_CLASS_GUARDIAN] =             { _("Guardian"), 25, BALL_ULTRA },
+    // NBSP keeps the class on one line when the battle intro auto-breaks.
+    [TRAINER_CLASS_HOLON_RESEARCHER] =     { _("Holon{NBSP}Researcher"), 15, BALL_ULTRA },
+    [TRAINER_CLASS_HOLON_LEADER] =         { _("Holon{NBSP}Leader"), 20, BALL_MASTER },
 };
 
 static void (*const sTurnActionsFuncsTable[])(void) =

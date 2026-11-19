@@ -1,0 +1,1210 @@
+[
+ {
+  "layout": "LAYOUT_BATTLE_FRONTIER_OUTSIDE_EAST",
+  "kind": "centre",
+  "door": [
+   3,
+   50
+  ],
+  "box": [
+   2,
+   48,
+   4,
+   4
+  ],
+  "new": [
+   1,
+   46,
+   5,
+   5
+  ],
+  "forced": [
+   [
+    1,
+    49
+   ]
+  ],
+  "move": []
+ },
+ {
+  "layout": "LAYOUT_BATTLE_FRONTIER_OUTSIDE_WEST",
+  "kind": "mart",
+  "door": [
+   51,
+   51
+  ],
+  "box": [
+   50,
+   48,
+   4,
+   4
+  ],
+  "new": [
+   50,
+   47,
+   4,
+   5
+  ],
+  "forced": [],
+  "move": [],
+  "sign": null
+ },
+ {
+  "layout": "LAYOUT_BURA_CITY",
+  "kind": "centre",
+  "door": [
+   19,
+   26
+  ],
+  "box": [
+   18,
+   24,
+   4,
+   4
+  ],
+  "new": [
+   17,
+   23,
+   5,
+   5
+  ],
+  "forced": [],
+  "move": []
+ },
+ {
+  "layout": "LAYOUT_BURA_CITY",
+  "kind": "mart",
+  "door": [
+   31,
+   27
+  ],
+  "box": [
+   30,
+   24,
+   4,
+   4
+  ],
+  "new": [
+   30,
+   23,
+   4,
+   5
+  ],
+  "forced": [],
+  "move": [],
+  "sign": [
+   34,
+   27
+  ]
+ },
+ {
+  "layout": "LAYOUT_CHALLENGER_GATE",
+  "kind": "centre",
+  "door": [
+   16,
+   30
+  ],
+  "box": [
+   15,
+   28,
+   4,
+   4
+  ],
+  "new": [
+   14,
+   27,
+   5,
+   5
+  ],
+  "forced": [],
+  "move": []
+ },
+ {
+  "layout": "LAYOUT_CHALLENGER_GATE",
+  "kind": "mart",
+  "door": [
+   31,
+   31
+  ],
+  "box": [
+   30,
+   28,
+   4,
+   4
+  ],
+  "new": [
+   30,
+   27,
+   4,
+   5
+  ],
+  "forced": [],
+  "move": [],
+  "sign": [
+   34,
+   31
+  ]
+ },
+ {
+  "layout": "LAYOUT_CHANGU_CITY",
+  "kind": "centre",
+  "door": [
+   14,
+   20
+  ],
+  "box": [
+   13,
+   18,
+   4,
+   4
+  ],
+  "new": [
+   12,
+   17,
+   5,
+   5
+  ],
+  "forced": [],
+  "move": []
+ },
+ {
+  "layout": "LAYOUT_CHANGU_CITY",
+  "kind": "mart",
+  "door": [
+   30,
+   13
+  ],
+  "box": [
+   29,
+   10,
+   4,
+   4
+  ],
+  "new": [
+   29,
+   9,
+   4,
+   5
+  ],
+  "forced": [],
+  "move": [],
+  "sign": [
+   33,
+   13
+  ]
+ },
+ {
+  "layout": "LAYOUT_CORRAL_CITY",
+  "kind": "centre",
+  "door": [
+   14,
+   14
+  ],
+  "box": [
+   13,
+   12,
+   4,
+   4
+  ],
+  "new": [
+   12,
+   11,
+   5,
+   5
+  ],
+  "forced": [],
+  "move": []
+ },
+ {
+  "layout": "LAYOUT_CORRAL_CITY",
+  "kind": "mart",
+  "door": [
+   31,
+   23
+  ],
+  "box": [
+   30,
+   20,
+   4,
+   4
+  ],
+  "new": [
+   30,
+   19,
+   4,
+   5
+  ],
+  "forced": [],
+  "move": [],
+  "sign": [
+   34,
+   23
+  ]
+ },
+ {
+  "layout": "LAYOUT_DEWFORD_TOWN",
+  "kind": "centre",
+  "door": [
+   2,
+   9
+  ],
+  "box": [
+   1,
+   7,
+   4,
+   4
+  ],
+  "new": [
+   0,
+   6,
+   5,
+   5
+  ],
+  "forced": [],
+  "move": [
+   [
+    1,
+    6
+   ]
+  ]
+ },
+ {
+  "layout": "LAYOUT_DRAKE_BASE_CAMP",
+  "kind": "centre",
+  "door": [
+   6,
+   15
+  ],
+  "box": [
+   5,
+   13,
+   4,
+   4
+  ],
+  "new": [
+   4,
+   12,
+   5,
+   5
+  ],
+  "forced": [],
+  "move": []
+ },
+ {
+  "layout": "LAYOUT_DRAKE_BASE_CAMP",
+  "kind": "mart",
+  "door": [
+   22,
+   16
+  ],
+  "box": [
+   21,
+   13,
+   4,
+   4
+  ],
+  "new": [
+   21,
+   12,
+   4,
+   5
+  ],
+  "forced": [],
+  "move": [],
+  "sign": [
+   25,
+   16
+  ]
+ },
+ {
+  "layout": "LAYOUT_FABER_TOWN",
+  "kind": "centre",
+  "door": [
+   18,
+   18
+  ],
+  "box": [
+   17,
+   16,
+   4,
+   4
+  ],
+  "new": [
+   16,
+   15,
+   5,
+   5
+  ],
+  "forced": [],
+  "move": []
+ },
+ {
+  "layout": "LAYOUT_FABER_TOWN",
+  "kind": "mart",
+  "door": [
+   23,
+   19
+  ],
+  "box": [
+   22,
+   16,
+   4,
+   4
+  ],
+  "new": [
+   22,
+   15,
+   4,
+   5
+  ],
+  "forced": [],
+  "move": [],
+  "sign": [
+   26,
+   19
+  ]
+ },
+ {
+  "layout": "LAYOUT_FALLARBOR_TOWN",
+  "kind": "centre",
+  "door": [
+   14,
+   6
+  ],
+  "box": [
+   13,
+   4,
+   4,
+   4
+  ],
+  "new": [
+   12,
+   4,
+   5,
+   5
+  ],
+  "forced": [
+   [
+    12,
+    4
+   ]
+  ],
+  "move": []
+ },
+ {
+  "layout": "LAYOUT_FALLARBOR_TOWN",
+  "kind": "mart",
+  "door": [
+   15,
+   15
+  ],
+  "box": [
+   14,
+   12,
+   4,
+   4
+  ],
+  "new": [
+   14,
+   11,
+   4,
+   5
+  ],
+  "forced": [],
+  "move": [],
+  "sign": [
+   13,
+   15
+  ]
+ },
+ {
+  "layout": "LAYOUT_FORTREE_CITY",
+  "kind": "centre",
+  "door": [
+   5,
+   5
+  ],
+  "box": [
+   4,
+   3,
+   4,
+   4
+  ],
+  "new": [
+   3,
+   3,
+   5,
+   5
+  ],
+  "forced": [
+   [
+    3,
+    3
+   ],
+   [
+    3,
+    4
+   ],
+   [
+    3,
+    5
+   ],
+   [
+    3,
+    6
+   ]
+  ],
+  "move": []
+ },
+ {
+  "layout": "LAYOUT_FORTREE_CITY",
+  "kind": "mart",
+  "door": [
+   4,
+   14
+  ],
+  "box": [
+   3,
+   11,
+   4,
+   4
+  ],
+  "new": [
+   3,
+   10,
+   4,
+   5
+  ],
+  "forced": [],
+  "move": [],
+  "sign": [
+   7,
+   14
+  ]
+ },
+ {
+  "layout": "LAYOUT_FURONG_VILLAGE",
+  "kind": "centre",
+  "door": [
+   4,
+   6
+  ],
+  "box": [
+   3,
+   4,
+   4,
+   4
+  ],
+  "new": [
+   2,
+   3,
+   5,
+   5
+  ],
+  "forced": [],
+  "move": []
+ },
+ {
+  "layout": "LAYOUT_INKA_CITY",
+  "kind": "centre",
+  "door": [
+   14,
+   12
+  ],
+  "box": [
+   13,
+   10,
+   4,
+   4
+  ],
+  "new": [
+   12,
+   9,
+   5,
+   5
+  ],
+  "forced": [],
+  "move": []
+ },
+ {
+  "layout": "LAYOUT_INKA_CITY",
+  "kind": "mart",
+  "door": [
+   31,
+   21
+  ],
+  "box": [
+   30,
+   18,
+   4,
+   4
+  ],
+  "new": [
+   30,
+   17,
+   4,
+   5
+  ],
+  "forced": [],
+  "move": [],
+  "sign": [
+   34,
+   21
+  ]
+ },
+ {
+  "layout": "LAYOUT_JURAN_CITY",
+  "kind": "centre",
+  "door": [
+   22,
+   25
+  ],
+  "box": [
+   21,
+   23,
+   4,
+   4
+  ],
+  "new": [
+   20,
+   22,
+   5,
+   5
+  ],
+  "forced": [],
+  "move": []
+ },
+ {
+  "layout": "LAYOUT_JURAN_CITY",
+  "kind": "mart",
+  "door": [
+   36,
+   26
+  ],
+  "box": [
+   35,
+   23,
+   4,
+   4
+  ],
+  "new": [
+   35,
+   22,
+   4,
+   5
+  ],
+  "forced": [],
+  "move": [],
+  "sign": [
+   39,
+   26
+  ]
+ },
+ {
+  "layout": "LAYOUT_LAVARIDGE_TOWN",
+  "kind": "centre",
+  "door": [
+   9,
+   5
+  ],
+  "box": [
+   8,
+   3,
+   4,
+   4
+  ],
+  "new": [
+   8,
+   3,
+   5,
+   5
+  ],
+  "forced": [
+   [
+    12,
+    3
+   ],
+   [
+    12,
+    5
+   ],
+   [
+    12,
+    6
+   ]
+  ],
+  "move": [
+   [
+    8,
+    7
+   ]
+  ]
+ },
+ {
+  "layout": "LAYOUT_LAVARIDGE_TOWN",
+  "kind": "mart",
+  "door": [
+   15,
+   5
+  ],
+  "box": [
+   14,
+   2,
+   4,
+   4
+  ],
+  "new": [
+   14,
+   2,
+   4,
+   5
+  ],
+  "forced": [],
+  "move": [],
+  "sign": null
+ },
+ {
+  "layout": "LAYOUT_MOONGROVE_CITY",
+  "kind": "centre",
+  "door": [
+   18,
+   14
+  ],
+  "box": [
+   17,
+   12,
+   4,
+   4
+  ],
+  "new": [
+   16,
+   11,
+   5,
+   5
+  ],
+  "forced": [],
+  "move": []
+ },
+ {
+  "layout": "LAYOUT_MOONGROVE_CITY",
+  "kind": "mart",
+  "door": [
+   38,
+   15
+  ],
+  "box": [
+   37,
+   12,
+   4,
+   4
+  ],
+  "new": [
+   37,
+   11,
+   4,
+   5
+  ],
+  "forced": [],
+  "move": [],
+  "sign": [
+   41,
+   15
+  ]
+ },
+ {
+  "layout": "LAYOUT_OLDALE_TOWN",
+  "kind": "centre",
+  "door": [
+   6,
+   15
+  ],
+  "box": [
+   5,
+   13,
+   4,
+   4
+  ],
+  "new": [
+   4,
+   12,
+   5,
+   5
+  ],
+  "forced": [],
+  "move": []
+ },
+ {
+  "layout": "LAYOUT_OLDALE_TOWN",
+  "kind": "mart",
+  "door": [
+   15,
+   16
+  ],
+  "box": [
+   14,
+   13,
+   4,
+   4
+  ],
+  "new": [
+   14,
+   12,
+   4,
+   5
+  ],
+  "forced": [],
+  "move": [],
+  "sign": [
+   13,
+   15
+  ]
+ },
+ {
+  "layout": "LAYOUT_PACIFIDLOG_TOWN",
+  "kind": "centre",
+  "door": [
+   8,
+   14
+  ],
+  "box": [
+   7,
+   12,
+   4,
+   4
+  ],
+  "new": [
+   6,
+   11,
+   5,
+   5
+  ],
+  "forced": [
+   [
+    6,
+    11
+   ],
+   [
+    6,
+    12
+   ],
+   [
+    6,
+    13
+   ],
+   [
+    6,
+    14
+   ],
+   [
+    6,
+    15
+   ],
+   [
+    7,
+    11
+   ],
+   [
+    8,
+    11
+   ],
+   [
+    9,
+    11
+   ],
+   [
+    10,
+    11
+   ]
+  ],
+  "move": []
+ },
+ {
+  "layout": "LAYOUT_PINESTAMP_TOWN",
+  "kind": "centre",
+  "door": [
+   8,
+   16
+  ],
+  "box": [
+   7,
+   14,
+   4,
+   4
+  ],
+  "new": [
+   6,
+   13,
+   5,
+   5
+  ],
+  "forced": [],
+  "move": []
+ },
+ {
+  "layout": "LAYOUT_PINESTAMP_TOWN",
+  "kind": "mart",
+  "door": [
+   22,
+   17
+  ],
+  "box": [
+   21,
+   14,
+   4,
+   4
+  ],
+  "new": [
+   21,
+   13,
+   4,
+   5
+  ],
+  "forced": [],
+  "move": [],
+  "sign": [
+   25,
+   17
+  ]
+ },
+ {
+  "layout": "LAYOUT_POKEMON_LEAGUE",
+  "kind": "centre",
+  "door": [
+   11,
+   18
+  ],
+  "box": [
+   10,
+   16,
+   4,
+   4
+  ],
+  "new": [
+   9,
+   15,
+   5,
+   5
+  ],
+  "forced": [],
+  "move": []
+ },
+ {
+  "layout": "LAYOUT_POKEMON_LEAGUE",
+  "kind": "mart",
+  "door": [
+   26,
+   19
+  ],
+  "box": [
+   25,
+   16,
+   4,
+   4
+  ],
+  "new": [
+   25,
+   15,
+   4,
+   5
+  ],
+  "forced": [],
+  "move": [],
+  "sign": [
+   29,
+   19
+  ]
+ },
+ {
+  "layout": "LAYOUT_SENOKO_CITY",
+  "kind": "centre",
+  "door": [
+   12,
+   12
+  ],
+  "box": [
+   11,
+   10,
+   4,
+   4
+  ],
+  "new": [
+   10,
+   9,
+   5,
+   5
+  ],
+  "forced": [],
+  "move": []
+ },
+ {
+  "layout": "LAYOUT_SENOKO_CITY",
+  "kind": "mart",
+  "door": [
+   27,
+   21
+  ],
+  "box": [
+   26,
+   18,
+   4,
+   4
+  ],
+  "new": [
+   26,
+   17,
+   4,
+   5
+  ],
+  "forced": [],
+  "move": [],
+  "sign": [
+   30,
+   21
+  ]
+ },
+ {
+  "layout": "LAYOUT_TANGLYN_TOWN",
+  "kind": "centre",
+  "door": [
+   4,
+   14
+  ],
+  "box": [
+   3,
+   12,
+   4,
+   4
+  ],
+  "new": [
+   3,
+   11,
+   5,
+   5
+  ],
+  "forced": [],
+  "move": []
+ },
+ {
+  "layout": "LAYOUT_TIMAH_CITY",
+  "kind": "centre",
+  "door": [
+   13,
+   20
+  ],
+  "box": [
+   12,
+   18,
+   4,
+   4
+  ],
+  "new": [
+   11,
+   17,
+   5,
+   5
+  ],
+  "forced": [],
+  "move": []
+ },
+ {
+  "layout": "LAYOUT_TIMAH_CITY",
+  "kind": "mart",
+  "door": [
+   26,
+   13
+  ],
+  "box": [
+   25,
+   10,
+   4,
+   4
+  ],
+  "new": [
+   25,
+   9,
+   4,
+   5
+  ],
+  "forced": [],
+  "move": [],
+  "sign": [
+   24,
+   13
+  ]
+ },
+ {
+  "layout": "LAYOUT_UBE_CITY",
+  "kind": "centre",
+  "door": [
+   6,
+   7
+  ],
+  "box": [
+   5,
+   5,
+   4,
+   4
+  ],
+  "new": [
+   4,
+   4,
+   5,
+   5
+  ],
+  "forced": [],
+  "move": []
+ },
+ {
+  "layout": "LAYOUT_UBE_CITY",
+  "kind": "mart",
+  "door": [
+   11,
+   8
+  ],
+  "box": [
+   10,
+   5,
+   4,
+   4
+  ],
+  "new": [
+   10,
+   4,
+   4,
+   5
+  ],
+  "forced": [],
+  "move": [],
+  "sign": [
+   14,
+   8
+  ]
+ },
+ {
+  "layout": "LAYOUT_VERDANTURF_TOWN",
+  "kind": "centre",
+  "door": [
+   16,
+   2
+  ],
+  "box": [
+   15,
+   0,
+   4,
+   4
+  ],
+  "new": [
+   15,
+   0,
+   5,
+   5
+  ],
+  "forced": [
+   [
+    15,
+    4
+   ],
+   [
+    18,
+    4
+   ],
+   [
+    19,
+    0
+   ],
+   [
+    19,
+    1
+   ],
+   [
+    19,
+    3
+   ],
+   [
+    19,
+    4
+   ]
+  ],
+  "move": []
+ },
+ {
+  "layout": "LAYOUT_VERDANTURF_TOWN",
+  "kind": "mart",
+  "door": [
+   12,
+   3
+  ],
+  "box": [
+   11,
+   0,
+   4,
+   4
+  ],
+  "new": [
+   11,
+   0,
+   4,
+   5
+  ],
+  "forced": [
+   [
+    11,
+    4
+   ],
+   [
+    14,
+    4
+   ]
+  ],
+  "move": [],
+  "sign": null
+ },
+ {
+  "layout": "LAYOUT_WAVEBREAK_TOWN",
+  "kind": "centre",
+  "door": [
+   14,
+   22
+  ],
+  "box": [
+   13,
+   20,
+   4,
+   4
+  ],
+  "new": [
+   12,
+   19,
+   5,
+   5
+  ],
+  "forced": [],
+  "move": []
+ },
+ {
+  "layout": "LAYOUT_WAVEBREAK_TOWN",
+  "kind": "mart",
+  "door": [
+   26,
+   23
+  ],
+  "box": [
+   25,
+   20,
+   4,
+   4
+  ],
+  "new": [
+   25,
+   19,
+   4,
+   5
+  ],
+  "forced": [],
+  "move": [],
+  "sign": [
+   29,
+   23
+  ]
+ }
+]

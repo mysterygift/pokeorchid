@@ -1,0 +1,47 @@
+raw `
+TanglynTown_MapScripts::
+	map_script MAP_SCRIPT_ON_TRANSITION, TanglynTown_OnTransition
+	.byte 0
+
+TanglynTown_OnTransition:
+	setflag FLAG_VISITED_TANGLYN_TOWN
+	end
+
+TanglynTown_EventScript_Sign0::
+	msgbox TanglynTown_Text_Sign0, MSGBOX_SIGN
+	end
+
+TanglynTown_EventScript_Sign1::
+	msgbox TanglynTown_Text_Sign1, MSGBOX_SIGN
+	end
+
+TanglynTown_Text_Sign0:
+	.string "TANGLYN TOWN\n"
+	.string "A quiet coastal town filled\l"
+	.string "with ancient murals.$"
+
+TanglynTown_Text_Sign1:
+	.string "TANGLYN MURAL HALL\n"
+	.string "Home of TIKSI's ancient murals.\l"
+	.string "(Closed for restoration.)$"
+
+`
+
+// --- tiksi_people.py (generated) ---
+
+script TanglynTown_EventScript_TiksiNpc1 {
+    msgbox(format("The murals in the hall show giants sealed away by Tiksi's ancestors. Five of them! Not three."), MSGBOX_NPC)
+}
+
+script TanglynTown_EventScript_TiksiNpc2 {
+    msgbox(format("The murals are older than any record. Some say people from Sevii painted them."), MSGBOX_NPC)
+}
+
+script TanglynTown_EventScript_TiksiNpc3 {
+    msgbox(format("Frigo Cave's off the north shore. Locals say it's colder inside than it has any right to be."), MSGBOX_NPC)
+}
+
+script TanglynTown_EventScript_TiksiGuardianFrigoCave {
+    msgbox(format("Frigo Cave is colder than it has any right to be. The ice giant is back inside.\pI have guarded this shore all my life. Don't make me regret letting you pass."), MSGBOX_NPC)
+}
+// --- end tiksi_people.py ---

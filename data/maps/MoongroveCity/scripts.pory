@@ -1,0 +1,33 @@
+mapscripts MoongroveCity_MapScripts {
+    MAP_SCRIPT_ON_TRANSITION {
+        setflag(FLAG_VISITED_MOSSDEEP_CITY)
+    }
+}
+
+script MoongroveCity_EventScript_TownSign {
+    msgbox(format("Moongrove City\n“Roots in the mud, eyes on the tide.”"), MSGBOX_SIGN)
+}
+
+script MoongroveCity_EventScript_GymSign {
+    msgbox(format("Moongrove City Pokémon Gym\nLeader: Tork. Ground-type Pokémon."), MSGBOX_SIGN)
+}
+
+script MoongroveCity_EventScript_Npc1 {
+    msgbox(format("Tork, our Gym Leader, was out on the mudflats before dawn again.\pHe swears the big catfish only bite when the tide turns."), MSGBOX_NPC)
+}
+
+script MoongroveCity_EventScript_Npc2 {
+    msgbox(format("The mangroves keep the sea from swallowing the town. Their roots hold this whole place together."), MSGBOX_NPC)
+}
+
+script MoongroveCity_EventScript_Npc3 {
+    msgbox(format("Have you seen the lights at the Abandoned House? My brother says it's a ghost.\pI say it's Mum looking for her keys."), MSGBOX_NPC)
+}
+
+script MoongroveCity_EventScript_Npc4 {
+    msgbox(format("Moongrove Marsh is a fisher's dream. Bring a rod, some patience… and bug spray."), MSGBOX_NPC)
+}
+
+script MoongroveCity_EventScript_Npc5 {
+    msgbox(format("The train's made Moongrove easy to reach. Shame half the visitors only come to gawk at the haunted house."), MSGBOX_NPC)
+}

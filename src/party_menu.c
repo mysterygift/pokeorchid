@@ -2415,9 +2415,8 @@ static void LoadPartyMenuWindows(void)
     DeactivateAllTextPrinters();
     for (i = 0; i < PARTY_SIZE; i++)
         FillWindowPixelBuffer(i, PIXEL_FILL(0));
-    // Orchid: std frame + Orchid text colours for every popup (shared windows use the Orchid theme)
-    LoadBgTiles(0, gTextWindowFrameOrchid_Gfx, 9 * TILE_SIZE_4BPP, ORCHID_FRAME_TILE);
-    LoadPalette(gTextWindowFrameOrchid_Pal, BG_PLTT_ID(ORCHID_PAL_FRAME), PLTT_SIZE_4BPP);
+    // Orchid: the player's FRAME type + Orchid text colours for every popup
+    LoadUserWindowBorderGfxOnBg(0, ORCHID_FRAME_TILE, BG_PLTT_ID(ORCHID_PAL_FRAME));
     LoadPalette(sOrchidMenuTextPal, BG_PLTT_ID(14), PLTT_SIZE_4BPP);
     LoadPalette(sOrchidMenuTextPal, BG_PLTT_ID(15), PLTT_SIZE_4BPP);
 }

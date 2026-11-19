@@ -1,0 +1,5 @@
+mapscripts InkaCity_House1_MapScripts {}
+
+script InkaCity_House1_EventScript_Npc1 {
+    msgbox(format("My Snorunt works night shifts at the cold store. It gets paid in ice cubes."), MSGBOX_NPC)
+}

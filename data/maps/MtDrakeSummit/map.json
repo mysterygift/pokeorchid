@@ -1,0 +1,43 @@
+{
+  "id": "MAP_MT_DRAKE_SUMMIT",
+  "name": "MtDrakeSummit",
+  "layout": "LAYOUT_MT_DRAKE_SUMMIT",
+  "music": "MUS_SEALED_CHAMBER",
+  "region_map_section": "MAPSEC_MT_DRAKE",
+  "requires_flash": false,
+  "weather": "WEATHER_NONE",
+  "map_type": "MAP_TYPE_UNDERGROUND",
+  "allow_cycling": true,
+  "allow_escaping": true,
+  "allow_running": true,
+  "show_map_name": true,
+  "battle_scene": "MAP_BATTLE_SCENE_NORMAL",
+  "connections": null,
+  "object_events": [
+    {
+      "graphics_id": "OBJ_EVENT_GFX_SPECIES(REGIDRAGO)",
+      "x": 8,
+      "y": 8,
+      "elevation": 5,
+      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
+      "movement_range_x": 0,
+      "movement_range_y": 0,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "MtDrakeSummit_EventScript_Regi",
+      "flag": "FLAG_HIDE_REGIDRAGO"
+    }
+  ],
+  "warp_events": [
+    {
+      "x": 8,
+      "y": 13,
+      "elevation": 3,
+      "dest_map": "MAP_MT_DRAKE_PEAK",
+      "dest_warp_id": "1"
+    }
+  ],
+  "coord_events": [],
+  "bg_events": [],
+  "region": "REGION_HOENN"
+}

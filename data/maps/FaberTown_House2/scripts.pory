@@ -1,0 +1,5 @@
+mapscripts FaberTown_House2_MapScripts {}
+
+script FaberTown_House2_EventScript_Npc1 {
+    msgbox(format("Rock Pokémon tumble down from the peaks after a storm. We dig them out and send them home."), MSGBOX_NPC)
+}

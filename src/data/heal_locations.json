@@ -13,76 +13,12 @@
       "y": 2
     },
     {
-      "id": "HEAL_LOCATION_PETALBURG_CITY",
-      "map": "MAP_PETALBURG_CITY",
-      "x": 20,
-      "y": 17,
-      "respawn_map": "MAP_PETALBURG_CITY_POKEMON_CENTER_1F",
-      "respawn_npc": "LOCALID_PETALBURG_NURSE"
-    },
-    {
-      "id": "HEAL_LOCATION_SLATEPORT_CITY",
-      "map": "MAP_SLATEPORT_CITY",
-      "x": 19,
-      "y": 20,
-      "respawn_map": "MAP_SLATEPORT_CITY_POKEMON_CENTER_1F",
-      "respawn_npc": "LOCALID_SLATEPORT_NURSE"
-    },
-    {
-      "id": "HEAL_LOCATION_MAUVILLE_CITY",
-      "map": "MAP_MAUVILLE_CITY",
-      "x": 22,
-      "y": 6,
-      "respawn_map": "MAP_MAUVILLE_CITY_POKEMON_CENTER_1F",
-      "respawn_npc": "LOCALID_MAUVILLE_NURSE"
-    },
-    {
-      "id": "HEAL_LOCATION_RUSTBORO_CITY",
-      "map": "MAP_RUSTBORO_CITY",
-      "x": 16,
-      "y": 39,
-      "respawn_map": "MAP_RUSTBORO_CITY_POKEMON_CENTER_1F",
-      "respawn_npc": "LOCALID_RUSTBORO_NURSE"
-    },
-    {
       "id": "HEAL_LOCATION_FORTREE_CITY",
       "map": "MAP_FORTREE_CITY",
       "x": 5,
       "y": 7,
       "respawn_map": "MAP_FORTREE_CITY_POKEMON_CENTER_1F",
       "respawn_npc": "LOCALID_FORTREE_NURSE"
-    },
-    {
-      "id": "HEAL_LOCATION_LILYCOVE_CITY",
-      "map": "MAP_LILYCOVE_CITY",
-      "x": 24,
-      "y": 15,
-      "respawn_map": "MAP_LILYCOVE_CITY_POKEMON_CENTER_1F",
-      "respawn_npc": "LOCALID_LILYCOVE_NURSE"
-    },
-    {
-      "id": "HEAL_LOCATION_MOSSDEEP_CITY",
-      "map": "MAP_MOSSDEEP_CITY",
-      "x": 28,
-      "y": 17,
-      "respawn_map": "MAP_MOSSDEEP_CITY_POKEMON_CENTER_1F",
-      "respawn_npc": "LOCALID_MOSSDEEP_NURSE"
-    },
-    {
-      "id": "HEAL_LOCATION_SOOTOPOLIS_CITY",
-      "map": "MAP_SOOTOPOLIS_CITY",
-      "x": 43,
-      "y": 32,
-      "respawn_map": "MAP_SOOTOPOLIS_CITY_POKEMON_CENTER_1F",
-      "respawn_npc": "LOCALID_SOOTOPOLIS_NURSE"
-    },
-    {
-      "id": "HEAL_LOCATION_EVER_GRANDE_CITY",
-      "map": "MAP_EVER_GRANDE_CITY",
-      "x": 27,
-      "y": 49,
-      "respawn_map": "MAP_EVER_GRANDE_CITY_POKEMON_CENTER_1F",
-      "respawn_npc": "LOCALID_EVER_GRANDE_NURSE"
     },
     {
       "id": "HEAL_LOCATION_TOSA_PORT_MAYS_HOUSE",
@@ -141,16 +77,6 @@
       "y": 16,
       "respawn_map": "MAP_PACIFIDLOG_TOWN_POKEMON_CENTER_1F",
       "respawn_npc": "LOCALID_PACIFIDLOG_NURSE"
-    },
-    {
-      "id": "HEAL_LOCATION_EVER_GRANDE_CITY_POKEMON_LEAGUE",
-      "map": "MAP_EVER_GRANDE_CITY",
-      "x": 18,
-      "y": 6,
-      "respawn_map": "MAP_EVER_GRANDE_CITY_POKEMON_LEAGUE_1F",
-      "respawn_npc": "LOCALID_LEAGUE_NURSE",
-      "respawn_x": 3,
-      "respawn_y": 4
     },
     {
       "id": "HEAL_LOCATION_SOUTHERN_ISLAND_EXTERIOR",
@@ -282,7 +208,7 @@
       "x": 14,
       "y": 6,
       "respawn_map": "MAP_ONE_ISLAND_POKEMON_CENTER_1F",
-      "respawn_npc": "0"
+      "respawn_npc": "LOCALID_ONE_ISLAND_NURSE"
     },
     {
       "id": "HEAL_LOCATION_TWO_ISLAND",
@@ -290,7 +216,7 @@
       "x": 21,
       "y": 8,
       "respawn_map": "MAP_TWO_ISLAND_POKEMON_CENTER_1F",
-      "respawn_npc": "0"
+      "respawn_npc": "LOCALID_TWO_ISLAND_NURSE"
     },
     {
       "id": "HEAL_LOCATION_THREE_ISLAND",
@@ -298,7 +224,7 @@
       "x": 14,
       "y": 28,
       "respawn_map": "MAP_THREE_ISLAND_POKEMON_CENTER_1F",
-      "respawn_npc": "0"
+      "respawn_npc": "LOCALID_THREE_ISLAND_NURSE"
     },
     {
       "id": "HEAL_LOCATION_FOUR_ISLAND",
@@ -306,7 +232,7 @@
       "x": 18,
       "y": 21,
       "respawn_map": "MAP_FOUR_ISLAND_POKEMON_CENTER_1F",
-      "respawn_npc": "0"
+      "respawn_npc": "LOCALID_FOUR_ISLAND_NURSE"
     },
     {
       "id": "HEAL_LOCATION_FIVE_ISLAND",
@@ -314,7 +240,7 @@
       "x": 18,
       "y": 7,
       "respawn_map": "MAP_FIVE_ISLAND_POKEMON_CENTER_1F",
-      "respawn_npc": "0"
+      "respawn_npc": "LOCALID_FIVE_ISLAND_NURSE"
     },
     {
       "id": "HEAL_LOCATION_SEVEN_ISLAND",
@@ -322,7 +248,7 @@
       "x": 12,
       "y": 4,
       "respawn_map": "MAP_SEVEN_ISLAND_POKEMON_CENTER_1F",
-      "respawn_npc": "0"
+      "respawn_npc": "LOCALID_SEVEN_ISLAND_NURSE"
     },
     {
       "id": "HEAL_LOCATION_SIX_ISLAND",
@@ -330,7 +256,151 @@
       "x": 11,
       "y": 12,
       "respawn_map": "MAP_SIX_ISLAND_POKEMON_CENTER_1F",
-      "respawn_npc": "0"
+      "respawn_npc": "LOCALID_SIX_ISLAND_NURSE"
+    },
+    {
+      "id": "HEAL_LOCATION_MOONGROVE_CITY",
+      "map": "MAP_MOONGROVE_CITY",
+      "x": 18,
+      "y": 15,
+      "respawn_map": "MAP_MOONGROVE_CITY_POKEMON_CENTER_1F",
+      "respawn_npc": "LOCALID_MOONGROVE_CITY_NURSE"
+    },
+    {
+      "id": "HEAL_LOCATION_TIMAH_CITY",
+      "map": "MAP_TIMAH_CITY",
+      "x": 13,
+      "y": 21,
+      "respawn_map": "MAP_TIMAH_CITY_POKEMON_CENTER_1F",
+      "respawn_npc": "LOCALID_TIMAH_CITY_NURSE"
+    },
+    {
+      "id": "HEAL_LOCATION_FABER_TOWN",
+      "map": "MAP_FABER_TOWN",
+      "x": 18,
+      "y": 19,
+      "respawn_map": "MAP_FABER_TOWN_POKEMON_CENTER_1F",
+      "respawn_npc": "LOCALID_FABER_TOWN_NURSE"
+    },
+    {
+      "id": "HEAL_LOCATION_CHANGU_CITY",
+      "map": "MAP_CHANGU_CITY",
+      "x": 14,
+      "y": 21,
+      "respawn_map": "MAP_CHANGU_CITY_POKEMON_CENTER_1F",
+      "respawn_npc": "LOCALID_CHANGU_CITY_NURSE"
+    },
+    {
+      "id": "HEAL_LOCATION_INKA_CITY",
+      "map": "MAP_INKA_CITY",
+      "x": 14,
+      "y": 13,
+      "respawn_map": "MAP_INKA_CITY_POKEMON_CENTER_1F",
+      "respawn_npc": "LOCALID_INKA_CITY_NURSE"
+    },
+    {
+      "id": "HEAL_LOCATION_BURA_CITY",
+      "map": "MAP_BURA_CITY",
+      "x": 19,
+      "y": 27,
+      "respawn_map": "MAP_BURA_CITY_POKEMON_CENTER_1F",
+      "respawn_npc": "LOCALID_BURA_CITY_NURSE"
+    },
+    {
+      "id": "HEAL_LOCATION_JURAN_CITY",
+      "map": "MAP_JURAN_CITY",
+      "x": 22,
+      "y": 26,
+      "respawn_map": "MAP_JURAN_CITY_POKEMON_CENTER_1F",
+      "respawn_npc": "LOCALID_JURAN_CITY_NURSE"
+    },
+    {
+      "id": "HEAL_LOCATION_SENOKO_CITY",
+      "map": "MAP_SENOKO_CITY",
+      "x": 12,
+      "y": 13,
+      "respawn_map": "MAP_SENOKO_CITY_POKEMON_CENTER_1F",
+      "respawn_npc": "LOCALID_SENOKO_CITY_NURSE"
+    },
+    {
+      "id": "HEAL_LOCATION_POKEMON_LEAGUE",
+      "map": "MAP_POKEMON_LEAGUE",
+      "x": 11,
+      "y": 19,
+      "respawn_map": "MAP_POKEMON_LEAGUE_POKEMON_CENTER_1F",
+      "respawn_npc": "LOCALID_POKEMON_LEAGUE_NURSE"
+    },
+    {
+      "id": "HEAL_LOCATION_CORRAL_CITY",
+      "map": "MAP_CORRAL_CITY",
+      "x": 14,
+      "y": 15,
+      "respawn_map": "MAP_CORRAL_CITY_POKEMON_CENTER_1F",
+      "respawn_npc": "LOCALID_CORRAL_CITY_NURSE"
+    },
+    {
+      "id": "HEAL_LOCATION_WAVEBREAK_TOWN",
+      "map": "MAP_WAVEBREAK_TOWN",
+      "x": 14,
+      "y": 23,
+      "respawn_map": "MAP_WAVEBREAK_TOWN_POKEMON_CENTER_1F",
+      "respawn_npc": "LOCALID_WAVEBREAK_TOWN_NURSE"
+    },
+    {
+      "id": "HEAL_LOCATION_PINESTAMP_TOWN",
+      "map": "MAP_PINESTAMP_TOWN",
+      "x": 8,
+      "y": 17,
+      "respawn_map": "MAP_PINESTAMP_TOWN_POKEMON_CENTER_1F",
+      "respawn_npc": "LOCALID_PINESTAMP_TOWN_NURSE"
+    },
+    {
+      "id": "HEAL_LOCATION_CHALLENGER_GATE",
+      "map": "MAP_CHALLENGER_GATE",
+      "x": 16,
+      "y": 31,
+      "respawn_map": "MAP_CHALLENGER_GATE_POKEMON_CENTER_1F",
+      "respawn_npc": "LOCALID_CHALLENGER_GATE_NURSE"
+    },
+    {
+      "id": "HEAL_LOCATION_FURONG_VILLAGE",
+      "map": "MAP_FURONG_VILLAGE",
+      "x": 4,
+      "y": 8,
+      "respawn_map": "MAP_FURONG_VILLAGE_POKEMON_CENTER_1F",
+      "respawn_npc": "LOCALID_FURONG_VILLAGE_NURSE"
+    },
+    {
+      "id": "HEAL_LOCATION_DRAKE_BASE_CAMP",
+      "map": "MAP_DRAKE_BASE_CAMP",
+      "x": 6,
+      "y": 17,
+      "respawn_map": "MAP_DRAKE_BASE_CAMP_POKEMON_CENTER_1F",
+      "respawn_npc": "LOCALID_DRAKE_BASE_CAMP_NURSE"
+    },
+    {
+      "id": "HEAL_LOCATION_UBE_CITY",
+      "map": "MAP_UBE_CITY",
+      "x": 6,
+      "y": 9,
+      "respawn_map": "MAP_UBE_CITY_POKEMON_CENTER_1F",
+      "respawn_npc": "LOCALID_UBE_CITY_NURSE"
+    },
+    {
+      "id": "HEAL_LOCATION_TANGLYN_TOWN",
+      "map": "MAP_TANGLYN_TOWN",
+      "x": 4,
+      "y": 16,
+      "respawn_map": "MAP_TANGLYN_TOWN_POKEMON_CENTER_1F",
+      "respawn_npc": "LOCALID_TANGLYN_TOWN_NURSE"
+    },
+    {
+      "id": "HEAL_LOCATION_HOLON_VILLAGE",
+      "map": "MAP_HOLON_VILLAGE",
+      "x": 6,
+      "y": 36,
+      "respawn_map": "MAP_HOLON_VILLAGE_POKEMON_CENTER_1F",
+      "respawn_npc": "LOCALID_HOLON_VILLAGE_NURSE"
     }
   ]
 }

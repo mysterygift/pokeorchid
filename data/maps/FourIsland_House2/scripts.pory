@@ -1,0 +1,5 @@
+mapscripts FourIsland_House2_MapScripts {}
+
+script FourIsland_House2_EventScript_StickerMan {
+    msgbox(format("I love it when trainers show me their journeys. Come back once you've seen every island!"), MSGBOX_NPC)
+}

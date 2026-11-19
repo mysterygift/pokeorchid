@@ -184,7 +184,7 @@ def silhouette_mask():
     return m
 
 
-def draw_phone(s, cursor, badge=0, eye=False, tick=0, pool=None):
+def draw_shell(s, eye=False):
     cv, c = s.cv, s.c
     m = silhouette_mask().load()
     inside = lambda x, y: 0 <= x < W and 0 <= y < H and m[x, y]
@@ -215,6 +215,10 @@ def draw_phone(s, cursor, badge=0, eye=False, tick=0, pool=None):
     if eye:
         cv.set(29, 79, c(WHITE))
 
+
+def draw_phone(s, cursor, badge=0, eye=False, tick=0, pool=None):
+    cv, c = s.cv, s.c
+    draw_shell(s, eye)
     # status bar
     draw_ticker(s, tick, pool if pool is not None else news_pool(1))
     draw_text(cv, 170, 31, "4:27", c(WHITE), c(SCR_DEEP), font="small")
@@ -254,6 +258,54 @@ def draw_phone(s, cursor, badge=0, eye=False, tick=0, pool=None):
     # Rotom speech strip
     rounded_box(cv, 35, 100, 170, 28, 3, c(SCR_DEEP), c(SCR_DEEP), c(SCR_DEEP), c(SCR_DEEP), bevel=False)
     draw_text(cv, 40, 98, APPS[cursor][2], c(WHITE), c((88, 88, 104)), line_h=12)
+
+
+# ---------------------------------------------------------------- offline (before FLAG_SYS_PHONE_ACTIVE)
+# User request 2026-11-18: until a story flag switches the phone on, opening it shows Rotom's face
+# with X eyes, empty signal bars and the clock; no ticker, apps or speech strip.
+PIP_EMPTY = (88, 88, 104)
+X_EYE = ['##............##',
+         '###..........###',
+         '.###........###.',
+         '..###......###..',
+         '...###....###...',
+         '....###..###....',
+         '.....######.....',
+         '......####......',
+         '......####......',
+         '.....######.....',
+         '....###..###....',
+         '...###....###...',
+         '..###......###..',
+         '.###........###.',
+         '###..........###',
+         '##............##']
+MOUTH = ['#......##......##......##',
+         '.#....#..#....#..#....#..',
+         '..#..#....#..#....#..#...',
+         '...##......##......##....']
+
+
+def draw_phone_offline(s, clock="4:27"):
+    cv, c = s.cv, s.c
+    draw_shell(s, False)
+    draw_text(cv, 170, 31, clock, c(WHITE), c(SCR_DEEP), font="small")
+    for k in range(3):                                   # empty signal pips
+        cv.rect(154 + k * 3, 41 - 2 * k, 155 + k * 3, 42, c(PIP_EMPTY))
+    cv.hline(36, 203, 45, c(SCR_DEEP))
+    for ex in (90, 134):                                 # X eyes, shaded down-right
+        kit.stamp(cv, ex + 1, 63, X_EYE, {"#": c(SCR_DEEP)})
+        kit.stamp(cv, ex, 62, X_EYE, {"#": c(WHITE)})
+    kit.stamp(cv, 109, 93, MOUTH, {"#": c(SCR_DEEP)})
+    kit.stamp(cv, 108, 92, MOUTH, {"#": c(WHITE)})
+
+
+def offline_frame(scroll=0, clock="4:27"):
+    s = Sheet(W, H)
+    draw_phone_offline(s, clock)
+    out = K.grid_frame(scroll)
+    out.alpha_composite(s.rgba())
+    return out
 
 
 def phone_layer(cursor, badge=0, eye=False, tick=0, pool=None):
@@ -310,6 +362,7 @@ def main(outdir):
     os.makedirs(outdir, exist_ok=True)
     entries = ["POKéDEX", "POKéMON", "BAG", "PHONE", "PLAYER", "SAVE", "OPTION", "EXIT"]
     MS.render_start(entries, cursor=3).save(os.path.join(outdir, "00_start.png"))
+    offline_frame().save(os.path.join(outdir, "06_offline.png"))
     for i in range(4):
         frame(i, badge=2, eye=(i == 2)).save(os.path.join(outdir, "%02d_home_%s.png" % (i + 1, APPS[i][0].lower())))
     # GIF: slide up from the start menu, then cursor walks the apps

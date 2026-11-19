@@ -1,0 +1,16 @@
+mapscripts KantuFalls_MapScripts {}
+
+script KantuFalls_EventScript_PlaceholderSign {
+    msgbox(format("Kantu Falls: a beautiful series of waterfalls near Faber Town. Locals come once or twice a year to bathe in the mineral-rich waters. Placeholder map."), MSGBOX_SIGN)
+}
+
+// --- route_people.py (generated) ---
+
+script KantuFalls_EventScript_Route1 {
+    msgbox(format("Once or twice a year, the people of Faber Town come to bathe in the falls. The water's full of minerals."), MSGBOX_NPC)
+}
+
+script KantuFalls_EventScript_Route2 {
+    msgbox(format("Brrr! The water's freezing… but I feel ten years younger!"), MSGBOX_NPC)
+}
+// --- end route_people.py ---

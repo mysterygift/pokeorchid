@@ -1,0 +1,106 @@
+mapscripts SevenIsland_TanobyRuins_MapScripts {
+    MAP_SCRIPT_ON_LOAD {
+        if (flag(FLAG_SEVII_TANOBY_OPEN)) {
+            setmetatile(120, 10, 0x20A, FALSE)
+            setmetatile(103, 10, 0x20A, FALSE)
+            setmetatile(88, 8, 0x20A, FALSE)
+            setmetatile(44, 11, 0x20A, FALSE)
+            setmetatile(32, 9, 0x20A, FALSE)
+            setmetatile(12, 15, 0x20A, FALSE)
+            setmetatile(11, 6, 0x20A, FALSE)
+        }
+    }
+}
+
+script SevenIsland_TanobyRuins_EventScript_Brandon {
+    trainerbattle_single(TRAINER_SEVII_BRANDON, SevenIsland_TanobyRuins_Text_BrandonIntro, SevenIsland_TanobyRuins_Text_BrandonDefeat)
+    msgbox(SevenIsland_TanobyRuins_Text_BrandonPost, MSGBOX_AUTOCLOSE)
+}
+
+text SevenIsland_TanobyRuins_Text_BrandonIntro {
+    format("The ruins hold secrets. You won't take them!")
+}
+
+text SevenIsland_TanobyRuins_Text_BrandonDefeat {
+    format("Crumbled like old stone.")
+}
+
+text SevenIsland_TanobyRuins_Text_BrandonPost {
+    format("I heard strange cries from inside the ruins once.")
+}
+
+script SevenIsland_TanobyRuins_EventScript_Benjamin {
+    msgbox(format("I've climbed every hill in the Sevii Islands. Some twice!"), MSGBOX_NPC)
+}
+
+script SevenIsland_TanobyRuins_EventScript_Edna {
+    msgbox(format("I heard strange cries from inside the ruins once."), MSGBOX_NPC)
+}
+
+script SevenIsland_TanobyRuins_EventScript_Clifford {
+    trainerbattle_single(TRAINER_SEVII_CLIFFORD, SevenIsland_TanobyRuins_Text_CliffordIntro, SevenIsland_TanobyRuins_Text_CliffordDefeat)
+    msgbox(SevenIsland_TanobyRuins_Text_CliffordPost, MSGBOX_AUTOCLOSE)
+}
+
+text SevenIsland_TanobyRuins_Text_CliffordIntro {
+    format("A gentleman's battle among the ruins?")
+}
+
+text SevenIsland_TanobyRuins_Text_CliffordDefeat {
+    format("Splendid, simply splendid.")
+}
+
+text SevenIsland_TanobyRuins_Text_CliffordPost {
+    format("I've spent my life exploring these ruins. The chambers have been closed off by rockfalls lately.")
+}
+
+script SevenIsland_TanobyRuins_EventScript_Sealed {
+    if (flag(FLAG_SEVII_TANOBY_OPEN)) {
+        end
+    }
+    msgbox(format("The chamber's entrance is sealed by a fall of rock.\n"
+        "Nothing gets through for now."), MSGBOX_SIGN)
+}
+
+// polish: chamber doors (coord triggers; the door metatile is TanobyDelta's, shared with Tiksi)
+script SevenIsland_TanobyRuins_EventScript_EnterChamber_120_10 {
+    if (flag(FLAG_SEVII_TANOBY_OPEN)) {
+        warp(MAP_SEVEN_ISLAND_TANOBY_RUINS_MONEAN_CHAMBER, 0)
+    }
+}
+
+script SevenIsland_TanobyRuins_EventScript_EnterChamber_103_10 {
+    if (flag(FLAG_SEVII_TANOBY_OPEN)) {
+        warp(MAP_SEVEN_ISLAND_TANOBY_RUINS_LIPTOO_CHAMBER, 0)
+    }
+}
+
+script SevenIsland_TanobyRuins_EventScript_EnterChamber_88_8 {
+    if (flag(FLAG_SEVII_TANOBY_OPEN)) {
+        warp(MAP_SEVEN_ISLAND_TANOBY_RUINS_WEEPTH_CHAMBER, 0)
+    }
+}
+
+script SevenIsland_TanobyRuins_EventScript_EnterChamber_44_11 {
+    if (flag(FLAG_SEVII_TANOBY_OPEN)) {
+        warp(MAP_SEVEN_ISLAND_TANOBY_RUINS_DILFORD_CHAMBER, 0)
+    }
+}
+
+script SevenIsland_TanobyRuins_EventScript_EnterChamber_32_9 {
+    if (flag(FLAG_SEVII_TANOBY_OPEN)) {
+        warp(MAP_SEVEN_ISLAND_TANOBY_RUINS_SCUFIB_CHAMBER, 0)
+    }
+}
+
+script SevenIsland_TanobyRuins_EventScript_EnterChamber_12_15 {
+    if (flag(FLAG_SEVII_TANOBY_OPEN)) {
+        warp(MAP_SEVEN_ISLAND_TANOBY_RUINS_RIXY_CHAMBER, 0)
+    }
+}
+
+script SevenIsland_TanobyRuins_EventScript_EnterChamber_11_6 {
+    if (flag(FLAG_SEVII_TANOBY_OPEN)) {
+        warp(MAP_SEVEN_ISLAND_TANOBY_RUINS_VIAPOIS_CHAMBER, 0)
+    }
+}

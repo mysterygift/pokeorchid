@@ -4,7 +4,7 @@
   "layout": "LAYOUT_EVER_GRANDE_CITY_POKEMON_LEAGUE_1F",
   "music": "MUS_POKE_CENTER",
   "region": "REGION_HOENN",
-  "region_map_section": "MAPSEC_EVER_GRANDE_CITY",
+  "region_map_section": "MAPSEC_PKMN_LEAGUE",
   "requires_flash": false,
   "weather": "WEATHER_NONE",
   "map_type": "MAP_TYPE_INDOOR",
@@ -76,15 +76,15 @@
       "x": 9,
       "y": 11,
       "elevation": 3,
-      "dest_map": "MAP_EVER_GRANDE_CITY",
+      "dest_map": "MAP_EVER_GRANDE_CITY_POKEMON_LEAGUE_1F",
       "dest_warp_id": "0"
     },
     {
       "x": 10,
       "y": 11,
       "elevation": 3,
-      "dest_map": "MAP_EVER_GRANDE_CITY",
-      "dest_warp_id": "0"
+      "dest_map": "MAP_EVER_GRANDE_CITY_POKEMON_LEAGUE_1F",
+      "dest_warp_id": "1"
     },
     {
       "x": 9,

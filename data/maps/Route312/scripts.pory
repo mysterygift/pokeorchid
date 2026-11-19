@@ -1,0 +1,8 @@
+mapscripts Route312_MapScripts {}
+
+// --- route_people.py (generated) ---
+
+script Route312_EventScript_Route1 {
+    msgbox(format("The current's strong out here. Keep swimming!"), MSGBOX_NPC)
+}
+// --- end route_people.py ---

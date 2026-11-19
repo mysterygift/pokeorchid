@@ -1,0 +1,5 @@
+mapscripts MoongroveCity_House4_MapScripts {}
+
+script MoongroveCity_House4_EventScript_Npc1 {
+    msgbox(format("I hung my washing out and a Wingull stole a sock. Wingull aren't even from around here!"), MSGBOX_NPC)
+}

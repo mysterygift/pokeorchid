@@ -1,0 +1,22 @@
+mapscripts OneIsland_TreasureBeach_MapScripts {}
+
+script OneIsland_TreasureBeach_EventScript_Amara {
+    trainerbattle_single(TRAINER_SEVII_AMARA, OneIsland_TreasureBeach_Text_AmaraIntro, OneIsland_TreasureBeach_Text_AmaraDefeat)
+    msgbox(OneIsland_TreasureBeach_Text_AmaraPost, MSGBOX_AUTOCLOSE)
+}
+
+text OneIsland_TreasureBeach_Text_AmaraIntro {
+    format("Looking for treasure? Get past me first!")
+}
+
+text OneIsland_TreasureBeach_Text_AmaraDefeat {
+    format("You found my weak spot.")
+}
+
+text OneIsland_TreasureBeach_Text_AmaraPost {
+    format("The water around the Sevii Islands is so clear!")
+}
+
+script OneIsland_TreasureBeach_EventScript_Boy {
+    msgbox(format("The tide washes all kinds of things up on Treasure Beach. Look carefully in the sand!"), MSGBOX_NPC)
+}

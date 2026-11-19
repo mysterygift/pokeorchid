@@ -1,0 +1,10 @@
+mapscripts MtDrake_WestFace_MapScripts {}
+
+
+script MtDrake_WestFace_EventScript_Sign {
+    msgbox(format("Mt. Drake\nWest Face. Ferrum Shrine lies within the rock."), MSGBOX_SIGN)
+}
+
+script MtDrake_WestFace_EventScript_Npc1 {
+    msgbox(format("Ferrum Shrine lies at the core of Mt. Drake. The steel giant has returned to it.\pI am sworn to guard this door."), MSGBOX_NPC)
+}

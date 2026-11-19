@@ -1,0 +1,18 @@
+mapscripts PowerPlant_MapScripts {
+}
+
+script PowerPlant_EventScript_TownSign {
+    msgbox(format("Power Plant\n“Senoko City Wind Power Plant.”"), MSGBOX_SIGN)
+}
+
+script PowerPlant_EventScript_Sign0 {
+    msgbox(format("SENOKO WIND POWER PLANT\nControl building. Staff only."), MSGBOX_SIGN)
+}
+
+script PowerPlant_EventScript_Npc1 {
+    msgbox(format("The turbines feed straight into Mo's grid. When the wind drops, his Electric Pokémon pick up the slack."), MSGBOX_NPC)
+}
+
+script PowerPlant_EventScript_Npc2 {
+    msgbox(format("Voltorb keep rolling in from the hills. We think the hum of the generators attracts them."), MSGBOX_NPC)
+}

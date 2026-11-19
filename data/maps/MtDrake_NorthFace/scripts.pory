@@ -1,0 +1,10 @@
+mapscripts MtDrake_NorthFace_MapScripts {}
+
+
+script MtDrake_NorthFace_EventScript_Sign {
+    msgbox(format("Mt. Drake\nNorth Face. Drake Base Camp is just ahead."), MSGBOX_SIGN)
+}
+
+script MtDrake_NorthFace_EventScript_Npc1 {
+    msgbox(format("Climbers rest at Drake Base Camp before trying for the peak. Smart ones, anyway."), MSGBOX_NPC)
+}

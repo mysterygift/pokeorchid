@@ -1,0 +1,12 @@
+mapscripts MtBatok_East_1F_MapScripts {}
+
+script MtBatok_East_1F_EventScript_PlaceholderSign {
+    msgbox(format("Mt. Batok east 1F (to Route 307). Placeholder map."), MSGBOX_SIGN)
+}
+
+// --- route_people.py (generated) ---
+
+script MtBatok_East_1F_EventScript_Route1 {
+    msgbox(format("This side of Mt. Batok comes out on Route 307."), MSGBOX_NPC)
+}
+// --- end route_people.py ---

@@ -1,0 +1,7 @@
+  lake? True (31, 0, 24, 14)
+  shot lake_rock_9_23_prompt (8, 23, 24, 14)
+  shot lake_rock_9_23_after (8, 22, 24, 14)
+PASS Holon Lake rock (9,23): object there before=True, gone after Rock Smash=True, encounter: None
+  shot lake_rock_27_41_prompt (26, 41, 24, 14)
+  shot lake_rock_27_41_after (26, 40, 24, 14)
+PASS Holon Lake rock (27,41): object there before=True, gone after Rock Smash=True, encounter: None

@@ -1,0 +1,16 @@
+mapscripts TwoIsland_PokemonCenter_1F_MapScripts {
+    MAP_SCRIPT_ON_RESUME: CableClub_OnResume
+    MAP_SCRIPT_ON_TRANSITION {
+        setrespawn(HEAL_LOCATION_TWO_ISLAND)
+    }
+}
+
+raw `
+TwoIsland_PokemonCenter_1F_EventScript_Nurse::
+	setvar VAR_0x800B, LOCALID_TWO_ISLAND_NURSE
+	call Common_EventScript_PkmnCenterNurse
+	waitmessage
+	waitbuttonpress
+	release
+	end
+`

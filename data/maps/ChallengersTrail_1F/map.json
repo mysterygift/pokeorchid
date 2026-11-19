@@ -1,0 +1,59 @@
+{
+  "id": "MAP_CHALLENGERS_TRAIL_1F",
+  "name": "ChallengersTrail_1F",
+  "layout": "LAYOUT_CHALLENGERS_TRAIL_1F",
+  "music": "MUS_VICTORY_ROAD",
+  "region_map_section": "MAPSEC_CHALLENGERS_TRAIL",
+  "requires_flash": false,
+  "weather": "WEATHER_NONE",
+  "map_type": "MAP_TYPE_UNDERGROUND",
+  "allow_cycling": true,
+  "allow_escaping": true,
+  "allow_running": true,
+  "show_map_name": true,
+  "battle_scene": "MAP_BATTLE_SCENE_NORMAL",
+  "connections": null,
+  "object_events": [
+    {
+      "graphics_id": "OBJ_EVENT_GFX_MAN_3",
+      "x": 18,
+      "y": 17,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_WANDER_AROUND",
+      "movement_range_x": 1,
+      "movement_range_y": 1,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "ChallengersTrail_1F_EventScript_Route1",
+      "flag": "0"
+    }
+  ],
+  "warp_events": [
+    {
+      "x": 6,
+      "y": 42,
+      "elevation": 3,
+      "dest_map": "MAP_CHALLENGER_GATE",
+      "dest_warp_id": "0"
+    },
+    {
+      "x": 41,
+      "y": 42,
+      "elevation": 3,
+      "dest_map": "MAP_CHALLENGERS_TRAIL_CLIFFS",
+      "dest_warp_id": "0"
+    }
+  ],
+  "coord_events": [],
+  "bg_events": [
+    {
+      "type": "sign",
+      "x": 27,
+      "y": 24,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "ChallengersTrail_1F_EventScript_PlaceholderSign"
+    }
+  ],
+  "region": "REGION_HOENN"
+}

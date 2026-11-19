@@ -1,0 +1,37 @@
+mapscripts SenokoCity_MapScripts {
+    MAP_SCRIPT_ON_TRANSITION {
+        setflag(FLAG_VISITED_MAUVILLE_CITY)
+    }
+}
+
+script SenokoCity_EventScript_TownSign {
+    msgbox(format("Senoko City\n“Powering Tosa, one turbine at a time.”"), MSGBOX_SIGN)
+}
+
+script SenokoCity_EventScript_GymSign {
+    msgbox(format("Senoko City Pokémon Gym\nLeader: Mo. Electric-type Pokémon."), MSGBOX_SIGN)
+}
+
+script SenokoCity_EventScript_Sign3 {
+    msgbox(format("TOSA NATIONAL GRID\nSenoko control office."), MSGBOX_SIGN)
+}
+
+script SenokoCity_EventScript_Npc1 {
+    msgbox(format("Mo runs the national power grid from Senoko. If the lights go out anywhere in Tosa, he's the one who gets the call."), MSGBOX_NPC)
+}
+
+script SenokoCity_EventScript_Npc2 {
+    msgbox(format("The wind farms around town spin day and night. Electric Pokémon love napping by the turbines."), MSGBOX_NPC)
+}
+
+script SenokoCity_EventScript_Npc3 {
+    msgbox(format("When the wind drops, Mo sends his Electric Pokémon to the Power Plant to help out. True story!"), MSGBOX_NPC)
+}
+
+script SenokoCity_EventScript_Npc4 {
+    msgbox(format("I counted forty turbines on the hill! Then I lost count."), MSGBOX_NPC)
+}
+
+script SenokoCity_EventScript_Npc5 {
+    msgbox(format("Senoko was a sleepy place before the turbines. Now it powers the whole region."), MSGBOX_NPC)
+}

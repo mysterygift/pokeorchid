@@ -1,0 +1,327 @@
+{
+ "size": [
+  17,
+  13
+ ],
+ "tileset": [
+  "gTileset_General",
+  "gTileset_IslandHarbor"
+ ],
+ "base": "LAYOUT_ISLAND_HARBOR",
+ "marks": [
+  [
+   8,
+   2,
+   "EXIT",
+   "warp"
+  ],
+  [
+   8,
+   5,
+   "Sailor",
+   "sailor"
+  ],
+  [
+   8,
+   7,
+   "",
+   "boat"
+  ]
+ ],
+ "report": {
+  "pair": [
+   "gTileset_General",
+   "gTileset_IslandHarbor"
+  ],
+  "size": [
+   17,
+   13
+  ],
+  "method": "clone: maps point at the existing LAYOUT_ISLAND_HARBOR",
+  "frlg_layout": "LAYOUT_ISLAND_HARBOR_FRLG (General_Frlg / IslandHarbor_Frlg, 17x13)",
+  "same_room": "Same room: same 17x13 size, building with the door on (8,2), walkway row 3 x1-15, railed pier south of the door, sea, railing on the bottom row. Emerald's pier is wider at the top (x6-10 on row 4) and solid below; FRLG's jetty runs on to (8,6).",
+  "birth_island_events": {
+   "warps": [
+    {
+     "x": 8,
+     "y": 2,
+     "elevation": 0,
+     "dest_map": "MAP_BIRTH_ISLAND_EXTERIOR",
+     "dest_warp_id": "0"
+    }
+   ],
+   "objects": [
+    [
+     8,
+     5,
+     "OBJ_EVENT_GFX_SAILOR"
+    ],
+    [
+     8,
+     7,
+     "OBJ_EVENT_GFX_SS_TIDAL"
+    ]
+   ]
+  },
+  "maps": [
+   {
+    "map": "MAP_ONE_ISLAND_HARBOR",
+    "layout": "LAYOUT_ISLAND_HARBOR (shared, unchanged)",
+    "warp": {
+     "x": 8,
+     "y": 2,
+     "dest_map": "MAP_ONE_ISLAND",
+     "dest_warp_id": "3"
+    },
+    "objects": [
+     {
+      "x": 8,
+      "y": 5,
+      "gfx": "OBJ_EVENT_GFX_SAILOR",
+      "frlg": [
+       8,
+       6
+      ],
+      "script": "OneIsland_Harbor_EventScript_Sailor"
+     },
+     {
+      "x": 8,
+      "y": 7,
+      "gfx": "Briney's boat (decision 1; vanilla OBJ_EVENT_GFX_SS_TIDAL slot)",
+      "frlg": [
+       8,
+       9
+      ]
+     }
+    ]
+   },
+   {
+    "map": "MAP_TWO_ISLAND_HARBOR",
+    "layout": "LAYOUT_ISLAND_HARBOR (shared, unchanged)",
+    "warp": {
+     "x": 8,
+     "y": 2,
+     "dest_map": "MAP_TWO_ISLAND",
+     "dest_warp_id": "3"
+    },
+    "objects": [
+     {
+      "x": 8,
+      "y": 5,
+      "gfx": "OBJ_EVENT_GFX_SAILOR",
+      "frlg": [
+       8,
+       6
+      ],
+      "script": "TwoIsland_Harbor_EventScript_Sailor"
+     },
+     {
+      "x": 8,
+      "y": 7,
+      "gfx": "Briney's boat (decision 1; vanilla OBJ_EVENT_GFX_SS_TIDAL slot)",
+      "frlg": [
+       8,
+       9
+      ]
+     }
+    ]
+   },
+   {
+    "map": "MAP_THREE_ISLAND_HARBOR",
+    "layout": "LAYOUT_ISLAND_HARBOR (shared, unchanged)",
+    "warp": {
+     "x": 8,
+     "y": 2,
+     "dest_map": "MAP_THREE_ISLAND_PORT",
+     "dest_warp_id": "2"
+    },
+    "objects": [
+     {
+      "x": 8,
+      "y": 5,
+      "gfx": "OBJ_EVENT_GFX_SAILOR",
+      "frlg": [
+       8,
+       6
+      ],
+      "script": "ThreeIsland_Harbor_EventScript_Sailor"
+     },
+     {
+      "x": 8,
+      "y": 7,
+      "gfx": "Briney's boat (decision 1; vanilla OBJ_EVENT_GFX_SS_TIDAL slot)",
+      "frlg": [
+       8,
+       9
+      ]
+     }
+    ]
+   },
+   {
+    "map": "MAP_FOUR_ISLAND_HARBOR",
+    "layout": "LAYOUT_ISLAND_HARBOR (shared, unchanged)",
+    "warp": {
+     "x": 8,
+     "y": 2,
+     "dest_map": "MAP_FOUR_ISLAND",
+     "dest_warp_id": "6"
+    },
+    "objects": [
+     {
+      "x": 8,
+      "y": 5,
+      "gfx": "OBJ_EVENT_GFX_SAILOR",
+      "frlg": [
+       8,
+       6
+      ],
+      "script": "FourIsland_Harbor_EventScript_Sailor"
+     },
+     {
+      "x": 8,
+      "y": 7,
+      "gfx": "Briney's boat (decision 1; vanilla OBJ_EVENT_GFX_SS_TIDAL slot)",
+      "frlg": [
+       8,
+       9
+      ]
+     }
+    ]
+   },
+   {
+    "map": "MAP_FIVE_ISLAND_HARBOR",
+    "layout": "LAYOUT_ISLAND_HARBOR (shared, unchanged)",
+    "warp": {
+     "x": 8,
+     "y": 2,
+     "dest_map": "MAP_FIVE_ISLAND",
+     "dest_warp_id": "0"
+    },
+    "objects": [
+     {
+      "x": 8,
+      "y": 5,
+      "gfx": "OBJ_EVENT_GFX_SAILOR",
+      "frlg": [
+       8,
+       6
+      ],
+      "script": "FiveIsland_Harbor_EventScript_Sailor"
+     },
+     {
+      "x": 8,
+      "y": 7,
+      "gfx": "Briney's boat (decision 1; vanilla OBJ_EVENT_GFX_SS_TIDAL slot)",
+      "frlg": [
+       8,
+       9
+      ]
+     }
+    ]
+   },
+   {
+    "map": "MAP_SIX_ISLAND_HARBOR",
+    "layout": "LAYOUT_ISLAND_HARBOR (shared, unchanged)",
+    "warp": {
+     "x": 8,
+     "y": 2,
+     "dest_map": "MAP_SIX_ISLAND",
+     "dest_warp_id": "0"
+    },
+    "objects": [
+     {
+      "x": 8,
+      "y": 5,
+      "gfx": "OBJ_EVENT_GFX_SAILOR",
+      "frlg": [
+       8,
+       6
+      ],
+      "script": "SixIsland_Harbor_EventScript_Sailor"
+     },
+     {
+      "x": 8,
+      "y": 7,
+      "gfx": "Briney's boat (decision 1; vanilla OBJ_EVENT_GFX_SS_TIDAL slot)",
+      "frlg": [
+       8,
+       9
+      ]
+     }
+    ]
+   },
+   {
+    "map": "MAP_SEVEN_ISLAND_HARBOR",
+    "layout": "LAYOUT_ISLAND_HARBOR (shared, unchanged)",
+    "warp": {
+     "x": 8,
+     "y": 2,
+     "dest_map": "MAP_SEVEN_ISLAND",
+     "dest_warp_id": "3"
+    },
+    "objects": [
+     {
+      "x": 8,
+      "y": 5,
+      "gfx": "OBJ_EVENT_GFX_SAILOR",
+      "frlg": [
+       8,
+       6
+      ],
+      "script": "SevenIsland_Harbor_EventScript_Sailor"
+     },
+     {
+      "x": 8,
+      "y": 7,
+      "gfx": "Briney's boat (decision 1; vanilla OBJ_EVENT_GFX_SS_TIDAL slot)",
+      "frlg": [
+       8,
+       9
+      ]
+     }
+    ]
+   }
+  ],
+  "walk_diff": [
+   {
+    "x": 6,
+    "y": 4,
+    "frlg": "solid",
+    "emerald": "open"
+   },
+   {
+    "x": 10,
+    "y": 4,
+    "frlg": "solid",
+    "emerald": "open"
+   },
+   {
+    "x": 7,
+    "y": 5,
+    "frlg": "open",
+    "emerald": "solid"
+   },
+   {
+    "x": 8,
+    "y": 5,
+    "frlg": "open",
+    "emerald": "solid"
+   },
+   {
+    "x": 9,
+    "y": 5,
+    "frlg": "open",
+    "emerald": "solid"
+   },
+   {
+    "x": 8,
+    "y": 6,
+    "frlg": "open",
+    "emerald": "solid"
+   }
+  ],
+  "secondary_users": [
+   "LAYOUT_ISLAND_HARBOR"
+  ]
+ }
+}

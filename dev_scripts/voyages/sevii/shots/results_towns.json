@@ -1,0 +1,30 @@
+[
+ [
+  true,
+  "OneIsland: warped in at (14, 6), FLAG_VISITED set=1"
+ ],
+ [
+  true,
+  "TwoIsland: warped in at (39, 9), FLAG_VISITED set=1"
+ ],
+ [
+  true,
+  "ThreeIsland: warped in at (3, 32), FLAG_VISITED set=1"
+ ],
+ [
+  true,
+  "FourIsland: warped in at (18, 21), FLAG_VISITED set=1"
+ ],
+ [
+  true,
+  "FiveIsland: warped in at (12, 14), FLAG_VISITED set=1"
+ ],
+ [
+  true,
+  "SixIsland: warped in at (11, 23), FLAG_VISITED set=1"
+ ],
+ [
+  true,
+  "SevenIsland: warped in at (11, 10), FLAG_VISITED set=1"
+ ]
+]

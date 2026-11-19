@@ -1354,3 +1354,22 @@ TEST("InheritAbility copy the ability of the mother or non-ditto parent (gen6+)"
     else
         EXPECT_EQ(GetMonData(&egg, MON_DATA_ABILITY_NUM), 3);
 }
+
+TEST("(Daycare) Orchid: either Delta parent passes Delta on to the Egg")
+{
+    u32 offspring = 0;
+    ASSUME(P_FAMILY_MAGIKARP == TRUE);
+    ASSUME(P_FAMILY_RALTS == TRUE);
+    ASSUME(P_GEN_4_CROSS_EVOS == TRUE);
+
+    ZeroPlayerPartyMons();
+    PARAMETRIZE { offspring = SPECIES_MAGIKARP_DELTA; RUN_OVERWORLD_SCRIPT(givemon SPECIES_GYARADOS, 100, gender=MON_MALE; givemon SPECIES_GYARADOS_DELTA, 100, gender=MON_FEMALE;); }
+    PARAMETRIZE { offspring = SPECIES_MAGIKARP_DELTA; RUN_OVERWORLD_SCRIPT(givemon SPECIES_GYARADOS_DELTA, 100, gender=MON_MALE; givemon SPECIES_MAGIKARP, 100, gender=MON_FEMALE;); }
+    PARAMETRIZE { offspring = SPECIES_MAGIKARP;       RUN_OVERWORLD_SCRIPT(givemon SPECIES_GYARADOS, 100, gender=MON_MALE; givemon SPECIES_GYARADOS, 100, gender=MON_FEMALE;); }
+    PARAMETRIZE { offspring = SPECIES_RALTS_DELTA;    RUN_OVERWORLD_SCRIPT(givemon SPECIES_GALLADE_DELTA, 100, gender=MON_MALE; givemon SPECIES_GARDEVOIR, 100, gender=MON_FEMALE;); }
+    PARAMETRIZE { offspring = SPECIES_RALTS_DELTA;    RUN_OVERWORLD_SCRIPT(givemon SPECIES_GALLADE_DELTA, 100, gender=MON_MALE; givemon SPECIES_DITTO, 100;); }
+    PARAMETRIZE { offspring = SPECIES_PICHU_DELTA;    RUN_OVERWORLD_SCRIPT(givemon SPECIES_PIKACHU, 100, gender=MON_MALE; givemon SPECIES_RAICHU_DELTA, 100, gender=MON_FEMALE;); }
+    STORE_IN_DAYCARE_AND_GET_EGG();
+
+    EXPECT_EQ(GetMonData(&gParties[B_TRAINER_PLAYER][0], MON_DATA_SPECIES), offspring);
+}

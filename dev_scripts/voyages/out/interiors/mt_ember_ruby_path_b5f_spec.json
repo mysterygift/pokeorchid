@@ -1,0 +1,185 @@
+{
+ "size": [
+  16,
+  15
+ ],
+ "tileset": [
+  "gTileset_General",
+  "gTileset_Lavaridge"
+ ],
+ "ground": [
+  "raw",
+  1649
+ ],
+ "marks": [
+  [
+   11,
+   7,
+   "B4F",
+   "warp"
+  ],
+  [
+   7,
+   7,
+   "ruby",
+   "note"
+  ],
+  [
+   7,
+   2,
+   "BrailleM",
+   "sign"
+  ]
+ ],
+ "grid_raw": [
+  "0671 0671 0671 0671 0671 0671 0671 0671 0671 0671 0671 0671 0671 0671 0671 0671",
+  "0671 0671 0671 067B 0674 0674 0674 0674 0674 0674 0674 0671 0671 0671 0671 0671",
+  "0671 0671 0671 0672 067B 0674 0674 0674 0674 0674 067C 0671 0671 0671 0671 0671",
+  "0671 0671 0671 0672 0672 3308 3308 3308 3308 3308 067C 0671 0671 0671 0671 0671",
+  "0671 0671 0671 0672 070F 3308 3310 3311 3310 3308 0678 067C 0671 0671 0671 0671",
+  "0671 0671 067B 070F 3308 3310 3311 3310 3311 3310 3308 0670 0671 0671 0671 0671",
+  "0671 0671 0672 3308 3310 3311 3310 3308 3310 3311 3308 0670 0671 0671 0671 0671",
+  "0671 0671 0672 3308 3311 3310 3308 070D 3308 3310 3308 32AE 0671 0671 0671 0671",
+  "0671 0671 0672 3308 3310 3311 3310 3308 3310 3311 3310 3308 0670 0671 0671 0671",
+  "0671 0671 067F 066A 3308 3310 3311 3310 3311 3310 3308 070A 067E 0671 0671 0671",
+  "0671 0671 0671 067F 066A 3308 3310 3311 3310 3308 070A 067E 0671 0671 0671 0671",
+  "0671 0671 0671 0671 067F 070C 3308 3308 3308 070C 067F 0671 0671 0671 0671 0671",
+  "0671 0671 0671 0671 0671 0671 0671 0671 0671 0671 0671 0671 0671 0671 0671 0671",
+  "0671 0671 0671 0671 0671 0671 0671 0671 0671 0671 0671 0671 0671 0671 0671 0671",
+  "0671 0671 0671 0671 0671 0671 0671 0671 0671 0671 0671 0671 0671 0671 0671 0671"
+ ],
+ "report": {
+  "pair": [
+   "gTileset_General",
+   "gTileset_Lavaridge"
+  ],
+  "set": "lava",
+  "look": "Fiery Path / Magma Hideout red rock (Mt. Chimney's volcano cave), Lavaridge hot-spring water",
+  "classes": [
+   "################",
+   "################",
+   "################",
+   "#####.....######",
+   "#####.***.######",
+   "####.*****.#####",
+   "###.***.**.#####",
+   "###.**.B.*.U####",
+   "###.***.***.####",
+   "####.*****.#####",
+   "#####.***.######",
+   "######...#######",
+   "################",
+   "################",
+   "################"
+  ],
+  "sig_levels": {
+   "5": 171,
+   "1": 10,
+   "2": 2
+  },
+  "notes": [],
+  "frlg_map": "MtEmber_RubyPath_B5F",
+  "frlg_layout": "LAYOUT_MT_EMBER_RUBY_PATH_B5F",
+  "frlg_pair": [
+   "gTileset_General_Frlg",
+   "gTileset_MtEmber"
+  ],
+  "maps": [
+   "MAP_MT_EMBER_RUBY_PATH_B5_F"
+  ],
+  "size": [
+   16,
+   15
+  ],
+  "method": "learned cave autotiler (interiors_caves.py), set 'lava'",
+  "warps": [
+   {
+    "x": 11,
+    "y": 7,
+    "dest_map": "MAP_MT_EMBER_RUBY_PATH_B4F",
+    "dest_warp_id": "0"
+   }
+  ],
+  "objects": [
+   {
+    "x": 7,
+    "y": 7,
+    "frlg_gfx": "OBJ_EVENT_GFX_RUBY",
+    "emerald_gfx": "OBJ_EVENT_GFX_RUBY (FRLG-only: needs gfx)",
+    "movement": "MOVEMENT_TYPE_FACE_DOWN",
+    "script": "MtEmber_RubyPath_B5F_EventScript_Ruby"
+   }
+  ],
+  "bg_events": [
+   {
+    "type": "sign",
+    "x": 7,
+    "y": 2,
+    "elevation": 0,
+    "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
+    "script": "MtEmber_RubyPath_B5F_EventScript_BrailleMessage"
+   }
+  ],
+  "coord_events": [],
+  "walk_diff": [],
+  "seams_before_fix": 78,
+  "seam_cells_repicked": 26,
+  "seams": [
+   [
+    3,
+    4,
+    "E",
+    "0x272",
+    "0x30F"
+   ],
+   [
+    11,
+    6,
+    "S",
+    "0x270",
+    "0x2AE"
+   ],
+   [
+    11,
+    7,
+    "E",
+    "0x2AE",
+    "0x271"
+   ]
+  ],
+  "secondary_users": [
+   "LAYOUT_LAVARIDGE_TOWN",
+   "LAYOUT_JAGGED_PASS",
+   "LAYOUT_FIERY_PATH",
+   "LAYOUT_MAGMA_HIDEOUT_1F",
+   "LAYOUT_MAGMA_HIDEOUT_2F_1R",
+   "LAYOUT_MAGMA_HIDEOUT_2F_2R",
+   "LAYOUT_MAGMA_HIDEOUT_3F_1R",
+   "LAYOUT_MAGMA_HIDEOUT_3F_2R",
+   "LAYOUT_MAGMA_HIDEOUT_4F",
+   "LAYOUT_MAGMA_HIDEOUT_3F_3R",
+   "LAYOUT_MAGMA_HIDEOUT_2F_3R",
+   "LAYOUT_DRAKE_BASE_CAMP"
+  ],
+  "metatiles": [
+   "0x26A",
+   "0x270",
+   "0x271",
+   "0x272",
+   "0x274",
+   "0x278",
+   "0x27B",
+   "0x27C",
+   "0x27E",
+   "0x27F",
+   "0x2AE",
+   "0x308",
+   "0x30A",
+   "0x30C",
+   "0x30D",
+   "0x30F",
+   "0x310",
+   "0x311"
+  ]
+ }
+}

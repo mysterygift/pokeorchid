@@ -149,7 +149,7 @@ struct Trainer
 
 struct TrainerClass
 {
-    u8 name[13];
+    u8 name[17]; // Orchid: widened from 13 for "Holon{NBSP}Researcher" (16 chars + EOS)
     u8 money;
     u16 ball;
 };

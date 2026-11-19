@@ -1,0 +1,18 @@
+mapscripts FiveIsland_MapScripts {
+    MAP_SCRIPT_ON_TRANSITION {
+        setflag(FLAG_VISITED_FIVE_ISLAND)
+    }
+}
+
+script FiveIsland_EventScript_Fisher {
+    msgbox(format("The fishing off Five Island is the best in the Sevii Islands."), MSGBOX_NPC)
+}
+
+script FiveIsland_EventScript_BugCatcher {
+    msgbox(format("The meadow east of here is full of bug POKéMON. There's a creepy warehouse there too."), MSGBOX_NPC)
+}
+
+script FiveIsland_EventScript_IslandSign {
+    msgbox(format("FIVE ISLAND\n"
+        "Chrono Island. The meadow is to the east."), MSGBOX_SIGN)
+}

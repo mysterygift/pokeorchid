@@ -1,0 +1,10 @@
+mapscripts Route407_MapScripts {}
+
+
+script Route407_EventScript_Sign {
+    msgbox(format("Route 407"), MSGBOX_SIGN)
+}
+
+script Route407_EventScript_Npc1 {
+    msgbox(format("Ube City's to the north and Furong Village is south. This road joins the two."), MSGBOX_NPC)
+}

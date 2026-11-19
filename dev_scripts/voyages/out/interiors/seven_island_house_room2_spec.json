@@ -1,0 +1,208 @@
+{
+ "size": [
+  12,
+  9
+ ],
+ "tileset": [
+  "gTileset_Building",
+  "gTileset_GenericBuilding"
+ ],
+ "ground": [
+  "raw",
+  1541
+ ],
+ "marks": [
+  [
+   3,
+   1,
+   "ROOM1",
+   "warp"
+  ],
+  [
+   6,
+   5,
+   "0x0",
+   "npc",
+   "man"
+  ]
+ ],
+ "grid_raw": [
+  "0605 0607 0605 0613 0605 0607 0606 0605 0606 0605 0605 0607",
+  "060D 060F 060D 020B 060D 060F 060E 060D 060E 060D 060D 060F",
+  "3290 3224 3224 3224 3224 3224 3224 3224 3224 3224 3224 3290",
+  "0698 3223 3223 3223 3223 3223 3223 3223 3223 3223 3223 0698",
+  "3239 3223 3223 3235 3236 3236 3236 3236 3237 3223 3223 3223",
+  "3239 3223 3223 023D 323E 323E 323E 323E 323F 3223 3223 3223",
+  "3291 3223 3223 3245 3246 3246 3246 3246 3247 3223 3223 3222",
+  "0699 3223 3223 3223 3223 3223 3223 3223 3223 3223 3223 062A",
+  "3239 3223 3223 3223 3223 3223 3223 3223 3223 3223 3223 3223"
+ ],
+ "report": {
+  "frlg_map": "SevenIsland_House_Room2",
+  "frlg_layout": "LAYOUT_SEVEN_ISLAND_HOUSE_ROOM2",
+  "frlg_pair": [
+   "gTileset_BuildingFrlg",
+   "gTileset_GenericBuilding2"
+  ],
+  "maps": [
+   "SEVEN_ISLAND_HOUSE_ROOM2"
+  ],
+  "pair": [
+   "gTileset_Building",
+   "gTileset_GenericBuilding"
+  ],
+  "size": [
+   12,
+   9
+  ],
+  "method": "hand class map; FRLG dark doorway -> Lilycove motel stairs (only GenericBuilding way out through a back wall); blue rug -> vanilla orange rug",
+  "warps": [
+   {
+    "x": 3,
+    "y": 1,
+    "dest_map": "MAP_SEVEN_ISLAND_HOUSE_ROOM1",
+    "dest_warp_id": "1",
+    "frlg": true
+   }
+  ],
+  "objects": [
+   {
+    "x": 6,
+    "y": 5,
+    "frlg_gfx": "OBJ_EVENT_GFX_VAR_0",
+    "emerald_gfx": "OBJ_EVENT_GFX_VAR_0 (e-Reader trainer)",
+    "movement": "MOVEMENT_TYPE_FACE_LEFT",
+    "script": "0x0"
+   }
+  ],
+  "bg_events": [],
+  "coord_events": [],
+  "walk_diff": [],
+  "seams": [
+   [
+    2,
+    0,
+    "E",
+    "0x205",
+    "0x213"
+   ],
+   [
+    3,
+    0,
+    "E",
+    "0x213",
+    "0x205"
+   ],
+   [
+    5,
+    0,
+    "E",
+    "0x207",
+    "0x206"
+   ],
+   [
+    0,
+    1,
+    "S",
+    "0x20D",
+    "0x290"
+   ],
+   [
+    2,
+    1,
+    "E",
+    "0x20D",
+    "0x20B"
+   ],
+   [
+    3,
+    1,
+    "E",
+    "0x20B",
+    "0x20D"
+   ],
+   [
+    5,
+    1,
+    "E",
+    "0x20F",
+    "0x20E"
+   ],
+   [
+    11,
+    1,
+    "S",
+    "0x20F",
+    "0x290"
+   ],
+   [
+    0,
+    2,
+    "E",
+    "0x290",
+    "0x224"
+   ],
+   [
+    10,
+    2,
+    "E",
+    "0x224",
+    "0x290"
+   ],
+   [
+    0,
+    7,
+    "S",
+    "0x299",
+    "0x239"
+   ]
+  ],
+  "secondary_users": [
+   "LAYOUT_HOUSE1",
+   "LAYOUT_HOUSE2",
+   "LAYOUT_HOUSE3",
+   "LAYOUT_DEWFORD_TOWN_HALL",
+   "LAYOUT_HOUSE4",
+   "LAYOUT_VERDANTURF_TOWN_WANDAS_HOUSE",
+   "LAYOUT_PACIFIDLOG_TOWN_HOUSE1",
+   "LAYOUT_PACIFIDLOG_TOWN_HOUSE2",
+   "LAYOUT_FORTREE_CITY_HOUSE1",
+   "LAYOUT_FORTREE_CITY_HOUSE2",
+   "LAYOUT_ROUTE116_TUNNELERS_REST_HOUSE",
+   "LAYOUT_FORTREE_CITY_DECORATION_SHOP",
+   "LAYOUT_ROUTE124_DIVING_TREASURE_HUNTERS_HOUSE",
+   "LAYOUT_SAFARI_ZONE_REST_HOUSE"
+  ],
+  "notes": [
+   "e-Reader trainer room: reached only through Room1's DOOR_OPEN layout. FRLG pictures x1/x5/x11 -> shutter windows, 2-wide pictures x6-7/x8-9 -> curtain windows."
+  ],
+  "metatiles": [
+   "0x205",
+   "0x206",
+   "0x207",
+   "0x20B",
+   "0x20D",
+   "0x20E",
+   "0x20F",
+   "0x213",
+   "0x222",
+   "0x223",
+   "0x224",
+   "0x22A",
+   "0x235",
+   "0x236",
+   "0x237",
+   "0x239",
+   "0x23D",
+   "0x23E",
+   "0x23F",
+   "0x245",
+   "0x246",
+   "0x247",
+   "0x290",
+   "0x291",
+   "0x298",
+   "0x299"
+  ]
+ }
+}

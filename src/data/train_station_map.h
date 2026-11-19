@@ -3,47 +3,85 @@
 
 #define TRAIN_MAP_CANVAS_W 512
 #define TRAIN_MAP_CANVAS_H 256
-#define TRAIN_MAP_LINE_COUNT 2
-#define TRAIN_MAP_EDGE_COUNT 2
+#define TRAIN_MAP_LINE_COUNT 4
+#define TRAIN_MAP_EDGE_COUNT 13
 
 struct TrainMapStation { u16 x, y; u8 lineMask; bool8 interchange; s16 labelX, labelY; u8 labelW; u16 labelCellsStart; u8 labelCellsCount; };
 struct TrainMapEdge { u8 a, b, line; u16 cellsStart; u16 cellsCount; };
 
-static const u8 *const sTrainMapLineNames[TRAIN_MAP_LINE_COUNT] = { (const u8[])_("COAST"), (const u8[])_("RIDGE") };
+static const u8 *const sTrainMapLineNames[TRAIN_MAP_LINE_COUNT] = { (const u8[])_("WEST"), (const u8[])_("CENTRAL"), (const u8[])_("EAST"), (const u8[])_("POKéTOPIA") };
 
 static const struct TrainMapStation sTrainMapStations[TRAIN_STATION_COUNT] =
 {
-    [TRAIN_STATION_TEST_WEST] = { .x = 36, .y = 196, .lineMask = 0x03, .interchange = TRUE, .labelX = 8, .labelY = 201, .labelW = 56, .labelCellsStart = 0, .labelCellsCount = 10 },
-    [TRAIN_STATION_TEST_EAST] = { .x = 476, .y = 196, .lineMask = 0x01, .interchange = FALSE, .labelX = 448, .labelY = 201, .labelW = 56, .labelCellsStart = 10, .labelCellsCount = 10 },
-    [TRAIN_STATION_TEST_NORTH] = { .x = 252, .y = 44, .lineMask = 0x02, .interchange = FALSE, .labelX = 225, .labelY = 49, .labelW = 56, .labelCellsStart = 20, .labelCellsCount = 14 },
+    [TRAIN_STATION_TOSA_PORT] = { .x = 28, .y = 180, .lineMask = 0x01, .interchange = FALSE, .labelX = 1, .labelY = 185, .labelW = 56, .labelCellsStart = 0, .labelCellsCount = 11 },
+    [TRAIN_STATION_MOONGROVE_CITY] = { .x = 76, .y = 180, .lineMask = 0x01, .interchange = FALSE, .labelX = 76, .labelY = 185, .labelW = 80, .labelCellsStart = 11, .labelCellsCount = 18 },
+    [TRAIN_STATION_TIMAH_CITY] = { .x = 108, .y = 28, .lineMask = 0x01, .interchange = FALSE, .labelX = 81, .labelY = 9, .labelW = 56, .labelCellsStart = 29, .labelCellsCount = 13 },
+    [TRAIN_STATION_FABER_TOWN] = { .x = 148, .y = 28, .lineMask = 0x01, .interchange = FALSE, .labelX = 147, .labelY = 21, .labelW = 64, .labelCellsStart = 42, .labelCellsCount = 14 },
+    [TRAIN_STATION_CHANGU_CITY] = { .x = 188, .y = 100, .lineMask = 0x07, .interchange = TRUE, .labelX = 123, .labelY = 105, .labelW = 64, .labelCellsStart = 56, .labelCellsCount = 14 },
+    [TRAIN_STATION_CHANGU_AIRPORT] = { .x = 188, .y = 140, .lineMask = 0x02, .interchange = FALSE, .labelX = 188, .labelY = 133, .labelW = 80, .labelCellsStart = 70, .labelCellsCount = 18 },
+    [TRAIN_STATION_INKA_CITY] = { .x = 188, .y = 220, .lineMask = 0x02, .interchange = FALSE, .labelX = 161, .labelY = 225, .labelW = 56, .labelCellsStart = 88, .labelCellsCount = 10 },
+    [TRAIN_STATION_BURA_CITY] = { .x = 308, .y = 100, .lineMask = 0x02, .interchange = FALSE, .labelX = 280, .labelY = 81, .labelW = 56, .labelCellsStart = 98, .labelCellsCount = 10 },
+    [TRAIN_STATION_JURAN_CITY] = { .x = 348, .y = 180, .lineMask = 0x0A, .interchange = TRUE, .labelX = 351, .labelY = 161, .labelW = 56, .labelCellsStart = 108, .labelCellsCount = 14 },
+    [TRAIN_STATION_SENOKO_CITY] = { .x = 452, .y = 68, .lineMask = 0x04, .interchange = FALSE, .labelX = 420, .labelY = 73, .labelW = 64, .labelCellsStart = 122, .labelCellsCount = 14 },
+    [TRAIN_STATION_POKEMON_LEAGUE] = { .x = 348, .y = 28, .lineMask = 0x04, .interchange = FALSE, .labelX = 308, .labelY = 33, .labelW = 80, .labelCellsStart = 136, .labelCellsCount = 18 },
+    [TRAIN_STATION_POKETOPIA_GATE] = { .x = 412, .y = 220, .lineMask = 0x08, .interchange = FALSE, .labelX = 373, .labelY = 225, .labelW = 80, .labelCellsStart = 154, .labelCellsCount = 18 },
+    [TRAIN_STATION_CORRAL_CITY] = { .x = 476, .y = 220, .lineMask = 0x08, .interchange = FALSE, .labelX = 438, .labelY = 201, .labelW = 64, .labelCellsStart = 172, .labelCellsCount = 14 },
 };
 
 // tilemap cell index = y*64 + x (canvas tile coords, NOT screenblock order)
 static const u16 sTrainMapLabelCells[] =
 {
-    1602, 1603, 1604, 1605, 1606, 1666, 1667, 1668, 1669, 1670, 1657, 1658, 1659, 1660, 1661, 1721,
-    1722, 1723, 1724, 1725, 412, 413, 414, 415, 416, 417, 418, 476, 477, 478, 479, 480,
-    481, 482,
+    1473, 1474, 1475, 1476, 1477, 1478, 1537, 1538, 1539, 1540, 1541, 1482, 1483, 1484, 1485, 1486,
+    1487, 1488, 1489, 1490, 1546, 1547, 1548, 1549, 1550, 1551, 1552, 1553, 1554, 74, 75, 76,
+    77, 78, 79, 80, 139, 140, 141, 142, 143, 144, 211, 212, 213, 214, 215, 216,
+    217, 275, 276, 277, 278, 279, 280, 281, 848, 849, 850, 851, 852, 853, 854, 912,
+    913, 914, 915, 916, 917, 918, 1112, 1113, 1114, 1115, 1116, 1117, 1118, 1119, 1120, 1176,
+    1177, 1178, 1179, 1180, 1181, 1182, 1183, 1184, 1813, 1814, 1815, 1816, 1817, 1877, 1878, 1879,
+    1880, 1881, 676, 677, 678, 679, 680, 740, 741, 742, 743, 744, 1324, 1325, 1326, 1327,
+    1328, 1329, 1330, 1388, 1389, 1390, 1391, 1392, 1393, 1394, 629, 630, 631, 632, 633, 634,
+    635, 693, 694, 695, 696, 697, 698, 699, 295, 296, 297, 298, 299, 300, 301, 302,
+    303, 359, 360, 361, 362, 363, 364, 365, 366, 367, 1839, 1840, 1841, 1842, 1843, 1844,
+    1845, 1846, 1847, 1903, 1904, 1905, 1906, 1907, 1908, 1909, 1910, 1911, 1655, 1656, 1657, 1658,
+    1659, 1660, 1661, 1719, 1720, 1721, 1722, 1723, 1724, 1725,
 };
 
 static const struct TrainMapEdge sTrainMapEdges[TRAIN_MAP_EDGE_COUNT] =
 {
-    { .a = TRAIN_STATION_TEST_WEST, .b = TRAIN_STATION_TEST_EAST, .line = 0, .cellsStart = 0, .cellsCount = 56 },
-    { .a = TRAIN_STATION_TEST_WEST, .b = TRAIN_STATION_TEST_NORTH, .line = 1, .cellsStart = 56, .cellsCount = 51 },
+    { .a = TRAIN_STATION_TOSA_PORT, .b = TRAIN_STATION_MOONGROVE_CITY, .line = 0, .cellsStart = 0, .cellsCount = 7 },
+    { .a = TRAIN_STATION_MOONGROVE_CITY, .b = TRAIN_STATION_TIMAH_CITY, .line = 0, .cellsStart = 7, .cellsCount = 28 },
+    { .a = TRAIN_STATION_TIMAH_CITY, .b = TRAIN_STATION_FABER_TOWN, .line = 0, .cellsStart = 35, .cellsCount = 6 },
+    { .a = TRAIN_STATION_FABER_TOWN, .b = TRAIN_STATION_CHANGU_CITY, .line = 0, .cellsStart = 41, .cellsCount = 15 },
+    { .a = TRAIN_STATION_CHANGU_CITY, .b = TRAIN_STATION_BURA_CITY, .line = 1, .cellsStart = 56, .cellsCount = 16 },
+    { .a = TRAIN_STATION_BURA_CITY, .b = TRAIN_STATION_JURAN_CITY, .line = 1, .cellsStart = 72, .cellsCount = 21 },
+    { .a = TRAIN_STATION_JURAN_CITY, .b = TRAIN_STATION_INKA_CITY, .line = 1, .cellsStart = 93, .cellsCount = 31 },
+    { .a = TRAIN_STATION_INKA_CITY, .b = TRAIN_STATION_CHANGU_AIRPORT, .line = 1, .cellsStart = 124, .cellsCount = 11 },
+    { .a = TRAIN_STATION_CHANGU_AIRPORT, .b = TRAIN_STATION_CHANGU_CITY, .line = 1, .cellsStart = 135, .cellsCount = 6 },
+    { .a = TRAIN_STATION_CHANGU_CITY, .b = TRAIN_STATION_SENOKO_CITY, .line = 2, .cellsStart = 141, .cellsCount = 40 },
+    { .a = TRAIN_STATION_SENOKO_CITY, .b = TRAIN_STATION_POKEMON_LEAGUE, .line = 2, .cellsStart = 181, .cellsCount = 19 },
+    { .a = TRAIN_STATION_JURAN_CITY, .b = TRAIN_STATION_POKETOPIA_GATE, .line = 3, .cellsStart = 200, .cellsCount = 19 },
+    { .a = TRAIN_STATION_POKETOPIA_GATE, .b = TRAIN_STATION_CORRAL_CITY, .line = 3, .cellsStart = 219, .cellsCount = 9 },
 };
 
 // tube cells for each edge, same indexing
 static const u16 sTrainMapEdgeCells[] =
 {
-    1540, 1541, 1542, 1543, 1544, 1545, 1546, 1547, 1548, 1549, 1550, 1551, 1552, 1553, 1554, 1555,
-    1556, 1557, 1558, 1559, 1560, 1561, 1562, 1563, 1564, 1565, 1566, 1567, 1568, 1569, 1570, 1571,
-    1572, 1573, 1574, 1575, 1576, 1577, 1578, 1579, 1580, 1581, 1582, 1583, 1584, 1585, 1586, 1587,
-    1588, 1589, 1590, 1591, 1592, 1593, 1594, 1595, 327, 328, 329, 330, 331, 332, 333, 334,
-    335, 336, 337, 338, 339, 340, 341, 342, 343, 344, 345, 346, 347, 348, 349, 350,
-    351, 390, 391, 392, 453, 454, 455, 516, 517, 518, 580, 581, 644, 708, 772, 836,
-    900, 964, 1028, 1092, 1156, 1220, 1284, 1348, 1412, 1476, 1540,
+    1411, 1412, 1413, 1414, 1415, 1416, 1417, 204, 205, 267, 268, 269, 330, 331, 332, 393,
+    394, 395, 457, 458, 521, 585, 649, 713, 777, 841, 905, 969, 1033, 1097, 1161, 1225,
+    1289, 1353, 1417, 205, 206, 207, 208, 209, 210, 210, 274, 338, 402, 466, 530, 594,
+    658, 722, 786, 787, 788, 789, 790, 791, 791, 792, 793, 794, 795, 796, 797, 798,
+    799, 800, 801, 802, 803, 804, 805, 806, 806, 807, 870, 871, 872, 935, 936, 937,
+    1000, 1001, 1002, 1065, 1066, 1067, 1130, 1131, 1195, 1259, 1323, 1387, 1451, 1450, 1451, 1513,
+    1514, 1515, 1576, 1577, 1578, 1639, 1640, 1641, 1702, 1703, 1704, 1751, 1752, 1753, 1754, 1755,
+    1756, 1757, 1758, 1759, 1760, 1761, 1762, 1763, 1764, 1765, 1766, 1767, 1111, 1175, 1239, 1303,
+    1367, 1431, 1495, 1559, 1623, 1687, 1751, 791, 855, 919, 983, 1047, 1111, 536, 537, 538,
+    539, 540, 541, 542, 543, 544, 545, 546, 547, 548, 549, 550, 551, 552, 553, 554,
+    555, 556, 557, 558, 559, 560, 561, 562, 563, 564, 565, 566, 567, 568, 599, 600,
+    601, 663, 664, 727, 791, 235, 236, 237, 238, 239, 240, 241, 242, 243, 244, 245,
+    246, 247, 248, 312, 376, 440, 504, 568, 1451, 1452, 1453, 1454, 1517, 1518, 1519, 1582,
+    1583, 1584, 1647, 1648, 1649, 1712, 1713, 1714, 1777, 1778, 1779, 1779, 1780, 1781, 1782, 1783,
+    1784, 1785, 1786, 1787,
 };
 
 // screen x of each legend tube OBJ (y = header)
-static const u8 sTrainMapLegendX[TRAIN_MAP_LINE_COUNT] = { 152, 197 };
+static const u8 sTrainMapLegendX[TRAIN_MAP_LINE_COUNT] = { 43, 83, 138, 178 };
 #define TRAIN_MAP_LEGEND_Y 4

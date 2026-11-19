@@ -42,6 +42,7 @@
 #include "util.h"
 #include "wild_encounter.h"
 #include "wild_encounter_ow.h"
+#include "holon.h"
 #include "constants/event_object_movement.h"
 #include "constants/abilities.h"
 #include "constants/battle.h"
@@ -541,6 +542,7 @@ static const struct SpritePalette sObjectEventSpritePalettes[] = {
     {gObjectEventPal_NpcGreenReflection,    OBJ_EVENT_PAL_TAG_NPC_GREEN_REFLECTION},
     {gObjectEventPal_NpcWhiteReflection,    OBJ_EVENT_PAL_TAG_NPC_WHITE_REFLECTION},
     {gObjectEventPal_NpcSchoolKidF,         OBJ_EVENT_PAL_TAG_NPC_SCHOOL_KID_F},
+    {gObjectEventPal_HolonSphere,           OBJ_EVENT_PAL_TAG_HOLON_SPHERE},   // Orchid Holon
 #if IS_FRLG
     {gObjectEventPal_PlayerFrlg,            OBJ_EVENT_PAL_TAG_PLAYER_RED},
     {gObjectEventPal_PlayerReflectionFrlg,  OBJ_EVENT_PAL_TAG_PLAYER_RED_REFLECTION},
@@ -2624,24 +2626,21 @@ void GetFollowerAction(struct ScriptContext *ctx) // Essentially a big switch fo
         emotion_weight[FOLLOWER_EMOTION_SAD] = 30;
         condEmotes[condCount++] = (struct SpecialEmote) {.emotion = FOLLOWER_EMOTION_SAD, .index = 6};
     }
-    // Gym type advantage/disadvantage
+    // Gym type advantage/disadvantage (Hoenn gym towns)
     if (GetCurrentMapMusic() == MUS_GYM || GetCurrentMapMusic() == MUS_RG_GYM)
     {
         switch (gMapHeader.regionMapSectionId)
         {
         case MAPSEC_RUSTBORO_CITY:
-        case MAPSEC_PEWTER_CITY:
             multi = TYPE_ROCK;
             break;
         case MAPSEC_DEWFORD_TOWN:
             multi = TYPE_FIGHTING;
             break;
         case MAPSEC_MAUVILLE_CITY:
-        case MAPSEC_VERMILION_CITY:
             multi = TYPE_ELECTRIC;
             break;
         case MAPSEC_LAVARIDGE_TOWN:
-        case MAPSEC_CINNABAR_ISLAND:
             multi = TYPE_FIRE;
             break;
         case MAPSEC_PETALBURG_CITY:
@@ -2651,22 +2650,13 @@ void GetFollowerAction(struct ScriptContext *ctx) // Essentially a big switch fo
             multi = TYPE_FLYING;
             break;
         case MAPSEC_MOSSDEEP_CITY:
-        case MAPSEC_SAFFRON_CITY:
             multi = TYPE_PSYCHIC;
             break;
         case MAPSEC_SOOTOPOLIS_CITY:
-        case MAPSEC_CERULEAN_CITY:
             multi = TYPE_WATER;
             break;
-        case MAPSEC_CELADON_CITY:
-            multi = TYPE_GRASS;
-            break;
-        case MAPSEC_FUCHSIA_CITY:
-            multi = TYPE_POISON;
-            break;
-        case MAPSEC_VIRIDIAN_CITY:
-            multi = TYPE_GROUND;
-            break;
+        // Orchid: the Kanto city sections are Tiksi places now (Furong Village, Ube City, ...), so the
+        // FRLG gym cases are gone; Tiksi followers get the standard reactions until Tiksi gyms exist
         default:
             multi = NUMBER_OF_MON_TYPES;
         }
@@ -3298,7 +3288,11 @@ void FreeAndReserveObjectSpritePalettes(void)
 
 u8 LoadObjectEventPalette(u16 paletteTag)
 {
-    u16 i = FindObjectEventPaletteIndexByTag(paletteTag);
+    u16 i;
+
+    if (paletteTag == OBJ_EVENT_PAL_TAG_HOLON_SPHERE) // Orchid Holon: dormant or glowing palette
+        return Holon_LoadSpherePalette();
+    i = FindObjectEventPaletteIndexByTag(paletteTag);
     if (i == 0xFF)
         return i;
     return LoadSpritePaletteIfTagExists(&sObjectEventSpritePalettes[i]);

@@ -1,0 +1,5 @@
+mapscripts MoongroveCity_House2_MapScripts {}
+
+script MoongroveCity_House2_EventScript_Npc1 {
+    msgbox(format("Catfish Pokémon can sense earthquakes before they happen. Tork says that's why he trains Ground types."), MSGBOX_NPC)
+}

@@ -1,0 +1,5 @@
+mapscripts DrakeBaseCamp_House1_MapScripts {}
+
+script DrakeBaseCamp_House1_EventScript_Npc1 {
+    msgbox(format("Every climber rests here before the ascent. Take a breather while you can."), MSGBOX_NPC)
+}

@@ -1,0 +1,1058 @@
+{
+  "_note": "Intended Holon tables with Delta species (SPECIES_<BASE>_DELTA); swap them into src/data/wild_encounters.json once the delta stream is merged (same map / base_label keys as the base-species tables installed now).",
+  "encounters": [
+    {
+      "map": "MAP_HOLON_MIRAGE_FOREST",
+      "base_label": "gHolonMirageForest",
+      "land_mons": {
+        "encounter_rate": 20,
+        "mons": [
+          {
+            "min_level": 52,
+            "max_level": 54,
+            "species": "SPECIES_TROPIUS"
+          },
+          {
+            "min_level": 50,
+            "max_level": 53,
+            "species": "SPECIES_WINGULL_DELTA"
+          },
+          {
+            "min_level": 54,
+            "max_level": 54,
+            "species": "SPECIES_PELIPPER"
+          },
+          {
+            "min_level": 50,
+            "max_level": 52,
+            "species": "SPECIES_SWABLU_DELTA"
+          },
+          {
+            "min_level": 52,
+            "max_level": 52,
+            "species": "SPECIES_SPINDA"
+          },
+          {
+            "min_level": 54,
+            "max_level": 54,
+            "species": "SPECIES_EXEGGUTOR"
+          },
+          {
+            "min_level": 52,
+            "max_level": 54,
+            "species": "SPECIES_FLAAFFY_DELTA"
+          },
+          {
+            "min_level": 52,
+            "max_level": 52,
+            "species": "SPECIES_TRAPINCH"
+          },
+          {
+            "min_level": 50,
+            "max_level": 50,
+            "species": "SPECIES_TREECKO_DELTA"
+          },
+          {
+            "min_level": 55,
+            "max_level": 55,
+            "species": "SPECIES_ALTARIA_DELTA"
+          },
+          {
+            "min_level": 50,
+            "max_level": 50,
+            "species": "SPECIES_CHARMANDER_DELTA"
+          },
+          {
+            "min_level": 50,
+            "max_level": 50,
+            "species": "SPECIES_TOTODILE_DELTA"
+          }
+        ]
+      },
+      "water_mons": {
+        "encounter_rate": 4,
+        "mons": [
+          {
+            "min_level": 50,
+            "max_level": 55,
+            "species": "SPECIES_TENTACRUEL"
+          },
+          {
+            "min_level": 52,
+            "max_level": 55,
+            "species": "SPECIES_PELIPPER_DELTA"
+          },
+          {
+            "min_level": 50,
+            "max_level": 52,
+            "species": "SPECIES_WAILMER"
+          },
+          {
+            "min_level": 52,
+            "max_level": 54,
+            "species": "SPECIES_CROCONAW_DELTA"
+          },
+          {
+            "min_level": 56,
+            "max_level": 56,
+            "species": "SPECIES_FERALIGATR_DELTA"
+          }
+        ]
+      },
+      "fishing_mons": {
+        "encounter_rate": 30,
+        "mons": [
+          {
+            "min_level": 50,
+            "max_level": 50,
+            "species": "SPECIES_MAGIKARP"
+          },
+          {
+            "min_level": 50,
+            "max_level": 50,
+            "species": "SPECIES_KRABBY_DELTA"
+          },
+          {
+            "min_level": 52,
+            "max_level": 52,
+            "species": "SPECIES_KRABBY_DELTA"
+          },
+          {
+            "min_level": 52,
+            "max_level": 52,
+            "species": "SPECIES_CORSOLA"
+          },
+          {
+            "min_level": 52,
+            "max_level": 52,
+            "species": "SPECIES_LUVDISC"
+          },
+          {
+            "min_level": 55,
+            "max_level": 55,
+            "species": "SPECIES_KINGLER_DELTA"
+          },
+          {
+            "min_level": 55,
+            "max_level": 55,
+            "species": "SPECIES_SHARPEDO"
+          },
+          {
+            "min_level": 55,
+            "max_level": 55,
+            "species": "SPECIES_RELICANTH_DELTA"
+          },
+          {
+            "min_level": 58,
+            "max_level": 58,
+            "species": "SPECIES_WAILORD"
+          },
+          {
+            "min_level": 58,
+            "max_level": 58,
+            "species": "SPECIES_LAPRAS"
+          }
+        ]
+      }
+    },
+    {
+      "map": "MAP_HOLON_MIRAGE_FOREST",
+      "base_label": "gHolonMirageForest_Night",
+      "land_mons": {
+        "encounter_rate": 20,
+        "mons": [
+          {
+            "min_level": 52,
+            "max_level": 54,
+            "species": "SPECIES_DRIFLOON_DELTA"
+          },
+          {
+            "min_level": 52,
+            "max_level": 54,
+            "species": "SPECIES_SHUPPET"
+          },
+          {
+            "min_level": 54,
+            "max_level": 54,
+            "species": "SPECIES_PELIPPER"
+          },
+          {
+            "min_level": 50,
+            "max_level": 52,
+            "species": "SPECIES_VULPIX_DELTA"
+          },
+          {
+            "min_level": 52,
+            "max_level": 52,
+            "species": "SPECIES_SPINDA"
+          },
+          {
+            "min_level": 54,
+            "max_level": 54,
+            "species": "SPECIES_EXEGGUTOR"
+          },
+          {
+            "min_level": 52,
+            "max_level": 54,
+            "species": "SPECIES_FLAAFFY_DELTA"
+          },
+          {
+            "min_level": 55,
+            "max_level": 55,
+            "species": "SPECIES_BANETTE"
+          },
+          {
+            "min_level": 56,
+            "max_level": 56,
+            "species": "SPECIES_NINETALES_DELTA"
+          },
+          {
+            "min_level": 55,
+            "max_level": 55,
+            "species": "SPECIES_ALTARIA_DELTA"
+          },
+          {
+            "min_level": 50,
+            "max_level": 50,
+            "species": "SPECIES_CHARMANDER_DELTA"
+          },
+          {
+            "min_level": 50,
+            "max_level": 50,
+            "species": "SPECIES_TOTODILE_DELTA"
+          }
+        ]
+      },
+      "water_mons": {
+        "encounter_rate": 4,
+        "mons": [
+          {
+            "min_level": 50,
+            "max_level": 55,
+            "species": "SPECIES_TENTACRUEL"
+          },
+          {
+            "min_level": 52,
+            "max_level": 55,
+            "species": "SPECIES_PELIPPER_DELTA"
+          },
+          {
+            "min_level": 50,
+            "max_level": 52,
+            "species": "SPECIES_WAILMER"
+          },
+          {
+            "min_level": 52,
+            "max_level": 54,
+            "species": "SPECIES_CROCONAW_DELTA"
+          },
+          {
+            "min_level": 56,
+            "max_level": 56,
+            "species": "SPECIES_FERALIGATR_DELTA"
+          }
+        ]
+      },
+      "fishing_mons": {
+        "encounter_rate": 30,
+        "mons": [
+          {
+            "min_level": 50,
+            "max_level": 50,
+            "species": "SPECIES_MAGIKARP"
+          },
+          {
+            "min_level": 50,
+            "max_level": 50,
+            "species": "SPECIES_KRABBY_DELTA"
+          },
+          {
+            "min_level": 52,
+            "max_level": 52,
+            "species": "SPECIES_KRABBY_DELTA"
+          },
+          {
+            "min_level": 52,
+            "max_level": 52,
+            "species": "SPECIES_CORSOLA"
+          },
+          {
+            "min_level": 52,
+            "max_level": 52,
+            "species": "SPECIES_LUVDISC"
+          },
+          {
+            "min_level": 55,
+            "max_level": 55,
+            "species": "SPECIES_KINGLER_DELTA"
+          },
+          {
+            "min_level": 55,
+            "max_level": 55,
+            "species": "SPECIES_SHARPEDO"
+          },
+          {
+            "min_level": 55,
+            "max_level": 55,
+            "species": "SPECIES_RELICANTH_DELTA"
+          },
+          {
+            "min_level": 58,
+            "max_level": 58,
+            "species": "SPECIES_WAILORD"
+          },
+          {
+            "min_level": 58,
+            "max_level": 58,
+            "species": "SPECIES_LAPRAS"
+          }
+        ]
+      }
+    },
+    {
+      "map": "MAP_HOLON_VILLAGE",
+      "base_label": "gHolonVillage",
+      "land_mons": {
+        "encounter_rate": 20,
+        "mons": [
+          {
+            "min_level": 52,
+            "max_level": 54,
+            "species": "SPECIES_GLAMEOW_DELTA"
+          },
+          {
+            "min_level": 53,
+            "max_level": 55,
+            "species": "SPECIES_MILTANK"
+          },
+          {
+            "min_level": 54,
+            "max_level": 54,
+            "species": "SPECIES_FARFETCHD_DELTA"
+          },
+          {
+            "min_level": 54,
+            "max_level": 54,
+            "species": "SPECIES_STANTLER_DELTA"
+          },
+          {
+            "min_level": 53,
+            "max_level": 53,
+            "species": "SPECIES_FURRET"
+          },
+          {
+            "min_level": 55,
+            "max_level": 55,
+            "species": "SPECIES_TAUROS"
+          },
+          {
+            "min_level": 52,
+            "max_level": 52,
+            "species": "SPECIES_PANCHAM_DELTA"
+          },
+          {
+            "min_level": 52,
+            "max_level": 52,
+            "species": "SPECIES_RALTS_DELTA"
+          },
+          {
+            "min_level": 54,
+            "max_level": 54,
+            "species": "SPECIES_KIRLIA_DELTA"
+          },
+          {
+            "min_level": 55,
+            "max_level": 55,
+            "species": "SPECIES_SMEARGLE"
+          },
+          {
+            "min_level": 52,
+            "max_level": 52,
+            "species": "SPECIES_LARVITAR_DELTA"
+          },
+          {
+            "min_level": 52,
+            "max_level": 52,
+            "species": "SPECIES_BAGON_DELTA"
+          }
+        ]
+      },
+      "water_mons": {
+        "encounter_rate": 4,
+        "mons": [
+          {
+            "min_level": 52,
+            "max_level": 55,
+            "species": "SPECIES_AZUMARILL"
+          },
+          {
+            "min_level": 53,
+            "max_level": 55,
+            "species": "SPECIES_GOLDUCK"
+          },
+          {
+            "min_level": 55,
+            "max_level": 55,
+            "species": "SPECIES_DRAGONAIR_DELTA"
+          },
+          {
+            "min_level": 54,
+            "max_level": 54,
+            "species": "SPECIES_QUAGSIRE"
+          },
+          {
+            "min_level": 58,
+            "max_level": 58,
+            "species": "SPECIES_DRAGONITE_DELTA"
+          }
+        ]
+      },
+      "fishing_mons": {
+        "encounter_rate": 30,
+        "mons": [
+          {
+            "min_level": 50,
+            "max_level": 50,
+            "species": "SPECIES_MAGIKARP_DELTA"
+          },
+          {
+            "min_level": 50,
+            "max_level": 50,
+            "species": "SPECIES_GOLDEEN"
+          },
+          {
+            "min_level": 52,
+            "max_level": 52,
+            "species": "SPECIES_MAGIKARP_DELTA"
+          },
+          {
+            "min_level": 52,
+            "max_level": 52,
+            "species": "SPECIES_SEAKING"
+          },
+          {
+            "min_level": 52,
+            "max_level": 52,
+            "species": "SPECIES_DRATINI_DELTA"
+          },
+          {
+            "min_level": 55,
+            "max_level": 55,
+            "species": "SPECIES_DRATINI_DELTA"
+          },
+          {
+            "min_level": 55,
+            "max_level": 55,
+            "species": "SPECIES_SEAKING"
+          },
+          {
+            "min_level": 57,
+            "max_level": 57,
+            "species": "SPECIES_DRAGONAIR_DELTA"
+          },
+          {
+            "min_level": 58,
+            "max_level": 58,
+            "species": "SPECIES_GYARADOS_DELTA"
+          },
+          {
+            "min_level": 60,
+            "max_level": 60,
+            "species": "SPECIES_DRAGONITE_DELTA"
+          }
+        ]
+      }
+    },
+    {
+      "map": "MAP_HOLON_VILLAGE",
+      "base_label": "gHolonVillage_Night",
+      "land_mons": {
+        "encounter_rate": 20,
+        "mons": [
+          {
+            "min_level": 52,
+            "max_level": 54,
+            "species": "SPECIES_PURRLOIN_DELTA"
+          },
+          {
+            "min_level": 53,
+            "max_level": 55,
+            "species": "SPECIES_NOCTOWL"
+          },
+          {
+            "min_level": 54,
+            "max_level": 54,
+            "species": "SPECIES_DRIFLOON_DELTA"
+          },
+          {
+            "min_level": 54,
+            "max_level": 54,
+            "species": "SPECIES_STANTLER_DELTA"
+          },
+          {
+            "min_level": 53,
+            "max_level": 53,
+            "species": "SPECIES_MIGHTYENA"
+          },
+          {
+            "min_level": 55,
+            "max_level": 55,
+            "species": "SPECIES_MISDREAVUS"
+          },
+          {
+            "min_level": 55,
+            "max_level": 55,
+            "species": "SPECIES_LIEPARD_DELTA"
+          },
+          {
+            "min_level": 52,
+            "max_level": 52,
+            "species": "SPECIES_RALTS_DELTA"
+          },
+          {
+            "min_level": 56,
+            "max_level": 56,
+            "species": "SPECIES_DRIFBLIM_DELTA"
+          },
+          {
+            "min_level": 55,
+            "max_level": 55,
+            "species": "SPECIES_MURKROW"
+          },
+          {
+            "min_level": 55,
+            "max_level": 55,
+            "species": "SPECIES_PUPITAR_DELTA"
+          },
+          {
+            "min_level": 55,
+            "max_level": 55,
+            "species": "SPECIES_SHELGON_DELTA"
+          }
+        ]
+      },
+      "water_mons": {
+        "encounter_rate": 4,
+        "mons": [
+          {
+            "min_level": 52,
+            "max_level": 55,
+            "species": "SPECIES_AZUMARILL"
+          },
+          {
+            "min_level": 53,
+            "max_level": 55,
+            "species": "SPECIES_GOLDUCK"
+          },
+          {
+            "min_level": 55,
+            "max_level": 55,
+            "species": "SPECIES_DRAGONAIR_DELTA"
+          },
+          {
+            "min_level": 54,
+            "max_level": 54,
+            "species": "SPECIES_QUAGSIRE"
+          },
+          {
+            "min_level": 58,
+            "max_level": 58,
+            "species": "SPECIES_DRAGONITE_DELTA"
+          }
+        ]
+      },
+      "fishing_mons": {
+        "encounter_rate": 30,
+        "mons": [
+          {
+            "min_level": 50,
+            "max_level": 50,
+            "species": "SPECIES_MAGIKARP_DELTA"
+          },
+          {
+            "min_level": 50,
+            "max_level": 50,
+            "species": "SPECIES_GOLDEEN"
+          },
+          {
+            "min_level": 52,
+            "max_level": 52,
+            "species": "SPECIES_MAGIKARP_DELTA"
+          },
+          {
+            "min_level": 52,
+            "max_level": 52,
+            "species": "SPECIES_SEAKING"
+          },
+          {
+            "min_level": 52,
+            "max_level": 52,
+            "species": "SPECIES_DRATINI_DELTA"
+          },
+          {
+            "min_level": 55,
+            "max_level": 55,
+            "species": "SPECIES_DRATINI_DELTA"
+          },
+          {
+            "min_level": 55,
+            "max_level": 55,
+            "species": "SPECIES_SEAKING"
+          },
+          {
+            "min_level": 57,
+            "max_level": 57,
+            "species": "SPECIES_DRAGONAIR_DELTA"
+          },
+          {
+            "min_level": 58,
+            "max_level": 58,
+            "species": "SPECIES_GYARADOS_DELTA"
+          },
+          {
+            "min_level": 60,
+            "max_level": 60,
+            "species": "SPECIES_DRAGONITE_DELTA"
+          }
+        ]
+      }
+    },
+    {
+      "map": "MAP_HOLON_RESEARCH_TOWER_1F",
+      "base_label": "gHolonResearchTower_1F",
+      "land_mons": {
+        "encounter_rate": 20,
+        "mons": [
+          {
+            "min_level": 55,
+            "max_level": 57,
+            "species": "SPECIES_MAGNETON"
+          },
+          {
+            "min_level": 55,
+            "max_level": 55,
+            "species": "SPECIES_VOLTORB"
+          },
+          {
+            "min_level": 56,
+            "max_level": 56,
+            "species": "SPECIES_KLANG_DELTA"
+          },
+          {
+            "min_level": 56,
+            "max_level": 56,
+            "species": "SPECIES_METANG_DELTA"
+          },
+          {
+            "min_level": 57,
+            "max_level": 57,
+            "species": "SPECIES_ELECTRODE"
+          },
+          {
+            "min_level": 55,
+            "max_level": 55,
+            "species": "SPECIES_KLINK_DELTA"
+          },
+          {
+            "min_level": 55,
+            "max_level": 55,
+            "species": "SPECIES_CASTFORM"
+          },
+          {
+            "min_level": 55,
+            "max_level": 55,
+            "species": "SPECIES_MAGNEMITE"
+          },
+          {
+            "min_level": 55,
+            "max_level": 55,
+            "species": "SPECIES_BELDUM_DELTA"
+          },
+          {
+            "min_level": 58,
+            "max_level": 58,
+            "species": "SPECIES_PORYGON2"
+          },
+          {
+            "min_level": 55,
+            "max_level": 55,
+            "species": "SPECIES_EEVEE_DELTA"
+          },
+          {
+            "min_level": 60,
+            "max_level": 60,
+            "species": "SPECIES_KLINKLANG_DELTA"
+          }
+        ]
+      }
+    },
+    {
+      "map": "MAP_HOLON_LAKE",
+      "base_label": "gHolonLake",
+      "land_mons": {
+        "encounter_rate": 20,
+        "mons": [
+          {
+            "min_level": 58,
+            "max_level": 60,
+            "species": "SPECIES_PIDGEOTTO_DELTA"
+          },
+          {
+            "min_level": 58,
+            "max_level": 60,
+            "species": "SPECIES_PIKACHU_DELTA"
+          },
+          {
+            "min_level": 59,
+            "max_level": 59,
+            "species": "SPECIES_VIBRAVA_DELTA"
+          },
+          {
+            "min_level": 58,
+            "max_level": 58,
+            "species": "SPECIES_MEOWTH_DELTA"
+          },
+          {
+            "min_level": 58,
+            "max_level": 58,
+            "species": "SPECIES_GLOOM_DELTA"
+          },
+          {
+            "min_level": 58,
+            "max_level": 58,
+            "species": "SPECIES_TRAPINCH_DELTA"
+          },
+          {
+            "min_level": 61,
+            "max_level": 61,
+            "species": "SPECIES_PERSIAN_DELTA"
+          },
+          {
+            "min_level": 61,
+            "max_level": 61,
+            "species": "SPECIES_RAICHU_DELTA"
+          },
+          {
+            "min_level": 63,
+            "max_level": 63,
+            "species": "SPECIES_PIDGEOT_DELTA"
+          },
+          {
+            "min_level": 63,
+            "max_level": 63,
+            "species": "SPECIES_FLYGON_DELTA"
+          },
+          {
+            "min_level": 60,
+            "max_level": 60,
+            "species": "SPECIES_CASTFORM"
+          },
+          {
+            "min_level": 63,
+            "max_level": 63,
+            "species": "SPECIES_VILEPLUME_DELTA"
+          }
+        ]
+      },
+      "rock_smash_mons": {
+        "encounter_rate": 20,
+        "mons": [
+          {
+            "min_level": 58,
+            "max_level": 60,
+            "species": "SPECIES_KABUTO_DELTA"
+          },
+          {
+            "min_level": 58,
+            "max_level": 60,
+            "species": "SPECIES_OMANYTE_DELTA"
+          },
+          {
+            "min_level": 58,
+            "max_level": 58,
+            "species": "SPECIES_ANORITH_DELTA"
+          },
+          {
+            "min_level": 58,
+            "max_level": 58,
+            "species": "SPECIES_LILEEP_DELTA"
+          },
+          {
+            "min_level": 62,
+            "max_level": 62,
+            "species": "SPECIES_KABUTOPS_DELTA"
+          }
+        ]
+      },
+      "water_mons": {
+        "encounter_rate": 4,
+        "mons": [
+          {
+            "min_level": 58,
+            "max_level": 60,
+            "species": "SPECIES_PSYDUCK_DELTA"
+          },
+          {
+            "min_level": 60,
+            "max_level": 62,
+            "species": "SPECIES_GOLDUCK_DELTA"
+          },
+          {
+            "min_level": 60,
+            "max_level": 60,
+            "species": "SPECIES_SEADRA_DELTA"
+          },
+          {
+            "min_level": 63,
+            "max_level": 63,
+            "species": "SPECIES_KINGDRA_DELTA"
+          },
+          {
+            "min_level": 63,
+            "max_level": 63,
+            "species": "SPECIES_GYARADOS_DELTA"
+          }
+        ]
+      },
+      "fishing_mons": {
+        "encounter_rate": 30,
+        "mons": [
+          {
+            "min_level": 55,
+            "max_level": 55,
+            "species": "SPECIES_MAGIKARP_DELTA"
+          },
+          {
+            "min_level": 55,
+            "max_level": 55,
+            "species": "SPECIES_HORSEA_DELTA"
+          },
+          {
+            "min_level": 58,
+            "max_level": 58,
+            "species": "SPECIES_MAGIKARP_DELTA"
+          },
+          {
+            "min_level": 58,
+            "max_level": 58,
+            "species": "SPECIES_HORSEA_DELTA"
+          },
+          {
+            "min_level": 58,
+            "max_level": 58,
+            "species": "SPECIES_FEEBAS_DELTA"
+          },
+          {
+            "min_level": 60,
+            "max_level": 60,
+            "species": "SPECIES_GYARADOS_DELTA"
+          },
+          {
+            "min_level": 60,
+            "max_level": 60,
+            "species": "SPECIES_SEADRA_DELTA"
+          },
+          {
+            "min_level": 60,
+            "max_level": 60,
+            "species": "SPECIES_FEEBAS_DELTA"
+          },
+          {
+            "min_level": 65,
+            "max_level": 65,
+            "species": "SPECIES_MILOTIC_DELTA"
+          },
+          {
+            "min_level": 65,
+            "max_level": 65,
+            "species": "SPECIES_KINGDRA_DELTA"
+          }
+        ]
+      }
+    },
+    {
+      "map": "MAP_HOLON_LAKE",
+      "base_label": "gHolonLake_Night",
+      "land_mons": {
+        "encounter_rate": 20,
+        "mons": [
+          {
+            "min_level": 58,
+            "max_level": 60,
+            "species": "SPECIES_MEOWTH_DELTA"
+          },
+          {
+            "min_level": 58,
+            "max_level": 60,
+            "species": "SPECIES_GLOOM_DELTA"
+          },
+          {
+            "min_level": 61,
+            "max_level": 61,
+            "species": "SPECIES_PERSIAN_DELTA"
+          },
+          {
+            "min_level": 58,
+            "max_level": 58,
+            "species": "SPECIES_PIKACHU_DELTA"
+          },
+          {
+            "min_level": 58,
+            "max_level": 58,
+            "species": "SPECIES_ODDISH_DELTA"
+          },
+          {
+            "min_level": 59,
+            "max_level": 59,
+            "species": "SPECIES_VIBRAVA_DELTA"
+          },
+          {
+            "min_level": 61,
+            "max_level": 61,
+            "species": "SPECIES_RAICHU_DELTA"
+          },
+          {
+            "min_level": 63,
+            "max_level": 63,
+            "species": "SPECIES_VILEPLUME_DELTA"
+          },
+          {
+            "min_level": 63,
+            "max_level": 63,
+            "species": "SPECIES_BELLOSSOM_DELTA"
+          },
+          {
+            "min_level": 63,
+            "max_level": 63,
+            "species": "SPECIES_FLYGON_DELTA"
+          },
+          {
+            "min_level": 60,
+            "max_level": 60,
+            "species": "SPECIES_CASTFORM"
+          },
+          {
+            "min_level": 63,
+            "max_level": 63,
+            "species": "SPECIES_PIDGEOT_DELTA"
+          }
+        ]
+      },
+      "rock_smash_mons": {
+        "encounter_rate": 20,
+        "mons": [
+          {
+            "min_level": 58,
+            "max_level": 60,
+            "species": "SPECIES_KABUTO_DELTA"
+          },
+          {
+            "min_level": 58,
+            "max_level": 60,
+            "species": "SPECIES_OMANYTE_DELTA"
+          },
+          {
+            "min_level": 58,
+            "max_level": 58,
+            "species": "SPECIES_ANORITH_DELTA"
+          },
+          {
+            "min_level": 58,
+            "max_level": 58,
+            "species": "SPECIES_LILEEP_DELTA"
+          },
+          {
+            "min_level": 62,
+            "max_level": 62,
+            "species": "SPECIES_KABUTOPS_DELTA"
+          }
+        ]
+      },
+      "water_mons": {
+        "encounter_rate": 4,
+        "mons": [
+          {
+            "min_level": 58,
+            "max_level": 60,
+            "species": "SPECIES_PSYDUCK_DELTA"
+          },
+          {
+            "min_level": 60,
+            "max_level": 62,
+            "species": "SPECIES_GOLDUCK_DELTA"
+          },
+          {
+            "min_level": 60,
+            "max_level": 60,
+            "species": "SPECIES_SEADRA_DELTA"
+          },
+          {
+            "min_level": 63,
+            "max_level": 63,
+            "species": "SPECIES_KINGDRA_DELTA"
+          },
+          {
+            "min_level": 63,
+            "max_level": 63,
+            "species": "SPECIES_GYARADOS_DELTA"
+          }
+        ]
+      },
+      "fishing_mons": {
+        "encounter_rate": 30,
+        "mons": [
+          {
+            "min_level": 55,
+            "max_level": 55,
+            "species": "SPECIES_MAGIKARP_DELTA"
+          },
+          {
+            "min_level": 55,
+            "max_level": 55,
+            "species": "SPECIES_HORSEA_DELTA"
+          },
+          {
+            "min_level": 58,
+            "max_level": 58,
+            "species": "SPECIES_MAGIKARP_DELTA"
+          },
+          {
+            "min_level": 58,
+            "max_level": 58,
+            "species": "SPECIES_HORSEA_DELTA"
+          },
+          {
+            "min_level": 58,
+            "max_level": 58,
+            "species": "SPECIES_FEEBAS_DELTA"
+          },
+          {
+            "min_level": 60,
+            "max_level": 60,
+            "species": "SPECIES_GYARADOS_DELTA"
+          },
+          {
+            "min_level": 60,
+            "max_level": 60,
+            "species": "SPECIES_SEADRA_DELTA"
+          },
+          {
+            "min_level": 60,
+            "max_level": 60,
+            "species": "SPECIES_FEEBAS_DELTA"
+          },
+          {
+            "min_level": 65,
+            "max_level": 65,
+            "species": "SPECIES_MILOTIC_DELTA"
+          },
+          {
+            "min_level": 65,
+            "max_level": 65,
+            "species": "SPECIES_KINGDRA_DELTA"
+          }
+        ]
+      }
+    }
+  ]
+}

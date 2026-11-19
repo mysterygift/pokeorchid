@@ -33,6 +33,10 @@ const u16 gMetatileAttributes_Fallarbor[] = INCBIN_U16("data/tilesets/secondary/
 const u16 gMetatiles_Fortree[] = INCBIN_U16("data/tilesets/secondary/fortree/metatiles.bin");
 const u16 gMetatileAttributes_Fortree[] = INCBIN_U16("data/tilesets/secondary/fortree/metatile_attributes.bin");
 
+// Orchid Holon
+const u16 gMetatiles_Holon[] = INCBIN_U16("data/tilesets/secondary/holon/metatiles.bin");
+const u16 gMetatileAttributes_Holon[] = INCBIN_U16("data/tilesets/secondary/holon/metatile_attributes.bin");
+
 const u16 gMetatiles_Lilycove[] = INCBIN_U16("data/tilesets/secondary/lilycove/metatiles.bin");
 const u16 gMetatileAttributes_Lilycove[] = INCBIN_U16("data/tilesets/secondary/lilycove/metatile_attributes.bin");
 
@@ -72,8 +76,17 @@ const u16 gMetatileAttributes_PokemonSchool[] = INCBIN_U16("data/tilesets/second
 const u16 gMetatiles_UrbanInterior[] = INCBIN_U16("data/tilesets/secondary/urban_interior/metatiles.bin");
 const u16 gMetatileAttributes_UrbanInterior[] = INCBIN_U16("data/tilesets/secondary/urban_interior/metatile_attributes.bin");
 
+const u16 gMetatiles_UrbanPlatform[] = INCBIN_U16("data/tilesets/secondary/urban_platform/metatiles.bin");
+const u16 gMetatileAttributes_UrbanPlatform[] = INCBIN_U16("data/tilesets/secondary/urban_platform/metatile_attributes.bin");
+
 const u16 gMetatiles_HawkerCentre[] = INCBIN_U16("data/tilesets/secondary/hawker_centre/metatiles.bin");
 const u16 gMetatileAttributes_HawkerCentre[] = INCBIN_U16("data/tilesets/secondary/hawker_centre/metatile_attributes.bin");
+
+const u16 gMetatiles_TanobyDelta[] = INCBIN_U16("data/tilesets/secondary/tanoby_delta/metatiles.bin");
+const u16 gMetatileAttributes_TanobyDelta[] = INCBIN_U16("data/tilesets/secondary/tanoby_delta/metatile_attributes.bin");
+
+const u16 gMetatiles_UbeCity[] = INCBIN_U16("data/tilesets/secondary/ube_city/metatiles.bin");
+const u16 gMetatileAttributes_UbeCity[] = INCBIN_U16("data/tilesets/secondary/ube_city/metatile_attributes.bin");
 
 const u16 gMetatiles_TosaPort[] = INCBIN_U16("data/tilesets/secondary/tosa_port/metatiles.bin");
 const u16 gMetatileAttributes_TosaPort[] = INCBIN_U16("data/tilesets/secondary/tosa_port/metatile_attributes.bin");
@@ -128,6 +141,10 @@ const u16 gMetatileAttributes_BrendansMaysHouse[] = INCBIN_U16("data/tilesets/se
 
 const u16 gMetatiles_Lab[] = INCBIN_U16("data/tilesets/secondary/lab/metatiles.bin");
 const u16 gMetatileAttributes_Lab[] = INCBIN_U16("data/tilesets/secondary/lab/metatile_attributes.bin");
+
+// Orchid Holon: Lab metatiles + 0x29E (lab floor 0x269 with MB_INDOOR_ENCOUNTER) for Research Tower 2F
+const u16 gMetatiles_HolonLab[] = INCBIN_U16("data/tilesets/secondary/holon_lab/metatiles.bin");
+const u16 gMetatileAttributes_HolonLab[] = INCBIN_U16("data/tilesets/secondary/holon_lab/metatile_attributes.bin");
 
 const u16 gMetatiles_Underwater[] = INCBIN_U16("data/tilesets/secondary/underwater/metatiles.bin");
 const u16 gMetatileAttributes_Underwater[] = INCBIN_U16("data/tilesets/secondary/underwater/metatile_attributes.bin");
@@ -424,5 +441,13 @@ const u16 gMetatileAttributes_HallOfFame[] = INCBIN_U16("data/tilesets/secondary
 const u16 gMetatiles_OrchidCentre[] = INCBIN_U16("data/tilesets/secondary/orchid_centre/metatiles.bin");
 const u16 gMetatileAttributes_OrchidCentre[] = INCBIN_U16("data/tilesets/secondary/orchid_centre/metatile_attributes.bin");
 
+const u16 gMetatiles_ChanguCafe[] = INCBIN_U16("data/tilesets/secondary/changu_cafe/metatiles.bin");
+const u16 gMetatileAttributes_ChanguCafe[] = INCBIN_U16("data/tilesets/secondary/changu_cafe/metatile_attributes.bin");
+
 const u16 gMetatiles_OrchidMart[] = INCBIN_U16("data/tilesets/secondary/orchid_mart/metatiles.bin");
 const u16 gMetatileAttributes_OrchidMart[] = INCBIN_U16("data/tilesets/secondary/orchid_mart/metatile_attributes.bin");
+
+// Sevii Islands begin
+const u16 gMetatiles_SeviiIslands[] = INCBIN_U16("data/tilesets/secondary/sevii_islands/metatiles.bin");
+const u16 gMetatileAttributes_SeviiIslands[] = INCBIN_U16("data/tilesets/secondary/sevii_islands/metatile_attributes.bin");
+// Sevii Islands end

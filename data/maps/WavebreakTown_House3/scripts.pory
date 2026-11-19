@@ -1,0 +1,5 @@
+mapscripts WavebreakTown_House3_MapScripts {}
+
+script WavebreakTown_House3_EventScript_Npc1 {
+    msgbox(format("I've seen boats come in at night with no lights. Not fishing boats, either."), MSGBOX_NPC)
+}

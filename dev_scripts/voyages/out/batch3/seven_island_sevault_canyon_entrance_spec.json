@@ -1,0 +1,573 @@
+{
+"name": "SevenIsland_SevaultCanyon_Entrance",
+"size": [
+24,
+40
+],
+"tileset": [
+"gTileset_General",
+"gTileset_SeviiIslands"
+],
+"ground": [
+"id",
+368,
+0,
+1
+],
+"mask": [
+"~~~~~~~kkk~~~~~~~~~~~~~~",
+"~~~~~~~kkk~~~~~~~~~~~~~~",
+"~~~~~~~kkk~~~~~~~~~~~~~~",
+"~~~WWWWkkkWWWW~~~~~~~~~~",
+"~~~WKKK...KKKWW~~~~~~~~~",
+"~~~WK.....f.fKWWWWWWWWWW",
+"~~~WK........MKKKKKKKKKK",
+"~~~WK.....fMMMMMMMMMMMMM",
+"~~~WK.ggggMMMMMMMMMMMMMM",
+"~~~WKgggggMMMMMMMMMMMMMM",
+"~~~WKgggggMf.....MMMMMMM",
+"~~~WKgggggM.....gMMMMMMM",
+"~~~WKgggggM....ggMMMMMMM",
+"~~~WKgggggMhhMgggMMMMMMM",
+"~~~WKgggg....MgggMMMMMMM",
+"~~~WKf.......MgggMMMMMMM",
+"~~~WKM........gggMMMMMMM",
+"~~~WKMMMMM....gg.MMMMMMM",
+"~~WWKMMMMM.......MMMMMMM",
+"~WWK..MMMMMMMMMhhMMMMMMM",
+"~WKMg.MMMMMgg....MMMMMMM",
+"~WKMgg....Mggg...MMMMMMM",
+"~WKMggg...Mgggg..MMMMMMM",
+"~WKMgggMhhMgggg..MMMMMMM",
+"~WKMgggMggggggg..MMMMMMM",
+"~WKMgggMgggggM....MMMMMM",
+"~WKMgggMgggggMn..gMMMMMM",
+"~WKMgggM.ggggM..ggggMMMM",
+"~WKMgggM..gggM..ggggM.pp",
+"~WKMgg...M.ggMhhMgggM..p",
+"~WKMg....M......Mgg.MhhM",
+"~WKM.....M......M......M",
+"~WKMMMhhMMMMMMMMMM.....M",
+"~WK.....MMMMMMMMMMMMMMMM",
+"~WK....MMMMMMMMMMMMMMMMM",
+"~WWKKKMMMMMMMMMMMMMMMMMM",
+"~~WWWWKMMMMMMMMMMMMMMMMM",
+"~~~~~WKMMMMMMMMMMMMMMMMM",
+"~~~~~WKMMMMMMMMMMMMMMMMM",
+"~~~~~WKMMMMMMMMMMMMMMMMM"
+],
+"big_trees": "T",
+"stamps": [],
+"pstamps": [
+[
+"LAYOUT_ROUTE104@git",
+7,
+48,
+2,
+2,
+16,
+0
+],
+[
+"LAYOUT_ROUTE104@git",
+7,
+48,
+2,
+2,
+1,
+2
+],
+[
+"LAYOUT_ROUTE104@git",
+7,
+48,
+2,
+2,
+19,
+3
+],
+[
+"LAYOUT_ROUTE104@git",
+7,
+48,
+2,
+2,
+22,
+4
+],
+[
+"LAYOUT_ROUTE104@git",
+7,
+48,
+2,
+2,
+0,
+8
+],
+[
+"LAYOUT_ROUTE104@git",
+7,
+48,
+2,
+2,
+1,
+13
+],
+[
+"LAYOUT_ROUTE104@git",
+7,
+48,
+2,
+2,
+0,
+19
+],
+[
+"LAYOUT_ROUTE104@git",
+7,
+48,
+2,
+2,
+0,
+37
+]
+],
+"cells": [
+[
+22,
+28,
+[
+"id",
+280
+]
+],
+[
+23,
+28,
+[
+"id",
+281
+]
+],
+[
+23,
+29,
+[
+"id",
+296
+]
+],
+[
+7,
+0,
+[
+"LAYOUT_ROUTE104@git",
+12,
+51
+]
+],
+[
+8,
+0,
+[
+"LAYOUT_ROUTE104@git",
+12,
+51
+]
+],
+[
+9,
+0,
+[
+"LAYOUT_ROUTE104@git",
+12,
+51
+]
+],
+[
+7,
+1,
+[
+"LAYOUT_ROUTE104@git",
+12,
+52
+]
+],
+[
+8,
+1,
+[
+"LAYOUT_ROUTE104@git",
+12,
+52
+]
+],
+[
+9,
+1,
+[
+"LAYOUT_ROUTE104@git",
+12,
+52
+]
+],
+[
+7,
+2,
+[
+"LAYOUT_ROUTE104@git",
+12,
+52
+]
+],
+[
+8,
+2,
+[
+"LAYOUT_ROUTE104@git",
+12,
+52
+]
+],
+[
+9,
+2,
+[
+"LAYOUT_ROUTE104@git",
+12,
+52
+]
+],
+[
+7,
+3,
+[
+"LAYOUT_ROUTE104@git",
+12,
+52
+]
+],
+[
+8,
+3,
+[
+"LAYOUT_ROUTE104@git",
+12,
+52
+]
+],
+[
+9,
+3,
+[
+"LAYOUT_ROUTE104@git",
+12,
+52
+]
+],
+[
+11,
+13,
+[
+"id",
+175
+]
+],
+[
+12,
+13,
+[
+"id",
+207
+]
+],
+[
+15,
+19,
+[
+"id",
+175
+]
+],
+[
+16,
+19,
+[
+"id",
+207
+]
+],
+[
+8,
+23,
+[
+"id",
+175
+]
+],
+[
+9,
+23,
+[
+"id",
+207
+]
+],
+[
+14,
+29,
+[
+"id",
+175
+]
+],
+[
+15,
+29,
+[
+"id",
+207
+]
+],
+[
+21,
+30,
+[
+"id",
+175
+]
+],
+[
+22,
+30,
+[
+"id",
+207
+]
+],
+[
+6,
+32,
+[
+"id",
+175
+]
+],
+[
+7,
+32,
+[
+"id",
+207
+]
+]
+],
+"auto": [],
+"marks": [
+[
+12,
+6,
+"",
+"npc",
+"woman"
+],
+[
+3,
+34,
+"",
+"npc",
+"beauty"
+],
+[
+4,
+34,
+"",
+"npc",
+"man"
+],
+[
+11,
+26,
+"",
+"npc",
+"camper"
+],
+[
+10,
+26,
+"",
+"npc",
+"picnicker"
+],
+[
+11,
+17,
+"",
+"npc",
+"man"
+],
+[
+7,
+-2,
+"",
+"npc",
+"man"
+],
+[
+8,
+29,
+"h",
+"note"
+],
+[
+14,
+26,
+"",
+"sign"
+],
+[
+1,
+0,
+"^ Seven Island",
+"conn"
+],
+[
+15,
+22,
+"Seven Island Sevault Canyon >",
+"conn"
+]
+],
+"post": [],
+"vstamps": [],
+"vcells": [],
+"arrow_warps": [],
+"object_events": [
+{
+"graphics_id": "OBJ_EVENT_GFX_WOMAN_2",
+"x": 12,
+"y": 6,
+"script": "SevenIsland_SevaultCanyon_Entrance_EventScript_Miah"
+},
+{
+"graphics_id": "OBJ_EVENT_GFX_BEAUTY",
+"x": 3,
+"y": 34,
+"script": "SevenIsland_SevaultCanyon_Entrance_EventScript_Eve"
+},
+{
+"graphics_id": "OBJ_EVENT_GFX_MAN_3",
+"x": 4,
+"y": 34,
+"script": "SevenIsland_SevaultCanyon_Entrance_EventScript_Jon"
+},
+{
+"graphics_id": "OBJ_EVENT_GFX_CAMPER",
+"x": 11,
+"y": 26,
+"script": "SevenIsland_SevaultCanyon_Entrance_EventScript_Nicolas"
+},
+{
+"graphics_id": "OBJ_EVENT_GFX_PICNICKER",
+"x": 10,
+"y": 26,
+"script": "SevenIsland_SevaultCanyon_Entrance_EventScript_Madeline"
+},
+{
+"graphics_id": "OBJ_EVENT_GFX_ROCKER",
+"x": 11,
+"y": 17,
+"script": "SevenIsland_SevaultCanyon_Entrance_EventScript_Mason"
+},
+{
+"graphics_id": "OBJ_EVENT_GFX_COOLTRAINER_M",
+"x": 7,
+"y": -2,
+"script": null
+}
+],
+"report": {
+"map": "SevenIsland_SevaultCanyon_Entrance",
+"size": [
+24,
+40
+],
+"pair": [
+"gTileset_General",
+"gTileset_SeviiIslands"
+],
+"unresolved": [],
+"buildings": [],
+"caves": [],
+"ported_cells": 0,
+"arrow_warps": [],
+"connections": [
+[
+"up",
+0,
+"MAP_SEVEN_ISLAND"
+],
+[
+"right",
+20,
+"MAP_SEVEN_ISLAND_SEVAULT_CANYON"
+]
+],
+"warps": [],
+"objects": [
+[
+12,
+6,
+"OBJ_EVENT_GFX_WOMAN_2_FRLG",
+"WOMAN_2"
+],
+[
+3,
+34,
+"OBJ_EVENT_GFX_BEAUTY_FRLG",
+"BEAUTY"
+],
+[
+4,
+34,
+"OBJ_EVENT_GFX_MAN",
+"MAN_3"
+],
+[
+11,
+26,
+"OBJ_EVENT_GFX_CAMPER_FRLG",
+"CAMPER"
+],
+[
+10,
+26,
+"OBJ_EVENT_GFX_PICNICKER_FRLG",
+"PICNICKER"
+],
+[
+11,
+17,
+"OBJ_EVENT_GFX_ROCKER",
+"ROCKER"
+],
+[
+7,
+-2,
+"OBJ_EVENT_GFX_COOLTRAINER_M",
+"COOLTRAINER_M"
+]
+],
+"classes": {
+"~": 225,
+"k": 12,
+"M": 419,
+".": 153,
+"f": 5,
+"g": 130,
+"h": 12,
+"n": 1,
+"p": 3
+}
+}
+}

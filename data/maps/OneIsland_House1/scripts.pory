@@ -1,0 +1,9 @@
+mapscripts OneIsland_House1_MapScripts {}
+
+script OneIsland_House1_EventScript_OldMan {
+    msgbox(format("We've lived on One Island all our lives. Visitors from Tosa are a new thing for us!"), MSGBOX_NPC)
+}
+
+script OneIsland_House1_EventScript_OldWoman {
+    msgbox(format("Make sure you rest at the Ember Spa. It does wonders for tired legs."), MSGBOX_NPC)
+}

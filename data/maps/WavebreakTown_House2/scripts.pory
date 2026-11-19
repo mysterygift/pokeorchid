@@ -1,0 +1,5 @@
+mapscripts WavebreakTown_House2_MapScripts {}
+
+script WavebreakTown_House2_EventScript_Npc1 {
+    msgbox(format("The young ones all left for Tosa Port and the cities. I don't blame them."), MSGBOX_NPC)
+}

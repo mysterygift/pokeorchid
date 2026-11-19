@@ -1,0 +1,12 @@
+mapscripts MtBatok_1F_MapScripts {}
+
+script MtBatok_1F_EventScript_PlaceholderSign {
+    msgbox(format("Mt. Batok 1F (from Route 302). Placeholder map."), MSGBOX_SIGN)
+}
+
+// --- route_people.py (generated) ---
+
+script MtBatok_1F_EventScript_Route1 {
+    msgbox(format("Mt. Batok goes up three floors to Faber Town. Mind the loose rocks!"), MSGBOX_NPC)
+}
+// --- end route_people.py ---

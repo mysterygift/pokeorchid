@@ -562,6 +562,22 @@ static const struct MatchCallStructTrainer sWallaceMatchCallHeader =
     }
 };
 
+// Wavebreak Voyages: Cynthia, registered once she's beaten at Holon Lake. The Rotom Phone builds her call text
+// itself (rotating lines + whether today's Battle Cafe rematch is still open, rotom_phone_call.c); this line is
+// only the PokéNav fallback.
+static const struct MatchCallStructNPC sCynthiaMatchCallHeader =
+{
+    .type = MC_TYPE_NPC,
+    .mapSec = MAPSEC_CHANGU_CITY,
+    .flag = FLAG_CYNTHIA_BEATEN_AT_LAKE,
+    .desc = COMPOUND_STRING("CHAMPION"),
+    .name = COMPOUND_STRING("Cynthia"),
+    .textData = (const match_call_text_data_t[]) {
+        { COMPOUND_STRING("CYNTHIA: Hello, {PLAYER}. I'm at the\nBattle Café in Changu City.\pCome by whenever you'd like a\nrematch."), ALWAYS_AVAILABLE, NO_FLAG_TO_SET },
+        MATCH_CALL_TEXT_END
+    }
+};
+
 static const match_call_t sMatchCallHeaders[] = {
     [MC_HEADER_MR_STONE]   = {.npc    = &sMrStoneMatchCallHeader},
     [MC_HEADER_PROF_BIRCH] = {.birch  = &sProfBirchMatchCallHeader},
@@ -583,7 +599,8 @@ static const match_call_t sMatchCallHeaders[] = {
     [MC_HEADER_PHOEBE]     = {.leader = &sPhoebeMatchCallHeader},
     [MC_HEADER_GLACIA]     = {.leader = &sGlaciaMatchCallHeader},
     [MC_HEADER_DRAKE]      = {.leader = &sDrakeMatchCallHeader},
-    [MC_HEADER_WALLACE]    = {.leader = &sWallaceMatchCallHeader}
+    [MC_HEADER_WALLACE]    = {.leader = &sWallaceMatchCallHeader},
+    [MC_HEADER_CYNTHIA]    = {.npc    = &sCynthiaMatchCallHeader},
 };
 
 static bool32 (*const sMatchCallGetEnabledFuncs[])(match_call_t) = {

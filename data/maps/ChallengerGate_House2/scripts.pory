@@ -1,0 +1,5 @@
+mapscripts ChallengerGate_House2_MapScripts {}
+
+script ChallengerGate_House2_EventScript_Npc1 {
+    msgbox(format("I sell sandwiches to Trainers heading up the mountain. Nobody ever comes back for a second one."), MSGBOX_NPC)
+}

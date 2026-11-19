@@ -1,0 +1,79 @@
+mapscripts HolonVillage_MapScripts {
+    MAP_SCRIPT_ON_TRANSITION {
+        setflag(FLAG_VISITED_HOLON_VILLAGE)
+        call_if_unset(FLAG_HOLON_BERRIES_PLANTED, HolonVillage_EventScript_PlantBerries)
+    }
+}
+
+script HolonVillage_EventScript_PlantBerries {
+    setberrytree(BERRY_TREE_ROUTE_104_SOIL_1, BERRY_ID_ORAN, BERRY_STAGE_BERRIES)
+    setberrytree(BERRY_TREE_ROUTE_104_ORAN_1, BERRY_ID_PECHA, BERRY_STAGE_BERRIES)
+    setberrytree(BERRY_TREE_ROUTE_104_CHERI_1, BERRY_ID_ORAN, BERRY_STAGE_BERRIES)
+    setberrytree(BERRY_TREE_ROUTE_104_SOIL_2, BERRY_ID_SITRUS, BERRY_STAGE_BERRIES)
+    setberrytree(BERRY_TREE_ROUTE_104_LEPPA, BERRY_ID_ORAN, BERRY_STAGE_BERRIES)
+    setberrytree(BERRY_TREE_ROUTE_104_ORAN_2, BERRY_ID_LUM, BERRY_STAGE_BERRIES)
+    setberrytree(BERRY_TREE_ROUTE_104_SOIL_3, BERRY_ID_PECHA, BERRY_STAGE_BERRIES)
+    setberrytree(BERRY_TREE_ROUTE_104_PECHA, BERRY_ID_ORAN, BERRY_STAGE_BERRIES)
+    setberrytree(BERRY_TREE_ROUTE_102_ORAN, BERRY_ID_PERSIM, BERRY_STAGE_BERRIES)
+    setflag(FLAG_HOLON_BERRIES_PLANTED)
+}
+
+script HolonVillage_EventScript_Walkway {
+    if (flag(FLAG_HOLON_POWER_SPOTS_HEALED)) {
+        msgbox(format("Readings at the Power Spot are climbing back to normal. Faba's so-called tolerance... I should have checked his numbers."), MSGBOX_NPC)
+    } else {
+        msgbox(format("A seasonal fluctuation, nothing more. The readings from the Power Spot are perfectly within tolerance."), MSGBOX_NPC)
+    }
+}
+
+script HolonVillage_EventScript_FarmerNw {
+    if (flag(FLAG_HOLON_POWER_SPOTS_HEALED)) {
+        msgbox(format("Look at that! The leaves by the tower came up green this morning. Maybe the berries will set after all."), MSGBOX_NPC)
+    } else {
+        msgbox(format("Third season the berries won't set. Leaves come up grey as ash, closer to that tower they get."), MSGBOX_NPC)
+    }
+}
+
+script HolonVillage_EventScript_FarmerSe {
+    if (flag(FLAG_HOLON_POWER_SPOTS_HEALED)) {
+        msgbox(format("The soil's breathing again, I swear it. Gran was right about this land."), MSGBOX_NPC)
+    } else {
+        msgbox(format("My gran said this soil grew anything. Now look at it. Power Spot, they call it... more like a drain."), MSGBOX_NPC)
+    }
+}
+
+script HolonVillage_EventScript_Lass {
+    if (flag(FLAG_HOLON_POWER_SPOTS_HEALED)) {
+        msgbox(format("Have you seen the lake? The grass round the stone pillars is green again!"), MSGBOX_NPC)
+    } else {
+        msgbox(format("The grass round the lake used to be so green. Now it's all washed out near those stone pillars."), MSGBOX_NPC)
+    }
+}
+
+script HolonVillage_EventScript_Mentor {
+    msgbox(format("That old house belonged to Holon's stone carvers. When the tower went up they left, and nobody's lived there since."), MSGBOX_NPC)
+}
+
+script HolonVillage_EventScript_FarmerN {
+    if (flag(FLAG_HOLON_POWER_SPOTS_HEALED)) {
+        msgbox(format("Word is the tower's machines are off. Good riddance. We'll have a proper harvest yet."), MSGBOX_NPC)
+    } else {
+        msgbox(format("Farming's hard work, but nobody in Holon ever went hungry. Well... nobody used to."), MSGBOX_NPC)
+    }
+}
+
+script HolonVillage_EventScript_TownSign {
+    msgbox(format("Holon Village\nWelcome, travellers from across the sea."), MSGBOX_SIGN)
+}
+
+script HolonVillage_EventScript_LakeSign {
+    msgbox(format("South: Holon Lake\nNorth: Holon Village"), MSGBOX_SIGN)
+}
+
+script HolonVillage_EventScript_FarmSign {
+    msgbox(format("Holon Farms\nPlease leave the berry trees to the farmers."), MSGBOX_SIGN)
+}
+
+script HolonVillage_EventScript_TowerSign {
+    msgbox(format("Holon Research Tower\nStudying the Power Spots and the Delta Species."), MSGBOX_SIGN)
+}

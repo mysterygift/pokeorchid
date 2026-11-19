@@ -1,0 +1,75 @@
+mapscripts FourIsland_Harbor_MapScripts {}
+
+raw `
+FourIsland_Harbor_EventScript_Sailor::
+	lock
+	faceplayer
+	message SeviiFerry_Text_WhereTo
+	waitmessage
+	dynmultichoice 0, 0, FALSE, 7, 0, DYN_MULTICHOICE_CB_NONE, SeviiFerry_Text_FiveIsland, SeviiFerry_Text_OneIsland, SeviiFerry_Text_TwoIsland, SeviiFerry_Text_ThreeIsland, SeviiFerry_Text_SixIsland, SeviiFerry_Text_SevenIsland, SeviiFerry_Text_Stay_Option
+	switch VAR_RESULT
+	case 0, FourIsland_Harbor_EventScript_ToFiveIsland
+	case 1, FourIsland_Harbor_EventScript_ToOneIsland
+	case 2, FourIsland_Harbor_EventScript_ToTwoIsland
+	case 3, FourIsland_Harbor_EventScript_ToThreeIsland
+	case 4, FourIsland_Harbor_EventScript_ToSixIsland
+	case 5, FourIsland_Harbor_EventScript_ToSevenIsland
+	msgbox SeviiFerry_Text_Stay, MSGBOX_DEFAULT
+	release
+	end
+
+FourIsland_Harbor_EventScript_ToFiveIsland::
+	setvar VAR_0x8004, LOCALID_FOUR_ISLAND_HARBOR_BOAT
+	setvar VAR_0x8005, LOCALID_FOUR_ISLAND_HARBOR_SAILOR
+	call SeviiFerry_EventScript_Board
+	warp MAP_FIVE_ISLAND_HARBOR, 8, 4
+	waitstate
+	release
+	end
+
+FourIsland_Harbor_EventScript_ToOneIsland::
+	setvar VAR_0x8004, LOCALID_FOUR_ISLAND_HARBOR_BOAT
+	setvar VAR_0x8005, LOCALID_FOUR_ISLAND_HARBOR_SAILOR
+	call SeviiFerry_EventScript_Board
+	warp MAP_ONE_ISLAND_HARBOR, 8, 4
+	waitstate
+	release
+	end
+
+FourIsland_Harbor_EventScript_ToTwoIsland::
+	setvar VAR_0x8004, LOCALID_FOUR_ISLAND_HARBOR_BOAT
+	setvar VAR_0x8005, LOCALID_FOUR_ISLAND_HARBOR_SAILOR
+	call SeviiFerry_EventScript_Board
+	warp MAP_TWO_ISLAND_HARBOR, 8, 4
+	waitstate
+	release
+	end
+
+FourIsland_Harbor_EventScript_ToThreeIsland::
+	setvar VAR_0x8004, LOCALID_FOUR_ISLAND_HARBOR_BOAT
+	setvar VAR_0x8005, LOCALID_FOUR_ISLAND_HARBOR_SAILOR
+	call SeviiFerry_EventScript_Board
+	warp MAP_THREE_ISLAND_HARBOR, 8, 4
+	waitstate
+	release
+	end
+
+FourIsland_Harbor_EventScript_ToSixIsland::
+	setvar VAR_0x8004, LOCALID_FOUR_ISLAND_HARBOR_BOAT
+	setvar VAR_0x8005, LOCALID_FOUR_ISLAND_HARBOR_SAILOR
+	call SeviiFerry_EventScript_Board
+	warp MAP_SIX_ISLAND_HARBOR, 8, 4
+	waitstate
+	release
+	end
+
+FourIsland_Harbor_EventScript_ToSevenIsland::
+	setvar VAR_0x8004, LOCALID_FOUR_ISLAND_HARBOR_BOAT
+	setvar VAR_0x8005, LOCALID_FOUR_ISLAND_HARBOR_SAILOR
+	call SeviiFerry_EventScript_Board
+	warp MAP_SEVEN_ISLAND_HARBOR, 8, 4
+	waitstate
+	release
+	end
+
+`

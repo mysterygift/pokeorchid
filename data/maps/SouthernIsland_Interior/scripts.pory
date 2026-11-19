@@ -1,4 +1,7 @@
 raw `
+@ Orchid: Eon Island (vanilla Southern Island). Voyage legendary: Latias by day, Latios at night (gettimeofday),
+@ each until caught; a fainted/fled one returns on the next voyage (src/voyages.c clears its hide flag).
+@ The mega stone item balls appear once their Lati is caught.
 SouthernIsland_Interior_MapScripts::
 	map_script MAP_SCRIPT_ON_RESUME, SouthernIsland_Interior_OnResume
 	map_script MAP_SCRIPT_ON_TRANSITION, SouthernIsland_Interior_OnTransition
@@ -15,10 +18,23 @@ SouthernIsland_Interior_EventScript_TryRemoveLati::
 	return
 
 SouthernIsland_Interior_OnTransition:
-	call_if_eq VAR_ROAMER_POKEMON, 0, SouthernIsland_Interior_EventScript_SetUpLatios
-	call_if_ne VAR_ROAMER_POKEMON, 0, SouthernIsland_Interior_EventScript_SetUpLatias
+	gettimeofday
+	call_if_eq VAR_0x8000, TIME_NIGHT, SouthernIsland_Interior_EventScript_SetUpLatios
+	call_if_ne VAR_0x8000, TIME_NIGHT, SouthernIsland_Interior_EventScript_SetUpLatias
 	call SouthernIsland_Interior_EventScript_SetUpPlayerGfx
+	call_if_unset FLAG_CAUGHT_VOYAGE_LATIAS, SouthernIsland_Interior_EventScript_HideLatiasite
+	call_if_set FLAG_ITEM_EON_ISLAND_LATIASITE, SouthernIsland_Interior_EventScript_HideLatiasite
+	call_if_unset FLAG_CAUGHT_VOYAGE_LATIOS, SouthernIsland_Interior_EventScript_HideLatiosite
+	call_if_set FLAG_ITEM_EON_ISLAND_LATIOSITE, SouthernIsland_Interior_EventScript_HideLatiosite
 	end
+
+SouthernIsland_Interior_EventScript_HideLatiasite::
+	setflag FLAG_TEMP_3
+	return
+
+SouthernIsland_Interior_EventScript_HideLatiosite::
+	setflag FLAG_TEMP_4
+	return
 
 SouthernIsland_Interior_EventScript_SetUpLatios::
 	setvar VAR_OBJ_GFX_ID_1, OBJ_EVENT_GFX_LATIOS
@@ -46,15 +62,14 @@ SouthernIsland_Interior_EventScript_SetMayGfx::
 
 SouthernIsland_Interior_EventScript_TryLatiEncounter::
 	lockall
-	setvar VAR_0x8008, 12  @ Player's Y coordinate. Not read
-	goto SouthernIsland_Interior_EventScript_Lati
-	end
-
-SouthernIsland_Interior_EventScript_Lati::
 	goto_if_set FLAG_TEMP_2, SouthernIsland_Interior_EventScript_Sign
-	goto_if_set FLAG_DEFEATED_LATIAS_OR_LATIOS, SouthernIsland_Interior_EventScript_Sign
-	goto_if_set FLAG_CAUGHT_LATIAS_OR_LATIOS, SouthernIsland_Interior_EventScript_Sign
-	goto_if_unset FLAG_ENABLE_SHIP_SOUTHERN_ISLAND, SouthernIsland_Interior_EventScript_Sign
+	goto_if_eq VAR_TEMP_4, SPECIES_LATIOS, SouthernIsland_Interior_EventScript_CheckLatios
+	goto_if_set FLAG_HIDE_EON_LATIAS, SouthernIsland_Interior_EventScript_Sign
+	goto SouthernIsland_Interior_EventScript_Lati
+
+SouthernIsland_Interior_EventScript_CheckLatios::
+	goto_if_set FLAG_HIDE_EON_LATIOS, SouthernIsland_Interior_EventScript_Sign
+SouthernIsland_Interior_EventScript_Lati::
 	setflag FLAG_ENCOUNTERED_LATIAS_OR_LATIOS
 	setflag FLAG_TEMP_2
 	special SpawnCameraObject
@@ -73,28 +88,45 @@ SouthernIsland_Interior_EventScript_Lati::
 	delay 50
 	special RemoveCameraObject
 	setvar VAR_LAST_TALKED, LOCALID_SOUTHERN_ISLAND_LATI
-	call_if_eq VAR_ROAMER_POKEMON, 0, SouthernIsland_Interior_EventScript_SetLatiosBattleVars
-	call_if_ne VAR_ROAMER_POKEMON, 0, SouthernIsland_Interior_EventScript_SetLatiasBattleVars
+	call_if_eq VAR_TEMP_4, SPECIES_LATIOS, SouthernIsland_Interior_EventScript_SetLatiosBattleVars
+	call_if_ne VAR_TEMP_4, SPECIES_LATIOS, SouthernIsland_Interior_EventScript_SetLatiasBattleVars
 	setflag FLAG_SYS_CTRL_OBJ_DELETE
-	special BattleSetup_StartLatiBattle
+	special BattleSetup_StartLegendaryBattle
 	clearflag FLAG_SYS_CTRL_OBJ_DELETE
+	call_if_eq VAR_TEMP_4, SPECIES_LATIOS, SouthernIsland_Interior_EventScript_LatiosGone
+	call_if_ne VAR_TEMP_4, SPECIES_LATIOS, SouthernIsland_Interior_EventScript_LatiasGone
 	specialvar VAR_RESULT, GetBattleOutcome
-	goto_if_eq VAR_RESULT, B_OUTCOME_WON, SouthernIsland_Interior_EventScript_LatiDefeated
-	goto_if_eq VAR_RESULT, B_OUTCOME_RAN, SouthernIsland_Interior_EventScript_RanFromLati
-	goto_if_eq VAR_RESULT, B_OUTCOME_PLAYER_TELEPORTED, SouthernIsland_Interior_EventScript_RanFromLati
-	setflag FLAG_CAUGHT_LATIAS_OR_LATIOS
+	goto_if_eq VAR_RESULT, B_OUTCOME_WON, SouthernIsland_Interior_EventScript_LatiFlewAway
+	goto_if_eq VAR_RESULT, B_OUTCOME_RAN, SouthernIsland_Interior_EventScript_LatiFlewAway
+	goto_if_eq VAR_RESULT, B_OUTCOME_PLAYER_TELEPORTED, SouthernIsland_Interior_EventScript_LatiFlewAway
+	goto_if_eq VAR_TEMP_4, SPECIES_LATIOS, SouthernIsland_Interior_EventScript_CaughtLatios
+	setflag FLAG_CAUGHT_VOYAGE_LATIAS
+	goto_if_set FLAG_ITEM_EON_ISLAND_LATIASITE, SouthernIsland_Interior_EventScript_CaughtDone
+	clearflag FLAG_TEMP_3
+	addobject LOCALID_EON_LATIASITE
+	goto SouthernIsland_Interior_EventScript_CaughtDone
+
+SouthernIsland_Interior_EventScript_CaughtLatios::
+	setflag FLAG_CAUGHT_VOYAGE_LATIOS
+	goto_if_set FLAG_ITEM_EON_ISLAND_LATIOSITE, SouthernIsland_Interior_EventScript_CaughtDone
+	clearflag FLAG_TEMP_4
+	addobject LOCALID_EON_LATIOSITE
+SouthernIsland_Interior_EventScript_CaughtDone::
 	releaseall
 	end
 
-SouthernIsland_Interior_EventScript_LatiDefeated::
-	setflag FLAG_DEFEATED_LATIAS_OR_LATIOS
-	copyvar VAR_0x8004, VAR_TEMP_4
-	goto Common_EventScript_LegendaryFlewAway
-	end
+@ Whatever the outcome, this Lati is gone until the next voyage (or for good once caught).
+SouthernIsland_Interior_EventScript_LatiasGone::
+	setflag FLAG_HIDE_EON_LATIAS
+	return
 
-SouthernIsland_Interior_EventScript_RanFromLati::
+SouthernIsland_Interior_EventScript_LatiosGone::
+	setflag FLAG_HIDE_EON_LATIOS
+	return
+
+SouthernIsland_Interior_EventScript_LatiFlewAway::
 	copyvar VAR_0x8004, VAR_TEMP_4
-	goto Common_EventScript_LegendaryFlewAway
+	goto Voyage_EventScript_LegendaryGone
 	end
 
 SouthernIsland_Interior_EventScript_Sign::
@@ -103,12 +135,25 @@ SouthernIsland_Interior_EventScript_Sign::
 	end
 
 SouthernIsland_Interior_EventScript_SetLatiosBattleVars::
-	seteventmon SPECIES_LATIOS, 50, ITEM_SOUL_DEW
+	setwildbattle SPECIES_LATIOS, VOYAGE_LEGENDARY_LEVEL
 	return
 
 SouthernIsland_Interior_EventScript_SetLatiasBattleVars::
-	seteventmon SPECIES_LATIAS, 50, ITEM_SOUL_DEW
+	setwildbattle SPECIES_LATIAS, VOYAGE_LEGENDARY_LEVEL
 	return
+
+SouthernIsland_Interior_EventScript_Latiasite::
+	finditem ITEM_LATIASITE
+	goto_if_eq VAR_0x8007, FALSE, SouthernIsland_Interior_EventScript_ItemEnd
+	setflag FLAG_ITEM_EON_ISLAND_LATIASITE
+	end
+
+SouthernIsland_Interior_EventScript_Latiosite::
+	finditem ITEM_LATIOSITE
+	goto_if_eq VAR_0x8007, FALSE, SouthernIsland_Interior_EventScript_ItemEnd
+	setflag FLAG_ITEM_EON_ISLAND_LATIOSITE
+SouthernIsland_Interior_EventScript_ItemEnd::
+	end
 
 SouthernIsland_Interior_Movement_CameraPanUp:
 	walk_up

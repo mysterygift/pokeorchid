@@ -1,0 +1,180 @@
+mapscripts HolonResearchTower_2F_MapScripts {}
+
+// Wavebreak Voyages: Holon Leader Faba, the one draining the Power Spots (dev_scripts/voyages/faba).
+// Talk-to boss (TRAINER_TYPE_NONE): encounter music comes from his trainer's "Music: Aqua", the battle theme from
+// GetBattleBGM (TRAINER_CLASS_HOLON_LEADER) and the Holon logo transition from GetTrainerBattleTransition.
+// After the win he leaves (FLAG_HOLON_FABA_DEFEATED hides him), and the drained rings heal (FLAG_HOLON_POWER_SPOTS_HEALED).
+script HolonResearchTower_2F_EventScript_Faba {
+    trainerbattle_single(TRAINER_HOLON_FABA, HolonResearchTower_2F_Text_FabaIntro, HolonResearchTower_2F_Text_FabaDefeat, HolonResearchTower_2F_EventScript_FabaDefeated)
+    msgbox(HolonResearchTower_2F_Text_FabaPost, MSGBOX_AUTOCLOSE)
+}
+
+script HolonResearchTower_2F_EventScript_FabaDefeated {
+    msgbox(HolonResearchTower_2F_Text_FabaPost, MSGBOX_DEFAULT)
+    closemessage
+    setflag(FLAG_HOLON_FABA_DEFEATED)
+    setflag(FLAG_HOLON_POWER_SPOTS_HEALED)
+    fadescreen(FADE_TO_BLACK)
+    removeobject(LOCALID_HOLON_FABA)
+    fadescreen(FADE_FROM_BLACK)
+    release
+    end
+}
+
+text HolonResearchTower_2F_Text_FabaIntro {
+    format("Ah, the tourist. You've seen the fields? Wilted, yes. A small price.\pEvery Power Spot on Holon flows into these machines. With that energy, my Delta Pokémon will rival any legend!\pI am Holon Leader Faba, and no child is pulling the plug!")
+}
+
+text HolonResearchTower_2F_Text_FabaDefeat {
+    format("Impossible! My calculations were flawless!")
+}
+
+text HolonResearchTower_2F_Text_FabaPost {
+    format("Fine! Shut the machines down! The Power Spots will refill... eventually.\pBut Holon WILL remember Faba!")
+}
+
+script HolonResearchTower_2F_EventScript_Researcher1 {
+    trainerbattle_single(TRAINER_HOLON_TOBIAS, HolonResearchTower_2F_Text_Researcher1Intro, HolonResearchTower_2F_Text_Researcher1Defeat)
+    if (flag(FLAG_HOLON_FABA_DEFEATED)) {
+        msgbox(format("The machines are off. Our Delta research will slow down without that energy... Maybe that's for the best."), MSGBOX_AUTOCLOSE)
+    } else {
+        msgbox(HolonResearchTower_2F_Text_Researcher1Post, MSGBOX_AUTOCLOSE)
+    }
+}
+
+text HolonResearchTower_2F_Text_Researcher1Intro {
+    format("Authorised staff only past this point!")
+}
+
+text HolonResearchTower_2F_Text_Researcher1Defeat {
+    format("I suppose you've earned a look.")
+}
+
+text HolonResearchTower_2F_Text_Researcher1Post {
+    format("Every machine on this floor stores energy drawn from the Power Spot.")
+}
+
+script HolonResearchTower_2F_EventScript_Researcher2 {
+    trainerbattle_single(TRAINER_HOLON_KENJI, HolonResearchTower_2F_Text_Researcher2Intro, HolonResearchTower_2F_Text_Researcher2Defeat)
+    if (flag(FLAG_HOLON_FABA_DEFEATED)) {
+        msgbox(format("Faba's gone and the machines are quiet. The farmers should see their fields green up again soon."), MSGBOX_AUTOCLOSE)
+    } else {
+        msgbox(HolonResearchTower_2F_Text_Researcher2Post, MSGBOX_AUTOCLOSE)
+    }
+}
+
+text HolonResearchTower_2F_Text_Researcher2Intro {
+    format("Want to see what a Delta Pokémon can do on a full charge?")
+}
+
+text HolonResearchTower_2F_Text_Researcher2Defeat {
+    format("Overloaded... and I lost anyway.")
+}
+
+text HolonResearchTower_2F_Text_Researcher2Post {
+    format("Our head of research says the drain is temporary. The farmers don't believe her.")
+}
+
+script HolonResearchTower_2F_EventScript_Npc {
+    if (flag(FLAG_HOLON_FABA_DEFEATED)) {
+        msgbox(format("We've shut the round machines down. Faba never told us how much he was really draining."), MSGBOX_NPC)
+    } else {
+        msgbox(format("Those round machines store the energy we draw from the Power Spot. Please don't touch them!"), MSGBOX_NPC)
+    }
+}
+raw `
+HolonResearchTower_2F_EventScript_HeadOfResearch::
+	lock
+	faceplayer
+	goto_if_set FLAG_HOLON_RECEIVED_EEVEE, HolonResearchTower_2F_EventScript_HeadAfter
+	goto_if_unset FLAG_HOLON_FABA_DEFEATED, HolonResearchTower_2F_EventScript_HeadNotNow
+	msgbox HolonResearchTower_2F_Text_HeadOffer, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, HolonResearchTower_2F_EventScript_HeadDeclined
+	@ TODO(delta): SPECIES_EEVEE -> SPECIES_EEVEE_DELTA (Eevee-δ gift, Lv 50)
+	setvar VAR_TEMP_TRANSFERRED_SPECIES, SPECIES_EEVEE_DELTA
+	givemon SPECIES_EEVEE_DELTA, 50
+	goto_if_eq VAR_RESULT, MON_GIVEN_TO_PARTY, HolonResearchTower_2F_EventScript_EeveeParty
+	goto_if_eq VAR_RESULT, MON_GIVEN_TO_PC, HolonResearchTower_2F_EventScript_EeveePC
+	goto Common_EventScript_NoMoreRoomForPokemon
+	end
+
+HolonResearchTower_2F_EventScript_EeveeParty::
+	call HolonResearchTower_2F_EventScript_EeveeFanfare
+	msgbox gText_NicknameThisPokemon, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, HolonResearchTower_2F_EventScript_EeveeDone
+	call Common_EventScript_GetGiftMonPartySlot
+	call Common_EventScript_NameReceivedPartyMon
+	goto HolonResearchTower_2F_EventScript_EeveeDone
+	end
+
+HolonResearchTower_2F_EventScript_EeveePC::
+	call HolonResearchTower_2F_EventScript_EeveeFanfare
+	msgbox gText_NicknameThisPokemon, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, HolonResearchTower_2F_EventScript_EeveeToPC
+	call Common_EventScript_NameReceivedBoxMon
+	goto HolonResearchTower_2F_EventScript_EeveeToPC
+	end
+
+HolonResearchTower_2F_EventScript_EeveeToPC::
+	call Common_EventScript_TransferredToPC
+	goto HolonResearchTower_2F_EventScript_EeveeDone
+	end
+
+HolonResearchTower_2F_EventScript_EeveeFanfare::
+	bufferspeciesname STR_VAR_1, SPECIES_EEVEE_DELTA
+	playfanfare MUS_OBTAIN_ITEM
+	message HolonResearchTower_2F_Text_ReceivedEevee
+	waitmessage
+	waitfanfare
+	return
+
+HolonResearchTower_2F_EventScript_EeveeDone::
+	setflag FLAG_HOLON_RECEIVED_EEVEE
+	msgbox HolonResearchTower_2F_Text_HeadAfter, MSGBOX_DEFAULT
+	release
+	end
+
+HolonResearchTower_2F_EventScript_HeadDeclined::
+	msgbox HolonResearchTower_2F_Text_HeadDeclined, MSGBOX_DEFAULT
+	release
+	end
+
+HolonResearchTower_2F_EventScript_HeadAfter::
+	msgbox HolonResearchTower_2F_Text_HeadAfter, MSGBOX_DEFAULT
+	release
+	end
+
+@ Wavebreak Voyages: the Eevee-delta gift waits until Faba is beaten.
+HolonResearchTower_2F_EventScript_HeadNotNow::
+	msgbox HolonResearchTower_2F_Text_HeadNotNow, MSGBOX_DEFAULT
+	release
+	end
+`
+
+text HolonResearchTower_2F_Text_HeadNotNow {
+    format("I'm the head of research here. Forgive me, I can't think about anything but those machines right now.\pFaba is draining every Power Spot on Holon, and he won't listen to a word I say.\pIf someone could stop him... I'd have something to give them.")
+}
+
+text HolonResearchTower_2F_Text_HeadOffer {
+    format("You stopped Faba! Thank you. The Power Spots can finally recover.\pYou've come a long way to see Holon, and I have something for you.\pThis Eevee was born right beside the Power Spot. Its type shifted as it grew. A Delta Species!\pWe can't give it the attention it deserves. Would you take care of it?")
+}
+
+text HolonResearchTower_2F_Text_HeadDeclined {
+    format("I see. If you change your mind, I'll be here.")
+}
+
+text HolonResearchTower_2F_Text_HeadAfter {
+    format("Delta Species are proof of how much power sleeps under Holon. Raise that Eevee well.")
+}
+
+text HolonResearchTower_2F_Text_ReceivedEevee {
+    "{PLAYER} received {STR_VAR_1}!"
+}
+
+script HolonResearchTower_2F_EventScript_Machine {
+    if (flag(FLAG_HOLON_FABA_DEFEATED)) {
+        msgbox(format("The round machine is silent. The stored energy is draining back into the ground."), MSGBOX_SIGN)
+    } else {
+        msgbox(format("A round machine humming with stored energy."), MSGBOX_SIGN)
+    }
+}

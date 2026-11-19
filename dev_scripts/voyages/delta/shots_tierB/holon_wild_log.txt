@@ -1,0 +1,1 @@
+(11, (1637, ['ELECTRIC', 'STEEL', 'MYSTERY'], 188), (1668, ['PSYCHIC', 'PSYCHIC', 'MYSTERY'], 150), 'Ninetales')

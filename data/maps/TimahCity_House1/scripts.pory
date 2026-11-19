@@ -1,0 +1,5 @@
+mapscripts TimahCity_House1_MapScripts {}
+
+script TimahCity_House1_EventScript_Npc1 {
+    msgbox(format("My Oddish wandered into Hana's garden once. She sent it home with a ribbon and a very stern note."), MSGBOX_NPC)
+}

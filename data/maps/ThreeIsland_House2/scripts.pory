@@ -1,0 +1,9 @@
+mapscripts ThreeIsland_House2_MapScripts {}
+
+script ThreeIsland_House2_EventScript_Rocker {
+    msgbox(format("It's lovely to meet a traveller from Tosa."), MSGBOX_NPC)
+}
+
+script ThreeIsland_House2_EventScript_Man {
+    msgbox(format("The Sevii Islands are so peaceful. I could stay here forever."), MSGBOX_NPC)
+}

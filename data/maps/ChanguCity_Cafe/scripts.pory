@@ -1,0 +1,32 @@
+// Wavebreak Voyages: the Changu City Battle Café (placeholder for a future Battle Lounge).
+// Cynthia sits at the far table once she has been beaten at Holon Lake; her script is
+// Common_EventScript_CynthiaCafe (data/scripts/cynthia.pory).
+mapscripts ChanguCity_Cafe_MapScripts {
+    MAP_SCRIPT_ON_TRANSITION {
+        if (flag(FLAG_CYNTHIA_BEATEN_AT_LAKE)) {
+            clearflag(FLAG_HIDE_CHANGU_CAFE_CYNTHIA)
+        } else {
+            setflag(FLAG_HIDE_CHANGU_CAFE_CYNTHIA)
+        }
+    }
+}
+
+script ChanguCity_Cafe_EventScript_Barista {
+    msgbox(format("Welcome to the Battle Café!"), MSGBOX_NPC)
+}
+
+script ChanguCity_Cafe_EventScript_Businessman {
+    msgbox(format("We flew in from Lumiose this morning. If this deal doesn't close by tonight, I'm on the red-eye home."), MSGBOX_NPC)
+}
+
+script ChanguCity_Cafe_EventScript_Businesswoman {
+    msgbox(format("Synergise, innovate, leverage… I just wanted a kaya toast in peace."), MSGBOX_NPC)
+}
+
+script ChanguCity_Cafe_EventScript_Tourist {
+    if (flag(FLAG_CYNTHIA_BEATEN_AT_LAKE)) {
+        msgbox(format("That blonde lady in the corner has been here every day since she came back from Holon Lake. Is she someone famous?"), MSGBOX_NPC)
+    } else {
+        msgbox(format("They call this place the Battle Café. Trainers come here between flights, hoping a strong opponent walks in."), MSGBOX_NPC)
+    }
+}

@@ -1,0 +1,10 @@
+mapscripts Route409_MapScripts {}
+
+
+script Route409_EventScript_Sign {
+    msgbox(format("Route 409\nA strangely frozen route, despite Tiksi's generally warm arid climate."), MSGBOX_SIGN)
+}
+
+script Route409_EventScript_Npc1 {
+    msgbox(format("Feel that chill? Tiksi is warm everywhere else. The cold comes from the cave at the end of this route…"), MSGBOX_NPC)
+}

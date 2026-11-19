@@ -1,0 +1,5 @@
+mapscripts PoketopiaGate_House2_MapScripts {}
+
+script PoketopiaGate_House2_EventScript_Npc1 {
+    msgbox(format("Marina, the Gym Leader in Corral City, once swam here from Pokétopia. In a storm!"), MSGBOX_NPC)
+}

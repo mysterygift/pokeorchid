@@ -48,6 +48,7 @@ static void QueueAnimTiles_General_Water(u16);
 static void QueueAnimTiles_General_SandWaterEdge(u16);
 static void QueueAnimTiles_General_Waterfall(u16);
 static void QueueAnimTiles_General_LandWaterEdge(u16);
+static void QueueAnimTiles_General_CentreArrow(u16);
 static void QueueAnimTiles_Building_TVTurnedOn(u16);
 static void QueueAnimTiles_Rustboro_WindyWater(u16, u8);
 static void QueueAnimTiles_Rustboro_Fountain(u16);
@@ -78,6 +79,43 @@ const u16 gTilesetAnims_General_Flower_Frame1[] = INCGFX_U16("data/tilesets/prim
 const u16 gTilesetAnims_General_Flower_Frame0[] = INCGFX_U16("data/tilesets/primary/general/anim/flower/0.png", ".4bpp");
 const u16 gTilesetAnims_General_Flower_Frame2[] = INCGFX_U16("data/tilesets/primary/general/anim/flower/2.png", ".4bpp");
 const u16 tileset_anims_space_0[16] = {};
+
+// Orchid: the arrow on the Pokemon Centre sign scrolls left (tiles 167-168, dev_scripts/centre_mart_v2)
+const u16 gTilesetAnims_General_CentreArrow_Frame0[] = INCGFX_U16("data/tilesets/primary/general/anim/centre_arrow/0.png", ".4bpp");
+const u16 gTilesetAnims_General_CentreArrow_Frame1[] = INCGFX_U16("data/tilesets/primary/general/anim/centre_arrow/1.png", ".4bpp");
+const u16 gTilesetAnims_General_CentreArrow_Frame2[] = INCGFX_U16("data/tilesets/primary/general/anim/centre_arrow/2.png", ".4bpp");
+const u16 gTilesetAnims_General_CentreArrow_Frame3[] = INCGFX_U16("data/tilesets/primary/general/anim/centre_arrow/3.png", ".4bpp");
+const u16 gTilesetAnims_General_CentreArrow_Frame4[] = INCGFX_U16("data/tilesets/primary/general/anim/centre_arrow/4.png", ".4bpp");
+const u16 gTilesetAnims_General_CentreArrow_Frame5[] = INCGFX_U16("data/tilesets/primary/general/anim/centre_arrow/5.png", ".4bpp");
+const u16 gTilesetAnims_General_CentreArrow_Frame6[] = INCGFX_U16("data/tilesets/primary/general/anim/centre_arrow/6.png", ".4bpp");
+const u16 gTilesetAnims_General_CentreArrow_Frame7[] = INCGFX_U16("data/tilesets/primary/general/anim/centre_arrow/7.png", ".4bpp");
+const u16 gTilesetAnims_General_CentreArrow_Frame8[] = INCGFX_U16("data/tilesets/primary/general/anim/centre_arrow/8.png", ".4bpp");
+const u16 gTilesetAnims_General_CentreArrow_Frame9[] = INCGFX_U16("data/tilesets/primary/general/anim/centre_arrow/9.png", ".4bpp");
+const u16 gTilesetAnims_General_CentreArrow_Frame10[] = INCGFX_U16("data/tilesets/primary/general/anim/centre_arrow/10.png", ".4bpp");
+const u16 gTilesetAnims_General_CentreArrow_Frame11[] = INCGFX_U16("data/tilesets/primary/general/anim/centre_arrow/11.png", ".4bpp");
+const u16 gTilesetAnims_General_CentreArrow_Frame12[] = INCGFX_U16("data/tilesets/primary/general/anim/centre_arrow/12.png", ".4bpp");
+const u16 gTilesetAnims_General_CentreArrow_Frame13[] = INCGFX_U16("data/tilesets/primary/general/anim/centre_arrow/13.png", ".4bpp");
+const u16 gTilesetAnims_General_CentreArrow_Frame14[] = INCGFX_U16("data/tilesets/primary/general/anim/centre_arrow/14.png", ".4bpp");
+const u16 gTilesetAnims_General_CentreArrow_Frame15[] = INCGFX_U16("data/tilesets/primary/general/anim/centre_arrow/15.png", ".4bpp");
+
+const u16 *const gTilesetAnims_General_CentreArrow[] = {
+    gTilesetAnims_General_CentreArrow_Frame0,
+    gTilesetAnims_General_CentreArrow_Frame1,
+    gTilesetAnims_General_CentreArrow_Frame2,
+    gTilesetAnims_General_CentreArrow_Frame3,
+    gTilesetAnims_General_CentreArrow_Frame4,
+    gTilesetAnims_General_CentreArrow_Frame5,
+    gTilesetAnims_General_CentreArrow_Frame6,
+    gTilesetAnims_General_CentreArrow_Frame7,
+    gTilesetAnims_General_CentreArrow_Frame8,
+    gTilesetAnims_General_CentreArrow_Frame9,
+    gTilesetAnims_General_CentreArrow_Frame10,
+    gTilesetAnims_General_CentreArrow_Frame11,
+    gTilesetAnims_General_CentreArrow_Frame12,
+    gTilesetAnims_General_CentreArrow_Frame13,
+    gTilesetAnims_General_CentreArrow_Frame14,
+    gTilesetAnims_General_CentreArrow_Frame15,
+};
 
 const u16 *const gTilesetAnims_General_Flower[] = {
     gTilesetAnims_General_Flower_Frame0,
@@ -641,6 +679,8 @@ static void TilesetAnim_General(u16 timer)
         QueueAnimTiles_General_Waterfall(timer / 16);
     if (timer % 16 == 4)
         QueueAnimTiles_General_LandWaterEdge(timer / 16);
+    if (timer % 8 == 5)
+        QueueAnimTiles_General_CentreArrow(timer / 8);
 }
 
 static void TilesetAnim_Building(u16 timer)
@@ -653,6 +693,12 @@ static void QueueAnimTiles_General_Flower(u16 timer)
 {
     u16 i = timer % ARRAY_COUNT(gTilesetAnims_General_Flower);
     AppendTilesetAnimToBuffer(gTilesetAnims_General_Flower[i], (u16 *)(BG_VRAM + TILE_OFFSET_4BPP(508)), 4 * TILE_SIZE_4BPP);
+}
+
+static void QueueAnimTiles_General_CentreArrow(u16 timer)
+{
+    u16 i = timer % ARRAY_COUNT(gTilesetAnims_General_CentreArrow);
+    AppendTilesetAnimToBuffer(gTilesetAnims_General_CentreArrow[i], (u16 *)(BG_VRAM + TILE_OFFSET_4BPP(167)), 2 * TILE_SIZE_4BPP);
 }
 
 static void QueueAnimTiles_General_Water(u16 timer)

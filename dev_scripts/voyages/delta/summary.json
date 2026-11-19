@@ -1,0 +1,53 @@
+{
+ "species_total": 91,
+ "lines_total": 35,
+ "user_species": 21,
+ "tcg_species": 65,
+ "extrap_species": 5,
+ "tierA_species": 57,
+ "tierB_species": 34,
+ "tierA_lines": 21,
+ "tierB_lines": 14,
+ "longest_names": [
+  [
+   12,
+   "Feraligatr-δ"
+  ],
+  [
+   12,
+   "Farfetch'd-δ"
+  ],
+  [
+   12,
+   "Charmeleon-δ"
+  ],
+  [
+   12,
+   "Charmander-δ"
+  ],
+  [
+   11,
+   "Vileplume-δ"
+  ],
+  [
+   11,
+   "Tyranitar-δ"
+  ]
+ ],
+ "last_enum_species_id": {
+  "SPECIES_GLIMMORA_MEGA": 1572,
+  "SPECIES_LAOMEOW": 1577,
+  "SPECIES_EGG/NUM_SPECIES": 1578
+ },
+ "after_all_deltas": {
+  "last_delta_id": 1668,
+  "NUM_SPECIES": 1669,
+  "headroom_to_2047": 378
+ },
+ "national_dex": {
+  "NATIONAL_DEX_LAOMEOW": 1030,
+  "last_delta": 1121
+ },
+ "dex_flag_bytes_added_each_of_seen_caught": 12,
+ "problems": []
+}

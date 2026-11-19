@@ -15,6 +15,7 @@ enum Region
     REGION_GALAR,
     REGION_HISUI,
     REGION_PALDEA,
+    REGION_TIKSI,   // Orchid: second region, west of Tosa (reuses the vanilla Kanto/Sevii map sections)
     REGIONS_COUNT,
 };
 

@@ -1,0 +1,532 @@
+{
+"name": "SixIsland",
+"size": [
+24,
+30
+],
+"tileset": [
+"gTileset_General",
+"gTileset_SeviiIslands"
+],
+"ground": [
+"id",
+368,
+0,
+1
+],
+"mask": [
+"~~~~~~~~~~~~~~WKMMMMMMMM",
+"~~~~~~~~~~~~~~WKMMMMMMMM",
+"~~~~~~~~~~~~~~WKMMMMMMMM",
+"WWWWWWWWWWW~~~WKMMMMMMMM",
+"RRRRRRRRRKW~~~WKMMMMMMMM",
+"TTTTTTTTTKWWWWWKMMMMMMMM",
+"TTTTTTTTTMKKKKKMMFFTMMMM",
+"TTTTTTTTTfffff....RRRRFF",
+"TTTTTTTTT.....TTTRWWWWR.",
+"TTTTTTTTT.....TTTTRRRR.T",
+"TTTTTTT................T",
+"TTTTTTT.f........f......",
+"TTTTTTTf................",
+"TTTTTTT.TT..............",
+"TTTTTTT.TT..............",
+"TTTTTTT.TT..............",
+"TTTTTTT.TT..............",
+"TTTTTTT..n...ff.........",
+"TTTTTTTf................",
+"TTTTTTT..f..............",
+"TTTMMMMMMMhhhMMMM...f.fF",
+"TTTMTTTT........MFFFFFFT",
+"MMMMTTTTFF...FFFMMMMMMMM",
+"KKKKKKKKKKRRRKKKKMMMMMMM",
+"WWWWWWWWWWWWWWWWWKMMMMMM",
+"~~~~~~~~~~~~~~~~WKMMMMMM",
+"~~~~~~~~~~~~~~~~WKMMMMMM",
+"~~~~~~~~~~~~~~~~WKMMMMMM",
+"~~~~~~~~~~~~~~~~WKMMMMMM",
+"~~~~~~~~~~~~~~~~WKMMMMMM"
+],
+"big_trees": "T",
+"stamps": [
+[
+"LAYOUT_SOUTHERN_ISLAND_EXTERIOR",
+10,
+21,
+9,
+4,
+7,
+24
+]
+],
+"pstamps": [
+[
+"LAYOUT_LAVARIDGE_TOWN",
+8,
+3,
+5,
+5,
+9,
+7
+],
+[
+"LAYOUT_LAVARIDGE_TOWN",
+14,
+2,
+4,
+5,
+19,
+7
+]
+],
+"cells": [
+[
+10,
+23,
+[
+"id",
+280
+]
+],
+[
+11,
+23,
+[
+"id",
+281
+]
+],
+[
+12,
+23,
+[
+"id",
+282
+]
+],
+[
+10,
+20,
+[
+"id",
+175
+]
+],
+[
+11,
+20,
+[
+"id",
+207
+]
+],
+[
+12,
+20,
+[
+"id",
+207
+]
+]
+],
+"auto": [
+[
+17,
+6,
+[
+329,
+330,
+331,
+332,
+333
+]
+],
+[
+18,
+6,
+[
+329,
+330,
+331,
+332,
+333
+]
+],
+[
+23,
+7,
+[
+329,
+330,
+331,
+332,
+333
+]
+],
+[
+23,
+20,
+[
+329,
+330,
+331,
+332,
+333
+]
+],
+[
+17,
+21,
+[
+329,
+330,
+331,
+332,
+333
+]
+],
+[
+18,
+21,
+[
+329,
+330,
+331,
+332,
+333
+]
+],
+[
+19,
+21,
+[
+329,
+330,
+331,
+332,
+333
+]
+],
+[
+20,
+21,
+[
+329,
+330,
+331,
+332,
+333
+]
+],
+[
+21,
+21,
+[
+329,
+330,
+331,
+332,
+333
+]
+],
+[
+22,
+21,
+[
+329,
+330,
+331,
+332,
+333
+]
+],
+[
+8,
+22,
+[
+329,
+330,
+331,
+332,
+333
+]
+],
+[
+9,
+22,
+[
+329,
+330,
+331,
+332,
+333
+]
+],
+[
+13,
+22,
+[
+329,
+330,
+331,
+332,
+333
+]
+],
+[
+14,
+22,
+[
+329,
+330,
+331,
+332,
+333
+]
+],
+[
+15,
+22,
+[
+329,
+330,
+331,
+332,
+333
+]
+]
+],
+"marks": [
+[
+11,
+23,
+"harbor (arrow S)",
+"warp"
+],
+[
+11,
+11,
+"pokemon_center",
+"warp"
+],
+[
+16,
+17,
+"house",
+"warp"
+],
+[
+20,
+11,
+"mart",
+"warp"
+],
+[
+10,
+15,
+"",
+"npc",
+"boy"
+],
+[
+15,
+13,
+"",
+"npc",
+"hiker"
+],
+[
+9,
+17,
+"",
+"sign"
+],
+[
+9,
+7,
+"h",
+"note"
+],
+[
+15,
+2,
+"Six Island Water Path >",
+"conn"
+]
+],
+"post": [],
+"vstamps": [
+[
+"cottage_v3",
+13,
+14
+]
+],
+"vcells": [],
+"arrow_warps": [
+[
+11,
+23,
+"S"
+]
+],
+"object_events": [
+{
+"graphics_id": "OBJ_EVENT_GFX_BOY_1",
+"x": 10,
+"y": 15,
+"script": "SixIsland_EventScript_Boy"
+},
+{
+"graphics_id": "OBJ_EVENT_GFX_HIKER",
+"x": 15,
+"y": 13,
+"script": "SixIsland_EventScript_Hiker"
+}
+],
+"report": {
+"map": "SixIsland",
+"size": [
+24,
+30
+],
+"pair": [
+"gTileset_General",
+"gTileset_SeviiIslands"
+],
+"unresolved": [],
+"buildings": [
+{
+"warp": [
+11,
+23
+],
+"dest": "MAP_SIX_ISLAND_HARBOR",
+"footprint": 64,
+"stamp": "harbor dock"
+},
+{
+"warp": [
+11,
+11
+],
+"dest": "MAP_SIX_ISLAND_POKEMON_CENTER_1F",
+"footprint": [
+7,
+8,
+9,
+4
+],
+"stamp": "centre",
+"at": [
+9,
+7,
+5,
+5
+]
+},
+{
+"warp": [
+16,
+17
+],
+"dest": "MAP_SIX_ISLAND_HOUSE",
+"footprint": [
+15,
+15,
+5,
+3
+],
+"stamp": "cottage_v3",
+"at": [
+13,
+14,
+5,
+4
+]
+},
+{
+"warp": [
+20,
+11
+],
+"dest": "MAP_SIX_ISLAND_MART",
+"footprint": [
+16,
+9,
+8,
+3
+],
+"stamp": "mart",
+"at": [
+19,
+7,
+4,
+5
+]
+}
+],
+"caves": [],
+"ported_cells": 0,
+"arrow_warps": [
+[
+11,
+23,
+"S"
+]
+],
+"connections": [
+[
+"right",
+-40,
+"MAP_SIX_ISLAND_WATER_PATH"
+]
+],
+"warps": [
+[
+11,
+23,
+"MAP_SIX_ISLAND_HARBOR"
+],
+[
+11,
+11,
+"MAP_SIX_ISLAND_POKEMON_CENTER_1F"
+],
+[
+16,
+17,
+"MAP_SIX_ISLAND_HOUSE"
+],
+[
+20,
+11,
+"MAP_SIX_ISLAND_MART"
+]
+],
+"objects": [
+[
+10,
+15,
+"OBJ_EVENT_GFX_BOY",
+"BOY_1"
+],
+[
+15,
+13,
+"OBJ_EVENT_GFX_HIKER_FRLG",
+"HIKER"
+]
+],
+"classes": {
+"~": 176,
+"M": 156,
+"T": 158,
+"F": 19,
+"f": 14,
+".": 190,
+"n": 1,
+"h": 3,
+"p": 3
+}
+}
+}

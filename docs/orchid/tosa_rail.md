@@ -2,7 +2,25 @@
 
 Code: `src/train_travel.c` (access rules, journey cutscene), `src/train_station_map.c` (station picker),
 `data/scripts/train.inc` (shared script), station table `src/data/train_stations.h`.
-Example maps: `TrainTestWest/East/North` (`data/maps/TrainTestWest/scripts.inc`).
+Stations: `TRAIN_STATION_TOSA_PORT` (platform `TosaPort_BrendansHouse_2F`) plus the test stations
+`TrainTestEast/North` (shared attendant + debug station master in `data/maps/TrainTestEast/scripts.inc`).
+The Tosa Port gatehouse `TosaPort_BrendansHouse_1F` has the paid area at the back left: through the fare
+gates (x 4), then the down escalator (warp (1,4)) to the platform's up escalator (warp (1,7)).
+
+Concourse kit (gTileset_UrbanInterior 0x2B0+, `dev_scripts/station_tileset/concourse.py`): concourse wall,
+tactile guide strips and blister pads, fare gate cabinet + gate closed/open (for a north-south gate line)
++ glass fence (east-west run), ticket booth (a small building: roof, fascia drawn over sprites, facade,
+counter = MB_COUNTER), seats, exit mats, 2-wide rear exit arch and the train `StationSign`. The floor is
+the platform's staggered paving (Paving_A on even rows, Paving_B on odd rows; the stock PC escalator
+metatiles assume the same), so every floor prop has an `_A` and a `_B` version; the painter picks by row.
+`export_tileset.py --paint-tosa-port` repaints the gatehouse and the Tosa Port platform (overwrites
+Porymap edits to those two layouts).
+
+Fare gates: the gate tiles are solid. Their bg events (`TosaGateway_FareGateNorth/South`) set the gate's
+x/y in `VAR_0x8004/5` and run `TosaGateway_FareGate`: no Rail Card → refusal message; otherwise it swaps
+in `FareGate_Gate_Open_B`, hides the follower, walks the player two tiles in the direction they face and
+swaps `FareGate_Gate_B` back. A new gate on an even row needs the `_A` ids instead. TEMP: the ticket
+booth clerk gives a Rail Card if you have none.
 
 ## Macros (`asm/macros/event.inc`)
 
@@ -91,6 +109,9 @@ tileset of each area that has railway. `python3 dev_scripts/rail_tileset/install
 its `KITS` table; rerunning rewrites the same range, so Porymap edits inside the kit are lost. To add
 an area, add a `KITS` row (tile base after its last used tile, metatile base = its metatile count,
 rounded up to a row of 8) and rerun. Slateport, TosaPort and Mauville are nearly out of tiles.
+If a merge conflicts on a kit tileset's binaries, take the other side's `metatiles.bin` and
+`metatile_attributes.bin` (both, so their lengths match) and rerun the installer; it keeps everything
+below the kit bases and rewrites the kit on top.
 
 What one install adds (Petalburg: tiles 320-378, metatiles 0x290-0x2E7; render with `--preview DIR`):
 

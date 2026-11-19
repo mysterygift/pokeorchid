@@ -1,0 +1,16 @@
+PASS gTrainerApproachMusicStyles: 17 vanilla entries unchanged, [HOLON] = MUS_ORCHID_ENCOUNTER_HOLON
+PASS PlayTrainerEncounterMusic TRAINER_CALVIN_1 -> MUS_ENCOUNTER_MALE (want MUS_ENCOUNTER_MALE)
+PASS PlayTrainerEncounterMusic TRAINER_GRUNT_AQUA_HIDEOUT_7 -> MUS_ENCOUNTER_AQUA (want MUS_ENCOUNTER_AQUA)
+PASS PlayTrainerEncounterMusic TRAINER_TAKAO -> MUS_ENCOUNTER_INTENSE (want MUS_ENCOUNTER_INTENSE)
+PASS PlayTrainerEncounterMusic TRAINER_HOLON_IDO -> MUS_ORCHID_ENCOUNTER_HOLON (want MUS_ORCHID_ENCOUNTER_HOLON)
+  tower 2F (17, 2, 24, 13) map song MUS_RUSTBORO
+  shot holon_music_1_tobias_spots (15, 6, 24, 13)
+  pos (15, 6, 24, 13) text: Authorised staff only past this point!
+PASS Tobias spotting the player: songs ['MUS_RUSTBORO', 'MUS_ORCHID_ENCOUNTER_HOLON'], header == mus_orchid_encounter_holon: True
+  battle vs 29 song MUS_ORCHID_VS_TRAINER
+PASS the spotting battle is vs Tobias (29)
+  map song after the battle: MUS_RUSTBORO
+  shot holon_music_2_faba_talk (11, 7, 24, 13)
+PASS Faba's talk: songs ['MUS_ORCHID_ENCOUNTER_HOLON'], header == mus_orchid_encounter_holon: True
+  battle song: MUS_VS_AQUA_MAGMA_LEADER
+8/8 PASS

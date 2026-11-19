@@ -1,0 +1,12 @@
+mapscripts DampPath_MapScripts {}
+
+script DampPath_EventScript_PlaceholderSign {
+    msgbox(format("Damp Path: a wet, abandoned path through the hills of West Tosa. Filled with rowdy thugs and ne'er-do-wells now. And Zubat. Placeholder map."), MSGBOX_SIGN)
+}
+
+// --- route_people.py (generated) ---
+
+script DampPath_EventScript_Route1 {
+    msgbox(format("Oi, this is our path! Pay the toll or turn back!\p…Just kidding. The Zubat are the real problem down here."), MSGBOX_NPC)
+}
+// --- end route_people.py ---

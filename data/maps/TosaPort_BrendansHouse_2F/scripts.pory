@@ -1,1 +1,17 @@
 mapscripts TosaPort_BrendansHouse_2F_MapScripts {}
+
+// Tosa Port station platform (under the gatehouse). Layout painted by
+// dev_scripts/station_tileset/export_tileset.py --paint-tosa-port.
+//
+// Wall colour = the West line (gTileset_UrbanPlatform, dev_scripts/train_ui/tosa_stations.py).
+//
+// TEMP (testing): the attendant opens every station so rides work before the story opens them
+// (the Rail Card comes from the gatehouse ticket booth for now). Remove the call then.
+script TosaPortStation_Attendant {
+    lock
+    faceplayer
+    call(TosaRail_EventScript_OpenAllStations)
+    usetrain
+    release
+    end
+}

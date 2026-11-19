@@ -1,0 +1,5 @@
+mapscripts FourIsland_PokemonDayCare_MapScripts {}
+
+script FourIsland_PokemonDayCare_EventScript_DaycareWoman {
+    msgbox(format("My husband is outside. We take good care of the POKéMON left with us."), MSGBOX_NPC)
+}

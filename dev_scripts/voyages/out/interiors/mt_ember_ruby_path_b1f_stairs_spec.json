@@ -1,0 +1,165 @@
+{
+ "size": [
+  6,
+  7
+ ],
+ "tileset": [
+  "gTileset_General",
+  "gTileset_Lavaridge"
+ ],
+ "ground": [
+  "raw",
+  1649
+ ],
+ "marks": [
+  [
+   4,
+   1,
+   "B3F",
+   "warp"
+  ],
+  [
+   1,
+   5,
+   "STAIRS",
+   "warp"
+  ],
+  [
+   4,
+   2,
+   "",
+   "field",
+   "breakable_rock"
+  ]
+ ],
+ "grid_raw": [
+  "0671 0671 0706 0671 0671 0671",
+  "0671 0671 0706 3308 32AE 067C",
+  "0671 0671 0706 3308 3308 0706",
+  "0671 0671 0706 3308 070A 067E",
+  "0671 0671 0678 3308 0706 0671",
+  "0671 32AE 3308 3308 0706 0670",
+  "0671 0671 0671 0671 0706 0670"
+ ],
+ "report": {
+  "pair": [
+   "gTileset_General",
+   "gTileset_Lavaridge"
+  ],
+  "set": "lava",
+  "look": "Fiery Path / Magma Hideout red rock (Mt. Chimney's volcano cave), Lavaridge hot-spring water",
+  "classes": [
+   "######",
+   "###.U#",
+   "###..#",
+   "###.##",
+   "###.##",
+   "#U..##",
+   "######"
+  ],
+  "sig_levels": {
+   "5": 20,
+   "1": 14,
+   "2": 1
+  },
+  "notes": [],
+  "frlg_map": "MtEmber_RubyPath_B1F_Stairs",
+  "frlg_layout": "LAYOUT_MT_EMBER_RUBY_PATH_B1F_STAIRS",
+  "frlg_pair": [
+   "gTileset_General_Frlg",
+   "gTileset_MtEmber"
+  ],
+  "maps": [
+   "MAP_MT_EMBER_RUBY_PATH_B1_F_STAIRS"
+  ],
+  "size": [
+   6,
+   7
+  ],
+  "method": "learned cave autotiler (interiors_caves.py), set 'lava'",
+  "warps": [
+   {
+    "x": 4,
+    "y": 1,
+    "dest_map": "MAP_MT_EMBER_RUBY_PATH_B3F",
+    "dest_warp_id": "1"
+   },
+   {
+    "x": 1,
+    "y": 5,
+    "dest_map": "MAP_MT_EMBER_RUBY_PATH_B2F_STAIRS",
+    "dest_warp_id": "0"
+   }
+  ],
+  "objects": [
+   {
+    "x": 4,
+    "y": 2,
+    "frlg_gfx": "OBJ_EVENT_GFX_BREAKABLE_ROCK_FRLG",
+    "emerald_gfx": "OBJ_EVENT_GFX_BREAKABLE_ROCK",
+    "movement": "MOVEMENT_TYPE_LOOK_AROUND",
+    "script": "EventScript_RockSmash"
+   }
+  ],
+  "bg_events": [],
+  "coord_events": [],
+  "walk_diff": [],
+  "seams_before_fix": 24,
+  "seam_cells_repicked": 13,
+  "seams": [
+   [
+    4,
+    0,
+    "S",
+    "0x271",
+    "0x2AE"
+   ],
+   [
+    4,
+    1,
+    "E",
+    "0x2AE",
+    "0x27C"
+   ],
+   [
+    1,
+    4,
+    "S",
+    "0x271",
+    "0x2AE"
+   ],
+   [
+    1,
+    5,
+    "S",
+    "0x2AE",
+    "0x271"
+   ]
+  ],
+  "secondary_users": [
+   "LAYOUT_LAVARIDGE_TOWN",
+   "LAYOUT_JAGGED_PASS",
+   "LAYOUT_FIERY_PATH",
+   "LAYOUT_MAGMA_HIDEOUT_1F",
+   "LAYOUT_MAGMA_HIDEOUT_2F_1R",
+   "LAYOUT_MAGMA_HIDEOUT_2F_2R",
+   "LAYOUT_MAGMA_HIDEOUT_3F_1R",
+   "LAYOUT_MAGMA_HIDEOUT_3F_2R",
+   "LAYOUT_MAGMA_HIDEOUT_4F",
+   "LAYOUT_MAGMA_HIDEOUT_3F_3R",
+   "LAYOUT_MAGMA_HIDEOUT_2F_3R",
+   "LAYOUT_DRAKE_BASE_CAMP"
+  ],
+  "metatiles": [
+   "0x270",
+   "0x271",
+   "0x278",
+   "0x27C",
+   "0x27E",
+   "0x2AE",
+   "0x306",
+   "0x308",
+   "0x30A"
+  ]
+ }
+}

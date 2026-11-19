@@ -1,0 +1,14 @@
+mapscripts Route403_MapScripts {}
+
+
+script Route403_EventScript_Sign {
+    msgbox(format("Route 403"), MSGBOX_SIGN)
+}
+
+script Route403_EventScript_Npc1 {
+    msgbox(format("The shrine up north sits in the middle of a desert. The locals won't go near it."), MSGBOX_NPC)
+}
+
+script Route403_EventScript_Guardian1 {
+    msgbox(format("This path leads to Regolis Shrine, in the heart of the desert. The rock giant sleeps there once more.\pI am its guardian. Go if you must."), MSGBOX_NPC)
+}

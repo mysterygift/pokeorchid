@@ -26,6 +26,7 @@
 #include "field_screen_effect.h"
 #include "field_weather.h"
 #include "fieldmap.h"
+#include "m4a.h"
 #include "malloc.h"
 #include "overworld.h"
 #include "palette.h"
@@ -40,6 +41,7 @@
 #include "constants/flags.h"
 #include "constants/maps.h"
 #include "constants/songs.h"
+#include "constants/train_sounds.h"
 
 #include "data/train_stations.h"
 
@@ -71,6 +73,25 @@
 #define TRAIN_DEPART_FRAMES     80
 #define TRAIN_DOOR_FRAMES       12
 #define TRAIN_SETTLE_FRAMES     16
+#define TRAIN_BRAKE_FRAME       44      // into the arrival: rumble gives way to the brakes as it slows
+#define TRAIN_CHIME_FRAMES      68      // "doors closing" chime, then the doors shut once it has finished
+                                        // (the chime outranks the other SE1 sounds and would block them)
+
+// The rumble loops until stopped, so every path that ends a train move stops it.
+static void StopTrainRumble(void)
+{
+    m4aSongNumStop(SE_TRAIN_RUMBLE);
+}
+
+// Arrival sound for frame t of the approach (called after the frame's movement).
+static void TrainArriveSound(s32 t)
+{
+    if (t == TRAIN_BRAKE_FRAME)
+    {
+        StopTrainRumble();
+        PlaySE(SE_TRAIN_BRAKES);
+    }
+}
 
 static const u32 sTrain_Gfx[] = INCBIN_U32("graphics/train/train.4bpp.smol");
 static const u16 sTrain_Pal[] = INCBIN_U16("graphics/train/train.gbapal");
@@ -424,7 +445,7 @@ void TrainTravel_Depart(void)
         task->tTo = 0;
         sprite->x2 = task->tFrom;
         task->tState = DEPART_TRAIN_ARRIVES;
-        PlaySE(SE_TRUCK_MOVE);
+        PlaySE(SE_TRAIN_RUMBLE);
     }
     else
     {
@@ -449,9 +470,9 @@ static void Task_TrainDepart(u8 taskId)
             break;
         }
         train->x2 = EaseOut(task->tFrom, task->tTo, ++task->tTimer, TRAIN_ARRIVE_FRAMES);
+        TrainArriveSound(task->tTimer);
         if (task->tTimer >= TRAIN_ARRIVE_FRAMES)
         {
-            PlaySE(SE_TRUCK_STOP);
             task->tTimer = 0;
             task->tState = DEPART_DOOR_OPENS;
         }
@@ -459,7 +480,7 @@ static void Task_TrainDepart(u8 taskId)
     case DEPART_DOOR_OPENS:
         if (++task->tTimer == TRAIN_SETTLE_FRAMES)
         {
-            PlaySE(SE_TRUCK_DOOR);
+            PlaySE(SE_TRAIN_DOOR_OPEN);
             train->subspriteTableNum = TRAIN_DOOR_OPEN;
         }
         else if (task->tTimer >= TRAIN_SETTLE_FRAMES + TRAIN_DOOR_FRAMES)
@@ -495,14 +516,19 @@ static void Task_TrainDepart(u8 taskId)
             task->tState = DEPART_FADE;
             break;
         }
-        if (++task->tTimer == TRAIN_DOOR_FRAMES)
+        if (++task->tTimer == 1)
         {
-            PlaySE(SE_TRUCK_DOOR);
+            PlaySE(SE_TRAIN_DOOR_CHIME);
+        }
+        else if (task->tTimer == TRAIN_CHIME_FRAMES)
+        {
+            m4aSongNumStop(SE_TRAIN_DOOR_CHIME);
+            PlaySE(SE_TRAIN_DOOR_SHUT);
             train->subspriteTableNum = TRAIN_DOOR_SHUT;
         }
-        else if (task->tTimer >= TRAIN_DOOR_FRAMES + TRAIN_SETTLE_FRAMES)
+        else if (task->tTimer >= TRAIN_CHIME_FRAMES + TRAIN_SETTLE_FRAMES)
         {
-            PlaySE(SE_TRUCK_MOVE);
+            PlaySE(SE_TRAIN_RUMBLE);
             task->tTimer = 0;
             task->tFrom = 0;
             task->tTo = TrainOffscreenRightX2(train);
@@ -522,6 +548,7 @@ static void Task_TrainDepart(u8 taskId)
         if (dest == NULL)
         {
             // Bad destination: put everything back and give control back.
+            StopTrainRumble();
             player->invisible = FALSE;
             DestroyTrainSprite(task->tSpriteId);
             ScriptContext_Enable();
@@ -537,6 +564,7 @@ static void Task_TrainDepart(u8 taskId)
     case DEPART_WARP:
         if (!gPaletteFade.active && BGMusicStopped())
         {
+            StopTrainRumble();
             WarpIntoMap();
             gFieldCallback = FieldCB_TrainArrive;
             SetMainCallback2(CB2_LoadMap);
@@ -599,16 +627,17 @@ static void Task_TrainArrive(u8 taskId)
     case ARRIVE_WAIT_FADE:
         if (IsWeatherNotFadingIn())
         {
-            PlaySE(SE_TRUCK_MOVE);
+            if (train != NULL)
+                PlaySE(SE_TRAIN_RUMBLE);
             task->tTimer = 0;
             task->tState = train != NULL ? ARRIVE_TRAIN_ARRIVES : ARRIVE_PLAYER_STEPS_OUT;
         }
         break;
     case ARRIVE_TRAIN_ARRIVES:
         train->x2 = EaseOut(task->tFrom, task->tTo, ++task->tTimer, TRAIN_ARRIVE_FRAMES);
+        TrainArriveSound(task->tTimer);
         if (task->tTimer >= TRAIN_ARRIVE_FRAMES)
         {
-            PlaySE(SE_TRUCK_STOP);
             task->tTimer = 0;
             task->tState = ARRIVE_DOOR_OPENS;
         }
@@ -616,7 +645,7 @@ static void Task_TrainArrive(u8 taskId)
     case ARRIVE_DOOR_OPENS:
         if (++task->tTimer == TRAIN_SETTLE_FRAMES)
         {
-            PlaySE(SE_TRUCK_DOOR);
+            PlaySE(SE_TRAIN_DOOR_OPEN);
             train->subspriteTableNum = TRAIN_DOOR_OPEN;
         }
         else if (task->tTimer >= TRAIN_SETTLE_FRAMES + TRAIN_DOOR_FRAMES)
@@ -640,14 +669,19 @@ static void Task_TrainArrive(u8 taskId)
         }
         break;
     case ARRIVE_DOOR_CLOSES:
-        if (++task->tTimer == TRAIN_DOOR_FRAMES)
+        if (++task->tTimer == 1)
         {
-            PlaySE(SE_TRUCK_DOOR);
+            PlaySE(SE_TRAIN_DOOR_CHIME);
+        }
+        else if (task->tTimer == TRAIN_CHIME_FRAMES)
+        {
+            m4aSongNumStop(SE_TRAIN_DOOR_CHIME);
+            PlaySE(SE_TRAIN_DOOR_SHUT);
             train->subspriteTableNum = TRAIN_DOOR_SHUT;
         }
-        else if (task->tTimer >= TRAIN_DOOR_FRAMES + TRAIN_SETTLE_FRAMES)
+        else if (task->tTimer >= TRAIN_CHIME_FRAMES + TRAIN_SETTLE_FRAMES)
         {
-            PlaySE(SE_TRUCK_MOVE);
+            PlaySE(SE_TRAIN_RUMBLE);
             task->tTimer = 0;
             task->tFrom = 0;
             task->tTo = TrainOffscreenRightX2(train);
@@ -657,7 +691,10 @@ static void Task_TrainArrive(u8 taskId)
     case ARRIVE_TRAIN_LEAVES:
         train->x2 = EaseIn(task->tFrom, task->tTo, ++task->tTimer, TRAIN_DEPART_FRAMES);
         if (task->tTimer >= TRAIN_DEPART_FRAMES)
+        {
+            StopTrainRumble();
             task->tState = ARRIVE_END;
+        }
         break;
     case ARRIVE_END:
         DestroyTrainSprite(task->tSpriteId);

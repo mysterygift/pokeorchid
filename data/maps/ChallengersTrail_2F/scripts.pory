@@ -1,0 +1,12 @@
+mapscripts ChallengersTrail_2F_MapScripts {}
+
+script ChallengersTrail_2F_EventScript_PlaceholderSign {
+    msgbox(format("Challenger's Trail 2F. Placeholder map."), MSGBOX_SIGN)
+}
+
+// --- route_people.py (generated) ---
+
+script ChallengersTrail_2F_EventScript_Route1 {
+    msgbox(format("My Pokémon are exhausted, but we're not giving up now!"), MSGBOX_NPC)
+}
+// --- end route_people.py ---

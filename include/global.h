@@ -143,7 +143,10 @@
 
 #define ROUND_BITS_TO_BYTES(numBits) DIV_ROUND_UP(numBits, 8)
 
-#define NUM_DEX_FLAG_BYTES ROUND_BITS_TO_BYTES(POKEMON_SLOTS_NUMBER)
+// Orchid: the dex flag arrays reserve room for every planned Delta species (tier A + B = 91 after
+// Laomeow #1030), so adding tier B later doesn't shift dexCaught and the SaveBlock1 fields after it again.
+#define ORCHID_DEX_FLAG_SLOTS (1030 + 91 + 1)
+#define NUM_DEX_FLAG_BYTES ROUND_BITS_TO_BYTES(POKEMON_SLOTS_NUMBER > ORCHID_DEX_FLAG_SLOTS ? POKEMON_SLOTS_NUMBER : ORCHID_DEX_FLAG_SLOTS)
 #define NUM_FLAG_BYTES ROUND_BITS_TO_BYTES(FLAGS_COUNT)
 #define NUM_TRENDY_SAYING_BYTES ROUND_BITS_TO_BYTES(NUM_TRENDY_SAYINGS)
 
@@ -585,6 +588,11 @@ struct RankingHall2P
     //u8 padding;
 };
 
+#include "constants/quests.h"
+#define QUEST_FLAGS_COUNT ROUND_BITS_TO_BYTES(QUEST_COUNT)
+#define SUB_FLAGS_COUNT ROUND_BITS_TO_BYTES(SUB_QUEST_COUNT)
+#define QUEST_STATES 5 // Number of different quest states tracked in the saveblock
+
 struct SaveBlock2
 {
     /*0x00*/ u8 playerName[PLAYER_NAME_LENGTH + 1];
@@ -623,7 +631,10 @@ struct SaveBlock2
 #endif //FREE_RECORD_MIXING_HALL_RECORDS
     /*0x624*/ u16 contestLinkResults[CONTEST_CATEGORIES_COUNT][CONTESTANT_COUNT];
     /*0x64C*/ struct BattleFrontier frontier;
-}; // sizeof=0xF2C
+    // Orchid: quests (PSF Unbound Quest Menu port, src/quests.c). 5 state bits per quest, 1 bit per step.
+    u8 questData[QUEST_FLAGS_COUNT * QUEST_STATES];
+    u8 subQuests[SUB_FLAGS_COUNT];
+}; // sizeof=0xF2C + quests
 
 extern struct SaveBlock2 *gSaveBlock2Ptr;
 

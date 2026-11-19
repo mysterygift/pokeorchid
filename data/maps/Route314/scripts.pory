@@ -1,0 +1,8 @@
+mapscripts Route314_MapScripts {}
+
+// --- route_people.py (generated) ---
+
+script Route314_EventScript_Route1 {
+    msgbox(format("Ahoy! Tosa's waters are full of Pokémon you won't see anywhere else."), MSGBOX_NPC)
+}
+// --- end route_people.py ---

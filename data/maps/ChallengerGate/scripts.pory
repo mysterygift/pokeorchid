@@ -1,0 +1,25 @@
+mapscripts ChallengerGate_MapScripts {
+    MAP_SCRIPT_ON_TRANSITION {
+        setflag(FLAG_VISITED_EVER_GRANDE_CITY)
+    }
+}
+
+script ChallengerGate_EventScript_TownSign {
+    msgbox(format("Challenger Gate\n“The last stop before the Pokémon League.”"), MSGBOX_SIGN)
+}
+
+script ChallengerGate_EventScript_Npc1 {
+    msgbox(format("Only Trainers with every Badge in Tosa are allowed onto Challenger's Trail."), MSGBOX_NPC)
+}
+
+script ChallengerGate_EventScript_Npc2 {
+    msgbox(format("The Trail climbs right up the mountain to the Pokémon League. Plenty turn back."), MSGBOX_NPC)
+}
+
+script ChallengerGate_EventScript_Npc3 {
+    msgbox(format("Every Badge in Tosa, and I still got lost in that cave. Bring Repels."), MSGBOX_NPC)
+}
+
+script ChallengerGate_EventScript_Npc4 {
+    msgbox(format("One day I'll walk the Trail. Today I'm just here for the café."), MSGBOX_NPC)
+}
