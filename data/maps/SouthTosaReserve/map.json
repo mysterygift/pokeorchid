@@ -3,7 +3,6 @@
   "name": "SouthTosaReserve",
   "layout": "LAYOUT_SOUTHTOSARESERVE",
   "music": "MUS_SOUTHTOSARESERVE",
-  "region": "REGION_HOENN",
   "region_map_section": "MAPSEC_SOUTH_TOSA_RESERVE_1",
   "requires_flash": false,
   "weather": "WEATHER_SUNNY",
@@ -277,5 +276,6 @@
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
       "script": "SouthTosaReserve_EventScript_RouteSign"
     }
-  ]
+  ],
+  "region": "REGION_HOENN"
 }
