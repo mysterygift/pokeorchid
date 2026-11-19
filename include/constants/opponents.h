@@ -22,11 +22,11 @@
 #define TRAINER_HOCK_AND_LAN                 15
 #define TRAINER_YUKI                         16
 #define TRAINER_FAIZ                         17
-#define TRAINER_GRUNT_WEATHER_INST_2         18
-#define TRAINER_GRUNT_WEATHER_INST_3         19
-#define TRAINER_GRUNT_MUSEUM_1               20
-#define TRAINER_GRUNT_MUSEUM_2               21
-#define TRAINER_GRUNT_SPACE_CENTER_1         22
+#define TRAINER_GUARDIAN_REGOLIS             18
+#define TRAINER_GUARDIAN_FRIGO               19
+#define TRAINER_GUARDIAN_FERRUM              20
+#define TRAINER_GUARDIAN_GAVANI              21
+#define TRAINER_GUARDIAN_DRAKE               22
 #define TRAINER_GRUNT_MT_PYRE_1              23
 #define TRAINER_GRUNT_MT_PYRE_2              24
 #define TRAINER_GRUNT_MT_PYRE_3              25
@@ -896,6 +896,13 @@
 #define TRAINER_DECLAN                        TRAINER_HOCK_AND_LAN
 #define TRAINER_GRUNT_RUSTURF_TUNNEL          TRAINER_YUKI
 #define TRAINER_GRUNT_WEATHER_INST_1          TRAINER_FAIZ
+
+// Orchid: vanilla slots 18-22 were reused for the Tiksi Regi Guardians.
+#define TRAINER_GRUNT_WEATHER_INST_2           TRAINER_GUARDIAN_REGOLIS
+#define TRAINER_GRUNT_WEATHER_INST_3           TRAINER_GUARDIAN_FRIGO
+#define TRAINER_GRUNT_MUSEUM_1                 TRAINER_GUARDIAN_FERRUM
+#define TRAINER_GRUNT_MUSEUM_2                 TRAINER_GUARDIAN_GAVANI
+#define TRAINER_GRUNT_SPACE_CENTER_1           TRAINER_GUARDIAN_DRAKE
 
 // NOTE: Because each Trainer uses a flag to determine when they are defeated, there is only space for 2 additional trainers before trainer flag space overflows
 //       More space can be made by shifting flags around in constants/flags.h or changing how trainer flags are handled
