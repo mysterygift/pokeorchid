@@ -200,6 +200,14 @@ gStdScripts_End::
 	.include "data/maps/HawkerCentreTest/scripts.inc"
 	.include "data/maps/ColdStorageTest/scripts.inc"
 	.include "data/maps/ColdStorageTestOutside/scripts.inc"
+	.include "data/maps/FurongVillage/scripts.inc" @ tiksi-placeholder
+	.include "data/maps/FurongVillage_PokemonCenter_1F/scripts.inc" @ tiksi-placeholder
+	.include "data/maps/DrakeBaseCamp/scripts.inc" @ tiksi-placeholder
+	.include "data/maps/DrakeBaseCamp_PokemonCenter_1F/scripts.inc" @ tiksi-placeholder
+	.include "data/maps/UbeCity/scripts.inc" @ tiksi-placeholder
+	.include "data/maps/UbeCity_PokemonCenter_1F/scripts.inc" @ tiksi-placeholder
+	.include "data/maps/TanglynTown/scripts.inc" @ tiksi-placeholder
+	.include "data/maps/TanglynTown_PokemonCenter_1F/scripts.inc" @ tiksi-placeholder
 	.include "data/maps/TelokTown_House2/scripts.inc"
 	.include "data/maps/TelokTown_PokemonCenter_1F/scripts.inc"
 	.include "data/maps/TelokTown_PokemonCenter_2F/scripts.inc"

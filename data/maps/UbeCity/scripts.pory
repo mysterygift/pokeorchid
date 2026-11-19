@@ -1,0 +1,26 @@
+raw `
+UbeCity_MapScripts::
+	map_script MAP_SCRIPT_ON_TRANSITION, UbeCity_OnTransition
+	.byte 0
+
+UbeCity_OnTransition:
+	setflag FLAG_VISITED_UBE_CITY
+	end
+
+UbeCity_EventScript_TownSign::
+	msgbox UbeCity_Text_TownSign, MSGBOX_SIGN
+	end
+
+UbeCity_EventScript_Sign0::
+	msgbox UbeCity_Text_Sign0, MSGBOX_SIGN
+	end
+
+UbeCity_Text_TownSign:
+	.string "UBE CITY\n"
+	.string "Home of SILPH CO.'s TIKSI branch.$"
+
+UbeCity_Text_Sign0:
+	.string "SILPH CO. TIKSI BRANCH\n"
+	.string "Closed to visitors.$"
+
+`

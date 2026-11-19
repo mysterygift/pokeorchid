@@ -1,0 +1,18 @@
+raw `
+FurongVillage_MapScripts::
+	map_script MAP_SCRIPT_ON_TRANSITION, FurongVillage_OnTransition
+	.byte 0
+
+FurongVillage_OnTransition:
+	setflag FLAG_VISITED_FURONG_VILLAGE
+	end
+
+FurongVillage_EventScript_TownSign::
+	msgbox FurongVillage_Text_TownSign, MSGBOX_SIGN
+	end
+
+FurongVillage_Text_TownSign:
+	.string "FURONG VILLAGE\n"
+	.string "A fishing village on TIKSI's shore.$"
+
+`

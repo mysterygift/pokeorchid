@@ -331,6 +331,38 @@
       "y": 12,
       "respawn_map": "MAP_SIX_ISLAND_POKEMON_CENTER_1F",
       "respawn_npc": "0"
+    },
+    {
+      "id": "HEAL_LOCATION_FURONG_VILLAGE",
+      "map": "MAP_FURONG_VILLAGE",
+      "x": 2,
+      "y": 11,
+      "respawn_map": "MAP_FURONG_VILLAGE_POKEMON_CENTER_1F",
+      "respawn_npc": "0"
+    },
+    {
+      "id": "HEAL_LOCATION_DRAKE_BASE_CAMP",
+      "map": "MAP_DRAKE_BASE_CAMP",
+      "x": 9,
+      "y": 7,
+      "respawn_map": "MAP_DRAKE_BASE_CAMP_POKEMON_CENTER_1F",
+      "respawn_npc": "LOCALID_DRAKE_BASE_CAMP_NURSE"
+    },
+    {
+      "id": "HEAL_LOCATION_UBE_CITY",
+      "map": "MAP_UBE_CITY",
+      "x": 12,
+      "y": 34,
+      "respawn_map": "MAP_UBE_CITY_POKEMON_CENTER_1F",
+      "respawn_npc": "LOCALID_UBE_CITY_NURSE"
+    },
+    {
+      "id": "HEAL_LOCATION_TANGLYN_TOWN",
+      "map": "MAP_TANGLYN_TOWN",
+      "x": 19,
+      "y": 14,
+      "respawn_map": "MAP_TANGLYN_TOWN_POKEMON_CENTER_1F",
+      "respawn_npc": "LOCALID_TANGLYN_TOWN_NURSE"
     }
   ]
 }

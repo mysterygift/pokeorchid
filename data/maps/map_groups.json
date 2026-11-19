@@ -34,7 +34,8 @@
     "gMapGroup_IndoorRoute123",
     "gMapGroup_IndoorRoute119",
     "gMapGroup_IndoorRoute124",
-    "gMapGroup_TrainTest"
+    "gMapGroup_TrainTest",
+    "gMapGroup_Tiksi"
   ],
   "gMapGroup_TownsAndRoutes": [
     "PetalburgCity",
@@ -628,5 +629,15 @@
     "HawkerCentreTest",
     "ColdStorageTest",
     "ColdStorageTestOutside"
+  ],
+  "gMapGroup_Tiksi": [
+    "FurongVillage",
+    "FurongVillage_PokemonCenter_1F",
+    "DrakeBaseCamp",
+    "DrakeBaseCamp_PokemonCenter_1F",
+    "UbeCity",
+    "UbeCity_PokemonCenter_1F",
+    "TanglynTown",
+    "TanglynTown_PokemonCenter_1F"
   ]
 }

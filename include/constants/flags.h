@@ -1397,10 +1397,10 @@
 #define FLAG_NURSE_UNION_ROOM_REMINDER              (SYSTEM_FLAGS + 0x20)
 
 #define FLAG_VISITED_TIKSI                          (SYSTEM_FLAGS + 0x21) // Orchid: set on first entry to any Tiksi map (or by script); unlocks L/R region switch in the phone MAP
-#define FLAG_UNUSED_0x882                           (SYSTEM_FLAGS + 0x22) // Unused Flag
-#define FLAG_UNUSED_0x883                           (SYSTEM_FLAGS + 0x23) // Unused Flag
-#define FLAG_UNUSED_0x884                           (SYSTEM_FLAGS + 0x24) // Unused Flag
-#define FLAG_UNUSED_0x885                           (SYSTEM_FLAGS + 0x25) // Unused Flag
+#define FLAG_VISITED_TANGLYN_TOWN                   (SYSTEM_FLAGS + 0x22) // Orchid: Tiksi fly point (set by the town map script)
+#define FLAG_VISITED_DRAKE_BASE_CAMP                (SYSTEM_FLAGS + 0x23) // Orchid: Tiksi fly point (set by the town map script)
+#define FLAG_VISITED_UBE_CITY                       (SYSTEM_FLAGS + 0x24) // Orchid: Tiksi fly point (set by the town map script)
+#define FLAG_VISITED_FURONG_VILLAGE                 (SYSTEM_FLAGS + 0x25) // Orchid: Tiksi fly point (set by the town map script)
 #define FLAG_UNUSED_0x886                           (SYSTEM_FLAGS + 0x26) // Unused Flag
 #define FLAG_UNUSED_0x887                           (SYSTEM_FLAGS + 0x27) // Unused Flag
 

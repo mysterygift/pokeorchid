@@ -9367,6 +9367,50 @@
       "border_filepath": "data/layouts/ColdStorageTestOutside/border.bin",
       "blockdata_filepath": "data/layouts/ColdStorageTestOutside/map.bin",
       "layout_version": "emerald"
+    },
+    {
+      "id": "LAYOUT_FURONG_VILLAGE",
+      "name": "FurongVillage_Layout",
+      "width": 20,
+      "height": 20,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_Dewford",
+      "border_filepath": "data/layouts/FurongVillage/border.bin",
+      "blockdata_filepath": "data/layouts/FurongVillage/map.bin",
+      "layout_version": "emerald"
+    },
+    {
+      "id": "LAYOUT_DRAKE_BASE_CAMP",
+      "name": "DrakeBaseCamp_Layout",
+      "width": 20,
+      "height": 20,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_Lavaridge",
+      "border_filepath": "data/layouts/DrakeBaseCamp/border.bin",
+      "blockdata_filepath": "data/layouts/DrakeBaseCamp/map.bin",
+      "layout_version": "emerald"
+    },
+    {
+      "id": "LAYOUT_UBE_CITY",
+      "name": "UbeCity_Layout",
+      "width": 35,
+      "height": 46,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_Rustboro",
+      "border_filepath": "data/layouts/UbeCity/border.bin",
+      "blockdata_filepath": "data/layouts/UbeCity/map.bin",
+      "layout_version": "emerald"
+    },
+    {
+      "id": "LAYOUT_TANGLYN_TOWN",
+      "name": "TanglynTown_Layout",
+      "width": 24,
+      "height": 27,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_Slateport",
+      "border_filepath": "data/layouts/TanglynTown/border.bin",
+      "blockdata_filepath": "data/layouts/TanglynTown/map.bin",
+      "layout_version": "emerald"
     }
   ]
 }
