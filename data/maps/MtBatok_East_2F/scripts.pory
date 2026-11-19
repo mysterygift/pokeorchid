@@ -1,0 +1,5 @@
+mapscripts MtBatok_East_2F_MapScripts {}
+
+script MtBatok_East_2F_EventScript_PlaceholderSign {
+    msgbox(format("Mt. Batok east 2F (from Faber Town). Placeholder map."), MSGBOX_SIGN)
+}

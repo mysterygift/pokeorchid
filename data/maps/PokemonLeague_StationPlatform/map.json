@@ -1,5 +1,5 @@
 {
-  "id": "MAP_POKEMON_LEAGUE__STATION_PLATFORM",
+  "id": "MAP_POKEMON_LEAGUE_STATION_PLATFORM",
   "name": "PokemonLeague_StationPlatform",
   "layout": "LAYOUT_TOSA_RAIL_PLATFORM_EAST",
   "music": "MUS_EVER_GRANDE",
@@ -34,7 +34,7 @@
       "x": 1,
       "y": 7,
       "elevation": 4,
-      "dest_map": "MAP_POKEMON_LEAGUE__STATION",
+      "dest_map": "MAP_POKEMON_LEAGUE_STATION",
       "dest_warp_id": "2"
     }
   ],

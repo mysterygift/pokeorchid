@@ -20,10 +20,65 @@
       "x": 7,
       "y": 7,
       "elevation": 0,
-      "dest_map": "MAP_INKA_CITY__STATION",
+      "dest_map": "MAP_INKA_CITY_STATION",
+      "dest_warp_id": "0"
+    },
+    {
+      "x": 11,
+      "y": 22,
+      "elevation": 0,
+      "dest_map": "MAP_INKA_CITY_POKEMON_CENTER_1F",
+      "dest_warp_id": "0"
+    },
+    {
+      "x": 24,
+      "y": 22,
+      "elevation": 0,
+      "dest_map": "MAP_INKA_CITY_MART",
       "dest_warp_id": "0"
     }
   ],
   "coord_events": [],
-  "bg_events": []
+  "bg_events": [
+    {
+      "type": "sign",
+      "x": 21,
+      "y": 18,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "InkaCity_EventScript_PlaceholderSign"
+    },
+    {
+      "type": "sign",
+      "x": 12,
+      "y": 23,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
+      "script": "Common_EventScript_ShowPokemonCenterSign"
+    },
+    {
+      "type": "sign",
+      "x": 13,
+      "y": 23,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
+      "script": "Common_EventScript_ShowPokemonCenterSign"
+    },
+    {
+      "type": "sign",
+      "x": 25,
+      "y": 22,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
+      "script": "Common_EventScript_ShowPokemartSign"
+    },
+    {
+      "type": "sign",
+      "x": 26,
+      "y": 22,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
+      "script": "Common_EventScript_ShowPokemartSign"
+    }
+  ]
 }

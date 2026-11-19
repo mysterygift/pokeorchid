@@ -1,5 +1,5 @@
 {
-  "id": "MAP_CORRAL_CITY__STATION",
+  "id": "MAP_CORRAL_CITY_STATION",
   "name": "CorralCity_Station",
   "layout": "LAYOUT_TOSA_RAIL_CONCOURSE",
   "music": "MUS_SOOTOPOLIS",
@@ -61,7 +61,7 @@
       "x": 1,
       "y": 4,
       "elevation": 4,
-      "dest_map": "MAP_CORRAL_CITY__STATION_PLATFORM",
+      "dest_map": "MAP_CORRAL_CITY_STATION_PLATFORM",
       "dest_warp_id": "0"
     }
   ],

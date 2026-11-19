@@ -1,1 +1,5 @@
 mapscripts InkaCity_MapScripts {}
+
+script InkaCity_EventScript_PlaceholderSign {
+    msgbox(format("Inka City: the region's logistics hub. Gym leader Frea runs a cold food distribution centre. Marlin Co. hides a secret. Placeholder map."), MSGBOX_SIGN)
+}

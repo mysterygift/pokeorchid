@@ -1,5 +1,5 @@
 {
-  "id": "MAP_POKETOPIA_GATE__STATION",
+  "id": "MAP_POKETOPIA_GATE_STATION",
   "name": "PoketopiaGate_Station",
   "layout": "LAYOUT_TOSA_RAIL_CONCOURSE",
   "music": "MUS_LILYCOVE",
@@ -61,7 +61,7 @@
       "x": 1,
       "y": 4,
       "elevation": 4,
-      "dest_map": "MAP_POKETOPIA_GATE__STATION_PLATFORM",
+      "dest_map": "MAP_POKETOPIA_GATE_STATION_PLATFORM",
       "dest_warp_id": "0"
     }
   ],

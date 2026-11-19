@@ -1,1 +1,5 @@
 mapscripts MoongroveCity_MapScripts {}
+
+script MoongroveCity_EventScript_PlaceholderSign {
+    msgbox(format("Moongrove City: nestled in the mangroves. Gym leader Tork enjoys hunting for catfish. Placeholder map."), MSGBOX_SIGN)
+}

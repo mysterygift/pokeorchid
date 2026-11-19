@@ -1,1 +1,5 @@
 mapscripts TimahCity_MapScripts {}
+
+script TimahCity_EventScript_PlaceholderSign {
+    msgbox(format("Timah City: in the tropical heart of the Tosa Reserve. Gym leader Hana cultivates orchids in her garden. Placeholder map."), MSGBOX_SIGN)
+}

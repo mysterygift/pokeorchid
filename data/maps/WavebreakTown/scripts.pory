@@ -1,0 +1,5 @@
+mapscripts WavebreakTown_MapScripts {}
+
+script WavebreakTown_EventScript_PlaceholderSign {
+    msgbox(format("Wavebreak Town: a forgotten seaside town, home to Tosa's first port before Tosa Port opened. Placeholder map."), MSGBOX_SIGN)
+}

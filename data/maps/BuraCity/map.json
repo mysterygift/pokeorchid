@@ -20,10 +20,72 @@
       "x": 7,
       "y": 7,
       "elevation": 0,
-      "dest_map": "MAP_BURA_CITY__STATION",
+      "dest_map": "MAP_BURA_CITY_STATION",
+      "dest_warp_id": "0"
+    },
+    {
+      "x": 18,
+      "y": 20,
+      "elevation": 0,
+      "dest_map": "MAP_BURA_CITY_POKEMON_CENTER_1F",
+      "dest_warp_id": "0"
+    },
+    {
+      "x": 26,
+      "y": 20,
+      "elevation": 0,
+      "dest_map": "MAP_BURA_CITY_MART",
+      "dest_warp_id": "0"
+    },
+    {
+      "x": 24,
+      "y": 12,
+      "elevation": 0,
+      "dest_map": "MAP_BURA_CITY_HAWKER_CENTRE",
       "dest_warp_id": "0"
     }
   ],
   "coord_events": [],
-  "bg_events": []
+  "bg_events": [
+    {
+      "type": "sign",
+      "x": 29,
+      "y": 16,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "BuraCity_EventScript_PlaceholderSign"
+    },
+    {
+      "type": "sign",
+      "x": 19,
+      "y": 21,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
+      "script": "Common_EventScript_ShowPokemonCenterSign"
+    },
+    {
+      "type": "sign",
+      "x": 20,
+      "y": 21,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
+      "script": "Common_EventScript_ShowPokemonCenterSign"
+    },
+    {
+      "type": "sign",
+      "x": 27,
+      "y": 20,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
+      "script": "Common_EventScript_ShowPokemartSign"
+    },
+    {
+      "type": "sign",
+      "x": 28,
+      "y": 20,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
+      "script": "Common_EventScript_ShowPokemartSign"
+    }
+  ]
 }

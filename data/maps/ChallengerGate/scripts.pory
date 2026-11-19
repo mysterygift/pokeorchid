@@ -1,0 +1,5 @@
+mapscripts ChallengerGate_MapScripts {}
+
+script ChallengerGate_EventScript_PlaceholderSign {
+    msgbox(format("Challenger Gate: the last stop before Challenger's Trail and the Pokémon League. Placeholder map."), MSGBOX_SIGN)
+}

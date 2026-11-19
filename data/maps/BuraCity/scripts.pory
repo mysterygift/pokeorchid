@@ -1,1 +1,5 @@
 mapscripts BuraCity_MapScripts {}
+
+script BuraCity_EventScript_PlaceholderSign {
+    msgbox(format("Bura City: a quiet stopover on the way between Changu and Juran. Placeholder map."), MSGBOX_SIGN)
+}

@@ -1,0 +1,5 @@
+mapscripts NorthTosaReserve_MapScripts {}
+
+script NorthTosaReserve_EventScript_PlaceholderSign {
+    msgbox(format("North Tosa Reserve. A sprawling nature reserve at the heart of the Tosa region, home to all manner of species. Pokémon Rangers watch over it; invasive species from other regions are a growing problem. Placeholder map."), MSGBOX_SIGN)
+}

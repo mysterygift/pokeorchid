@@ -1,0 +1,30 @@
+{
+  "id": "MAP_SOUTH_TOSA_RESERVE3",
+  "name": "SouthTosaReserve3",
+  "layout": "LAYOUT_SOUTH_TOSA_RESERVE3",
+  "music": "MUS_SOUTHTOSARESERVE",
+  "region": "REGION_HOENN",
+  "region_map_section": "MAPSEC_SOUTH_TOSA_RESERVE_3",
+  "requires_flash": false,
+  "weather": "WEATHER_SUNNY",
+  "map_type": "MAP_TYPE_ROUTE",
+  "allow_cycling": true,
+  "allow_escaping": false,
+  "allow_running": true,
+  "show_map_name": true,
+  "battle_scene": "MAP_BATTLE_SCENE_NORMAL",
+  "connections": null,
+  "object_events": [],
+  "warp_events": [],
+  "coord_events": [],
+  "bg_events": [
+    {
+      "type": "sign",
+      "x": 35,
+      "y": 42,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "SouthTosaReserve3_EventScript_PlaceholderSign"
+    }
+  ]
+}

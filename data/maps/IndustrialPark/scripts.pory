@@ -1,0 +1,5 @@
+mapscripts IndustrialPark_MapScripts {}
+
+script IndustrialPark_EventScript_PlaceholderSign {
+    msgbox(format("Industrial Park. Placeholder map."), MSGBOX_SIGN)
+}
