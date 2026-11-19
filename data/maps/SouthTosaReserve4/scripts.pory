@@ -1,0 +1,10 @@
+mapscripts SouthTosaReserve4_MapScripts {}
+
+
+script SouthTosaReserve4_EventScript_Sign {
+    msgbox(format("South Tosa Reserve\nNorth: Abandoned House  South: Moongrove Marsh"), MSGBOX_SIGN)
+}
+
+script SouthTosaReserve4_EventScript_Ranger {
+    msgbox(format("The old house up north gives me the creeps. Lights in the windows, and nobody's lived there for decades.\pIf you're heading to the marsh, the tall grass here is full of Pokémon."), MSGBOX_NPC)
+}

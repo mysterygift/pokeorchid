@@ -8947,6 +8947,17 @@
       "border_filepath": "data/layouts/MtDrakeSummit/border.bin",
       "blockdata_filepath": "data/layouts/MtDrakeSummit/map.bin",
       "layout_version": "emerald"
+    },
+    {
+      "id": "LAYOUT_SOUTH_TOSA_RESERVE4",
+      "name": "SouthTosaReserve4_Layout",
+      "width": 48,
+      "height": 28,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_TosaPort",
+      "border_filepath": "data/layouts/SouthTosaReserve4/border.bin",
+      "blockdata_filepath": "data/layouts/SouthTosaReserve4/map.bin",
+      "layout_version": "emerald"
     }
   ]
 }
