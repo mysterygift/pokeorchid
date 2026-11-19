@@ -586,14 +586,12 @@ def export_check(st, lines, net, D, legend_xs, cam, cursor, accessible, path):
     # header/tray OBJs (prio 0)
     for i, x in enumerate(legend_xs):
         obj(out, os.path.join(GFX, "legend.png"), ob, i, 8, x, LEGEND_Y)
-    trf = len(lines) if len(s["lines"]) > 1 else s["lines"][0]
-    obj(out, os.path.join(GFX, "tray_line.png"), ob, trf, 16, 5, 131)
     # BG0 text stand-in (what the C side prints)
     lay = new_sheet(240, 160)
     cv = Canvas(lay)
-    draw_text(cv, 24 + 2, 128 + 1, s["name"], INK, PANEL_SHADE)
+    draw_text(cv, 8 + 2, 128 + 1, s["name"], INK, PANEL_SHADE)
     names = [lines[i]["name"] for i in s["lines"]]
-    draw_text(cv, 24 + 2, 144, " + ".join(names) + ("" if len(names) > 1 else " LINE"), INK_SOFT, PANEL_SHADE, font="small")
+    draw_text(cv, 8 + 2, 144, " + ".join(names) + ("" if len(names) > 1 else " LINE"), INK_SOFT, PANEL_SHADE, font="small")
     x = 136 + 6
     x = draw_button(cv, x, 148, "A") + 3
     x = draw_text(cv, x, 144, "DEPART", INK, PANEL_SHADE, font="small") + 8
@@ -660,7 +658,6 @@ def main():
     save_png(build_pill()[0], os.path.join(GFX, "pill.png"))
     leg, pb = build_legend(lines)
     save_png(leg, os.path.join(GFX, "legend.png"))
-    save_png(build_tray_line(lines)[0], os.path.join(GFX, "tray_line.png"))
     write_jasc(os.path.join(GFX, "obj.pal"), pa)
     write_jasc(os.path.join(GFX, "obj_lines.pal"), pb)
     # header
