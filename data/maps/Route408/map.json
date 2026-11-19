@@ -3,7 +3,6 @@
   "name": "Route408",
   "layout": "LAYOUT_ROUTE408",
   "music": "MUS_ROUTE104",
-  "region": "REGION_HOENN",
   "region_map_section": "MAPSEC_ROUTE_408",
   "requires_flash": false,
   "weather": "WEATHER_SUNNY",
@@ -13,7 +12,18 @@
   "allow_running": true,
   "show_map_name": true,
   "battle_scene": "MAP_BATTLE_SCENE_NORMAL",
-  "connections": null,
+  "connections": [
+    {
+      "map": "MAP_TANGLYN_TOWN",
+      "offset": 5,
+      "direction": "up"
+    },
+    {
+      "map": "MAP_ROUTE409",
+      "offset": 24,
+      "direction": "right"
+    }
+  ],
   "object_events": [
     {
       "graphics_id": "OBJ_EVENT_GFX_SAILOR",
@@ -40,5 +50,6 @@
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
       "script": "Route408_EventScript_Sign"
     }
-  ]
+  ],
+  "region": "REGION_HOENN"
 }

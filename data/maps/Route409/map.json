@@ -3,7 +3,6 @@
   "name": "Route409",
   "layout": "LAYOUT_ROUTE409",
   "music": "MUS_ROUTE113",
-  "region": "REGION_HOENN",
   "region_map_section": "MAPSEC_ROUTE_409",
   "requires_flash": false,
   "weather": "WEATHER_SUNNY",
@@ -14,6 +13,11 @@
   "show_map_name": true,
   "battle_scene": "MAP_BATTLE_SCENE_NORMAL",
   "connections": [
+    {
+      "map": "MAP_ROUTE408",
+      "offset": -24,
+      "direction": "left"
+    },
     {
       "map": "MAP_FRIGO_CAVE_EXTERIOR",
       "offset": 0,
@@ -46,5 +50,6 @@
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
       "script": "Route409_EventScript_Sign"
     }
-  ]
+  ],
+  "region": "REGION_HOENN"
 }

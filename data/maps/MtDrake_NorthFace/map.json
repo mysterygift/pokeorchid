@@ -22,6 +22,11 @@
       "map": "MAP_MT_DRAKE_SOUTH_FACE",
       "offset": 0,
       "direction": "down"
+    },
+    {
+      "map": "MAP_MT_DRAKE_WEST_FACE",
+      "offset": 0,
+      "direction": "left"
     }
   ],
   "object_events": [

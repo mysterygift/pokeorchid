@@ -3,7 +3,6 @@
   "name": "FrigoCave",
   "layout": "LAYOUT_FRIGO_CAVE",
   "music": "MUS_SEALED_CHAMBER",
-  "region": "REGION_HOENN",
   "region_map_section": "MAPSEC_FRIGO_CAVE",
   "requires_flash": false,
   "weather": "WEATHER_NONE",
@@ -39,5 +38,6 @@
     }
   ],
   "coord_events": [],
-  "bg_events": []
+  "bg_events": [],
+  "region": "REGION_HOENN"
 }

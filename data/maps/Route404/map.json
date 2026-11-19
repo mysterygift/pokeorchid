@@ -17,6 +17,21 @@
       "map": "MAP_DRAKE_BASE_CAMP",
       "offset": 21,
       "direction": "down"
+    },
+    {
+      "map": "MAP_ROUTE403",
+      "offset": 0,
+      "direction": "left"
+    },
+    {
+      "map": "MAP_ROUTE406",
+      "offset": -3,
+      "direction": "right"
+    },
+    {
+      "map": "MAP_ROUTE405",
+      "offset": 117,
+      "direction": "down"
     }
   ],
   "object_events": [
