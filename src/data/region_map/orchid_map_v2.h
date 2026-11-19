@@ -23,8 +23,8 @@ static const struct OrchidMapNode sOrchidMapNodes[] =
     { 15,  8, FALSE, MAPSEC_CHANGU_CITY,             0x010 }, // Changu City
     { 21,  8, FALSE, MAPSEC_BURA_CITY,               0x016 }, // Bura City
     {  9, 10, TRUE,  MAPSEC_ABANDONED_HOUSE,         0x010 }, // Abandoned House
-    { 15, 10, TRUE,  MAPSEC_CHANGU_AIRPORT,          0x810 }, // Changu Airport
-    { 17, 10, TRUE,  MAPSEC_INDUSTRIAL_PARK,         0xC10 }, // Industrial Park
+    { 15, 10, TRUE,  MAPSEC_CHANGU_AIRPORT,          0x020 }, // Changu Airport
+    { 17, 10, TRUE,  MAPSEC_INDUSTRIAL_PARK,         0x020 }, // Industrial Park
     {  7, 12, FALSE, MAPSEC_TOSA_PORT,               0x020 }, // Tosa Port
     {  8, 12, TRUE,  MAPSEC_RAILWAY_TUNNELS,         0x000 }, // Railway Tunnels
     {  9, 12, FALSE, MAPSEC_MOONGROVE_CITY,          0x020 }, // Moongrove City
@@ -51,7 +51,6 @@ static const u32 sOrchidMapComponents[] =
     0x00800400, // Wavebreak Town, Inka City
     0x00041000, // Telok Town, Tosa Port
     0x00012000, // Changu City, Changu Airport
-    0x00030000, // Changu Airport, Industrial Park
     0x00108000, // Abandoned House, Moongrove City
 };
 
@@ -110,11 +109,10 @@ static const struct OrchidMapTube sOrchidMapTubes[] =
     {  7, 10, FALSE, 11, 0x014 },
     { 10, 10, FALSE,  3, 0x011 },
     { 11, 10, FALSE,  3, 0x01A },
-    { 16, 10, FALSE, 13, 0x011 },
     { 23, 10, FALSE,  6, 0x014 },
     {  3, 11, TRUE,  10, 0x014 },
     {  7, 11, FALSE, 11, 0x014 },
-    {  9, 11, FALSE, 14, 0x014 },
+    {  9, 11, FALSE, 13, 0x014 },
     { 23, 11, FALSE,  6, 0x014 },
     {  3, 12, TRUE,  10, 0x014 },
     {  3, 13, TRUE,  10, 0x014 },
