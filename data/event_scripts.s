@@ -377,6 +377,7 @@ gStdScripts_End::
 	.include "data/maps/Route409/scripts.inc" @ tiksi-routes
 	.include "data/maps/Route410/scripts.inc" @ tiksi-routes
 	.include "data/maps/TanobyDelta/scripts.inc" @ tiksi-routes
+	.include "data/maps/FrigoCave_Exterior/scripts.inc" @ tiksi-routes
 	.include "data/maps/TelokTown_House2/scripts.inc"
 	.include "data/maps/TelokTown_PokemonCenter_1F/scripts.inc"
 	.include "data/maps/TelokTown_PokemonCenter_2F/scripts.inc"

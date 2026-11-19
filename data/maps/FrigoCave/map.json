@@ -34,8 +34,8 @@
       "x": 7,
       "y": 12,
       "elevation": 3,
-      "dest_map": "MAP_TANGLYN_TOWN",
-      "dest_warp_id": "1"
+      "dest_map": "MAP_FRIGO_CAVE_EXTERIOR",
+      "dest_warp_id": "0"
     }
   ],
   "coord_events": [],
