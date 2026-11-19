@@ -1,0 +1,830 @@
+{
+"name": "ThreeIsland_BerryForest",
+"size": [
+57,
+47
+],
+"tileset": [
+"gTileset_General",
+"gTileset_SeviiIslands"
+],
+"ground": [
+"id",
+368,
+0,
+1
+],
+"mask": [
+"TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT",
+"TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT",
+"TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT",
+"TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT",
+"TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT",
+"TTT......TTT......TTT.......................g...TTTTTTTTT",
+"TTT.ggg..TTT..g...TTT......TTTTTT..........g.gg.TTTTTTTTT",
+"TTT.ggg..TTT.gTTTg.....g...TTTTTTTTTTTT...g.ggggTTTTTTTTT",
+"TTT..ggg.TTTg.TTT.gTTTg.TTTTTTTTTTTTTTTvvvTTTgggTTTTTTTTT",
+"TTT......TTT.gTTTggTTTggTTTTTTgggTTTTTT...TTTgggTTTTTTTTT",
+"TTT...TTTTTT..gggggTTTggTTTTTTggggg.......TTTgggTTTTTTTTT",
+"TTT...TTTTTT...gggggggggTTTLLLLLLLLL......TTT.ggTTTTTTTTT",
+"TTT...TTTTTT.TTTg.ggggggTTLQQQQQQQQQL.....TTTg.gTTTTTTTTT",
+"TTT...TTT....TTT.g.ggTTTTTLQqqqqqqqQLTTvvvTTT.g.TTTTTTTTT",
+"TTT...TTT.g..TTTg.g..TTTTTLQQQQQQQQQLTT...TTTg..TTTTTTTTT",
+"TTT...TTTg.g.........TTTTTTLLLLLLLLLTTT.........TTTTTTTTT",
+"TTT...TTT.g.g...........TTT......TTTTTTTTT......TTTTTTTTT",
+"TTT...TTTggggg..ggg..g..TTT......TTTTTTTTT......TTTTTTTTT",
+"TTT...TTTgggggggggggTTT.TTTvvvvvvTTT...TTTTTT...TTTTTTTTT",
+"TTT...TTTggTTTgggTTTTTT.gggg.....TTT......TTT...TTTTTTTTT",
+"TTT...TTTggTTTTTTTTTTTT..gggg.TTTTTT..TTT.TTT...TTTTTTTTT",
+"TTT...TTT.gTTTTTTTTTg.g.gggg..TTT.....TTT.TTT...TTTTTTTTT",
+"TTT...TTTg.g..TTTggggg...ggTTTTTT.....TTT.TTT...TTTTTTTTT",
+"TTT...TTT.g.....g.ggg.g...gTTTTTT..................TTTTTT",
+"TTT...TTT........g.TTT.....TTTTTT...TTT.....TTT....TTTTTT",
+"TTT...TTTLLLLLLLLLLTTT.....TTT......TTT.....TTT....TTTTTT",
+"TTT...TTLQQQQQQQQQQLTT..TTTTTT......TTTTTT..TTT....TTTTTT",
+"TTT....nLQqqqqqqqqQL.g..TTTTTT..TTTgTTTTTT..TTT....TTTTTT",
+"TTT.....LQQQQQQQQQQLg...TTTTTT..TTTgTTTTTT..TTT....TTTTTT",
+"TTT......LLLLLLLLLLggg..TTTTTT..TTTgTTT.g..........TTTTTT",
+"TTTTTT....g.g.g.gggggTTTTTTTTT..TTTgTTTg.gTTT......TTTTTT",
+"TTTTTTLLLLLL.ggggggggTTTTTTTTTg.TTTgTTT.ggTTT......TTTTTT",
+"TTTTTLQQQQQQLTTTTTTTTTTTTTTTTT.g.gggTTTgggTTT...TTTTTTTTT",
+"TTTTTLQqqqqQLTTTTTTTTTTTTTTTTTg.ggggTTTgggg.....TTTTTTTTT",
+"TTTTTLQqqqqQLTTTTTTTTTTTTTTTTTggggg.TTTggg...TTTTTTTTTTTT",
+"TTTTTLQqqqqQLTTTTTTTTTTTTTTTTTgggg.gTTTnvvvvvTTTTTTTTTTTT",
+"TTTTTLQqqqqQLTTTTTTTTTTTTTTTTTggg.g.TTT......TTTTTTTTTTTT",
+"TTTTTLQQQQQQLTTTTTTTTTTTTTTTTT.g.............TTTTTTTTTTTT",
+"TTTTTTLLLLLLTTTTTTTTTTTTTTTTTTg..............TTTTTTTTTTTT",
+"TTTTTT......gg.gg.gg.TTTTTTTTT...............TTTTTTTTTTTT",
+"TTTTTTTTTTTTTTTTTTgggTTTTTTTTTTTTTTTTTTTTT...TTTTTTTTTTTT",
+"TTTTTTTTTTTTTTTTTTgggTTTTTTTTTTTTTTTTTTTTT.p.TTTTTTTTTTTT",
+"TTTTTTTTTTTTTTTTTTgggTTTTTTTTTTTTTTTTTTTTTpppTTTTTTTTTTTT",
+"TTTTTTTTTTTT..gg.ggg.TTTTTTTTTTTTTTTTTTTTTpppTTTTTTTTTTTT",
+"TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTpppTTTTTTTTTTTT",
+"TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTpppTTTTTTTTTTTT",
+"TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTpppTTTTTTTTTTTT"
+],
+"big_trees": "T",
+"stamps": [],
+"pstamps": [],
+"cells": [
+[
+43,
+41,
+[
+"id",
+280
+]
+],
+[
+42,
+42,
+[
+"id",
+280
+]
+],
+[
+43,
+42,
+[
+"id",
+289
+]
+],
+[
+44,
+42,
+[
+"id",
+282
+]
+],
+[
+42,
+43,
+[
+"id",
+288
+]
+],
+[
+43,
+43,
+[
+"id",
+289
+]
+],
+[
+44,
+43,
+[
+"id",
+290
+]
+],
+[
+42,
+44,
+[
+"id",
+288
+]
+],
+[
+43,
+44,
+[
+"id",
+289
+]
+],
+[
+44,
+44,
+[
+"id",
+290
+]
+],
+[
+42,
+45,
+[
+"id",
+288
+]
+],
+[
+43,
+45,
+[
+"id",
+289
+]
+],
+[
+44,
+45,
+[
+"id",
+290
+]
+],
+[
+42,
+46,
+[
+"id",
+288
+]
+],
+[
+43,
+46,
+[
+"id",
+289
+]
+],
+[
+44,
+46,
+[
+"id",
+290
+]
+]
+],
+"auto": [
+[
+39,
+8,
+[
+213,
+135,
+214,
+143
+]
+],
+[
+40,
+8,
+[
+213,
+135,
+214,
+143
+]
+],
+[
+41,
+8,
+[
+213,
+135,
+214,
+143
+]
+],
+[
+39,
+13,
+[
+213,
+135,
+214,
+143
+]
+],
+[
+40,
+13,
+[
+213,
+135,
+214,
+143
+]
+],
+[
+41,
+13,
+[
+213,
+135,
+214,
+143
+]
+],
+[
+27,
+18,
+[
+213,
+135,
+214,
+143
+]
+],
+[
+28,
+18,
+[
+213,
+135,
+214,
+143
+]
+],
+[
+29,
+18,
+[
+213,
+135,
+214,
+143
+]
+],
+[
+30,
+18,
+[
+213,
+135,
+214,
+143
+]
+],
+[
+31,
+18,
+[
+213,
+135,
+214,
+143
+]
+],
+[
+32,
+18,
+[
+213,
+135,
+214,
+143
+]
+],
+[
+40,
+35,
+[
+213,
+135,
+214,
+143
+]
+],
+[
+41,
+35,
+[
+213,
+135,
+214,
+143
+]
+],
+[
+42,
+35,
+[
+213,
+135,
+214,
+143
+]
+],
+[
+43,
+35,
+[
+213,
+135,
+214,
+143
+]
+],
+[
+44,
+35,
+[
+213,
+135,
+214,
+143
+]
+]
+],
+"marks": [
+[
+43,
+41,
+"three_island_b (arrow S)",
+"warp"
+],
+[
+42,
+41,
+"three_island_b (arrow S)",
+"warp"
+],
+[
+44,
+41,
+"three_island_b (arrow S)",
+"warp"
+],
+[
+4,
+8,
+"",
+"npc",
+"lass"
+],
+[
+12,
+11,
+"",
+"field",
+"cuttable_tree"
+],
+[
+19,
+7,
+"",
+"field",
+"cuttable_tree"
+],
+[
+23,
+17,
+"",
+"field",
+"cuttable_tree"
+],
+[
+38,
+23,
+"",
+"field",
+"cuttable_tree"
+],
+[
+44,
+23,
+"",
+"field",
+"cuttable_tree"
+],
+[
+44,
+29,
+"",
+"field",
+"cuttable_tree"
+],
+[
+16,
+43,
+"",
+"field",
+"cuttable_tree"
+],
+[
+17,
+39,
+"",
+"field",
+"cuttable_tree"
+],
+[
+14,
+39,
+"",
+"field",
+"cuttable_tree"
+],
+[
+11,
+39,
+"",
+"field",
+"cuttable_tree"
+],
+[
+12,
+5,
+"",
+"item",
+"item"
+],
+[
+27,
+11,
+"",
+"item",
+"item"
+],
+[
+12,
+43,
+"",
+"item",
+"item"
+],
+[
+7,
+27,
+"",
+"sign"
+],
+[
+39,
+35,
+"",
+"sign"
+],
+[
+31,
+25,
+"h",
+"note"
+],
+[
+15,
+15,
+"h",
+"note"
+],
+[
+25,
+24,
+"h",
+"note"
+],
+[
+11,
+24,
+"h",
+"note"
+],
+[
+37,
+18,
+"h",
+"note"
+],
+[
+14,
+23,
+"h",
+"note"
+],
+[
+47,
+5,
+"h",
+"note"
+],
+[
+7,
+30,
+"h",
+"note"
+],
+[
+16,
+5,
+"h",
+"note"
+],
+[
+25,
+6,
+"h",
+"note"
+],
+[
+46,
+32,
+"h",
+"note"
+],
+[
+43,
+16,
+"h",
+"note"
+],
+[
+8,
+5,
+"h",
+"note"
+]
+],
+"post": [],
+"vstamps": [],
+"vcells": [],
+"arrow_warps": [
+[
+43,
+41,
+"S"
+],
+[
+42,
+41,
+"S"
+],
+[
+44,
+41,
+"S"
+]
+],
+"object_events": [
+{
+"graphics_id": "OBJ_EVENT_GFX_LITTLE_GIRL",
+"x": 4,
+"y": 8,
+"script": "ThreeIsland_BerryForest_EventScript_Lostelle"
+},
+{
+"graphics_id": "OBJ_EVENT_GFX_CUTTABLE_TREE",
+"x": 12,
+"y": 11,
+"script": "EventScript_CutTree"
+},
+{
+"graphics_id": "OBJ_EVENT_GFX_CUTTABLE_TREE",
+"x": 19,
+"y": 7,
+"script": "EventScript_CutTree"
+},
+{
+"graphics_id": "OBJ_EVENT_GFX_CUTTABLE_TREE",
+"x": 23,
+"y": 17,
+"script": "EventScript_CutTree"
+},
+{
+"graphics_id": "OBJ_EVENT_GFX_CUTTABLE_TREE",
+"x": 38,
+"y": 23,
+"script": "EventScript_CutTree"
+},
+{
+"graphics_id": "OBJ_EVENT_GFX_CUTTABLE_TREE",
+"x": 44,
+"y": 23,
+"script": "EventScript_CutTree"
+},
+{
+"graphics_id": "OBJ_EVENT_GFX_CUTTABLE_TREE",
+"x": 44,
+"y": 29,
+"script": "EventScript_CutTree"
+},
+{
+"graphics_id": "OBJ_EVENT_GFX_CUTTABLE_TREE",
+"x": 16,
+"y": 43,
+"script": "EventScript_CutTree"
+},
+{
+"graphics_id": "OBJ_EVENT_GFX_CUTTABLE_TREE",
+"x": 17,
+"y": 39,
+"script": "EventScript_CutTree"
+},
+{
+"graphics_id": "OBJ_EVENT_GFX_CUTTABLE_TREE",
+"x": 14,
+"y": 39,
+"script": "EventScript_CutTree"
+},
+{
+"graphics_id": "OBJ_EVENT_GFX_CUTTABLE_TREE",
+"x": 11,
+"y": 39,
+"script": "EventScript_CutTree"
+},
+{
+"graphics_id": "OBJ_EVENT_GFX_ITEM_BALL",
+"x": 12,
+"y": 5,
+"script": "ThreeIsland_BerryForest_EventScript_ItemMaxEther"
+},
+{
+"graphics_id": "OBJ_EVENT_GFX_ITEM_BALL",
+"x": 27,
+"y": 11,
+"script": "ThreeIsland_BerryForest_EventScript_ItemFullHeal"
+},
+{
+"graphics_id": "OBJ_EVENT_GFX_ITEM_BALL",
+"x": 12,
+"y": 43,
+"script": "ThreeIsland_BerryForest_EventScript_ItemMaxElixir"
+}
+],
+"report": {
+"map": "ThreeIsland_BerryForest",
+"size": [
+57,
+47
+],
+"pair": [
+"gTileset_General",
+"gTileset_SeviiIslands"
+],
+"unresolved": [],
+"buildings": [],
+"caves": [],
+"ported_cells": 0,
+"arrow_warps": [
+[
+43,
+41,
+"S"
+],
+[
+42,
+41,
+"S"
+],
+[
+44,
+41,
+"S"
+]
+],
+"connections": [],
+"warps": [
+[
+43,
+41,
+"MAP_THREE_ISLAND_BOND_BRIDGE"
+],
+[
+42,
+41,
+"MAP_THREE_ISLAND_BOND_BRIDGE"
+],
+[
+44,
+41,
+"MAP_THREE_ISLAND_BOND_BRIDGE"
+]
+],
+"objects": [
+[
+4,
+8,
+"OBJ_EVENT_GFX_LITTLE_GIRL_FRLG",
+"LITTLE_GIRL"
+],
+[
+12,
+11,
+"OBJ_EVENT_GFX_CUTTABLE_TREE_FRLG",
+"CUTTABLE_TREE"
+],
+[
+19,
+7,
+"OBJ_EVENT_GFX_CUTTABLE_TREE_FRLG",
+"CUTTABLE_TREE"
+],
+[
+23,
+17,
+"OBJ_EVENT_GFX_CUTTABLE_TREE_FRLG",
+"CUTTABLE_TREE"
+],
+[
+38,
+23,
+"OBJ_EVENT_GFX_CUTTABLE_TREE_FRLG",
+"CUTTABLE_TREE"
+],
+[
+44,
+23,
+"OBJ_EVENT_GFX_CUTTABLE_TREE_FRLG",
+"CUTTABLE_TREE"
+],
+[
+44,
+29,
+"OBJ_EVENT_GFX_CUTTABLE_TREE_FRLG",
+"CUTTABLE_TREE"
+],
+[
+16,
+43,
+"OBJ_EVENT_GFX_CUTTABLE_TREE_FRLG",
+"CUTTABLE_TREE"
+],
+[
+17,
+39,
+"OBJ_EVENT_GFX_CUTTABLE_TREE_FRLG",
+"CUTTABLE_TREE"
+],
+[
+14,
+39,
+"OBJ_EVENT_GFX_CUTTABLE_TREE_FRLG",
+"CUTTABLE_TREE"
+],
+[
+11,
+39,
+"OBJ_EVENT_GFX_CUTTABLE_TREE_FRLG",
+"CUTTABLE_TREE"
+],
+[
+12,
+5,
+"OBJ_EVENT_GFX_ITEM_BALL",
+"ITEM_BALL"
+],
+[
+27,
+11,
+"OBJ_EVENT_GFX_ITEM_BALL",
+"ITEM_BALL"
+],
+[
+12,
+43,
+"OBJ_EVENT_GFX_ITEM_BALL",
+"ITEM_BALL"
+]
+],
+"classes": {
+"T": 1698,
+".": 605,
+"g": 248,
+"v": 17,
+"q": 93,
+"n": 2,
+"p": 16
+}
+}
+}

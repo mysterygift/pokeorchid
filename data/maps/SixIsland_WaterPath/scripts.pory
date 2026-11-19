@@ -1,0 +1,91 @@
+mapscripts SixIsland_WaterPath_MapScripts {}
+
+script SixIsland_WaterPath_EventScript_Rose {
+    trainerbattle_single(TRAINER_SEVII_ROSE, SixIsland_WaterPath_Text_RoseIntro, SixIsland_WaterPath_Text_RoseDefeat)
+    msgbox(SixIsland_WaterPath_Text_RosePost, MSGBOX_AUTOCLOSE)
+}
+
+text SixIsland_WaterPath_Text_RoseIntro {
+    format("The flowers along Water Path smell lovely!")
+}
+
+text SixIsland_WaterPath_Text_RoseDefeat {
+    format("My petals wilted...")
+}
+
+text SixIsland_WaterPath_Text_RosePost {
+    format("A ferry hops between the islands from every harbour.")
+}
+
+script SixIsland_WaterPath_EventScript_Edward {
+    msgbox(format("Water Path winds between the sea and the hills."), MSGBOX_NPC)
+}
+
+script SixIsland_WaterPath_EventScript_Samir {
+    trainerbattle_single(TRAINER_SEVII_SAMIR, SixIsland_WaterPath_Text_SamirIntro, SixIsland_WaterPath_Text_SamirDefeat)
+    msgbox(SixIsland_WaterPath_Text_SamirPost, MSGBOX_AUTOCLOSE)
+}
+
+text SixIsland_WaterPath_Text_SamirIntro {
+    format("Nobody swims Water Path faster than me!")
+}
+
+text SixIsland_WaterPath_Text_SamirDefeat {
+    format("Overtaken!")
+}
+
+text SixIsland_WaterPath_Text_SamirPost {
+    format("There's a house up the path with a horn-obsessed collector.")
+}
+
+script SixIsland_WaterPath_EventScript_Denise {
+    trainerbattle_single(TRAINER_SEVII_DENISE, SixIsland_WaterPath_Text_DeniseIntro, SixIsland_WaterPath_Text_DeniseDefeat)
+    msgbox(SixIsland_WaterPath_Text_DenisePost, MSGBOX_AUTOCLOSE)
+}
+
+text SixIsland_WaterPath_Text_DeniseIntro {
+    format("The water's so clear here! Battle?")
+}
+
+text SixIsland_WaterPath_Text_DeniseDefeat {
+    format("That light went out.")
+}
+
+text SixIsland_WaterPath_Text_DenisePost {
+    format("There's a house up the path with a horn-obsessed collector.")
+}
+
+script SixIsland_WaterPath_EventScript_Miu {
+    msgbox(format("There's a house up the path with a horn-obsessed collector."), MSGBOX_NPC)
+}
+
+script SixIsland_WaterPath_EventScript_Mia {
+    msgbox(format("My big brother lets me ride on his Lapras sometimes!"), MSGBOX_NPC)
+}
+
+script SixIsland_WaterPath_EventScript_Earl {
+    trainerbattle_single(TRAINER_SEVII_EARL, SixIsland_WaterPath_Text_EarlIntro, SixIsland_WaterPath_Text_EarlDefeat)
+    msgbox(SixIsland_WaterPath_Text_EarlPost, MSGBOX_AUTOCLOSE)
+}
+
+text SixIsland_WaterPath_Text_EarlIntro {
+    format("Ruin Valley's hills keep me strong!")
+}
+
+text SixIsland_WaterPath_Text_EarlDefeat {
+    format("My knees gave out.")
+}
+
+text SixIsland_WaterPath_Text_EarlPost {
+    format("The ground here rumbles sometimes. Mt. Ember isn't fully asleep.")
+}
+
+script SixIsland_WaterPath_EventScript_HornWantedSign {
+    msgbox(format("Wanted: a HERACROSS with a magnificent horn.\n"
+        "Enquire at the house up the path."), MSGBOX_SIGN)
+}
+
+script SixIsland_WaterPath_EventScript_RouteSign {
+    msgbox(format("WATER PATH\n"
+        "Ruin Valley lies to the south."), MSGBOX_SIGN)
+}

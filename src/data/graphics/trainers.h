@@ -509,6 +509,14 @@ const u16 gTrainerPalette_Recruit[] = INCGFX_U16("graphics/trainers/front_pics/r
 const u32 gTrainerFrontPic_PortWorker[] = INCGFX_U32("graphics/trainers/front_pics/port_worker.png", ".4bpp.smol");
 const u16 gTrainerPalette_PortWorker[] = INCGFX_U16("graphics/trainers/front_pics/port_worker.png", ".gbapal");
 
+// Wavebreak Voyages (Holon). Cynthia sprite by lichen (see CREDITS.md).
+const u32 gTrainerFrontPic_HolonResearcher[] = INCGFX_U32("graphics/trainers/front_pics/holon_researcher.png", ".4bpp.smol");
+const u16 gTrainerPalette_HolonResearcher[] = INCGFX_U16("graphics/trainers/front_pics/holon_researcher.png", ".gbapal");
+const u32 gTrainerFrontPic_Cynthia[] = INCGFX_U32("graphics/trainers/front_pics/cynthia.png", ".4bpp.smol");
+const u16 gTrainerPalette_Cynthia[] = INCGFX_U16("graphics/trainers/front_pics/cynthia.png", ".gbapal");
+const u32 gTrainerFrontPic_HolonLeaderFaba[] = INCGFX_U32("graphics/trainers/front_pics/holon_leader_faba.png", ".4bpp.smol");
+const u16 gTrainerPalette_HolonLeaderFaba[] = INCGFX_U16("graphics/trainers/front_pics/holon_leader_faba.png", ".gbapal");
+
 static const u8 gTrainerBackPic_None[] = INCGFX_U8("graphics/trainers/back_pics/none.png", ".4bpp");
 const u8 gTrainerBackPic_Brendan[] = INCGFX_U8("graphics/trainers/back_pics/brendan.png", ".4bpp");
 const u8 gTrainerBackPic_May[] = INCGFX_U8("graphics/trainers/back_pics/may.png", ".4bpp");
@@ -1317,5 +1325,17 @@ const struct TrainerPicInfo gTrainerPicInfo[TRAINER_PIC_COUNT] =
     [TRAINER_PIC_PORT_WORKER] =
     {
         .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_PortWorker, gTrainerPalette_PortWorker),
+    },
+    [TRAINER_PIC_HOLON_RESEARCHER] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_HolonResearcher, gTrainerPalette_HolonResearcher),
+    },
+    [TRAINER_PIC_CYNTHIA] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_Cynthia, gTrainerPalette_Cynthia, -4, 7, 0x188),
+    },
+    [TRAINER_PIC_HOLON_LEADER_FABA] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_HolonLeaderFaba, gTrainerPalette_HolonLeaderFaba),
     },
 };

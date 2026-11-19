@@ -15,4 +15,8 @@
 
 #define SEAGALLOP_MORE           254
 
+// Orchid voyages (src/voyages.c): VAR_0x8004 for the Sailor's boat; VAR_0x8006 is then a VOYAGE_DEST_*.
+#define SEAGALLOP_VOYAGE_OUTBOUND 200
+#define SEAGALLOP_VOYAGE_INBOUND  201
+
 #endif //GUARD_CONSTANTS_SEAGALLOP_H

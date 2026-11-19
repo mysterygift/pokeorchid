@@ -1509,4 +1509,128 @@
 #define METATILE_RSMossdeepGym_Switch_Down           0x239
 #define METATILE_RSMossdeepGym_Switch_Up             0x238
 
+
+
+
+
+
+
+
+
+
+
+
+
+// Sevii Islands begin
+// gTileset_SeviiIslands
+#define METATILE_SeviiIslands_Cottage_FlowerBox_283            0x377
+#define METATILE_SeviiIslands_Cottage_OldThatch_268            0x36D
+#define METATILE_SeviiIslands_Cottage_OldThatch_269            0x36E
+#define METATILE_SeviiIslands_Cottage_OldThatch_26C            0x36F
+#define METATILE_SeviiIslands_Cottage_OldThatch_270            0x370
+#define METATILE_SeviiIslands_Cottage_OldThatch_271            0x371
+#define METATILE_SeviiIslands_Cottage_OldThatch_274            0x372
+#define METATILE_SeviiIslands_Cottage_OldThatch_278            0x373
+#define METATILE_SeviiIslands_Cottage_OldThatch_279            0x374
+#define METATILE_SeviiIslands_Cottage_OldThatch_27A            0x375
+#define METATILE_SeviiIslands_Cottage_OldThatch_27C            0x376
+#define METATILE_SeviiIslands_MarketStall_0_0                  0x378
+#define METATILE_SeviiIslands_MarketStall_0_1                  0x37B
+#define METATILE_SeviiIslands_MarketStall_0_2                  0x37E
+#define METATILE_SeviiIslands_MarketStall_1_0                  0x379
+#define METATILE_SeviiIslands_MarketStall_1_1                  0x37C
+#define METATILE_SeviiIslands_MarketStall_1_2                  0x37F
+#define METATILE_SeviiIslands_MarketStall_2_2                  0x380
+#define METATILE_SeviiIslands_MarketStall_3_0                  0x37A
+#define METATILE_SeviiIslands_MarketStall_3_1                  0x37D
+#define METATILE_SeviiIslands_MarketStall_3_2                  0x381
+#define METATILE_SeviiIslands_MarketStall_Counter_0            0x382
+#define METATILE_SeviiIslands_MarketStall_Counter_1            0x383
+#define METATILE_SeviiIslands_MarketStall_Counter_2            0x384
+#define METATILE_SeviiIslands_MarketStall_Counter_3            0x385
+#define METATILE_SeviiIslands_OnixTail_071                     0x38A
+#define METATILE_SeviiIslands_OnixTail_079                     0x38D
+#define METATILE_SeviiIslands_OnixTail_098                     0x386
+#define METATILE_SeviiIslands_OnixTail_099                     0x387
+#define METATILE_SeviiIslands_OnixTail_09A                     0x388
+#define METATILE_SeviiIslands_OnixTail_0A0                     0x389
+#define METATILE_SeviiIslands_OnixTail_0A2                     0x38B
+#define METATILE_SeviiIslands_OnixTail_0A8                     0x38C
+#define METATILE_SeviiIslands_OnixTail_0AA                     0x38E
+#define METATILE_SeviiIslands_OnixTail_0BA                     0x38F
+#define METATILE_SeviiIslands_Port_General_Frlg_071            0x3BE
+#define METATILE_SeviiIslands_Port_General_Frlg_073            0x3B3
+#define METATILE_SeviiIslands_Port_General_Frlg_075            0x3C4
+#define METATILE_SeviiIslands_Port_General_Frlg_078            0x3B4
+#define METATILE_SeviiIslands_Port_General_Frlg_07A            0x3CC
+#define METATILE_SeviiIslands_Port_General_Frlg_07B            0x3B9
+#define METATILE_SeviiIslands_Port_General_Frlg_07C            0x3BF
+#define METATILE_SeviiIslands_Port_General_Frlg_07D            0x3C5
+#define METATILE_SeviiIslands_Port_General_Frlg_0C4            0x3CA
+#define METATILE_SeviiIslands_Port_General_Frlg_0C5            0x3B5
+#define METATILE_SeviiIslands_Port_General_Frlg_0C6            0x3C1
+#define METATILE_SeviiIslands_Port_General_Frlg_0C7            0x3C9
+#define METATILE_SeviiIslands_Port_General_Frlg_0CB            0x3BC
+#define METATILE_SeviiIslands_Port_General_Frlg_0CC            0x3C8
+#define METATILE_SeviiIslands_Port_General_Frlg_0CD            0x3B6
+#define METATILE_SeviiIslands_Port_General_Frlg_0CE            0x3C2
+#define METATILE_SeviiIslands_Port_General_Frlg_0CF            0x3CD
+#define METATILE_SeviiIslands_Port_General_Frlg_0D0            0x3A3
+#define METATILE_SeviiIslands_Port_General_Frlg_0D2            0x3A6
+#define METATILE_SeviiIslands_Port_General_Frlg_0D8            0x3A7
+#define METATILE_SeviiIslands_Port_General_Frlg_0DA            0x3AA
+#define METATILE_SeviiIslands_Port_General_Frlg_0E1            0x3B0
+#define METATILE_SeviiIslands_Port_General_Frlg_0E2            0x3B1
+#define METATILE_SeviiIslands_Port_SeviiIslands45_2C0          0x3A1
+#define METATILE_SeviiIslands_Port_SeviiIslands45_2C1          0x3A2
+#define METATILE_SeviiIslands_Port_SeviiIslands45_2C2          0x3AB
+#define METATILE_SeviiIslands_Port_SeviiIslands45_2C8          0x3A4
+#define METATILE_SeviiIslands_Port_SeviiIslands45_2C9          0x3A5
+#define METATILE_SeviiIslands_Port_SeviiIslands45_2CA          0x3AE
+#define METATILE_SeviiIslands_Port_SeviiIslands45_2D0          0x3A8
+#define METATILE_SeviiIslands_Port_SeviiIslands45_2D1          0x3A9
+#define METATILE_SeviiIslands_Port_SeviiIslands45_2D8          0x3AC
+#define METATILE_SeviiIslands_Port_SeviiIslands45_2D9          0x3AD
+#define METATILE_SeviiIslands_Port_SeviiIslands45_30A          0x3AF
+#define METATILE_SeviiIslands_Port_SeviiIslands67_2DB          0x3B2
+#define METATILE_SeviiIslands_Port_SeviiIslands67_2DC          0x3B7
+#define METATILE_SeviiIslands_Port_SeviiIslands67_2DD          0x3CB
+#define METATILE_SeviiIslands_Port_SeviiIslands67_32E          0x3BA
+#define METATILE_SeviiIslands_Port_SeviiIslands67_32F          0x3C3
+#define METATILE_SeviiIslands_Port_SeviiIslands67_330          0x3B8
+#define METATILE_SeviiIslands_Port_SeviiIslands67_336          0x3BB
+#define METATILE_SeviiIslands_Port_SeviiIslands67_338          0x3BD
+#define METATILE_SeviiIslands_Port_SeviiIslands67_357          0x3C0
+#define METATILE_SeviiIslands_Port_SeviiIslands67_367          0x3C6
+#define METATILE_SeviiIslands_Port_SeviiIslands67_36F          0x3C7
+#define METATILE_SeviiIslands_RocketWarehouse_Door             0x3A0
+#define METATILE_SeviiIslands_RocketWarehouse_Door_Top         0x39F
+#define METATILE_SeviiIslands_RocketWarehouse_Roof_B           0x397
+#define METATILE_SeviiIslands_RocketWarehouse_Roof_BL          0x396
+#define METATILE_SeviiIslands_RocketWarehouse_Roof_BR          0x398
+#define METATILE_SeviiIslands_RocketWarehouse_Roof_M           0x394
+#define METATILE_SeviiIslands_RocketWarehouse_Roof_ML          0x393
+#define METATILE_SeviiIslands_RocketWarehouse_Roof_MR          0x395
+#define METATILE_SeviiIslands_RocketWarehouse_Roof_T           0x391
+#define METATILE_SeviiIslands_RocketWarehouse_Roof_TL          0x390
+#define METATILE_SeviiIslands_RocketWarehouse_Roof_TR          0x392
+#define METATILE_SeviiIslands_RocketWarehouse_Wall_B           0x39D
+#define METATILE_SeviiIslands_RocketWarehouse_Wall_BL          0x39C
+#define METATILE_SeviiIslands_RocketWarehouse_Wall_BR          0x39E
+#define METATILE_SeviiIslands_RocketWarehouse_Wall_T           0x39A
+#define METATILE_SeviiIslands_RocketWarehouse_Wall_TL          0x399
+#define METATILE_SeviiIslands_RocketWarehouse_Wall_TR          0x39B
+#define METATILE_SeviiIslands_arrow_N_001                      0x3D1
+#define METATILE_SeviiIslands_arrow_N_120                      0x3CF
+#define METATILE_SeviiIslands_arrow_N_122                      0x3D0
+#define METATILE_SeviiIslands_arrow_S_001                      0x3D4
+#define METATILE_SeviiIslands_arrow_S_118                      0x3D3
+#define METATILE_SeviiIslands_arrow_S_119                      0x3D5
+#define METATILE_SeviiIslands_arrow_S_129                      0x3D6
+#define METATILE_SeviiIslands_arrow_S_26D                      0x3CE
+#define METATILE_SeviiIslands_arrow_S_26E                      0x3D2
+#define METATILE_HolonLab_EncounterFloor                      0x29E
+#define METATILE_SeviiIslands_DottedDoor_Open                 0x3D7
+// Sevii Islands end
+
 #endif // GUARD_METATILE_LABELS_H

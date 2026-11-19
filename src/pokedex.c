@@ -5538,6 +5538,9 @@ bool16 HasAllHoennMons(void)
     for (i = 0; i < HOENN_DEX_COUNT - 1; i++)
     {
         j = HoennToNationalOrder(i + 1);
+        // Orchid: Delta (δ) species are listed in the Tosa dex but not needed for the diploma.
+        if (IsDeltaSpecies(NationalPokedexNumToSpecies(j)))
+            continue;
         if (!(gSpeciesInfo[j].isMythical && !gSpeciesInfo[j].dexForceRequired) && !GetSetPokedexFlag(j, FLAG_GET_CAUGHT))
             return FALSE;
     }

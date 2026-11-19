@@ -1,0 +1,9 @@
+mapscripts SeviiSeaRouteD_MapScripts {}
+
+script SeviiSeaRouteD_EventScript_Swimmer1 {
+    msgbox(format("Seven Island is west and Six Island is east."), MSGBOX_NPC)
+}
+
+script SeviiSeaRouteD_EventScript_Swimmer2 {
+    msgbox(format("Seven Island is west and Six Island is east."), MSGBOX_NPC)
+}

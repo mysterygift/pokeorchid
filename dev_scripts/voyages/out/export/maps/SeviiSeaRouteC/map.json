@@ -1,0 +1,93 @@
+{
+  "id": "MAP_SEVII_SEA_ROUTE_C",
+  "name": "SeviiSeaRouteC",
+  "layout": "LAYOUT_SEVII_SEA_ROUTE_C",
+  "music": "MUS_RG_SEVII_45",
+  "region": "REGION_KANTO",
+  "region_map_section": "MAPSEC_SEVII_SEA_ROUTE_C",
+  "requires_flash": false,
+  "weather": "WEATHER_SUNNY",
+  "map_type": "MAP_TYPE_ROUTE",
+  "allow_cycling": false,
+  "allow_escaping": false,
+  "allow_running": true,
+  "show_map_name": true,
+  "floor_number": 0,
+  "battle_scene": "MAP_BATTLE_SCENE_NORMAL",
+  "connections": [
+    {
+      "map": "MAP_FOUR_ISLAND",
+      "offset": -10,
+      "direction": "up"
+    },
+    {
+      "map": "MAP_FIVE_ISLAND",
+      "offset": 6,
+      "direction": "right"
+    }
+  ],
+  "object_events": [
+    {
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_ITEM_BALL",
+      "x": 24,
+      "y": 15,
+      "elevation": 1,
+      "movement_type": "MOVEMENT_TYPE_LOOK_AROUND",
+      "movement_range_x": 0,
+      "movement_range_y": 0,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "ITEM_NONE",
+      "script": "Common_EventScript_FindItem",
+      "flag": "FLAG_ITEM_SEVII_SEA_ROUTE_C_1"
+    },
+    {
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_SWIMMER_M",
+      "x": 5,
+      "y": 7,
+      "elevation": 1,
+      "movement_type": "MOVEMENT_TYPE_WANDER_AROUND",
+      "movement_range_x": 2,
+      "movement_range_y": 1,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "SeviiSeaRouteC_EventScript_Swimmer1",
+      "flag": "0"
+    },
+    {
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_SWIMMER_F",
+      "x": 15,
+      "y": 17,
+      "elevation": 1,
+      "movement_type": "MOVEMENT_TYPE_WANDER_AROUND",
+      "movement_range_x": 2,
+      "movement_range_y": 1,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "SeviiSeaRouteC_EventScript_Swimmer2",
+      "flag": "0"
+    },
+    {
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_SWIMMER_M",
+      "x": 34,
+      "y": 13,
+      "elevation": 1,
+      "movement_type": "MOVEMENT_TYPE_WANDER_AROUND",
+      "movement_range_x": 2,
+      "movement_range_y": 1,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "SeviiSeaRouteC_EventScript_Swimmer3",
+      "flag": "0"
+    }
+  ],
+  "warp_events": [],
+  "coord_events": [],
+  "bg_events": [],
+  "_export_notes": [
+    "invented Surf route (user decision); MAPSEC_SEVII_SEA_ROUTE_C is a NEW region-map section to add; item flags are placeholders (reuse unreachable vanilla item flags, see memory)"
+  ]
+}

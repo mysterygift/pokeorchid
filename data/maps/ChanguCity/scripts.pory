@@ -35,3 +35,11 @@ script ChanguCity_EventScript_Npc4 {
 script ChanguCity_EventScript_Npc5 {
     msgbox(format("Customs has tightened up. Too many Pokémon have been coming in without import permits lately."), MSGBOX_NPC)
 }
+
+script ChanguCity_EventScript_CafeSign {
+    msgbox(format("BATTLE CAFÉ\nKopi, kaya toast and a seat between flights."), MSGBOX_SIGN)
+}
+
+script ChanguCity_EventScript_CafeTerracePatron {
+    msgbox(format("Best seat in Changu. You can watch the planes come in over the rooftops."), MSGBOX_NPC)
+}

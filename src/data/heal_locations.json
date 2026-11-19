@@ -208,7 +208,7 @@
       "x": 14,
       "y": 6,
       "respawn_map": "MAP_ONE_ISLAND_POKEMON_CENTER_1F",
-      "respawn_npc": "0"
+      "respawn_npc": "LOCALID_ONE_ISLAND_NURSE"
     },
     {
       "id": "HEAL_LOCATION_TWO_ISLAND",
@@ -216,7 +216,7 @@
       "x": 21,
       "y": 8,
       "respawn_map": "MAP_TWO_ISLAND_POKEMON_CENTER_1F",
-      "respawn_npc": "0"
+      "respawn_npc": "LOCALID_TWO_ISLAND_NURSE"
     },
     {
       "id": "HEAL_LOCATION_THREE_ISLAND",
@@ -224,7 +224,7 @@
       "x": 14,
       "y": 28,
       "respawn_map": "MAP_THREE_ISLAND_POKEMON_CENTER_1F",
-      "respawn_npc": "0"
+      "respawn_npc": "LOCALID_THREE_ISLAND_NURSE"
     },
     {
       "id": "HEAL_LOCATION_FOUR_ISLAND",
@@ -232,7 +232,7 @@
       "x": 18,
       "y": 21,
       "respawn_map": "MAP_FOUR_ISLAND_POKEMON_CENTER_1F",
-      "respawn_npc": "0"
+      "respawn_npc": "LOCALID_FOUR_ISLAND_NURSE"
     },
     {
       "id": "HEAL_LOCATION_FIVE_ISLAND",
@@ -240,7 +240,7 @@
       "x": 18,
       "y": 7,
       "respawn_map": "MAP_FIVE_ISLAND_POKEMON_CENTER_1F",
-      "respawn_npc": "0"
+      "respawn_npc": "LOCALID_FIVE_ISLAND_NURSE"
     },
     {
       "id": "HEAL_LOCATION_SEVEN_ISLAND",
@@ -248,7 +248,7 @@
       "x": 12,
       "y": 4,
       "respawn_map": "MAP_SEVEN_ISLAND_POKEMON_CENTER_1F",
-      "respawn_npc": "0"
+      "respawn_npc": "LOCALID_SEVEN_ISLAND_NURSE"
     },
     {
       "id": "HEAL_LOCATION_SIX_ISLAND",
@@ -256,7 +256,7 @@
       "x": 11,
       "y": 12,
       "respawn_map": "MAP_SIX_ISLAND_POKEMON_CENTER_1F",
-      "respawn_npc": "0"
+      "respawn_npc": "LOCALID_SIX_ISLAND_NURSE"
     },
     {
       "id": "HEAL_LOCATION_MOONGROVE_CITY",
@@ -393,6 +393,14 @@
       "y": 16,
       "respawn_map": "MAP_TANGLYN_TOWN_POKEMON_CENTER_1F",
       "respawn_npc": "LOCALID_TANGLYN_TOWN_NURSE"
+    },
+    {
+      "id": "HEAL_LOCATION_HOLON_VILLAGE",
+      "map": "MAP_HOLON_VILLAGE",
+      "x": 6,
+      "y": 36,
+      "respawn_map": "MAP_HOLON_VILLAGE_POKEMON_CENTER_1F",
+      "respawn_npc": "LOCALID_HOLON_VILLAGE_NURSE"
     }
   ]
 }

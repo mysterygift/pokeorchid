@@ -1,0 +1,11 @@
+mapscripts MtEmber_Summit_MapScripts {}
+
+raw `
+MtEmber_Summit_EventScript_EdgeWarp_9_15::
+	specialvar VAR_RESULT, GetPlayerFacingDirection
+	goto_if_ne VAR_RESULT, DIR_SOUTH, Sevii_EventScript_End
+	warp MAP_MT_EMBER_EXTERIOR, 4
+	waitstate
+	end
+
+`

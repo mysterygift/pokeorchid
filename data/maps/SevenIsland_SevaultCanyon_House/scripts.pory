@@ -1,0 +1,15 @@
+mapscripts SevenIsland_SevaultCanyon_House_MapScripts {}
+
+script SevenIsland_SevaultCanyon_House_EventScript_ChanseyDanceMan {
+    msgbox(format("My Chansey loves to dance! Don't you, dear?"), MSGBOX_NPC)
+}
+
+script SevenIsland_SevaultCanyon_House_EventScript_Chansey {
+    lock
+    faceplayer
+    waitse
+    playmoncry(SPECIES_CHANSEY, CRY_MODE_NORMAL)
+    msgbox(format("CHANSEY: Chaaansey!"))
+    waitmoncry
+    release
+}

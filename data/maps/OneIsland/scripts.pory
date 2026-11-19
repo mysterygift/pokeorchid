@@ -1,0 +1,27 @@
+mapscripts OneIsland_MapScripts {
+    MAP_SCRIPT_ON_TRANSITION {
+        setflag(FLAG_VISITED_ONE_ISLAND)
+    }
+}
+
+script OneIsland_EventScript_BILL {
+    msgbox(format("I'm visiting an old friend who runs the Net Center. He's always tinkering with the network machine."), MSGBOX_NPC)
+}
+
+script OneIsland_EventScript_OldMan {
+    msgbox(format("One Island is the gateway to the Sevii Islands. Ferries for all seven islands leave from the harbour."), MSGBOX_NPC)
+}
+
+script OneIsland_EventScript_BaldingMan {
+    msgbox(format("Kindle Road runs north from here to Mt. Ember. The hot springs on the way are wonderful."), MSGBOX_NPC)
+}
+
+script OneIsland_EventScript_IslandSign {
+    msgbox(format("ONE ISLAND\n"
+        "Where the warm sea meets the Kindle Road."), MSGBOX_SIGN)
+}
+
+script OneIsland_EventScript_PokemonNetCenterSign {
+    msgbox(format("POKéMON NET CENTER\n"
+        "Healing and long-distance links for travellers."), MSGBOX_SIGN)
+}

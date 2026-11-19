@@ -57,6 +57,18 @@ ChanguCity_EventScript_Npc5::
 	return
 
 
+ChanguCity_EventScript_CafeSign::
+# 40 "data/maps/ChanguCity/scripts.pory"
+	msgbox ChanguCity_EventScript_CafeSign_Text_0, MSGBOX_SIGN
+	return
+
+
+ChanguCity_EventScript_CafeTerracePatron::
+# 44 "data/maps/ChanguCity/scripts.pory"
+	msgbox ChanguCity_EventScript_CafeTerracePatron_Text_0, MSGBOX_NPC
+	return
+
+
 ChanguCity_EventScript_TownSign_Text_0:
 # 8 "data/maps/ChanguCity/scripts.pory"
 	.string "Changu City\n"
@@ -101,3 +113,14 @@ ChanguCity_EventScript_Npc5_Text_0:
 	.string "Customs has tightened up. Too many\n"
 	.string "Pokémon have been coming in without\l"
 	.string "import permits lately.$"
+
+ChanguCity_EventScript_CafeSign_Text_0:
+# 40 "data/maps/ChanguCity/scripts.pory"
+	.string "BATTLE CAFÉ\n"
+	.string "Kopi, kaya toast and a seat between\l"
+	.string "flights.$"
+
+ChanguCity_EventScript_CafeTerracePatron_Text_0:
+# 44 "data/maps/ChanguCity/scripts.pory"
+	.string "Best seat in Changu. You can watch the\n"
+	.string "planes come in over the rooftops.$"

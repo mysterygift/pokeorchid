@@ -569,6 +569,14 @@ gSongTable::
 	song mus_orchid_vs_trainer, MUSIC_PLAYER_BGM, 0
 	song mus_sinjoh_ruins_test, MUSIC_PLAYER_BGM, 0
 	song mus_tanoby_delta_test, MUSIC_PLAYER_BGM, 0
+	song mus_orchid_encounter_cynthia, MUSIC_PLAYER_BGM, 0
+	song mus_orchid_vs_cynthia, MUSIC_PLAYER_BGM, 0
+	song mus_orchid_sevii_vs_wild, MUSIC_PLAYER_BGM, 0
+	song mus_orchid_sevii_vs_trainer, MUSIC_PLAYER_BGM, 0
+	song mus_orchid_sevii_encounter_boy, MUSIC_PLAYER_BGM, 0
+	song mus_orchid_sevii_encounter_girl, MUSIC_PLAYER_BGM, 0
+	song mus_orchid_sevii_encounter_rocket, MUSIC_PLAYER_BGM, 0
+	song mus_orchid_encounter_holon, MUSIC_PLAYER_BGM, 0
 	song mus_dp_route202, MUSIC_PLAYER_BGM, 0
 	song mus_dp_route205, MUSIC_PLAYER_BGM, 0
 	song mus_dp_route209, MUSIC_PLAYER_BGM, 0

@@ -1,0 +1,5 @@
+mapscripts HolonVillage_House1_MapScripts {}
+
+script HolonVillage_House1_EventScript_Npc {
+    msgbox(format("My husband worked the fields for fifty years. These days he just sits by the window and watches that tower."), MSGBOX_NPC)
+}

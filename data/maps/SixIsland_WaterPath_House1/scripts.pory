@@ -1,0 +1,10 @@
+mapscripts SixIsland_WaterPath_House1_MapScripts {}
+
+script SixIsland_WaterPath_House1_EventScript_Beauty {
+    msgbox(format("My brother is obsessed with Heracross horns. Don't get him started."), MSGBOX_NPC)
+}
+
+script SixIsland_WaterPath_House1_EventScript_SizeRecord {
+    msgbox(format("HERACROSS horn size record:\n"
+        "no one has beaten it yet."), MSGBOX_SIGN)
+}

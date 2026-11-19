@@ -1,0 +1,190 @@
+{
+ "size": [
+  11,
+  9
+ ],
+ "tileset": [
+  "gTileset_Building",
+  "gTileset_GenericBuilding"
+ ],
+ "ground": [
+  "raw",
+  1541
+ ],
+ "marks": [
+  [
+   3,
+   7,
+   "PATH",
+   "warp"
+  ],
+  [
+   2,
+   7,
+   "PATH",
+   "warp"
+  ],
+  [
+   3,
+   4,
+   "Beauty",
+   "npc",
+   "beauty"
+  ],
+  [
+   9,
+   1,
+   "SizeReco",
+   "sign"
+  ]
+ ],
+ "grid_raw": [
+  "0605 0686 0687 0605 0606 0605 0606 0605 0605 0607 0605",
+  "0668 068E 068F 060D 060E 060D 060E 060D 060D 060F 060D",
+  "3270 3296 3297 3224 3224 3224 3224 3224 3224 3224 3224",
+  "3239 3223 3223 3223 3223 3223 3223 3223 3223 3223 3223",
+  "3291 3223 3223 3223 322B 064A 064B 322C 3223 3223 3223",
+  "0699 3223 3223 3223 322B 0652 0653 322C 3223 3223 3223",
+  "3291 3223 3223 3223 3223 3223 3223 3223 3223 3223 3223",
+  "0699 3223 0208 0209 3223 3223 3223 3223 3223 3223 3223",
+  "0401 0401 0401 0401 0401 0401 0401 0401 0401 0401 0401"
+ ],
+ "report": {
+  "frlg_map": "SixIsland_WaterPath_House1",
+  "frlg_layout": "LAYOUT_HOUSE4_FRLG",
+  "frlg_pair": [
+   "gTileset_BuildingFrlg",
+   "gTileset_GenericBuilding2"
+  ],
+  "maps": [
+   "SIX_ISLAND_WATER_PATH_HOUSE1"
+  ],
+  "pair": [
+   "gTileset_Building",
+   "gTileset_GenericBuilding"
+  ],
+  "size": [
+   11,
+   9
+  ],
+  "method": "hand class map (HOUSE3 kit, windows + size-record board)",
+  "warps": [
+   {
+    "x": 3,
+    "y": 7,
+    "dest_map": "MAP_SIX_ISLAND_WATER_PATH",
+    "dest_warp_id": "0",
+    "frlg": true
+   },
+   {
+    "x": 2,
+    "y": 7,
+    "dest_map": "MAP_SIX_ISLAND_WATER_PATH",
+    "dest_warp_id": "0",
+    "frlg": false,
+    "note": "2nd half of the Emerald exit mat"
+   }
+  ],
+  "objects": [
+   {
+    "x": 3,
+    "y": 4,
+    "frlg_gfx": "OBJ_EVENT_GFX_BEAUTY_FRLG",
+    "emerald_gfx": "OBJ_EVENT_GFX_BEAUTY",
+    "movement": "MOVEMENT_TYPE_FACE_DOWN",
+    "script": "SixIsland_WaterPath_House1_EventScript_Beauty"
+   }
+  ],
+  "bg_events": [
+   {
+    "type": "sign",
+    "x": 9,
+    "y": 1,
+    "elevation": 0,
+    "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+    "script": "SixIsland_WaterPath_House1_EventScript_SizeRecord"
+   }
+  ],
+  "coord_events": [],
+  "walk_diff": [],
+  "seams": [
+   [
+    0,
+    1,
+    "E",
+    "0x268",
+    "0x28E"
+   ],
+   [
+    0,
+    2,
+    "E",
+    "0x270",
+    "0x296"
+   ],
+   [
+    0,
+    2,
+    "S",
+    "0x270",
+    "0x239"
+   ],
+   [
+    0,
+    5,
+    "S",
+    "0x299",
+    "0x291"
+   ]
+  ],
+  "secondary_users": [
+   "LAYOUT_HOUSE1",
+   "LAYOUT_HOUSE2",
+   "LAYOUT_HOUSE3",
+   "LAYOUT_DEWFORD_TOWN_HALL",
+   "LAYOUT_HOUSE4",
+   "LAYOUT_VERDANTURF_TOWN_WANDAS_HOUSE",
+   "LAYOUT_PACIFIDLOG_TOWN_HOUSE1",
+   "LAYOUT_PACIFIDLOG_TOWN_HOUSE2",
+   "LAYOUT_FORTREE_CITY_HOUSE1",
+   "LAYOUT_FORTREE_CITY_HOUSE2",
+   "LAYOUT_ROUTE116_TUNNELERS_REST_HOUSE",
+   "LAYOUT_FORTREE_CITY_DECORATION_SHOP",
+   "LAYOUT_ROUTE124_DIVING_TREASURE_HUNTERS_HOUSE",
+   "LAYOUT_SAFARI_ZONE_REST_HOUSE"
+  ],
+  "notes": [
+   "FRLG size-record notice (bg (9,1)) -> shutter window 207/20F (GenericBuilding has no notice board); sign event kept on (9,1)."
+  ],
+  "metatiles": [
+   "0x001",
+   "0x205",
+   "0x206",
+   "0x207",
+   "0x208",
+   "0x209",
+   "0x20D",
+   "0x20E",
+   "0x20F",
+   "0x223",
+   "0x224",
+   "0x22B",
+   "0x22C",
+   "0x239",
+   "0x24A",
+   "0x24B",
+   "0x252",
+   "0x253",
+   "0x268",
+   "0x270",
+   "0x286",
+   "0x287",
+   "0x28E",
+   "0x28F",
+   "0x291",
+   "0x296",
+   "0x297",
+   "0x299"
+  ]
+ }
+}

@@ -1,0 +1,5 @@
+mapscripts HolonVillage_House2_MapScripts {}
+
+script HolonVillage_House2_EventScript_Npc {
+    msgbox(format("Mum says the researchers came from far away. They've got computers bigger than our house!"), MSGBOX_NPC)
+}

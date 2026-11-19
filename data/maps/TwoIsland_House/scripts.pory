@@ -1,0 +1,5 @@
+mapscripts TwoIsland_House_MapScripts {}
+
+script TwoIsland_House_EventScript_MoveManiac {
+    msgbox(format("I collect moves the way some people collect stamps. Have you met the teacher at Cape Brink?"), MSGBOX_NPC)
+}

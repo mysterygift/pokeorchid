@@ -1,0 +1,39 @@
+mapscripts SeviiSeaRouteC_MapScripts {}
+
+script SeviiSeaRouteC_EventScript_Swimmer1 {
+    trainerbattle_single(TRAINER_SEVII_RORY, SeviiSeaRouteC_Text_Swimmer1Intro, SeviiSeaRouteC_Text_Swimmer1Defeat)
+    msgbox(SeviiSeaRouteC_Text_Swimmer1Post, MSGBOX_AUTOCLOSE)
+}
+
+text SeviiSeaRouteC_Text_Swimmer1Intro {
+    format("These waters are mine. Let's go!")
+}
+
+text SeviiSeaRouteC_Text_Swimmer1Defeat {
+    format("I'm sunk!")
+}
+
+text SeviiSeaRouteC_Text_Swimmer1Post {
+    format("The currents are gentle today. Perfect for a long swim.")
+}
+
+script SeviiSeaRouteC_EventScript_Swimmer2 {
+    trainerbattle_single(TRAINER_SEVII_LANA, SeviiSeaRouteC_Text_Swimmer2Intro, SeviiSeaRouteC_Text_Swimmer2Defeat)
+    msgbox(SeviiSeaRouteC_Text_Swimmer2Post, MSGBOX_AUTOCLOSE)
+}
+
+text SeviiSeaRouteC_Text_Swimmer2Intro {
+    format("Swimming between the islands builds stamina!")
+}
+
+text SeviiSeaRouteC_Text_Swimmer2Defeat {
+    format("I need a rest...")
+}
+
+text SeviiSeaRouteC_Text_Swimmer2Post {
+    format("Sometimes Lapras swim past these islands. It's beautiful.")
+}
+
+script SeviiSeaRouteC_EventScript_Swimmer3 {
+    msgbox(format("Four Island is north and Five Island is east of here."), MSGBOX_NPC)
+}

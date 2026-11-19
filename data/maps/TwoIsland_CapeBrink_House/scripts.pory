@@ -1,0 +1,5 @@
+mapscripts TwoIsland_CapeBrink_House_MapScripts {}
+
+script TwoIsland_CapeBrink_House_EventScript_StarterTutor {
+    msgbox(format("I once taught the strongest moves to the partners of young trainers. These days I just enjoy the view."), MSGBOX_NPC)
+}

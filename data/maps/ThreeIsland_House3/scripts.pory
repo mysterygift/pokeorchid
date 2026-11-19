@@ -1,0 +1,5 @@
+mapscripts ThreeIsland_House3_MapScripts {}
+
+script ThreeIsland_House3_EventScript_Beauty {
+    msgbox(format("Each island has its own character. Have you visited them all?"), MSGBOX_NPC)
+}

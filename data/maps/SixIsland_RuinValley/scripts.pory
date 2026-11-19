@@ -1,0 +1,93 @@
+mapscripts SixIsland_RuinValley_MapScripts {
+    MAP_SCRIPT_ON_LOAD {
+        if (flag(FLAG_SEVII_DOTTED_HOLE_OPEN)) {
+            setmetatile(24, 24, METATILE_SeviiIslands_DottedDoor_Open, FALSE)
+        }
+    }
+    MAP_SCRIPT_ON_TRANSITION {
+        if (flag(FLAG_SEVII_DOTTED_HOLE_OPEN)) {
+            setobjectxyperm(LOCALID_RUIN_VALLEY_SCIENTIST, 26, 25)
+            setobjectmovementtype(LOCALID_RUIN_VALLEY_SCIENTIST, MOVEMENT_TYPE_FACE_LEFT)
+        }
+    }
+}
+
+script SixIsland_RuinValley_EventScript_Scientist {
+    if (flag(FLAG_SEVII_DOTTED_HOLE_OPEN)) {
+        msgbox(format("The dotted door finally opened! I only hope what's down there is friendly."), MSGBOX_NPC)
+    } else {
+        msgbox(format("That dotted door is a puzzle from ancient times. I've studied it for years with no luck."), MSGBOX_NPC)
+    }
+}
+
+script SixIsland_RuinValley_EventScript_Stanly {
+    trainerbattle_single(TRAINER_SEVII_STANLY, SixIsland_RuinValley_Text_StanlyIntro, SixIsland_RuinValley_Text_StanlyDefeat)
+    msgbox(SixIsland_RuinValley_Text_StanlyPost, MSGBOX_AUTOCLOSE)
+}
+
+text SixIsland_RuinValley_Text_StanlyIntro {
+    format("These ruins are mine to dig! Out of my way!")
+}
+
+text SixIsland_RuinValley_Text_StanlyDefeat {
+    format("Buried alive!")
+}
+
+text SixIsland_RuinValley_Text_StanlyPost {
+    format("Ruin Valley is full of ancient carvings.")
+}
+
+script SixIsland_RuinValley_EventScript_Foster {
+    msgbox(format("The ground here rumbles sometimes. Mt. Ember isn't fully asleep."), MSGBOX_NPC)
+}
+
+script SixIsland_RuinValley_EventScript_Larry {
+    msgbox(format("I've climbed every hill in the Sevii Islands. Some twice!"), MSGBOX_NPC)
+}
+
+script SixIsland_RuinValley_EventScript_Daryl {
+    trainerbattle_single(TRAINER_SEVII_DARYL, SixIsland_RuinValley_Text_DarylIntro, SixIsland_RuinValley_Text_DarylDefeat)
+    msgbox(SixIsland_RuinValley_Text_DarylPost, MSGBOX_AUTOCLOSE)
+}
+
+text SixIsland_RuinValley_Text_DarylIntro {
+    format("Is that a tree? No, it's my partner!")
+}
+
+text SixIsland_RuinValley_Text_DarylDefeat {
+    format("Timber!")
+}
+
+text SixIsland_RuinValley_Text_DarylPost {
+    format("I've climbed every hill in the Sevii Islands. Some twice!")
+}
+
+script SixIsland_RuinValley_EventScript_Hector {
+    trainerbattle_single(TRAINER_SEVII_HECTOR, SixIsland_RuinValley_Text_HectorIntro, SixIsland_RuinValley_Text_HectorDefeat)
+    msgbox(SixIsland_RuinValley_Text_HectorPost, MSGBOX_AUTOCLOSE)
+}
+
+text SixIsland_RuinValley_Text_HectorIntro {
+    format("My rare Pokémon will crush you!")
+}
+
+text SixIsland_RuinValley_Text_HectorDefeat {
+    format("My collection!")
+}
+
+text SixIsland_RuinValley_Text_HectorPost {
+    format("Each island has its own character. Have you visited them all?")
+}
+
+script SixIsland_RuinValley_EventScript_DottedHoleDoor {
+    msgbox(format("The door is sealed with a dotted stone slab.\n"
+        "It won't budge. Maybe it will open some day."), MSGBOX_SIGN)
+}
+
+script SixIsland_RuinValley_EventScript_Sealed {
+    if (flag(FLAG_SEVII_DOTTED_HOLE_OPEN)) {
+        end
+    }
+    msgbox(format("The door is sealed with a dotted stone slab.\n"
+        "It won't budge. Maybe it will open some day."), MSGBOX_SIGN)
+}

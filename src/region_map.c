@@ -74,6 +74,7 @@ struct MultiNameFlyDest
 
 #include "data/region_map/orchid_map_v2.h"
 #include "data/region_map/orchid_map_v2_tiksi.h"
+#include "data/region_map/orchid_map_v2_voyages.h"
 
 // MAP v2 data per region: Tosa (export_map_v2.py) and Tiksi (export_region_map_tiksi.py)
 struct OrchidRegionMapV2
@@ -167,6 +168,7 @@ static const u8 sRegionMapPlayerIcon_LeafGfx[] = INCGFX_U8("graphics/pokenav/reg
 #include "data/region_map/region_map_layout_sevii45.h"
 #include "data/region_map/region_map_layout_sevii67.h"
 #include "data/region_map/region_map_layout_tiksi.h"
+#include "data/region_map/region_map_layout_voyages.h"
 #include "data/region_map/region_map_entries.h"
 
 static const mapsec_u16_t sRegionMap_SpecialPlaceLocations[][2] =
@@ -361,6 +363,26 @@ static const u16 ALIGNED(4) sRegionMapTiksi_Pal[] = INCGFX_U16("graphics/pokenav
 static const u32 sRegionMapTiksi_Gfx[] = INCGFX_U32("graphics/pokenav/region_map/map_tiksi.png", ".8bpp.smol", "-num_tiles 219 -Wnum_tiles");
 static const u32 sRegionMapTiksi_Tilemap[] = INCGFX_U32("graphics/pokenav/region_map/map_tiksi.bin", ".smolTM");
 
+// Wavebreak Voyages (dev_scripts/voyages/export_region_maps.py). The Dex AREA screen reuses the same 8bpp tiles
+// and palette with its own u16 tilemap.
+static const u16 ALIGNED(4) sRegionMapEon_Pal[] = INCGFX_U16("graphics/pokenav/region_map/map_eon.pal", ".gbapal");
+static const u32 sRegionMapEon_Gfx[] = INCGFX_U32("graphics/pokenav/region_map/map_eon.png", ".8bpp.smol", "-num_tiles 125 -Wnum_tiles");
+static const u32 sRegionMapEon_Tilemap[] = INCGFX_U32("graphics/pokenav/region_map/map_eon.bin", ".smolTM");
+static const u32 sPokedexAreaMapEon_Tilemap[] = INCGFX_U32("graphics/pokedex/region_map_eon.bin", ".smolTM");
+// Holon: the user's terrain art (Tiksi recipe); its Dex AREA copy has the routes + markers baked in.
+static const u16 ALIGNED(4) sRegionMapHolon_Pal[] = INCGFX_U16("graphics/pokenav/region_map/map_holon.pal", ".gbapal");
+static const u32 sRegionMapHolon_Gfx[] = INCGFX_U32("graphics/pokenav/region_map/map_holon.png", ".8bpp.smol", "-num_tiles 255 -Wnum_tiles");
+static const u32 sRegionMapHolon_Tilemap[] = INCGFX_U32("graphics/pokenav/region_map/map_holon.bin", ".smolTM");
+static const u16 ALIGNED(4) sPokedexAreaMapHolon_Pal[] = INCGFX_U16("graphics/pokedex/region_map_holon.pal", ".gbapal");
+static const u32 sPokedexAreaMapHolon_Gfx[] = INCGFX_U32("graphics/pokedex/region_map_holon.png", ".8bpp.smol", "-num_tiles 256 -Wnum_tiles");
+// Newmoon + Fullmoon share one map: the Gen 4 Sinnoh map redrawn Gen 3-style, under Eon's intro clouds
+// (dev_scripts/voyages/regionmap/sinnoh_moons.py).
+static const u16 ALIGNED(4) sRegionMapSinnoh_Pal[] = INCGFX_U16("graphics/pokenav/region_map/map_sinnoh.pal", ".gbapal");
+static const u32 sRegionMapSinnoh_Gfx[] = INCGFX_U32("graphics/pokenav/region_map/map_sinnoh.png", ".8bpp.smol", "-num_tiles 161 -Wnum_tiles");
+static const u32 sRegionMapSinnoh_Tilemap[] = INCGFX_U32("graphics/pokenav/region_map/map_sinnoh.bin", ".smolTM");
+static const u32 sPokedexAreaMapHolon_Tilemap[] = INCGFX_U32("graphics/pokedex/region_map_holon.bin", ".smolTM");
+static const u32 sPokedexAreaMapSinnoh_Tilemap[] = INCGFX_U32("graphics/pokedex/region_map_sinnoh.bin", ".smolTM");
+
 const struct RegionMapInfo gRegionMapInfos[] =
 {
     [REGION_MAP_HOENN]    =
@@ -423,7 +445,38 @@ const struct RegionMapInfo gRegionMapInfos[] =
         .regionMapGfx = sRegionMapTiksi_Gfx,
         .regionMapTilemap = sRegionMapTiksi_Tilemap,
     },
+    [REGION_MAP_EON] =
+    {
+        .dexMapPalette = sRegionMapEon_Pal,
+        .dexMapGfx = sRegionMapEon_Gfx,
+        .dexMapTilemap = sPokedexAreaMapEon_Tilemap,
+        .dexMapPaletteSize = sizeof(sRegionMapEon_Pal),
+        .regionMapPalette = sRegionMapEon_Pal,
+        .regionMapGfx = sRegionMapEon_Gfx,
+        .regionMapTilemap = sRegionMapEon_Tilemap,
+    },
+    [REGION_MAP_HOLON] =
+    {
+        .dexMapPalette = sPokedexAreaMapHolon_Pal,
+        .dexMapGfx = sPokedexAreaMapHolon_Gfx,
+        .dexMapTilemap = sPokedexAreaMapHolon_Tilemap,
+        .dexMapPaletteSize = sizeof(sPokedexAreaMapHolon_Pal),
+        .regionMapPalette = sRegionMapHolon_Pal,
+        .regionMapGfx = sRegionMapHolon_Gfx,
+        .regionMapTilemap = sRegionMapHolon_Tilemap,
+    },
+    [REGION_MAP_SINNOH] =
+    {
+        .dexMapPalette = sRegionMapSinnoh_Pal,
+        .dexMapGfx = sRegionMapSinnoh_Gfx,
+        .dexMapTilemap = sPokedexAreaMapSinnoh_Tilemap,
+        .dexMapPaletteSize = sizeof(sRegionMapSinnoh_Pal),
+        .regionMapPalette = sRegionMapSinnoh_Pal,
+        .regionMapGfx = sRegionMapSinnoh_Gfx,
+        .regionMapTilemap = sRegionMapSinnoh_Tilemap,
+    },
 };
+STATIC_ASSERT(ARRAY_COUNT(gRegionMapInfos) == REGION_MAP_COUNT, RegionMapInfosCoverEveryType);
 
 static const u8 sMapHealLocations[][3] =
 {
@@ -528,12 +581,12 @@ static const u8 sMapHealLocations[][3] =
     [MAPSEC_CAPE_BRINK] = {MAP_GROUP(MAP_TWO_ISLAND_CAPE_BRINK), MAP_NUM(MAP_TWO_ISLAND_CAPE_BRINK), HEAL_LOCATION_NONE},
     [MAPSEC_BOND_BRIDGE] = {MAP_GROUP(MAP_THREE_ISLAND_BOND_BRIDGE), MAP_NUM(MAP_THREE_ISLAND_BOND_BRIDGE), HEAL_LOCATION_NONE},
     [MAPSEC_THREE_ISLE_PORT] = {MAP_GROUP(MAP_THREE_ISLAND_PORT), MAP_NUM(MAP_THREE_ISLAND_PORT), HEAL_LOCATION_NONE},
-    [MAPSEC_RESORT_GORGEOUS] = {MAP_GROUP(MAP_FIVE_ISLAND_RESORT_GORGEOUS), MAP_NUM(MAP_FIVE_ISLAND_RESORT_GORGEOUS), HEAL_LOCATION_NONE},
-    [MAPSEC_WATER_LABYRINTH] = {MAP_GROUP(MAP_FIVE_ISLAND_WATER_LABYRINTH), MAP_NUM(MAP_FIVE_ISLAND_WATER_LABYRINTH), HEAL_LOCATION_NONE},
+    [MAPSEC_HOLON_VILLAGE] = {MAP_GROUP(MAP_HOLON_VILLAGE), MAP_NUM(MAP_HOLON_VILLAGE), HEAL_LOCATION_HOLON_VILLAGE},
+    [MAPSEC_MIRAGE_FOREST] = {MAP_GROUP(MAP_HOLON_MIRAGE_FOREST), MAP_NUM(MAP_HOLON_MIRAGE_FOREST), HEAL_LOCATION_NONE},
     [MAPSEC_FIVE_ISLE_MEADOW] = {MAP_GROUP(MAP_FIVE_ISLAND_MEADOW), MAP_NUM(MAP_FIVE_ISLAND_MEADOW), HEAL_LOCATION_NONE},
     [MAPSEC_MEMORIAL_PILLAR] = {MAP_GROUP(MAP_FIVE_ISLAND_MEMORIAL_PILLAR), MAP_NUM(MAP_FIVE_ISLAND_MEMORIAL_PILLAR), HEAL_LOCATION_NONE},
-    [MAPSEC_OUTCAST_ISLAND] = {MAP_GROUP(MAP_SIX_ISLAND_OUTCAST_ISLAND), MAP_NUM(MAP_SIX_ISLAND_OUTCAST_ISLAND), HEAL_LOCATION_NONE},
-    [MAPSEC_GREEN_PATH] = {MAP_GROUP(MAP_SIX_ISLAND_GREEN_PATH), MAP_NUM(MAP_SIX_ISLAND_GREEN_PATH), HEAL_LOCATION_NONE},
+    [MAPSEC_RESEARCH_TOWER] = {MAP_GROUP(MAP_HOLON_RESEARCH_TOWER_1F), MAP_NUM(MAP_HOLON_RESEARCH_TOWER_1F), HEAL_LOCATION_NONE},
+    [MAPSEC_HOLON_LAKE] = {MAP_GROUP(MAP_HOLON_LAKE), MAP_NUM(MAP_HOLON_LAKE), HEAL_LOCATION_NONE},
     [MAPSEC_WATER_PATH] = {MAP_GROUP(MAP_SIX_ISLAND_WATER_PATH), MAP_NUM(MAP_SIX_ISLAND_WATER_PATH), HEAL_LOCATION_NONE},
     [MAPSEC_RUIN_VALLEY] = {MAP_GROUP(MAP_SIX_ISLAND_RUIN_VALLEY), MAP_NUM(MAP_SIX_ISLAND_RUIN_VALLEY), HEAL_LOCATION_NONE},
     [MAPSEC_TRAINER_TOWER] = {MAP_GROUP(MAP_SEVEN_ISLAND_TRAINER_TOWER), MAP_NUM(MAP_SEVEN_ISLAND_TRAINER_TOWER), HEAL_LOCATION_NONE},
@@ -543,7 +596,7 @@ static const u8 sMapHealLocations[][3] =
     [MAPSEC_SEVII_ISLE_22] = {MAP_GROUP(MAP_PALLET_TOWN), MAP_NUM(MAP_PALLET_TOWN), HEAL_LOCATION_NONE},
     [MAPSEC_SEVII_ISLE_23] = {MAP_GROUP(MAP_PALLET_TOWN), MAP_NUM(MAP_PALLET_TOWN), HEAL_LOCATION_NONE},
     [MAPSEC_SEVII_ISLE_24] = {MAP_GROUP(MAP_PALLET_TOWN), MAP_NUM(MAP_PALLET_TOWN), HEAL_LOCATION_NONE},
-    [MAPSEC_NAVEL_ROCK_FRLG] = {MAP_GROUP(MAP_NAVEL_ROCK_EXTERIOR_FRLG), MAP_NUM(MAP_NAVEL_ROCK_EXTERIOR_FRLG), HEAL_LOCATION_NONE},
+    [MAPSEC_NEWMOON_ISLAND] = {MAP_GROUP(MAP_NEWMOON_ISLAND), MAP_NUM(MAP_NEWMOON_ISLAND), HEAL_LOCATION_NONE},
     [MAPSEC_MT_EMBER] = {MAP_GROUP(MAP_PALLET_TOWN), MAP_NUM(MAP_PALLET_TOWN), HEAL_LOCATION_NONE},
     [MAPSEC_BERRY_FOREST] = {MAP_GROUP(MAP_PALLET_TOWN), MAP_NUM(MAP_PALLET_TOWN), HEAL_LOCATION_NONE},
     [MAPSEC_ICEFALL_CAVE] = {MAP_GROUP(MAP_PALLET_TOWN), MAP_NUM(MAP_PALLET_TOWN), HEAL_LOCATION_NONE},
@@ -556,7 +609,7 @@ static const u8 sMapHealLocations[][3] =
     [MAPSEC_TANOBY_CHAMBERS] = {MAP_GROUP(MAP_PALLET_TOWN), MAP_NUM(MAP_PALLET_TOWN), HEAL_LOCATION_NONE},
     [MAPSEC_THREE_ISLE_PATH] = {MAP_GROUP(MAP_PALLET_TOWN), MAP_NUM(MAP_PALLET_TOWN), HEAL_LOCATION_NONE},
     [MAPSEC_TANOBY_KEY] = {MAP_GROUP(MAP_PALLET_TOWN), MAP_NUM(MAP_PALLET_TOWN), HEAL_LOCATION_NONE},
-    [MAPSEC_BIRTH_ISLAND_FRLG] = {MAP_GROUP(MAP_BIRTH_ISLAND_EXTERIOR_FRLG), MAP_NUM(MAP_BIRTH_ISLAND_EXTERIOR_FRLG), HEAL_LOCATION_NONE},
+    [MAPSEC_FULLMOON_ISLAND] = {MAP_GROUP(MAP_FULLMOON_ISLAND), MAP_NUM(MAP_FULLMOON_ISLAND), HEAL_LOCATION_NONE},
     [MAPSEC_MONEAN_CHAMBER] = {MAP_GROUP(MAP_PALLET_TOWN), MAP_NUM(MAP_PALLET_TOWN), HEAL_LOCATION_NONE},
     [MAPSEC_LIPTOO_CHAMBER] = {MAP_GROUP(MAP_PALLET_TOWN), MAP_NUM(MAP_PALLET_TOWN), HEAL_LOCATION_NONE},
     [MAPSEC_WEEPTH_CHAMBER] = {MAP_GROUP(MAP_PALLET_TOWN), MAP_NUM(MAP_PALLET_TOWN), HEAL_LOCATION_NONE},
@@ -1203,8 +1256,85 @@ void PokedexAreaScreen_UpdateRegionMapVariablesAndVideoRegs(s16 x, s16 y)
     }
 }
 
+// Wavebreak Voyages: which voyage region map a section belongs to (REGION_MAP_COUNT = not a voyage section).
+// The sections keep REGION_TOSA as their region (music, evolution, daycare); only the map differs.
+static enum RegionMapType GetVoyageRegionMapType(u32 mapSecId)
+{
+    switch (mapSecId)
+    {
+    case MAPSEC_ONE_ISLAND:
+    case MAPSEC_TWO_ISLAND:
+    case MAPSEC_THREE_ISLAND:
+    case MAPSEC_KINDLE_ROAD:
+    case MAPSEC_TREASURE_BEACH:
+    case MAPSEC_CAPE_BRINK:
+    case MAPSEC_BOND_BRIDGE:
+    case MAPSEC_THREE_ISLE_PORT:
+    case MAPSEC_MT_EMBER:
+    case MAPSEC_BERRY_FOREST:
+    case MAPSEC_EMBER_SPA:
+    case MAPSEC_ONE_TWO_STRAIT:
+    case MAPSEC_TWO_THREE_STRAIT:
+        return REGION_MAP_SEVII123;
+    case MAPSEC_FOUR_ISLAND:
+    case MAPSEC_FIVE_ISLAND:
+    case MAPSEC_FIVE_ISLE_MEADOW:
+    case MAPSEC_MEMORIAL_PILLAR:
+    case MAPSEC_ICEFALL_CAVE:
+    case MAPSEC_ROCKET_WAREHOUSE:
+    case MAPSEC_LOST_CAVE:
+    case MAPSEC_FOUR_FIVE_STRAIT:
+        return REGION_MAP_SEVII45;
+    case MAPSEC_SIX_ISLAND:
+    case MAPSEC_SEVEN_ISLAND:
+    case MAPSEC_WATER_PATH:
+    case MAPSEC_RUIN_VALLEY:
+    case MAPSEC_TRAINER_TOWER:
+    case MAPSEC_TRAINER_TOWER_2:
+    case MAPSEC_CANYON_ENTRANCE:
+    case MAPSEC_SEVAULT_CANYON:
+    case MAPSEC_TANOBY_RUINS:
+    case MAPSEC_DOTTED_HOLE:
+    case MAPSEC_PATTERN_BUSH:
+    case MAPSEC_ALTERING_CAVE_FRLG:
+    case MAPSEC_TANOBY_CHAMBERS:
+    case MAPSEC_TANOBY_KEY:
+    case MAPSEC_MONEAN_CHAMBER:
+    case MAPSEC_LIPTOO_CHAMBER:
+    case MAPSEC_WEEPTH_CHAMBER:
+    case MAPSEC_DILFORD_CHAMBER:
+    case MAPSEC_SCUFIB_CHAMBER:
+    case MAPSEC_RIXY_CHAMBER:
+    case MAPSEC_VIAPOIS_CHAMBER:
+    case MAPSEC_SIX_SEVEN_STRAIT:
+        return REGION_MAP_SEVII67;
+    case MAPSEC_EON_ISLAND:
+        return REGION_MAP_EON;
+    case MAPSEC_HOLON_VILLAGE:
+    case MAPSEC_MIRAGE_FOREST:
+    case MAPSEC_RESEARCH_TOWER:
+    case MAPSEC_HOLON_LAKE:
+        return REGION_MAP_HOLON;
+    case MAPSEC_NEWMOON_ISLAND:
+    case MAPSEC_FULLMOON_ISLAND:
+        return REGION_MAP_SINNOH;
+    default:
+        return REGION_MAP_COUNT;
+    }
+}
+
+bool32 IsSeviiMapSec(u32 mapSecId)
+{
+    enum RegionMapType type = GetVoyageRegionMapType(mapSecId);
+    return type == REGION_MAP_SEVII123 || type == REGION_MAP_SEVII45 || type == REGION_MAP_SEVII67;
+}
+
 enum RegionMapType GetRegionMapType(u32 mapSecId)
 {
+    enum RegionMapType voyage = GetVoyageRegionMapType(mapSecId);
+
+    if (voyage != REGION_MAP_COUNT)
+        return voyage;
     switch (GetRegionForSectionId(mapSecId))
     {
     case REGION_TIKSI:
@@ -1249,6 +1379,12 @@ static mapsec_u16_t GetMapSecIdAt(u16 x, u16 y)
         return sRegionMapSections_Sevii67[y][x];
     case REGION_MAP_KANTO:
         return sRegionMapSections_Kanto[y][x];
+    case REGION_MAP_EON:
+        return sRegionMapSections_Eon[y][x];
+    case REGION_MAP_HOLON:
+        return sRegionMapSections_Holon[y][x];
+    case REGION_MAP_SINNOH:
+        return sRegionMapSections_Sinnoh[y][x];
     case REGION_MAP_HOENN:
     default:
         return sRegionMap_MapSectionLayout[y][x];
@@ -1258,17 +1394,63 @@ static mapsec_u16_t GetMapSecIdAt(u16 x, u16 y)
 // Orchid: the name of the region the player is in, for map headers and the Rotom Phone
 const u8 *GetRegionMapRegionName(void)
 {
-    if (GetViewedRegionMapType() == REGION_MAP_TIKSI)
+    switch (GetViewedRegionMapType())
+    {
+    case REGION_MAP_TIKSI:
         return COMPOUND_STRING("TIKSI");
-    return COMPOUND_STRING("TOSA");
+    case REGION_MAP_SEVII123:
+    case REGION_MAP_SEVII45:
+    case REGION_MAP_SEVII67:
+        return COMPOUND_STRING("SEVII ISLANDS");
+    case REGION_MAP_EON:
+        return COMPOUND_STRING("EON ISLAND");
+    case REGION_MAP_HOLON:
+        return COMPOUND_STRING("HOLON");
+    case REGION_MAP_SINNOH:
+        return COMPOUND_STRING("SINNOH");
+    default:
+        return COMPOUND_STRING("TOSA");
+    }
+}
+
+// Wavebreak Voyages: the Sevii cluster shown, right-aligned in the MAP header (NULL = none)
+const u8 *GetRegionMapSubAreaName(void)
+{
+    switch (GetViewedRegionMapType())
+    {
+    case REGION_MAP_SEVII123:
+        return COMPOUND_STRING("ISLES 1-3");
+    case REGION_MAP_SEVII45:
+        return COMPOUND_STRING("ISLES 4-5");
+    case REGION_MAP_SEVII67:
+        return COMPOUND_STRING("ISLES 6-7");
+    default:
+        return NULL;
+    }
 }
 
 // Orchid: where the cursor / player head goes when the current section has no cell on its region's map
 static mapsec_u16_t GetRegionMapFallbackMapSec(void)
 {
-    if (GetViewedRegionMapType() == REGION_MAP_TIKSI)
+    switch (GetViewedRegionMapType())
+    {
+    case REGION_MAP_TIKSI:
         return MAPSEC_FURONG_VILLAGE;   // where the ferry from Tosa lands (export_region_map_tiksi.py FALLBACK)
-    return MAPSEC_TOSA_PORT;
+    case REGION_MAP_SEVII123:
+        return MAPSEC_ONE_ISLAND;       // voyages: where the Sailor / ferry lands
+    case REGION_MAP_SEVII45:
+        return MAPSEC_FOUR_ISLAND;
+    case REGION_MAP_SEVII67:
+        return MAPSEC_SEVEN_ISLAND;
+    case REGION_MAP_EON:
+        return MAPSEC_EON_ISLAND;
+    case REGION_MAP_HOLON:
+        return MAPSEC_MIRAGE_FOREST;
+    case REGION_MAP_SINNOH:
+        return MAPSEC_NEWMOON_ISLAND;
+    default:
+        return MAPSEC_TOSA_PORT;
+    }
 }
 
 static void InitMapBasedOnPlayerLocation(void)
@@ -1438,6 +1620,30 @@ static void InitMapBasedOnPlayerLocation(void)
     case MAPSEC_UNDERWATER_MARINE_CAVE:
         GetMarineCaveCoords(&sRegionMap->cursorPosX, &sRegionMap->cursorPosY);
         return;
+    case MAPSEC_ONE_TWO_STRAIT:
+    case MAPSEC_TWO_THREE_STRAIT:
+    case MAPSEC_FOUR_FIVE_STRAIT:
+    case MAPSEC_SIX_SEVEN_STRAIT:
+        // Wavebreak Voyages: the straits are L-shaped / long on the map; follow the cell list instead of the bbox
+        {
+            u32 i, progress, idx;
+            for (i = 0; i < ARRAY_COUNT(sVoyageStraitCells); i++)
+            {
+                const struct VoyageStraitCells *s = &sVoyageStraitCells[i];
+                if (s->mapsec != sRegionMap->mapSecId || mapWidth == 0 || mapHeight == 0)
+                    continue;
+                progress = (gSaveBlock1Ptr->pos.x * 256) / mapWidth;
+                if (s->diagonal)
+                    progress = (progress + (gSaveBlock1Ptr->pos.y * 256) / mapHeight) / 2;
+                idx = (progress * s->count) / 256;
+                if (idx >= s->count)
+                    idx = s->count - 1;
+                sRegionMap->cursorPosX = s->cells[idx][0] + MAPCURSOR_X_MIN;
+                sRegionMap->cursorPosY = s->cells[idx][1] + MAPCURSOR_Y_MIN;
+                return;
+            }
+        }
+        break;
     }
     sRegionMap->cursorPosX = gRegionMapEntries[sRegionMap->mapSecId].x + x + MAPCURSOR_X_MIN;
     sRegionMap->cursorPosY = gRegionMapEntries[sRegionMap->mapSecId].y + y + MAPCURSOR_Y_MIN;
@@ -1537,8 +1743,10 @@ static u8 GetMapsecType(mapsec_u16_t mapSecId)
         return FlagGet(FLAG_VISITED_EVER_GRANDE_CITY) ? MAPSECTYPE_CITY_CANFLY : MAPSECTYPE_CITY_CANTFLY;
     case MAPSEC_BATTLE_FRONTIER:
         return FlagGet(FLAG_LANDMARK_BATTLE_FRONTIER) ? MAPSECTYPE_BATTLE_FRONTIER : MAPSECTYPE_NONE;
-    case MAPSEC_SOUTHERN_ISLAND:
-        return FlagGet(FLAG_LANDMARK_SOUTHERN_ISLAND) ? MAPSECTYPE_ROUTE : MAPSECTYPE_NONE;
+    case MAPSEC_EON_ISLAND:     // was Southern Island; only on the Eon voyage map
+        return MAPSECTYPE_ROUTE;
+    case MAPSEC_HOLON_VILLAGE:  // Wavebreak Voyages: Holon's only town (Fly target on the Holon map)
+        return FlagGet(FLAG_VISITED_HOLON_VILLAGE) ? MAPSECTYPE_CITY_CANFLY : MAPSECTYPE_CITY_CANTFLY;
     case MAPSEC_TANGLYN_TOWN:   // Tiksi
         return FlagGet(FLAG_VISITED_TANGLYN_TOWN) ? MAPSECTYPE_CITY_CANFLY : MAPSECTYPE_CITY_CANTFLY;
     case MAPSEC_DRAKE_BASE_CAMP:   // Tiksi
@@ -2569,6 +2777,7 @@ void SetFlyDestination(struct RegionMap* regionMap)
 // the route touches is visited, grey before, blue for sea routes); places are OBJ discs / diamonds.
 static const u32 sOrchidMapFrame_Gfx[] = INCGFX_U32("graphics/pokenav/region_map/orchid_frame.png", ".4bpp.smol");
 static const u32 sOrchidMapFrameTiksi_Gfx[] = INCGFX_U32("graphics/pokenav/region_map/orchid_frame_tiksi.png", ".4bpp.smol");
+static const u32 sOrchidMapFrameVoyages_Gfx[] = INCGFX_U32("graphics/pokenav/region_map/orchid_frame_voyages.png", ".4bpp.smol");
 static const u32 sOrchidMapFrame_Tilemap[] = INCGFX_U32("graphics/pokenav/region_map/orchid_frame.bin", ".smolTM");
 static const u32 sOrchidMapFrameFly_Tilemap[] = INCGFX_U32("graphics/pokenav/region_map/orchid_frame_fly.bin", ".smolTM");
 static const u16 sOrchidMapFrame_Pal[] = INCGFX_U16("graphics/pokenav/region_map/orchid_frame.pal", ".gbapal");
@@ -2622,6 +2831,42 @@ static const struct OrchidRegionMapV2 sOrchidRegionMapsV2[] =
         .tubes = sOrchidMapTubes_Tiksi, .tubeCount = ARRAY_COUNT(sOrchidMapTubes_Tiksi),
         .components = sOrchidMapComponents_Tiksi, .frameGfx = sOrchidMapFrameTiksi_Gfx,
     },
+    [REGION_MAP_SEVII123] =
+    {
+        .nodes = sOrchidMapNodes_Sevii123, .nodeCount = ORCHID_V2_NODES_Sevii123,
+        .tubes = sOrchidMapTubes_Sevii123, .tubeCount = ORCHID_V2_TUBES_Sevii123,
+        .components = sOrchidMapComponents_Sevii123, .frameGfx = sOrchidMapFrameVoyages_Gfx,
+    },
+    [REGION_MAP_SEVII45] =
+    {
+        .nodes = sOrchidMapNodes_Sevii45, .nodeCount = ORCHID_V2_NODES_Sevii45,
+        .tubes = sOrchidMapTubes_Sevii45, .tubeCount = ORCHID_V2_TUBES_Sevii45,
+        .components = sOrchidMapComponents_Sevii45, .frameGfx = sOrchidMapFrameVoyages_Gfx,
+    },
+    [REGION_MAP_SEVII67] =
+    {
+        .nodes = sOrchidMapNodes_Sevii67, .nodeCount = ORCHID_V2_NODES_Sevii67,
+        .tubes = sOrchidMapTubes_Sevii67, .tubeCount = ORCHID_V2_TUBES_Sevii67,
+        .components = sOrchidMapComponents_Sevii67, .frameGfx = sOrchidMapFrameVoyages_Gfx,
+    },
+    [REGION_MAP_EON] =
+    {
+        .nodes = sOrchidMapNodes_Eon, .nodeCount = ORCHID_V2_NODES_Eon,
+        .tubes = sOrchidMapTubes_Eon, .tubeCount = ORCHID_V2_TUBES_Eon,
+        .components = sOrchidMapComponents_Eon, .frameGfx = sOrchidMapFrameVoyages_Gfx,
+    },
+    [REGION_MAP_HOLON] =
+    {
+        .nodes = sOrchidMapNodes_Holon, .nodeCount = ORCHID_V2_NODES_Holon,
+        .tubes = sOrchidMapTubes_Holon, .tubeCount = ORCHID_V2_TUBES_Holon,
+        .components = sOrchidMapComponents_Holon, .frameGfx = sOrchidMapFrameVoyages_Gfx,
+    },
+    [REGION_MAP_SINNOH] =
+    {
+        .nodes = sOrchidMapNodes_Sinnoh, .nodeCount = ORCHID_V2_NODES_Sinnoh,
+        .tubes = sOrchidMapTubes_Sinnoh, .tubeCount = ORCHID_V2_TUBES_Sinnoh,
+        .components = sOrchidMapComponents_Sinnoh, .frameGfx = sOrchidMapFrameVoyages_Gfx,
+    },
 };
 
 static const struct OrchidRegionMapV2 *GetOrchidRegionMapV2(void)
@@ -2636,6 +2881,8 @@ static const struct OrchidRegionMapV2 *GetOrchidRegionMapV2(void)
 static bool32 OrchidMapPlaceVisited(mapsec_u16_t mapSecId)
 {
     // TODO: Tosa places added by the region map tagger (Bura City, Faber Town, ...) have no visited flags yet, so they stay grey
+    if (mapSecId == MAPSEC_HOLON_LAKE && FlagGet(FLAG_VISITED_HOLON_LAKE))   // Holon landmark with its own flag
+        return TRUE;
     return GetMapsecType(mapSecId) == MAPSECTYPE_CITY_CANFLY || mapSecId == gMapHeader.regionMapSectionId;
 }
 

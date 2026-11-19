@@ -1,0 +1,9 @@
+mapscripts FourIsland_House1_MapScripts {}
+
+script FourIsland_House1_EventScript_BodySlamTutor {
+    msgbox(format("Big POKéMON win by sheer weight! That's my philosophy."), MSGBOX_NPC)
+}
+
+script FourIsland_House1_EventScript_FatMan {
+    msgbox(format("It's lovely to meet a traveller from Tosa."), MSGBOX_NPC)
+}

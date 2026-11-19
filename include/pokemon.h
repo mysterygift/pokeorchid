@@ -494,7 +494,8 @@ struct SpeciesInfo /*0xC4*/
     u32 isFrontierBanned:1; // This species is not allowed to participate in Battle Frontier facilities.
     u32 isSkyBattleBanned:1;
     u32 isTelekinesisBanned:1;
-    u32 padding4:8;
+    u32 isDeltaSpecies:1; // Orchid: Holon Delta (δ) species, see dev_scripts/voyages/delta/gen_delta.py
+    u32 padding4:7;
     // Shadow settings
     s8 enemyShadowXOffset; // This determines the X-offset for an enemy Pokémon's shadow during battle; negative values point left, positive values point right.
     s8 enemyShadowYOffset; // This determines the Y-offset for an enemy Pokémon's shadow during battle; negative values point up, positive values point down.
@@ -910,7 +911,11 @@ u16 SpeciesToPokedexNum(enum Species species);
 bool32 IsSpeciesInRegionalDex(enum Species species);
 bool32 IsSpeciesInKantoDex(enum Species species);
 bool32 IsSpeciesInHoennDex(enum Species species);
+bool32 IsDeltaSpecies(enum Species species);
+enum Species GetDeltaBaseSpecies(enum Species deltaSpecies);
+enum Species GetDeltaSpecies(enum Species baseSpecies);
 u16 GetBattleBGM(void);
+u16 GetSeviiTrainerEncounterBGM(u16 music);
 void PlayBattleBGM(void);
 void PlayMapChosenOrBattleBGM(u16 songId);
 void CreateTask_PlayMapChosenOrBattleBGM(u16 songId);

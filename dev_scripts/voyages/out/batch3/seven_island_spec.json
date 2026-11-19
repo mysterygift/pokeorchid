@@ -1,0 +1,555 @@
+{
+"name": "SevenIsland",
+"size": [
+24,
+20
+],
+"tileset": [
+"gTileset_General",
+"gTileset_SeviiIslands"
+],
+"ground": [
+"id",
+368,
+0,
+1
+],
+"mask": [
+"MMMMMMM........MMMMMMMMM",
+"MMMMMMM........MMMMMMMMM",
+"MMMMMMM........MMMMMMMMM",
+"KMMMMMM..........MMMMKMM",
+"WKMMMMM..........MMMKWKK",
+"KMMM.............MMMMKWW",
+"KKM..............MMMMKW~",
+"WWK..............MMMMKW~",
+"WKM..............MMMMKW~",
+"WKM..............nMMMKW~",
+"WKM...............MMMKW~",
+"WKM...............MMMKW~",
+"WKMMMKM...MKMMMhhhMMMKW~",
+"WWKKKWK...KWKKKRRRKKKWW~",
+"~WWWWKMhhhKWWWWWWWWWWW~~",
+"~~~~WWKkkkKW~~~~~~~~~~~~",
+"~~~~~WWkkkWW~~~~~~~~~~~~",
+"~~~~~~~kkk~~~~~~~~~~~~~~",
+"~~~~~~~kkk~~~~~~~~~~~~~~",
+"~~~~~~~kkk~~~~~~~~~~~~~~"
+],
+"big_trees": "T",
+"stamps": [
+[
+"LAYOUT_SOUTHERN_ISLAND_EXTERIOR",
+10,
+21,
+9,
+4,
+12,
+14
+]
+],
+"pstamps": [
+[
+"LAYOUT_LAVARIDGE_TOWN",
+14,
+2,
+4,
+5,
+4,
+5
+],
+[
+"LAYOUT_LAVARIDGE_TOWN",
+8,
+3,
+5,
+5,
+10,
+-1
+],
+[
+"LAYOUT_ROUTE104@git",
+7,
+48,
+2,
+2,
+22,
+16
+],
+[
+"LAYOUT_ROUTE104@git",
+7,
+48,
+2,
+2,
+2,
+17
+]
+],
+"cells": [
+[
+15,
+13,
+[
+"id",
+296
+]
+],
+[
+16,
+13,
+[
+"id",
+297
+]
+],
+[
+17,
+13,
+[
+"id",
+298
+]
+],
+[
+15,
+12,
+[
+"id",
+175
+]
+],
+[
+16,
+12,
+[
+"id",
+207
+]
+],
+[
+17,
+12,
+[
+"id",
+207
+]
+],
+[
+7,
+14,
+[
+"id",
+175
+]
+],
+[
+8,
+14,
+[
+"id",
+207
+]
+],
+[
+9,
+14,
+[
+"id",
+207
+]
+],
+[
+7,
+15,
+[
+"LAYOUT_ROUTE104@git",
+12,
+51
+]
+],
+[
+8,
+15,
+[
+"LAYOUT_ROUTE104@git",
+12,
+51
+]
+],
+[
+9,
+15,
+[
+"LAYOUT_ROUTE104@git",
+12,
+51
+]
+],
+[
+7,
+16,
+[
+"LAYOUT_ROUTE104@git",
+12,
+52
+]
+],
+[
+8,
+16,
+[
+"LAYOUT_ROUTE104@git",
+12,
+52
+]
+],
+[
+9,
+16,
+[
+"LAYOUT_ROUTE104@git",
+12,
+52
+]
+],
+[
+7,
+17,
+[
+"LAYOUT_ROUTE104@git",
+12,
+52
+]
+],
+[
+8,
+17,
+[
+"LAYOUT_ROUTE104@git",
+12,
+52
+]
+],
+[
+9,
+17,
+[
+"LAYOUT_ROUTE104@git",
+12,
+52
+]
+],
+[
+7,
+18,
+[
+"LAYOUT_ROUTE104@git",
+12,
+52
+]
+],
+[
+8,
+18,
+[
+"LAYOUT_ROUTE104@git",
+12,
+52
+]
+],
+[
+9,
+18,
+[
+"LAYOUT_ROUTE104@git",
+12,
+52
+]
+],
+[
+7,
+19,
+[
+"LAYOUT_ROUTE104@git",
+12,
+52
+]
+],
+[
+8,
+19,
+[
+"LAYOUT_ROUTE104@git",
+12,
+52
+]
+],
+[
+9,
+19,
+[
+"LAYOUT_ROUTE104@git",
+12,
+52
+]
+]
+],
+"auto": [],
+"marks": [
+[
+11,
+9,
+"house_room1",
+"warp"
+],
+[
+5,
+9,
+"mart",
+"warp"
+],
+[
+12,
+3,
+"pokemon_center",
+"warp"
+],
+[
+16,
+13,
+"harbor (arrow S)",
+"warp"
+],
+[
+7,
+18,
+"",
+"npc",
+"man"
+],
+[
+9,
+7,
+"",
+"npc",
+"man"
+],
+[
+15,
+5,
+"",
+"npc",
+"man"
+],
+[
+17,
+9,
+"",
+"sign"
+],
+[
+1,
+0,
+"^ Seven Island Trainer Tower",
+"conn"
+],
+[
+1,
+19,
+"v Seven Island Sevault Canyon Entrance",
+"conn"
+]
+],
+"post": [],
+"vstamps": [
+[
+"cottage",
+9,
+6
+]
+],
+"vcells": [],
+"arrow_warps": [
+[
+16,
+13,
+"S"
+]
+],
+"object_events": [
+{
+"graphics_id": "OBJ_EVENT_GFX_COOLTRAINER_M",
+"x": 7,
+"y": 18,
+"script": "SevenIsland_EventScript_SwordsDanceTutor"
+},
+{
+"graphics_id": "OBJ_EVENT_GFX_OLD_WOMAN_FRLG",
+"x": 9,
+"y": 7,
+"script": "SevenIsland_EventScript_OldWoman"
+},
+{
+"graphics_id": "OBJ_EVENT_GFX_SCIENTIST",
+"x": 15,
+"y": 5,
+"script": "SevenIsland_EventScript_Scientist"
+}
+],
+"report": {
+"map": "SevenIsland",
+"size": [
+24,
+20
+],
+"pair": [
+"gTileset_General",
+"gTileset_SeviiIslands"
+],
+"unresolved": [],
+"buildings": [
+{
+"warp": [
+11,
+9
+],
+"dest": "MAP_SEVEN_ISLAND_HOUSE_ROOM1",
+"footprint": [
+10,
+7,
+5,
+3
+],
+"stamp": "cottage",
+"at": [
+9,
+6,
+5,
+4
+]
+},
+{
+"warp": [
+5,
+9
+],
+"dest": "MAP_SEVEN_ISLAND_MART",
+"footprint": [
+3,
+6,
+4,
+4
+],
+"stamp": "mart",
+"at": [
+4,
+5,
+4,
+5
+]
+},
+{
+"warp": [
+12,
+3
+],
+"dest": "MAP_SEVEN_ISLAND_POKEMON_CENTER_1F",
+"footprint": [
+10,
+0,
+5,
+4
+],
+"stamp": "centre",
+"at": [
+10,
+-1,
+5,
+5
+]
+},
+{
+"warp": [
+16,
+13
+],
+"dest": "MAP_SEVEN_ISLAND_HARBOR",
+"footprint": 64,
+"stamp": "harbor dock"
+}
+],
+"caves": [],
+"ported_cells": 0,
+"arrow_warps": [
+[
+16,
+13,
+"S"
+]
+],
+"connections": [
+[
+"up",
+-48,
+"MAP_SEVEN_ISLAND_TRAINER_TOWER"
+],
+[
+"down",
+0,
+"MAP_SEVEN_ISLAND_SEVAULT_CANYON_ENTRANCE"
+]
+],
+"warps": [
+[
+11,
+9,
+"MAP_SEVEN_ISLAND_HOUSE_ROOM1"
+],
+[
+5,
+9,
+"MAP_SEVEN_ISLAND_MART"
+],
+[
+12,
+3,
+"MAP_SEVEN_ISLAND_POKEMON_CENTER_1F"
+],
+[
+16,
+13,
+"MAP_SEVEN_ISLAND_HARBOR"
+]
+],
+"objects": [
+[
+7,
+18,
+"OBJ_EVENT_GFX_COOLTRAINER_M",
+"COOLTRAINER_M"
+],
+[
+9,
+7,
+"OBJ_EVENT_GFX_OLD_WOMAN_FRLG",
+"OLD_WOMAN_FRLG"
+],
+[
+15,
+5,
+"OBJ_EVENT_GFX_SCIENTIST",
+"SCIENTIST"
+]
+],
+"classes": {
+"M": 153,
+".": 149,
+"~": 153,
+"n": 1,
+"h": 6,
+"p": 3,
+"k": 15
+}
+}
+}

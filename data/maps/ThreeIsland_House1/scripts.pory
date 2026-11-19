@@ -1,0 +1,9 @@
+mapscripts ThreeIsland_House1_MapScripts {}
+
+script ThreeIsland_House1_EventScript_Lostelle {
+    msgbox(format("Daddy says I'm not allowed in Berry Forest on my own anymore."), MSGBOX_NPC)
+}
+
+script ThreeIsland_House1_EventScript_DisplayCase {
+    msgbox(format("A display case full of shiny Berry seeds."), MSGBOX_SIGN)
+}

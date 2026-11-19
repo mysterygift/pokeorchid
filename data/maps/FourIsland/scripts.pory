@@ -1,0 +1,70 @@
+mapscripts FourIsland_MapScripts {
+    MAP_SCRIPT_ON_TRANSITION {
+        setflag(FLAG_VISITED_FOUR_ISLAND)
+    }
+}
+
+script FourIsland_EventScript_DaycareMan {
+    msgbox(format("We look after POKéMON while their trainers explore the islands."), MSGBOX_NPC)
+}
+
+script FourIsland_EventScript_Doduo {
+    lock
+    faceplayer
+    waitse
+    playmoncry(SPECIES_DODUO, CRY_MODE_NORMAL)
+    msgbox(format("DODUO: Mrrrr!"))
+    waitmoncry
+    release
+}
+
+script FourIsland_EventScript_NidoranF {
+    lock
+    faceplayer
+    waitse
+    playmoncry(SPECIES_NIDORAN_F, CRY_MODE_NORMAL)
+    msgbox(format("NIDORAN: Gyaoo!"))
+    waitmoncry
+    release
+}
+
+script FourIsland_EventScript_NidoranM {
+    lock
+    faceplayer
+    waitse
+    playmoncry(SPECIES_NIDORAN_M, CRY_MODE_NORMAL)
+    msgbox(format("NIDORAN: Grrr!"))
+    waitmoncry
+    release
+}
+
+script FourIsland_EventScript_Psyduck {
+    lock
+    faceplayer
+    waitse
+    playmoncry(SPECIES_PSYDUCK, CRY_MODE_NORMAL)
+    msgbox(format("PSYDUCK: Pii-pii!"))
+    waitmoncry
+    release
+}
+
+script FourIsland_EventScript_OldWoman {
+    msgbox(format("The ice cave across the water stays frozen all year round. Strange, isn't it?"), MSGBOX_NPC)
+}
+
+script FourIsland_EventScript_FatMan {
+    msgbox(format("Lorelei lives on this island. She's terribly strong, but kind to the children."), MSGBOX_NPC)
+}
+
+script FourIsland_EventScript_LittleGirl {
+    msgbox(format("I'm building a snow POKéMON from the cave ice! It keeps melting..."), MSGBOX_NPC)
+}
+
+script FourIsland_EventScript_IslandSign {
+    msgbox(format("FOUR ISLAND\n"
+        "Floe Island. The ice cave lies across the water."), MSGBOX_SIGN)
+}
+
+script FourIsland_EventScript_LoreleisHouseSign {
+    msgbox(format("LORELEI'S HOUSE"), MSGBOX_SIGN)
+}

@@ -1,0 +1,5 @@
+mapscripts HolonVillage_House7_MapScripts {}
+
+script HolonVillage_House7_EventScript_Npc {
+    msgbox(format("Long ago, folk carved diamonds into stones all over Holon. Nobody remembers why any more."), MSGBOX_NPC)
+}

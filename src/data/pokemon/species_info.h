@@ -160,6 +160,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
     #include "species_info/gen_8_families.h"
     #include "species_info/gen_9_families.h"
     #include "species_info/orchid_families.h"
+    #include "species_info/delta_families.h"
 
     [SPECIES_EGG] =
     {

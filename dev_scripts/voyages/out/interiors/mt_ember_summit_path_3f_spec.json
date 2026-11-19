@@ -1,0 +1,192 @@
+{
+ "size": [
+  15,
+  11
+ ],
+ "tileset": [
+  "gTileset_General",
+  "gTileset_Lavaridge"
+ ],
+ "ground": [
+  "raw",
+  1649
+ ],
+ "marks": [
+  [
+   2,
+   4,
+   "2F",
+   "warp"
+  ],
+  [
+   11,
+   8,
+   "EXTERIOR",
+   "warp"
+  ]
+ ],
+ "grid_raw": [
+  "0671 0678 0674 0674 0674 0674 0674 0671 0671 0671 0671 0671 0671 0671 0671",
+  "067B 0674 0674 0674 0674 0674 072D 067C 0678 0674 0671 0671 0671 0671 0671",
+  "0672 0672 3308 3308 3308 3308 3308 070E 0674 0674 0674 0674 0674 0671 0671",
+  "0672 0672 3308 3308 3308 3308 3308 3308 3308 0674 0674 0674 067C 0671 0671",
+  "0671 0671 3309 070C 070C 070C 070C 070C 3308 3308 3308 3308 070E 067C 0670",
+  "0671 0671 0671 0671 0671 0671 0671 0671 067B 070B 3308 3308 3308 0706 0670",
+  "0671 0671 0671 0671 0671 0671 0671 0671 0672 0707 3308 3308 3308 0706 0670",
+  "0671 0671 0671 0671 0671 0671 0671 0671 0672 0672 3308 3308 3308 0706 0670",
+  "0671 0671 0671 0671 0671 0671 0671 0671 0671 0672 3308 3309 3308 0706 0670",
+  "0671 0671 0671 0671 0671 0671 0671 0671 0671 067F 0671 0671 0671 0706 0670",
+  "0671 0671 0671 0671 0671 0671 0671 0671 0671 0671 0671 0671 0671 0706 0670"
+ ],
+ "report": {
+  "pair": [
+   "gTileset_General",
+   "gTileset_Lavaridge"
+  ],
+  "set": "lava",
+  "look": "Fiery Path / Magma Hideout red rock (Mt. Chimney's volcano cave), Lavaridge hot-spring water",
+  "classes": [
+   "###############",
+   "###############",
+   "##.....########",
+   "##.......######",
+   "##v#####....###",
+   "##########...##",
+   "##########...##",
+   "##########...##",
+   "##########.v.##",
+   "###############",
+   "###############"
+  ],
+  "sig_levels": {
+   "5": 116,
+   "1": 19,
+   "2": 1
+  },
+  "notes": [],
+  "frlg_map": "MtEmber_SummitPath_3F",
+  "frlg_layout": "LAYOUT_MT_EMBER_SUMMIT_PATH_3F",
+  "frlg_pair": [
+   "gTileset_General_Frlg",
+   "gTileset_MtEmber"
+  ],
+  "maps": [
+   "MAP_MT_EMBER_SUMMIT_PATH_3_F"
+  ],
+  "size": [
+   15,
+   11
+  ],
+  "method": "learned cave autotiler (interiors_caves.py), set 'lava'",
+  "warps": [
+   {
+    "x": 2,
+    "y": 4,
+    "dest_map": "MAP_MT_EMBER_SUMMIT_PATH_2F",
+    "dest_warp_id": "1"
+   },
+   {
+    "x": 11,
+    "y": 8,
+    "dest_map": "MAP_MT_EMBER_EXTERIOR",
+    "dest_warp_id": "3"
+   }
+  ],
+  "objects": [],
+  "bg_events": [],
+  "coord_events": [],
+  "walk_diff": [],
+  "seams_before_fix": 25,
+  "seam_cells_repicked": 20,
+  "seams": [
+   [
+    0,
+    3,
+    "S",
+    "0x272",
+    "0x271"
+   ],
+   [
+    1,
+    3,
+    "S",
+    "0x272",
+    "0x271"
+   ],
+   [
+    1,
+    4,
+    "E",
+    "0x271",
+    "0x309"
+   ],
+   [
+    2,
+    4,
+    "E",
+    "0x309",
+    "0x30C"
+   ],
+   [
+    2,
+    4,
+    "S",
+    "0x309",
+    "0x271"
+   ],
+   [
+    8,
+    5,
+    "E",
+    "0x27B",
+    "0x30B"
+   ],
+   [
+    8,
+    7,
+    "S",
+    "0x272",
+    "0x271"
+   ],
+   [
+    11,
+    8,
+    "S",
+    "0x309",
+    "0x271"
+   ]
+  ],
+  "secondary_users": [
+   "LAYOUT_LAVARIDGE_TOWN",
+   "LAYOUT_JAGGED_PASS",
+   "LAYOUT_FIERY_PATH",
+   "LAYOUT_MAGMA_HIDEOUT_1F",
+   "LAYOUT_MAGMA_HIDEOUT_2F_1R",
+   "LAYOUT_MAGMA_HIDEOUT_2F_2R",
+   "LAYOUT_MAGMA_HIDEOUT_3F_1R",
+   "LAYOUT_MAGMA_HIDEOUT_3F_2R",
+   "LAYOUT_MAGMA_HIDEOUT_4F",
+   "LAYOUT_MAGMA_HIDEOUT_3F_3R",
+   "LAYOUT_MAGMA_HIDEOUT_2F_3R",
+   "LAYOUT_DRAKE_BASE_CAMP"
+  ],
+  "metatiles": [
+   "0x270",
+   "0x271",
+   "0x272",
+   "0x274",
+   "0x278",
+   "0x27B",
+   "0x27C",
+   "0x27F",
+   "0x306",
+   "0x307",
+   "0x308",
+   "0x309",
+   "0x30B",
+   "0x30C",
+   "0x30E",
+   "0x32D"
+  ]
+ }
+}

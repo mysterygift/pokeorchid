@@ -14,6 +14,7 @@
 #include "text_window.h"
 #include "trainer_pokemon_sprites.h"
 #include "window.h"
+#include "voyages.h"
 #include "constants/maps.h"
 #include "constants/rgb.h"
 #include "constants/seagallop.h"
@@ -21,8 +22,15 @@
 
 #define TILESTAG_FERRY 3000
 #define TILESTAG_WAKE  4000
+#define TILESTAG_BOAT  3001 // Orchid voyages: Mr. Briney's boat instead of the ferry
 
 #define PALTAG_FERRY_WAKE 3000
+#define PALTAG_BOAT       3001
+
+// Orchid voyages: the Sailor's small boat replaces the ferry, and voyages.c picks the arrival warp.
+#define IS_VOYAGE() (gSpecialVar_0x8004 == SEAGALLOP_VOYAGE_OUTBOUND || gSpecialVar_0x8004 == SEAGALLOP_VOYAGE_INBOUND)
+#define BOAT_Y_OFFSET (-12) // the boat art fills its 64x64 box, the ferry only the top 40 rows
+#define BOAT_WAKE_Y_OFFSET 4
 
 static EWRAM_DATA void *sBg3TilemapBuffer = NULL;
 
@@ -52,6 +60,8 @@ static const u16 sWaterTilemap_EB[] = INCBIN_U16("graphics/seagallop/eb_tilemap.
 static const u16 sFerrySpriteTiles[] = INCGFX_U16("graphics/seagallop/ferry_sprite.png", ".4bpp");
 static const u16 sFerryAndWakePal[] = INCGFX_U16("graphics/seagallop/ferry_and_wake.pal", ".gbapal");
 static const u16 sWakeSpriteTiles[] = INCGFX_U16("graphics/seagallop/wake.png", ".4bpp");
+static const u16 sBoatSpriteTiles[] = INCGFX_U16("graphics/seagallop/briney_boat.png", ".4bpp");
+static const u16 sBoatPal[] = INCGFX_U16("graphics/seagallop/briney_boat.png", ".gbapal");
 
 static const struct BgTemplate sBGTemplates[] = {
     {
@@ -131,6 +141,19 @@ static const struct SpriteTemplate sFerrySpriteTemplate = {
     gDummySpriteAffineAnimTable,
     SpriteCB_Ferry
 };
+
+static const struct SpriteTemplate sBoatSpriteTemplate = {
+    TILESTAG_BOAT,
+    PALTAG_BOAT,
+    &sOamData_Ferry,
+    sSpriteAnimTable_Ferry,
+    NULL,
+    gDummySpriteAffineAnimTable,
+    SpriteCB_Ferry
+};
+
+static const struct SpriteSheet sBoatSpriteSheet = {(const void *)sBoatSpriteTiles, sizeof(sBoatSpriteTiles), TILESTAG_BOAT};
+static const struct SpritePalette sBoatSpritePalette = {sBoatPal, PALTAG_BOAT};
 
 static const struct SpriteSheet sFerryAndWakeSpriteSheets[] = {
     {(const void *)sWakeSpriteTiles,  sizeof(sWakeSpriteTiles),  TILESTAG_WAKE},
@@ -309,11 +332,18 @@ static void Task_Seagallop_3(void)
 {
     const s8 * warpInfo;
 
-    if (gSpecialVar_0x8006 >= NELEMS(sSeag))
+    if (!IS_VOYAGE() && gSpecialVar_0x8006 >= NELEMS(sSeag))
         gSpecialVar_0x8006 = 0;
 
-    warpInfo = sSeag[gSpecialVar_0x8006];
-    SetWarpDestination(warpInfo[0], warpInfo[1], -1, warpInfo[2], warpInfo[3]);
+    if (IS_VOYAGE())
+    {
+        Voyage_SetArrivalWarp(gSpecialVar_0x8006);
+    }
+    else
+    {
+        warpInfo = sSeag[gSpecialVar_0x8006];
+        SetWarpDestination(warpInfo[0], warpInfo[1], -1, warpInfo[2], warpInfo[3]);
+    }
     PlayRainStoppingSoundEffect();
     PlaySE(SE_EXIT);
     gFieldCallback = FieldCB_DefaultWarpExit;
@@ -385,6 +415,11 @@ static void LoadFerrySpriteResources(void)
 {
     LoadSpriteSheets(sFerryAndWakeSpriteSheets);
     LoadSpritePalettes(sFerryAndWakeSpritePalettes);
+    if (IS_VOYAGE())
+    {
+        LoadSpriteSheet(&sBoatSpriteSheet);
+        LoadSpritePalette(&sBoatSpritePalette);
+    }
 }
 
 static void FreeFerrySpriteResources(void)
@@ -392,11 +427,17 @@ static void FreeFerrySpriteResources(void)
     FreeSpriteTilesByTag(TILESTAG_FERRY);
     FreeSpriteTilesByTag(TILESTAG_WAKE);
     FreeSpritePaletteByTag(PALTAG_FERRY_WAKE);
+    FreeSpriteTilesByTag(TILESTAG_BOAT);
+    FreeSpritePaletteByTag(PALTAG_BOAT);
 }
 
 static void CreateFerrySprite(void)
 {
-    u8 spriteId = CreateSprite(&sFerrySpriteTemplate, 0, 92, 0);
+    u8 spriteId;
+    if (IS_VOYAGE())
+        spriteId = CreateSprite(&sBoatSpriteTemplate, 0, 92 + BOAT_Y_OFFSET, 0);
+    else
+        spriteId = CreateSprite(&sFerrySpriteTemplate, 0, 92, 0);
     gSprites[spriteId].data[0] = 48;
     if (GetDirectionOfTravel() == DIRN_EASTBOUND)
     {
@@ -426,7 +467,7 @@ static void SpriteCB_Ferry(struct Sprite *sprite)
 
 static void CreateWakeSprite(s16 x)
 {
-    u8 spriteId = CreateSpriteUnchecked(&sWakeSpriteTemplate, x, 92, 8);
+    u8 spriteId = CreateSpriteUnchecked(&sWakeSpriteTemplate, x, IS_VOYAGE() ? 92 + BOAT_WAKE_Y_OFFSET : 92, 8);
     if (spriteId != MAX_SPRITES)
     {
         if (GetDirectionOfTravel() == DIRN_EASTBOUND)
@@ -446,6 +487,8 @@ static void SpriteCB_Wake(struct Sprite *sprite)
 
 static bool8 GetDirectionOfTravel(void)
 {
+    if (IS_VOYAGE()) // leaving Wavebreak heads out east; coming home heads west
+        return gSpecialVar_0x8004 == SEAGALLOP_VOYAGE_OUTBOUND ? DIRN_EASTBOUND : DIRN_WESTBOUND;
     if (gSpecialVar_0x8004 >= NELEMS(sTravelDirectionMatrix))
     {
         return DIRN_EASTBOUND;

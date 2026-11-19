@@ -1,0 +1,13 @@
+mapscripts ThreeIsland_Port_MapScripts {}
+
+script ThreeIsland_Port_EventScript_Woman {
+    msgbox(format("It's lovely to meet a traveller from Tosa."), MSGBOX_NPC)
+}
+
+script ThreeIsland_Port_EventScript_Biker1 {
+    msgbox(format("Ships used to dock at this port all day long."), MSGBOX_NPC)
+}
+
+script ThreeIsland_Port_EventScript_Biker2 {
+    msgbox(format("Ships used to dock at this port all day long."), MSGBOX_NPC)
+}

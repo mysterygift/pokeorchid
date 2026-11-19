@@ -1,0 +1,722 @@
+{
+"name": "MtEmber_Summit",
+"size": [
+19,
+22
+],
+"tileset": [
+"gTileset_General",
+"gTileset_Lavaridge"
+],
+"ground": [
+"id",
+368,
+0,
+1
+],
+"mask": [
+"MMMMMMMMMMMMMMMMMMM",
+"MMMMMMMMMMMMMMMMMMM",
+"MMMMMMMMMMMMMMMMMMM",
+"MMMMMMMMMMMMMMMMMMM",
+"MMMMMMMMMMMMMMMMMMM",
+"MMMMMMMpppppMMMMMMM",
+"MMMMMMMpppppMMMMMMM",
+"ppMMMMMpppppMMMMppp",
+"pppppppooppoppppppp",
+"ppppppopppppoppppMM",
+"poppppoppoopoppppMM",
+"MMMpppoppppopoppMMM",
+"MMMpopoopppopppMMMM",
+"MMMMpppoopppoppMMMM",
+"MMMMMMoppppoppoMMMM",
+"MMMMMMpoopopoMMMMMM",
+"MMMMMMMMhhhMMMMMMMM",
+"MMMMMMMMhhhMMMMMMMM",
+"MMMMMMMMhhhMMMMMMMM",
+"MMMMMMMMhhhMMMMMMMM",
+"MMMMMMMMhhhMMMMMMMM",
+"MMMMMMMMhhhMMMMMMMM"
+],
+"big_trees": "T",
+"stamps": [],
+"pstamps": [],
+"cells": [
+[
+8,
+16,
+[
+"id",
+686
+]
+],
+[
+9,
+16,
+[
+"id",
+687
+]
+],
+[
+10,
+16,
+[
+"id",
+687
+]
+],
+[
+8,
+17,
+[
+"id",
+686
+]
+],
+[
+9,
+17,
+[
+"id",
+687
+]
+],
+[
+10,
+17,
+[
+"id",
+687
+]
+],
+[
+8,
+18,
+[
+"id",
+686
+]
+],
+[
+9,
+18,
+[
+"id",
+687
+]
+],
+[
+10,
+18,
+[
+"id",
+687
+]
+],
+[
+8,
+19,
+[
+"id",
+686
+]
+],
+[
+9,
+19,
+[
+"id",
+687
+]
+],
+[
+10,
+19,
+[
+"id",
+687
+]
+],
+[
+8,
+20,
+[
+"id",
+686
+]
+],
+[
+9,
+20,
+[
+"id",
+687
+]
+],
+[
+10,
+20,
+[
+"id",
+687
+]
+],
+[
+8,
+21,
+[
+"id",
+686
+]
+],
+[
+9,
+21,
+[
+"id",
+687
+]
+],
+[
+10,
+21,
+[
+"id",
+687
+]
+],
+[
+7,
+8,
+[
+"id",
+225
+]
+],
+[
+8,
+8,
+[
+"id",
+225
+]
+],
+[
+11,
+8,
+[
+"id",
+225
+]
+],
+[
+6,
+9,
+[
+"id",
+225
+]
+],
+[
+12,
+9,
+[
+"id",
+225
+]
+],
+[
+1,
+10,
+[
+"id",
+225
+]
+],
+[
+6,
+10,
+[
+"id",
+225
+]
+],
+[
+9,
+10,
+[
+"id",
+225
+]
+],
+[
+10,
+10,
+[
+"id",
+225
+]
+],
+[
+12,
+10,
+[
+"id",
+225
+]
+],
+[
+6,
+11,
+[
+"id",
+225
+]
+],
+[
+11,
+11,
+[
+"id",
+225
+]
+],
+[
+13,
+11,
+[
+"id",
+225
+]
+],
+[
+4,
+12,
+[
+"id",
+225
+]
+],
+[
+6,
+12,
+[
+"id",
+225
+]
+],
+[
+7,
+12,
+[
+"id",
+225
+]
+],
+[
+11,
+12,
+[
+"id",
+225
+]
+],
+[
+7,
+13,
+[
+"id",
+225
+]
+],
+[
+8,
+13,
+[
+"id",
+225
+]
+],
+[
+12,
+13,
+[
+"id",
+225
+]
+],
+[
+6,
+14,
+[
+"id",
+225
+]
+],
+[
+11,
+14,
+[
+"id",
+225
+]
+],
+[
+14,
+14,
+[
+"id",
+225
+]
+],
+[
+7,
+15,
+[
+"id",
+225
+]
+],
+[
+8,
+15,
+[
+"id",
+225
+]
+],
+[
+10,
+15,
+[
+"id",
+225
+]
+],
+[
+12,
+15,
+[
+"id",
+225
+]
+]
+],
+"auto": [],
+"marks": [
+[
+9,
+15,
+"mt_ember_exter (arrow S)",
+"warp"
+],
+[
+9,
+6,
+"Moltres",
+"spot"
+],
+[
+10,
+12,
+"",
+"field",
+"pushable_boulder"
+],
+[
+9,
+12,
+"",
+"field",
+"pushable_boulder"
+],
+[
+8,
+11,
+"",
+"npc",
+"man"
+],
+[
+8,
+10,
+"",
+"npc",
+"man"
+]
+],
+"post": [],
+"vstamps": [],
+"vcells": [],
+"arrow_warps": [
+[
+9,
+15,
+"S"
+]
+],
+"object_events": [
+{
+"graphics_id": "OBJ_EVENT_GFX_SPECIES(MOLTRES)",
+"x": 9,
+"y": 6,
+"script": "MtEmber_Summit_EventScript_Moltres"
+},
+{
+"graphics_id": "OBJ_EVENT_GFX_PUSHABLE_BOULDER",
+"x": 10,
+"y": 12,
+"script": "EventScript_StrengthBoulder"
+},
+{
+"graphics_id": "OBJ_EVENT_GFX_PUSHABLE_BOULDER",
+"x": 9,
+"y": 12,
+"script": "EventScript_StrengthBoulder"
+},
+{
+"graphics_id": "OBJ_EVENT_GFX_PUSHABLE_BOULDER",
+"x": 8,
+"y": 11,
+"script": "EventScript_StrengthBoulder"
+},
+{
+"graphics_id": "OBJ_EVENT_GFX_PUSHABLE_BOULDER",
+"x": 8,
+"y": 10,
+"script": "EventScript_StrengthBoulder"
+}
+],
+"report": {
+"map": "MtEmber_Summit",
+"size": [
+19,
+22
+],
+"pair": [
+"gTileset_General",
+"gTileset_Lavaridge"
+],
+"unresolved": [],
+"buildings": [],
+"caves": [],
+"boulders": [
+[
+7,
+8,
+"0E1",
+"dirt (flag)"
+],
+[
+8,
+8,
+"0E1",
+"dirt (flag)"
+],
+[
+11,
+8,
+"0E1",
+"dirt (flag)"
+],
+[
+6,
+9,
+"0E1",
+"dirt (flag)"
+],
+[
+12,
+9,
+"0E1",
+"dirt (flag)"
+],
+[
+1,
+10,
+"0E1",
+"dirt (flag)"
+],
+[
+6,
+10,
+"0E1",
+"dirt (flag)"
+],
+[
+9,
+10,
+"0E1",
+"dirt (flag)"
+],
+[
+10,
+10,
+"0E1",
+"dirt (flag)"
+],
+[
+12,
+10,
+"0E1",
+"dirt (flag)"
+],
+[
+6,
+11,
+"0E1",
+"dirt (flag)"
+],
+[
+11,
+11,
+"0E1",
+"dirt (flag)"
+],
+[
+13,
+11,
+"0E1",
+"dirt (flag)"
+],
+[
+4,
+12,
+"0E1",
+"dirt (flag)"
+],
+[
+6,
+12,
+"0E1",
+"dirt (flag)"
+],
+[
+7,
+12,
+"0E1",
+"dirt (flag)"
+],
+[
+11,
+12,
+"0E1",
+"dirt (flag)"
+],
+[
+7,
+13,
+"0E1",
+"dirt (flag)"
+],
+[
+8,
+13,
+"0E1",
+"dirt (flag)"
+],
+[
+12,
+13,
+"0E1",
+"dirt (flag)"
+],
+[
+6,
+14,
+"0E1",
+"dirt (flag)"
+],
+[
+11,
+14,
+"0E1",
+"dirt (flag)"
+],
+[
+14,
+14,
+"0E1",
+"dirt (flag)"
+],
+[
+7,
+15,
+"0E1",
+"dirt (flag)"
+],
+[
+8,
+15,
+"0E1",
+"dirt (flag)"
+],
+[
+10,
+15,
+"0E1",
+"dirt (flag)"
+],
+[
+12,
+15,
+"0E1",
+"dirt (flag)"
+]
+],
+"arrow_warps": [
+[
+9,
+15,
+"S"
+]
+],
+"connections": [],
+"warps": [
+[
+9,
+15,
+"MAP_MT_EMBER_EXTERIOR"
+]
+],
+"objects": [
+[
+9,
+6,
+"OBJ_EVENT_GFX_MOLTRES",
+"SPECIES(MOLTRES)"
+],
+[
+10,
+12,
+"OBJ_EVENT_GFX_PUSHABLE_BOULDER_FRLG",
+"PUSHABLE_BOULDER"
+],
+[
+9,
+12,
+"OBJ_EVENT_GFX_PUSHABLE_BOULDER_FRLG",
+"PUSHABLE_BOULDER"
+],
+[
+8,
+11,
+"OBJ_EVENT_GFX_PUSHABLE_BOULDER",
+"PUSHABLE_BOULDER"
+],
+[
+8,
+10,
+"OBJ_EVENT_GFX_PUSHABLE_BOULDER",
+"PUSHABLE_BOULDER"
+]
+],
+"classes": {
+"M": 275,
+"p": 98,
+"o": 27,
+"h": 18
+}
+}
+}

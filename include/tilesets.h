@@ -12,6 +12,7 @@ extern const struct Tileset gTileset_BuildingFrlg;
 extern const struct Tileset gTileset_BrendansMaysHouse;
 extern const struct Tileset gTileset_GenericBuilding1;
 extern const struct Tileset gTileset_General;
+extern const struct Tileset gTileset_General_Holon; // Orchid Holon
 extern const struct Tileset gTileset_Petalburg;
 extern const struct Tileset gTileset_Rustboro;
 extern const struct Tileset gTileset_Fallarbor;
@@ -26,6 +27,7 @@ extern const struct Tileset gTileset_Pacifidlog;
 extern const struct Tileset gTileset_PetalburgGym;
 extern const struct Tileset gTileset_PokemonCenter;
 extern const struct Tileset gTileset_OrchidCentre;
+extern const struct Tileset gTileset_ChanguCafe;
 extern const struct Tileset gTileset_InsideShip;
 extern const struct Tileset gTileset_Fallarbor;
 extern const struct Tileset gTileset_Shop;
@@ -64,5 +66,21 @@ extern const struct Tileset gTileset_TrainerTower;
 extern const struct Tileset gTileset_TosaPort;
 extern const struct Tileset gTileset_TanobyDelta;
 extern const struct Tileset gTileset_UbeCity;
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Sevii Islands begin
+extern const struct Tileset gTileset_SeviiIslands;
+// Sevii Islands end
 
 #endif //GUARD_tilesets_H
