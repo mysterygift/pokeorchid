@@ -1,6 +1,7 @@
 #include "global.h"
 #include "graphics.h"
 #include "window.h"
+#include "gpu_regs.h"
 #include "data/battle_orchid_ui.h"
 #include "battle.h"
 #include "battle_hold_effects.h"
@@ -8488,6 +8489,11 @@ static void Cmd_displaydexinfo(void)
         break;
     case 3:
         InitBattleBgsVideo();
+        // InitBattleBgsVideo turns WIN0 and the OBJ window on but leaves WININ/WINOUT alone.
+        // A summary screen earlier in the battle (e.g. "forget which move?" from the catch
+        // exp level-up) zeroes both on exit, which would hide every layer -> black screen.
+        SetGpuReg(REG_OFFSET_WININ, WININ_WIN0_BG_ALL | WININ_WIN0_OBJ | WININ_WIN0_CLR | WININ_WIN1_BG_ALL | WININ_WIN1_OBJ | WININ_WIN1_CLR);
+        SetGpuReg(REG_OFFSET_WINOUT, WINOUT_WIN01_BG_ALL | WINOUT_WIN01_OBJ | WINOUT_WIN01_CLR | WINOUT_WINOBJ_BG_ALL | WINOUT_WINOBJ_OBJ | WINOUT_WINOBJ_CLR);
         LoadBattleTextboxAndBackground();
         gBattle_BG3_X = 256;
         gBattleCommunication[0]++;
