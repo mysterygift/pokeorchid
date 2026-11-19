@@ -349,6 +349,7 @@ gStdScripts_End::
 	.include "data/maps/FerrumShrine/scripts.inc" @ tiksi-maps
 	.include "data/maps/GavaniPath/scripts.inc" @ tiksi-maps
 	.include "data/maps/MtDrakeSummit/scripts.inc" @ tiksi-maps
+	.include "data/maps/MtDrake_WestFace/scripts.inc" @ mt-drake
 	.include "data/maps/MtDrake_SouthFace/scripts.inc" @ mt-drake
 	.include "data/maps/MtDrake_1F/scripts.inc" @ mt-drake
 	.include "data/maps/MtDrake_2F/scripts.inc" @ mt-drake

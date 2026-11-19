@@ -47,7 +47,10 @@ ROUTES = OrderedDict([
     ("Route402", ("MAPSEC_ROUTE_402", "MUS_ROUTE110", "HIKER",
                   "Mt. Drake starts just north of here. Its peaks are higher than anything in Tosa.", {})),
     ("Route403", ("MAPSEC_ROUTE_403", "MUS_DESERT", "CAMPER",
-                  "The shrine up north sits in the middle of a desert. The locals won't go near it.", {})),
+                  "The shrine up north sits in the middle of a desert. The locals won't go near it.",
+                  {"cave": ("N", "RegolisShrine", "EXPERT_F",
+                            "This path leads to Regolis Shrine, in the heart of the desert. The rock giant sleeps there once more."
+                            "\\pI am its guardian. Go if you must.")})),
     ("Route404", ("MAPSEC_ROUTE_404", "MUS_ROUTE110", "HIKER",
                   "Drake Base Camp is where climbers rest before Mt. Drake. Warm stew, cold nights.", {})),
     ("Route405", ("MAPSEC_ROUTE_405", "MUS_ROUTE120", "PICNICKER",
@@ -222,6 +225,16 @@ def build(name, sec, extra, grid):
         else:
             for x in range(min(mx, edge[0]), max(mx, edge[0]) + 2):
                 cv.set(x, my, "P"); cv.set(x, my + 1, "P")
+    caves = []
+    if extra.get("cave"):                        # a cave mouth on the route's edge path (the Regi shrines)
+        side, folder, gfx, line = extra["cave"]
+        d, c, (ex, ey), _ = next(o for o in opens if o[0] == side)
+        mx, _ = centre(c)
+        cv.rect(mx - 3, 0, mx + 4, 3, "R")
+        cv.stamp(mx - 1 + 1, 0, PH.MOUTH)            # door (mx + 1, 3) sits on the path's right lane
+        for y in range(4, 6):
+            cv.set(mx, y, "P"); cv.set(mx + 1, y, "P")
+        caves.append(((mx + 1, 3), folder, gfx, line))
     # tall grass, scattered trees (dense along a hidden route)
     keep = ("P", "X", "W", "S", "R")
     area = sum(1 for row in cv.t for c in row if c == "G")
@@ -264,7 +277,7 @@ def build(name, sec, extra, grid):
             sign = (x, y)
             break
     blocks = PH.render(cv, "route")
-    return dict(blocks=blocks, w=w, h=h, s=s, hub=(hx, hy), sign=sign, signs=[], opens=opens, cells=local,
+    return dict(blocks=blocks, w=w, h=h, s=s, hub=(hx, hy), sign=sign, signs=[], opens=opens, cells=local, caves=caves,
                 box=(cx0, cy0, cols, rows))
 
 
@@ -308,7 +321,8 @@ def main():
         w, h = r["w"], r["h"]
         title, note = notes[sec]
         events = [r["sign"]] if r["sign"] else []
-        events += [xy for xy, _ in r["signs"]]
+        events += [xy for xy, _ in r["signs"]] + [xy for xy, *_ in r.get("caves", [])] + \
+            [(x, y + 1) for (x, y), *_ in r.get("caves", [])]
         nx, ny = npc_spot(r["blocks"], w, h, (r["hub"][0] - 3, r["hub"][1] + 1), events)
         events.append((nx, ny))
         blocks = dress.apply(r["blocks"], w, h, "dirt", events, name, ledges=0 if extra.get("delta") else w * h // 600,
@@ -335,14 +349,27 @@ def main():
             bg.append(OrderedDict([("type", "sign"), ("x", sx), ("y", sy), ("elevation", 0),
                                    ("player_facing_dir", "BG_EVENT_PLAYER_FACING_ANY"), ("script", label)]))
         pory += TW.msg(name + "_EventScript_Npc1", line, "MSGBOX_NPC")
+        warps, extra_objs = [], []
+        for k, ((cx_, cy_), folder, ggfx, gline) in enumerate(r.get("caves", [])):
+            fpath = P("data", "maps", folder, "map.json")
+            fm = json.load(open(fpath), object_pairs_hook=OrderedDict)
+            for wv in fm["warp_events"]:
+                wv.update(dest_map="MAP_" + PH.snake(name), dest_warp_id=str(len(warps)))
+            PH.write_json(fpath, fm)
+            warps.append(OrderedDict([("x", cx_), ("y", cy_), ("elevation", 0), ("dest_map", fm["id"]), ("dest_warp_id", "0")]))
+            gx, gy = npc_spot(blocks, w, h, (cx_ + 2, cy_ + 1), events)
+            events.append((gx, gy))
+            label = "%s_EventScript_Guardian%d" % (name, k + 1)
+            extra_objs.append(TW.obj(G(ggfx), gx, gy, 3, "down", label))
+            pory += TW.msg(label, gline, "MSGBOX_NPC")
         m = OrderedDict([
             ("id", "MAP_" + PH.snake(name)), ("name", name), ("layout", lid), ("music", music),
             ("region", "REGION_HOENN"), ("region_map_section", sec), ("requires_flash", False),
             ("weather", "WEATHER_SUNNY"), ("map_type", "MAP_TYPE_ROUTE"), ("allow_cycling", True),
             ("allow_escaping", False), ("allow_running", True), ("show_map_name", True),
             ("battle_scene", "MAP_BATTLE_SCENE_NORMAL"), ("connections", old_conn),
-            ("object_events", [TW.obj(G(gfx), nx, ny, 3, "look", name + "_EventScript_Npc1")]),
-            ("warp_events", []), ("coord_events", []), ("bg_events", bg)])
+            ("object_events", [TW.obj(G(gfx), nx, ny, 3, "look", name + "_EventScript_Npc1")] + extra_objs),
+            ("warp_events", warps), ("coord_events", []), ("bg_events", bg)])
         PH.write_json(mpath, m)
         TW.write_pory(name, pory)
         if name not in mg[GROUP]:

@@ -23,29 +23,7 @@
    ]
   ]
  },
- "DrakeBaseCamp": {
-  "RegolisShrine": [
-   [
-    1640,
-    1641,
-    1642
-   ],
-   [
-    1656,
-    598,
-    1658
-   ],
-   [
-    1652,
-    606,
-    1652
-   ]
-  ],
-  "RegolisShrine@": [
-   4,
-   7
-  ]
- },
+ "DrakeBaseCamp": {},
  "UbeCity": {},
  "TanglynTown": {
   "FrigoCave": [

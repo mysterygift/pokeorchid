@@ -49,12 +49,6 @@ DrakeBaseCamp_EventScript_TiksiNpc3::
 	return
 
 
-DrakeBaseCamp_EventScript_TiksiGuardianRegolisShrine::
-# 35 "data/maps/DrakeBaseCamp/scripts.pory"
-	msgbox DrakeBaseCamp_EventScript_TiksiGuardianRegolisShrine_Text_0, MSGBOX_NPC
-	return
-
-
 DrakeBaseCamp_EventScript_TiksiNpc1_Text_0:
 # 23 "data/maps/DrakeBaseCamp/scripts.pory"
 	.string "The peak of Mt. Drake is said to be home\n"
@@ -72,10 +66,3 @@ DrakeBaseCamp_EventScript_TiksiNpc3_Text_0:
 	.string "Some strangers in blue came through\n"
 	.string "last week, heading up the mountain.\l"
 	.string "Didn't say hello.$"
-
-DrakeBaseCamp_EventScript_TiksiGuardianRegolisShrine_Text_0:
-# 35 "data/maps/DrakeBaseCamp/scripts.pory"
-	.string "This path leads to Regolis Shrine, in\n"
-	.string "the heart of the desert. The rock giant\l"
-	.string "sleeps there once more.\p"
-	.string "I am its guardian. Go if you must.$"

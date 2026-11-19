@@ -9015,17 +9015,6 @@
       "layout_version": "emerald"
     },
     {
-      "id": "LAYOUT_ROUTE403",
-      "name": "Route403_Layout",
-      "width": 30,
-      "height": 90,
-      "primary_tileset": "gTileset_General",
-      "secondary_tileset": "gTileset_TosaPort",
-      "border_filepath": "data/layouts/Route403/border.bin",
-      "blockdata_filepath": "data/layouts/Route403/map.bin",
-      "layout_version": "emerald"
-    },
-    {
       "id": "LAYOUT_ROUTE404",
       "name": "Route404_Layout",
       "width": 144,
@@ -9114,6 +9103,17 @@
       "layout_version": "emerald"
     },
     {
+      "id": "LAYOUT_ROUTE403",
+      "name": "Route403_Layout",
+      "width": 30,
+      "height": 90,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_TosaPort",
+      "border_filepath": "data/layouts/Route403/border.bin",
+      "blockdata_filepath": "data/layouts/Route403/map.bin",
+      "layout_version": "emerald"
+    },
+    {
       "id": "LAYOUT_MT_DRAKE_SOUTH_FACE",
       "name": "MtDrake_SouthFace_Layout",
       "width": 30,
@@ -9166,6 +9166,17 @@
       "secondary_tileset": "gTileset_Cave",
       "border_filepath": "data/layouts/MtDrake_3F/border.bin",
       "blockdata_filepath": "data/layouts/MtDrake_3F/map.bin",
+      "layout_version": "emerald"
+    },
+    {
+      "id": "LAYOUT_MT_DRAKE_WEST_FACE",
+      "name": "MtDrake_WestFace_Layout",
+      "width": 30,
+      "height": 36,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_TosaPort",
+      "border_filepath": "data/layouts/MtDrake_WestFace/border.bin",
+      "blockdata_filepath": "data/layouts/MtDrake_WestFace/map.bin",
       "layout_version": "emerald"
     },
     {

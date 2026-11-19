@@ -5,10 +5,13 @@ built with the Tosa placeholder builder (placeholders.build, like Mt. Batok / Ch
 
   Route 402 --edge-- South Face --cave mouth--> 1F --ladder--> 2F --ladder--> 3F --mat--> Peak --cave mouth--> Summit
                                                  |               |
-                                  ladder down to Ferrum Shrine   mat --> North Face --edge-- Drake Base Camp
+                                  mat --> West Face              mat --> North Face --edge-- Drake Base Camp
+                                          (Ferrum Shrine mouth; a one-way ledge down to a path north to Route 403)
 
 Ferrum Shrine ("at the core of Mt. Drake") and the Summit used to be entered from mounds in Drake Base
-Camp (tiksi_people.py now leaves those out); their guardians stand here instead. Everything is in
+Camp (tiksi_people.py now leaves those out); their guardians stand here instead. The West Face is drawn
+by hand (west_face()): Gen 3 has no north-facing ledge tile, so the drop is a west-facing ledge
+(General 0x0FE / 0x085 / 0x106) off the plateau onto the path that runs north to Route 403. Everything is in
 MAPSEC_MT_DRAKE. Edge connections to Route 402 and Drake Base Camp are set here (both maps line up at
 offset 0); re-running rebuilds the six maps and relinks the Summit and Ferrum Shrine.
 usage: python3 dev_scripts/tiksi_maps/mt_drake.py
@@ -33,8 +36,8 @@ MAPS = [
     ("MtDrake_SouthFace", "rocky", (30, 36), {"mouths": {"cave": "N"}}, {"S": [14]},
      "Mt. Drake\nSouth Face. The trail into the mountain starts here.",
      [(G("HIKER"), "mouth:cave", "Mt. Drake's peaks were carved by beams of light from an ancient Pokémon's maw.\\pThat's what my grandmother said, anyway.")]),
-    ("MtDrake_1F", "cave", (44, 34), {"floor": {"mats": {"south": "c"}, "ladders": {"up": (0.8, 0.25), "ferrum": (0.12, 0.45)}}}, {}, None,
-     [(G("BLACK_BELT"), "ladder:ferrum", "Ferrum Shrine lies below us, at the core of Mt. Drake. The steel giant has returned to it.\\pI am sworn to guard this way down."),
+    ("MtDrake_1F", "cave", (44, 34), {"floor": {"mats": {"south": "c", "west": "w"}, "ladders": {"up": (0.8, 0.25)}}}, {}, None,
+     [(G("PICNICKER"), "mat:west", "That passage comes out on the west face. Ferrum Shrine is out there, and a drop down to Route 403."),
       (G("CAMPER"), "ladder:up", "The way up is steep. Don't push your Pokémon too hard.")]),
     ("MtDrake_2F", "cave", (40, 32), {"floor": {"mats": {"north": "e"}, "ladders": {"down": (0.8, 0.25), "up": (0.2, 0.3)}}}, {}, None,
      [(G("HIKER"), "mat:north", "That opening leads out onto the north face. Drake Base Camp is just down the slope.")]),
@@ -43,6 +46,9 @@ MAPS = [
      [(G("EXPERT_M"), "mouth:cave", "Climbers rest at Drake Base Camp before trying for the peak. Smart ones, anyway.")]),
     ("MtDrake_3F", "cave", (36, 30), {"floor": {"mats": {"peak": "c"}, "ladders": {"down": (0.2, 0.3)}}}, {}, None,
      [(G("EXPERT_F"), "mat:peak", "Fresh air ahead… the peak is close.")]),
+    ("MtDrake_WestFace", "west", (30, 36), {}, {},
+     "Mt. Drake\nWest Face. Ferrum Shrine lies within the rock.",
+     [(G("BLACK_BELT"), "mouth:ferrum", "Ferrum Shrine lies at the core of Mt. Drake. The steel giant has returned to it.\\pI am sworn to guard this door.")]),
     ("MtDrake_Peak", "rocky", (30, 30), {"mouths": {"low": "S", "summit": "N"}, "closed": True}, {},
      "Mt. Drake\nThe peak. The summit cave is above.",
      [(G("HIKER"), "mouth:summit", "Beyond here, the old trail climbs into the summit. They say the dragon giant waits at the top.\\pI guard the way. Be ready.")]),
@@ -53,10 +59,39 @@ LINKS = [
     (("MtDrake_2F", "mat:north"), ("MtDrake_NorthFace", "mouth:cave")),
     (("MtDrake_2F", "ladder:up"), ("MtDrake_3F", "ladder:down")),
     (("MtDrake_3F", "mat:peak"), ("MtDrake_Peak", "mouth:low")),
+    (("MtDrake_1F", "mat:west"), ("MtDrake_WestFace", "mouth:cave")),
 ]
-EXTERNAL = [(("MtDrake_Peak", "mouth:summit"), "MtDrakeSummit"), (("MtDrake_1F", "ladder:ferrum"), "FerrumShrine")]
+EXTERNAL = [(("MtDrake_Peak", "mouth:summit"), "MtDrakeSummit"), (("MtDrake_WestFace", "mouth:ferrum"), "FerrumShrine")]
 EDGES = [("MtDrake_SouthFace", "down", "MAP_ROUTE402", 0, "Route402", "up"),
-         ("MtDrake_NorthFace", "up", "MAP_DRAKE_BASE_CAMP", 0, "DrakeBaseCamp", "down")]
+         ("MtDrake_NorthFace", "up", "MAP_DRAKE_BASE_CAMP", 0, "DrakeBaseCamp", "down"),
+         ("MtDrake_WestFace", "up", "MAP_ROUTE403", 0, "Route403", "down")]
+
+
+def west_face(w, h):
+    """Plateau (east) with the cave back into 1F and Ferrum Shrine's mouth; a west-facing ledge down its
+    west side onto a lower path that runs north to the top edge (x 14-15, under Route 403's path)."""
+    cv = PH.Canvas(w, h, "R")
+    cv.rect(2, 2, 11, h - 3, "P")                    # lower path, west
+    cv.rect(2, 2, 17, 6, "P")                        # ... and across the top to the opening
+    cv.rect(14, 0, 15, 1, "P")                       # the opening, under Route 403's path
+    cv.rect(13, 9, w - 3, h - 3, "P")                # plateau
+    cv.rect(18, 4, 26, 8, "R")                       # rock above the plateau, with the way back into Mt. Drake
+    cv.stamp(21, 5, PH.MOUTH)
+    cv.warps["mouth:cave"] = (22, 8, 0)
+    cv.rect(17, 23, 23, 27, "R")                     # Ferrum Shrine's rock, inside the plateau
+    cv.stamp(19, 24, PH.MOUTH)
+    cv.warps["mouth:ferrum"] = (20, 27, 0)
+    for y in range(10, h - 4):                       # the ledge: jump west off the plateau
+        cv.raw[(12, y)] = 0x0400 | (0x0FE if y == 10 else 0x106 if y == h - 5 else 0x085)
+    for (x, y) in ((12, 9), (12, h - 4), (12, h - 3)):
+        cv.t[y][x] = "R"
+    rnd = __import__("random").Random("mtdrake/west")
+    for _ in range(14):                              # boulders
+        bx, by = rnd.randrange(14, w - 4) & ~1, rnd.randrange(11, h - 5) & ~1
+        if all(cv.t[by + j][bx + i] == "P" and (bx + i, by + j) not in cv.raw for i in (0, 1) for j in (0, 1)) and \
+                all(abs(bx - x) > 3 or abs(by - y) > 3 for (x, y, _) in cv.warps.values()):
+            cv.rect(bx, by, bx + 1, by + 1, "R")
+    return cv, (22, 12)
 
 
 def set_connection(path, direction, target, offset):
@@ -86,7 +121,11 @@ def main():
     lj = json.load(open(lj_path), object_pairs_hook=OrderedDict)
     built = {}
     for name, theme, (w, h), extras, opens, sign_text, people in MAPS:
-        cv, hub = PH.build(name, theme, w, h, opens, extras, None, None)
+        if theme == "west":
+            cv, hub = west_face(w, h)
+            theme = "rocky"
+        else:
+            cv, hub = PH.build(name, theme, w, h, opens, extras, None, None)
         sign = PH.place_sign(cv, hub, "P") if sign_text else None
         vals = PH.render(cv, theme)
         keys = list(cv.warps.keys())
