@@ -66,6 +66,19 @@
       "trainer_sight_or_berry_tree_id": "0",
       "script": "PokemonLeague_EventScript_Npc4",
       "flag": "0"
+    },
+    {
+      "graphics_id": "OBJ_EVENT_GFX_MART_SIGN",
+      "x": 29,
+      "y": 19,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_NONE",
+      "movement_range_x": 0,
+      "movement_range_y": 0,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "0x0",
+      "flag": "0"
     }
   ],
   "warp_events": [
@@ -92,7 +105,7 @@
     },
     {
       "x": 11,
-      "y": 18,
+      "y": 19,
       "elevation": 0,
       "dest_map": "MAP_POKEMON_LEAGUE_POKEMON_CENTER_1F",
       "dest_warp_id": "0"
@@ -116,6 +129,13 @@
       "y": 8,
       "elevation": 0,
       "dest_map": "MAP_POKEMON_LEAGUE_HOUSE2",
+      "dest_warp_id": "0"
+    },
+    {
+      "x": 27,
+      "y": 19,
+      "elevation": 0,
+      "dest_map": "MAP_POKEMON_LEAGUE_MART",
       "dest_warp_id": "0"
     }
   ],
