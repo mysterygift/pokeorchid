@@ -61,6 +61,7 @@
 #include "constants/roulette.h"
 #include "constants/script_menu.h"
 #include "constants/seagallop.h"
+#include "constants/voyages.h"
 #include "constants/secret_bases.h"
 #include "constants/siirtc.h"
 #include "constants/songs.h"
@@ -78,6 +79,7 @@
 #include "constants/vars.h"
 #include "constants/weather.h"
 #include "constants/speaker_names.h"
+#include "constants/holon.h"
 	.include "asm/macros.inc"
 	.include "asm/macros/event.inc"
 	.include "constants/constants.inc"
@@ -313,6 +315,7 @@ gStdScripts_End::
 	.include "data/maps/ChanguAirport_StationPlatform/scripts.inc"
 	.include "data/maps/InkaCity/scripts.inc"
 	.include "data/maps/InkaSeawall/scripts.inc"
+	.include "data/maps/ChanguCity_Cafe/scripts.inc"
 	.include "data/maps/InkaCity_Station/scripts.inc"
 	.include "data/maps/InkaCity_StationPlatform/scripts.inc"
 	.include "data/maps/BuraCity/scripts.inc"
@@ -378,6 +381,11 @@ gStdScripts_End::
 	.include "data/maps/Route410/scripts.inc" @ tiksi-routes
 	.include "data/maps/TanobyDelta/scripts.inc" @ tiksi-routes
 	.include "data/maps/FrigoCave_Exterior/scripts.inc" @ tiksi-routes
+	.include "data/maps/WavebreakTown_SailorsHut/scripts.inc" @ voyages
+	.include "data/maps/NewmoonIsland/scripts.inc" @ voyages
+	.include "data/maps/NewmoonIsland_Interior/scripts.inc" @ voyages
+	.include "data/maps/FullmoonIsland/scripts.inc" @ voyages
+	.include "data/maps/FullmoonIsland_Interior/scripts.inc" @ voyages
 	.include "data/maps/TelokTown_House2/scripts.inc"
 	.include "data/maps/TelokTown_PokemonCenter_1F/scripts.inc"
 	.include "data/maps/TelokTown_PokemonCenter_2F/scripts.inc"
@@ -651,6 +659,120 @@ gStdScripts_End::
 	.include "data/maps/Route119_WeatherInstitute_2F/scripts.inc"
 	.include "data/maps/Route119_House/scripts.inc"
 	.include "data/maps/Route124_DivingTreasureHuntersHouse/scripts.inc"
+	.include "data/maps/HolonMirageForest/scripts.inc" @ holon-maps
+	.include "data/maps/HolonVillage/scripts.inc" @ holon-maps
+	.include "data/maps/HolonVillage_PokemonCenter_1F/scripts.inc" @ holon-maps
+	.include "data/maps/HolonVillage_Mart/scripts.inc" @ holon-maps
+	.include "data/maps/HolonVillage_House1/scripts.inc" @ holon-maps
+	.include "data/maps/HolonVillage_House2/scripts.inc" @ holon-maps
+	.include "data/maps/HolonVillage_House3/scripts.inc" @ holon-maps
+	.include "data/maps/HolonVillage_House4/scripts.inc" @ holon-maps
+	.include "data/maps/HolonVillage_House5/scripts.inc" @ holon-maps
+	.include "data/maps/HolonVillage_House6/scripts.inc" @ holon-maps
+	.include "data/maps/HolonVillage_House7/scripts.inc" @ holon-maps
+	.include "data/maps/HolonVillage_RuinsHouse/scripts.inc" @ holon-maps
+	.include "data/maps/HolonResearchTower_1F/scripts.inc" @ holon-maps
+	.include "data/maps/HolonResearchTower_2F/scripts.inc" @ holon-maps
+	.include "data/maps/HolonLake/scripts.inc" @ holon-maps
+	.include "data/maps/OneIsland/scripts.inc" @ sevii-maps
+	.include "data/maps/TwoIsland/scripts.inc" @ sevii-maps
+	.include "data/maps/ThreeIsland/scripts.inc" @ sevii-maps
+	.include "data/maps/FourIsland/scripts.inc" @ sevii-maps
+	.include "data/maps/FiveIsland/scripts.inc" @ sevii-maps
+	.include "data/maps/SixIsland/scripts.inc" @ sevii-maps
+	.include "data/maps/SevenIsland/scripts.inc" @ sevii-maps
+	.include "data/maps/FiveIsland_Harbor/scripts.inc" @ sevii-maps
+	.include "data/maps/FiveIsland_House1/scripts.inc" @ sevii-maps
+	.include "data/maps/FiveIsland_House2/scripts.inc" @ sevii-maps
+	.include "data/maps/FiveIsland_Meadow/scripts.inc" @ sevii-maps
+	.include "data/maps/FiveIsland_MemorialPillar/scripts.inc" @ sevii-maps
+	.include "data/maps/FiveIsland_PokemonCenter_1F/scripts.inc" @ sevii-maps
+	.include "data/maps/FiveIsland_RocketWarehouse/scripts.inc" @ sevii-maps
+	.include "data/maps/FourIsland_Harbor/scripts.inc" @ sevii-maps
+	.include "data/maps/FourIsland_House1/scripts.inc" @ sevii-maps
+	.include "data/maps/FourIsland_House2/scripts.inc" @ sevii-maps
+	.include "data/maps/FourIsland_IcefallCave_1F/scripts.inc" @ sevii-maps
+	.include "data/maps/FourIsland_IcefallCave_B1F/scripts.inc" @ sevii-maps
+	.include "data/maps/FourIsland_IcefallCave_Back/scripts.inc" @ sevii-maps
+	.include "data/maps/FourIsland_IcefallCave_Entrance/scripts.inc" @ sevii-maps
+	.include "data/maps/FourIsland_LoreleisHouse/scripts.inc" @ sevii-maps
+	.include "data/maps/FourIsland_Mart/scripts.inc" @ sevii-maps
+	.include "data/maps/FourIsland_PokemonCenter_1F/scripts.inc" @ sevii-maps
+	.include "data/maps/FourIsland_PokemonDayCare/scripts.inc" @ sevii-maps
+	.include "data/maps/MtEmber_Exterior/scripts.inc" @ sevii-maps
+	.include "data/maps/MtEmber_RubyPath_1F/scripts.inc" @ sevii-maps
+	.include "data/maps/MtEmber_RubyPath_B1F/scripts.inc" @ sevii-maps
+	.include "data/maps/MtEmber_RubyPath_B1F_Stairs/scripts.inc" @ sevii-maps
+	.include "data/maps/MtEmber_RubyPath_B2F/scripts.inc" @ sevii-maps
+	.include "data/maps/MtEmber_RubyPath_B2F_Stairs/scripts.inc" @ sevii-maps
+	.include "data/maps/MtEmber_RubyPath_B3F/scripts.inc" @ sevii-maps
+	.include "data/maps/MtEmber_RubyPath_B4F/scripts.inc" @ sevii-maps
+	.include "data/maps/MtEmber_RubyPath_B5F/scripts.inc" @ sevii-maps
+	.include "data/maps/MtEmber_Summit/scripts.inc" @ sevii-maps
+	.include "data/maps/MtEmber_SummitPath_1F/scripts.inc" @ sevii-maps
+	.include "data/maps/MtEmber_SummitPath_2F/scripts.inc" @ sevii-maps
+	.include "data/maps/MtEmber_SummitPath_3F/scripts.inc" @ sevii-maps
+	.include "data/maps/OneIsland_Harbor/scripts.inc" @ sevii-maps
+	.include "data/maps/OneIsland_House1/scripts.inc" @ sevii-maps
+	.include "data/maps/OneIsland_House2/scripts.inc" @ sevii-maps
+	.include "data/maps/OneIsland_KindleRoad/scripts.inc" @ sevii-maps
+	.include "data/maps/OneIsland_KindleRoad_EmberSpa/scripts.inc" @ sevii-maps
+	.include "data/maps/OneIsland_PokemonCenter_1F/scripts.inc" @ sevii-maps
+	.include "data/maps/OneIsland_TreasureBeach/scripts.inc" @ sevii-maps
+	.include "data/maps/SevenIsland_Harbor/scripts.inc" @ sevii-maps
+	.include "data/maps/SevenIsland_House_Room1/scripts.inc" @ sevii-maps
+	.include "data/maps/SevenIsland_House_Room2/scripts.inc" @ sevii-maps
+	.include "data/maps/SevenIsland_Mart/scripts.inc" @ sevii-maps
+	.include "data/maps/SevenIsland_PokemonCenter_1F/scripts.inc" @ sevii-maps
+	.include "data/maps/SevenIsland_SevaultCanyon/scripts.inc" @ sevii-maps
+	.include "data/maps/SevenIsland_SevaultCanyon_Entrance/scripts.inc" @ sevii-maps
+	.include "data/maps/SevenIsland_SevaultCanyon_House/scripts.inc" @ sevii-maps
+	.include "data/maps/SevenIsland_SevaultCanyon_TanobyKey/scripts.inc" @ sevii-maps
+	.include "data/maps/SevenIsland_TanobyRuins/scripts.inc" @ sevii-maps
+	.include "data/maps/SevenIsland_TanobyRuins_DilfordChamber/scripts.inc" @ sevii-maps
+	.include "data/maps/SevenIsland_TanobyRuins_LiptooChamber/scripts.inc" @ sevii-maps
+	.include "data/maps/SevenIsland_TanobyRuins_MoneanChamber/scripts.inc" @ sevii-maps
+	.include "data/maps/SevenIsland_TanobyRuins_RixyChamber/scripts.inc" @ sevii-maps
+	.include "data/maps/SevenIsland_TanobyRuins_ScufibChamber/scripts.inc" @ sevii-maps
+	.include "data/maps/SevenIsland_TanobyRuins_ViapoisChamber/scripts.inc" @ sevii-maps
+	.include "data/maps/SevenIsland_TanobyRuins_WeepthChamber/scripts.inc" @ sevii-maps
+	.include "data/maps/SeviiSeaRouteA/scripts.inc" @ sevii-maps
+	.include "data/maps/SeviiSeaRouteB/scripts.inc" @ sevii-maps
+	.include "data/maps/SeviiSeaRouteC/scripts.inc" @ sevii-maps
+	.include "data/maps/SeviiSeaRouteD/scripts.inc" @ sevii-maps
+	.include "data/maps/SixIsland_DottedHole_1F/scripts.inc" @ sevii-maps
+	.include "data/maps/SixIsland_DottedHole_B1F/scripts.inc" @ sevii-maps
+	.include "data/maps/SixIsland_DottedHole_B2F/scripts.inc" @ sevii-maps
+	.include "data/maps/SixIsland_DottedHole_B3F/scripts.inc" @ sevii-maps
+	.include "data/maps/SixIsland_DottedHole_B4F/scripts.inc" @ sevii-maps
+	.include "data/maps/SixIsland_DottedHole_SapphireRoom/scripts.inc" @ sevii-maps
+	.include "data/maps/SixIsland_Harbor/scripts.inc" @ sevii-maps
+	.include "data/maps/SixIsland_House/scripts.inc" @ sevii-maps
+	.include "data/maps/SixIsland_Mart/scripts.inc" @ sevii-maps
+	.include "data/maps/SixIsland_PokemonCenter_1F/scripts.inc" @ sevii-maps
+	.include "data/maps/SixIsland_RuinValley/scripts.inc" @ sevii-maps
+	.include "data/maps/SixIsland_WaterPath/scripts.inc" @ sevii-maps
+	.include "data/maps/SixIsland_WaterPath_House1/scripts.inc" @ sevii-maps
+	.include "data/maps/SixIsland_WaterPath_House2/scripts.inc" @ sevii-maps
+	.include "data/maps/ThreeIsland_BerryForest/scripts.inc" @ sevii-maps
+	.include "data/maps/ThreeIsland_BondBridge/scripts.inc" @ sevii-maps
+	.include "data/maps/ThreeIsland_DunsparceTunnel/scripts.inc" @ sevii-maps
+	.include "data/maps/ThreeIsland_Harbor/scripts.inc" @ sevii-maps
+	.include "data/maps/ThreeIsland_House1/scripts.inc" @ sevii-maps
+	.include "data/maps/ThreeIsland_House2/scripts.inc" @ sevii-maps
+	.include "data/maps/ThreeIsland_House3/scripts.inc" @ sevii-maps
+	.include "data/maps/ThreeIsland_House4/scripts.inc" @ sevii-maps
+	.include "data/maps/ThreeIsland_House5/scripts.inc" @ sevii-maps
+	.include "data/maps/ThreeIsland_Mart/scripts.inc" @ sevii-maps
+	.include "data/maps/ThreeIsland_PokemonCenter_1F/scripts.inc" @ sevii-maps
+	.include "data/maps/ThreeIsland_Port/scripts.inc" @ sevii-maps
+	.include "data/maps/TwoIsland_CapeBrink/scripts.inc" @ sevii-maps
+	.include "data/maps/TwoIsland_CapeBrink_House/scripts.inc" @ sevii-maps
+	.include "data/maps/TwoIsland_Harbor/scripts.inc" @ sevii-maps
+	.include "data/maps/TwoIsland_House/scripts.inc" @ sevii-maps
+	.include "data/maps/TwoIsland_JoyfulGameCorner/scripts.inc" @ sevii-maps
+	.include "data/maps/TwoIsland_PokemonCenter_1F/scripts.inc" @ sevii-maps
+	.include "data/scripts/sevii.inc" @ sevii-maps
 
 .if IS_FRLG
 
@@ -798,6 +920,7 @@ EventScript_SetBrineyLocation_Route109::
 
 	.include "data/scripts/pkmn_center_nurse.inc"
 	.include "data/scripts/orchid_cafe.inc"
+	.include "data/scripts/cynthia.inc"
 	.include "data/scripts/obtain_item.inc"
 	.include "data/scripts/record_mix.inc"
 	.include "data/scripts/pc.inc"
@@ -1375,4 +1498,5 @@ EventScript_PalletTown_PlayersHouse_2F_TurnOnPC::
 	.include "data/scripts/apricorn_tree.inc"
 	.include "data/scripts/wild_encounter.inc"
 	.include "data/scripts/train.inc"
+	.include "data/scripts/voyages.inc"
 	.include "data/scripts/deleted_hoenn_stubs.inc"

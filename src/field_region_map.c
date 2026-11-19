@@ -240,7 +240,9 @@ static void FieldUpdateRegionMap(void)
 // Orchid: Tosa <-> Tiksi on R, only in the Rotom Phone's MAP app and once Tiksi has been visited
 static bool32 CanSwitchRegionFromMap(void)
 {
-    return sFieldRegionMapHandler->callback == CB2_ReturnToRotomPhone && FlagGet(FLAG_VISITED_TIKSI);
+    // Wavebreak Voyages: on a voyage the map shows only where you are (no switch, no hint)
+    return sFieldRegionMapHandler->callback == CB2_ReturnToRotomPhone && FlagGet(FLAG_VISITED_TIKSI)
+        && !IsVoyageRegionMapType(GetRegionMapType(gMapHeader.regionMapSectionId));
 }
 
 // R = Fly (expansion's Poké Rider). Never from the Rotom Phone's MAP app: Orchid wants players on
@@ -270,11 +272,15 @@ static void PrintTitleWindowText(void)
 {
     static const u8 FlyPromptText[] = _("{R_BUTTON} FLY");
     const u8 *region = IS_FRLG ? gText_Kanto : GetRegionMapRegionName();
+    const u8 *subArea;
 
     FillWindowPixelBuffer(WIN_TITLE, PIXEL_FILL(0));
     AddTextPrinterParameterized4(WIN_TITLE, FONT_NORMAL, 23, 0, 0, 0, sOrchidMapText_Label, TEXT_SKIP_DRAW, region);
     if (CanSwitchRegionFromMap())
         RegionMap_BlitOrchidSwitchHint(WIN_TITLE, DISPLAY_WIDTH - 40, 4);   // header top-right: R = switch map
+    else if ((subArea = GetRegionMapSubAreaName()) != NULL)   // voyages: "ISLES 1-3" right-aligned
+        AddTextPrinterParameterized4(WIN_TITLE, FONT_NARROW, DISPLAY_WIDTH - 6 - GetStringWidth(FONT_NARROW, subArea, 0), 1,
+                                     0, 0, sOrchidMapText_Label, TEXT_SKIP_DRAW, subArea);
     CopyWindowToVram(WIN_TITLE, COPYWIN_GFX);
 
     FillWindowPixelBuffer(WIN_PROMPT, PIXEL_FILL(0));

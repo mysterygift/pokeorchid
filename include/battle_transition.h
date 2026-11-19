@@ -61,6 +61,7 @@ enum BattleTransition
     B_TRANSITION_FRONTIER_CIRCLES_CROSS_IN_SEQ,
     B_TRANSITION_FRONTIER_CIRCLES_ASYMMETRIC_SPIRAL_IN_SEQ,
     B_TRANSITION_FRONTIER_CIRCLES_SYMMETRIC_SPIRAL_IN_SEQ,
+    B_TRANSITION_HOLON, // Wavebreak Voyages: Holon logo (Faba + Holon Researchers), Aqua's weave with holon.png
     B_TRANSITION_COUNT
 };
 

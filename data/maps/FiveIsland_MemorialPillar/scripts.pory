@@ -1,0 +1,61 @@
+mapscripts FiveIsland_MemorialPillar_MapScripts {}
+
+script FiveIsland_MemorialPillar_EventScript_MemorialMan {
+    msgbox(format("I come every day to polish this pillar for my old partner. It helps me remember."), MSGBOX_NPC)
+}
+
+script FiveIsland_MemorialPillar_EventScript_Milo {
+    trainerbattle_single(TRAINER_SEVII_MILO, FiveIsland_MemorialPillar_Text_MiloIntro, FiveIsland_MemorialPillar_Text_MiloDefeat)
+    msgbox(FiveIsland_MemorialPillar_Text_MiloPost, MSGBOX_AUTOCLOSE)
+}
+
+text FiveIsland_MemorialPillar_Text_MiloIntro {
+    format("My birds soar over Five Isle! Battle!")
+}
+
+text FiveIsland_MemorialPillar_Text_MiloDefeat {
+    format("Grounded!")
+}
+
+text FiveIsland_MemorialPillar_Text_MiloPost {
+    format("A ferry hops between the islands from every harbour.")
+}
+
+script FiveIsland_MemorialPillar_EventScript_Chaz {
+    trainerbattle_single(TRAINER_SEVII_CHAZ, FiveIsland_MemorialPillar_Text_ChazIntro, FiveIsland_MemorialPillar_Text_ChazDefeat)
+    msgbox(FiveIsland_MemorialPillar_Text_ChazPost, MSGBOX_AUTOCLOSE)
+}
+
+text FiveIsland_MemorialPillar_Text_ChazIntro {
+    format("The wind off the sea is perfect for flying!")
+}
+
+text FiveIsland_MemorialPillar_Text_ChazDefeat {
+    format("My birds lost their wind.")
+}
+
+text FiveIsland_MemorialPillar_Text_ChazPost {
+    format("People come here to remember POKéMON they've lost. It's very quiet.")
+}
+
+script FiveIsland_MemorialPillar_EventScript_Harold {
+    trainerbattle_single(TRAINER_SEVII_HAROLD, FiveIsland_MemorialPillar_Text_HaroldIntro, FiveIsland_MemorialPillar_Text_HaroldDefeat)
+    msgbox(FiveIsland_MemorialPillar_Text_HaroldPost, MSGBOX_AUTOCLOSE)
+}
+
+text FiveIsland_MemorialPillar_Text_HaroldIntro {
+    format("Hoo! Hoo! Battle me!")
+}
+
+text FiveIsland_MemorialPillar_Text_HaroldDefeat {
+    format("My owl saw that coming...")
+}
+
+text FiveIsland_MemorialPillar_Text_HaroldPost {
+    format("A ferry hops between the islands from every harbour.")
+}
+
+script FiveIsland_MemorialPillar_EventScript_Memorial {
+    msgbox(format("In memory of a dear partner.\n"
+        "The stone is clean and freshly polished."), MSGBOX_SIGN)
+}

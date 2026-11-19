@@ -1,0 +1,356 @@
+{
+ "size": [
+  15,
+  16
+ ],
+ "tileset": [
+  "gTileset_General",
+  "gTileset_RusturfTunnel"
+ ],
+ "ground": [
+  "raw",
+  1553
+ ],
+ "marks": [
+  [
+   7,
+   13,
+   "CANYON",
+   "warp"
+  ],
+  [
+   7,
+   6,
+   "",
+   "field",
+   "pushable_boulder"
+  ],
+  [
+   8,
+   6,
+   "",
+   "field",
+   "pushable_boulder"
+  ],
+  [
+   8,
+   9,
+   "",
+   "field",
+   "pushable_boulder"
+  ],
+  [
+   6,
+   10,
+   "",
+   "field",
+   "pushable_boulder"
+  ],
+  [
+   8,
+   10,
+   "",
+   "field",
+   "pushable_boulder"
+  ],
+  [
+   6,
+   9,
+   "",
+   "field",
+   "pushable_boulder"
+  ],
+  [
+   6,
+   6,
+   "",
+   "field",
+   "pushable_boulder"
+  ],
+  [
+   7,
+   2,
+   "Switch1",
+   "note"
+  ],
+  [
+   9,
+   8,
+   "Switch7",
+   "note"
+  ],
+  [
+   5,
+   8,
+   "Switch6",
+   "note"
+  ],
+  [
+   9,
+   6,
+   "Switch5",
+   "note"
+  ],
+  [
+   5,
+   6,
+   "Switch4",
+   "note"
+  ],
+  [
+   10,
+   4,
+   "Switch3",
+   "note"
+  ],
+  [
+   4,
+   4,
+   "Switch2",
+   "note"
+  ]
+ ],
+ "grid_raw": [
+  "0611 0611 0611 0611 0611 0611 0611 0611 0611 0611 0611 0611 0611 0611 0611",
+  "0611 0611 0611 0611 0611 0611 0611 0606 0611 0611 0611 0611 0611 0611 0611",
+  "0611 0611 0611 0611 0611 0611 0605 3202 0619 061C 0611 0611 0611 0611 0611",
+  "0611 0611 0611 061B 0619 0619 3201 3201 3201 0618 0619 0611 0611 0611 0611",
+  "0611 0611 0611 0612 3202 3201 3201 3201 3201 3201 3202 0611 0611 0611 0611",
+  "0611 0611 0611 0612 061B 3201 0603 3201 0603 3201 0608 0609 0611 0611 0611",
+  "0611 0611 0611 0612 0612 3202 3201 3201 3201 3202 0610 0611 0609 0611 0611",
+  "0611 0611 0611 0612 061B 0619 3201 3201 3201 0606 0610 0611 0611 0611 0611",
+  "0611 0611 0611 0612 0612 3202 3201 3201 3201 3202 0610 0611 0611 0611 0611",
+  "0611 0611 0611 0612 0612 3201 3201 3201 3201 3201 0610 0611 0611 0611 0611",
+  "0611 0611 0611 0612 0612 3201 3201 3201 3201 3201 0610 0611 0611 0611 0611",
+  "0611 0611 0611 0612 0612 3201 063C 063C 063C 3201 0610 0611 0611 0611 0611",
+  "0611 0611 0611 0612 0612 3201 3201 3201 3201 3201 0610 0611 0611 0611 0611",
+  "0611 0611 0611 0612 0609 3201 3201 3207 3201 3201 0610 0611 0611 0611 0611",
+  "0611 0611 0611 0609 0609 0609 0609 0609 0609 0609 0609 0611 0611 0611 0611",
+  "0611 0611 0611 0609 0611 0609 0611 0609 0609 0609 0611 0609 0611 0611 0611"
+ ],
+ "report": {
+  "pair": [
+   "gTileset_General",
+   "gTileset_RusturfTunnel"
+  ],
+  "set": "rusturf",
+  "look": "Rusturf Tunnel (Emerald's dug-through tunnel; grey-green)",
+  "classes": [
+   "###############",
+   "###############",
+   "#######b#######",
+   "######...######",
+   "####b.....b####",
+   "#####.B.B.#####",
+   "#####b...b#####",
+   "######...######",
+   "#####b...b#####",
+   "#####.....#####",
+   "#####.....#####",
+   "#####.JJJ.#####",
+   "#####.....#####",
+   "#####..v..#####",
+   "###############",
+   "###############"
+  ],
+  "sig_levels": {
+   "5": 140,
+   "1": 33,
+   "2": 13
+  },
+  "notes": [],
+  "frlg_map": "SevenIsland_SevaultCanyon_TanobyKey",
+  "frlg_layout": "LAYOUT_SEVEN_ISLAND_SEVAULT_CANYON_TANOBY_KEY",
+  "frlg_pair": [
+   "gTileset_General_Frlg",
+   "gTileset_DiglettsCave"
+  ],
+  "maps": [
+   "MAP_SEVEN_ISLAND_SEVAULT_CANYON_TANOBY_KEY"
+  ],
+  "size": [
+   15,
+   16
+  ],
+  "method": "learned cave autotiler (interiors_caves.py), set 'rusturf'",
+  "warps": [
+   {
+    "x": 7,
+    "y": 13,
+    "dest_map": "MAP_SEVEN_ISLAND_SEVAULT_CANYON",
+    "dest_warp_id": "0"
+   }
+  ],
+  "objects": [
+   {
+    "x": 7,
+    "y": 6,
+    "frlg_gfx": "OBJ_EVENT_GFX_PUSHABLE_BOULDER",
+    "emerald_gfx": "OBJ_EVENT_GFX_PUSHABLE_BOULDER",
+    "movement": "MOVEMENT_TYPE_LOOK_AROUND",
+    "script": "EventScript_StrengthBoulder"
+   },
+   {
+    "x": 8,
+    "y": 6,
+    "frlg_gfx": "OBJ_EVENT_GFX_PUSHABLE_BOULDER",
+    "emerald_gfx": "OBJ_EVENT_GFX_PUSHABLE_BOULDER",
+    "movement": "MOVEMENT_TYPE_LOOK_AROUND",
+    "script": "EventScript_StrengthBoulder"
+   },
+   {
+    "x": 8,
+    "y": 9,
+    "frlg_gfx": "OBJ_EVENT_GFX_PUSHABLE_BOULDER",
+    "emerald_gfx": "OBJ_EVENT_GFX_PUSHABLE_BOULDER",
+    "movement": "MOVEMENT_TYPE_LOOK_AROUND",
+    "script": "EventScript_StrengthBoulder"
+   },
+   {
+    "x": 6,
+    "y": 10,
+    "frlg_gfx": "OBJ_EVENT_GFX_PUSHABLE_BOULDER",
+    "emerald_gfx": "OBJ_EVENT_GFX_PUSHABLE_BOULDER",
+    "movement": "MOVEMENT_TYPE_LOOK_AROUND",
+    "script": "EventScript_StrengthBoulder"
+   },
+   {
+    "x": 8,
+    "y": 10,
+    "frlg_gfx": "OBJ_EVENT_GFX_PUSHABLE_BOULDER",
+    "emerald_gfx": "OBJ_EVENT_GFX_PUSHABLE_BOULDER",
+    "movement": "MOVEMENT_TYPE_LOOK_AROUND",
+    "script": "EventScript_StrengthBoulder"
+   },
+   {
+    "x": 6,
+    "y": 9,
+    "frlg_gfx": "OBJ_EVENT_GFX_PUSHABLE_BOULDER",
+    "emerald_gfx": "OBJ_EVENT_GFX_PUSHABLE_BOULDER",
+    "movement": "MOVEMENT_TYPE_LOOK_AROUND",
+    "script": "EventScript_StrengthBoulder"
+   },
+   {
+    "x": 6,
+    "y": 6,
+    "frlg_gfx": "OBJ_EVENT_GFX_PUSHABLE_BOULDER",
+    "emerald_gfx": "OBJ_EVENT_GFX_PUSHABLE_BOULDER",
+    "movement": "MOVEMENT_TYPE_LOOK_AROUND",
+    "script": "EventScript_StrengthBoulder"
+   }
+  ],
+  "bg_events": [],
+  "coord_events": [
+   {
+    "type": "trigger",
+    "x": 7,
+    "y": 2,
+    "elevation": 3,
+    "var": "VAR_TEMP_1",
+    "var_value": "99",
+    "script": "SevenIsland_SevaultCanyon_TanobyKey_EventScript_Switch1"
+   },
+   {
+    "type": "trigger",
+    "x": 9,
+    "y": 8,
+    "elevation": 3,
+    "var": "VAR_TEMP_7",
+    "var_value": "99",
+    "script": "SevenIsland_SevaultCanyon_TanobyKey_EventScript_Switch7"
+   },
+   {
+    "type": "trigger",
+    "x": 5,
+    "y": 8,
+    "elevation": 3,
+    "var": "VAR_TEMP_6",
+    "var_value": "99",
+    "script": "SevenIsland_SevaultCanyon_TanobyKey_EventScript_Switch6"
+   },
+   {
+    "type": "trigger",
+    "x": 9,
+    "y": 6,
+    "elevation": 3,
+    "var": "VAR_TEMP_5",
+    "var_value": "99",
+    "script": "SevenIsland_SevaultCanyon_TanobyKey_EventScript_Switch5"
+   },
+   {
+    "type": "trigger",
+    "x": 5,
+    "y": 6,
+    "elevation": 3,
+    "var": "VAR_TEMP_4",
+    "var_value": "99",
+    "script": "SevenIsland_SevaultCanyon_TanobyKey_EventScript_Switch4"
+   },
+   {
+    "type": "trigger",
+    "x": 10,
+    "y": 4,
+    "elevation": 3,
+    "var": "VAR_TEMP_3",
+    "var_value": "99",
+    "script": "SevenIsland_SevaultCanyon_TanobyKey_EventScript_Switch3"
+   },
+   {
+    "type": "trigger",
+    "x": 4,
+    "y": 4,
+    "elevation": 3,
+    "var": "VAR_TEMP_2",
+    "var_value": "99",
+    "script": "SevenIsland_SevaultCanyon_TanobyKey_EventScript_Switch2"
+   }
+  ],
+  "walk_diff": [],
+  "seams_before_fix": 46,
+  "seam_cells_repicked": 20,
+  "seams": [
+   [
+    10,
+    3,
+    "E",
+    "0x219",
+    "0x211"
+   ],
+   [
+    4,
+    6,
+    "S",
+    "0x212",
+    "0x21B"
+   ],
+   [
+    7,
+    13,
+    "S",
+    "0x207",
+    "0x209"
+   ]
+  ],
+  "secondary_users": [
+   "LAYOUT_RUSTURF_TUNNEL"
+  ],
+  "metatiles": [
+   "0x201",
+   "0x202",
+   "0x203",
+   "0x205",
+   "0x206",
+   "0x207",
+   "0x208",
+   "0x209",
+   "0x210",
+   "0x211",
+   "0x212",
+   "0x218",
+   "0x219",
+   "0x21B",
+   "0x21C",
+   "0x23C"
+  ]
+ }
+}

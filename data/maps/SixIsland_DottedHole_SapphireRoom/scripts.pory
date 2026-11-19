@@ -1,0 +1,10 @@
+mapscripts SixIsland_DottedHole_SapphireRoom_MapScripts {}
+
+script SixIsland_DottedHole_SapphireRoom_EventScript_Person {
+    msgbox(format("I'm studying how the island POKéMON adapted to the sea air."), MSGBOX_NPC)
+}
+
+script SixIsland_DottedHole_SapphireRoom_EventScript_BrailleMessage {
+    msgbox(format("Rows of raised dots are carved into the rock.\n"
+        "You can't make sense of them."), MSGBOX_SIGN)
+}

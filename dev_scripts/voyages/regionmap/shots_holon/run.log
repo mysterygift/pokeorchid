@@ -1,0 +1,9 @@
+village (6, 36, 24, 1) VISITED_VILLAGE 1
+  shot holon_village (6, 36, 24, 1)
+holon_village ok True {'mapsec': 155, 'cursor': (11, 11), 'head': (11, 11)}
+coast (22, 24, 24, 0)
+  shot holon_coast_mirage_forest (22, 24, 24, 0)
+holon_coast_mirage_forest ok True {'mapsec': 156, 'cursor': (15, 13), 'head': (15, 13)}
+tower (9, 12, 24, 12)
+  shot holon_tower_lake_visited (9, 12, 24, 12)
+holon_tower_lake_visited ok True {'mapsec': 159, 'cursor': (9, 3), 'head': (9, 3)}

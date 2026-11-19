@@ -1,0 +1,46 @@
+CURRENT (after the user's Tanoby decision + arrow-warp duplicates; from out/export/tilesets/sevii_islands/labels.json):
+  Tanoby chambers port DROPPED (Tanoby Ruins uses Tiksi's gTileset_TanobyDelta as-is): -41 tiles, -28 metatiles
+  + 9 arrow-warp duplicates (0 tiles, 9 metatiles)
+  => new tiles 164 (237 of 401 free slots left), new metatiles 106 (365+106 = 471 of 512, 41 left), palette slots 6, 7, 12
+
+gTileset_SeviiIslands budget (proposed secondary = gTileset_Rustboro copy + additions)
+
+base: Rustboro uses 498/512 tiles, 365/512 metatiles
+free tile slots: 401 (art.free_policy: tiles no metatile of LAYOUT_ROUTE104@git, LAYOUT_SOUTHERN_ISLAND_EXTERIOR@git, LAYOUT_FARAWAY_ISLAND_ENTRANCE@git references; tile 0 and Rustboro's anim destinations 128-159 / 448-451 excluded); 272 Rustboro metatiles dropped (ids kept, blanked)
+
+addition                          tiles  metatiles  palette slot
+cottage variants                      2         11  6 (new: Rustboro pal 9 + weathered-thatch ramp)
+market stall                         24         14  6 (shared with the cottage roof: indices 5, 8-15)
+Onix tails (port)                    36         10  3 (General, Emerald rock ramp; no new palette)
+Rocket Warehouse                     26         17  12 (new: Cold Storage palette recoloured)
+Memorial Pillar (port)               43         17  5 (General greys), 7 (new: FRLG primary pal 5 verbatim)
+Tanoby chambers (port)               41         28  7 (FRLG pal 5), 3 (rock), 4/5 (Emerald sea/sand)
+Ruin Valley Dotted Hole (port)       33         28  3 (rock), 5 (posts), 7 (pale path: mints 12-13), 1 (pond, Emerald)
+TOTAL                               205        125
+
+tiles left: 196   metatiles left: 22   secondary palette slots filled: [6, 7, 12] (6, 7, 12 were unused by every kept Rustboro metatile; 8-11 stay Rustboro's)
+
+metatiles are now the tight limit (22 left). If more are needed: the 272 dropped Rustboro ids are blank in the Sevii copy and could be re-used for new metatiles (no Sevii spec places them; check_kept() guards the ones they do).
+
+free policy:
+kept: every Rustboro metatile of LAYOUT_ROUTE104@git, LAYOUT_SOUTHERN_ISLAND_EXTERIOR@git, LAYOUT_FARAWAY_ISLAND_ENTRANCE@git (93 metatiles, 106 tiles); free: 401 tile slots (tile 0 and the anim destinations 128-159, 448-451 excluded)
+
+Onix tails:
+ported FRLG ids (General_Frlg primary): 071 079 098 099 09A 0A0 0A2 0A8 0AA 0BA
+the ids shared with every FRLG cliff (071 079 0A0 0A8) are in PORTED too: substitute by PORTED_CELLS (per cell) unless a map really wants the FRLG rock texture everywhere
+
+Rocket Warehouse:
+palette 12 = rocket_palette('rust_steel'); alternatives in ROCKET_PALETTES (same tiles): rust_steel, frlg, steel.
+door = MB_ANIMATED_DOOR copied from METATILE_Slateport_ColdStorage_Door: src/field_door.c needs a new sDoorAnimGraphicsTable entry for the Sevii door metatile (tiles = a 3-frame anim like graphics/door_anims/cold_storage.png but with the R and the moved glass index, palettes {12 x8}).
+
+kept cells:
+verified: 73 Rustboro secondary cells the Sevii specs use keep their metatiles + tiles
+
+Memorial Pillar:
+PORTED_CELLS FiveIsland_MemorialPillar: 8,40 9,40 7,41 8,41 9,41 10,41 7,42 8,42 9,42 10,42 7,43 8,43 9,43 10,43 7,44 8,44 9,44 10,44
+
+Tanoby Ruins:
+PORTED_CELLS SevenIsland_TanobyRuins: 186 cells around the 7 chamber warps
+
+Ruin Valley:
+PORTED_CELLS SixIsland_RuinValley: 58 cells (mound x22-26 y20-25 + pale path)

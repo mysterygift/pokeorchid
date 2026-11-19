@@ -1,0 +1,576 @@
+{
+"name": "OneIsland",
+"size": [
+24,
+20
+],
+"tileset": [
+"gTileset_General",
+"gTileset_SeviiIslands"
+],
+"ground": [
+"id",
+368,
+0,
+1
+],
+"mask": [
+"MMMMMMMMMMM.......TTMKW~",
+"MMMMMMMMMMM.......TTMKW~",
+"MMMMMMMTTTT.......TTMKW~",
+"MMMMMMMTTTT.......TTMKW~",
+"MMMMMMMTTTT.......TTMKW~",
+"MMMMMMMTTTT.......TTMKWW",
+"MMMMMMMMMMMM...n......RK",
+"MMMMMTTTTTTMMhhhM......M",
+"MMMMMTT................M",
+"MMMMMTT................M",
+"MMMMMTT................M",
+"MMMMMTT..........MhhhMMM",
+"MMMMMTT..........Mssssss",
+"MMMMMTT.......n..M.sssss",
+"MMMMMTT..........MMsMMMM",
+"MMMMKKKKKKKhhhKKKKMMMMMM",
+"MMMKWWWWWWWkkkWWWWKMMMMM",
+"KKKWW~~~~~~kkk~~~WKKKKKM",
+"WWWW~~~~~~~kkk~~~WWWWWWK",
+"~~~~~~~~~~~~~~~~~~~~~~WK"
+],
+"big_trees": "T",
+"stamps": [
+[
+"LAYOUT_SOUTHERN_ISLAND_EXTERIOR",
+10,
+21,
+9,
+4,
+8,
+19
+]
+],
+"pstamps": [
+[
+"LAYOUT_LAVARIDGE_TOWN",
+8,
+3,
+5,
+5,
+12,
+1
+],
+[
+"LAYOUT_ROUTE104@git",
+7,
+48,
+2,
+2,
+22,
+1
+],
+[
+"LAYOUT_ROUTE104@git",
+7,
+48,
+2,
+2,
+6,
+16
+],
+[
+"LAYOUT_ROUTE104@git",
+7,
+48,
+2,
+2,
+15,
+16
+],
+[
+"LAYOUT_ROUTE104@git",
+7,
+48,
+2,
+2,
+2,
+18
+],
+[
+"LAYOUT_ROUTE104@git",
+7,
+48,
+2,
+2,
+5,
+18
+],
+[
+"LAYOUT_ROUTE104@git",
+7,
+48,
+2,
+2,
+17,
+18
+]
+],
+"cells": [
+[
+13,
+7,
+[
+"id",
+175
+]
+],
+[
+14,
+7,
+[
+"id",
+207
+]
+],
+[
+15,
+7,
+[
+"id",
+207
+]
+],
+[
+18,
+11,
+[
+"id",
+175
+]
+],
+[
+19,
+11,
+[
+"id",
+207
+]
+],
+[
+20,
+11,
+[
+"id",
+207
+]
+],
+[
+11,
+15,
+[
+"id",
+175
+]
+],
+[
+12,
+15,
+[
+"id",
+207
+]
+],
+[
+13,
+15,
+[
+"id",
+207
+]
+],
+[
+11,
+16,
+[
+"LAYOUT_ROUTE104@git",
+12,
+51
+]
+],
+[
+12,
+16,
+[
+"LAYOUT_ROUTE104@git",
+12,
+51
+]
+],
+[
+13,
+16,
+[
+"LAYOUT_ROUTE104@git",
+12,
+51
+]
+],
+[
+11,
+17,
+[
+"LAYOUT_ROUTE104@git",
+12,
+52
+]
+],
+[
+12,
+17,
+[
+"LAYOUT_ROUTE104@git",
+12,
+52
+]
+],
+[
+13,
+17,
+[
+"LAYOUT_ROUTE104@git",
+12,
+52
+]
+],
+[
+11,
+18,
+[
+"LAYOUT_ROUTE104@git",
+12,
+52
+]
+],
+[
+12,
+18,
+[
+"LAYOUT_ROUTE104@git",
+12,
+52
+]
+],
+[
+13,
+18,
+[
+"LAYOUT_ROUTE104@git",
+12,
+52
+]
+]
+],
+"auto": [],
+"marks": [
+[
+14,
+5,
+"pokemon_center",
+"warp"
+],
+[
+19,
+9,
+"house1",
+"warp"
+],
+[
+8,
+11,
+"house2",
+"warp"
+],
+[
+12,
+18,
+"harbor (arrow S)",
+"warp"
+],
+[
+12,
+16,
+"",
+"npc",
+"man"
+],
+[
+16,
+12,
+"",
+"npc",
+"old_man"
+],
+[
+13,
+9,
+"",
+"npc",
+"man"
+],
+[
+14,
+13,
+"",
+"sign"
+],
+[
+15,
+6,
+"",
+"sign"
+],
+[
+1,
+19,
+"v One Island Treasure Beach",
+"conn"
+],
+[
+15,
+2,
+"One Island Kindle Road >",
+"conn"
+],
+[
+11,
+17,
+"Sailor",
+"sailor",
+"sailor_right"
+],
+[
+9,
+17,
+"boat",
+"boat",
+"boat_right"
+]
+],
+"post": [],
+"vstamps": [
+[
+"cottage_v1",
+17,
+6
+],
+[
+"cottage_v2",
+7,
+8
+]
+],
+"vcells": [],
+"arrow_warps": [
+[
+12,
+18,
+"S"
+]
+],
+"object_events": [
+{
+"graphics_id": "OBJ_EVENT_GFX_SCIENTIST_1",
+"x": 12,
+"y": 16,
+"script": "0x0"
+},
+{
+"graphics_id": "OBJ_EVENT_GFX_OLD_MAN",
+"x": 16,
+"y": 12,
+"script": "OneIsland_EventScript_OldMan"
+},
+{
+"graphics_id": "OBJ_EVENT_GFX_MAN_3",
+"x": 13,
+"y": 9,
+"script": "OneIsland_EventScript_BaldingMan"
+}
+],
+"report": {
+"map": "OneIsland",
+"size": [
+24,
+20
+],
+"pair": [
+"gTileset_General",
+"gTileset_SeviiIslands"
+],
+"unresolved": [],
+"buildings": [
+{
+"warp": [
+14,
+5
+],
+"dest": "MAP_ONE_ISLAND_POKEMON_CENTER_1F",
+"footprint": [
+11,
+0,
+7,
+6
+],
+"stamp": "centre",
+"at": [
+12,
+1,
+5,
+5
+]
+},
+{
+"warp": [
+19,
+9
+],
+"dest": "MAP_ONE_ISLAND_HOUSE1",
+"footprint": [
+18,
+6,
+5,
+4
+],
+"stamp": "cottage_v1",
+"at": [
+17,
+6,
+5,
+4
+]
+},
+{
+"warp": [
+8,
+11
+],
+"dest": "MAP_ONE_ISLAND_HOUSE2",
+"footprint": [
+7,
+9,
+5,
+3
+],
+"stamp": "cottage_v2",
+"at": [
+7,
+8,
+5,
+4
+]
+},
+{
+"warp": [
+12,
+18
+],
+"dest": "MAP_ONE_ISLAND_HARBOR",
+"footprint": 5,
+"stamp": "harbor dock"
+}
+],
+"caves": [],
+"rocks_merged": [
+[
+5,
+18
+],
+[
+6,
+18
+],
+[
+16,
+18
+],
+[
+17,
+18
+],
+[
+19,
+19
+]
+],
+"ported_cells": 0,
+"arrow_warps": [
+[
+12,
+18,
+"S"
+]
+],
+"connections": [
+[
+"down",
+0,
+"MAP_ONE_ISLAND_TREASURE_BEACH"
+],
+[
+"right",
+-120,
+"MAP_ONE_ISLAND_KINDLE_ROAD"
+]
+],
+"warps": [
+[
+14,
+5,
+"MAP_ONE_ISLAND_POKEMON_CENTER_1F"
+],
+[
+19,
+9,
+"MAP_ONE_ISLAND_HOUSE1"
+],
+[
+8,
+11,
+"MAP_ONE_ISLAND_HOUSE2"
+],
+[
+12,
+18,
+"MAP_ONE_ISLAND_HARBOR"
+]
+],
+"objects": [
+[
+12,
+16,
+"OBJ_EVENT_GFX_BILL",
+"SCIENTIST_1"
+],
+[
+16,
+12,
+"OBJ_EVENT_GFX_OLD_MAN_1",
+"OLD_MAN"
+],
+[
+13,
+9,
+"OBJ_EVENT_GFX_BALDING_MAN",
+"MAN_3"
+]
+],
+"classes": {
+"M": 176,
+".": 146,
+"T": 48,
+"~": 78,
+"n": 2,
+"h": 9,
+"s": 12,
+"k": 9
+}
+}
+}

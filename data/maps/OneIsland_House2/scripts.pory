@@ -1,0 +1,5 @@
+mapscripts OneIsland_House2_MapScripts {}
+
+script OneIsland_House2_EventScript_Lass {
+    msgbox(format("The sea between the islands is calm now. You can Surf from island to island if you're brave."), MSGBOX_NPC)
+}

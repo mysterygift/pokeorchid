@@ -47,6 +47,7 @@
 #include "random_mon_generation.h"
 #include "recorded_battle.h"
 #include "regions.h"
+#include "region_map.h"
 #include "rtc.h"
 #include "sound.h"
 #include "string_util.h"
@@ -457,6 +458,7 @@ const struct NatureInfo gNaturesInfo[NUM_NATURES] =
 };
 
 #include "data/graphics/pokemon.h"
+#include "data/graphics/delta_pokemon.h"
 
 #include "data/pokemon/trainer_class_lookups.h"
 #include "data/pokemon/experience_tables.h"
@@ -484,6 +486,8 @@ const struct NatureInfo gNaturesInfo[NUM_NATURES] =
 #include "data/pokemon/teachable_learnsets.h"
 #include "data/pokemon/egg_moves.h"
 #include "data/pokemon/orchid_learnsets.h"
+#include "data/pokemon/delta_learnsets.h"
+#include "data/pokemon/delta_species.h"
 #include "data/pokemon/form_species_tables.h"
 #include "data/pokemon/form_change_tables.h"
 #include "data/pokemon/form_change_table_pointers.h"
@@ -5079,6 +5083,35 @@ bool32 IsSpeciesInKantoDex(enum Species species)
         return TRUE;
 }
 
+bool32 IsDeltaSpecies(enum Species species)
+{
+    return species < NUM_SPECIES && gSpeciesInfo[species].isDeltaSpecies;
+}
+
+// Delta (δ) species -> the species it is a δ variant of (SPECIES_NONE if not a δ).
+enum Species GetDeltaBaseSpecies(enum Species deltaSpecies)
+{
+    u32 i;
+    for (i = 0; i < ARRAY_COUNT(sDeltaSpeciesPairs); i++)
+    {
+        if (sDeltaSpeciesPairs[i][1] == deltaSpecies)
+            return sDeltaSpeciesPairs[i][0];
+    }
+    return SPECIES_NONE;
+}
+
+// Species -> its δ variant (SPECIES_NONE if it has none).
+enum Species GetDeltaSpecies(enum Species baseSpecies)
+{
+    u32 i;
+    for (i = 0; i < ARRAY_COUNT(sDeltaSpeciesPairs); i++)
+    {
+        if (sDeltaSpeciesPairs[i][0] == baseSpecies)
+            return sDeltaSpeciesPairs[i][1];
+    }
+    return SPECIES_NONE;
+}
+
 bool32 IsSpeciesInHoennDex(enum Species species)
 {
     if (SpeciesToHoennPokedexNum(species) > HOENN_DEX_COUNT)
@@ -5124,10 +5157,16 @@ u16 GetBattleBGM(void)
         else
             trainerClass = GetTrainerClassFromId(TRAINER_BATTLE_PARAM.opponentA);
 
+        // Wavebreak Voyages: Cynthia (Holon Lake + Battle Cafe rematch) has her own theme.
+        if (!(gBattleTypeFlags & (BATTLE_TYPE_FRONTIER | BATTLE_TYPE_TRAINER_HILL))
+         && (TRAINER_BATTLE_PARAM.opponentA == TRAINER_CYNTHIA_LAKE || TRAINER_BATTLE_PARAM.opponentA == TRAINER_CYNTHIA_CAFE))
+            return MUS_ORCHID_VS_CYNTHIA;
+
         switch (trainerClass)
         {
         case TRAINER_CLASS_AQUA_LEADER:
         case TRAINER_CLASS_MAGMA_LEADER:
+        case TRAINER_CLASS_HOLON_LEADER: // Wavebreak Voyages: Faba
             return MUS_VS_AQUA_MAGMA_LEADER;
         case TRAINER_CLASS_TEAM_AQUA:
         case TRAINER_CLASS_TEAM_MAGMA:
@@ -5162,16 +5201,45 @@ u16 GetBattleBGM(void)
         default:
             if (GetCurrentRegion() == REGION_KANTO)
                 return MUS_RG_VS_TRAINER;
-            else
-                return MUS_ORCHID_VS_TRAINER;
+            // Wavebreak Voyages: Sevii plays FRLG's trainer theme re-voiced onto Hoenn instruments
+            // (dev_scripts/voyages/polish_phone_music)
+            if (IsSeviiMapSec(gMapHeader.regionMapSectionId))
+                return MUS_ORCHID_SEVII_VS_TRAINER;
+            return MUS_ORCHID_VS_TRAINER;
         }
     }
     else
     {
         if (GetCurrentRegion() == REGION_KANTO)
             return MUS_RG_VS_WILD;
-        else
-            return MUS_VS_WILD;
+        // Wavebreak Voyages: Sevii plays FRLG's wild theme re-voiced onto Hoenn instruments
+        if (IsSeviiMapSec(gMapHeader.regionMapSectionId))
+            return MUS_ORCHID_SEVII_VS_WILD;
+        return MUS_VS_WILD;
+    }
+}
+
+// Wavebreak Voyages: on Sevii, trainer approach music uses FRLG's three encounter themes (the trainer_tower.c
+// grouping), re-voiced onto Hoenn instruments. Elsewhere the Emerald theme is kept. (Victory themes need no
+// Sevii case: FRLG's MUS_RG_VICTORY_WILD / _TRAINER are the R/S songs on the same voicegroups.)
+u16 GetSeviiTrainerEncounterBGM(u16 music)
+{
+    if (!IsSeviiMapSec(gMapHeader.regionMapSectionId))
+        return music;
+    switch (music)
+    {
+    case MUS_ENCOUNTER_FEMALE:
+    case MUS_ENCOUNTER_GIRL:
+    case MUS_ENCOUNTER_TWINS:
+    case MUS_RG_ENCOUNTER_GIRL:
+        return MUS_ORCHID_SEVII_ENCOUNTER_GIRL;
+    case MUS_ENCOUNTER_SUSPICIOUS:
+    case MUS_ENCOUNTER_AQUA:
+    case MUS_ENCOUNTER_MAGMA:
+    case MUS_RG_ENCOUNTER_ROCKET:
+        return MUS_ORCHID_SEVII_ENCOUNTER_ROCKET;
+    default:
+        return MUS_ORCHID_SEVII_ENCOUNTER_BOY;
     }
 }
 

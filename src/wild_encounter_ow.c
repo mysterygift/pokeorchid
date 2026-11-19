@@ -22,6 +22,7 @@
 #include "task.h"
 #include "trainer_hill.h"
 #include "wild_encounter.h"
+#include "holon.h"
 #include "constants/battle_frontier.h"
 #include "constants/event_objects.h"
 #include "constants/field_effects.h"
@@ -1765,7 +1766,7 @@ struct SpritePalette GetOWESpawnDespawnAnimFldEffPalette(enum SpawnDespawnTypeOW
         break;
     }
 
-    return palette;
+    return *Holon_GetFieldEffectPalette(&palette); // Orchid Holon: desaturated greens on Holon maps
 }
 
 static bool32 CheckValidOWESpecies(enum Species speciesId)

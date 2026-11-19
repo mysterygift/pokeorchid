@@ -1,0 +1,34 @@
+mapscripts FiveIsland_RocketWarehouse_MapScripts {}
+
+script FiveIsland_RocketWarehouse_EventScript_Grunt2 {
+    msgbox(format("We're just... looking after this place. Nothing to see."), MSGBOX_NPC)
+}
+
+script FiveIsland_RocketWarehouse_EventScript_Grunt3 {
+    msgbox(format("The boss said to keep an eye on the islands. So I'm keeping an eye."), MSGBOX_NPC)
+}
+
+script FiveIsland_RocketWarehouse_EventScript_Admin1 {
+    msgbox(format("This place is a front, I tell you. Shipping crates full of who-knows-what."), MSGBOX_NPC)
+}
+
+script FiveIsland_RocketWarehouse_EventScript_Admin2 {
+    msgbox(format("Hey! This is official business. Move along."), MSGBOX_NPC)
+}
+
+script FiveIsland_RocketWarehouse_EventScript_Grunt1 {
+    msgbox(format("Hey! This is official business. Move along."), MSGBOX_NPC)
+}
+
+script FiveIsland_RocketWarehouse_EventScript_Gideon {
+    msgbox(format("This placeholder lab needs a lot more work. Please come back later!"), MSGBOX_NPC)
+}
+
+script FiveIsland_RocketWarehouse_EventScript_Cage {
+    msgbox(format("A cage. It's empty, thankfully."), MSGBOX_SIGN)
+}
+
+script FiveIsland_RocketWarehouse_EventScript_Computer {
+    msgbox(format("The screen is full of shipping notes.\n"
+        "Someone has been busy here."), MSGBOX_SIGN)
+}

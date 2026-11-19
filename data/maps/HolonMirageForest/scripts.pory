@@ -1,0 +1,55 @@
+mapscripts HolonMirageForest_MapScripts {}
+
+script HolonMirageForest_EventScript_Sailor {
+    lock
+    faceplayer
+    // TODO(core): replace with the voyage return menu (Wavebreak / other unlocked destinations)
+    call(Holon_SailorReturnPlaceholder)
+    release
+}
+
+script Holon_SailorReturnPlaceholder {
+    msgbox(format("Ahoy! Whenever you're ready to head home, just say the word.\p(Placeholder: the voyage return menu is added by the core voyage stream.)"), MSGBOX_DEFAULT)
+}
+
+script HolonMirageForest_EventScript_Lass {
+    msgbox(format("Folks call this the Mirage Forest. The trails twist so much they seem to move. Keep to the path east and you'll reach Holon Village."), MSGBOX_NPC)
+}
+
+script HolonMirageForest_EventScript_Sign {
+    msgbox(format("Mirage Forest\nHolon Village: follow the path east."), MSGBOX_SIGN)
+}
+
+script HolonMirageForest_EventScript_Researcher1 {
+    trainerbattle_single(TRAINER_HOLON_IDO, HolonMirageForest_Text_Researcher1Intro, HolonMirageForest_Text_Researcher1Defeat)
+    msgbox(HolonMirageForest_Text_Researcher1Post, MSGBOX_AUTOCLOSE)
+}
+
+text HolonMirageForest_Text_Researcher1Intro {
+    format("These ruins sit on a Power Spot. You're standing right on my sensor line!")
+}
+
+text HolonMirageForest_Text_Researcher1Defeat {
+    format("My readings... scrambled completely.")
+}
+
+text HolonMirageForest_Text_Researcher1Post {
+    format("The old track here carried carved stone down to the lake, long before our tower was built.")
+}
+
+script HolonMirageForest_EventScript_Researcher2 {
+    trainerbattle_single(TRAINER_HOLON_CHRISTOPHE, HolonMirageForest_Text_Researcher2Intro, HolonMirageForest_Text_Researcher2Defeat)
+    msgbox(HolonMirageForest_Text_Researcher2Post, MSGBOX_AUTOCLOSE)
+}
+
+text HolonMirageForest_Text_Researcher2Intro {
+    format("Delta Species gather wherever the Power Spot energy runs strong. Let me show you mine!")
+}
+
+text HolonMirageForest_Text_Researcher2Defeat {
+    format("Fascinating. Your Pokémon adapt so quickly.")
+}
+
+text HolonMirageForest_Text_Researcher2Post {
+    format("The energy changes a Pokémon's type, but never its heart. Or so we hope.")
+}

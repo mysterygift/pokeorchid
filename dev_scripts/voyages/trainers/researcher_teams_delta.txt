@@ -1,0 +1,55 @@
+Holon Researcher teams: intended Delta (δ) species, for the coordinator to swap in after the Delta merge.
+
+src/data/trainers.party currently uses the BASE species (the delta stream's SPECIES_*_DELTA constants don't
+exist on this branch yet). After the Delta merge, replace each species line below inside the named trainer
+block (only that line; levels, class, pic stay). The species constant column is what trainerproc accepts.
+Holon's own non-Delta Pokémon (Magneton/Electrode/Castform, batch5_delta NOTES §2) stay as they are.
+
+Class: Holon Researcher · Pic: Holon Researcher · AI: Basic Trainer · Music: Intense · default movesets
+(no items; IVs default 31). Levels 62-68, between Holon's wild Lv 50-65 and Cynthia's 70-74.
+
+=== TRAINER_HOLON_IDO (slot 25, was TRAINER_GRUNT_MT_PYRE_3) — Research Tower, machines
+  Klinklang  Lv62 -> SPECIES_KLINKLANG_DELTA   (Klinklang-δ, Rock/Ice)
+  Magneton   Lv62 -> keep SPECIES_MAGNETON      (Holon's Pokémon, not a Delta)
+  Farfetch'd Lv62 -> SPECIES_FARFETCHD_DELTA   (Farfetch'd-δ, Steel)
+  Metagross  Lv63 -> SPECIES_METAGROSS_DELTA   (Metagross-δ, Electric/Steel)
+
+=== TRAINER_HOLON_CHRISTOPHE (slot 26, was TRAINER_GRUNT_WEATHER_INST_4) — psychic/eeveelution research
+  Gardevoir  Lv63 -> SPECIES_GARDEVOIR_DELTA   (Gardevoir-δ, Grass)
+  Gallade    Lv63 -> SPECIES_GALLADE_DELTA     (Gallade-δ, Grass)
+  Espeon     Lv64 -> SPECIES_ESPEON_DELTA      (Espeon-δ, Psychic/Steel)
+  Umbreon    Lv64 -> SPECIES_UMBREON_DELTA     (Umbreon-δ, Dark/Steel)
+
+=== TRAINER_HOLON_MATEO (slot 27, was TRAINER_GRUNT_AQUA_HIDEOUT_5) — Holon Lake, water lines
+  Relicanth  Lv64 -> SPECIES_RELICANTH_DELTA   (Relicanth-δ, Grass/Ground)
+  Kingdra    Lv65 -> SPECIES_KINGDRA_DELTA     (Kingdra-δ, Fire/Steel)
+  Gyarados   Lv65 -> SPECIES_GYARADOS_DELTA    (Gyarados-δ, Electric/Steel)
+  Milotic    Lv65 -> SPECIES_MILOTIC_DELTA     (Milotic-δ, Fire)
+
+=== TRAINER_HOLON_HENRIK (slot 28, was TRAINER_GRUNT_AQUA_HIDEOUT_6) — village, cats + balloons
+  Persian    Lv65 -> SPECIES_PERSIAN_DELTA     (Persian-δ, Dark/Steel)
+  Liepard    Lv65 -> SPECIES_LIEPARD_DELTA     (Liepard-δ, Fairy)
+  Purugly    Lv65 -> SPECIES_PURUGLY_DELTA     (Purugly-δ, Fairy)
+  Drifblim   Lv66 -> SPECIES_DRIFBLIM_DELTA    (Drifblim-δ, Flying/Fire)
+  Pangoro    Lv66 -> SPECIES_PANGORO_DELTA     (Pangoro-δ, Psychic)
+
+=== TRAINER_HOLON_TOBIAS (slot 29, was TRAINER_FREDRICK) — pseudo-legendary lines
+  Flygon     Lv66 -> SPECIES_FLYGON_DELTA      (Flygon-δ, Grass/Steel)
+  Salamence  Lv67 -> SPECIES_SALAMENCE_DELTA   (Salamence-δ, Fire/Steel)
+  Tyranitar  Lv67 -> SPECIES_TYRANITAR_DELTA   (Tyranitar-δ, Fire/Steel)
+
+=== TRAINER_HOLON_KENJI (slot 30, was TRAINER_MATT) — senior researcher, strongest
+  Raichu     Lv67 -> SPECIES_RAICHU_DELTA      (Raichu-δ, Steel)
+  Sylveon    Lv67 -> SPECIES_SYLVEON_DELTA     (Sylveon-δ, Fairy/Steel)
+  Charizard  Lv68 -> SPECIES_CHARIZARD_DELTA   (Charizard-δ, Electric/Steel)
+  Dragonite  Lv68 -> SPECIES_DRAGONITE_DELTA   (Dragonite-δ, Electric)
+
+Notes
+- The δ entries use the base learnsets plus the delta stream's 2-3 δ STAB level-up moves per line, so default
+  movesets at these levels should already include δ STAB once the Delta learnset patch lands; re-check after
+  the merge (if a team has no STAB, add explicit move lists).
+- Base Charizard/Gyarados/Tyranitar etc. currently have Megas; the δ forms deliberately drop formChangeTable, and
+  none of these entries hold a stone, so nothing Mega Evolves either way.
+- None of these trainers are placed on a map yet (Holon maps are another stream). Suggested placements: Ido +
+  Christophe in the Research Tower, Mateo at the Lake, Henrik in the village, Tobias on the coast, Kenji on
+  Research Tower 2F.

@@ -1,0 +1,44 @@
+mapscripts ThreeIsland_MapScripts {
+    MAP_SCRIPT_ON_TRANSITION {
+        setflag(FLAG_VISITED_THREE_ISLAND)
+    }
+}
+
+script ThreeIsland_EventScript_AntiBiker1 {
+    msgbox(format("The Sevii Islands are so peaceful. I could stay here forever."), MSGBOX_NPC)
+}
+
+script ThreeIsland_EventScript_AntiBiker2 {
+    msgbox(format("Each island has its own character. Have you visited them all?"), MSGBOX_NPC)
+}
+
+script ThreeIsland_EventScript_Biker {
+    msgbox(format("The roads on Three Island are short, so we ride in circles."), MSGBOX_NPC)
+}
+
+script ThreeIsland_EventScript_Woman {
+    msgbox(format("A biker gang used to bother us here. Now they just ride up and down the island."), MSGBOX_NPC)
+}
+
+script ThreeIsland_EventScript_LittleBoy {
+    msgbox(format("I found a pretty shell on the beach today!"), MSGBOX_NPC)
+}
+
+script ThreeIsland_EventScript_Doduo {
+    lock
+    faceplayer
+    waitse
+    playmoncry(SPECIES_DODUO, CRY_MODE_NORMAL)
+    msgbox(format("DODUO: Gwaa gwaa!"))
+    waitmoncry
+    release
+}
+
+script ThreeIsland_EventScript_Biker6 {
+    msgbox(format("The roads on Three Island are short, so we ride in circles."), MSGBOX_NPC)
+}
+
+script ThreeIsland_EventScript_IslandSign {
+    msgbox(format("THREE ISLAND\n"
+        "Kin Island. Bond Bridge to the west."), MSGBOX_SIGN)
+}

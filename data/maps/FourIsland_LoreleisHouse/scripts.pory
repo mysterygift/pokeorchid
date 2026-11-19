@@ -1,0 +1,9 @@
+mapscripts FourIsland_LoreleisHouse_MapScripts {}
+
+script FourIsland_LoreleisHouse_EventScript_Lorelei {
+    msgbox(format("Oh, a visitor from Tosa? I'm resting at home for now. Please, look around my collection."), MSGBOX_NPC)
+}
+
+script FourIsland_LoreleisHouse_EventScript_Doll {
+    msgbox(format("A cute doll. Lorelei looks after her collection carefully."), MSGBOX_SIGN)
+}

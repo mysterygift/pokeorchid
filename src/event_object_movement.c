@@ -42,6 +42,7 @@
 #include "util.h"
 #include "wild_encounter.h"
 #include "wild_encounter_ow.h"
+#include "holon.h"
 #include "constants/event_object_movement.h"
 #include "constants/abilities.h"
 #include "constants/battle.h"
@@ -541,6 +542,7 @@ static const struct SpritePalette sObjectEventSpritePalettes[] = {
     {gObjectEventPal_NpcGreenReflection,    OBJ_EVENT_PAL_TAG_NPC_GREEN_REFLECTION},
     {gObjectEventPal_NpcWhiteReflection,    OBJ_EVENT_PAL_TAG_NPC_WHITE_REFLECTION},
     {gObjectEventPal_NpcSchoolKidF,         OBJ_EVENT_PAL_TAG_NPC_SCHOOL_KID_F},
+    {gObjectEventPal_HolonSphere,           OBJ_EVENT_PAL_TAG_HOLON_SPHERE},   // Orchid Holon
 #if IS_FRLG
     {gObjectEventPal_PlayerFrlg,            OBJ_EVENT_PAL_TAG_PLAYER_RED},
     {gObjectEventPal_PlayerReflectionFrlg,  OBJ_EVENT_PAL_TAG_PLAYER_RED_REFLECTION},
@@ -3286,7 +3288,11 @@ void FreeAndReserveObjectSpritePalettes(void)
 
 u8 LoadObjectEventPalette(u16 paletteTag)
 {
-    u16 i = FindObjectEventPaletteIndexByTag(paletteTag);
+    u16 i;
+
+    if (paletteTag == OBJ_EVENT_PAL_TAG_HOLON_SPHERE) // Orchid Holon: dormant or glowing palette
+        return Holon_LoadSpherePalette();
+    i = FindObjectEventPaletteIndexByTag(paletteTag);
     if (i == 0xFF)
         return i;
     return LoadSpritePaletteIfTagExists(&sObjectEventSpritePalettes[i]);

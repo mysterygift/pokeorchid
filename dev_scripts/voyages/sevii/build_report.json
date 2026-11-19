@@ -1,0 +1,801 @@
+{
+  "num_tiles": 498,
+  "door_entries": [
+    "METATILE_Rustboro_Door_Tan",
+    "METATILE_Rustboro_Door_Gray"
+  ],
+  "ash_cells_fixed": {
+    "LAYOUT_MT_EMBER_EXTERIOR": 321,
+    "LAYOUT_MT_EMBER_SUMMIT": 98,
+    "LAYOUT_FOUR_ISLAND": 10,
+    "LAYOUT_TWO_ISLAND_CAPE_BRINK": 2,
+    "LAYOUT_FIVE_ISLAND_MEMORIAL_PILLAR": 1,
+    "LAYOUT_SIX_ISLAND_RUIN_VALLEY": 2,
+    "LAYOUT_THREE_ISLAND_BERRY_FOREST": 19,
+    "LAYOUT_ONE_ISLAND (elev 4->3)": 9,
+    "LAYOUT_TWO_ISLAND (elev 4->3)": 6,
+    "LAYOUT_FOUR_ISLAND (elev 4->3)": 4,
+    "LAYOUT_FIVE_ISLAND (elev 4->3)": 3,
+    "LAYOUT_SEVEN_ISLAND (elev 4->3)": 15,
+    "LAYOUT_THREE_ISLAND_BOND_BRIDGE (elev 4->3)": 20,
+    "LAYOUT_THREE_ISLAND_PORT (elev 4->3)": 3,
+    "LAYOUT_FIVE_ISLAND_MEMORIAL_PILLAR (elev 4->3)": 9,
+    "LAYOUT_SEVEN_ISLAND_SEVAULT_CANYON_ENTRANCE (elev 4->3)": 12,
+    "LAYOUT_FOUR_ISLAND (39,27) opened": 1,
+    "LAYOUT_SIX_ISLAND (14,25) opened": 1
+  },
+  "maps": [
+    "OneIsland",
+    "TwoIsland",
+    "ThreeIsland",
+    "FourIsland",
+    "FiveIsland",
+    "SixIsland",
+    "SevenIsland",
+    "FiveIsland_Harbor",
+    "FiveIsland_House1",
+    "FiveIsland_House2",
+    "FiveIsland_Meadow",
+    "FiveIsland_MemorialPillar",
+    "FiveIsland_PokemonCenter_1F",
+    "FiveIsland_RocketWarehouse",
+    "FourIsland_Harbor",
+    "FourIsland_House1",
+    "FourIsland_House2",
+    "FourIsland_IcefallCave_1F",
+    "FourIsland_IcefallCave_B1F",
+    "FourIsland_IcefallCave_Back",
+    "FourIsland_IcefallCave_Entrance",
+    "FourIsland_LoreleisHouse",
+    "FourIsland_Mart",
+    "FourIsland_PokemonCenter_1F",
+    "FourIsland_PokemonDayCare",
+    "MtEmber_Exterior",
+    "MtEmber_RubyPath_1F",
+    "MtEmber_RubyPath_B1F",
+    "MtEmber_RubyPath_B1F_Stairs",
+    "MtEmber_RubyPath_B2F",
+    "MtEmber_RubyPath_B2F_Stairs",
+    "MtEmber_RubyPath_B3F",
+    "MtEmber_RubyPath_B4F",
+    "MtEmber_RubyPath_B5F",
+    "MtEmber_Summit",
+    "MtEmber_SummitPath_1F",
+    "MtEmber_SummitPath_2F",
+    "MtEmber_SummitPath_3F",
+    "OneIsland_Harbor",
+    "OneIsland_House1",
+    "OneIsland_House2",
+    "OneIsland_KindleRoad",
+    "OneIsland_KindleRoad_EmberSpa",
+    "OneIsland_PokemonCenter_1F",
+    "OneIsland_TreasureBeach",
+    "SevenIsland_Harbor",
+    "SevenIsland_House_Room1",
+    "SevenIsland_House_Room2",
+    "SevenIsland_Mart",
+    "SevenIsland_PokemonCenter_1F",
+    "SevenIsland_SevaultCanyon",
+    "SevenIsland_SevaultCanyon_Entrance",
+    "SevenIsland_SevaultCanyon_House",
+    "SevenIsland_SevaultCanyon_TanobyKey",
+    "SevenIsland_TanobyRuins",
+    "SevenIsland_TanobyRuins_DilfordChamber",
+    "SevenIsland_TanobyRuins_LiptooChamber",
+    "SevenIsland_TanobyRuins_MoneanChamber",
+    "SevenIsland_TanobyRuins_RixyChamber",
+    "SevenIsland_TanobyRuins_ScufibChamber",
+    "SevenIsland_TanobyRuins_ViapoisChamber",
+    "SevenIsland_TanobyRuins_WeepthChamber",
+    "SeviiSeaRouteA",
+    "SeviiSeaRouteB",
+    "SeviiSeaRouteC",
+    "SeviiSeaRouteD",
+    "SixIsland_DottedHole_1F",
+    "SixIsland_DottedHole_B1F",
+    "SixIsland_DottedHole_B2F",
+    "SixIsland_DottedHole_B3F",
+    "SixIsland_DottedHole_B4F",
+    "SixIsland_DottedHole_SapphireRoom",
+    "SixIsland_Harbor",
+    "SixIsland_House",
+    "SixIsland_Mart",
+    "SixIsland_PokemonCenter_1F",
+    "SixIsland_RuinValley",
+    "SixIsland_WaterPath",
+    "SixIsland_WaterPath_House1",
+    "SixIsland_WaterPath_House2",
+    "ThreeIsland_BerryForest",
+    "ThreeIsland_BondBridge",
+    "ThreeIsland_DunsparceTunnel",
+    "ThreeIsland_Harbor",
+    "ThreeIsland_House1",
+    "ThreeIsland_House2",
+    "ThreeIsland_House3",
+    "ThreeIsland_House4",
+    "ThreeIsland_House5",
+    "ThreeIsland_Mart",
+    "ThreeIsland_PokemonCenter_1F",
+    "ThreeIsland_Port",
+    "TwoIsland_CapeBrink",
+    "TwoIsland_CapeBrink_House",
+    "TwoIsland_Harbor",
+    "TwoIsland_House",
+    "TwoIsland_JoyfulGameCorner",
+    "TwoIsland_PokemonCenter_1F"
+  ],
+  "clones": [
+    "OneIsland_PokemonCenter_1F",
+    "TwoIsland_PokemonCenter_1F",
+    "ThreeIsland_PokemonCenter_1F",
+    "ThreeIsland_Mart",
+    "FourIsland_PokemonCenter_1F",
+    "FourIsland_Mart",
+    "FiveIsland_PokemonCenter_1F",
+    "SixIsland_PokemonCenter_1F",
+    "SixIsland_Mart",
+    "SevenIsland_PokemonCenter_1F",
+    "SevenIsland_Mart",
+    "TwoIsland_JoyfulGameCorner"
+  ],
+  "sealed": [
+    [
+      "SixIsland_RuinValley",
+      24,
+      24,
+      "MAP_SIX_ISLAND_DOTTED_HOLE_1F"
+    ],
+    [
+      "SevenIsland_TanobyRuins",
+      120,
+      10,
+      "MAP_SEVEN_ISLAND_TANOBY_RUINS_MONEAN_CHAMBER"
+    ],
+    [
+      "SevenIsland_TanobyRuins",
+      103,
+      10,
+      "MAP_SEVEN_ISLAND_TANOBY_RUINS_LIPTOO_CHAMBER"
+    ],
+    [
+      "SevenIsland_TanobyRuins",
+      88,
+      8,
+      "MAP_SEVEN_ISLAND_TANOBY_RUINS_WEEPTH_CHAMBER"
+    ],
+    [
+      "SevenIsland_TanobyRuins",
+      44,
+      11,
+      "MAP_SEVEN_ISLAND_TANOBY_RUINS_DILFORD_CHAMBER"
+    ],
+    [
+      "SevenIsland_TanobyRuins",
+      32,
+      9,
+      "MAP_SEVEN_ISLAND_TANOBY_RUINS_SCUFIB_CHAMBER"
+    ],
+    [
+      "SevenIsland_TanobyRuins",
+      12,
+      15,
+      "MAP_SEVEN_ISLAND_TANOBY_RUINS_RIXY_CHAMBER"
+    ],
+    [
+      "SevenIsland_TanobyRuins",
+      11,
+      6,
+      "MAP_SEVEN_ISLAND_TANOBY_RUINS_VIAPOIS_CHAMBER"
+    ]
+  ],
+  "mat_warps": [
+    [
+      "FiveIsland_House1",
+      3,
+      7
+    ],
+    [
+      "FiveIsland_House2",
+      3,
+      7
+    ],
+    [
+      "FiveIsland_RocketWarehouse",
+      25,
+      27
+    ],
+    [
+      "FourIsland_House1",
+      3,
+      7
+    ],
+    [
+      "FourIsland_House2",
+      3,
+      7
+    ],
+    [
+      "FourIsland_LoreleisHouse",
+      3,
+      7
+    ],
+    [
+      "FourIsland_PokemonDayCare",
+      3,
+      7
+    ],
+    [
+      "OneIsland_House1",
+      3,
+      7
+    ],
+    [
+      "OneIsland_House2",
+      3,
+      7
+    ],
+    [
+      "SevenIsland_House_Room1",
+      3,
+      7
+    ],
+    [
+      "SevenIsland_SevaultCanyon_House",
+      3,
+      7
+    ],
+    [
+      "SixIsland_House",
+      3,
+      7
+    ],
+    [
+      "SixIsland_WaterPath_House1",
+      2,
+      7
+    ],
+    [
+      "SixIsland_WaterPath_House2",
+      3,
+      7
+    ],
+    [
+      "ThreeIsland_House1",
+      3,
+      7
+    ],
+    [
+      "ThreeIsland_House2",
+      3,
+      7
+    ],
+    [
+      "ThreeIsland_House3",
+      3,
+      7
+    ],
+    [
+      "ThreeIsland_House4",
+      3,
+      7
+    ],
+    [
+      "ThreeIsland_House5",
+      3,
+      7
+    ],
+    [
+      "TwoIsland_CapeBrink_House",
+      3,
+      7
+    ],
+    [
+      "TwoIsland_House",
+      3,
+      7
+    ]
+  ],
+  "warp_problems": [
+    "SixIsland_DottedHole_B2F warp 1 -> MAP_SIX_ISLAND_DOTTED_HOLE_1F has no warp back",
+    "SixIsland_DottedHole_B2F warp 2 -> MAP_SIX_ISLAND_DOTTED_HOLE_1F has no warp back",
+    "SixIsland_DottedHole_B2F warp 3 -> MAP_SIX_ISLAND_DOTTED_HOLE_1F has no warp back",
+    "SixIsland_DottedHole_B3F warp 1 -> MAP_SIX_ISLAND_DOTTED_HOLE_1F has no warp back",
+    "SixIsland_DottedHole_B3F warp 3 -> MAP_SIX_ISLAND_DOTTED_HOLE_1F has no warp back",
+    "SixIsland_DottedHole_B3F warp 4 -> MAP_SIX_ISLAND_DOTTED_HOLE_1F has no warp back",
+    "SixIsland_DottedHole_B4F warp 1 -> MAP_SIX_ISLAND_DOTTED_HOLE_1F has no warp back",
+    "SixIsland_DottedHole_B4F warp 2 -> MAP_SIX_ISLAND_DOTTED_HOLE_1F has no warp back",
+    "SixIsland_DottedHole_B4F warp 4 -> MAP_SIX_ISLAND_DOTTED_HOLE_1F has no warp back"
+  ],
+  "relocated": [
+    [
+      "FiveIsland_Meadow",
+      "OBJ_EVENT_GFX_ITEM_BALL",
+      [
+        3,
+        22
+      ],
+      [
+        11,
+        22
+      ]
+    ],
+    [
+      "FiveIsland_RocketWarehouse",
+      "ITEM_NET_BALL",
+      [
+        7,
+        16
+      ],
+      [
+        7,
+        17
+      ]
+    ],
+    [
+      "FourIsland",
+      "OBJ_EVENT_GFX_LITTLE_GIRL",
+      [
+        31,
+        21
+      ],
+      [
+        29,
+        22
+      ]
+    ],
+    [
+      "MtEmber_Exterior",
+      "ITEM_FIRE_STONE",
+      [
+        18,
+        17
+      ],
+      [
+        18,
+        16
+      ]
+    ],
+    [
+      "SixIsland",
+      "ITEM_LEPPA_BERRY",
+      [
+        9,
+        7
+      ],
+      [
+        8,
+        10
+      ]
+    ],
+    [
+      "ThreeIsland_BerryForest",
+      "OBJ_EVENT_GFX_ITEM_BALL",
+      [
+        27,
+        11
+      ],
+      [
+        23,
+        11
+      ]
+    ],
+    [
+      "ThreeIsland_BondBridge",
+      "ITEM_MAX_REPEL",
+      [
+        61,
+        5
+      ],
+      [
+        61,
+        6
+      ]
+    ],
+    [
+      "ThreeIsland_DunsparceTunnel",
+      "ITEM_NUGGET",
+      [
+        21,
+        3
+      ],
+      [
+        20,
+        3
+      ]
+    ],
+    [
+      "FiveIsland_MemorialPillar",
+      "OBJ_EVENT_GFX_MAN_3",
+      "elevation 4 -> 3",
+      [
+        8,
+        44
+      ]
+    ],
+    [
+      "FiveIsland_RocketWarehouse",
+      "OBJ_EVENT_GFX_ITEM_BALL",
+      "elevation 0 -> 3",
+      [
+        17,
+        3
+      ]
+    ],
+    [
+      "OneIsland_KindleRoad",
+      "OBJ_EVENT_GFX_BLACK_BELT",
+      "elevation 4 -> 3",
+      [
+        18,
+        105
+      ]
+    ],
+    [
+      "OneIsland_KindleRoad",
+      "OBJ_EVENT_GFX_BREAKABLE_ROCK",
+      "elevation 4 -> 3",
+      [
+        18,
+        111
+      ]
+    ],
+    [
+      "OneIsland_KindleRoad",
+      "OBJ_EVENT_GFX_BREAKABLE_ROCK",
+      "elevation 4 -> 3",
+      [
+        18,
+        112
+      ]
+    ],
+    [
+      "OneIsland_KindleRoad",
+      "OBJ_EVENT_GFX_ITEM_BALL",
+      "elevation 4 -> 3",
+      [
+        18,
+        114
+      ]
+    ],
+    [
+      "SevenIsland_SevaultCanyon_Entrance",
+      "OBJ_EVENT_GFX_MAN_5",
+      "elevation 5 -> 3",
+      [
+        11,
+        17
+      ]
+    ],
+    [
+      "SevenIsland_SevaultCanyon_House",
+      "OBJ_EVENT_GFX_ITEM_BALL",
+      "elevation 0 -> 3",
+      [
+        6,
+        4
+      ]
+    ],
+    [
+      "SeviiSeaRouteA",
+      "OBJ_EVENT_GFX_ITEM_BALL",
+      "elevation 1 -> 3",
+      [
+        18,
+        5
+      ]
+    ],
+    [
+      "SeviiSeaRouteB",
+      "OBJ_EVENT_GFX_ITEM_BALL",
+      "elevation 1 -> 3",
+      [
+        22,
+        15
+      ]
+    ],
+    [
+      "SeviiSeaRouteC",
+      "OBJ_EVENT_GFX_ITEM_BALL",
+      "elevation 1 -> 3",
+      [
+        24,
+        15
+      ]
+    ],
+    [
+      "SixIsland_RuinValley",
+      "OBJ_EVENT_GFX_HIKER",
+      "elevation 5 -> 3",
+      [
+        32,
+        11
+      ]
+    ],
+    [
+      "SixIsland_RuinValley",
+      "OBJ_EVENT_GFX_HIKER",
+      "elevation 5 -> 3",
+      [
+        33,
+        16
+      ]
+    ],
+    [
+      "SixIsland_RuinValley",
+      "OBJ_EVENT_GFX_HIKER",
+      "elevation 5 -> 3",
+      [
+        31,
+        24
+      ]
+    ],
+    [
+      "SixIsland_RuinValley",
+      "OBJ_EVENT_GFX_HIKER",
+      "elevation 5 -> 3",
+      [
+        14,
+        10
+      ]
+    ],
+    [
+      "SixIsland_RuinValley",
+      "OBJ_EVENT_GFX_MANIAC",
+      "elevation 5 -> 3",
+      [
+        21,
+        29
+      ]
+    ],
+    [
+      "SixIsland_RuinValley",
+      "OBJ_EVENT_GFX_PUSHABLE_BOULDER",
+      "elevation 5 -> 3",
+      [
+        17,
+        10
+      ]
+    ],
+    [
+      "SixIsland_RuinValley",
+      "OBJ_EVENT_GFX_PUSHABLE_BOULDER",
+      "elevation 5 -> 3",
+      [
+        17,
+        12
+      ]
+    ],
+    [
+      "SixIsland_RuinValley",
+      "OBJ_EVENT_GFX_PUSHABLE_BOULDER",
+      "elevation 5 -> 3",
+      [
+        18,
+        11
+      ]
+    ],
+    [
+      "SixIsland_RuinValley",
+      "OBJ_EVENT_GFX_ITEM_BALL",
+      "elevation 5 -> 3",
+      [
+        19,
+        11
+      ]
+    ],
+    [
+      "SixIsland_WaterPath",
+      "OBJ_EVENT_GFX_ITEM_BALL",
+      "elevation 0 -> 3",
+      [
+        17,
+        19
+      ]
+    ],
+    [
+      "SixIsland_WaterPath",
+      "OBJ_EVENT_GFX_ITEM_BALL",
+      "elevation 3 -> 1",
+      [
+        17,
+        87
+      ]
+    ],
+    [
+      "ThreeIsland_House1",
+      "OBJ_EVENT_GFX_LITTLE_GIRL",
+      "elevation 0 -> 3",
+      [
+        3,
+        4
+      ]
+    ]
+  ],
+  "flags": {
+    "FLAG_ITEM_SEVII_FIVE_ISLAND_MEADOW_MAX_POTION": "FLAG_ITEM_ROUTE_116_X_SPECIAL",
+    "FLAG_ITEM_SEVII_FIVE_ISLAND_MEADOW_PP_UP": "FLAG_ITEM_ROUTE_104_PP_UP",
+    "FLAG_ITEM_SEVII_FIVE_ISLAND_MEMORIAL_PILLAR_METAL_COAT": "FLAG_ITEM_ROUTE_105_IRON",
+    "FLAG_ITEM_SEVII_FIVE_ISLAND_ROCKET_WAREHOUSE_BIG_PEARL": "FLAG_ITEM_ROUTE_106_PROTEIN",
+    "FLAG_ITEM_SEVII_FIVE_ISLAND_ROCKET_WAREHOUSE_TM36": "FLAG_ITEM_ROUTE_109_PP_UP",
+    "FLAG_ITEM_SEVII_FIVE_ISLAND_ROCKET_WAREHOUSE_PEARL": "FLAG_ITEM_ROUTE_110_RARE_CANDY",
+    "FLAG_ITEM_SEVII_FIVE_ISLAND_ROCKET_WAREHOUSE_UPGRADE": "FLAG_ITEM_ROUTE_110_DIRE_HIT",
+    "FLAG_ITEM_SEVII_FOUR_ISLAND_STAR_PIECE": "FLAG_ITEM_ROUTE_111_TM_SANDSTORM",
+    "FLAG_ITEM_SEVII_FOUR_ISLAND_STARDUST": "FLAG_ITEM_ROUTE_111_STARDUST",
+    "FLAG_ITEM_SEVII_FOUR_ISLAND_ICEFALL_CAVE_1F_ULTRA_BALL": "FLAG_ITEM_NEW_MAUVILLE_ULTRA_BALL",
+    "FLAG_ITEM_SEVII_FOUR_ISLAND_ICEFALL_CAVE_1F_ICE_STONE": "FLAG_ITEM_ROUTE_111_HP_UP",
+    "FLAG_ITEM_SEVII_FOUR_ISLAND_ICEFALL_CAVE_B1F_FULL_RESTORE": "FLAG_ITEM_VICTORY_ROAD_B1F_FULL_RESTORE",
+    "FLAG_ITEM_SEVII_FOUR_ISLAND_ICEFALL_CAVE_B1F_NEVER_MELT_ICE": "FLAG_ITEM_ROUTE_112_NUGGET",
+    "FLAG_ITEM_SEVII_MT_EMBER_EXTERIOR_ULTRA_BALL": "FLAG_ITEM_ROUTE_113_MAX_ETHER",
+    "FLAG_ITEM_SEVII_MT_EMBER_EXTERIOR_FIRE_STONE": "FLAG_ITEM_ROUTE_113_SUPER_REPEL",
+    "FLAG_ITEM_SEVII_MT_EMBER_EXTERIOR_DIRE_HIT": "FLAG_ITEM_ROUTE_114_RARE_CANDY",
+    "FLAG_ITEM_SEVII_ONE_ISLAND_KINDLE_ROAD_ETHER": "FLAG_ITEM_ROUTE_116_ETHER",
+    "FLAG_ITEM_SEVII_ONE_ISLAND_KINDLE_ROAD_MAX_REPEL": "FLAG_ITEM_LILYCOVE_CITY_MAX_REPEL",
+    "FLAG_ITEM_SEVII_ONE_ISLAND_KINDLE_ROAD_CARBOS": "FLAG_ITEM_ROUTE_114_PROTEIN",
+    "FLAG_ITEM_SEVII_SEVEN_ISLAND_SEVAULT_CANYON_KINGS_ROCK": "FLAG_ITEM_ROUTE_115_TM_FOCUS_PUNCH",
+    "FLAG_ITEM_SEVII_SEVEN_ISLAND_SEVAULT_CANYON_MAX_ELIXIR": "FLAG_ITEM_AQUA_HIDEOUT_B1F_MAX_ELIXIR",
+    "FLAG_ITEM_SEVII_SEVEN_ISLAND_SEVAULT_CANYON_NUGGET": "FLAG_ITEM_ROUTE_115_IRON",
+    "FLAG_ITEM_SEVII_SEVEN_ISLAND_SEVAULT_CANYON_HOUSE_LUCKY_PUNCH": "FLAG_ITEM_ROUTE_116_REPEL",
+    "FLAG_ITEM_SEVII_SEA_ROUTE_A_PEARL": "FLAG_ITEM_ROUTE_116_HP_UP",
+    "FLAG_ITEM_SEVII_SEA_ROUTE_B_STAR_PIECE": "FLAG_ITEM_ROUTE_117_GREAT_BALL",
+    "FLAG_ITEM_SEVII_SEA_ROUTE_C_BIG_PEARL": "FLAG_ITEM_ROUTE_123_RARE_CANDY",
+    "FLAG_ITEM_SEVII_SIX_ISLAND_RUIN_VALLEY_HP_UP": "FLAG_ITEM_PETALBURG_CITY_MAX_REVIVE",
+    "FLAG_ITEM_SEVII_SIX_ISLAND_RUIN_VALLEY_FULL_RESTORE": "FLAG_ITEM_PETALBURG_CITY_ETHER",
+    "FLAG_ITEM_SEVII_SIX_ISLAND_RUIN_VALLEY_SUN_STONE": "FLAG_ITEM_RUSTBORO_CITY_X_DEFEND",
+    "FLAG_ITEM_SEVII_SIX_ISLAND_WATER_PATH_ELIXIR": "FLAG_ITEM_VICTORY_ROAD_1F_MAX_ELIXIR",
+    "FLAG_ITEM_SEVII_SIX_ISLAND_WATER_PATH_DRAGON_SCALE": "FLAG_ITEM_MOSSDEEP_CITY_NET_BALL",
+    "FLAG_ITEM_SEVII_THREE_ISLAND_ZINC": "FLAG_ITEM_METEOR_FALLS_1F_1R_TM_IRON_TAIL",
+    "FLAG_ITEM_SEVII_THREE_ISLAND_BERRY_FOREST_MAX_ETHER": "FLAG_ITEM_RUSTURF_TUNNEL_MAX_ETHER",
+    "FLAG_ITEM_SEVII_THREE_ISLAND_BERRY_FOREST_FULL_HEAL": "FLAG_ITEM_METEOR_FALLS_1F_1R_FULL_HEAL",
+    "FLAG_ITEM_SEVII_THREE_ISLAND_BERRY_FOREST_MAX_ELIXIR": "FLAG_ITEM_METEOR_FALLS_1F_1R_MOON_STONE",
+    "FLAG_ITEM_SEVII_TWO_ISLAND_REVIVE": "FLAG_ITEM_ABANDONED_SHIP_ROOMS_2_1F_REVIVE",
+    "FLAG_HIDDEN_ITEM_SEVII_FIVE_ISLAND_MEMORIAL_PILLAR_BIG_PEARL": "FLAG_HIDDEN_ITEM_ROUTE_105_BIG_PEARL",
+    "FLAG_HIDDEN_ITEM_SEVII_FIVE_ISLAND_MEMORIAL_PILLAR_RAZZ_BERRY": "FLAG_HIDDEN_ITEM_LAVARIDGE_TOWN_ICE_HEAL",
+    "FLAG_HIDDEN_ITEM_SEVII_FIVE_ISLAND_MEMORIAL_PILLAR_SITRUS_BERRY": "FLAG_HIDDEN_ITEM_ROUTE_111_STARDUST",
+    "FLAG_HIDDEN_ITEM_SEVII_FIVE_ISLAND_MEMORIAL_PILLAR_BLUK_BERRY": "FLAG_HIDDEN_ITEM_ROUTE_113_ETHER",
+    "FLAG_HIDDEN_ITEM_SEVII_FIVE_ISLAND_ROCKET_WAREHOUSE_NEST_BALL": "FLAG_HIDDEN_ITEM_ROUTE_114_CARBOS",
+    "FLAG_HIDDEN_ITEM_SEVII_FIVE_ISLAND_ROCKET_WAREHOUSE_NET_BALL": "FLAG_HIDDEN_ITEM_LILYCOVE_CITY_HEART_SCALE",
+    "FLAG_HIDDEN_ITEM_SEVII_FOUR_ISLAND_PEARL": "FLAG_HIDDEN_ITEM_FALLARBOR_TOWN_NUGGET",
+    "FLAG_HIDDEN_ITEM_SEVII_FOUR_ISLAND_ULTRA_BALL": "FLAG_HIDDEN_ITEM_VICTORY_ROAD_1F_ULTRA_BALL",
+    "FLAG_HIDDEN_ITEM_SEVII_MT_EMBER_EXTERIOR_FIRE_STONE": "FLAG_HIDDEN_ITEM_ROUTE_113_TM_DOUBLE_TEAM",
+    "FLAG_HIDDEN_ITEM_SEVII_MT_EMBER_EXTERIOR_ULTRA_BALL": "FLAG_HIDDEN_ITEM_ROUTE_104_POTION",
+    "FLAG_HIDDEN_ITEM_SEVII_ONE_ISLAND_TREASURE_BEACH_STARDUST": "FLAG_HIDDEN_ITEM_ROUTE_106_STARDUST",
+    "FLAG_HIDDEN_ITEM_SEVII_ONE_ISLAND_TREASURE_BEACH_STARDUST_2": "FLAG_HIDDEN_ITEM_ROUTE_114_REVIVE",
+    "FLAG_HIDDEN_ITEM_SEVII_ONE_ISLAND_TREASURE_BEACH_PEARL": "FLAG_HIDDEN_ITEM_LILYCOVE_CITY_PP_UP",
+    "FLAG_HIDDEN_ITEM_SEVII_ONE_ISLAND_TREASURE_BEACH_PEARL_2": "FLAG_HIDDEN_ITEM_ROUTE_104_SUPER_POTION",
+    "FLAG_HIDDEN_ITEM_SEVII_ONE_ISLAND_TREASURE_BEACH_ULTRA_BALL": "FLAG_HIDDEN_ITEM_ROUTE_116_SUPER_POTION",
+    "FLAG_HIDDEN_ITEM_SEVII_ONE_ISLAND_TREASURE_BEACH_ULTRA_BALL_2": "FLAG_HIDDEN_ITEM_ROUTE_106_HEART_SCALE",
+    "FLAG_HIDDEN_ITEM_SEVII_ONE_ISLAND_TREASURE_BEACH_STAR_PIECE": "FLAG_HIDDEN_ITEM_GRANITE_CAVE_B2F_EVERSTONE_1",
+    "FLAG_HIDDEN_ITEM_SEVII_ONE_ISLAND_TREASURE_BEACH_BIG_PEARL": "FLAG_HIDDEN_ITEM_GRANITE_CAVE_B2F_EVERSTONE_2",
+    "FLAG_HIDDEN_ITEM_SEVII_SEVEN_ISLAND_SEVAULT_CANYON_CHERI_BERRY": "FLAG_HIDDEN_ITEM_ROUTE_109_REVIVE",
+    "FLAG_HIDDEN_ITEM_SEVII_SEVEN_ISLAND_SEVAULT_CANYON_ENTRANCE_RAWST_BERRY": "FLAG_HIDDEN_ITEM_ROUTE_109_GREAT_BALL",
+    "FLAG_HIDDEN_ITEM_SEVII_SEVEN_ISLAND_TANOBY_RUINS_HEART_SCALE": "FLAG_HIDDEN_ITEM_ROUTE_104_HEART_SCALE",
+    "FLAG_HIDDEN_ITEM_SEVII_SEVEN_ISLAND_TANOBY_RUINS_HEART_SCALE_2": "FLAG_HIDDEN_ITEM_ROUTE_105_HEART_SCALE",
+    "FLAG_HIDDEN_ITEM_SEVII_SEVEN_ISLAND_TANOBY_RUINS_HEART_SCALE_3": "FLAG_HIDDEN_ITEM_ROUTE_115_HEART_SCALE",
+    "FLAG_HIDDEN_ITEM_SEVII_SEVEN_ISLAND_TANOBY_RUINS_HEART_SCALE_4": "FLAG_HIDDEN_ITEM_ROUTE_109_HEART_SCALE_1",
+    "FLAG_HIDDEN_ITEM_SEVII_SIX_ISLAND_LEPPA_BERRY": "FLAG_HIDDEN_ITEM_ROUTE_110_GREAT_BALL",
+    "FLAG_HIDDEN_ITEM_SEVII_SIX_ISLAND_WATER_PATH_ASPEAR_BERRY": "FLAG_HIDDEN_ITEM_ROUTE_110_REVIVE",
+    "FLAG_HIDDEN_ITEM_SEVII_SIX_ISLAND_WATER_PATH_ORAN_BERRY": "FLAG_HIDDEN_ITEM_ROUTE_110_FULL_HEAL",
+    "FLAG_HIDDEN_ITEM_SEVII_SIX_ISLAND_WATER_PATH_PINAP_BERRY": "FLAG_HIDDEN_ITEM_ROUTE_111_PROTEIN",
+    "FLAG_HIDDEN_ITEM_SEVII_THREE_ISLAND_PP_UP": "FLAG_HIDDEN_ITEM_ROUTE_111_RARE_CANDY",
+    "FLAG_HIDDEN_ITEM_SEVII_THREE_ISLAND_BERRY_FOREST_RAZZ_BERRY": "FLAG_HIDDEN_ITEM_PETALBURG_WOODS_POTION",
+    "FLAG_HIDDEN_ITEM_SEVII_THREE_ISLAND_BERRY_FOREST_BLUK_BERRY": "FLAG_HIDDEN_ITEM_PETALBURG_WOODS_TINY_MUSHROOM_1",
+    "FLAG_HIDDEN_ITEM_SEVII_THREE_ISLAND_BERRY_FOREST_NANAB_BERRY": "FLAG_HIDDEN_ITEM_PETALBURG_WOODS_TINY_MUSHROOM_2",
+    "FLAG_HIDDEN_ITEM_SEVII_THREE_ISLAND_BERRY_FOREST_WEPEAR_BERRY": "FLAG_HIDDEN_ITEM_PETALBURG_WOODS_POKE_BALL",
+    "FLAG_HIDDEN_ITEM_SEVII_THREE_ISLAND_BERRY_FOREST_ORAN_BERRY": "FLAG_HIDDEN_ITEM_ROUTE_104_POKE_BALL",
+    "FLAG_HIDDEN_ITEM_SEVII_THREE_ISLAND_BERRY_FOREST_CHERI_BERRY": "FLAG_HIDDEN_ITEM_ROUTE_106_POKE_BALL",
+    "FLAG_HIDDEN_ITEM_SEVII_THREE_ISLAND_BERRY_FOREST_CHESTO_BERRY": "FLAG_HIDDEN_ITEM_ROUTE_109_ETHER",
+    "FLAG_HIDDEN_ITEM_SEVII_THREE_ISLAND_BERRY_FOREST_PECHA_BERRY": "FLAG_HIDDEN_ITEM_ROUTE_110_POKE_BALL",
+    "FLAG_HIDDEN_ITEM_SEVII_THREE_ISLAND_BERRY_FOREST_RAWST_BERRY": "FLAG_HIDDEN_ITEM_ROUTE_117_REPEL",
+    "FLAG_HIDDEN_ITEM_SEVII_THREE_ISLAND_BERRY_FOREST_ASPEAR_BERRY": "FLAG_HIDDEN_ITEM_LILYCOVE_CITY_POKE_BALL",
+    "FLAG_HIDDEN_ITEM_SEVII_THREE_ISLAND_BERRY_FOREST_PERSIM_BERRY": "FLAG_HIDDEN_ITEM_JAGGED_PASS_GREAT_BALL",
+    "FLAG_HIDDEN_ITEM_SEVII_THREE_ISLAND_BERRY_FOREST_PINAP_BERRY": "FLAG_HIDDEN_ITEM_JAGGED_PASS_FULL_HEAL",
+    "FLAG_HIDDEN_ITEM_SEVII_THREE_ISLAND_BERRY_FOREST_LUM_BERRY": "FLAG_HIDDEN_ITEM_VICTORY_ROAD_B2F_ELIXIR",
+    "FLAG_HIDDEN_ITEM_SEVII_THREE_ISLAND_BOND_BRIDGE_MAX_REPEL": "FLAG_HIDDEN_ITEM_VICTORY_ROAD_B2F_MAX_REPEL",
+    "FLAG_HIDDEN_ITEM_SEVII_THREE_ISLAND_BOND_BRIDGE_PEARL": "FLAG_HIDDEN_ITEM_ROUTE_104_ANTIDOTE",
+    "FLAG_HIDDEN_ITEM_SEVII_THREE_ISLAND_BOND_BRIDGE_STARDUST": "FLAG_HIDDEN_ITEM_ROUTE_108_RARE_CANDY",
+    "FLAG_HIDDEN_ITEM_SEVII_THREE_ISLAND_DUNSPARCE_TUNNEL_NUGGET": "FLAG_HIDDEN_ITEM_ROUTE_113_NUGGET",
+    "FLAG_HIDDEN_ITEM_SEVII_TWO_ISLAND_CAPE_BRINK_PP_MAX": "FLAG_HIDDEN_ITEM_ROUTE_109_HEART_SCALE_2",
+    "FLAG_HIDDEN_ITEM_SEVII_TWO_ISLAND_CAPE_BRINK_RARE_CANDY": "FLAG_HIDDEN_ITEM_PETALBURG_CITY_RARE_CANDY"
+  },
+  "heal_locations": [
+    {
+      "id": "HEAL_LOCATION_ONE_ISLAND",
+      "map": "MAP_ONE_ISLAND",
+      "x": 14,
+      "y": 6,
+      "respawn_map": "MAP_ONE_ISLAND_POKEMON_CENTER_1F",
+      "respawn_npc": "LOCALID_ONE_ISLAND_NURSE"
+    },
+    {
+      "id": "HEAL_LOCATION_TWO_ISLAND",
+      "map": "MAP_TWO_ISLAND",
+      "x": 21,
+      "y": 8,
+      "respawn_map": "MAP_TWO_ISLAND_POKEMON_CENTER_1F",
+      "respawn_npc": "LOCALID_TWO_ISLAND_NURSE"
+    },
+    {
+      "id": "HEAL_LOCATION_THREE_ISLAND",
+      "map": "MAP_THREE_ISLAND",
+      "x": 14,
+      "y": 28,
+      "respawn_map": "MAP_THREE_ISLAND_POKEMON_CENTER_1F",
+      "respawn_npc": "LOCALID_THREE_ISLAND_NURSE"
+    },
+    {
+      "id": "HEAL_LOCATION_FOUR_ISLAND",
+      "map": "MAP_FOUR_ISLAND",
+      "x": 18,
+      "y": 21,
+      "respawn_map": "MAP_FOUR_ISLAND_POKEMON_CENTER_1F",
+      "respawn_npc": "LOCALID_FOUR_ISLAND_NURSE"
+    },
+    {
+      "id": "HEAL_LOCATION_FIVE_ISLAND",
+      "map": "MAP_FIVE_ISLAND",
+      "x": 18,
+      "y": 7,
+      "respawn_map": "MAP_FIVE_ISLAND_POKEMON_CENTER_1F",
+      "respawn_npc": "LOCALID_FIVE_ISLAND_NURSE"
+    },
+    {
+      "id": "HEAL_LOCATION_SIX_ISLAND",
+      "map": "MAP_SIX_ISLAND",
+      "x": 11,
+      "y": 12,
+      "respawn_map": "MAP_SIX_ISLAND_POKEMON_CENTER_1F",
+      "respawn_npc": "LOCALID_SIX_ISLAND_NURSE"
+    },
+    {
+      "id": "HEAL_LOCATION_SEVEN_ISLAND",
+      "map": "MAP_SEVEN_ISLAND",
+      "x": 12,
+      "y": 4,
+      "respawn_map": "MAP_SEVEN_ISLAND_POKEMON_CENTER_1F",
+      "respawn_npc": "LOCALID_SEVEN_ISLAND_NURSE"
+    }
+  ],
+  "wild": [
+    "OneIsland",
+    "TwoIsland",
+    "ThreeIsland",
+    "OneIsland_KindleRoad",
+    "OneIsland_TreasureBeach",
+    "TwoIsland_CapeBrink",
+    "ThreeIsland_BondBridge",
+    "ThreeIsland_Port",
+    "ThreeIsland_BerryForest",
+    "MtEmber_Exterior",
+    "MtEmber_SummitPath_1F",
+    "MtEmber_SummitPath_2F",
+    "MtEmber_SummitPath_3F",
+    "MtEmber_RubyPath_1F",
+    "MtEmber_RubyPath_B1F",
+    "MtEmber_RubyPath_B2F",
+    "MtEmber_RubyPath_B3F",
+    "MtEmber_RubyPath_B1F_Stairs",
+    "MtEmber_RubyPath_B2F_Stairs",
+    "MtEmber_RubyPath_B4F",
+    "MtEmber_RubyPath_B5F",
+    "FourIsland",
+    "FourIsland_IcefallCave_Entrance",
+    "FourIsland_IcefallCave_1F",
+    "FourIsland_IcefallCave_B1F",
+    "FourIsland_IcefallCave_Back",
+    "FiveIsland",
+    "FiveIsland_Meadow",
+    "FiveIsland_MemorialPillar",
+    "SixIsland",
+    "SixIsland_WaterPath",
+    "SixIsland_RuinValley",
+    "SevenIsland",
+    "SevenIsland_SevaultCanyon_Entrance",
+    "SevenIsland_SevaultCanyon",
+    "SevenIsland_TanobyRuins",
+    "SeviiSeaRouteA",
+    "SeviiSeaRouteB",
+    "SeviiSeaRouteC",
+    "SeviiSeaRouteD",
+    "ThreeIsland_DunsparceTunnel"
+  ]
+}

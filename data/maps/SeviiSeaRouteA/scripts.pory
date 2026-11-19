@@ -1,0 +1,22 @@
+mapscripts SeviiSeaRouteA_MapScripts {}
+
+script SeviiSeaRouteA_EventScript_Swimmer1 {
+    trainerbattle_single(TRAINER_SEVII_DYLAN, SeviiSeaRouteA_Text_Swimmer1Intro, SeviiSeaRouteA_Text_Swimmer1Defeat)
+    msgbox(SeviiSeaRouteA_Text_Swimmer1Post, MSGBOX_AUTOCLOSE)
+}
+
+text SeviiSeaRouteA_Text_Swimmer1Intro {
+    format("Crossing the strait? Race you... in battle!")
+}
+
+text SeviiSeaRouteA_Text_Swimmer1Defeat {
+    format("You're faster than the current!")
+}
+
+text SeviiSeaRouteA_Text_Swimmer1Post {
+    format("This strait links One Island and Two Island.")
+}
+
+script SeviiSeaRouteA_EventScript_Swimmer2 {
+    msgbox(format("This strait links One Island and Two Island."), MSGBOX_NPC)
+}

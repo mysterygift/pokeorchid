@@ -1,0 +1,155 @@
+raw `
+HolonLake_MapScripts::
+	map_script MAP_SCRIPT_ON_RESUME, HolonLake_OnResume
+	map_script MAP_SCRIPT_ON_TRANSITION, HolonLake_OnTransition
+	.byte 0
+
+HolonLake_OnTransition:
+	setflag FLAG_VISITED_HOLON_LAKE
+	end
+
+HolonLake_OnResume:
+	call_if_set HOLON_SPHERE_GLOW_FLAG, HolonLake_EventScript_SphereGlowOn
+	call_if_set FLAG_SYS_CTRL_OBJ_DELETE, HolonLake_EventScript_TryRemoveGyarados
+	end
+
+HolonLake_EventScript_SphereGlowOn::
+	callnative Holon_SetSphereGlow
+	return
+
+HolonLake_EventScript_TryRemoveGyarados::
+	specialvar VAR_RESULT, GetBattleOutcome
+	goto_if_ne VAR_RESULT, B_OUTCOME_CAUGHT, Common_EventScript_NopReturn
+	removeobject VAR_LAST_TALKED
+	return
+
+HolonLake_EventScript_Sphere::
+	lock
+	goto_if_set HOLON_SPHERE_GLOW_FLAG, HolonLake_EventScript_SphereAwake
+	msgbox HolonLake_Text_SphereDormant, MSGBOX_DEFAULT
+	release
+	end
+
+HolonLake_EventScript_SphereAwake::
+	msgbox HolonLake_Text_SphereAwake, MSGBOX_DEFAULT
+	release
+	end
+
+@ Called once Cynthia is beaten (trainers stream): the sphere's OBJ palette swaps to the glow copy.
+Holon_EventScript_AwakenSphere::
+	setflag HOLON_SPHERE_GLOW_FLAG
+	callnative Holon_SetSphereGlow
+	playse SE_M_DETECT
+	waitse
+	return
+
+HolonLake_EventScript_Cynthia::
+	lock
+	faceplayer
+	@ TODO(trainers): replace with Cynthia's battle script (encounter music, trainerbattle, then
+	@ call Holon_EventScript_AwakenSphere and hide her here / move her to the Changu Battle Cafe)
+	goto Common_EventScript_CynthiaHolonLake
+	release
+	end
+
+Holon_CynthiaPlaceholder::
+	msgbox HolonLake_Text_CynthiaPlaceholder, MSGBOX_DEFAULT
+	return
+
+HolonLake_EventScript_Gyarados::
+	lock
+	faceplayer
+	@ TODO(delta): SPECIES_GYARADOS_DELTA -> SPECIES_GYARADOS_DELTA (shiny Gyarados-delta static, Lv 65)
+	waitse
+	playmoncry SPECIES_GYARADOS_DELTA, CRY_MODE_ENCOUNTER
+	delay 40
+	waitmoncry
+	setwildbattle SPECIES_GYARADOS_DELTA, 65
+	createmon 1, 0, SPECIES_GYARADOS_DELTA, 65, shinyMode=SHINY_MODE_ALWAYS
+	setflag FLAG_SYS_CTRL_OBJ_DELETE
+	dowildbattle
+	clearflag FLAG_SYS_CTRL_OBJ_DELETE
+	specialvar VAR_RESULT, GetBattleOutcome
+	goto_if_eq VAR_RESULT, B_OUTCOME_WON, HolonLake_EventScript_GyaradosGone
+	goto_if_eq VAR_RESULT, B_OUTCOME_RAN, HolonLake_EventScript_GyaradosStays
+	goto_if_eq VAR_RESULT, B_OUTCOME_PLAYER_TELEPORTED, HolonLake_EventScript_GyaradosStays
+	setflag FLAG_HOLON_HIDE_GYARADOS
+	release
+	end
+
+HolonLake_EventScript_GyaradosGone::
+	setflag FLAG_HOLON_HIDE_GYARADOS
+	goto Common_EventScript_RemoveStaticPokemon
+	end
+
+HolonLake_EventScript_GyaradosStays::
+	msgbox HolonLake_Text_GyaradosDived, MSGBOX_DEFAULT
+	release
+	end
+`
+
+text HolonLake_Text_SphereDormant {
+    format("A great stone sphere rests in the plinth's socket. Diamonds are carved all over it. It feels cold.")
+}
+
+text HolonLake_Text_SphereAwake {
+    format("The stone sphere is glowing with a soft blue light. The air around it hums.")
+}
+
+text HolonLake_Text_CynthiaPlaceholder {
+    format("...\p(Placeholder: Cynthia's battle script is added by the trainers stream.)")
+}
+
+text HolonLake_Text_GyaradosDived {
+    format("The Gyarados dived back under the surface...")
+}
+
+script HolonLake_EventScript_Mentor {
+    msgbox(format("Those stone domes by the shore have been sealed since before my grandmother's time. Whatever's inside is meant to stay there."), MSGBOX_NPC)
+}
+
+script HolonLake_EventScript_Researcher1 {
+    trainerbattle_single(TRAINER_HOLON_MATEO, HolonLake_Text_Researcher1Intro, HolonLake_Text_Researcher1Defeat)
+    msgbox(HolonLake_Text_Researcher1Post, MSGBOX_AUTOCLOSE)
+}
+
+text HolonLake_Text_Researcher1Intro {
+    format("The marsh readings are off the charts! Don't trample my instruments!")
+}
+
+text HolonLake_Text_Researcher1Defeat {
+    format("I'll have to recalibrate everything...")
+}
+
+text HolonLake_Text_Researcher1Post {
+    format("The pillars channel the lake's energy into that sphere. We just collect what spills over.")
+}
+
+script HolonLake_EventScript_Researcher2 {
+    trainerbattle_single(TRAINER_HOLON_HENRIK, HolonLake_Text_Researcher2Intro, HolonLake_Text_Researcher2Defeat)
+    msgbox(HolonLake_Text_Researcher2Post, MSGBOX_AUTOCLOSE)
+}
+
+text HolonLake_Text_Researcher2Intro {
+    format("A visitor? This part of the shore is closed for research!")
+}
+
+text HolonLake_Text_Researcher2Defeat {
+    format("Hmph. Fine, look around. Just don't touch the pillars.")
+}
+
+text HolonLake_Text_Researcher2Post {
+    format("The domes by the shore? Sealed. We've never found a way in, and the elders won't say.")
+}
+
+script HolonLake_EventScript_Sign {
+    msgbox(format("Holon Lake\nPlease do not disturb the stone pillars."), MSGBOX_SIGN)
+}
+
+script HolonLake_EventScript_SealedDome {
+    msgbox(format("The doorway is sealed with a carved stone slab. A diamond is cut into its face."), MSGBOX_SIGN)
+}
+
+script HolonLake_EventScript_Pillar {
+    msgbox(format("A tall carved pillar rising out of the lake. It hums faintly."), MSGBOX_SIGN)
+}

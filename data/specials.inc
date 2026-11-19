@@ -644,3 +644,9 @@ gSpecials::
 	def_special TrainStation_BufferName
 	def_special TrainTravel_Depart
 	def_special TrainStation_OpenMap
+	def_special IsCynthiaCafeRematchAvailable
+	def_special SetCynthiaCafeRematchDay
+	def_special Voyage_CheckCode
+	def_special Voyage_BuildMenu
+	def_special Voyage_IsDestinationOpen
+	def_special Voyage_Depart, waitstate=1

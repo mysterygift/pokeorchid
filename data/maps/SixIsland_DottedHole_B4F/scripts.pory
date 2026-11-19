@@ -1,0 +1,6 @@
+mapscripts SixIsland_DottedHole_B4F_MapScripts {}
+
+script SixIsland_DottedHole_B4F_EventScript_BrailleDown {
+    msgbox(format("Rows of raised dots are carved into the rock.\n"
+        "You can't make sense of them."), MSGBOX_SIGN)
+}

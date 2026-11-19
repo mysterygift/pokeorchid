@@ -1,0 +1,5 @@
+mapscripts HolonVillage_House5_MapScripts {}
+
+script HolonVillage_House5_EventScript_Npc {
+    msgbox(format("The lake fish have changed. Half my catch looks like it's been dipped in metal!"), MSGBOX_NPC)
+}

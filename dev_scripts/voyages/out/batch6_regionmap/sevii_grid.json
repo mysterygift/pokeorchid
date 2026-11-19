@@ -1,0 +1,420 @@
+{
+ "123": {
+  "erased_tiles": [
+   [
+    21,
+    14,
+    35
+   ],
+   [
+    22,
+    14,
+    36
+   ],
+   [
+    23,
+    14,
+    37
+   ],
+   [
+    21,
+    15,
+    41
+   ],
+   [
+    22,
+    15,
+    42
+   ],
+   [
+    23,
+    15,
+    43
+   ],
+   [
+    21,
+    16,
+    47
+   ],
+   [
+    22,
+    16,
+    48
+   ],
+   [
+    23,
+    16,
+    49
+   ]
+  ],
+  "sea_tile": 0,
+  "sections": {
+   "MAPSEC_BERRY_FOREST": {
+    "name": "Berry Forest",
+    "bbox": [
+     14,
+     12,
+     1,
+     1
+    ],
+    "cells": 1
+   },
+   "MAPSEC_BOND_BRIDGE": {
+    "name": "Bond Bridge",
+    "bbox": [
+     15,
+     12,
+     3,
+     1
+    ],
+    "cells": 3
+   },
+   "MAPSEC_CAPE_BRINK": {
+    "name": "Cape Brink",
+    "bbox": [
+     9,
+     7,
+     1,
+     2
+    ],
+    "cells": 2
+   },
+   "MAPSEC_KINDLE_ROAD": {
+    "name": "Kindle Road",
+    "bbox": [
+     2,
+     4,
+     1,
+     5
+    ],
+    "cells": 5
+   },
+   "MAPSEC_MT_EMBER": {
+    "name": "Mt. Ember",
+    "bbox": [
+     2,
+     3,
+     1,
+     1
+    ],
+    "cells": 1
+   },
+   "MAPSEC_ONE_ISLAND": {
+    "name": "One Island",
+    "bbox": [
+     1,
+     8,
+     1,
+     1
+    ],
+    "cells": 1
+   },
+   "MAPSEC_SEVII_ISLE_22": {
+    "name": "One-Two Strait",
+    "bbox": [
+     2,
+     9,
+     7,
+     1
+    ],
+    "cells": 7
+   },
+   "MAPSEC_SEVII_ISLE_23": {
+    "name": "Two-Three Strait",
+    "bbox": [
+     10,
+     9,
+     4,
+     4
+    ],
+    "cells": 7
+   },
+   "MAPSEC_THREE_ISLAND": {
+    "name": "Three Island",
+    "bbox": [
+     18,
+     12,
+     1,
+     1
+    ],
+    "cells": 1
+   },
+   "MAPSEC_THREE_ISLE_PORT": {
+    "name": "Three Isle Port",
+    "bbox": [
+     18,
+     13,
+     2,
+     1
+    ],
+    "cells": 2
+   },
+   "MAPSEC_TREASURE_BEACH": {
+    "name": "Treasure Beach",
+    "bbox": [
+     1,
+     9,
+     1,
+     2
+    ],
+    "cells": 2
+   },
+   "MAPSEC_TWO_ISLAND": {
+    "name": "Two Island",
+    "bbox": [
+     9,
+     9,
+     1,
+     1
+    ],
+    "cells": 1
+   }
+  },
+  "cleared": []
+ },
+ "45": {
+  "erased_tiles": [
+   [
+    21,
+    14,
+    19
+   ],
+   [
+    22,
+    14,
+    20
+   ],
+   [
+    23,
+    14,
+    21
+   ],
+   [
+    21,
+    15,
+    23
+   ],
+   [
+    22,
+    15,
+    24
+   ],
+   [
+    23,
+    15,
+    25
+   ],
+   [
+    21,
+    16,
+    28
+   ],
+   [
+    22,
+    16,
+    29
+   ],
+   [
+    23,
+    16,
+    30
+   ]
+  ],
+  "sea_tile": 0,
+  "sections": {
+   "MAPSEC_FIVE_ISLAND": {
+    "name": "Five Island",
+    "bbox": [
+     16,
+     11,
+     1,
+     1
+    ],
+    "cells": 1
+   },
+   "MAPSEC_FIVE_ISLE_MEADOW": {
+    "name": "Five Isle Meadow",
+    "bbox": [
+     17,
+     11,
+     1,
+     2
+    ],
+    "cells": 2
+   },
+   "MAPSEC_FOUR_ISLAND": {
+    "name": "Four Island",
+    "bbox": [
+     3,
+     4,
+     1,
+     1
+    ],
+    "cells": 1
+   },
+   "MAPSEC_MEMORIAL_PILLAR": {
+    "name": "Memorial Pillar",
+    "bbox": [
+     18,
+     12,
+     1,
+     3
+    ],
+    "cells": 3
+   },
+   "MAPSEC_SEVII_ISLE_24": {
+    "name": "Four-Five Strait",
+    "bbox": [
+     4,
+     4,
+     12,
+     8
+    ],
+    "cells": 19
+   }
+  },
+  "cleared": [
+   "MAPSEC_NAVEL_ROCK_FRLG",
+   "MAPSEC_RESORT_GORGEOUS",
+   "MAPSEC_WATER_LABYRINTH"
+  ]
+ },
+ "67": {
+  "erased_tiles": [
+   [
+    21,
+    14,
+    42
+   ],
+   [
+    22,
+    14,
+    43
+   ],
+   [
+    23,
+    14,
+    44
+   ],
+   [
+    21,
+    15,
+    49
+   ],
+   [
+    22,
+    15,
+    50
+   ],
+   [
+    23,
+    15,
+    51
+   ],
+   [
+    21,
+    16,
+    55
+   ],
+   [
+    22,
+    16,
+    56
+   ],
+   [
+    23,
+    16,
+    57
+   ]
+  ],
+  "sea_tile": 0,
+  "sections": {
+   "MAPSEC_CANYON_ENTRANCE": {
+    "name": "Canyon Entrance",
+    "bbox": [
+     5,
+     9,
+     1,
+     1
+    ],
+    "cells": 1
+   },
+   "MAPSEC_RUIN_VALLEY": {
+    "name": "Ruin Valley",
+    "bbox": [
+     16,
+     7,
+     2,
+     2
+    ],
+    "cells": 4
+   },
+   "MAPSEC_SEVAULT_CANYON": {
+    "name": "Sevault Canyon",
+    "bbox": [
+     6,
+     9,
+     1,
+     3
+    ],
+    "cells": 3
+   },
+   "MAPSEC_SEVEN_ISLAND": {
+    "name": "Seven Island",
+    "bbox": [
+     5,
+     8,
+     1,
+     1
+    ],
+    "cells": 1
+   },
+   "MAPSEC_SIX_ISLAND": {
+    "name": "Six Island",
+    "bbox": [
+     17,
+     5,
+     1,
+     1
+    ],
+    "cells": 1
+   },
+   "MAPSEC_TANOBY_RUINS": {
+    "name": "Tanoby Ruins",
+    "bbox": [
+     3,
+     12,
+     7,
+     1
+    ],
+    "cells": 7
+   },
+   "MAPSEC_THREE_ISLE_PATH": {
+    "name": "Six-Seven Strait",
+    "bbox": [
+     6,
+     6,
+     11,
+     2
+    ],
+    "cells": 12
+   },
+   "MAPSEC_WATER_PATH": {
+    "name": "Water Path",
+    "bbox": [
+     18,
+     3,
+     1,
+     5
+    ],
+    "cells": 5
+   }
+  },
+  "cleared": [
+   "MAPSEC_BIRTH_ISLAND_FRLG",
+   "MAPSEC_GREEN_PATH",
+   "MAPSEC_OUTCAST_ISLAND",
+   "MAPSEC_TRAINER_TOWER"
+  ]
+ }
+}

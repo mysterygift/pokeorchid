@@ -162,6 +162,7 @@ static void Task_HandleShopMenuBuy(u8 taskId);
 static void Task_HandleShopMenuSell(u8 taskId);
 static void BuyMenuPrintItemDescriptionAndShowItemIcon(s32 item, bool8 onInit, struct ListMenu *list);
 static void BuyMenuPrintPriceInList(u8 windowId, u32 itemId, u8 y);
+static u32 SeviiShopPrice(u32 itemId);
 static void OrchidShop_CreateSprites(void);
 static void OrchidShop_DrawRows(u16 scroll, u16 selectedRow);
 static void OrchidShop_PrintMoney(void);
@@ -666,7 +667,7 @@ static bool32 OrchidShop_IsTM(u32 itemId)
 static void OrchidShop_GetPriceString(u32 itemId, u8 *dst)
 {
     if (sMartInfo.martType == MART_TYPE_NORMAL)
-        ConvertIntToDecimalStringN(gStringVar1, GetItemPrice(itemId) >> IsPokeNewsActive(POKENEWS_SLATEPORT), STR_CONV_MODE_LEFT_ALIGN, 6);
+        ConvertIntToDecimalStringN(gStringVar1, SeviiShopPrice(itemId), STR_CONV_MODE_LEFT_ALIGN, 6);
     else
         ConvertIntToDecimalStringN(gStringVar1, gDecorations[itemId].price, STR_CONV_MODE_LEFT_ALIGN, 6);
 
@@ -1151,7 +1152,7 @@ static void Task_BuyMenu(u8 taskId)
             ClearWindowTilemap(WIN_ITEM_DESCRIPTION); // the message box covers the card; the row stays gold
 
             if (sMartInfo.martType == MART_TYPE_NORMAL)
-                sShopData->totalCost = (GetItemPrice(itemId) >> IsPokeNewsActive(POKENEWS_SLATEPORT));
+                sShopData->totalCost = (SeviiShopPrice(itemId));
             else
                 sShopData->totalCost = gDecorations[itemId].price;
 
@@ -1171,7 +1172,7 @@ static void Task_BuyMenu(u8 taskId)
                         ConvertIntToDecimalStringN(gStringVar2, sShopData->totalCost, STR_CONV_MODE_LEFT_ALIGN, 6);
                         StringExpandPlaceholders(gStringVar4, gText_YouWantedVar1ThatllBeVar2);
                         tItemCount = 1;
-                        sShopData->totalCost = (GetItemPrice(tItemId) >> IsPokeNewsActive(POKENEWS_SLATEPORT)) * tItemCount;
+                        sShopData->totalCost = (SeviiShopPrice(tItemId)) * tItemCount;
                         BuyMenuDisplayMessage(taskId, gStringVar4, BuyMenuConfirmPurchase);
                     }
                     else if (GetItemPocket(itemId) == POCKET_TM_HM)
@@ -1233,7 +1234,7 @@ static void Task_BuyHowManyDialogueHandleInput(u8 taskId)
 
     if (AdjustQuantityAccordingToDPadInput(&tItemCount, sShopData->maxQuantity) == TRUE)
     {
-        sShopData->totalCost = (GetItemPrice(tItemId) >> IsPokeNewsActive(POKENEWS_SLATEPORT)) * tItemCount;
+        sShopData->totalCost = (SeviiShopPrice(tItemId)) * tItemCount;
         BuyMenuPrintItemQuantityAndPrice(taskId);
     }
     else
@@ -1466,4 +1467,13 @@ void CreateDecorationShop2Menu(const u16 *itemsForSale)
     CreateShopMenu(MART_TYPE_DECOR2);
     SetShopItemsForSale(itemsForSale);
     SetShopMenuCallback(ScriptContext_Enable);
+}
+
+// Sevii (Wavebreak Voyages): a per-shop buy-price multiplier. A shop script sets VAR_SHOP_PRICE_MULTIPLIER
+// before `pokemart` and clears it after (Two Island's market stall uses x3); 0 means x1.
+static u32 SeviiShopPrice(u32 itemId)
+{
+    u32 mult = VarGet(VAR_SHOP_PRICE_MULTIPLIER);
+    u32 price = GetItemPrice(itemId) >> IsPokeNewsActive(POKENEWS_SLATEPORT);
+    return mult > 1 ? price * mult : price;
 }

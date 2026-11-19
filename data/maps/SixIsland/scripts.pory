@@ -1,0 +1,18 @@
+mapscripts SixIsland_MapScripts {
+    MAP_SCRIPT_ON_TRANSITION {
+        setflag(FLAG_VISITED_SIX_ISLAND)
+    }
+}
+
+script SixIsland_EventScript_Boy {
+    msgbox(format("Water Path runs from here all the way to Ruin Valley."), MSGBOX_NPC)
+}
+
+script SixIsland_EventScript_Hiker {
+    msgbox(format("Ruin Valley has a strange sealed door. Nobody has ever opened it."), MSGBOX_NPC)
+}
+
+script SixIsland_EventScript_IslandSign {
+    msgbox(format("SIX ISLAND\n"
+        "Fortune Island. Water Path to the east."), MSGBOX_SIGN)
+}

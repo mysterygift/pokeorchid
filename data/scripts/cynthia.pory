@@ -1,0 +1,59 @@
+// Wavebreak Voyages: Cynthia (Champion). Sprites by lichen.
+//
+// Holon Lake: the future Holon Lake map gives its Cynthia object
+//     "script": "Common_EventScript_CynthiaHolonLake", "flag": "FLAG_CYNTHIA_BEATEN_AT_LAKE"
+// Talking to her plays her encounter theme, she challenges the player, and after a win she leaves for the
+// Changu City Battle Cafe (FLAG_CYNTHIA_BEATEN_AT_LAKE is set, which also keeps her hidden at the lake).
+// The script uses VAR_LAST_TALKED, so it works whatever her local id on that map is.
+//
+// Battle Cafe: Common_EventScript_CynthiaCafe offers a rematch once per RTC day (IsCynthiaCafeRematchAvailable,
+// src/field_specials.c), see ChanguCity_Cafe.
+
+script Common_EventScript_CynthiaHolonLake {
+    lock
+    faceplayer
+    playbgm(MUS_ORCHID_ENCOUNTER_CYNTHIA, FALSE)
+    msgbox(format("Oh, hello. You must be the Trainer everyone in Tosa keeps talking about.\pI'm Cynthia. I came to Holon to study the Pokémon that live around this lake.\pThe researchers call them Delta Species. Their types have changed, but the bond they share with people hasn't changed at all.\pI'd like to see your bond for myself. Will you battle me?"), MSGBOX_YESNO)
+    if (var(VAR_RESULT) == NO) {
+        msgbox(format("I understand. Take all the time you need. I'll be right here by the lake."), MSGBOX_DEFAULT)
+        fadedefaultbgm
+        release
+        end
+    }
+    msgbox(format("Then let's begin. Show me everything you and your Pokémon have!"), MSGBOX_DEFAULT)
+    trainerbattle_no_intro(TRAINER_CYNTHIA_LAKE, format("Splendid… That was a wonderful battle."))
+    msgbox(format("You and your Pokémon trust each other completely. I could feel it in every move.\pHolon's mysteries can wait a little longer. I think I'll rest in Changu City for a while.\pThere's a café there I'm fond of. If you'd like a rematch, come and find me."), MSGBOX_DEFAULT)
+    setflag(FLAG_CYNTHIA_BEATEN_AT_LAKE)
+    fadescreen(FADE_TO_BLACK)
+    removeobject(VAR_LAST_TALKED)
+    fadescreen(FADE_FROM_BLACK)
+    fadedefaultbgm
+    release
+    end
+}
+
+script Common_EventScript_CynthiaCafe {
+    lock
+    faceplayer
+    specialvar(VAR_RESULT, IsCynthiaCafeRematchAvailable)
+    if (var(VAR_RESULT) == FALSE) {
+        msgbox(format("Splendid. I think I'll stay in Changu a little longer.\pCome back tomorrow, and we'll battle again."), MSGBOX_DEFAULT)
+        release
+        end
+    }
+    msgbox(format("Ah, it's you. The coffee here is wonderful, but I was hoping you'd come by.\pShall we have another battle?"), MSGBOX_YESNO)
+    if (var(VAR_RESULT) == NO) {
+        msgbox(format("That's all right. I'll be here, enjoying my coffee."), MSGBOX_DEFAULT)
+        release
+        end
+    }
+    playbgm(MUS_ORCHID_ENCOUNTER_CYNTHIA, FALSE)
+    msgbox(format("Wonderful. Let's not hold back."), MSGBOX_DEFAULT)
+    cleartrainerflag(TRAINER_CYNTHIA_CAFE)
+    trainerbattle_no_intro(TRAINER_CYNTHIA_CAFE, format("Splendid… You've grown even stronger."))
+    special(SetCynthiaCafeRematchDay)
+    msgbox(format("Splendid. I think I'll stay in Changu a little longer.\pCome back tomorrow, and we'll battle again."), MSGBOX_DEFAULT)
+    fadedefaultbgm
+    release
+    end
+}

@@ -1,0 +1,856 @@
+{
+"name": "TwoIsland",
+"size": [
+48,
+20
+],
+"tileset": [
+"gTileset_General",
+"gTileset_SeviiIslands"
+],
+"ground": [
+"id",
+368,
+0,
+1
+],
+"mask": [
+"MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMpppppMMMMMMM",
+"MMMMMKMMMMMMMMMMMMMMMMMMMMM....MMMMMhhMMMMMMMMMM",
+"KKKKKWKMMMMMMMMMMMMMMMMMM.M....M.MMMhhMMMMMMMMMM",
+"WWWWWWKMn....MMMMMM.....MMM....MM..ppppFFFFFFFFF",
+"~~~~~WWK..........M.......d....M.......F..TTTTTT",
+"~~~~~~WK..........M...................RF..TTTTTT",
+"~~~~~~WK..........M..................RWR........",
+"~~~~~~WWKkkkKKM...M...................R.........",
+"~~~~~~~WWkkkWWK...M..........n..................",
+"~~~~~~~~~~~~~WWR..M.............................",
+"~~~~~~~~~~~~~~WR..MMhhhMMMMM............nTTFFFFF",
+"~~~~~~~~~~~~~~WR...........M.............MMMMMMM",
+"~~~~~~~~~~~~~~WR...........M......f.f.f.fMMMMMMM",
+"~~~~~~~~~~~~~~WR...........MMMMMMMMMMMMMMMMMMMMM",
+"~~~~~~~~~~~~~~WWKMMMMMMMMM....TTTTTTTTTTMMMMMMMM",
+"~~~~~~~~~~~~~~~WKMMMMMMMMM....TTTTTTTTTTMMMMMMMM",
+"~~~~~~~~~~~~~~WWKMMMMMMMMM..............MMMMMMMM",
+"~~~~~~~~~~~~~~WKMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM",
+"~~~~~~~~~~~~~~WKMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM",
+"~~~~~~~~~~~~~~WKMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM"
+],
+"big_trees": "T",
+"stamps": [
+[
+"LAYOUT_ROUTE104@git",
+3,
+15,
+7,
+4,
+36,
+6
+],
+[
+"LAYOUT_SOUTHERN_ISLAND_EXTERIOR",
+10,
+21,
+9,
+4,
+6,
+9
+]
+],
+"pstamps": [
+[
+"LAYOUT_LAVARIDGE_TOWN",
+11,
+12,
+4,
+4,
+32,
+6
+],
+[
+"LAYOUT_LAVARIDGE_TOWN",
+8,
+3,
+5,
+5,
+19,
+3
+],
+[
+"LAYOUT_ROUTE104@git",
+7,
+48,
+2,
+2,
+3,
+6
+],
+[
+"LAYOUT_ROUTE104@git",
+7,
+48,
+2,
+2,
+3,
+11
+]
+],
+"cells": [
+[
+36,
+0,
+[
+"id",
+288
+]
+],
+[
+37,
+0,
+[
+"id",
+289
+]
+],
+[
+38,
+0,
+[
+"id",
+297
+]
+],
+[
+39,
+0,
+[
+"id",
+297
+]
+],
+[
+40,
+0,
+[
+"id",
+298
+]
+],
+[
+35,
+3,
+[
+"id",
+280
+]
+],
+[
+36,
+3,
+[
+"id",
+297
+]
+],
+[
+37,
+3,
+[
+"id",
+297
+]
+],
+[
+38,
+3,
+[
+"id",
+282
+]
+],
+[
+36,
+1,
+[
+"id",
+175
+]
+],
+[
+37,
+1,
+[
+"id",
+207
+]
+],
+[
+36,
+2,
+[
+"id",
+175
+]
+],
+[
+37,
+2,
+[
+"id",
+207
+]
+],
+[
+9,
+7,
+[
+"LAYOUT_ROUTE104@git",
+12,
+51
+]
+],
+[
+10,
+7,
+[
+"LAYOUT_ROUTE104@git",
+12,
+51
+]
+],
+[
+11,
+7,
+[
+"LAYOUT_ROUTE104@git",
+12,
+51
+]
+],
+[
+9,
+8,
+[
+"LAYOUT_ROUTE104@git",
+12,
+52
+]
+],
+[
+10,
+8,
+[
+"LAYOUT_ROUTE104@git",
+12,
+52
+]
+],
+[
+11,
+8,
+[
+"LAYOUT_ROUTE104@git",
+12,
+52
+]
+],
+[
+20,
+10,
+[
+"id",
+175
+]
+],
+[
+21,
+10,
+[
+"id",
+207
+]
+],
+[
+22,
+10,
+[
+"id",
+207
+]
+]
+],
+"auto": [
+[
+39,
+3,
+[
+329,
+330,
+331,
+332,
+333
+]
+],
+[
+40,
+3,
+[
+329,
+330,
+331,
+332,
+333
+]
+],
+[
+41,
+3,
+[
+329,
+330,
+331,
+332,
+333
+]
+],
+[
+42,
+3,
+[
+329,
+330,
+331,
+332,
+333
+]
+],
+[
+43,
+3,
+[
+329,
+330,
+331,
+332,
+333
+]
+],
+[
+44,
+3,
+[
+329,
+330,
+331,
+332,
+333
+]
+],
+[
+45,
+3,
+[
+329,
+330,
+331,
+332,
+333
+]
+],
+[
+46,
+3,
+[
+329,
+330,
+331,
+332,
+333
+]
+],
+[
+47,
+3,
+[
+329,
+330,
+331,
+332,
+333
+]
+],
+[
+39,
+4,
+[
+329,
+330,
+331,
+332,
+333
+]
+],
+[
+39,
+5,
+[
+329,
+330,
+331,
+332,
+333
+]
+],
+[
+43,
+10,
+[
+329,
+330,
+331,
+332,
+333
+]
+],
+[
+44,
+10,
+[
+329,
+330,
+331,
+332,
+333
+]
+],
+[
+45,
+10,
+[
+329,
+330,
+331,
+332,
+333
+]
+],
+[
+46,
+10,
+[
+329,
+330,
+331,
+332,
+333
+]
+],
+[
+47,
+10,
+[
+329,
+330,
+331,
+332,
+333
+]
+]
+],
+"marks": [
+[
+39,
+9,
+"joyful_game_co",
+"warp"
+],
+[
+33,
+9,
+"house",
+"warp"
+],
+[
+21,
+7,
+"pokemon_center",
+"warp"
+],
+[
+10,
+8,
+"harbor (arrow S)",
+"warp"
+],
+[
+28,
+3,
+"",
+"npc",
+"man"
+],
+[
+31,
+6,
+"",
+"npc",
+"woman"
+],
+[
+30,
+11,
+"",
+"npc",
+"beauty"
+],
+[
+26,
+5,
+"",
+"npc",
+"sailor"
+],
+[
+27,
+6,
+"",
+"npc",
+"man"
+],
+[
+30,
+16,
+"",
+"field",
+"cuttable_tree"
+],
+[
+39,
+16,
+"",
+"item",
+"item"
+],
+[
+37,
+12,
+"",
+"npc",
+"son"
+],
+[
+24,
+12,
+"",
+"npc",
+"boy"
+],
+[
+29,
+8,
+"",
+"sign"
+],
+[
+40,
+10,
+"",
+"sign"
+],
+[
+8,
+3,
+"",
+"sign"
+],
+[
+25,
+0,
+"^ Two Island Cape Brink",
+"conn"
+]
+],
+"post": [],
+"vstamps": [
+[
+"market_stall",
+27,
+1
+]
+],
+"vcells": [],
+"arrow_warps": [
+[
+10,
+8,
+"S"
+]
+],
+"object_events": [
+{
+"graphics_id": "OBJ_EVENT_GFX_MART_EMPLOYEE",
+"x": 28,
+"y": 4,
+"script": "TwoIsland_EventScript_Clerk"
+},
+{
+"graphics_id": "OBJ_EVENT_GFX_WOMAN_2",
+"x": 31,
+"y": 6,
+"script": "TwoIsland_EventScript_Woman"
+},
+{
+"graphics_id": "OBJ_EVENT_GFX_BEAUTY",
+"x": 30,
+"y": 11,
+"script": "TwoIsland_EventScript_Beauty"
+},
+{
+"graphics_id": "OBJ_EVENT_GFX_SAILOR",
+"x": 26,
+"y": 5,
+"script": "TwoIsland_EventScript_Sailor"
+},
+{
+"graphics_id": "OBJ_EVENT_GFX_MANIAC",
+"x": 27,
+"y": 6,
+"script": "TwoIsland_EventScript_SuperNerd"
+},
+{
+"graphics_id": "OBJ_EVENT_GFX_CUTTABLE_TREE",
+"x": 30,
+"y": 16,
+"script": "EventScript_CutTree"
+},
+{
+"graphics_id": "OBJ_EVENT_GFX_ITEM_BALL",
+"x": 39,
+"y": 16,
+"script": "TwoIsland_EventScript_ItemRevive"
+},
+{
+"graphics_id": "OBJ_EVENT_GFX_LITTLE_BOY",
+"x": 37,
+"y": 12,
+"script": "TwoIsland_EventScript_LittleBoy"
+},
+{
+"graphics_id": "OBJ_EVENT_GFX_BOY_1",
+"x": 24,
+"y": 12,
+"script": "TwoIsland_EventScript_Boy"
+}
+],
+"report": {
+"map": "TwoIsland",
+"size": [
+48,
+20
+],
+"pair": [
+"gTileset_General",
+"gTileset_SeviiIslands"
+],
+"unresolved": [],
+"buildings": [
+{
+"warp": [
+39,
+9
+],
+"dest": "MAP_TWO_ISLAND_JOYFUL_GAME_CORNER",
+"footprint": [
+37,
+6,
+5,
+4
+],
+"stamp": "flowershop",
+"at": [
+36,
+6,
+7,
+4
+]
+},
+{
+"warp": [
+33,
+9
+],
+"dest": "MAP_TWO_ISLAND_HOUSE",
+"footprint": [
+32,
+7,
+4,
+3
+],
+"stamp": "house",
+"at": [
+32,
+6,
+4,
+4
+]
+},
+{
+"warp": [
+21,
+7
+],
+"dest": "MAP_TWO_ISLAND_POKEMON_CENTER_1F",
+"footprint": [
+19,
+3,
+5,
+5
+],
+"stamp": "centre",
+"at": [
+19,
+3,
+5,
+5
+]
+},
+{
+"warp": [
+10,
+8
+],
+"dest": "MAP_TWO_ISLAND_HARBOR",
+"footprint": 81,
+"stamp": "harbor dock"
+}
+],
+"caves": [],
+"vstamps": [
+[
+"market_stall",
+27,
+1
+]
+],
+"ported_cells": 0,
+"arrow_warps": [
+[
+10,
+8,
+"S"
+]
+],
+"connections": [
+[
+"up",
+24,
+"MAP_TWO_ISLAND_CAPE_BRINK"
+]
+],
+"warps": [
+[
+39,
+9,
+"MAP_TWO_ISLAND_JOYFUL_GAME_CORNER"
+],
+[
+33,
+9,
+"MAP_TWO_ISLAND_HOUSE"
+],
+[
+21,
+7,
+"MAP_TWO_ISLAND_POKEMON_CENTER_1F"
+],
+[
+10,
+8,
+"MAP_TWO_ISLAND_HARBOR"
+]
+],
+"objects": [
+[
+28,
+4,
+"OBJ_EVENT_GFX_CLERK",
+"MART_EMPLOYEE"
+],
+[
+31,
+6,
+"OBJ_EVENT_GFX_WOMAN_1_FRLG",
+"WOMAN_2"
+],
+[
+30,
+11,
+"OBJ_EVENT_GFX_BEAUTY_FRLG",
+"BEAUTY"
+],
+[
+26,
+5,
+"OBJ_EVENT_GFX_SAILOR_FRLG",
+"SAILOR"
+],
+[
+27,
+6,
+"OBJ_EVENT_GFX_SUPER_NERD",
+"MANIAC"
+],
+[
+30,
+16,
+"OBJ_EVENT_GFX_CUTTABLE_TREE_FRLG",
+"CUTTABLE_TREE"
+],
+[
+39,
+16,
+"OBJ_EVENT_GFX_ITEM_BALL",
+"ITEM_BALL"
+],
+[
+37,
+12,
+"OBJ_EVENT_GFX_LITTLE_BOY_FRLG",
+"LITTLE_BOY"
+],
+[
+24,
+12,
+"OBJ_EVENT_GFX_BOY",
+"BOY_1"
+]
+],
+"classes": {
+"M": 349,
+"p": 10,
+".": 314,
+"h": 7,
+"~": 216,
+"n": 3,
+"F": 16,
+"d": 1,
+"T": 34,
+"k": 6,
+"f": 4
+},
+"sea_rocks_cleared_for_route": [
+[
+0,
+4
+],
+[
+9,
+17
+],
+[
+12,
+18
+]
+]
+}
+}

@@ -1,0 +1,690 @@
+{
+"name": "FiveIsland_Meadow",
+"size": [
+24,
+40
+],
+"tileset": [
+"gTileset_General",
+"gTileset_SeviiIslands"
+],
+"ground": [
+"id",
+368,
+0,
+1
+],
+"mask": [
+"~~~~~~~~~~~~~~~~~~~~~~~~",
+"~~~~~~~~~~~~~~~~~~~~~~~~",
+"WWWWWWWWWWWWWWWW~~~~~~~~",
+"RRRRRRRRRRRRRRKW~~~~~~~~",
+"TTTTTTTT.gg.g.KWWWWW~~~~",
+"TTTTg.g.gggg...RRRKWWW~~",
+"TTTT.ggggggggg.....RKW~~",
+"MM.ggggTTTTggg..gg..KW~~",
+"MM...ggTTTTTTTTgggg.KW~~",
+"MM.......ggTTTTTTgggKW~~",
+"MMhhMMMTTggg.TTTTgggKW~~",
+"ssssssMTTgg..TTgggggKW~~",
+"SSssssMTTTTTTTTgggg.KW~~",
+"wwKTTTTTTTTTTTTggTT.KW~~",
+"~WKTTTTTTTTTTTTggTT.KW~~",
+"~WKTTTTTTTTTTTTgggg.KW~~",
+"~WKTTTTTTTTTTTTggg..KW~~",
+"~WKTTTTTT......TT...KW~~",
+"~WKTTTTTT......TT...KW~~",
+"~WKTTTTTT......TT...KW~~",
+"~WKTTTTTT......TTMhhKW~~",
+"~WKTTTTTT......TTMggRW~~",
+"~WK..TTTTTT...gTTMggRW~~",
+"~WKM.TTTTTT....TTMggRW~~",
+"~WWKhMMTTTT..TTTTMggRW~~",
+"~~WR..MTTTTg.TTTTMggRW~~",
+"~~WR..MTTTTg..gTTM..RW~~",
+"~~WRRRMTTTT....ggM..RW~~",
+"~~WWWWKKKMg....gMM..RW~~",
+"~~~~~WWWWK.g..g.M...RW~~",
+"~~~~~~~~WKMMhhMMMTT.RW~~",
+"~~~~~~~~WRgg.....TT.RW~~",
+"~~~~~~~~WRTTg.......RW~~",
+"~~~~~~~~WRTTg..TT...RW~~",
+"~~~~~~~~WRRRRRRRRRRRWW~~",
+"~~~~~~~~WWWWWWWWWWWWW~~~",
+"~~~~~~~~~~~~~~~~~~~~~~~~",
+"~~~~~~~~~~~~~~~~~~~~~~~~",
+"~~~~~~~~~~~~~~~~~~~~~~~~",
+"~~~~~~~~~~~~~~~~~~~~~~~~"
+],
+"big_trees": "T",
+"stamps": [],
+"pstamps": [
+[
+"LAYOUT_ROUTE104@git",
+7,
+48,
+2,
+2,
+4,
+0
+],
+[
+"LAYOUT_ROUTE104@git",
+7,
+48,
+2,
+2,
+10,
+1
+],
+[
+"LAYOUT_ROUTE104@git",
+7,
+48,
+2,
+2,
+15,
+1
+],
+[
+"LAYOUT_ROUTE104@git",
+7,
+48,
+2,
+2,
+19,
+4
+],
+[
+"LAYOUT_ROUTE104@git",
+7,
+48,
+2,
+2,
+22,
+9
+],
+[
+"LAYOUT_ROUTE104@git",
+7,
+48,
+2,
+2,
+0,
+14
+],
+[
+"LAYOUT_ROUTE104@git",
+7,
+48,
+2,
+2,
+21,
+15
+],
+[
+"LAYOUT_ROUTE104@git",
+7,
+48,
+2,
+2,
+21,
+20
+],
+[
+"LAYOUT_ROUTE104@git",
+7,
+48,
+2,
+2,
+0,
+21
+],
+[
+"LAYOUT_ROUTE104@git",
+7,
+48,
+2,
+2,
+22,
+23
+],
+[
+"LAYOUT_ROUTE104@git",
+7,
+48,
+2,
+2,
+1,
+25
+],
+[
+"LAYOUT_ROUTE104@git",
+7,
+48,
+2,
+2,
+0,
+28
+],
+[
+"LAYOUT_ROUTE104@git",
+7,
+48,
+2,
+2,
+3,
+30
+],
+[
+"LAYOUT_ROUTE104@git",
+7,
+48,
+2,
+2,
+0,
+32
+],
+[
+"LAYOUT_ROUTE104@git",
+7,
+48,
+2,
+2,
+22,
+33
+],
+[
+"LAYOUT_ROUTE104@git",
+7,
+48,
+2,
+2,
+3,
+34
+],
+[
+"LAYOUT_ROUTE104@git",
+7,
+48,
+2,
+2,
+22,
+36
+],
+[
+"LAYOUT_ROUTE104@git",
+7,
+48,
+2,
+2,
+4,
+37
+],
+[
+"LAYOUT_ROUTE104@git",
+7,
+48,
+2,
+2,
+7,
+37
+],
+[
+"LAYOUT_ROUTE104@git",
+7,
+48,
+2,
+2,
+14,
+37
+],
+[
+"LAYOUT_ROUTE104@git",
+7,
+48,
+2,
+2,
+17,
+37
+],
+[
+"LAYOUT_ROUTE104@git",
+7,
+48,
+2,
+2,
+0,
+38
+],
+[
+"LAYOUT_ROUTE104@git",
+7,
+48,
+2,
+2,
+10,
+38
+],
+[
+"LAYOUT_ROUTE104@git",
+7,
+48,
+2,
+2,
+20,
+38
+]
+],
+"cells": [
+[
+2,
+10,
+[
+"id",
+175
+]
+],
+[
+3,
+10,
+[
+"id",
+207
+]
+],
+[
+18,
+20,
+[
+"id",
+175
+]
+],
+[
+19,
+20,
+[
+"id",
+207
+]
+],
+[
+4,
+24,
+[
+"id",
+175
+]
+],
+[
+12,
+30,
+[
+"id",
+175
+]
+],
+[
+13,
+30,
+[
+"id",
+207
+]
+]
+],
+"auto": [],
+"marks": [
+[
+12,
+21,
+"five_island_ro",
+"warp"
+],
+[
+18,
+18,
+"",
+"npc",
+"man"
+],
+[
+17,
+5,
+"",
+"npc",
+"man"
+],
+[
+11,
+27,
+"",
+"npc",
+"man"
+],
+[
+8,
+9,
+"",
+"field",
+"cuttable_tree"
+],
+[
+19,
+12,
+"",
+"field",
+"cuttable_tree"
+],
+[
+12,
+11,
+"",
+"item",
+"item"
+],
+[
+3,
+22,
+"",
+"item",
+"item"
+],
+[
+12,
+21,
+"",
+"sign"
+],
+[
+0,
+2,
+"< Five Island",
+"conn"
+],
+[
+15,
+22,
+"Five Island Memorial Pillar >",
+"conn"
+]
+],
+"post": [],
+"vstamps": [
+[
+"rocket_warehouse",
+9,
+17
+]
+],
+"vcells": [],
+"arrow_warps": [],
+"object_events": [
+{
+"graphics_id": "OBJ_EVENT_GFX_ROCKET_F",
+"x": 18,
+"y": 18,
+"script": "FiveIsland_Meadow_EventScript_Rocket3"
+},
+{
+"graphics_id": "OBJ_EVENT_GFX_ROCKET_M",
+"x": 17,
+"y": 5,
+"script": "FiveIsland_Meadow_EventScript_Rocket1"
+},
+{
+"graphics_id": "OBJ_EVENT_GFX_ROCKET_M",
+"x": 11,
+"y": 27,
+"script": "FiveIsland_Meadow_EventScript_Rocket2"
+},
+{
+"graphics_id": "OBJ_EVENT_GFX_CUTTABLE_TREE",
+"x": 8,
+"y": 9,
+"script": "EventScript_CutTree"
+},
+{
+"graphics_id": "OBJ_EVENT_GFX_CUTTABLE_TREE",
+"x": 19,
+"y": 12,
+"script": "EventScript_CutTree"
+},
+{
+"graphics_id": "OBJ_EVENT_GFX_ITEM_BALL",
+"x": 12,
+"y": 11,
+"script": "FiveIsland_Meadow_EventScript_ItemMaxPotion"
+},
+{
+"graphics_id": "OBJ_EVENT_GFX_ITEM_BALL",
+"x": 3,
+"y": 22,
+"script": "FiveIsland_Meadow_EventScript_ItemPPUp"
+}
+],
+"report": {
+"map": "FiveIsland_Meadow",
+"size": [
+24,
+40
+],
+"pair": [
+"gTileset_General",
+"gTileset_SeviiIslands"
+],
+"unresolved": [],
+"buildings": [
+{
+"warp": [
+12,
+21
+],
+"dest": "MAP_FIVE_ISLAND_ROCKET_WAREHOUSE",
+"footprint": [
+9,
+18,
+6,
+4
+],
+"stamp": "rocket_warehouse",
+"at": [
+9,
+17,
+6,
+5
+]
+}
+],
+"caves": [],
+"rocks_merged": [
+[
+23,
+22
+],
+[
+22,
+25
+],
+[
+23,
+25
+],
+[
+0,
+27
+],
+[
+1,
+27
+],
+[
+0,
+30
+],
+[
+1,
+30
+],
+[
+2,
+30
+],
+[
+2,
+31
+],
+[
+2,
+34
+],
+[
+2,
+35
+],
+[
+4,
+36
+],
+[
+5,
+36
+],
+[
+6,
+37
+],
+[
+9,
+37
+],
+[
+16,
+37
+],
+[
+6,
+38
+],
+[
+9,
+38
+],
+[
+12,
+38
+],
+[
+13,
+38
+],
+[
+16,
+38
+],
+[
+19,
+38
+],
+[
+20,
+38
+],
+[
+21,
+38
+],
+[
+12,
+39
+],
+[
+13,
+39
+],
+[
+18,
+39
+],
+[
+19,
+39
+]
+],
+"ported_cells": 0,
+"arrow_warps": [],
+"connections": [
+[
+"left",
+0,
+"MAP_FIVE_ISLAND"
+],
+[
+"right",
+20,
+"MAP_FIVE_ISLAND_MEMORIAL_PILLAR"
+]
+],
+"warps": [
+[
+12,
+21,
+"MAP_FIVE_ISLAND_ROCKET_WAREHOUSE"
+]
+],
+"objects": [
+[
+18,
+18,
+"OBJ_EVENT_GFX_ROCKET_F",
+"ROCKET_F"
+],
+[
+17,
+5,
+"OBJ_EVENT_GFX_ROCKET_M",
+"ROCKET_M"
+],
+[
+11,
+27,
+"OBJ_EVENT_GFX_ROCKET_M",
+"ROCKET_M"
+],
+[
+8,
+9,
+"OBJ_EVENT_GFX_CUTTABLE_TREE_FRLG",
+"CUTTABLE_TREE"
+],
+[
+19,
+12,
+"OBJ_EVENT_GFX_CUTTABLE_TREE_FRLG",
+"CUTTABLE_TREE"
+],
+[
+12,
+11,
+"OBJ_EVENT_GFX_ITEM_BALL",
+"ITEM_BALL"
+],
+[
+3,
+22,
+"OBJ_EVENT_GFX_ITEM_BALL",
+"ITEM_BALL"
+]
+],
+"classes": {
+"~": 397,
+"T": 206,
+".": 166,
+"M": 71,
+"g": 101,
+"h": 7,
+"s": 12
+}
+}
+}

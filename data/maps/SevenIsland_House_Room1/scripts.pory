@@ -1,0 +1,10 @@
+mapscripts SevenIsland_House_Room1_MapScripts {}
+
+script SevenIsland_House_Room1_EventScript_OldWoman {
+    msgbox(format("My grandson trained here for years. Now he's off on his own adventure."), MSGBOX_NPC)
+}
+
+script SevenIsland_House_Room1_EventScript_Box {
+    msgbox(format("A box of old trainer cards.\n"
+        "They're from all over the islands."), MSGBOX_SIGN)
+}

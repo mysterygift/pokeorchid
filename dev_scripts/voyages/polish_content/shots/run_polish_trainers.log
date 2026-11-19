@@ -1,0 +1,6 @@
+  shot trainer_mt_ember_logan (15, 30, 25, 25)
+PASS MtEmber_Exterior: mt_ember_logan spots the player at (15, 30) -> battle vs trainer 58 (expect 58)
+  shot trainer_ruin_valley_daryl (14, 11, 25, 76)
+PASS SixIsland_RuinValley: ruin_valley_daryl spots the player at (14, 11) -> battle vs trainer 92 (expect 92)
+  shot trainer_ruin_valley_stanly (31, 11, 25, 76)
+PASS Ruin Valley: Stanly battle -> trainer 88

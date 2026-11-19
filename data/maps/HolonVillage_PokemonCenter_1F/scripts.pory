@@ -1,0 +1,22 @@
+raw `
+HolonVillage_PokemonCenter_1F_MapScripts::
+	map_script MAP_SCRIPT_ON_TRANSITION, HolonVillage_PokemonCenter_1F_OnTransition
+	map_script MAP_SCRIPT_ON_RESUME, CableClub_OnResume
+	.byte 0
+
+HolonVillage_PokemonCenter_1F_OnTransition:
+	setrespawn HEAL_LOCATION_HOLON_VILLAGE
+	end
+
+HolonVillage_PokemonCenter_1F_EventScript_Nurse::
+	setvar VAR_0x800B, LOCALID_HOLON_VILLAGE_NURSE
+	call Common_EventScript_PkmnCenterNurse
+	waitmessage
+	waitbuttonpress
+	release
+	end
+`
+
+script HolonVillage_PokemonCenter_1F_EventScript_Visitor {
+    msgbox(format("I'm only here to study the Delta Species. Your Pokémon Center works just like ours back home!"), MSGBOX_NPC)
+}

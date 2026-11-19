@@ -1,0 +1,135 @@
+map,table,time,slot,rate,species,min_lv,max_lv,kind
+Mirage Forest coast (Lv 50-58),land,day,0,20,Tropius,52,54,normal
+Mirage Forest coast (Lv 50-58),land,day,1,20,Wingull-δ,50,53,delta
+Mirage Forest coast (Lv 50-58),land,day,2,10,Pelipper,54,54,normal
+Mirage Forest coast (Lv 50-58),land,day,3,10,Swablu-δ,50,52,delta
+Mirage Forest coast (Lv 50-58),land,day,4,10,Spinda,52,52,normal
+Mirage Forest coast (Lv 50-58),land,day,5,10,Exeggutor,54,54,normal
+Mirage Forest coast (Lv 50-58),land,day,6,5,Flaaffy-δ,52,54,delta
+Mirage Forest coast (Lv 50-58),land,day,7,5,Trapinch,52,52,normal
+Mirage Forest coast (Lv 50-58),land,day,8,4,Treecko-δ,50,50,delta
+Mirage Forest coast (Lv 50-58),land,day,9,4,Altaria-δ,55,55,delta
+Mirage Forest coast (Lv 50-58),land,day,10,1,Charmander-δ,50,50,delta
+Mirage Forest coast (Lv 50-58),land,day,11,1,Totodile-δ,50,50,delta
+Mirage Forest coast (Lv 50-58),land,night,0,20,Drifloon-δ,52,54,delta
+Mirage Forest coast (Lv 50-58),land,night,1,20,Shuppet,52,54,normal
+Mirage Forest coast (Lv 50-58),land,night,2,10,Pelipper,54,54,normal
+Mirage Forest coast (Lv 50-58),land,night,3,10,Vulpix-δ,50,52,delta
+Mirage Forest coast (Lv 50-58),land,night,4,10,Spinda,52,52,normal
+Mirage Forest coast (Lv 50-58),land,night,5,10,Exeggutor,54,54,normal
+Mirage Forest coast (Lv 50-58),land,night,6,5,Flaaffy-δ,52,54,delta
+Mirage Forest coast (Lv 50-58),land,night,7,5,Banette,55,55,normal
+Mirage Forest coast (Lv 50-58),land,night,8,4,Ninetales-δ,56,56,delta
+Mirage Forest coast (Lv 50-58),land,night,9,4,Altaria-δ,55,55,delta
+Mirage Forest coast (Lv 50-58),land,night,10,1,Charmander-δ,50,50,delta
+Mirage Forest coast (Lv 50-58),land,night,11,1,Totodile-δ,50,50,delta
+Mirage Forest coast (Lv 50-58),water,any,0,60,Tentacruel,50,55,normal
+Mirage Forest coast (Lv 50-58),water,any,1,30,Pelipper-δ,52,55,delta
+Mirage Forest coast (Lv 50-58),water,any,2,5,Wailmer,50,52,normal
+Mirage Forest coast (Lv 50-58),water,any,3,4,Croconaw-δ,52,54,delta
+Mirage Forest coast (Lv 50-58),water,any,4,1,Feraligatr-δ,56,56,delta
+Mirage Forest coast (Lv 50-58),old_rod,any,0,70,Magikarp,50,50,normal
+Mirage Forest coast (Lv 50-58),old_rod,any,1,30,Krabby-δ,50,50,delta
+Mirage Forest coast (Lv 50-58),good_rod,any,0,60,Krabby-δ,52,52,delta
+Mirage Forest coast (Lv 50-58),good_rod,any,1,20,Corsola,52,52,normal
+Mirage Forest coast (Lv 50-58),good_rod,any,2,20,Luvdisc,52,52,normal
+Mirage Forest coast (Lv 50-58),super_rod,any,0,40,Kingler-δ,55,55,delta
+Mirage Forest coast (Lv 50-58),super_rod,any,1,40,Sharpedo,55,55,normal
+Mirage Forest coast (Lv 50-58),super_rod,any,2,15,Relicanth-δ,55,55,delta
+Mirage Forest coast (Lv 50-58),super_rod,any,3,4,Wailord,58,58,normal
+Mirage Forest coast (Lv 50-58),super_rod,any,4,1,Lapras,58,58,normal
+Holon village (Lv 52-58),land,day,0,20,Glameow-δ,52,54,delta
+Holon village (Lv 52-58),land,day,1,20,Miltank,53,55,normal
+Holon village (Lv 52-58),land,day,2,10,Farfetch'd-δ,54,54,delta
+Holon village (Lv 52-58),land,day,3,10,Stantler-δ,54,54,delta
+Holon village (Lv 52-58),land,day,4,10,Furret,53,53,normal
+Holon village (Lv 52-58),land,day,5,10,Tauros,55,55,normal
+Holon village (Lv 52-58),land,day,6,5,Pancham-δ,52,52,delta
+Holon village (Lv 52-58),land,day,7,5,Ralts-δ,52,52,delta
+Holon village (Lv 52-58),land,day,8,4,Kirlia-δ,54,54,delta
+Holon village (Lv 52-58),land,day,9,4,Smeargle,55,55,normal
+Holon village (Lv 52-58),land,day,10,1,Larvitar-δ,52,52,delta
+Holon village (Lv 52-58),land,day,11,1,Bagon-δ,52,52,delta
+Holon village (Lv 52-58),land,night,0,20,Purrloin-δ,52,54,delta
+Holon village (Lv 52-58),land,night,1,20,Noctowl,53,55,normal
+Holon village (Lv 52-58),land,night,2,10,Drifloon-δ,54,54,delta
+Holon village (Lv 52-58),land,night,3,10,Stantler-δ,54,54,delta
+Holon village (Lv 52-58),land,night,4,10,Mightyena,53,53,normal
+Holon village (Lv 52-58),land,night,5,10,Misdreavus,55,55,normal
+Holon village (Lv 52-58),land,night,6,5,Liepard-δ,55,55,delta
+Holon village (Lv 52-58),land,night,7,5,Ralts-δ,52,52,delta
+Holon village (Lv 52-58),land,night,8,4,Drifblim-δ,56,56,delta
+Holon village (Lv 52-58),land,night,9,4,Murkrow,55,55,normal
+Holon village (Lv 52-58),land,night,10,1,Pupitar-δ,55,55,delta
+Holon village (Lv 52-58),land,night,11,1,Shelgon-δ,55,55,delta
+Holon village (Lv 52-58),water,any,0,60,Azumarill,52,55,normal
+Holon village (Lv 52-58),water,any,1,30,Golduck,53,55,normal
+Holon village (Lv 52-58),water,any,2,5,Dragonair-δ,55,55,delta
+Holon village (Lv 52-58),water,any,3,4,Quagsire,54,54,normal
+Holon village (Lv 52-58),water,any,4,1,Dragonite-δ,58,58,delta
+Holon village (Lv 52-58),old_rod,any,0,70,Magikarp-δ,50,50,delta
+Holon village (Lv 52-58),old_rod,any,1,30,Goldeen,50,50,normal
+Holon village (Lv 52-58),good_rod,any,0,60,Magikarp-δ,52,52,delta
+Holon village (Lv 52-58),good_rod,any,1,20,Seaking,52,52,normal
+Holon village (Lv 52-58),good_rod,any,2,20,Dratini-δ,52,52,delta
+Holon village (Lv 52-58),super_rod,any,0,40,Dratini-δ,55,55,delta
+Holon village (Lv 52-58),super_rod,any,1,40,Seaking,55,55,normal
+Holon village (Lv 52-58),super_rod,any,2,15,Dragonair-δ,57,57,delta
+Holon village (Lv 52-58),super_rod,any,3,4,Gyarados-δ,58,58,delta
+Holon village (Lv 52-58),super_rod,any,4,1,Dragonite-δ,60,60,delta
+Holon Research Tower (Lv 55-60),land,any,0,20,Magneton,55,57,holon
+Holon Research Tower (Lv 55-60),land,any,1,20,Voltorb,55,55,holon
+Holon Research Tower (Lv 55-60),land,any,2,10,Klang-δ,56,56,delta
+Holon Research Tower (Lv 55-60),land,any,3,10,Metang-δ,56,56,delta
+Holon Research Tower (Lv 55-60),land,any,4,10,Electrode,57,57,holon
+Holon Research Tower (Lv 55-60),land,any,5,10,Klink-δ,55,55,delta
+Holon Research Tower (Lv 55-60),land,any,6,5,Castform,55,55,holon
+Holon Research Tower (Lv 55-60),land,any,7,5,Magnemite,55,55,holon
+Holon Research Tower (Lv 55-60),land,any,8,4,Beldum-δ,55,55,delta
+Holon Research Tower (Lv 55-60),land,any,9,4,Porygon2,58,58,normal
+Holon Research Tower (Lv 55-60),land,any,10,1,Eevee-δ,55,55,delta
+Holon Research Tower (Lv 55-60),land,any,11,1,Klinklang-δ,60,60,delta
+Holon Lake (Lv 55-65),land,day,0,20,Pidgeotto-δ,58,60,delta
+Holon Lake (Lv 55-65),land,day,1,20,Pikachu-δ,58,60,delta
+Holon Lake (Lv 55-65),land,day,2,10,Vibrava-δ,59,59,delta
+Holon Lake (Lv 55-65),land,day,3,10,Meowth-δ,58,58,delta
+Holon Lake (Lv 55-65),land,day,4,10,Gloom-δ,58,58,delta
+Holon Lake (Lv 55-65),land,day,5,10,Trapinch-δ,58,58,delta
+Holon Lake (Lv 55-65),land,day,6,5,Persian-δ,61,61,delta
+Holon Lake (Lv 55-65),land,day,7,5,Raichu-δ,61,61,delta
+Holon Lake (Lv 55-65),land,day,8,4,Pidgeot-δ,63,63,delta
+Holon Lake (Lv 55-65),land,day,9,4,Flygon-δ,63,63,delta
+Holon Lake (Lv 55-65),land,day,10,1,Castform,60,60,holon
+Holon Lake (Lv 55-65),land,day,11,1,Vileplume-δ,63,63,delta
+Holon Lake (Lv 55-65),land,night,0,20,Meowth-δ,58,60,delta
+Holon Lake (Lv 55-65),land,night,1,20,Gloom-δ,58,60,delta
+Holon Lake (Lv 55-65),land,night,2,10,Persian-δ,61,61,delta
+Holon Lake (Lv 55-65),land,night,3,10,Pikachu-δ,58,58,delta
+Holon Lake (Lv 55-65),land,night,4,10,Oddish-δ,58,58,delta
+Holon Lake (Lv 55-65),land,night,5,10,Vibrava-δ,59,59,delta
+Holon Lake (Lv 55-65),land,night,6,5,Raichu-δ,61,61,delta
+Holon Lake (Lv 55-65),land,night,7,5,Vileplume-δ,63,63,delta
+Holon Lake (Lv 55-65),land,night,8,4,Bellossom-δ,63,63,delta
+Holon Lake (Lv 55-65),land,night,9,4,Flygon-δ,63,63,delta
+Holon Lake (Lv 55-65),land,night,10,1,Castform,60,60,holon
+Holon Lake (Lv 55-65),land,night,11,1,Pidgeot-δ,63,63,delta
+Holon Lake (Lv 55-65),rock_smash,any,0,60,Kabuto-δ,58,60,delta
+Holon Lake (Lv 55-65),rock_smash,any,1,30,Omanyte-δ,58,60,delta
+Holon Lake (Lv 55-65),rock_smash,any,2,5,Anorith-δ,58,58,delta
+Holon Lake (Lv 55-65),rock_smash,any,3,4,Lileep-δ,58,58,delta
+Holon Lake (Lv 55-65),rock_smash,any,4,1,Kabutops-δ,62,62,delta
+Holon Lake (Lv 55-65),water,any,0,60,Psyduck-δ,58,60,delta
+Holon Lake (Lv 55-65),water,any,1,30,Golduck-δ,60,62,delta
+Holon Lake (Lv 55-65),water,any,2,5,Seadra-δ,60,60,delta
+Holon Lake (Lv 55-65),water,any,3,4,Kingdra-δ,63,63,delta
+Holon Lake (Lv 55-65),water,any,4,1,Gyarados-δ,63,63,delta
+Holon Lake (Lv 55-65),old_rod,any,0,70,Magikarp-δ,55,55,delta
+Holon Lake (Lv 55-65),old_rod,any,1,30,Horsea-δ,55,55,delta
+Holon Lake (Lv 55-65),good_rod,any,0,60,Magikarp-δ,58,58,delta
+Holon Lake (Lv 55-65),good_rod,any,1,20,Horsea-δ,58,58,delta
+Holon Lake (Lv 55-65),good_rod,any,2,20,Feebas-δ,58,58,delta
+Holon Lake (Lv 55-65),super_rod,any,0,40,Gyarados-δ,60,60,delta
+Holon Lake (Lv 55-65),super_rod,any,1,40,Seadra-δ,60,60,delta
+Holon Lake (Lv 55-65),super_rod,any,2,15,Feebas-δ,60,60,delta
+Holon Lake (Lv 55-65),super_rod,any,3,4,Milotic-δ,65,65,delta
+Holon Lake (Lv 55-65),super_rod,any,4,1,Kingdra-δ,65,65,delta

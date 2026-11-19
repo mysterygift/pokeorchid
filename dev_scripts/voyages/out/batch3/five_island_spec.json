@@ -1,0 +1,584 @@
+{
+"name": "FiveIsland",
+"size": [
+24,
+20
+],
+"tileset": [
+"gTileset_General",
+"gTileset_SeviiIslands"
+],
+"ground": [
+"id",
+368,
+0,
+1
+],
+"mask": [
+"~~~~~~~~~~~~~~~~~~~~~~~~",
+"~~~~~~~~~WWWWWWWWWWWWWW~",
+"~~~~~~~wwwKRRRRRRRRRRKWW",
+"~~~~~~~wSSM....T.....TRR",
+"~~~~~~~wSsM..........TTT",
+"~~~~~~~wSsM..........TTT",
+"~~~~~~~wSsM.............",
+"~~~~~~~wSsM.............",
+"~~~~~~~wSsM.........n...",
+"~~~~~~~wSsMhhhMM........",
+"~~~~~~~wSssssssM.......M",
+"~~~~~~~wSssssssMMMMMMMMM",
+"~~~~~~~wwSSsssSSSSSSSSSS",
+"~~~~~~~~wwwkkkwwwwwwwwww",
+"~~~~~~~~~~WRRRW~~~~~~~~~",
+"~~~~~~~~~~WWWWW~~~~~~~~~",
+"~~~~~~~~~~~~~~~~~~~~~~~~",
+"~~~~~~~~~~~~~~~~~~~~~~~~",
+"~~~~~~~~~~~~~~~~~~~~~~~~",
+"~~~~~~~~~~~~~~~~~~~~~~~~"
+],
+"big_trees": "T",
+"stamps": [
+[
+"LAYOUT_SOUTHERN_ISLAND_EXTERIOR",
+10,
+21,
+9,
+4,
+8,
+15
+]
+],
+"pstamps": [
+[
+"LAYOUT_LAVARIDGE_TOWN",
+8,
+3,
+5,
+5,
+16,
+2
+],
+[
+"LAYOUT_LAVARIDGE_TOWN",
+11,
+12,
+4,
+4,
+11,
+3
+],
+[
+"LAYOUT_LAVARIDGE_TOWN",
+11,
+12,
+4,
+4,
+21,
+6
+],
+[
+"LAYOUT_ROUTE104@git",
+7,
+48,
+2,
+2,
+4,
+0
+],
+[
+"LAYOUT_ROUTE104@git",
+7,
+48,
+2,
+2,
+11,
+0
+],
+[
+"LAYOUT_ROUTE104@git",
+7,
+48,
+2,
+2,
+20,
+0
+],
+[
+"LAYOUT_ROUTE104@git",
+7,
+48,
+2,
+2,
+3,
+3
+],
+[
+"LAYOUT_ROUTE104@git",
+7,
+48,
+2,
+2,
+3,
+12
+],
+[
+"LAYOUT_ROUTE104@git",
+7,
+48,
+2,
+2,
+6,
+14
+],
+[
+"LAYOUT_ROUTE104@git",
+7,
+48,
+2,
+2,
+18,
+14
+],
+[
+"LAYOUT_ROUTE104@git",
+7,
+48,
+2,
+2,
+21,
+14
+],
+[
+"LAYOUT_ROUTE104@git",
+7,
+48,
+2,
+2,
+18,
+17
+],
+[
+"LAYOUT_ROUTE104@git",
+7,
+48,
+2,
+2,
+1,
+18
+]
+],
+"cells": [
+[
+11,
+14,
+[
+"id",
+280
+]
+],
+[
+12,
+14,
+[
+"id",
+281
+]
+],
+[
+13,
+14,
+[
+"id",
+282
+]
+],
+[
+11,
+9,
+[
+"id",
+175
+]
+],
+[
+12,
+9,
+[
+"id",
+207
+]
+],
+[
+13,
+9,
+[
+"id",
+207
+]
+],
+[
+11,
+13,
+[
+"LAYOUT_ROUTE104@git",
+12,
+51
+]
+],
+[
+12,
+13,
+[
+"LAYOUT_ROUTE104@git",
+12,
+51
+]
+],
+[
+13,
+13,
+[
+"LAYOUT_ROUTE104@git",
+12,
+51
+]
+]
+],
+"auto": [],
+"marks": [
+[
+12,
+14,
+"harbor (arrow S)",
+"warp"
+],
+[
+18,
+6,
+"pokemon_center",
+"warp"
+],
+[
+12,
+6,
+"house1",
+"warp"
+],
+[
+22,
+9,
+"house2",
+"warp"
+],
+[
+8,
+5,
+"",
+"npc",
+"fisherman"
+],
+[
+16,
+10,
+"",
+"npc",
+"man"
+],
+[
+32,
+9,
+"",
+"field",
+"cuttable_tree"
+],
+[
+20,
+8,
+"",
+"sign"
+],
+[
+1,
+0,
+"^ Five Island Water Labyrinth",
+"conn"
+],
+[
+15,
+2,
+"Five Island Meadow >",
+"conn"
+]
+],
+"post": [],
+"vstamps": [],
+"vcells": [],
+"arrow_warps": [
+[
+12,
+14,
+"S"
+]
+],
+"object_events": [
+{
+"graphics_id": "OBJ_EVENT_GFX_FISHERMAN",
+"x": 8,
+"y": 5,
+"script": "FiveIsland_EventScript_Fisher"
+},
+{
+"graphics_id": "OBJ_EVENT_GFX_BUG_CATCHER_FRLG",
+"x": 16,
+"y": 10,
+"script": "FiveIsland_EventScript_BugCatcher"
+},
+{
+"graphics_id": "OBJ_EVENT_GFX_CUTTABLE_TREE",
+"x": 32,
+"y": 9,
+"script": null
+}
+],
+"report": {
+"map": "FiveIsland",
+"size": [
+24,
+20
+],
+"pair": [
+"gTileset_General",
+"gTileset_SeviiIslands"
+],
+"unresolved": [],
+"buildings": [
+{
+"warp": [
+12,
+14
+],
+"dest": "MAP_FIVE_ISLAND_HARBOR",
+"footprint": 41,
+"stamp": "harbor dock"
+},
+{
+"warp": [
+18,
+6
+],
+"dest": "MAP_FIVE_ISLAND_POKEMON_CENTER_1F",
+"footprint": [
+16,
+2,
+4,
+5
+],
+"stamp": "centre",
+"at": [
+16,
+2,
+5,
+5
+]
+},
+{
+"warp": [
+12,
+6
+],
+"dest": "MAP_FIVE_ISLAND_HOUSE1",
+"footprint": [
+11,
+4,
+4,
+3
+],
+"stamp": "house",
+"at": [
+11,
+3,
+4,
+4
+]
+},
+{
+"warp": [
+22,
+9
+],
+"dest": "MAP_FIVE_ISLAND_HOUSE2",
+"footprint": [
+21,
+7,
+3,
+3
+],
+"stamp": "house",
+"at": [
+21,
+6,
+4,
+4
+]
+}
+],
+"caves": [],
+"rocks_merged": [
+[
+3,
+2
+],
+[
+4,
+2
+],
+[
+2,
+4
+],
+[
+2,
+5
+],
+[
+3,
+5
+],
+[
+2,
+8
+],
+[
+3,
+8
+],
+[
+1,
+10
+],
+[
+1,
+11
+],
+[
+2,
+11
+],
+[
+5,
+14
+],
+[
+20,
+14
+],
+[
+5,
+15
+],
+[
+20,
+15
+],
+[
+23,
+15
+],
+[
+22,
+16
+],
+[
+23,
+16
+]
+],
+"ported_cells": 0,
+"arrow_warps": [
+[
+12,
+14,
+"S"
+]
+],
+"connections": [
+[
+"up",
+-48,
+"MAP_FIVE_ISLAND_WATER_LABYRINTH"
+],
+[
+"right",
+0,
+"MAP_FIVE_ISLAND_MEADOW"
+]
+],
+"warps": [
+[
+12,
+14,
+"MAP_FIVE_ISLAND_HARBOR"
+],
+[
+18,
+6,
+"MAP_FIVE_ISLAND_POKEMON_CENTER_1F"
+],
+[
+12,
+6,
+"MAP_FIVE_ISLAND_HOUSE1"
+],
+[
+22,
+9,
+"MAP_FIVE_ISLAND_HOUSE2"
+]
+],
+"objects": [
+[
+8,
+5,
+"OBJ_EVENT_GFX_FISHER",
+"FISHERMAN"
+],
+[
+16,
+10,
+"OBJ_EVENT_GFX_BUG_CATCHER_FRLG",
+"BUG_CATCHER_FRLG"
+],
+[
+32,
+9,
+"OBJ_EVENT_GFX_CUTTABLE_TREE_FRLG",
+"CUTTABLE_TREE"
+]
+],
+"classes": {
+"~": 303,
+"M": 22,
+"T": 15,
+".": 87,
+"s": 43,
+"n": 1,
+"h": 3,
+"k": 3,
+"p": 3
+},
+"sea_rocks_cleared_for_route": [
+[
+1,
+6
+],
+[
+2,
+9
+],
+[
+0,
+14
+]
+]
+}
+}

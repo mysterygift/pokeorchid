@@ -1,0 +1,20 @@
+mapscripts OneIsland_PokemonCenter_1F_MapScripts {
+    MAP_SCRIPT_ON_RESUME: CableClub_OnResume
+    MAP_SCRIPT_ON_TRANSITION {
+        setrespawn(HEAL_LOCATION_ONE_ISLAND)
+    }
+}
+
+script OneIsland_PokemonCenter_1F_EventScript_NetTech {
+    msgbox(format("This is the POKéMON NET CENTER. The network machine in the back links the Sevii Islands with Tosa. It's still being tuned, though!"), MSGBOX_NPC)
+}
+
+raw `
+OneIsland_PokemonCenter_1F_EventScript_Nurse::
+	setvar VAR_0x800B, LOCALID_ONE_ISLAND_NURSE
+	call Common_EventScript_PkmnCenterNurse
+	waitmessage
+	waitbuttonpress
+	release
+	end
+`

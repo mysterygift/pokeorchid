@@ -1,0 +1,5 @@
+mapscripts SixIsland_House_MapScripts {}
+
+script SixIsland_House_EventScript_OldMan {
+    msgbox(format("Six Island used to be called Fortune Island. The fortune is in the fishing, I say."), MSGBOX_NPC)
+}

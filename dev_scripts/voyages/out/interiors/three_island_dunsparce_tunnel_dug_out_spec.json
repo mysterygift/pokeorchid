@@ -1,0 +1,245 @@
+{
+ "size": [
+  30,
+  7
+ ],
+ "tileset": [
+  "gTileset_General",
+  "gTileset_Cave"
+ ],
+ "ground": [
+  "raw",
+  1553
+ ],
+ "marks": [
+  [
+   3,
+   4,
+   "PORT",
+   "warp"
+  ],
+  [
+   25,
+   5,
+   "PORT",
+   "warp"
+  ],
+  [
+   23,
+   2,
+   "Prospector",
+   "npc",
+   "fat_man"
+  ],
+  [
+   21,
+   3,
+   "h:nugg",
+   "note"
+  ]
+ ],
+ "grid_raw": [
+  "0611 0611 061B 0619 0619 0611 061C 0611 0611 0611 0611 0611 0611 0611 0611 0611 0611 0611 0611 061B 0619 0619 0619 0619 0619 0619 0619 0619 0611 0611",
+  "0611 061B 0611 061B 0619 061C 0618 0619 0619 0619 0619 0619 0619 0619 0619 0619 0619 0611 3211 0611 3211 3211 3211 3211 3211 3211 0619 0619 061C 0611",
+  "0611 0611 061B 061A 3211 0618 0619 0619 0619 0619 0619 0619 0619 0619 0619 0619 0619 0619 0619 0619 3204 0620 0622 3211 0602 3211 3211 0611 0610 0611",
+  "0619 0619 061A 3211 3211 3211 3211 3211 3211 3211 3211 3211 3211 3211 3211 3211 3211 3211 3211 3211 3211 0610 0623 0609 3211 3211 0611 0611 0611 0611",
+  "0611 0611 3211 323C 3211 0611 0609 0609 0609 0609 0609 0609 0609 0609 0609 0609 3211 0620 0609 0609 0609 0609 3211 061B 0619 3211 0619 061C 0611 0611",
+  "0611 0623 0609 0609 0609 0611 0611 0611 0611 0611 0611 0611 0611 0611 0611 0611 061F 0609 0611 0609 0609 0611 3211 0611 3211 323C 3211 0610 0610 0611",
+  "0611 0609 0609 0609 0609 0609 0609 0611 0611 0611 0611 0611 0611 0611 0611 0610 0611 0621 0609 0611 0611 0611 0611 0623 0609 0609 0609 0609 0624 0611"
+ ],
+ "report": {
+  "pair": [
+   "gTileset_General",
+   "gTileset_Cave"
+  ],
+  "set": "cave",
+  "look": "Granite Cave brown",
+  "classes": [
+   "##############################",
+   "####################......####",
+   "####.###############S##.B..###",
+   "###..................###..####",
+   "##.v.###########.########.####",
+   "########################.v.###",
+   "##############################"
+  ],
+  "sig_levels": {
+   "5": 91,
+   "1": 63,
+   "2": 16
+  },
+  "notes": [],
+  "frlg_map": "ThreeIsland_DunsparceTunnel",
+  "frlg_layout": "LAYOUT_THREE_ISLAND_DUNSPARCE_TUNNEL_DUG_OUT",
+  "frlg_pair": [
+   "gTileset_General_Frlg",
+   "gTileset_Cave_Frlg"
+  ],
+  "maps": [
+   "MAP_THREE_ISLAND_DUNSPARCE_TUNNEL"
+  ],
+  "size": [
+   30,
+   7
+  ],
+  "method": "learned cave autotiler (interiors_caves.py), set 'cave'",
+  "warps": [
+   {
+    "x": 3,
+    "y": 4,
+    "dest_map": "MAP_THREE_ISLAND_PORT",
+    "dest_warp_id": "0"
+   },
+   {
+    "x": 25,
+    "y": 5,
+    "dest_map": "MAP_THREE_ISLAND_PORT",
+    "dest_warp_id": "1"
+   }
+  ],
+  "objects": [
+   {
+    "x": 23,
+    "y": 2,
+    "frlg_gfx": "OBJ_EVENT_GFX_FAT_MAN_FRLG",
+    "emerald_gfx": "OBJ_EVENT_GFX_FAT_MAN",
+    "movement": "MOVEMENT_TYPE_FACE_DOWN",
+    "script": "ThreeIsland_DunsparceTunnel_EventScript_Prospector"
+   }
+  ],
+  "bg_events": [
+   {
+    "type": "hidden_item",
+    "x": 21,
+    "y": 3,
+    "elevation": 0,
+    "item": "ITEM_NUGGET",
+    "flag": "FLAG_HIDDEN_ITEM_THREE_ISLAND_DUNSPARCE_TUNNEL_NUGGET",
+    "quantity": 1,
+    "underfoot": false
+   }
+  ],
+  "coord_events": [],
+  "walk_diff": [],
+  "seams_before_fix": 43,
+  "seam_cells_repicked": 26,
+  "seams": [
+   [
+    20,
+    2,
+    "E",
+    "0x204",
+    "0x220"
+   ],
+   [
+    3,
+    4,
+    "S",
+    "0x23C",
+    "0x209"
+   ],
+   [
+    25,
+    5,
+    "S",
+    "0x23C",
+    "0x209"
+   ]
+  ],
+  "secondary_users": [
+   "LAYOUT_ROUTE130_MIRAGE_ISLAND",
+   "LAYOUT_DESERT_RUINS",
+   "LAYOUT_GRANITE_CAVE_1F",
+   "LAYOUT_GRANITE_CAVE_B1F",
+   "LAYOUT_GRANITE_CAVE_B2F",
+   "LAYOUT_SEAFLOOR_CAVERN_ENTRANCE",
+   "LAYOUT_SEAFLOOR_CAVERN_ROOM1",
+   "LAYOUT_SEAFLOOR_CAVERN_ROOM2",
+   "LAYOUT_SEAFLOOR_CAVERN_ROOM3",
+   "LAYOUT_SEAFLOOR_CAVERN_ROOM4",
+   "LAYOUT_SEAFLOOR_CAVERN_ROOM5",
+   "LAYOUT_SEAFLOOR_CAVERN_ROOM8",
+   "LAYOUT_SEAFLOOR_CAVERN_ROOM9",
+   "LAYOUT_CAVE_OF_ORIGIN_ENTRANCE",
+   "LAYOUT_CAVE_OF_ORIGIN_1F",
+   "LAYOUT_CAVE_OF_ORIGIN_UNUSED_RUBY_SAPPHIRE_MAP1",
+   "LAYOUT_CAVE_OF_ORIGIN_UNUSED_RUBY_SAPPHIRE_MAP2",
+   "LAYOUT_CAVE_OF_ORIGIN_UNUSED_RUBY_SAPPHIRE_MAP3",
+   "LAYOUT_CAVE_OF_ORIGIN_B1F",
+   "LAYOUT_SHOAL_CAVE_LOW_TIDE_ENTRANCE_ROOM",
+   "LAYOUT_SHOAL_CAVE_LOW_TIDE_INNER_ROOM",
+   "LAYOUT_SHOAL_CAVE_LOW_TIDE_STAIRS_ROOM",
+   "LAYOUT_SHOAL_CAVE_LOW_TIDE_LOWER_ROOM",
+   "LAYOUT_SHOAL_CAVE_HIGH_TIDE_ENTRANCE_ROOM",
+   "LAYOUT_SHOAL_CAVE_HIGH_TIDE_INNER_ROOM",
+   "LAYOUT_UNUSED_CAVE1",
+   "LAYOUT_UNUSED_CAVE2",
+   "LAYOUT_UNUSED_CAVE3",
+   "LAYOUT_UNUSED_CAVE4",
+   "LAYOUT_UNUSED_CAVE5",
+   "LAYOUT_UNUSED_CAVE6",
+   "LAYOUT_UNUSED_CAVE7",
+   "LAYOUT_UNUSED_CAVE8",
+   "LAYOUT_UNUSED_CAVE9",
+   "LAYOUT_UNUSED_CAVE10",
+   "LAYOUT_UNUSED_CAVE11",
+   "LAYOUT_UNUSED_CAVE12",
+   "LAYOUT_UNUSED_CAVE13",
+   "LAYOUT_UNUSED_CAVE14",
+   "LAYOUT_ROUTE130",
+   "LAYOUT_ISLAND_CAVE",
+   "LAYOUT_ANCIENT_TOMB",
+   "LAYOUT_SEALED_CHAMBER_OUTER_ROOM",
+   "LAYOUT_GRANITE_CAVE_STEVENS_ROOM",
+   "LAYOUT_SEALED_CHAMBER_INNER_ROOM",
+   "LAYOUT_SCORCHED_SLAB",
+   "LAYOUT_CAVE_OF_ORIGIN_UNUSED_B4F_LAVA",
+   "LAYOUT_SKY_PILLAR_ENTRANCE",
+   "LAYOUT_SEAFLOOR_CAVERN_ROOM9_LAVA",
+   "LAYOUT_SHOAL_CAVE_LOW_TIDE_ICE_ROOM",
+   "LAYOUT_DESERT_UNDERPASS",
+   "LAYOUT_ARTISAN_CAVE_B1F",
+   "LAYOUT_ARTISAN_CAVE_1F",
+   "LAYOUT_MARINE_CAVE_ENTRANCE",
+   "LAYOUT_TERRA_CAVE_ENTRANCE",
+   "LAYOUT_TERRA_CAVE_END",
+   "LAYOUT_MARINE_CAVE_END",
+   "LAYOUT_ALTERING_CAVE",
+   "LAYOUT_DAMP_PATH",
+   "LAYOUT_MT_BATOK_1F",
+   "LAYOUT_MT_BATOK_2F",
+   "LAYOUT_MT_BATOK_3F",
+   "LAYOUT_MT_BATOK_EAST_2F",
+   "LAYOUT_MT_BATOK_EAST_1F",
+   "LAYOUT_CHALLENGERS_TRAIL_1F",
+   "LAYOUT_CHALLENGERS_TRAIL_2F",
+   "LAYOUT_CHALLENGERS_TRAIL_3F",
+   "LAYOUT_REGOLIS_SHRINE",
+   "LAYOUT_FRIGO_CAVE",
+   "LAYOUT_FERRUM_SHRINE",
+   "LAYOUT_GAVANI_PATH",
+   "LAYOUT_MT_DRAKE_1F",
+   "LAYOUT_MT_DRAKE_2F",
+   "LAYOUT_MT_DRAKE_3F"
+  ],
+  "metatiles": [
+   "0x202",
+   "0x204",
+   "0x209",
+   "0x210",
+   "0x211",
+   "0x218",
+   "0x219",
+   "0x21A",
+   "0x21B",
+   "0x21C",
+   "0x21F",
+   "0x220",
+   "0x221",
+   "0x222",
+   "0x223",
+   "0x224",
+   "0x23C"
+  ]
+ }
+}

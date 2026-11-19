@@ -1,0 +1,525 @@
+{
+ "size": [
+  11,
+  9
+ ],
+ "tileset": [
+  "gTileset_Building",
+  "gTileset_GenericBuilding"
+ ],
+ "ground": [
+  "raw",
+  1541
+ ],
+ "marks": [
+  [
+   4,
+   7,
+   "ISLAND",
+   "warp"
+  ],
+  [
+   3,
+   7,
+   "ISLAND",
+   "warp"
+  ],
+  [
+   7,
+   4,
+   "Lorelei",
+   "npc",
+   "glacia"
+  ],
+  [
+   0,
+   2,
+   "wigglyt",
+   "note"
+  ],
+  [
+   10,
+   3,
+   "seel",
+   "note"
+  ],
+  [
+   9,
+   3,
+   "",
+   "npc",
+   "pikachu_doll"
+  ],
+  [
+   7,
+   2,
+   "slowpok",
+   "note"
+  ],
+  [
+   6,
+   2,
+   "slowbro",
+   "note"
+  ],
+  [
+   6,
+   4,
+   "psyduck",
+   "note"
+  ],
+  [
+   9,
+   4,
+   "",
+   "npc",
+   "meowth_doll"
+  ],
+  [
+   10,
+   4,
+   "chansey",
+   "note"
+  ],
+  [
+   0,
+   3,
+   "",
+   "npc",
+   "jigglypuff_doll"
+  ],
+  [
+   0,
+   5,
+   "nidoran",
+   "note"
+  ],
+  [
+   1,
+   5,
+   "nidoran",
+   "note"
+  ],
+  [
+   9,
+   0,
+   "pidgeot",
+   "note"
+  ],
+  [
+   10,
+   0,
+   "fearow",
+   "note"
+  ],
+  [
+   9,
+   6,
+   "big",
+   "note"
+  ]
+ ],
+ "grid_raw": [
+  "0605 0605 0605 0686 0687 0606 0605 0605 0605 066E 066F",
+  "060D 060D 060D 068E 068F 060E 060D 060D 0668 0676 0677",
+  "365A 365B 3224 3296 3297 3224 3224 3224 3270 327E 327F",
+  "3662 3663 3223 3235 3236 3236 3236 3236 3237 064C 064D",
+  "3239 3223 3223 023D 32E1 3648 3649 32E2 323F 0654 0655",
+  "3239 3223 3223 023D 323E 3650 3651 323E 323F 3223 3223",
+  "3239 3223 3223 3245 3246 3246 3246 3246 3247 3223 3223",
+  "3239 3223 3223 0208 0209 3223 3223 3223 3223 3223 3223",
+  "0401 0401 0401 0401 0401 0401 0401 0401 0401 0401 0401"
+ ],
+ "report": {
+  "frlg_map": "FourIsland_LoreleisHouse",
+  "frlg_layout": "LAYOUT_FOUR_ISLAND_LORELEIS_HOUSE",
+  "frlg_pair": [
+   "gTileset_BuildingFrlg",
+   "gTileset_SafariZoneBuilding"
+  ],
+  "maps": [
+   "FOUR_ISLAND_LORELEIS_HOUSE"
+  ],
+  "pair": [
+   "gTileset_Building",
+   "gTileset_GenericBuilding"
+  ],
+  "size": [
+   11,
+   9
+  ],
+  "method": "hand class map; FRLG carpet room -> wood floor + vanilla orange rug (HOUSE1) with rug chairs, bed (HOUSE_WITH_BED), green bookshelf, yellow table",
+  "warps": [
+   {
+    "x": 4,
+    "y": 7,
+    "dest_map": "MAP_FOUR_ISLAND",
+    "dest_warp_id": "4",
+    "frlg": true
+   },
+   {
+    "x": 3,
+    "y": 7,
+    "dest_map": "MAP_FOUR_ISLAND",
+    "dest_warp_id": "4",
+    "frlg": false,
+    "note": "2nd half of the Emerald exit mat"
+   }
+  ],
+  "objects": [
+   {
+    "x": 7,
+    "y": 4,
+    "frlg_gfx": "OBJ_EVENT_GFX_LORELEI",
+    "emerald_gfx": "OBJ_EVENT_GFX_GLACIA",
+    "movement": "MOVEMENT_TYPE_FACE_LEFT",
+    "script": "FourIsland_LoreleisHouse_EventScript_Lorelei"
+   },
+   {
+    "x": 0,
+    "y": 2,
+    "frlg_gfx": "OBJ_EVENT_GFX_WIGGLYTUFF",
+    "emerald_gfx": "OBJ_EVENT_GFX_WIGGLYTUFF doll (no Emerald gfx)",
+    "movement": "MOVEMENT_TYPE_FACE_DOWN",
+    "script": "FourIsland_LoreleisHouse_EventScript_Doll"
+   },
+   {
+    "x": 10,
+    "y": 3,
+    "frlg_gfx": "OBJ_EVENT_GFX_SEEL",
+    "emerald_gfx": "OBJ_EVENT_GFX_SEEL doll (no Emerald gfx)",
+    "movement": "MOVEMENT_TYPE_FACE_DOWN",
+    "script": "FourIsland_LoreleisHouse_EventScript_Doll"
+   },
+   {
+    "x": 9,
+    "y": 3,
+    "frlg_gfx": "OBJ_EVENT_GFX_PIKACHU_FRLG",
+    "emerald_gfx": "OBJ_EVENT_GFX_PIKACHU_DOLL",
+    "movement": "MOVEMENT_TYPE_FACE_DOWN",
+    "script": "FourIsland_LoreleisHouse_EventScript_Doll"
+   },
+   {
+    "x": 7,
+    "y": 2,
+    "frlg_gfx": "OBJ_EVENT_GFX_SLOWPOKE",
+    "emerald_gfx": "OBJ_EVENT_GFX_SLOWPOKE doll (no Emerald gfx)",
+    "movement": "MOVEMENT_TYPE_FACE_DOWN",
+    "script": "FourIsland_LoreleisHouse_EventScript_Doll"
+   },
+   {
+    "x": 6,
+    "y": 2,
+    "frlg_gfx": "OBJ_EVENT_GFX_SLOWBRO",
+    "emerald_gfx": "OBJ_EVENT_GFX_SLOWBRO doll (no Emerald gfx)",
+    "movement": "MOVEMENT_TYPE_FACE_DOWN",
+    "script": "FourIsland_LoreleisHouse_EventScript_Doll"
+   },
+   {
+    "x": 6,
+    "y": 4,
+    "frlg_gfx": "OBJ_EVENT_GFX_PSYDUCK",
+    "emerald_gfx": "OBJ_EVENT_GFX_PSYDUCK doll (no Emerald gfx)",
+    "movement": "MOVEMENT_TYPE_FACE_DOWN",
+    "script": "FourIsland_LoreleisHouse_EventScript_Doll"
+   },
+   {
+    "x": 9,
+    "y": 4,
+    "frlg_gfx": "OBJ_EVENT_GFX_MEOWTH",
+    "emerald_gfx": "OBJ_EVENT_GFX_MEOWTH_DOLL",
+    "movement": "MOVEMENT_TYPE_FACE_DOWN",
+    "script": "FourIsland_LoreleisHouse_EventScript_Doll"
+   },
+   {
+    "x": 10,
+    "y": 4,
+    "frlg_gfx": "OBJ_EVENT_GFX_CHANSEY",
+    "emerald_gfx": "OBJ_EVENT_GFX_CHANSEY doll (no Emerald gfx)",
+    "movement": "MOVEMENT_TYPE_FACE_DOWN",
+    "script": "FourIsland_LoreleisHouse_EventScript_Doll"
+   },
+   {
+    "x": 0,
+    "y": 3,
+    "frlg_gfx": "OBJ_EVENT_GFX_JIGGLYPUFF",
+    "emerald_gfx": "OBJ_EVENT_GFX_JIGGLYPUFF_DOLL",
+    "movement": "MOVEMENT_TYPE_FACE_DOWN",
+    "script": "FourIsland_LoreleisHouse_EventScript_Doll"
+   },
+   {
+    "x": 0,
+    "y": 5,
+    "frlg_gfx": "OBJ_EVENT_GFX_NIDORAN_F",
+    "emerald_gfx": "OBJ_EVENT_GFX_NIDORAN_F doll (no Emerald gfx)",
+    "movement": "MOVEMENT_TYPE_FACE_DOWN",
+    "script": "FourIsland_LoreleisHouse_EventScript_Doll"
+   },
+   {
+    "x": 1,
+    "y": 5,
+    "frlg_gfx": "OBJ_EVENT_GFX_NIDORAN_M",
+    "emerald_gfx": "OBJ_EVENT_GFX_NIDORAN_M doll (no Emerald gfx)",
+    "movement": "MOVEMENT_TYPE_FACE_DOWN",
+    "script": "FourIsland_LoreleisHouse_EventScript_Doll"
+   },
+   {
+    "x": 9,
+    "y": 0,
+    "frlg_gfx": "OBJ_EVENT_GFX_PIDGEOT",
+    "emerald_gfx": "OBJ_EVENT_GFX_PIDGEOT doll (no Emerald gfx)",
+    "movement": "MOVEMENT_TYPE_FACE_DOWN",
+    "script": "FourIsland_LoreleisHouse_EventScript_Doll"
+   },
+   {
+    "x": 10,
+    "y": 0,
+    "frlg_gfx": "OBJ_EVENT_GFX_FEAROW",
+    "emerald_gfx": "OBJ_EVENT_GFX_FEAROW doll (no Emerald gfx)",
+    "movement": "MOVEMENT_TYPE_FACE_DOWN",
+    "script": "FourIsland_LoreleisHouse_EventScript_Doll"
+   },
+   {
+    "x": 9,
+    "y": 6,
+    "frlg_gfx": "OBJ_EVENT_GFX_LAPRAS_DOLL",
+    "emerald_gfx": "OBJ_EVENT_GFX_BIG_LAPRAS_DOLL? (32x32)",
+    "movement": "MOVEMENT_TYPE_FACE_DOWN",
+    "script": "FourIsland_LoreleisHouse_EventScript_Doll"
+   }
+  ],
+  "bg_events": [],
+  "coord_events": [],
+  "walk_diff": [
+   {
+    "x": 0,
+    "y": 2,
+    "frlg": "open",
+    "emerald": "solid"
+   },
+   {
+    "x": 1,
+    "y": 2,
+    "frlg": "open",
+    "emerald": "solid"
+   },
+   {
+    "x": 0,
+    "y": 3,
+    "frlg": "open",
+    "emerald": "solid"
+   }
+  ],
+  "seams": [
+   [
+    4,
+    0,
+    "E",
+    "0x287",
+    "0x206"
+   ],
+   [
+    0,
+    1,
+    "S",
+    "0x20D",
+    "0x25A"
+   ],
+   [
+    1,
+    1,
+    "S",
+    "0x20D",
+    "0x25B"
+   ],
+   [
+    2,
+    1,
+    "E",
+    "0x20D",
+    "0x28E"
+   ],
+   [
+    4,
+    1,
+    "E",
+    "0x28F",
+    "0x20E"
+   ],
+   [
+    8,
+    1,
+    "E",
+    "0x268",
+    "0x276"
+   ],
+   [
+    1,
+    2,
+    "E",
+    "0x25B",
+    "0x224"
+   ],
+   [
+    2,
+    2,
+    "E",
+    "0x224",
+    "0x296"
+   ],
+   [
+    3,
+    2,
+    "S",
+    "0x296",
+    "0x235"
+   ],
+   [
+    4,
+    2,
+    "S",
+    "0x297",
+    "0x236"
+   ],
+   [
+    8,
+    2,
+    "E",
+    "0x270",
+    "0x27E"
+   ],
+   [
+    8,
+    2,
+    "S",
+    "0x270",
+    "0x237"
+   ],
+   [
+    9,
+    2,
+    "S",
+    "0x27E",
+    "0x24C"
+   ],
+   [
+    10,
+    2,
+    "S",
+    "0x27F",
+    "0x24D"
+   ],
+   [
+    8,
+    3,
+    "E",
+    "0x237",
+    "0x24C"
+   ],
+   [
+    7,
+    4,
+    "S",
+    "0x2E2",
+    "0x23E"
+   ],
+   [
+    8,
+    4,
+    "E",
+    "0x23F",
+    "0x254"
+   ],
+   [
+    6,
+    5,
+    "E",
+    "0x251",
+    "0x23E"
+   ],
+   [
+    3,
+    6,
+    "S",
+    "0x245",
+    "0x208"
+   ],
+   [
+    4,
+    6,
+    "S",
+    "0x246",
+    "0x209"
+   ]
+  ],
+  "secondary_users": [
+   "LAYOUT_HOUSE1",
+   "LAYOUT_HOUSE2",
+   "LAYOUT_HOUSE3",
+   "LAYOUT_DEWFORD_TOWN_HALL",
+   "LAYOUT_HOUSE4",
+   "LAYOUT_VERDANTURF_TOWN_WANDAS_HOUSE",
+   "LAYOUT_PACIFIDLOG_TOWN_HOUSE1",
+   "LAYOUT_PACIFIDLOG_TOWN_HOUSE2",
+   "LAYOUT_FORTREE_CITY_HOUSE1",
+   "LAYOUT_FORTREE_CITY_HOUSE2",
+   "LAYOUT_ROUTE116_TUNNELERS_REST_HOUSE",
+   "LAYOUT_FORTREE_CITY_DECORATION_SHOP",
+   "LAYOUT_ROUTE124_DIVING_TREASURE_HUNTERS_HOUSE",
+   "LAYOUT_SAFARI_ZONE_REST_HOUSE"
+  ],
+  "notes": [
+   "FRLG 1-wide bed (x1) -> Emerald 2-wide bed x0-1: (0,2)/(0,3) become solid, but FRLG has the Wigglytuff / Jigglypuff dolls standing there anyway (object cells).",
+   "Dolls: FRLG uses Pokemon OW gfx (several FRLG-only). Emerald has the same dolls as decorations; the room needs doll OW gfx (marked 'note' here) -- see open questions."
+  ],
+  "metatiles": [
+   "0x001",
+   "0x205",
+   "0x206",
+   "0x208",
+   "0x209",
+   "0x20D",
+   "0x20E",
+   "0x223",
+   "0x224",
+   "0x235",
+   "0x236",
+   "0x237",
+   "0x239",
+   "0x23D",
+   "0x23E",
+   "0x23F",
+   "0x245",
+   "0x246",
+   "0x247",
+   "0x248",
+   "0x249",
+   "0x24C",
+   "0x24D",
+   "0x250",
+   "0x251",
+   "0x254",
+   "0x255",
+   "0x25A",
+   "0x25B",
+   "0x262",
+   "0x263",
+   "0x268",
+   "0x26E",
+   "0x26F",
+   "0x270",
+   "0x276",
+   "0x277",
+   "0x27E",
+   "0x27F",
+   "0x286",
+   "0x287",
+   "0x28E",
+   "0x28F",
+   "0x296",
+   "0x297",
+   "0x2E1",
+   "0x2E2"
+  ]
+ }
+}

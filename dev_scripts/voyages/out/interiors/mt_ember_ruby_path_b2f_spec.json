@@ -1,0 +1,299 @@
+{
+ "size": [
+  16,
+  11
+ ],
+ "tileset": [
+  "gTileset_General",
+  "gTileset_Lavaridge"
+ ],
+ "ground": [
+  "raw",
+  1649
+ ],
+ "marks": [
+  [
+   1,
+   7,
+   "B1F",
+   "warp"
+  ],
+  [
+   13,
+   9,
+   "B3F",
+   "warp"
+  ],
+  [
+   9,
+   3,
+   "",
+   "field",
+   "pushable_boulder"
+  ],
+  [
+   12,
+   5,
+   "",
+   "field",
+   "pushable_boulder"
+  ],
+  [
+   12,
+   2,
+   "",
+   "field",
+   "pushable_boulder"
+  ],
+  [
+   4,
+   8,
+   "",
+   "field",
+   "breakable_rock"
+  ],
+  [
+   1,
+   8,
+   "",
+   "field",
+   "breakable_rock"
+  ],
+  [
+   4,
+   5,
+   "",
+   "field",
+   "breakable_rock"
+  ],
+  [
+   5,
+   5,
+   "",
+   "field",
+   "breakable_rock"
+  ]
+ ],
+ "grid_raw": [
+  "0671 0671 0671 0671 0671 0671 0671 0671 0671 0671 0678 0674 0674 0674 067C 0671",
+  "0671 0671 0671 0671 0671 0671 0671 0671 0674 0674 0671 0672 3308 3308 070E 067C",
+  "0671 0671 0671 0671 0671 0671 067B 0674 0674 0674 0674 070F 3308 3308 3308 0706",
+  "0671 0671 0671 0671 0671 0671 0672 3308 3308 3308 3308 3308 3308 070D 3308 0706",
+  "0671 0671 0671 067B 0674 0674 070F 3308 3308 067C 3308 070D 3308 070D 3308 0706",
+  "0671 0671 0671 0672 3308 3308 3308 3308 3308 0706 3308 3308 3308 3308 3308 0706",
+  "0674 0674 0674 070F 3308 3308 3308 3308 070C 067F 070C 070C 067B 0674 3308 0670",
+  "0671 32AE 3308 3308 3308 070A 070C 070C 0671 0671 0671 0672 0707 3308 3308 0706",
+  "0671 3308 3308 3308 3308 0670 0671 0671 0671 0671 0671 0672 0672 3308 3308 0706",
+  "0671 070C 070C 070C 070C 0670 0671 0671 0671 0671 0671 0672 0672 32AE 3308 0706",
+  "0671 0671 0671 0671 0671 0670 0671 0671 0671 0671 0671 0672 067F 070C 070C 067F"
+ ],
+ "report": {
+  "pair": [
+   "gTileset_General",
+   "gTileset_Lavaridge"
+  ],
+  "set": "lava",
+  "look": "Fiery Path / Magma Hideout red rock (Mt. Chimney's volcano cave), Lavaridge hot-spring water",
+  "classes": [
+   "################",
+   "############..##",
+   "############...#",
+   "#######......B.#",
+   "#######..#.B.B.#",
+   "####.....#.....#",
+   "####....######.#",
+   "#U...########..#",
+   "#....########..#",
+   "#############H.#",
+   "################"
+  ],
+  "sig_levels": {
+   "5": 85,
+   "1": 37,
+   "2": 6
+  },
+  "notes": [],
+  "frlg_map": "MtEmber_RubyPath_B2F",
+  "frlg_layout": "LAYOUT_MT_EMBER_RUBY_PATH_B2F",
+  "frlg_pair": [
+   "gTileset_General_Frlg",
+   "gTileset_MtEmber"
+  ],
+  "maps": [
+   "MAP_MT_EMBER_RUBY_PATH_B2_F"
+  ],
+  "size": [
+   16,
+   11
+  ],
+  "method": "learned cave autotiler (interiors_caves.py), set 'lava'",
+  "warps": [
+   {
+    "x": 1,
+    "y": 7,
+    "dest_map": "MAP_MT_EMBER_RUBY_PATH_B1F",
+    "dest_warp_id": "1"
+   },
+   {
+    "x": 13,
+    "y": 9,
+    "dest_map": "MAP_MT_EMBER_RUBY_PATH_B3F",
+    "dest_warp_id": "0"
+   }
+  ],
+  "objects": [
+   {
+    "x": 9,
+    "y": 3,
+    "frlg_gfx": "OBJ_EVENT_GFX_PUSHABLE_BOULDER_FRLG",
+    "emerald_gfx": "OBJ_EVENT_GFX_PUSHABLE_BOULDER",
+    "movement": "MOVEMENT_TYPE_LOOK_AROUND",
+    "script": "EventScript_StrengthBoulder"
+   },
+   {
+    "x": 12,
+    "y": 5,
+    "frlg_gfx": "OBJ_EVENT_GFX_PUSHABLE_BOULDER_FRLG",
+    "emerald_gfx": "OBJ_EVENT_GFX_PUSHABLE_BOULDER",
+    "movement": "MOVEMENT_TYPE_LOOK_AROUND",
+    "script": "EventScript_StrengthBoulder"
+   },
+   {
+    "x": 12,
+    "y": 2,
+    "frlg_gfx": "OBJ_EVENT_GFX_PUSHABLE_BOULDER_FRLG",
+    "emerald_gfx": "OBJ_EVENT_GFX_PUSHABLE_BOULDER",
+    "movement": "MOVEMENT_TYPE_LOOK_AROUND",
+    "script": "EventScript_StrengthBoulder"
+   },
+   {
+    "x": 4,
+    "y": 8,
+    "frlg_gfx": "OBJ_EVENT_GFX_BREAKABLE_ROCK_FRLG",
+    "emerald_gfx": "OBJ_EVENT_GFX_BREAKABLE_ROCK",
+    "movement": "MOVEMENT_TYPE_LOOK_AROUND",
+    "script": "EventScript_RockSmash"
+   },
+   {
+    "x": 1,
+    "y": 8,
+    "frlg_gfx": "OBJ_EVENT_GFX_BREAKABLE_ROCK_FRLG",
+    "emerald_gfx": "OBJ_EVENT_GFX_BREAKABLE_ROCK",
+    "movement": "MOVEMENT_TYPE_LOOK_AROUND",
+    "script": "EventScript_RockSmash"
+   },
+   {
+    "x": 4,
+    "y": 5,
+    "frlg_gfx": "OBJ_EVENT_GFX_BREAKABLE_ROCK_FRLG",
+    "emerald_gfx": "OBJ_EVENT_GFX_BREAKABLE_ROCK",
+    "movement": "MOVEMENT_TYPE_LOOK_AROUND",
+    "script": "EventScript_RockSmash"
+   },
+   {
+    "x": 5,
+    "y": 5,
+    "frlg_gfx": "OBJ_EVENT_GFX_BREAKABLE_ROCK_FRLG",
+    "emerald_gfx": "OBJ_EVENT_GFX_BREAKABLE_ROCK",
+    "movement": "MOVEMENT_TYPE_LOOK_AROUND",
+    "script": "EventScript_RockSmash"
+   }
+  ],
+  "bg_events": [],
+  "coord_events": [],
+  "walk_diff": [],
+  "seams_before_fix": 40,
+  "seam_cells_repicked": 26,
+  "seams": [
+   [
+    7,
+    1,
+    "E",
+    "0x271",
+    "0x274"
+   ],
+   [
+    11,
+    6,
+    "E",
+    "0x30C",
+    "0x27B"
+   ],
+   [
+    11,
+    6,
+    "S",
+    "0x30C",
+    "0x272"
+   ],
+   [
+    7,
+    7,
+    "E",
+    "0x30C",
+    "0x271"
+   ],
+   [
+    0,
+    9,
+    "E",
+    "0x271",
+    "0x30C"
+   ],
+   [
+    4,
+    9,
+    "E",
+    "0x30C",
+    "0x270"
+   ],
+   [
+    12,
+    9,
+    "E",
+    "0x272",
+    "0x2AE"
+   ],
+   [
+    13,
+    9,
+    "S",
+    "0x2AE",
+    "0x30C"
+   ]
+  ],
+  "secondary_users": [
+   "LAYOUT_LAVARIDGE_TOWN",
+   "LAYOUT_JAGGED_PASS",
+   "LAYOUT_FIERY_PATH",
+   "LAYOUT_MAGMA_HIDEOUT_1F",
+   "LAYOUT_MAGMA_HIDEOUT_2F_1R",
+   "LAYOUT_MAGMA_HIDEOUT_2F_2R",
+   "LAYOUT_MAGMA_HIDEOUT_3F_1R",
+   "LAYOUT_MAGMA_HIDEOUT_3F_2R",
+   "LAYOUT_MAGMA_HIDEOUT_4F",
+   "LAYOUT_MAGMA_HIDEOUT_3F_3R",
+   "LAYOUT_MAGMA_HIDEOUT_2F_3R",
+   "LAYOUT_DRAKE_BASE_CAMP"
+  ],
+  "metatiles": [
+   "0x270",
+   "0x271",
+   "0x272",
+   "0x274",
+   "0x278",
+   "0x27B",
+   "0x27C",
+   "0x27F",
+   "0x2AE",
+   "0x306",
+   "0x307",
+   "0x308",
+   "0x30A",
+   "0x30C",
+   "0x30D",
+   "0x30E",
+   "0x30F"
+  ]
+ }
+}

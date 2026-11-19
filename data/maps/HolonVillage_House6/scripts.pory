@@ -1,0 +1,5 @@
+mapscripts HolonVillage_House6_MapScripts {}
+
+script HolonVillage_House6_EventScript_Npc {
+    msgbox(format("I saw a Pikachu that wasn't Electric-type! Grandpa says they're called Delta Species."), MSGBOX_NPC)
+}

@@ -1,4 +1,10 @@
 mapscripts WavebreakTown_MapScripts {
+    // Orchid voyages: the Sailor and his boat wait at the dock only after the Champion.
+    MAP_SCRIPT_ON_TRANSITION {
+        if (!flag(FLAG_SYS_GAME_CLEAR)) {
+            setflag(FLAG_TEMP_1)
+        }
+    }
 }
 
 script WavebreakTown_EventScript_TownSign {
@@ -19,4 +25,16 @@ script WavebreakTown_EventScript_Npc3 {
 
 script WavebreakTown_EventScript_Npc4 {
     msgbox(format("Smugglers love a quiet harbour. Just saying."), MSGBOX_NPC)
+}
+
+script WavebreakTown_EventScript_Npc5 {
+    msgbox(format("The fish bite best under these trees at the north end. Shade on the water, see?"), MSGBOX_NPC)
+}
+
+script WavebreakTown_EventScript_Npc6 {
+    msgbox(format("Left my spare rods by the Centre. If they're gone, so's my luck."), MSGBOX_NPC)
+}
+
+script WavebreakTown_EventScript_Npc7 {
+    msgbox(format("That old sailor's boat goes places my line never reaches. Wonder what bites out there."), MSGBOX_NPC)
 }

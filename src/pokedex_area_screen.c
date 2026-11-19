@@ -354,6 +354,21 @@ static void FindMapsWithMon(enum Species species)
             case MAP_GROUP_SPECIAL_AREA_FRLG:
                 SetSpecialMapHasMon(gWildMonHeaders[i].mapGroup, gWildMonHeaders[i].mapNum);
                 break;
+            default:
+                // Orchid: custom map groups (Tosa Rail / Overworld / Tiksi / Voyages / Holon / Sevii) were skipped.
+                // Caves and indoor maps get a marker, everything else the area glow.
+                switch (Overworld_GetMapHeaderByGroupAndId(gWildMonHeaders[i].mapGroup, gWildMonHeaders[i].mapNum)->mapType)
+                {
+                case MAP_TYPE_UNDERGROUND:
+                case MAP_TYPE_INDOOR:
+                case MAP_TYPE_UNKNOWN:
+                    SetSpecialMapHasMon(gWildMonHeaders[i].mapGroup, gWildMonHeaders[i].mapNum);
+                    break;
+                default:
+                    SetAreaHasMon(gWildMonHeaders[i].mapGroup, gWildMonHeaders[i].mapNum);
+                    break;
+                }
+                break;
             }
         }
     }

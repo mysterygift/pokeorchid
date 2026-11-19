@@ -1,0 +1,57 @@
+boot pos (10, 11, 22, 0)
+village (6, 36, 23, 1) HolonVillage
+shot 01_village_centre (6, 36, 23, 1)
+lead hp set 1 (was (126, 126))
+after door (7, 9, 23, 2) HolonVillage_PokemonCenter_1F
+walk HolonVillage_PokemonCenter_1F -> (7, 4) ok
+Centre heal: hp after nurse = (126, 126) -> HEALED
+shot 02_centre_after_heal (7, 4, 23, 2)
+walk HolonVillage_PokemonCenter_1F -> (7, 8) ok
+back out (6, 36, 23, 1) HolonVillage
+walk HolonVillage -> (0, 38) ok
+coast? (42, 26, 23, 0) HolonMirageForest
+shot 03_coast_east_edge (42, 26, 23, 0)
+walk HolonMirageForest -> (30, 14) ok
+FLDEFF_PAL_TAG_GENERAL_1 loaded: True matches holon copy: True matches vivid: False
+shot 04_coast_long_grass_rustle (30, 13, 23, 0)
+walk HolonMirageForest -> (21, 11) ok
+shot 05_coast_ruins_rail_stones (21, 11, 23, 0)
+walk HolonMirageForest -> (8, 36) ok
+walk HolonMirageForest -> (5, 36) ok
+shot 06_coast_jetty_sailor_boat (5, 36, 23, 0)
+walk HolonMirageForest -> (43, 26) ok
+village? (1, 38, 23, 1) HolonVillage
+walk HolonVillage -> (30, 50) ok
+shot 07_village_south_bridge (30, 50, 23, 1)
+walk HolonVillage -> (35, 38) ok
+shot 08_village_research_tower_drained_ring (35, 38, 23, 1)
+walk HolonVillage -> (30, 71) ok
+lake? (30, 1, 23, 14) HolonLake
+shot 09_lake_north (30, 1, 23, 14)
+walk HolonLake -> (24, 36) ok
+shot 10_lake_cynthia_peninsula (24, 36, 23, 14)
+walk HolonLake -> (7, 10) ok
+shot 11_lake_sealed_dome (7, 10, 23, 14)
+walk HolonLake -> (24, 28) ok
+shot 12_lake_sphere_dormant (24, 28, 23, 14)
+walk HolonLake -> (24, 4) ok
+sphere palette while away: False
+walk HolonLake -> (24, 28) ok
+sphere palette dormant[1:4] [32733, 29496, 25235] glow[1:4] [32766, 32725, 32590] expected glow [32766, 32725, 32590]
+shot 13_lake_sphere_glow (24, 28, 23, 14)
+walk HolonLake -> (40, 43) ok
+shot 14_lake_gyarados (40, 43, 23, 14)
+warp HolonResearchTower_1F (9, 12, 23, 12) HolonResearchTower_1F
+shot 15_tower_1f (9, 12, 23, 12)
+warp HolonResearchTower_2F (17, 2, 23, 13) HolonResearchTower_2F
+shot 16_tower_2f (17, 2, 23, 13)
+warp HolonVillage_RuinsHouse (3, 8, 23, 11) HolonVillage_RuinsHouse
+shot 17_ruins_house (3, 8, 23, 11)
+warp HolonVillage_House1 (3, 8, 23, 4) HolonVillage_House1
+shot 18_house1 (3, 8, 23, 4)
+warp HolonVillage_Mart (6, 8, 23, 3) HolonVillage_Mart
+shot 19_mart (6, 8, 23, 3)
+walk HolonResearchTower_2F -> (2, 7) ok
+shot 20a_tower_2f_naming (2, 7, 23, 13)
+Eevee gift flag 0x283 = 1
+shot 20_tower_2f_after_gift (2, 7, 23, 13)

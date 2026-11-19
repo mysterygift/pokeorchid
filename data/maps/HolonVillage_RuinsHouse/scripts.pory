@@ -1,0 +1,12 @@
+mapscripts HolonVillage_RuinsHouse_MapScripts {}
+
+script HolonVillage_RuinsHouse_EventScript_LoreItem {
+    lock
+    msgbox(format("There's a scrap of paper tucked under a loose board...\p'The Power Spots must never be tapped. What the land gives freely, it can take back.'"), MSGBOX_DEFAULT)
+    finditem(ITEM_STAR_PIECE)
+    release
+}
+
+script HolonVillage_RuinsHouse_EventScript_Bookshelf {
+    msgbox(format("Dusty old books about stone carving. The pages have gone brittle."), MSGBOX_SIGN)
+}

@@ -1,0 +1,13 @@
+mapscripts SeviiSeaRouteB_MapScripts {}
+
+script SeviiSeaRouteB_EventScript_Swimmer1 {
+    msgbox(format("Sometimes Lapras swim past these islands. It's beautiful."), MSGBOX_NPC)
+}
+
+script SeviiSeaRouteB_EventScript_Swimmer2 {
+    msgbox(format("Two Island and Three Isle Port are joined by this strait."), MSGBOX_NPC)
+}
+
+script SeviiSeaRouteB_EventScript_Swimmer3 {
+    msgbox(format("Two Island and Three Isle Port are joined by this strait."), MSGBOX_NPC)
+}

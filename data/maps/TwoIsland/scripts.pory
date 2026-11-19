@@ -1,0 +1,44 @@
+mapscripts TwoIsland_MapScripts {
+    MAP_SCRIPT_ON_TRANSITION {
+        setflag(FLAG_VISITED_TWO_ISLAND)
+    }
+}
+
+script TwoIsland_EventScript_Woman {
+    msgbox(format("The stall sells goods you can't find anywhere else. The prices, though... ouch."), MSGBOX_NPC)
+}
+
+script TwoIsland_EventScript_Beauty {
+    msgbox(format("The Game Corner here is run by a sweet old man. Everyone on the island plays there."), MSGBOX_NPC)
+}
+
+script TwoIsland_EventScript_Sailor {
+    msgbox(format("Cape Brink is north of here. They say a great teacher of moves lives at the very tip."), MSGBOX_NPC)
+}
+
+script TwoIsland_EventScript_SuperNerd {
+    msgbox(format("I came all the way from Tosa for the market. Worth every coin!"), MSGBOX_NPC)
+}
+
+script TwoIsland_EventScript_LittleBoy {
+    msgbox(format("My big brother lets me ride on his Lapras sometimes!"), MSGBOX_NPC)
+}
+
+script TwoIsland_EventScript_Boy {
+    msgbox(format("I found a pretty shell on the beach today!"), MSGBOX_NPC)
+}
+
+script TwoIsland_EventScript_IslandSign {
+    msgbox(format("TWO ISLAND\n"
+        "Boon Island for the market-minded."), MSGBOX_SIGN)
+}
+
+script TwoIsland_EventScript_JoyfulGameCornerSign {
+    msgbox(format("JOYFUL GAME CORNER\n"
+        "Play games, win prizes, make friends!"), MSGBOX_SIGN)
+}
+
+script TwoIsland_EventScript_FastCurrentSign {
+    msgbox(format("The currents around here used to be fierce.\n"
+        "These days the sea is calm enough to Surf."), MSGBOX_SIGN)
+}

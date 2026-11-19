@@ -1,0 +1,141 @@
+mapscripts OneIsland_KindleRoad_MapScripts {}
+
+script OneIsland_KindleRoad_EventScript_Maria {
+    trainerbattle_single(TRAINER_SEVII_MARIA, OneIsland_KindleRoad_Text_MariaIntro, OneIsland_KindleRoad_Text_MariaDefeat)
+    msgbox(OneIsland_KindleRoad_Text_MariaPost, MSGBOX_AUTOCLOSE)
+}
+
+text OneIsland_KindleRoad_Text_MariaIntro {
+    format("The sea off Kindle Road is my training pool!")
+}
+
+text OneIsland_KindleRoad_Text_MariaDefeat {
+    format("I swallowed seawater...")
+}
+
+text OneIsland_KindleRoad_Text_MariaPost {
+    format("The currents are gentle today. Perfect for a long swim.")
+}
+
+script OneIsland_KindleRoad_EventScript_Abigail {
+    msgbox(format("The spa halfway up the road is the best rest stop around."), MSGBOX_NPC)
+}
+
+script OneIsland_KindleRoad_EventScript_Finn {
+    trainerbattle_single(TRAINER_SEVII_FINN, OneIsland_KindleRoad_Text_FinnIntro, OneIsland_KindleRoad_Text_FinnDefeat)
+    msgbox(OneIsland_KindleRoad_Text_FinnPost, MSGBOX_AUTOCLOSE)
+}
+
+text OneIsland_KindleRoad_Text_FinnIntro {
+    format("Surfing past me? Not without a battle!")
+}
+
+text OneIsland_KindleRoad_Text_FinnDefeat {
+    format("Washed right out.")
+}
+
+text OneIsland_KindleRoad_Text_FinnPost {
+    format("The spa halfway up the road is the best rest stop around.")
+}
+
+script OneIsland_KindleRoad_EventScript_Garrett {
+    msgbox(format("The water around the Sevii Islands is so clear!"), MSGBOX_NPC)
+}
+
+script OneIsland_KindleRoad_EventScript_Tommy {
+    trainerbattle_single(TRAINER_SEVII_TOMMY, OneIsland_KindleRoad_Text_TommyIntro, OneIsland_KindleRoad_Text_TommyDefeat)
+    msgbox(OneIsland_KindleRoad_Text_TommyPost, MSGBOX_AUTOCLOSE)
+}
+
+text OneIsland_KindleRoad_Text_TommyIntro {
+    format("Shh! You'll scare the fish! Fine, let's battle.")
+}
+
+text OneIsland_KindleRoad_Text_TommyDefeat {
+    format("My line snapped...")
+}
+
+text OneIsland_KindleRoad_Text_TommyPost {
+    format("A Gyarados nearly pulled me in yesterday!")
+}
+
+script OneIsland_KindleRoad_EventScript_Sharon {
+    msgbox(format("The hot springs here are the best for sore muscles."), MSGBOX_NPC)
+}
+
+script OneIsland_KindleRoad_EventScript_Tanya {
+    msgbox(format("Kindle Road leads all the way up to Mt. Ember."), MSGBOX_NPC)
+}
+
+script OneIsland_KindleRoad_EventScript_Shea {
+    trainerbattle_single(TRAINER_SEVII_SHEA, OneIsland_KindleRoad_Text_SheaIntro, OneIsland_KindleRoad_Text_SheaDefeat)
+    msgbox(OneIsland_KindleRoad_Text_SheaPost, MSGBOX_AUTOCLOSE)
+}
+
+text OneIsland_KindleRoad_Text_SheaIntro {
+    format("Kindle Road is my training ground! Hiyah!")
+}
+
+text OneIsland_KindleRoad_Text_SheaDefeat {
+    format("My stance was off!")
+}
+
+text OneIsland_KindleRoad_Text_SheaPost {
+    format("The hot springs here are the best for sore muscles.")
+}
+
+script OneIsland_KindleRoad_EventScript_Hugh {
+    msgbox(format("A true fighter trains wherever the road takes them."), MSGBOX_NPC)
+}
+
+script OneIsland_KindleRoad_EventScript_Bryce {
+    trainerbattle_single(TRAINER_SEVII_BRYCE, OneIsland_KindleRoad_Text_BryceIntro, OneIsland_KindleRoad_Text_BryceDefeat)
+    msgbox(OneIsland_KindleRoad_Text_BrycePost, MSGBOX_AUTOCLOSE)
+}
+
+text OneIsland_KindleRoad_Text_BryceIntro {
+    format("I'm camping by the hot springs. Want to battle?")
+}
+
+text OneIsland_KindleRoad_Text_BryceDefeat {
+    format("Back to my tent...")
+}
+
+text OneIsland_KindleRoad_Text_BrycePost {
+    format("Kindle Road leads all the way up to Mt. Ember.")
+}
+
+script OneIsland_KindleRoad_EventScript_Claire {
+    trainerbattle_single(TRAINER_SEVII_CLAIRE, OneIsland_KindleRoad_Text_ClaireIntro, OneIsland_KindleRoad_Text_ClaireDefeat)
+    msgbox(OneIsland_KindleRoad_Text_ClairePost, MSGBOX_AUTOCLOSE)
+}
+
+text OneIsland_KindleRoad_Text_ClaireIntro {
+    format("A picnic and a battle! The perfect day out!")
+}
+
+text OneIsland_KindleRoad_Text_ClaireDefeat {
+    format("My picnic is ruined!")
+}
+
+text OneIsland_KindleRoad_Text_ClairePost {
+    format("The spa halfway up the road is the best rest stop around.")
+}
+
+script OneIsland_KindleRoad_EventScript_Mik {
+    msgbox(format("Kindle Road leads all the way up to Mt. Ember."), MSGBOX_NPC)
+}
+
+script OneIsland_KindleRoad_EventScript_Kia {
+    msgbox(format("The hot springs here are the best for sore muscles."), MSGBOX_NPC)
+}
+
+script OneIsland_KindleRoad_EventScript_EmberSpaSign {
+    msgbox(format("EMBER SPA\n"
+        "Rest your weary feet in volcanic hot water."), MSGBOX_SIGN)
+}
+
+script OneIsland_KindleRoad_EventScript_RouteSign {
+    msgbox(format("KINDLE ROAD\n"
+        "Mt. Ember ahead. Mind the hot rocks."), MSGBOX_SIGN)
+}

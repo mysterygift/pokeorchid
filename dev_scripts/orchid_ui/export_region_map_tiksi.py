@@ -83,9 +83,11 @@ def classify():
 
 
 def kanto_block(ids):
-    """[start, end) indices of the Kanto/Sevii block in the sections list (start may be renamed)."""
+    """[start, end) indices of Tiksi's part of the Kanto/Sevii block in the sections list (start may be renamed).
+    It ends at MAPSEC_ONE_ISLAND: the old Sevii block (0x8F-0xBF) belongs to the Wavebreak voyages (Sevii, Holon,
+    Newmoon, Fullmoon; src/voyages.c IsVoyageMapSec), so Tiksi never allocates or clears those slots."""
     start = RT.resolve_alias("MAPSEC_PALLET_TOWN")
-    return ids.index(start), ids.index("MAPSEC_SPECIAL_AREA")
+    return ids.index(start), ids.index("MAPSEC_ONE_ISLAND")
 
 
 def load_tags():

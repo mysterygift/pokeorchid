@@ -1,0 +1,38 @@
+cynthia flags at start 0 0
+  shot 30_to_holon_menu (5, 29, 21, 21)
+  shot 30_to_holon_scene (5, 29, 21, 21)
+-> holon (5, 36, 24, 0)
+  shot 31_holon_jetty (5, 36, 24, 0)
+  shot 32_holon_map_jetty (5, 36, 24, 0)
+  trainer flag TRAINER_HOLON_IDO (0x519) in save: 0
+researcher battle True
+  battlers [894, 1594] foe is Delta: True song 560
+  shot 33_researcher_battle (21, 10, 24, 0)
+  won -> True
+village (0, 32, 24, 1) HolonVillage
+  shot 34_holon_village_map (0, 32, 24, 1)
+lake (23, 0, 24, 14) HolonLake VISITED_LAKE 1
+  shot 35_holon_lake_map (23, 0, 24, 14)
+sphere before Cynthia: loaded True = plain pal: True
+  shot 35b_sphere_before (24, 28, 24, 14)
+wild battle 0 True battlers [894, 1629] foe is Delta: True song 474
+  shot 36_wild_delta (38, 4, 24, 14)
+  won -> True
+  shot 37_lake_cynthia_before (24, 34, 24, 14)
+  encounter song 563 (want 563) 'Oh, hello. You must be the Trainer\neveryone in Tos'
+  shot 38_cynthia_encounter (24, 34, 24, 14)
+cynthia battle True battlers [894, 442] song 564 (want 564)
+  shot 39_cynthia_battle (24, 34, 24, 14)
+  won -> True
+after: FLAG_CYNTHIA_BEATEN_AT_LAKE 1 cafe hide 0 pos (24, 34, 24, 14)
+  shot 40_lake_after_cynthia_gone (24, 34, 24, 14)
+sphere palette loaded: True = glow pal: True = plain pal: False
+  shot 40b_sphere_glowing (24, 27, 24, 14)
+village (23, 71, 24, 1)
+coast (43, 18, 24, 0)
+  shot 41_holon_home_menu (4, 36, 24, 0)
+  shot 41_holon_home_scene (4, 36, 24, 0)
+-> home (5, 29, 21, 21)
+FLAG_VISITED_TIKSI after Holon 0
+cafe (5, 9, 21, 121) cafe hide flag 0
+  shot 42_changu_cafe_cynthia (5, 9, 21, 121)
