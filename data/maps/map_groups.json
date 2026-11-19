@@ -588,7 +588,9 @@
     "ChallengerGate_House1",
     "ChallengerGate_House2",
     "AbandonedHouse_House1",
-    "SouthTosaReserve4"
+    "SouthTosaReserve4",
+    "EastTosaReserve2",
+    "EastTosaReserve3"
   ],
   "gMapGroup_Tiksi": [
     "FurongVillage",
