@@ -20,15 +20,15 @@
       "x": 13,
       "y": 15,
       "elevation": 3,
-      "dest_map": "MAP_ROUTE108",
+      "dest_map": "MAP_ABANDONED_SHIP_DECK",
       "dest_warp_id": "0"
     },
     {
       "x": 14,
       "y": 15,
       "elevation": 3,
-      "dest_map": "MAP_ROUTE108",
-      "dest_warp_id": "0"
+      "dest_map": "MAP_ABANDONED_SHIP_DECK",
+      "dest_warp_id": "1"
     },
     {
       "x": 13,

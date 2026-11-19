@@ -22,11 +22,6 @@
       "map": "MAP_TOSA_PORT",
       "offset": 0,
       "direction": "down"
-    },
-    {
-      "map": "MAP_PETALBURG_CITY",
-      "offset": -22,
-      "direction": "right"
     }
   ],
   "object_events": [

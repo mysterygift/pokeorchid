@@ -231,8 +231,8 @@
           }
         },
         {
-          "map": "MAP_ROUTE102",
-          "base_label": "gRoute102",
+          "map": "MAP_ROUTE302",
+          "base_label": "gRoute302",
           "land_mons": {
             "encounter_rate": 20,
             "mons": [
@@ -385,8 +385,8 @@
           }
         },
         {
-          "map": "MAP_ROUTE103",
-          "base_label": "gRoute103",
+          "map": "MAP_ROUTE303",
+          "base_label": "gRoute303",
           "land_mons": {
             "encounter_rate": 20,
             "mons": [
@@ -539,8 +539,8 @@
           }
         },
         {
-          "map": "MAP_ROUTE104",
-          "base_label": "gRoute104",
+          "map": "MAP_ROUTE304",
+          "base_label": "gRoute304",
           "land_mons": {
             "encounter_rate": 20,
             "mons": [
@@ -693,8 +693,8 @@
           }
         },
         {
-          "map": "MAP_ROUTE105",
-          "base_label": "gRoute105",
+          "map": "MAP_ROUTE305",
+          "base_label": "gRoute305",
           "water_mons": {
             "encounter_rate": 4,
             "mons": [
@@ -782,8 +782,8 @@
           }
         },
         {
-          "map": "MAP_ROUTE110",
-          "base_label": "gRoute110",
+          "map": "MAP_ROUTE310",
+          "base_label": "gRoute310",
           "land_mons": {
             "encounter_rate": 20,
             "mons": [
@@ -936,8 +936,8 @@
           }
         },
         {
-          "map": "MAP_ROUTE111",
-          "base_label": "gRoute111",
+          "map": "MAP_ROUTE311_WEST",
+          "base_label": "gRoute311_West",
           "land_mons": {
             "encounter_rate": 10,
             "mons": [
@@ -1120,8 +1120,8 @@
           }
         },
         {
-          "map": "MAP_ROUTE112",
-          "base_label": "gRoute112",
+          "map": "MAP_ROUTE312",
+          "base_label": "gRoute312",
           "land_mons": {
             "encounter_rate": 20,
             "mons": [
@@ -1189,8 +1189,8 @@
           }
         },
         {
-          "map": "MAP_ROUTE113",
-          "base_label": "gRoute113",
+          "map": "MAP_ROUTE313",
+          "base_label": "gRoute313",
           "land_mons": {
             "encounter_rate": 20,
             "mons": [
@@ -1258,8 +1258,8 @@
           }
         },
         {
-          "map": "MAP_ROUTE114",
-          "base_label": "gRoute114",
+          "map": "MAP_ROUTE314",
+          "base_label": "gRoute314",
           "land_mons": {
             "encounter_rate": 20,
             "mons": [
@@ -1908,8 +1908,8 @@
           }
         },
         {
-          "map": "MAP_PETALBURG_WOODS",
-          "base_label": "gPetalburgWoods",
+          "map": "MAP_MOONGROVE_MARSH",
+          "base_label": "gMoongroveMarsh",
           "land_mons": {
             "encounter_rate": 20,
             "mons": [
@@ -2253,8 +2253,8 @@
           }
         },
         {
-          "map": "MAP_VICTORY_ROAD_1F",
-          "base_label": "gVictoryRoad_1F",
+          "map": "MAP_CHALLENGERS_TRAIL_1F",
+          "base_label": "gChallengersTrail_1F",
           "land_mons": {
             "encounter_rate": 10,
             "mons": [
@@ -2905,8 +2905,8 @@
           }
         },
         {
-          "map": "MAP_ROUTE106",
-          "base_label": "gRoute106",
+          "map": "MAP_ROUTE306",
+          "base_label": "gRoute306",
           "water_mons": {
             "encounter_rate": 4,
             "mons": [
@@ -2994,8 +2994,8 @@
           }
         },
         {
-          "map": "MAP_ROUTE107",
-          "base_label": "gRoute107",
+          "map": "MAP_ROUTE307",
+          "base_label": "gRoute307",
           "water_mons": {
             "encounter_rate": 4,
             "mons": [
@@ -3083,8 +3083,8 @@
           }
         },
         {
-          "map": "MAP_ROUTE108",
-          "base_label": "gRoute108",
+          "map": "MAP_ROUTE308",
+          "base_label": "gRoute308",
           "water_mons": {
             "encounter_rate": 4,
             "mons": [
@@ -3172,8 +3172,8 @@
           }
         },
         {
-          "map": "MAP_ROUTE109",
-          "base_label": "gRoute109",
+          "map": "MAP_ROUTE309",
+          "base_label": "gRoute309",
           "water_mons": {
             "encounter_rate": 4,
             "mons": [
@@ -3410,75 +3410,6 @@
                 "min_level": 40,
                 "max_level": 45,
                 "species": "SPECIES_WAILMER"
-              }
-            ]
-          }
-        },
-        {
-          "map": "MAP_NEW_MAUVILLE_INSIDE",
-          "base_label": "gNewMauville_Inside",
-          "land_mons": {
-            "encounter_rate": 10,
-            "mons": [
-              {
-                "min_level": 24,
-                "max_level": 24,
-                "species": "SPECIES_VOLTORB"
-              },
-              {
-                "min_level": 24,
-                "max_level": 24,
-                "species": "SPECIES_MAGNEMITE"
-              },
-              {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_VOLTORB"
-              },
-              {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_MAGNEMITE"
-              },
-              {
-                "min_level": 23,
-                "max_level": 23,
-                "species": "SPECIES_VOLTORB"
-              },
-              {
-                "min_level": 23,
-                "max_level": 23,
-                "species": "SPECIES_MAGNEMITE"
-              },
-              {
-                "min_level": 26,
-                "max_level": 26,
-                "species": "SPECIES_VOLTORB"
-              },
-              {
-                "min_level": 26,
-                "max_level": 26,
-                "species": "SPECIES_MAGNEMITE"
-              },
-              {
-                "min_level": 22,
-                "max_level": 22,
-                "species": "SPECIES_VOLTORB"
-              },
-              {
-                "min_level": 22,
-                "max_level": 22,
-                "species": "SPECIES_MAGNEMITE"
-              },
-              {
-                "min_level": 26,
-                "max_level": 26,
-                "species": "SPECIES_ELECTRODE"
-              },
-              {
-                "min_level": 26,
-                "max_level": 26,
-                "species": "SPECIES_MAGNETON"
               }
             ]
           }
@@ -6941,75 +6872,6 @@
           }
         },
         {
-          "map": "MAP_NEW_MAUVILLE_ENTRANCE",
-          "base_label": "gNewMauville_Entrance",
-          "land_mons": {
-            "encounter_rate": 10,
-            "mons": [
-              {
-                "min_level": 24,
-                "max_level": 24,
-                "species": "SPECIES_VOLTORB"
-              },
-              {
-                "min_level": 24,
-                "max_level": 24,
-                "species": "SPECIES_MAGNEMITE"
-              },
-              {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_VOLTORB"
-              },
-              {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_MAGNEMITE"
-              },
-              {
-                "min_level": 23,
-                "max_level": 23,
-                "species": "SPECIES_VOLTORB"
-              },
-              {
-                "min_level": 23,
-                "max_level": 23,
-                "species": "SPECIES_MAGNEMITE"
-              },
-              {
-                "min_level": 26,
-                "max_level": 26,
-                "species": "SPECIES_VOLTORB"
-              },
-              {
-                "min_level": 26,
-                "max_level": 26,
-                "species": "SPECIES_MAGNEMITE"
-              },
-              {
-                "min_level": 22,
-                "max_level": 22,
-                "species": "SPECIES_VOLTORB"
-              },
-              {
-                "min_level": 22,
-                "max_level": 22,
-                "species": "SPECIES_MAGNEMITE"
-              },
-              {
-                "min_level": 22,
-                "max_level": 22,
-                "species": "SPECIES_VOLTORB"
-              },
-              {
-                "min_level": 22,
-                "max_level": 22,
-                "species": "SPECIES_MAGNEMITE"
-              }
-            ]
-          }
-        },
-        {
           "map": "MAP_SAFARI_ZONE_SOUTHWEST",
           "base_label": "gSafariZone_Southwest",
           "land_mons": {
@@ -7417,8 +7279,8 @@
           }
         },
         {
-          "map": "MAP_VICTORY_ROAD_B1F",
-          "base_label": "gVictoryRoad_B1F",
+          "map": "MAP_CHALLENGERS_TRAIL_2F",
+          "base_label": "gChallengersTrail_2F",
           "land_mons": {
             "encounter_rate": 10,
             "mons": [
@@ -7516,8 +7378,8 @@
           }
         },
         {
-          "map": "MAP_VICTORY_ROAD_B2F",
-          "base_label": "gVictoryRoad_B2F",
+          "map": "MAP_CHALLENGERS_TRAIL_3F",
+          "base_label": "gChallengersTrail_3F",
           "land_mons": {
             "encounter_rate": 10,
             "mons": [
@@ -8578,8 +8440,8 @@
           }
         },
         {
-          "map": "MAP_LILYCOVE_CITY",
-          "base_label": "gLilycoveCity",
+          "map": "MAP_JURAN_CITY",
+          "base_label": "gJuranCity",
           "water_mons": {
             "encounter_rate": 4,
             "mons": [
@@ -8756,8 +8618,8 @@
           }
         },
         {
-          "map": "MAP_SLATEPORT_CITY",
-          "base_label": "gSlateportCity",
+          "map": "MAP_CHANGU_CITY",
+          "base_label": "gChanguCity",
           "water_mons": {
             "encounter_rate": 4,
             "mons": [
@@ -8845,8 +8707,8 @@
           }
         },
         {
-          "map": "MAP_MOSSDEEP_CITY",
-          "base_label": "gMossdeepCity",
+          "map": "MAP_MOONGROVE_CITY",
+          "base_label": "gMoongroveCity",
           "water_mons": {
             "encounter_rate": 4,
             "mons": [
@@ -9023,8 +8885,8 @@
           }
         },
         {
-          "map": "MAP_EVER_GRANDE_CITY",
-          "base_label": "gEverGrandeCity",
+          "map": "MAP_CHALLENGER_GATE",
+          "base_label": "gChallengerGate",
           "water_mons": {
             "encounter_rate": 4,
             "mons": [
@@ -9112,8 +8974,8 @@
           }
         },
         {
-          "map": "MAP_PETALBURG_CITY",
-          "base_label": "gPetalburgCity",
+          "map": "MAP_TIMAH_CITY",
+          "base_label": "gTimahCity",
           "water_mons": {
             "encounter_rate": 1,
             "mons": [
@@ -9373,8 +9235,8 @@
           }
         },
         {
-          "map": "MAP_SOOTOPOLIS_CITY",
-          "base_label": "gSootopolisCity",
+          "map": "MAP_CORRAL_CITY",
+          "base_label": "gCorralCity",
           "water_mons": {
             "encounter_rate": 1,
             "mons": [

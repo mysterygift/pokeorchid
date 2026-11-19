@@ -12,6 +12,9 @@ enum
     MAP_UNDEFINED = (0xFF | (0xFF << 8)),
 };
 
+// Orchid: ids of Hoenn maps deleted for Tosa (dev_scripts/tosa_maps/delete_hoenn_maps.py)
+#include "constants/deleted_hoenn_maps.h"
+
 #define MAP_GROUP(map) (map >> 8)
 #define MAP_NUM(map) (map & 0xFF)
 
