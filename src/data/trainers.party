@@ -377,86 +377,169 @@ Level: 34
 Swellow
 Level: 35
 
-=== TRAINER_GRUNT_WEATHER_INST_2 ===
-Name: Grunt
-Class: Team Aqua
-Pic: Aqua Grunt M
+=== TRAINER_GUARDIAN_REGOLIS ===
+Name: Tomas
+Class: Ruin Maniac
+Pic: Ruin Maniac
 Gender: Male
-Music: Aqua
+Music: Intense
 Double Battle: No
-AI: Check Bad Move
+AI: Basic Trainer
 
-Poochyena
-Level: 27
-IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+Sudowoodo
+Level: 52
 
-Carvanha
-Level: 27
-IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+Shuckle
+Level: 52
 
-=== TRAINER_GRUNT_WEATHER_INST_3 ===
-Name: Grunt
-Class: Team Aqua
-Pic: Aqua Grunt M
+Cradily
+Level: 53
+
+Armaldo
+Level: 53
+
+Solrock
+Level: 54
+
+Tyranitar @ Hard Stone
+Level: 55
+Ability: Sand Stream
+- Stone Edge
+- Crunch
+- Earthquake
+- Dragon Claw
+
+=== TRAINER_GUARDIAN_FRIGO ===
+Name: Signe
+Class: Expert
+Pic: Expert F
+Gender: Female
+Music: Intense
+Double Battle: No
+AI: Basic Trainer
+
+Sneasel
+Level: 52
+
+Delibird
+Level: 52
+- Present
+- Drill Peck
+- Ice Punch
+- Icy Wind
+
+Piloswine
+Level: 53
+
+Mantine
+Level: 53
+
+Glalie
+Level: 54
+
+Walrein @ Never-Melt Ice
+Level: 55
+Ability: Thick Fat
+- Ice Beam
+- Surf
+- Earthquake
+- Body Slam
+
+=== TRAINER_GUARDIAN_FERRUM ===
+Name: Bram
+Class: Hiker
+Pic: Hiker
 Gender: Male
-Music: Aqua
+Music: Intense
 Double Battle: No
-AI: Check Bad Move
+AI: Basic Trainer
 
-Poochyena
-Level: 26
-IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+Skarmory
+Level: 52
 
-Zubat
-Level: 26
-IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+Forretress
+Level: 52
 
-Carvanha
-Level: 26
-IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+Mawile
+Level: 53
 
-=== TRAINER_GRUNT_MUSEUM_1 ===
-Name: Grunt
-Class: Team Aqua
-Pic: Aqua Grunt M
+Steelix
+Level: 53
+
+Aggron
+Level: 54
+
+Metagross @ Metal Coat
+Level: 55
+Ability: Clear Body
+- Meteor Mash
+- Zen Headbutt
+- Earthquake
+- Bullet Punch
+
+=== TRAINER_GUARDIAN_GAVANI ===
+Name: Ines
+Class: Hex Maniac
+Pic: Hex Maniac
+Gender: Female
+Music: Intense
+Double Battle: No
+AI: Basic Trainer
+
+Plusle
+Level: 52
+
+Minun
+Level: 52
+
+Nosepass
+Level: 53
+
+Lanturn
+Level: 53
+
+Manectric
+Level: 54
+
+Ampharos @ Magnet
+Level: 55
+Ability: Static
+- Thunderbolt
+- Power Gem
+- Dragon Pulse
+- Thunder Wave
+
+=== TRAINER_GUARDIAN_DRAKE ===
+Name: Aldric
+Class: Dragon Tamer
+Pic: Dragon Tamer
 Gender: Male
-Music: Aqua
+Music: Intense
 Double Battle: No
-AI: Check Bad Move
+AI: Basic Trainer
 
-Carvanha
-Level: 15
-IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+Altaria
+Level: 52
 
-=== TRAINER_GRUNT_MUSEUM_2 ===
-Name: Grunt
-Class: Team Aqua
-Pic: Aqua Grunt M
-Gender: Male
-Music: Aqua
-Double Battle: No
-AI: Check Bad Move
+Tropius
+Level: 52
 
-Zubat
-Level: 14
-IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+Camerupt
+Level: 53
 
-Carvanha
-Level: 14
-IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+Kingdra
+Level: 53
 
-=== TRAINER_GRUNT_SPACE_CENTER_1 ===
-Name: Grunt
-Class: Team Magma
-Pic: Magma Grunt M
-Gender: Male
-Music: Magma
-Double Battle: No
-AI: Check Bad Move
+Flygon
+Level: 54
 
-Numel
-Level: 32
-IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+Salamence @ Dragon Fang
+Level: 55
+Ability: Intimidate
+- Dragon Claw
+- Dual Wingbeat
+- Crunch
+- Flamethrower
 
 === TRAINER_GRUNT_MT_PYRE_1 ===
 Name: Grunt
@@ -4898,13 +4981,10 @@ AI: Basic Trainer
 Manectric
 Level: 46
 
-Electabuzz
+Electivire
 Level: 46
 
 Raichu
-Level: 47
-
-Kilowattrel
 Level: 47
 
 SPECIES_ROTOM_FAN
@@ -4913,6 +4993,13 @@ Level: 47
 - Thunderbolt
 - Confuse Ray
 - Substitute
+
+SPECIES_ROTOM_FROST
+Level: 47
+- Blizzard
+- Thunderbolt
+- Shadow Ball
+- Thunder Wave
 
 Magnezone @ Magnet
 Level: 48
@@ -5031,8 +5118,13 @@ Music: Male
 Double Battle: No
 AI: Basic Trainer
 
-Gligar
+Gliscor
 Level: 33
+Ability: Hyper Cutter
+- Aerial Ace
+- Dig
+- Knock Off
+- U-turn
 
 Stunfisk
 Level: 33
@@ -5066,20 +5158,16 @@ AI: Basic Trainer
 Sneasel
 Level: 38
 
-Vanillish
+Weavile
 Level: 38
 
-Delibird
+Vanillish
 Level: 38
-- Present
-- Drill Peck
-- Ice Punch
-- Icy Wind
 
 Pinguin
 Level: 39
 
-Sealeo
+Walrein
 Level: 39
 
 Avalugg @ Never-Melt Ice
