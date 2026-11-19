@@ -338,7 +338,7 @@
       "x": 21,
       "y": 23,
       "respawn_map": "MAP_MOONGROVE_CITY_POKEMON_CENTER_1F",
-      "respawn_npc": "0"
+      "respawn_npc": "LOCALID_MOONGROVE_CITY_NURSE"
     },
     {
       "id": "HEAL_LOCATION_TIMAH_CITY",

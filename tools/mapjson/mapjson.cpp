@@ -707,10 +707,11 @@ void clean_heal_locations(vector<string> &valid_map_ids)
     string line;
     while (std::getline(infile, line))
     {
-        if (std::regex_search(line, map_match, map_regex) && !deleted_flag) {
+        // Orchid fix: decide per entry. Before, an excluded respawn map whose respawn_npc was already "0"
+        // left the flag set, so the NEXT entry's LOCALID was zeroed (one more per build).
+        if (std::regex_search(line, map_match, map_regex)) {
             auto it = find(valid_map_ids.begin(), valid_map_ids.end(), map_match[1]);
-            if (it == valid_map_ids.end())
-                deleted_flag = true;
+            deleted_flag = (it == valid_map_ids.end());
         }
         if (deleted_flag && std::regex_search(line, npc_regex)) {
             deleted_flag = false;
