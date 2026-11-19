@@ -204,3 +204,5 @@
 .include "sound/voicegroups/rg_sevii_45.inc"
 .include "sound/voicegroups/rg_sevii_67.inc"
 .include "sound/voicegroups/drumsets/rg_credits.inc"
+.include "sound/voicegroups/mus_sinjoh_ruins_test.inc"
+.include "sound/voicegroups/mus_tanoby_delta_test.inc"
