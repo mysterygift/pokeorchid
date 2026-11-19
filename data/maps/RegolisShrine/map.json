@@ -33,8 +33,8 @@
       "x": 8,
       "y": 11,
       "elevation": 3,
-      "dest_map": "MAP_DRAKE_BASE_CAMP",
-      "dest_warp_id": "1"
+      "dest_map": "MAP_ROUTE403",
+      "dest_warp_id": "0"
     }
   ],
   "coord_events": [],

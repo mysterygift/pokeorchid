@@ -30,8 +30,4 @@ script DrakeBaseCamp_EventScript_TiksiNpc2 {
 script DrakeBaseCamp_EventScript_TiksiNpc3 {
     msgbox(format("Some strangers in blue came through last week, heading up the mountain. Didn't say hello."), MSGBOX_NPC)
 }
-
-script DrakeBaseCamp_EventScript_TiksiGuardianRegolisShrine {
-    msgbox(format("This path leads to Regolis Shrine, in the heart of the desert. The rock giant sleeps there once more.\pI am its guardian. Go if you must."), MSGBOX_NPC)
-}
 // --- end tiksi_people.py ---

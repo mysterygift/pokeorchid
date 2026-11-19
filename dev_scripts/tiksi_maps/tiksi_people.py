@@ -38,17 +38,43 @@ CLOSED = {"UbeCity": [(20, 7)], "TanglynTown": [(5, 5), (6, 5)]}     # Silph off
 MART_DOOR = 0x041
 # mouths moved elsewhere: where they were, and the approved map's blocks there (aefd62456c)
 GONE = {("DrakeBaseCamp", "MtDrakeSummit"): ((9, 7), [[12913, 12913, 12913], [12913, 12913, 12913], [1657, 1657, 1657]]),
+        ("DrakeBaseCamp", "RegolisShrine"): ((4, 7), [[1652, 1652, 1658], [1756, 1757, 1756], [1492, 1493, 1492]]),
         ("DrakeBaseCamp", "FerrumShrine"): ((23, 7), [[1815, 1494, 1493], [1817, 1500, 1501], [1493, 1492, 1493]])}
 # cave folder, top-left of the stamp, kind, guardian graphics, guardian line
 MOUTHS = {
     "FurongVillage": [("GavaniPath", (6, 13), "general", G("EXPERT_M"),
                        "I am the guardian of Gavani Path. The thunder giant has come home to its cave.\\pTiksi's elders swore to keep it from the people. Tread carefully in there.")],
-    "DrakeBaseCamp": [("RegolisShrine", (4, 7), "jagged", G("EXPERT_F"),
-                       "This path leads to Regolis Shrine, in the heart of the desert. The rock giant sleeps there once more.\\pI am its guardian. Go if you must."),
-                      ],   # Mt. Drake Summit and Ferrum Shrine are entered from inside Mt. Drake (mt_drake.py)
+    "DrakeBaseCamp": [],   # Regolis Shrine is entered from Route 403, Mt. Drake from its own maps (mt_drake.py)
     "TanglynTown": [("FrigoCave", (30, 2), "general", G("OLD_WOMAN"),
                      "Frigo Cave is colder than it has any right to be. The ice giant is back inside.\\pI have guarded this shore all my life. Don't make me regret letting you pass.")],
 }
+
+
+def drake_base_camp_top(vals, w):
+    """The user asked for the volcanic slope and its cave to go (Mt. Drake has its own maps now): rows
+    0-9 become grass and trees matching the lower camp, with a dirt path north to Route 404 (its south
+    opening lands on our x 13-16)."""
+    import dress
+    out = list(vals)
+    for y in range(10):
+        for x in range(w):
+            out[y * w + x] = PH.GRASS
+    tree_blocks = [(bx, by) for by in range(0, 10, 2) for bx in (0, 2, 26, 28)]
+    tree_blocks += [(bx, 0) for bx in range(4, 12, 2)] + [(bx, 0) for bx in range(18, 26, 2)]
+    tree_blocks += [(6, 4), (8, 4), (20, 2), (22, 6), (4, 8)]
+    for bx, by in tree_blocks:
+        for j in (0, 1):
+            for i in (0, 1):
+                out[(by + j) * w + bx + i] = PH.TREE[(i, j)]
+    for bx in (0, 2, 26, 28):                       # trees stacked down the side columns overlap
+        for by in range(0, 10, 2):
+            for i in (0, 1):
+                out[(by + 1) * w + bx + i] = PH.TREE_STACK[i]
+    for x, y in [(x, y) for y in (5, 6) for x in range(18, 23)] + [(x, y) for y in (3, 4) for x in range(10, 13)]:
+        out[y * w + x] = PH.TALL
+    for y in range(0, 11):
+        out[y * w + 14] = out[y * w + 15] = PH.PATH
+    return dress.apply(out, w, len(out) // w, "dirt", [], "DrakeBaseCamp")
 
 
 def read_layout(m, layouts):
@@ -169,6 +195,8 @@ def main():
             cj["warp_events"][0].update(dest_map=m["id"], dest_warp_id=str(idx))
             PH.write_json(cj_path, cj)
             guardians.append((gfx, (dx + 2, dy + 1), line, cave))
+        if town == "DrakeBaseCamp":
+            vals = drake_base_camp_top(vals, w)
         PH.write_bin(P(lay["blockdata_filepath"]), vals)
         # --- doors without warps: houses and Marts
         centre = next(wv for wv in m["warp_events"] if wv["dest_map"].endswith("_POKEMON_CENTER_1F"))
