@@ -47,8 +47,10 @@ STATIONS = [
      "Sun, sea and Route 104.", "Route 104", True),
     ("KANTO GOLD", 98.1, "Kanto", ((152, 40, 72), (216, 88, 112), (240, 152, 168)),
      "The classics, all day.", "Route 1", True),
+    ("SINNOH SOUND", 101.6, "Sinnoh", ((136, 56, 104), (200, 104, 160), (240, 168, 208)),
+     "Straight from Mt. Coronet.", "Route 209", True),
     ("RADIO UNOVA", 105.2, "Unova", ((40, 40, 64), (96, 96, 120), (160, 160, 184)),
-     "Big city sounds.", "Route 10", False),
+     "Big city sounds.", "Route 10", True),
     ("ABSOLUTE GALAR", 107.7, "Galar", ((136, 96, 24), (200, 152, 48), (240, 208, 120)),
      "Galar's biggest anthems.", "Motostoke", False),
 ]

@@ -2,6 +2,7 @@
 #define GUARD_RADIO_H
 
 // Rotom Phone radio (DESIGN.md "RADIO app"): VAR_RADIO_STATION = station + 1 (0 = off).
+// Stations are listed in frequency order (tuning steps through them in this order).
 // Music priority: battles / fanfares / cutscenes > script music > radio > map music.
 
 enum
@@ -9,12 +10,13 @@ enum
     RADIO_TOSA_FM,
     RADIO_HOENN_FM,
     RADIO_KANTO_GOLD,
+    RADIO_SINNOH,
     RADIO_UNOVA,
     RADIO_GALAR,
     RADIO_STATION_COUNT
 };
 
-enum { RADIO_RAMP_PURPLE, RADIO_RAMP_BLUE, RADIO_RAMP_RED, RADIO_RAMP_GREY, RADIO_RAMP_GOLD };
+enum { RADIO_RAMP_PURPLE, RADIO_RAMP_BLUE, RADIO_RAMP_RED, RADIO_RAMP_GREY, RADIO_RAMP_GOLD, RADIO_RAMP_PINK };
 #define RADIO_UNLOCK_NEVER 0xFFFF
 
 struct RadioSong

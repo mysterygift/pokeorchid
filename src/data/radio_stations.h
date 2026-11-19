@@ -48,6 +48,8 @@ static const struct RadioSong sSongs_Kanto[] =
     RADIO_SONG(MUS_RG_SEVII_ROUTE, "Sevii Routes"),
 };
 
+#include "radio_songs.h"     // Sinnoh + Unova (dev_scripts/radio/songs.py, register_songs.py)
+
 // accent ramps (dark, face, light) for the region plate, EQ and toast (mock_radio.py STATIONS)
 static const u16 sStationRamps[][3] =
 {
@@ -56,6 +58,7 @@ static const u16 sStationRamps[][3] =
     [RADIO_RAMP_RED]    = { RGB(19, 5, 9), RGB(27, 11, 14), RGB(30, 19, 21) },
     [RADIO_RAMP_GREY]   = { RGB(5, 5, 8), RGB(12, 12, 15), RGB(20, 20, 23) },
     [RADIO_RAMP_GOLD]   = { RGB(17, 12, 3), RGB(25, 19, 6), RGB(30, 26, 15) },
+    [RADIO_RAMP_PINK]   = { RGB(17, 7, 13), RGB(25, 13, 20), RGB(30, 21, 26) },
 };
 
 static const struct RadioStation sRadioStations[RADIO_STATION_COUNT] =
@@ -75,13 +78,18 @@ static const struct RadioStation sRadioStations[RADIO_STATION_COUNT] =
         .tagline = COMPOUND_STRING("The classics, all day."), .ramp = RADIO_RAMP_RED,
         .songs = sSongs_Kanto, .count = ARRAY_COUNT(sSongs_Kanto), .unlockFlag = 0,
     },
-    // TODO: Unova and Galar songs need MIDI imports (on dev) and quest unlock flags. Until then they
-    // have no songs and stay locked, so tuning skips them (their markers still show on the scale).
+    [RADIO_SINNOH] = {
+        .name = COMPOUND_STRING("SINNOH SOUND"), .freqTenths = 1016, .region = COMPOUND_STRING("Sinnoh"),
+        .tagline = COMPOUND_STRING("Straight from Mt. Coronet."), .ramp = RADIO_RAMP_PINK,
+        .songs = sSongs_Sinnoh, .count = ARRAY_COUNT(sSongs_Sinnoh), .unlockFlag = 0,
+    },
+    // TODO: quest unlock flags for Sinnoh / Unova / Galar (open from the start for now).
     [RADIO_UNOVA] = {
         .name = COMPOUND_STRING("RADIO UNOVA"), .freqTenths = 1052, .region = COMPOUND_STRING("Unova"),
         .tagline = COMPOUND_STRING("Big city sounds."), .ramp = RADIO_RAMP_GREY,
-        .songs = NULL, .count = 0, .unlockFlag = RADIO_UNLOCK_NEVER,
+        .songs = sSongs_Unova, .count = ARRAY_COUNT(sSongs_Unova), .unlockFlag = 0,
     },
+    // Galar has no songs yet (needs MIDI imports), so it stays locked and tuning skips it.
     [RADIO_GALAR] = {
         .name = COMPOUND_STRING("ABSOLUTE GALAR"), .freqTenths = 1077, .region = COMPOUND_STRING("Galar"),
         .tagline = COMPOUND_STRING("Galar's biggest anthems."), .ramp = RADIO_RAMP_GOLD,

@@ -577,6 +577,27 @@ gSongTable::
 	song mus_orchid_sevii_encounter_girl, MUSIC_PLAYER_BGM, 0
 	song mus_orchid_sevii_encounter_rocket, MUSIC_PLAYER_BGM, 0
 	song mus_orchid_encounter_holon, MUSIC_PLAYER_BGM, 0
+	song mus_dp_route202, MUSIC_PLAYER_BGM, 0
+	song mus_dp_route205, MUSIC_PLAYER_BGM, 0
+	song mus_dp_route209, MUSIC_PLAYER_BGM, 0
+	song mus_dp_route216, MUSIC_PLAYER_BGM, 0
+	song mus_dp_route228, MUSIC_PLAYER_BGM, 0
+	song mus_dp_eterna_night, MUSIC_PLAYER_BGM, 0
+	song mus_dp_hearthome, MUSIC_PLAYER_BGM, 0
+	song mus_dp_gts, MUSIC_PLAYER_BGM, 0
+	song mus_dp_lake_cavern, MUSIC_PLAYER_BGM, 0
+	song mus_dp_underground, MUSIC_PLAYER_BGM, 0
+	song mus_bw_nuvema, MUSIC_PLAYER_BGM, 0
+	song mus_bw_route2, MUSIC_PLAYER_BGM, 0
+	song mus_bw_castelia, MUSIC_PLAYER_BGM, 0
+	song mus_bw_driftveil, MUSIC_PLAYER_BGM, 0
+	song mus_bw_route10, MUSIC_PLAYER_BGM, 0
+	song mus_bw_victory_road, MUSIC_PLAYER_BGM, 0
+	song mus_bw_n_castle, MUSIC_PLAYER_BGM, 0
+	song mus_bw_alder, MUSIC_PLAYER_BGM, 0
+	song mus_bw_cheren, MUSIC_PLAYER_BGM, 0
+	song mus_bw_white_treehollow, MUSIC_PLAYER_BGM, 0
+	song mus_bw_entralink, MUSIC_PLAYER_BGM, 0
 	song ph_trap_blend, MUSIC_PLAYER_SE2, 2
 	song ph_trap_held, MUSIC_PLAYER_SE2, 2
 	song ph_trap_solo, MUSIC_PLAYER_SE2, 2
