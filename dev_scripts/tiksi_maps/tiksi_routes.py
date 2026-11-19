@@ -62,7 +62,7 @@ ROUTES = OrderedDict([
                   "Feel that chill? Tiksi is warm everywhere else. The cold comes from the cave at the end of this route…", {"cold": True})),
     ("Route410", ("MAPSEC_ROUTE_410", "MUS_ROUTE120", "OLD_MAN",
                   "Hm? You found this path? Only us locals know about it. It leads down to the delta.", {"hidden": True})),
-    ("TanobyDelta", ("MAPSEC_TANOBY_DELTA", "MUS_SINJOH_RUINS", "SCIENTIST_1",
+    ("TanobyDelta", ("MAPSEC_TANOBY_DELTA", "MUS_SINJOH_RUINS_TEST", "SCIENTIST_1",
                      "Nobody knows who built the ruin out there. Some say people came from across the sea, long before Tiksi had towns.", {"delta": True})),
 ])
 

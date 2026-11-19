@@ -140,7 +140,6 @@
 
 @ Custom Voice Groups
 .include "sound/voicegroups/tosa_port.inc"
-.include "sound/voicegroups/sinjoh_ruins.inc"
 
 @ FRLG
 .include "sound/voicegroups/rg_follow_me.inc"
