@@ -3,7 +3,6 @@
   "name": "SouthTosaReserve4",
   "layout": "LAYOUT_SOUTH_TOSA_RESERVE4",
   "music": "MUS_SOUTHTOSARESERVE",
-  "region": "REGION_HOENN",
   "region_map_section": "MAPSEC_SOUTH_TOSA_RESERVE_3",
   "requires_flash": false,
   "weather": "WEATHER_SUNNY",
@@ -20,8 +19,8 @@
       "direction": "up"
     },
     {
-      "map": "MAP_MOONGROVE_MARSH",
-      "offset": 8,
+      "map": "MAP_MOONGROVE_CITY",
+      "offset": 6,
       "direction": "down"
     }
   ],
@@ -51,5 +50,6 @@
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
       "script": "SouthTosaReserve4_EventScript_Sign"
     }
-  ]
+  ],
+  "region": "REGION_HOENN"
 }

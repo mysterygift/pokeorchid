@@ -357,8 +357,8 @@
     {
       "id": "HEAL_LOCATION_CHALLENGER_GATE",
       "map": "MAP_CHALLENGER_GATE",
-      "x": 8,
-      "y": 19,
+      "x": 16,
+      "y": 31,
       "respawn_map": "MAP_CHALLENGER_GATE_POKEMON_CENTER_1F",
       "respawn_npc": "LOCALID_CHALLENGER_GATE_NURSE"
     },

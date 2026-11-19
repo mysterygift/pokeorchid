@@ -3,7 +3,6 @@
   "name": "MoongroveMarsh",
   "layout": "LAYOUT_MOONGROVE_MARSH",
   "music": "MUS_PETALBURG_WOODS",
-  "region": "REGION_HOENN",
   "region_map_section": "MAPSEC_MOONGROVE_MARSH",
   "requires_flash": false,
   "weather": "WEATHER_SUNNY",
@@ -15,9 +14,9 @@
   "battle_scene": "MAP_BATTLE_SCENE_NORMAL",
   "connections": [
     {
-      "map": "MAP_SOUTH_TOSA_RESERVE4",
-      "offset": -8,
-      "direction": "up"
+      "map": "MAP_MOONGROVE_CITY",
+      "offset": 0,
+      "direction": "left"
     }
   ],
   "object_events": [
@@ -59,5 +58,6 @@
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
       "script": "MoongroveMarsh_EventScript_PlaceholderSign"
     }
-  ]
+  ],
+  "region": "REGION_HOENN"
 }

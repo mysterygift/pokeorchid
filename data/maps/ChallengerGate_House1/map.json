@@ -3,7 +3,6 @@
   "name": "ChallengerGate_House1",
   "layout": "LAYOUT_PACIFIDLOG_TOWN_HOUSE2",
   "music": "MUS_EVER_GRANDE",
-  "region": "REGION_HOENN",
   "region_map_section": "MAPSEC_CHALLENGER_GATE",
   "requires_flash": false,
   "weather": "WEATHER_NONE",
@@ -46,5 +45,6 @@
     }
   ],
   "coord_events": [],
-  "bg_events": []
+  "bg_events": [],
+  "region": "REGION_HOENN"
 }

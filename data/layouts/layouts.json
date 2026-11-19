@@ -8467,7 +8467,7 @@
     {
       "id": "LAYOUT_CHALLENGER_GATE",
       "name": "ChallengerGate_Layout",
-      "width": 34,
+      "width": 70,
       "height": 34,
       "primary_tileset": "gTileset_General",
       "secondary_tileset": "gTileset_TosaPort",
