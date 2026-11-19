@@ -74,6 +74,7 @@ static const u16 sUi_Pal[] = INCGFX_U16("graphics/rotom_phone/ui.pal", ".gbapal"
 #define NEWS_GAP        14      // px between headlines; the gold dot sits in the middle
 #define TICKER_Y        31      // top of the ticker strip on screen
 #define TICKER_BOTTOM   45
+#define TICKER_FRAMES_PER_PX 2  // ticker speed: move 1px every N frames (1 = 60 px/s, 2 = 30 px/s)
 #define EYE_BLINK       18      // frames on / off while quests are unread
 
 enum
@@ -167,6 +168,7 @@ struct RotomPhone
     u16 headEndCol[2];      // last virtual column (incl. the gold dot) of each scratch's headline
     u8 headScratch;         // which scratch holds the newest headline
     u32 nextHeadX;          // virtual px where the next headline will start
+    u8 tickerWait;          // frames since the last 1px step (see TICKER_FRAMES_PER_PX)
     void (*exitCallback)(void);
 };
 
@@ -766,5 +768,9 @@ static void Ticker_Update(void)
     if (dirty)
         CopyWindowToVram(WIN_TICKER, COPYWIN_GFX);
     ChangeBgX(1, ((sPhone->scroll - PHONE_TICK_R) & 255) << 8, BG_COORD_SET);
-    sPhone->scroll++;
+    if (++sPhone->tickerWait >= TICKER_FRAMES_PER_PX)
+    {
+        sPhone->tickerWait = 0;
+        sPhone->scroll++;
+    }
 }
