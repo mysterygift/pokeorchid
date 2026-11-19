@@ -62,7 +62,7 @@ ROUTES = OrderedDict([
                   "Feel that chill? Tiksi is warm everywhere else. The cold comes from the cave at the end of this route…", {"cold": True})),
     ("Route410", ("MAPSEC_ROUTE_410", "MUS_ROUTE120", "OLD_MAN",
                   "Hm? You found this path? Only us locals know about it. It leads down to the delta.", {"hidden": True})),
-    ("TanobyDelta", ("MAPSEC_TANOBY_DELTA", "MUS_ROUTE119", "SCIENTIST_1",
+    ("TanobyDelta", ("MAPSEC_TANOBY_DELTA", "MUS_SINJOH_RUINS_TEST", "SCIENTIST_1",
                      "Nobody knows who built the ruin out there. Some say people came from across the sea, long before Tiksi had towns.", {"delta": True})),
 ])
 
@@ -115,6 +115,7 @@ RUIN_TEXT = ("An ancient stone chamber. Strange carvings cover the sealed doorwa
 
 
 FACADE = [[0x0400 | (0x200 + r * 3 + c) for c in range(3)] for r in range(4)]   # gTileset_TanobyDelta
+PILLAR = [0x3000 | 0x20C, 0x3000 | 0x20D, 0x0400 | 0x20E]          # top, middle (walk behind), solid base
 
 
 def build_delta(name, grid, sec):
@@ -138,17 +139,33 @@ def build_delta(name, grid, sec):
             for x in range(cx - rx, cx + rx + 1):
                 d = ((x - cx) / (rx + 0.5)) ** 2 + ((y - cy) / (ry + 0.5)) ** 2
                 if d <= 1:
-                    cv.set(x, y, "G" if big and d < 0.35 else "S")
+                    cv.set(x, y, "S")
         # rock mound with the chamber facade set into it; the facade's bottom row stands on the sand
         fy = cy - 1                                  # facade bottom row
         side = 2 if big else 1
         cv.rect(cx - 1 - side, fy - 4 - (1 if big else 0), cx + 1 + side, fy - 1, "R")
         cv.stamp(cx - 1, fy - 3, FACADE)
         signs.append(((cx, fy), RUIN_TEXT))
+        return fy
 
-    islet(mx + 1, 23, 7, 5, True)                    # the central ruin
+    def pillar(x, base_y):
+        """A 1x3 Unown pillar standing on sand, base at (x, base_y); skipped if it wouldn't stand on sand."""
+        cells = [(x, base_y - 2 + k) for k in range(3)]
+        if all(cv.ok(a, b) and cv.t[b][a] == "S" and (a, b) not in cv.raw for a, b in cells) and \
+                all(not (abs(a - sx) <= 1 and abs(b - sy) <= 1) for (sx, sy), _ in signs for a, b in cells):
+            for (a, b), v in zip(cells, PILLAR):
+                cv.raw[(a, b)] = v
+
+    cx0 = mx + 1
+    fy = islet(cx0, 23, 7, 5, True)                  # the central ruin, with a gateway of pillars
+    for dx in (-4, 4):
+        pillar(cx0 + dx, fy + 1)
+        pillar(cx0 + dx // 2, fy + 4)
+    for dx in (-3, 4):                               # where Route 410's path reaches the beach
+        pillar(mx + dx, 10)
     for cx, cy in ((9, 18), (35, 17), (10, 30), (34, 30)):
-        islet(cx, cy, 3, 3, False)
+        f = islet(cx, cy, 3, 3, False)
+        pillar(cx + (2 if cx < mx else -2), f + 1)
     blocks = PH.render(cv, "route")
     return dict(blocks=blocks, w=w, h=h, s=w, hub=(mx, 5), sign=None, signs=signs, secondary="gTileset_TanobyDelta",
                 opens=[("N", (0, 0), (mx, 0), "MAPSEC_ROUTE_410")], cells={(0, 0)}, box=(0, 0, 1, 1))
