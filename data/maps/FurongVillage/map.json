@@ -3,7 +3,6 @@
   "name": "FurongVillage",
   "layout": "LAYOUT_FURONG_VILLAGE",
   "music": "MUS_DEWFORD",
-  "region": "REGION_HOENN",
   "region_map_section": "MAPSEC_FURONG_VILLAGE",
   "requires_flash": false,
   "weather": "WEATHER_SUNNY",
@@ -137,5 +136,6 @@
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
       "script": "FurongVillage_EventScript_Sign0"
     }
-  ]
+  ],
+  "region": "REGION_HOENN"
 }

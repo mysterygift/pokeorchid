@@ -3,7 +3,6 @@
   "name": "NorthTosaReserve",
   "layout": "LAYOUT_NORTH_TOSA_RESERVE",
   "music": "MUS_SOUTHTOSARESERVE",
-  "region": "REGION_HOENN",
   "region_map_section": "MAPSEC_NORTH_TOSA_RESERVE",
   "requires_flash": false,
   "weather": "WEATHER_SUNNY",
@@ -13,7 +12,13 @@
   "allow_running": true,
   "show_map_name": true,
   "battle_scene": "MAP_BATTLE_SCENE_NORMAL",
-  "connections": null,
+  "connections": [
+    {
+      "map": "MAP_SOUTH_TOSA_RESERVE3",
+      "offset": -32,
+      "direction": "down"
+    }
+  ],
   "object_events": [
     {
       "graphics_id": "OBJ_EVENT_GFX_POKEMON_RANGER_M",
@@ -53,5 +58,6 @@
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
       "script": "NorthTosaReserve_EventScript_PlaceholderSign"
     }
-  ]
+  ],
+  "region": "REGION_HOENN"
 }
