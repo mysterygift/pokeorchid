@@ -44,7 +44,7 @@ const u16 gTilesetPalettes_SecretBaseRedCave[][16] =
 
 #if !IS_FRLG
 
-const u32 gTilesetTiles_Petalburg[] = INCGFX_U32("data/tilesets/secondary/petalburg/tiles.png", ".4bpp.fastSmol", "-num_tiles 159 -Wnum_tiles");
+const u32 gTilesetTiles_Petalburg[] = INCGFX_U32("data/tilesets/secondary/petalburg/tiles.png", ".4bpp.fastSmol", "-num_tiles 379 -Wnum_tiles");
 
 const u16 gTilesetPalettes_Petalburg[][16] =
 {
