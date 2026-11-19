@@ -1140,9 +1140,9 @@ void LoadOrchidYesNoFrame(u8 bg, u16 frameTile)
 void LoadOrchidYesNoColors(u8 palSlot, bool32 wholePalette)
 {
     if (wholePalette)
-        LoadPalette(gOrchidYesNoFrame_Pal, BG_PLTT_ID(palSlot), PLTT_SIZE_4BPP);
+        LoadPalette(GetFrameTintedWindowPalette(gOrchidYesNoFrame_Pal), BG_PLTT_ID(palSlot), PLTT_SIZE_4BPP);
     else
-        LoadPalette(&gOrchidYesNoFrame_Pal[ORCHID_PILL_SHADE], BG_PLTT_ID(palSlot) + ORCHID_PILL_SHADE, PLTT_SIZEOF(6));
+        LoadPalette(&GetFrameTintedWindowPalette(gOrchidYesNoFrame_Pal)[ORCHID_PILL_SHADE], BG_PLTT_ID(palSlot) + ORCHID_PILL_SHADE, PLTT_SIZEOF(6));
 }
 
 static const u8 sOrchidYesNoTextColors[3] = {TEXT_COLOR_TRANSPARENT, TEXT_COLOR_DARK_GRAY, TEXT_COLOR_LIGHT_GRAY};
@@ -1259,7 +1259,7 @@ void LoadOrchidFieldWindowPalette(void)
         extras[2] = ORCHID_NAME_FEMALE_FG;
         extras[3] = ORCHID_NAME_FEMALE_SHADOW;
     }
-    LoadPalette(gOrchidYesNoFrame_Pal, BG_PLTT_ID(ORCHID_YESNO_FIELD_PAL), PLTT_SIZE_4BPP);
+    LoadPalette(GetFrameTintedWindowPalette(gOrchidYesNoFrame_Pal), BG_PLTT_ID(ORCHID_YESNO_FIELD_PAL), PLTT_SIZE_4BPP);
     LoadPalette(extras, BG_PLTT_ID(ORCHID_YESNO_FIELD_PAL) + 4, sizeof(extras));
 }
 

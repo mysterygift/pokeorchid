@@ -3,6 +3,15 @@
 
 #define WINDOW_FRAMES_COUNT 8 // Orchid kit frames (vanilla had 20; older saves map safely, see text_window.c)
 
+// Accent ramp slots: in a kit FRAME palette (kit.py roles) and in the Orchid window palette (message box,
+// Orchid YES/NO frame band). See GetFrameTintedWindowPalette.
+#define ORCHID_FRAME_PAL_ACCENT_DARK    7
+#define ORCHID_FRAME_PAL_ACCENT         8
+#define ORCHID_FRAME_PAL_ACCENT_LIGHT   9
+#define ORCHID_WINDOW_PAL_ACCENT_DARK  13
+#define ORCHID_WINDOW_PAL_ACCENT       14
+#define ORCHID_WINDOW_PAL_ACCENT_LIGHT 15
+
 struct TilesPal
 {
     const u8 *tiles;
@@ -25,6 +34,7 @@ void DrawTextBorderInner(u8 windowId, u16 tileNum, u8 palNum);
 void rbox_fill_rectangle(u8 windowId);
 const u16 *GetTextWindowPalette(u8 id);
 const u16 *GetOverworldTextboxPalettePtr(void);
+const u16 *GetFrameTintedWindowPalette(const u16 *windowPal);
 void LoadSignPostWindowFrameGfx(void);
 void LoadDexNavWindowGfx(u8 windowId, u16 destOffset, u8 palOffset);
 

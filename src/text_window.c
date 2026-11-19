@@ -157,9 +157,27 @@ const u16 *GetTextWindowPalette(u8 id)
     return (const u16 *)(sTextWindowPalettes) + id;
 }
 
+// Orchid: windows drawn with their own art (the field message box, the Orchid YES/NO frame that the Mart
+// and PC reuse) keep their frame band in the Orchid window palette's slots 13-15. Those take the selected
+// FRAME type's accent ramp (the kit frames' role slots 7-9), so the boxes follow the FRAME option like the
+// standard frames do. TYPE 1 Orchid's ramp is the original purple, so the default look is unchanged.
+// Returns a shared buffer: load it straight away.
+static EWRAM_DATA u16 sFrameTintedWindowPal[16] = {0};
+
+const u16 *GetFrameTintedWindowPalette(const u16 *windowPal)
+{
+    const u16 *framePal = GetWindowFrameTilesPal(gSaveBlock2Ptr->optionsWindowFrameType)->pal;
+
+    CpuCopy16(windowPal, sFrameTintedWindowPal, PLTT_SIZE_4BPP);
+    sFrameTintedWindowPal[ORCHID_WINDOW_PAL_ACCENT_DARK] = framePal[ORCHID_FRAME_PAL_ACCENT_DARK];
+    sFrameTintedWindowPal[ORCHID_WINDOW_PAL_ACCENT] = framePal[ORCHID_FRAME_PAL_ACCENT];
+    sFrameTintedWindowPal[ORCHID_WINDOW_PAL_ACCENT_LIGHT] = framePal[ORCHID_FRAME_PAL_ACCENT_LIGHT];
+    return sFrameTintedWindowPal;
+}
+
 const u16 *GetOverworldTextboxPalettePtr(void)
 {
-    return gMessageBox_Pal;
+    return GetFrameTintedWindowPalette(gMessageBox_Pal);
 }
 
 // Effectively LoadUserWindowBorderGfx but specifying the bg directly instead of a window from that bg
