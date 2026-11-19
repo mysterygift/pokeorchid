@@ -9108,7 +9108,7 @@
       "width": 44,
       "height": 36,
       "primary_tileset": "gTileset_General",
-      "secondary_tileset": "gTileset_TosaPort",
+      "secondary_tileset": "gTileset_TanobyDelta",
       "border_filepath": "data/layouts/TanobyDelta/border.bin",
       "blockdata_filepath": "data/layouts/TanobyDelta/map.bin",
       "layout_version": "emerald"

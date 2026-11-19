@@ -295,6 +295,19 @@ const struct Tileset gTileset_HawkerCentre =
     .callback = NULL,
 };
 
+// Tanoby Delta (Tiksi): the Tanoby Ruins chamber facade ported from FRLG's Sevii Islands 6-7 onto
+// Emerald's General primary (dev_scripts/tiksi_maps/port_tanoby.py). Sea, sand and rock are Emerald's.
+const struct Tileset gTileset_TanobyDelta =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_TanobyDelta,
+    .palettes = gTilesetPalettes_TanobyDelta,
+    .metatiles = gMetatiles_TanobyDelta,
+    .metatileAttributes = gMetatileAttributes_TanobyDelta,
+    .callback = NULL,
+};
+
 // Tosa Port's own copy of gTileset_Slateport (same metatile IDs, Cold Storage included) with the
 // ferry jetty added; see dev_scripts/ferry_jetty. Shares Slateport's tile animation.
 const struct Tileset gTileset_TosaPort =

@@ -14,7 +14,8 @@ engine's map-size limit allows, up to 30):
   - a route sign quoting the tagger notes and one NPC each
 
 Tanoby Delta nods to Sevii's Tanoby Ruins: a beach, then open water (Surf) with islets that each hold
-a sealed stone chamber, the biggest at the centre. Maps edited since generation
+a sealed stone chamber, the biggest at the centre. The chamber facade is FRLG's Tanoby art, ported by
+port_tanoby.py into gTileset_TanobyDelta; everything else there is Emerald General. Maps edited since generation
 (tiksi_routes.json hashes) are skipped unless --force.
 usage: python3 dev_scripts/tiksi_maps/tiksi_routes.py [--force] [--only Route401,...]
 """
@@ -113,11 +114,15 @@ RUIN_TEXT = ("An ancient stone chamber. Strange carvings cover the sealed doorwa
              "\\pIt's said the delta's ruins were built by people who came from across the sea.")
 
 
+FACADE = [[0x0400 | (0x200 + r * 3 + c) for c in range(3)] for r in range(4)]   # gTileset_TanobyDelta
+
+
 def build_delta(name, grid, sec):
     """Tanoby Delta, after Sevii's Tanoby Ruins: the river from Route 410 reaches a beach, then open water
-    (Surf) with a central islet holding a sealed stone chamber and smaller islets with their own."""
+    (Surf) with islets, each holding a sealed stone chamber. The chamber facade is the FRLG Tanoby art
+    (gTileset_TanobyDelta, dev_scripts/tiksi_maps/port_tanoby.py) set into an Emerald rock mound; sand,
+    sea, shore and rocks are Emerald General tiles."""
     w, h = 44, 36
-    rnd = random.Random("tiksi/" + name)
     cv = PH.Canvas(w, h, "W")
     mx = (w // 2) & ~1
     cv.rect(0, 0, w - 1, 7, "X")                     # forest along the top, the way in from Route 410
@@ -127,21 +132,25 @@ def build_delta(name, grid, sec):
         cv.set(mx, y, "P"); cv.set(mx + 1, y, "P")
     signs = [((mx + 3, 5), "Tanoby Delta\nA river delta with a mysterious ruin at its centre.")]
     cv.set(mx + 3, 5, "N")
-    def islet(cx, cy, rx, ry, chamber):
+
+    def islet(cx, cy, rx, ry, big):
         for y in range(cy - ry, cy + ry + 1):
             for x in range(cx - rx, cx + rx + 1):
-                if ((x - cx) / (rx + 0.5)) ** 2 + ((y - cy) / (ry + 0.5)) ** 2 <= 1:
-                    cv.set(x, y, "S" if ((x - cx) / (rx + 0.5)) ** 2 + ((y - cy) / (ry + 0.5)) ** 2 > 0.45 else "G")
-        if chamber:                                  # rock face with a sealed doorway, sign beside it
-            cv.rect(cx - 2, cy - 3, cx + 2, cy, "R")
-            cv.stamp(cx - 1, cy - 3, PH.MOUTH)
-            cv.set(cx + 2, cy + 1, "N")
-            signs.append(((cx + 2, cy + 1), RUIN_TEXT))
-    islet(mx, 21, 7, 5, True)                        # the central ruin
-    for cx, cy in ((9, 16), (35, 15), (10, 30), (34, 29)):
-        islet(cx, cy, 3, 3, True)
+                d = ((x - cx) / (rx + 0.5)) ** 2 + ((y - cy) / (ry + 0.5)) ** 2
+                if d <= 1:
+                    cv.set(x, y, "G" if big and d < 0.35 else "S")
+        # rock mound with the chamber facade set into it; the facade's bottom row stands on the sand
+        fy = cy - 1                                  # facade bottom row
+        side = 2 if big else 1
+        cv.rect(cx - 1 - side, fy - 4 - (1 if big else 0), cx + 1 + side, fy - 1, "R")
+        cv.stamp(cx - 1, fy - 3, FACADE)
+        signs.append(((cx, fy), RUIN_TEXT))
+
+    islet(mx + 1, 23, 7, 5, True)                    # the central ruin
+    for cx, cy in ((9, 18), (35, 17), (10, 30), (34, 30)):
+        islet(cx, cy, 3, 3, False)
     blocks = PH.render(cv, "route")
-    return dict(blocks=blocks, w=w, h=h, s=w, hub=(mx, 5), sign=None, signs=signs,
+    return dict(blocks=blocks, w=w, h=h, s=w, hub=(mx, 5), sign=None, signs=signs, secondary="gTileset_TanobyDelta",
                 opens=[("N", (0, 0), (mx, 0), "MAPSEC_ROUTE_410")], cells={(0, 0)}, box=(0, 0, 1, 1))
 
 
@@ -293,7 +302,7 @@ def main():
         lid = "LAYOUT_" + PH.snake(name)
         lj["layouts"] = [l for l in lj["layouts"] if l.get("id") != lid] + [OrderedDict([
             ("id", lid), ("name", name + "_Layout"), ("width", w), ("height", h),
-            ("primary_tileset", "gTileset_General"), ("secondary_tileset", "gTileset_TosaPort"),
+            ("primary_tileset", "gTileset_General"), ("secondary_tileset", r.get("secondary", "gTileset_TosaPort")),
             ("border_filepath", "data/layouts/%s/border.bin" % name),
             ("blockdata_filepath", "data/layouts/%s/map.bin" % name), ("layout_version", "emerald")])]
         text = title + ("\n" + note if note else "")
