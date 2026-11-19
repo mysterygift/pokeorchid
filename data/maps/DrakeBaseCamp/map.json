@@ -3,7 +3,6 @@
   "name": "DrakeBaseCamp",
   "layout": "LAYOUT_DRAKE_BASE_CAMP",
   "music": "MUS_OLDALE",
-  "region": "REGION_HOENN",
   "region_map_section": "MAPSEC_DRAKE_BASE_CAMP",
   "requires_flash": false,
   "weather": "WEATHER_SUNNY",
@@ -18,6 +17,11 @@
       "map": "MAP_MT_DRAKE_NORTH_FACE",
       "offset": 0,
       "direction": "down"
+    },
+    {
+      "map": "MAP_ROUTE404",
+      "offset": -21,
+      "direction": "up"
     }
   ],
   "object_events": [
@@ -153,5 +157,6 @@
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
       "script": "DrakeBaseCamp_EventScript_Sign0"
     }
-  ]
+  ],
+  "region": "REGION_HOENN"
 }

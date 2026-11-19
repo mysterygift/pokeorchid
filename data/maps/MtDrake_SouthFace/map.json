@@ -3,7 +3,6 @@
   "name": "MtDrake_SouthFace",
   "layout": "LAYOUT_MT_DRAKE_SOUTH_FACE",
   "music": "MUS_MT_PYRE_EXTERIOR",
-  "region": "REGION_HOENN",
   "region_map_section": "MAPSEC_MT_DRAKE",
   "requires_flash": false,
   "weather": "WEATHER_SUNNY",
@@ -18,6 +17,11 @@
       "map": "MAP_ROUTE402",
       "offset": 0,
       "direction": "down"
+    },
+    {
+      "map": "MAP_MT_DRAKE_NORTH_FACE",
+      "offset": 0,
+      "direction": "up"
     }
   ],
   "object_events": [
@@ -54,5 +58,6 @@
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
       "script": "MtDrake_SouthFace_EventScript_Sign"
     }
-  ]
+  ],
+  "region": "REGION_HOENN"
 }
