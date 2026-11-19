@@ -2620,10 +2620,9 @@ static void LoadBagMenuTextWindows(void)
 
     InitWindows(sDefaultBagWindows);
     DeactivateAllTextPrinters();
-    // Orchid std window frame (9 tiles at tile 1, palette 14) instead of the player's chosen frame;
-    // every DrawStdFrameWithCustomTileAndPalette(..., 1, 14) in the bag then uses it.
-    LoadBgTiles(0, gTextWindowFrameOrchid_Gfx, 9 * TILE_SIZE_4BPP, 1);
-    LoadPalette(gTextWindowFrameOrchid_Pal, BG_PLTT_ID(14), PLTT_SIZE_4BPP);
+    // The player's FRAME type (9 tiles at tile 1, palette 14); every
+    // DrawStdFrameWithCustomTileAndPalette(..., 1, 14) in the bag then uses it.
+    LoadUserWindowBorderGfxOnBg(0, 1, BG_PLTT_ID(14));
     LoadMessageBoxGfx(0, 10, BG_PLTT_ID(13));
     ListMenuLoadStdPalAt(BG_PLTT_ID(12), 1);
     LoadPalette(&gStandardMenuPalette, BG_PLTT_ID(15), PLTT_SIZE_4BPP);
