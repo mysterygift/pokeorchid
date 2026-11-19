@@ -75,7 +75,7 @@ void m4aSoundInit(void)
     m4aSoundMode(SOUND_MODE_DA_BIT_8
                | SOUND_MODE_FREQ_13379
                | (12 << SOUND_MODE_MASVOL_SHIFT)
-               | (5 << SOUND_MODE_MAXCHN_SHIFT));
+               | (10 << SOUND_MODE_MAXCHN_SHIFT)); // vanilla 5; 10 for the radio MIDI imports (dev_scripts/radio)
 
     for (i = 0; i < NUM_MUSIC_PLAYERS; i++)
     {

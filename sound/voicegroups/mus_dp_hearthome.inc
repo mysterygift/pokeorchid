@@ -1,0 +1,2 @@
+voice_group mus_dp_hearthome
+	voice_keysplit voicegroup_piano_keysplit, keysplit_piano

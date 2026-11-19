@@ -93,8 +93,9 @@ RADIO app (slot 4) — approved 2026-11-17 · mockups: `mock_radio.py`
 - Teal theme. LCD tuner (frequency, 88–108 scale, station markers, Gen 3 red needle OBJ), station card
   (region plate + name + tagline), now-playing tray with EQ bars. ←/→ tune (eased needle, crossfade), A on/off, B back.
 - Stations play random songs from a region in the Gen 3 soundfont: TOSA FM 88.4, HOENN FM 91.3, KANTO GOLD 98.1,
-  RADIO UNOVA 105.2, ABSOLUTE GALAR 107.7. **Town/route themes only** (no battle themes).
-- Unlocks: Tosa, Hoenn, Kanto from the start; Unova and Galar unlock through quests.
+  SINNOH SOUND 101.6 (added 2026-11-19), RADIO UNOVA 105.2, ABSOLUTE GALAR 107.7. **Town/route themes only** (no battle themes).
+- Unlocks: Tosa, Hoenn, Kanto from the start; Sinnoh, Unova and Galar unlock through quests (no quest flags yet, so
+  Sinnoh and Unova are open from the start for now).
 - Music priority: battles/fanfares/cutscenes > script music (playbgm / fadenewbgm / savebgm / savedMusic; radio yields
   until fadedefaultbgm or the next map change with nothing saved) > radio (overrides map, night, surf, bike) > map music.
 - **No signal** on underground and underwater map types: Rotom says "No signal…", map music plays.
@@ -104,7 +105,8 @@ RADIO app (slot 4) — approved 2026-11-17 · mockups: `mock_radio.py`
   the map-name popup.
 - State = `VAR_RADIO_STATION` (0 = off), no save-block change. Loop lengths generated from MIDI loop markers.
 - No quick toggle outside the phone for now.
-- Hoenn + Kanto songs are already in the ROM; Unova/Galar need MIDI imports (on dev).
+- Hoenn + Kanto songs are already in the ROM. Sinnoh (10) + Unova (11) are GM MIDI rips converted by
+  `dev_scripts/radio/import_radio_midi.py` (list: `songs.py`, registration: `register_songs.py`). Galar needs MIDIs.
 
 CALL app — approved 2026-11-17 · mockups: `mock_call.py`
 - Blue header (app header = the app's tile colour; QUESTS orchid, RADIO teal, MAP green — recommendation, not yet
@@ -141,7 +143,7 @@ MAP (region map) — v2, approved 2026-11-17
   `startquest` / `rewardquest` / `completequest` / `unlockquest` / `completesubquest` buzz Rotom on the field.
   Quest content is placeholder (mockup samples + numbered quests) until real quests are written on dev.
 - RADIO: `src/radio.c` + `src/rotom_phone_radio.c`; song lengths from `dev_scripts/radio/song_lengths.py`.
-  Unova / Galar are stubbed (no songs, locked).
+  Galar is stubbed (no songs, locked).
 - MAP v2: `export_map_v2.py` + `RegionMap_LoadOrchidMapV2` in region_map.c. Placeholder places have no visited
   flags yet, so they stay grey. The Fly map cursor still moves freely (A only works on places you can fly to).
 - PokéNav Condition / Ribbons retired behind `ORCHID_RETIRE_POKENAV_CONDITION_RIBBONS` (include/config/general.h).
