@@ -213,3 +213,4 @@
 .include "sound/voicegroups/sevii_encounter_boy.inc"
 .include "sound/voicegroups/sevii_encounter_girl.inc"
 .include "sound/voicegroups/sevii_encounter_rocket.inc"
+.include "sound/voicegroups/mus_orchid_encounter_holon.inc"

@@ -578,6 +578,7 @@ enum TrainerApproachMusic
     TRAINER_ENCOUNTER_MUSIC_CUTE,       // Used in FRLG for Beauties, Picknickers, Twins, Lasses, Ladies, Breeder, female Swimmers and Leaders
     TRAINER_ENCOUNTER_MUSIC_SERIOUS,    // Used in FRLG for most trainers
     TRAINER_ENCOUNTER_MUSIC_DANGEROUS,  // Used in FRLG for Burglars, Channelers, Poké Maniacs, Super Nerds and Rockets
+    TRAINER_ENCOUNTER_MUSIC_HOLON,      // Wavebreak Voyages: Holon Researchers and Holon Leader Faba
 
     TRAINER_ENCOUNTER_MUSIC_COUNT
 };
