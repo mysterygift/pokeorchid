@@ -1,0 +1,6 @@
+mapscripts MtDrake_2F_MapScripts {}
+
+
+script MtDrake_2F_EventScript_Npc1 {
+    msgbox(format("That opening leads out onto the north face. Drake Base Camp is just down the slope."), MSGBOX_NPC)
+}

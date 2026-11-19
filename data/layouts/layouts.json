@@ -9112,6 +9112,72 @@
       "border_filepath": "data/layouts/TanobyDelta/border.bin",
       "blockdata_filepath": "data/layouts/TanobyDelta/map.bin",
       "layout_version": "emerald"
+    },
+    {
+      "id": "LAYOUT_MT_DRAKE_SOUTH_FACE",
+      "name": "MtDrake_SouthFace_Layout",
+      "width": 30,
+      "height": 36,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_TosaPort",
+      "border_filepath": "data/layouts/MtDrake_SouthFace/border.bin",
+      "blockdata_filepath": "data/layouts/MtDrake_SouthFace/map.bin",
+      "layout_version": "emerald"
+    },
+    {
+      "id": "LAYOUT_MT_DRAKE_1F",
+      "name": "MtDrake_1F_Layout",
+      "width": 44,
+      "height": 34,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_Cave",
+      "border_filepath": "data/layouts/MtDrake_1F/border.bin",
+      "blockdata_filepath": "data/layouts/MtDrake_1F/map.bin",
+      "layout_version": "emerald"
+    },
+    {
+      "id": "LAYOUT_MT_DRAKE_2F",
+      "name": "MtDrake_2F_Layout",
+      "width": 40,
+      "height": 32,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_Cave",
+      "border_filepath": "data/layouts/MtDrake_2F/border.bin",
+      "blockdata_filepath": "data/layouts/MtDrake_2F/map.bin",
+      "layout_version": "emerald"
+    },
+    {
+      "id": "LAYOUT_MT_DRAKE_NORTH_FACE",
+      "name": "MtDrake_NorthFace_Layout",
+      "width": 30,
+      "height": 30,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_TosaPort",
+      "border_filepath": "data/layouts/MtDrake_NorthFace/border.bin",
+      "blockdata_filepath": "data/layouts/MtDrake_NorthFace/map.bin",
+      "layout_version": "emerald"
+    },
+    {
+      "id": "LAYOUT_MT_DRAKE_3F",
+      "name": "MtDrake_3F_Layout",
+      "width": 36,
+      "height": 30,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_Cave",
+      "border_filepath": "data/layouts/MtDrake_3F/border.bin",
+      "blockdata_filepath": "data/layouts/MtDrake_3F/map.bin",
+      "layout_version": "emerald"
+    },
+    {
+      "id": "LAYOUT_MT_DRAKE_PEAK",
+      "name": "MtDrake_Peak_Layout",
+      "width": 30,
+      "height": 30,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_TosaPort",
+      "border_filepath": "data/layouts/MtDrake_Peak/border.bin",
+      "blockdata_filepath": "data/layouts/MtDrake_Peak/map.bin",
+      "layout_version": "emerald"
     }
   ]
 }
