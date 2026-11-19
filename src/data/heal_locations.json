@@ -261,8 +261,8 @@
     {
       "id": "HEAL_LOCATION_MOONGROVE_CITY",
       "map": "MAP_MOONGROVE_CITY",
-      "x": 20,
-      "y": 29,
+      "x": 18,
+      "y": 15,
       "respawn_map": "MAP_MOONGROVE_CITY_POKEMON_CENTER_1F",
       "respawn_npc": "LOCALID_MOONGROVE_CITY_NURSE"
     },

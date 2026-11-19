@@ -8313,8 +8313,8 @@
     {
       "id": "LAYOUT_MOONGROVE_CITY",
       "name": "MoongroveCity_Layout",
-      "width": 42,
-      "height": 38,
+      "width": 46,
+      "height": 42,
       "primary_tileset": "gTileset_General",
       "secondary_tileset": "gTileset_TosaPort",
       "border_filepath": "data/layouts/MoongroveCity/border.bin",

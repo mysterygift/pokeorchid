@@ -17,7 +17,7 @@
   "object_events": [
     {
       "graphics_id": "OBJ_EVENT_GFX_BLACK_BELT",
-      "x": 23,
+      "x": 27,
       "y": 13,
       "elevation": 3,
       "movement_type": "MOVEMENT_TYPE_LOOK_AROUND",
@@ -56,8 +56,8 @@
     },
     {
       "graphics_id": "OBJ_EVENT_GFX_PORT_WORKER",
-      "x": 28,
-      "y": 9,
+      "x": 29,
+      "y": 8,
       "elevation": 3,
       "movement_type": "MOVEMENT_TYPE_LOOK_AROUND",
       "movement_range_x": 0,
@@ -70,7 +70,7 @@
     {
       "graphics_id": "OBJ_EVENT_GFX_CAMPER",
       "x": 32,
-      "y": 10,
+      "y": 18,
       "elevation": 3,
       "movement_type": "MOVEMENT_TYPE_WANDER_AROUND",
       "movement_range_x": 1,
@@ -105,7 +105,7 @@
     },
     {
       "x": 30,
-      "y": 8,
+      "y": 16,
       "elevation": 0,
       "dest_map": "MAP_MT_BATOK_EAST_2F",
       "dest_warp_id": "0"
