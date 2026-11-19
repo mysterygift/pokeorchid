@@ -1,5 +1,30 @@
-mapscripts ChanguAirport_MapScripts {}
+mapscripts ChanguAirport_MapScripts {
+}
 
-script ChanguAirport_EventScript_PlaceholderSign {
-    msgbox(format("Changu Airport: the Tosa region's international airport. Placeholder map."), MSGBOX_SIGN)
+script ChanguAirport_EventScript_TownSign {
+    msgbox(format("Changu Airport\n“Tosa's door to the world.”"), MSGBOX_SIGN)
+}
+
+script ChanguAirport_EventScript_Sign0 {
+    msgbox(format("CHANGU AIRPORT TERMINAL\nClosed for refurbishment. Please use the train."), MSGBOX_SIGN)
+}
+
+script ChanguAirport_EventScript_Sign1 {
+    msgbox(format("AIR CARGO\nAuthorised personnel only."), MSGBOX_SIGN)
+}
+
+script ChanguAirport_EventScript_Npc1 {
+    msgbox(format("Flights from Hoenn, Johto and Paldea all land here. Customs checks every single Poké Ball."), MSGBOX_NPC)
+}
+
+script ChanguAirport_EventScript_Npc2 {
+    msgbox(format("All imported Pokémon need a PokéPermit. No permit, no entry. We've caught a lot of smugglers lately."), MSGBOX_NPC)
+}
+
+script ChanguAirport_EventScript_Npc3 {
+    msgbox(format("I just flew in from Paldea! Is it always this humid?"), MSGBOX_NPC)
+}
+
+script ChanguAirport_EventScript_Npc4 {
+    msgbox(format("The terminal's being refurbished, so everyone's taking the train into the city."), MSGBOX_NPC)
 }

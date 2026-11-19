@@ -1,0 +1,28 @@
+mapscripts MoongroveCity_Gym_MapScripts {}
+
+script MoongroveCity_Gym_EventScript_Leader {
+    trainerbattle_single(TRAINER_LEADER_TORK, MoongroveCity_Gym_Text_Intro, MoongroveCity_Gym_Text_Defeat, MoongroveCity_Gym_EventScript_Defeated, NO_MUSIC)
+    msgbox(MoongroveCity_Gym_Text_Post, MSGBOX_AUTOCLOSE)
+}
+
+script MoongroveCity_Gym_EventScript_Defeated {
+    setflag(FLAG_BADGE05_GET)
+    msgbox(format("{PLAYER} received the Tork Gym Badge!\p(Placeholder Gym: the badge flag is set.)"))
+    release
+}
+
+script MoongroveCity_Gym_EventScript_Guide {
+    msgbox(format("Hey, Challenger! This is the Gym of Tork, who uses Ground-type Pokémon.\pThe Gym's still being fitted out. For now it's just you, Tork and this empty hall!"), MSGBOX_NPC)
+}
+
+text MoongroveCity_Gym_Text_Intro {
+    format("I was up before dawn hunting catfish in the mudflats. You'll find my Pokémon just as slippery!")
+}
+
+text MoongroveCity_Gym_Text_Defeat {
+    format("Well, I'll be. The big one got away again.")
+}
+
+text MoongroveCity_Gym_Text_Post {
+    format("Patience, that's the secret. In fishing and in battle.")
+}

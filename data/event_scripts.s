@@ -241,6 +241,58 @@ gStdScripts_End::
 	.include "data/maps/ChallengersTrail_Cliffs/scripts.inc"
 	.include "data/maps/ChallengersTrail_2F/scripts.inc"
 	.include "data/maps/ChallengersTrail_3F/scripts.inc"
+	.include "data/maps/MoongroveCity_Gym/scripts.inc"
+	.include "data/maps/MoongroveCity_House1/scripts.inc"
+	.include "data/maps/MoongroveCity_House2/scripts.inc"
+	.include "data/maps/MoongroveCity_House3/scripts.inc"
+	.include "data/maps/MoongroveCity_House4/scripts.inc"
+	.include "data/maps/TimahCity_Gym/scripts.inc"
+	.include "data/maps/TimahCity_House1/scripts.inc"
+	.include "data/maps/TimahCity_House2/scripts.inc"
+	.include "data/maps/TimahCity_House3/scripts.inc"
+	.include "data/maps/TimahCity_House4/scripts.inc"
+	.include "data/maps/FaberTown_Gym/scripts.inc"
+	.include "data/maps/FaberTown_House1/scripts.inc"
+	.include "data/maps/FaberTown_House2/scripts.inc"
+	.include "data/maps/ChanguCity_Gym/scripts.inc"
+	.include "data/maps/ChanguCity_House1/scripts.inc"
+	.include "data/maps/ChanguCity_House2/scripts.inc"
+	.include "data/maps/ChanguCity_House3/scripts.inc"
+	.include "data/maps/ChanguCity_House4/scripts.inc"
+	.include "data/maps/ChanguAirport_House1/scripts.inc"
+	.include "data/maps/InkaCity_Gym/scripts.inc"
+	.include "data/maps/InkaCity_House1/scripts.inc"
+	.include "data/maps/InkaCity_House2/scripts.inc"
+	.include "data/maps/InkaCity_House3/scripts.inc"
+	.include "data/maps/InkaCity_House4/scripts.inc"
+	.include "data/maps/BuraCity_Gym/scripts.inc"
+	.include "data/maps/BuraCity_House1/scripts.inc"
+	.include "data/maps/BuraCity_House2/scripts.inc"
+	.include "data/maps/JuranCity_House1/scripts.inc"
+	.include "data/maps/JuranCity_House2/scripts.inc"
+	.include "data/maps/JuranCity_House3/scripts.inc"
+	.include "data/maps/JuranCity_House4/scripts.inc"
+	.include "data/maps/SenokoCity_Gym/scripts.inc"
+	.include "data/maps/SenokoCity_House1/scripts.inc"
+	.include "data/maps/SenokoCity_House2/scripts.inc"
+	.include "data/maps/SenokoCity_House3/scripts.inc"
+	.include "data/maps/PokemonLeague_House1/scripts.inc"
+	.include "data/maps/PokemonLeague_House2/scripts.inc"
+	.include "data/maps/PoketopiaGate_House1/scripts.inc"
+	.include "data/maps/PoketopiaGate_House2/scripts.inc"
+	.include "data/maps/CorralCity_Gym/scripts.inc"
+	.include "data/maps/CorralCity_House1/scripts.inc"
+	.include "data/maps/CorralCity_House2/scripts.inc"
+	.include "data/maps/CorralCity_House3/scripts.inc"
+	.include "data/maps/WavebreakTown_House1/scripts.inc"
+	.include "data/maps/WavebreakTown_House2/scripts.inc"
+	.include "data/maps/WavebreakTown_House3/scripts.inc"
+	.include "data/maps/PinestampTown_House1/scripts.inc"
+	.include "data/maps/PinestampTown_House2/scripts.inc"
+	.include "data/maps/PinestampTown_House3/scripts.inc"
+	.include "data/maps/ChallengerGate_House1/scripts.inc"
+	.include "data/maps/ChallengerGate_House2/scripts.inc"
+	.include "data/maps/AbandonedHouse_House1/scripts.inc"
 	.include "data/maps/MoongroveCity/scripts.inc"
 	.include "data/maps/MoongroveCity_Station/scripts.inc"
 	.include "data/maps/MoongroveCity_StationPlatform/scripts.inc"
@@ -293,6 +345,16 @@ gStdScripts_End::
 	.include "data/maps/FerrumShrine/scripts.inc" @ tiksi-maps
 	.include "data/maps/GavaniPath/scripts.inc" @ tiksi-maps
 	.include "data/maps/MtDrakeSummit/scripts.inc" @ tiksi-maps
+	.include "data/maps/FurongVillage_House1/scripts.inc" @ tiksi-people
+	.include "data/maps/FurongVillage_House2/scripts.inc" @ tiksi-people
+	.include "data/maps/DrakeBaseCamp_Mart/scripts.inc" @ tiksi-people
+	.include "data/maps/DrakeBaseCamp_House1/scripts.inc" @ tiksi-people
+	.include "data/maps/DrakeBaseCamp_House2/scripts.inc" @ tiksi-people
+	.include "data/maps/UbeCity_Mart/scripts.inc" @ tiksi-people
+	.include "data/maps/UbeCity_House1/scripts.inc" @ tiksi-people
+	.include "data/maps/UbeCity_House2/scripts.inc" @ tiksi-people
+	.include "data/maps/TanglynTown_House1/scripts.inc" @ tiksi-people
+	.include "data/maps/TanglynTown_House2/scripts.inc" @ tiksi-people
 	.include "data/maps/TelokTown_House2/scripts.inc"
 	.include "data/maps/TelokTown_PokemonCenter_1F/scripts.inc"
 	.include "data/maps/TelokTown_PokemonCenter_2F/scripts.inc"

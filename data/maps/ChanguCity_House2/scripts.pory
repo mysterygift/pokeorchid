@@ -1,0 +1,5 @@
+mapscripts ChanguCity_House2_MapScripts {}
+
+script ChanguCity_House2_EventScript_Npc1 {
+    msgbox(format("My company sent me here from Kalos. The food's spicy, the weather's hot, and I'd never go back."), MSGBOX_NPC)
+}

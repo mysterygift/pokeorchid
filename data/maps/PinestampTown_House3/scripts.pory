@@ -1,0 +1,5 @@
+mapscripts PinestampTown_House3_MapScripts {}
+
+script PinestampTown_House3_EventScript_Npc1 {
+    msgbox(format("I carve little Pokémon out of pine wood. The Zigzagoon ones sell best."), MSGBOX_NPC)
+}

@@ -2,15 +2,26 @@ AbandonedHouse_MapScripts::
 	.byte 0
 
 
-AbandonedHouse_EventScript_PlaceholderSign::
-# 4 "data/maps/AbandonedHouse/scripts.pory"
-	msgbox AbandonedHouse_EventScript_PlaceholderSign_Text_0, MSGBOX_SIGN
+AbandonedHouse_EventScript_TownSign::
+# 5 "data/maps/AbandonedHouse/scripts.pory"
+	msgbox AbandonedHouse_EventScript_TownSign_Text_0, MSGBOX_SIGN
 	return
 
 
-AbandonedHouse_EventScript_PlaceholderSign_Text_0:
-# 4 "data/maps/AbandonedHouse/scripts.pory"
-	.string "Abandoned House: abandoned in the\n"
-	.string "early days of the Tosa region. People in\l"
-	.string "Moongrove spot lights here at night.\l"
-	.string "It's haunted. Placeholder map.$"
+AbandonedHouse_EventScript_Npc1::
+# 9 "data/maps/AbandonedHouse/scripts.pory"
+	msgbox AbandonedHouse_EventScript_Npc1_Text_0, MSGBOX_NPC
+	return
+
+
+AbandonedHouse_EventScript_TownSign_Text_0:
+# 5 "data/maps/AbandonedHouse/scripts.pory"
+	.string "Abandoned House\n"
+	.string "“…”$"
+
+AbandonedHouse_EventScript_Npc1_Text_0:
+# 9 "data/maps/AbandonedHouse/scripts.pory"
+	.string "People in Moongrove see lights in that\n"
+	.string "house at night.\p"
+	.string "Nobody has lived there since the early\n"
+	.string "days of Tosa…$"

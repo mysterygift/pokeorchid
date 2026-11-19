@@ -1,0 +1,5 @@
+mapscripts ChanguAirport_House1_MapScripts {}
+
+script ChanguAirport_House1_EventScript_Npc1 {
+    msgbox(format("I handle air cargo. You wouldn't believe what people try to fly in. A Sharpedo in a suitcase, once!"), MSGBOX_NPC)
+}

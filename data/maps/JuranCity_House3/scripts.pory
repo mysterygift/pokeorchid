@@ -1,0 +1,5 @@
+mapscripts JuranCity_House3_MapScripts {}
+
+script JuranCity_House3_EventScript_Npc1 {
+    msgbox(format("Mum says I'm not allowed in the casino until I'm forty."), MSGBOX_NPC)
+}

@@ -3,3 +3,10 @@ mapscripts ChallengersTrail_1F_MapScripts {}
 script ChallengersTrail_1F_EventScript_PlaceholderSign {
     msgbox(format("Challenger's Trail 1F: the final test before the Pokémon League. Placeholder map."), MSGBOX_SIGN)
 }
+
+// --- route_people.py (generated) ---
+
+script ChallengersTrail_1F_EventScript_Route1 {
+    msgbox(format("Challenger's Trail. Only the best Trainers make it to the top."), MSGBOX_NPC)
+}
+// --- end route_people.py ---

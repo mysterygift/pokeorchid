@@ -1,0 +1,5 @@
+mapscripts FurongVillage_House1_MapScripts {}
+
+script FurongVillage_House1_EventScript_Npc1 {
+    msgbox(format("That ship you came in on has been running between here and Tosa for months. Always at night."), MSGBOX_NPC)
+}

@@ -1,0 +1,5 @@
+mapscripts UbeCity_House1_MapScripts {}
+
+script UbeCity_House1_EventScript_Npc1 {
+    msgbox(format("Silph Co. keeps trying to sell us Poké Balls. We've used the same ones for thirty years!"), MSGBOX_NPC)
+}

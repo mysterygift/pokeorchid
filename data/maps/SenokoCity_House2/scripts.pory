@@ -1,0 +1,5 @@
+mapscripts SenokoCity_House2_MapScripts {}
+
+script SenokoCity_House2_EventScript_Npc1 {
+    msgbox(format("My electricity bill is the lowest in Tosa. Perks of living next to the Power Plant."), MSGBOX_NPC)
+}

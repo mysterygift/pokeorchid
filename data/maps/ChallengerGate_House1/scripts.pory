@@ -1,0 +1,5 @@
+mapscripts ChallengerGate_House1_MapScripts {}
+
+script ChallengerGate_House1_EventScript_Npc1 {
+    msgbox(format("I'm resting up before my third attempt at the Trail. Third time lucky!"), MSGBOX_NPC)
+}

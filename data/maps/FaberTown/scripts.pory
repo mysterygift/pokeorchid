@@ -1,5 +1,30 @@
-mapscripts FaberTown_MapScripts {}
+mapscripts FaberTown_MapScripts {
+}
 
-script FaberTown_EventScript_PlaceholderSign {
-    msgbox(format("Faber Town: nestled in the cliffs, reached by cable car or a treacherous climb. Meru, the town's leader, trains against Rock Pokémon. Placeholder map."), MSGBOX_SIGN)
+script FaberTown_EventScript_TownSign {
+    msgbox(format("Faber Town\n“A town carved from the cliffs.”"), MSGBOX_SIGN)
+}
+
+script FaberTown_EventScript_GymSign {
+    msgbox(format("Faber Town Pokémon Gym\nLeader: Meru. Fighting-type Pokémon."), MSGBOX_SIGN)
+}
+
+script FaberTown_EventScript_Npc1 {
+    msgbox(format("Meru heads up into the mountains alone to spar with wild Rock types. Bare-handed! That's our town leader."), MSGBOX_NPC)
+}
+
+script FaberTown_EventScript_Npc2 {
+    msgbox(format("I took the climb up Mt. Batok instead of the cable car. My knees will never forgive me."), MSGBOX_NPC)
+}
+
+script FaberTown_EventScript_Npc3 {
+    msgbox(format("Faber's houses are built right into the cliff. Mind the edge after dark."), MSGBOX_NPC)
+}
+
+script FaberTown_EventScript_Npc4 {
+    msgbox(format("The cable car's been out of service for months. Good thing the railway came through."), MSGBOX_NPC)
+}
+
+script FaberTown_EventScript_Npc5 {
+    msgbox(format("From up here you can see all the way to Kantu Falls. Folk bathe in the mineral water there once or twice a year."), MSGBOX_NPC)
 }

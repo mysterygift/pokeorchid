@@ -30,3 +30,51 @@ FurongVillage_Text_Sign0:
 	.string "FURONG VILLAGE\n"
 # 16 "data/maps/FurongVillage/scripts.pory"
 	.string "A fishing village on TIKSI's shore.$"
+
+FurongVillage_EventScript_TiksiNpc1::
+# 23 "data/maps/FurongVillage/scripts.pory"
+	msgbox FurongVillage_EventScript_TiksiNpc1_Text_0, MSGBOX_NPC
+	return
+
+
+FurongVillage_EventScript_TiksiNpc2::
+# 27 "data/maps/FurongVillage/scripts.pory"
+	msgbox FurongVillage_EventScript_TiksiNpc2_Text_0, MSGBOX_NPC
+	return
+
+
+FurongVillage_EventScript_TiksiNpc3::
+# 31 "data/maps/FurongVillage/scripts.pory"
+	msgbox FurongVillage_EventScript_TiksiNpc3_Text_0, MSGBOX_NPC
+	return
+
+
+FurongVillage_EventScript_TiksiGuardianGavaniPath::
+# 35 "data/maps/FurongVillage/scripts.pory"
+	msgbox FurongVillage_EventScript_TiksiGuardianGavaniPath_Text_0, MSGBOX_NPC
+	return
+
+
+FurongVillage_EventScript_TiksiNpc1_Text_0:
+# 23 "data/maps/FurongVillage/scripts.pory"
+	.string "A boat from Tosa? We don't get many of\n"
+	.string "those. Not legal ones, anyhow.$"
+
+FurongVillage_EventScript_TiksiNpc2_Text_0:
+# 27 "data/maps/FurongVillage/scripts.pory"
+	.string "Tiksi is a hard land. The sea feeds us\n"
+	.string "and the mountain watches over us.$"
+
+FurongVillage_EventScript_TiksiNpc3_Text_0:
+# 31 "data/maps/FurongVillage/scripts.pory"
+	.string "Are you from Tosa? Grandpa says Tosa\n"
+	.string "people are soft. You look all right to\l"
+	.string "me.$"
+
+FurongVillage_EventScript_TiksiGuardianGavaniPath_Text_0:
+# 35 "data/maps/FurongVillage/scripts.pory"
+	.string "I am the guardian of Gavani Path. The\n"
+	.string "thunder giant has come home to its\l"
+	.string "cave.\p"
+	.string "Tiksi's elders swore to keep it from the\n"
+	.string "people. Tread carefully in there.$"

@@ -1,5 +1,10 @@
-mapscripts AbandonedHouse_MapScripts {}
+mapscripts AbandonedHouse_MapScripts {
+}
 
-script AbandonedHouse_EventScript_PlaceholderSign {
-    msgbox(format("Abandoned House: abandoned in the early days of the Tosa region. People in Moongrove spot lights here at night. It's haunted. Placeholder map."), MSGBOX_SIGN)
+script AbandonedHouse_EventScript_TownSign {
+    msgbox(format("Abandoned House\n“…”"), MSGBOX_SIGN)
+}
+
+script AbandonedHouse_EventScript_Npc1 {
+    msgbox(format("People in Moongrove see lights in that house at night.\pNobody has lived there since the early days of Tosa…"), MSGBOX_NPC)
 }

@@ -1,0 +1,5 @@
+mapscripts CorralCity_House1_MapScripts {}
+
+script CorralCity_House1_EventScript_Npc1 {
+    msgbox(format("We rent rooms to holidaymakers in the summer. Pokémon are welcome. Sand is not."), MSGBOX_NPC)
+}

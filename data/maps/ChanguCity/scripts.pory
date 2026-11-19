@@ -1,5 +1,37 @@
-mapscripts ChanguCity_MapScripts {}
+mapscripts ChanguCity_MapScripts {
+    MAP_SCRIPT_ON_TRANSITION {
+        setflag(FLAG_VISITED_SLATEPORT_CITY)
+    }
+}
 
-script ChanguCity_EventScript_PlaceholderSign {
-    msgbox(format("Changu City: home of the Tosa region's airport. Placeholder map."), MSGBOX_SIGN)
+script ChanguCity_EventScript_TownSign {
+    msgbox(format("Changu City\n“Gateway to the Tosa region.”"), MSGBOX_SIGN)
+}
+
+script ChanguCity_EventScript_GymSign {
+    msgbox(format("Changu City Pokémon Gym\nLeader: Larry. Normal-type Pokémon."), MSGBOX_SIGN)
+}
+
+script ChanguCity_EventScript_Sign3 {
+    msgbox(format("CHANGU BUSINESS PARK\nOffices to let."), MSGBOX_SIGN)
+}
+
+script ChanguCity_EventScript_Npc1 {
+    msgbox(format("Synergise! Innovate! Profit!\pSorry, force of habit. I fly in every Monday for meetings."), MSGBOX_NPC)
+}
+
+script ChanguCity_EventScript_Npc2 {
+    msgbox(format("The airport's just up Route 306. They call Changu the gateway to Tosa. So far it's mostly office blocks."), MSGBOX_NPC)
+}
+
+script ChanguCity_EventScript_Npc3 {
+    msgbox(format("Our Gym Leader Larry was sent over from Paldea by their Champion. He seems… tired. Very, very tired."), MSGBOX_NPC)
+}
+
+script ChanguCity_EventScript_Npc4 {
+    msgbox(format("I saw Larry at the hawker stall eating the same set lunch as yesterday. And the day before."), MSGBOX_NPC)
+}
+
+script ChanguCity_EventScript_Npc5 {
+    msgbox(format("Customs has tightened up. Too many Pokémon have been coming in without import permits lately."), MSGBOX_NPC)
 }

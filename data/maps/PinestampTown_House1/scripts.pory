@@ -1,0 +1,5 @@
+mapscripts PinestampTown_House1_MapScripts {}
+
+script PinestampTown_House1_EventScript_Npc1 {
+    msgbox(format("I collect stamps! Well… stamp. I've got one."), MSGBOX_NPC)
+}

@@ -1,0 +1,5 @@
+mapscripts FaberTown_House1_MapScripts {}
+
+script FaberTown_House1_EventScript_Npc1 {
+    msgbox(format("Meru trained my Machop when it was tiny. Now it carries my shopping up the cliff."), MSGBOX_NPC)
+}

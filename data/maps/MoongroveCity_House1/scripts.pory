@@ -1,0 +1,9 @@
+mapscripts MoongroveCity_House1_MapScripts {}
+
+script MoongroveCity_House1_EventScript_Npc1 {
+    msgbox(format("When I was young there was no train. Just little boats poling through the mangrove channels."), MSGBOX_NPC)
+}
+
+script MoongroveCity_House1_EventScript_Npc2 {
+    msgbox(format("Grandpa says the marsh ghosts only come out for people who drop litter!"), MSGBOX_NPC)
+}

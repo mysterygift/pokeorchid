@@ -3,3 +3,10 @@ mapscripts RailwayTunnels_MapScripts {}
 script RailwayTunnels_EventScript_PlaceholderSign {
     msgbox(format("Railway Tunnels: dingy tunnels beneath Tosa Port railway station. Placeholder map."), MSGBOX_SIGN)
 }
+
+// --- route_people.py (generated) ---
+
+script RailwayTunnels_EventScript_Route1 {
+    msgbox(format("These old tunnels run under Tosa Port station. We're not supposed to let anyone down here… but I won't tell."), MSGBOX_NPC)
+}
+// --- end route_people.py ---

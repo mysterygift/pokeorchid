@@ -14,11 +14,84 @@
   "show_map_name": true,
   "battle_scene": "MAP_BATTLE_SCENE_NORMAL",
   "connections": null,
-  "object_events": [],
+  "object_events": [
+    {
+      "graphics_id": "OBJ_EVENT_GFX_BLACK_BELT",
+      "x": 23,
+      "y": 13,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_LOOK_AROUND",
+      "movement_range_x": 0,
+      "movement_range_y": 0,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "FaberTown_EventScript_Npc1",
+      "flag": "0"
+    },
+    {
+      "graphics_id": "OBJ_EVENT_GFX_HIKER",
+      "x": 7,
+      "y": 10,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_LOOK_AROUND",
+      "movement_range_x": 0,
+      "movement_range_y": 0,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "FaberTown_EventScript_Npc2",
+      "flag": "0"
+    },
+    {
+      "graphics_id": "OBJ_EVENT_GFX_OLD_WOMAN",
+      "x": 5,
+      "y": 22,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_WANDER_AROUND",
+      "movement_range_x": 1,
+      "movement_range_y": 1,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "FaberTown_EventScript_Npc3",
+      "flag": "0"
+    },
+    {
+      "graphics_id": "OBJ_EVENT_GFX_PORT_WORKER",
+      "x": 28,
+      "y": 9,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_LOOK_AROUND",
+      "movement_range_x": 0,
+      "movement_range_y": 0,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "FaberTown_EventScript_Npc4",
+      "flag": "0"
+    },
+    {
+      "graphics_id": "OBJ_EVENT_GFX_CAMPER",
+      "x": 32,
+      "y": 10,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_WANDER_AROUND",
+      "movement_range_x": 1,
+      "movement_range_y": 1,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "FaberTown_EventScript_Npc5",
+      "flag": "0"
+    }
+  ],
   "warp_events": [
     {
-      "x": 7,
-      "y": 7,
+      "x": 26,
+      "y": 6,
+      "elevation": 0,
+      "dest_map": "MAP_FABER_TOWN_STATION",
+      "dest_warp_id": "0"
+    },
+    {
+      "x": 27,
+      "y": 6,
       "elevation": 0,
       "dest_map": "MAP_FABER_TOWN_STATION",
       "dest_warp_id": "0"
@@ -31,24 +104,45 @@
       "dest_warp_id": "0"
     },
     {
-      "x": 22,
+      "x": 30,
       "y": 8,
       "elevation": 0,
       "dest_map": "MAP_MT_BATOK_EAST_2F",
       "dest_warp_id": "0"
     },
     {
-      "x": 4,
+      "x": 18,
       "y": 18,
       "elevation": 0,
       "dest_map": "MAP_FABER_TOWN_POKEMON_CENTER_1F",
       "dest_warp_id": "0"
     },
     {
-      "x": 12,
-      "y": 18,
+      "x": 23,
+      "y": 19,
       "elevation": 0,
       "dest_map": "MAP_FABER_TOWN_MART",
+      "dest_warp_id": "0"
+    },
+    {
+      "x": 14,
+      "y": 8,
+      "elevation": 0,
+      "dest_map": "MAP_FABER_TOWN_GYM",
+      "dest_warp_id": "0"
+    },
+    {
+      "x": 10,
+      "y": 19,
+      "elevation": 0,
+      "dest_map": "MAP_FABER_TOWN_HOUSE1",
+      "dest_warp_id": "0"
+    },
+    {
+      "x": 5,
+      "y": 19,
+      "elevation": 0,
+      "dest_map": "MAP_FABER_TOWN_HOUSE2",
       "dest_warp_id": "0"
     }
   ],
@@ -56,15 +150,15 @@
   "bg_events": [
     {
       "type": "sign",
-      "x": 7,
-      "y": 14,
+      "x": 17,
+      "y": 3,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
-      "script": "FaberTown_EventScript_PlaceholderSign"
+      "script": "FaberTown_EventScript_TownSign"
     },
     {
       "type": "sign",
-      "x": 5,
+      "x": 19,
       "y": 19,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
@@ -72,7 +166,7 @@
     },
     {
       "type": "sign",
-      "x": 6,
+      "x": 20,
       "y": 19,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
@@ -80,19 +174,27 @@
     },
     {
       "type": "sign",
-      "x": 13,
-      "y": 18,
+      "x": 24,
+      "y": 19,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
       "script": "Common_EventScript_ShowPokemartSign"
     },
     {
       "type": "sign",
-      "x": 14,
-      "y": 18,
+      "x": 25,
+      "y": 19,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
       "script": "Common_EventScript_ShowPokemartSign"
+    },
+    {
+      "type": "sign",
+      "x": 10,
+      "y": 8,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "FaberTown_EventScript_GymSign"
     }
   ]
 }

@@ -3,3 +3,14 @@ mapscripts Route305_MapScripts {}
 script Route305_EventScript_PlaceholderSign {
     msgbox(format("Route 305 Placeholder map."), MSGBOX_SIGN)
 }
+
+// --- route_people.py (generated) ---
+
+script Route305_EventScript_Route1 {
+    msgbox(format("This route goes on forever! Good thing there are Pokémon Centres in every town."), MSGBOX_NPC)
+}
+
+script Route305_EventScript_Route2 {
+    msgbox(format("I've seen Pokémon here that aren't in any of my books. Invasive, the Rangers said."), MSGBOX_NPC)
+}
+// --- end route_people.py ---

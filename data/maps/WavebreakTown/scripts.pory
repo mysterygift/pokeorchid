@@ -1,5 +1,22 @@
-mapscripts WavebreakTown_MapScripts {}
+mapscripts WavebreakTown_MapScripts {
+}
 
-script WavebreakTown_EventScript_PlaceholderSign {
-    msgbox(format("Wavebreak Town: a forgotten seaside town, home to Tosa's first port before Tosa Port opened. Placeholder map."), MSGBOX_SIGN)
+script WavebreakTown_EventScript_TownSign {
+    msgbox(format("Wavebreak Town\n“Tosa's first harbour.”"), MSGBOX_SIGN)
+}
+
+script WavebreakTown_EventScript_Npc1 {
+    msgbox(format("Wavebreak was Tosa's first port, you know. Then Tosa Port opened and the ships stopped coming."), MSGBOX_NPC)
+}
+
+script WavebreakTown_EventScript_Npc2 {
+    msgbox(format("Nobody's left to scare the Pokémon off, so the fishing's never been better."), MSGBOX_NPC)
+}
+
+script WavebreakTown_EventScript_Npc3 {
+    msgbox(format("My husband worked the docks here for forty years. Now the only thing that washes in is seaweed."), MSGBOX_NPC)
+}
+
+script WavebreakTown_EventScript_Npc4 {
+    msgbox(format("Smugglers love a quiet harbour. Just saying."), MSGBOX_NPC)
 }

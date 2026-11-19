@@ -1,0 +1,5 @@
+mapscripts InkaCity_House3_MapScripts {}
+
+script InkaCity_House3_EventScript_Npc1 {
+    msgbox(format("Marlin Co. offered me a job. Good pay, no questions asked.\pThat's exactly what worried me."), MSGBOX_NPC)
+}

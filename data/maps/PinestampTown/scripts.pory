@@ -1,5 +1,18 @@
-mapscripts PinestampTown_MapScripts {}
+mapscripts PinestampTown_MapScripts {
+}
 
-script PinestampTown_EventScript_PlaceholderSign {
-    msgbox(format("Pinestamp Town. Placeholder map."), MSGBOX_SIGN)
+script PinestampTown_EventScript_TownSign {
+    msgbox(format("Pinestamp Town\n“A quiet town among the pines.”"), MSGBOX_SIGN)
+}
+
+script PinestampTown_EventScript_Npc1 {
+    msgbox(format("The pine trees keep Pinestamp cool, even in the dry season."), MSGBOX_NPC)
+}
+
+script PinestampTown_EventScript_Npc2 {
+    msgbox(format("Bug Pokémon love pine sap. Check the trees around town for a surprise!"), MSGBOX_NPC)
+}
+
+script PinestampTown_EventScript_Npc3 {
+    msgbox(format("Most Trainers pass straight through on their way somewhere else. Stop and smell the pines, I say."), MSGBOX_NPC)
 }

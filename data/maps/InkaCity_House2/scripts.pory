@@ -1,0 +1,5 @@
+mapscripts InkaCity_House2_MapScripts {}
+
+script InkaCity_House2_EventScript_Npc1 {
+    msgbox(format("Inka used to be all farmland. Now it's lorries as far as the eye can see."), MSGBOX_NPC)
+}

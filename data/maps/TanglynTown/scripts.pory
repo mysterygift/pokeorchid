@@ -26,3 +26,22 @@ TanglynTown_Text_Sign1:
 	.string "(Closed for restoration.)$"
 
 `
+
+// --- tiksi_people.py (generated) ---
+
+script TanglynTown_EventScript_TiksiNpc1 {
+    msgbox(format("The murals in the hall show giants sealed away by Tiksi's ancestors. Five of them! Not three."), MSGBOX_NPC)
+}
+
+script TanglynTown_EventScript_TiksiNpc2 {
+    msgbox(format("The murals are older than any record. Some say people from Sevii painted them."), MSGBOX_NPC)
+}
+
+script TanglynTown_EventScript_TiksiNpc3 {
+    msgbox(format("Frigo Cave's off the north shore. Locals say it's colder inside than it has any right to be."), MSGBOX_NPC)
+}
+
+script TanglynTown_EventScript_TiksiGuardianFrigoCave {
+    msgbox(format("Frigo Cave is colder than it has any right to be. The ice giant is back inside.\pI have guarded this shore all my life. Don't make me regret letting you pass."), MSGBOX_NPC)
+}
+// --- end tiksi_people.py ---

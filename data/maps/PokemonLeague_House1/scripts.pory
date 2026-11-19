@@ -1,0 +1,5 @@
+mapscripts PokemonLeague_House1_MapScripts {}
+
+script PokemonLeague_House1_EventScript_Npc1 {
+    msgbox(format("My son challenged the League three times. He's a chef now. Very happy."), MSGBOX_NPC)
+}

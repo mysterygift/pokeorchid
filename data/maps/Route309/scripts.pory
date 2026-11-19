@@ -3,3 +3,10 @@ mapscripts Route309_MapScripts {}
 script Route309_EventScript_PlaceholderSign {
     msgbox(format("Route 309 Placeholder map."), MSGBOX_SIGN)
 }
+
+// --- route_people.py (generated) ---
+
+script Route309_EventScript_Route1 {
+    msgbox(format("Such a long route! I keep stopping to look at the flowers."), MSGBOX_NPC)
+}
+// --- end route_people.py ---

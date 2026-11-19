@@ -3,3 +3,14 @@ mapscripts Route306_MapScripts {}
 script Route306_EventScript_PlaceholderSign {
     msgbox(format("Route 306: a short, pleasant path for people commuting from Changu City to Changu Airport. Placeholder map."), MSGBOX_SIGN)
 }
+
+// --- route_people.py (generated) ---
+
+script Route306_EventScript_Route1 {
+    msgbox(format("I walk to the airport every morning. It's a short, pleasant commute."), MSGBOX_NPC)
+}
+
+script Route306_EventScript_Route2 {
+    msgbox(format("Is this the way to Changu City? My map's all in kilometres!"), MSGBOX_NPC)
+}
+// --- end route_people.py ---

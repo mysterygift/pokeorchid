@@ -1,0 +1,5 @@
+mapscripts MoongroveCity_House3_MapScripts {}
+
+script MoongroveCity_House3_EventScript_Npc1 {
+    msgbox(format("Professor Palm's assistant came through counting Pokémon in the marsh. Fewer Lotad than last year, apparently."), MSGBOX_NPC)
+}

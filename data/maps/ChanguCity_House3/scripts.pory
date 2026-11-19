@@ -1,0 +1,5 @@
+mapscripts ChanguCity_House3_MapScripts {}
+
+script ChanguCity_House3_EventScript_Npc1 {
+    msgbox(format("Daddy says Tosa is an “emerging market”. I don't know what that means, but it sounds expensive."), MSGBOX_NPC)
+}
