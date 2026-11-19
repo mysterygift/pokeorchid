@@ -1055,7 +1055,7 @@ static void BuyMenuDecompressBgGraphics(void)
             grid[y * 32 + x] = (OSHOP_GRID_TILE + (x & 1) + (y & 1) * 2) | (OSHOP_PAL_GRID << 12);
     }
     LoadPalette(gOrchidShopBg_Pal, BG_PLTT_ID(0), OSHOP_NUM_BG_PALS * PLTT_SIZE_4BPP);
-    LoadPalette(gOrchidYesNoFrame_Pal, BG_PLTT_ID(OSHOP_WINDOW_PAL), PLTT_SIZE_4BPP);
+    LoadPalette(GetFrameTintedWindowPalette(gOrchidYesNoFrame_Pal), BG_PLTT_ID(OSHOP_WINDOW_PAL), PLTT_SIZE_4BPP);
     LoadBgTiles(0, gOrchidShopMsgFrame_Gfx, OSHOP_MSG_FRAME_TILES * TILE_SIZE_4BPP, OSHOP_MSG_FRAME_BASE);
     LoadOrchidYesNoFrame(0, ORCHID_SHOP_YESNO_FRAME_TILE);
 }

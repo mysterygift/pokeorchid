@@ -4568,7 +4568,7 @@ static void InitPalettesAndSprites(void)
     LoadPalette(&gOrchidPc_Pal[OPC_PAL_UI * 16], BG_PLTT_ID(OPC_BG_UI), 2 * PLTT_SIZE_4BPP);
     OrchidPC_LoadSlotPalettes();
     LoadPalette(&gOrchidPc_Pal[OPC_PAL_TITLE * 16], BG_PLTT_ID(OPC_BG_TITLE), 2 * PLTT_SIZE_4BPP);
-    LoadPalette(gOrchidYesNoFrame_Pal, BG_PLTT_ID(OPC_BG_WINDOW), PLTT_SIZE_4BPP);
+    LoadPalette(GetFrameTintedWindowPalette(gOrchidYesNoFrame_Pal), BG_PLTT_ID(OPC_BG_WINDOW), PLTT_SIZE_4BPP);
     LoadPalette(sTextWindows_Pal, BG_PLTT_ID(OPC_BG_TEXTWIN), sizeof(sTextWindows_Pal));
     if (sStorage->boxOption != OPTION_MOVE_ITEMS)
         LoadPalette(&gOrchidPc_Pal[OPC_PAL_GRID * 16], BG_PLTT_ID(OPC_BG_GRID), PLTT_SIZE_4BPP);
