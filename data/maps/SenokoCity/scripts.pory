@@ -1,0 +1,5 @@
+mapscripts SenokoCity_MapScripts {}
+
+script SenokoCity_EventScript_PlaceholderSign {
+    msgbox(format("Senoko City: Mo runs the national power grid and looks after the wind farms around town. Placeholder map."), MSGBOX_SIGN)
+}

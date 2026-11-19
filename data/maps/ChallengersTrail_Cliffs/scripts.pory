@@ -1,0 +1,5 @@
+mapscripts ChallengersTrail_Cliffs_MapScripts {}
+
+script ChallengersTrail_Cliffs_EventScript_PlaceholderSign {
+    msgbox(format("Challenger's Trail: the open cliffs halfway up. Placeholder map."), MSGBOX_SIGN)
+}

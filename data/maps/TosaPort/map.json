@@ -3,7 +3,6 @@
   "name": "TosaPort",
   "layout": "LAYOUT_TOSA_PORT",
   "music": "MUS_TOSA_PORT",
-  "region": "REGION_HOENN",
   "region_map_section": "MAPSEC_TOSA_PORT",
   "requires_flash": false,
   "weather": "WEATHER_SUNNY",
@@ -408,5 +407,6 @@
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_WEST",
       "script": "TosaPort_EventScript_TruckSign"
     }
-  ]
+  ],
+  "region": "REGION_HOENN"
 }

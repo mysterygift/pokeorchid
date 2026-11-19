@@ -1,0 +1,5 @@
+mapscripts MtBatok_1F_MapScripts {}
+
+script MtBatok_1F_EventScript_PlaceholderSign {
+    msgbox(format("Mt. Batok 1F (from Route 302). Placeholder map."), MSGBOX_SIGN)
+}

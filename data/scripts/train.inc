@@ -47,3 +47,46 @@ Common_Text_UseTrain_NoDestinations:
 
 Common_Text_UseTrain_ComeAgain:
 	.string "Please ride with us again!$"
+
+@ ---------------------------------------------------------------------------------------------
+@ Shared by the generated stations (dev_scripts/train_ui/tosa_stations.py). Their concourse fare
+@ gates reuse TosaGateway_FareGateNorth / _South (same tiles as the Tosa Port gatehouse).
+TosaRail_EventScript_Receptionist::
+	lock
+	faceplayer
+	msgbox TosaRail_Text_Receptionist, MSGBOX_DEFAULT
+	release
+	end
+
+TosaRail_EventScript_PlatformAttendant::
+	lock
+	faceplayer
+	usetrain
+	release
+	end
+
+@ TEMP (testing) / debug: open or lock every station. Called by the Tosa Port platform attendant
+@ until the story opens stations, and by the station master in TrainTestEast.
+TosaRail_EventScript_OpenAllStations::
+	setvar VAR_0x8004, 0
+TosaRail_EventScript_OpenAllStations_Loop::
+	setvar VAR_0x8005, TRAIN_ACCESS_OPEN
+	special TrainStation_SetAccess
+	addvar VAR_0x8004, 1
+	goto_if_lt VAR_0x8004, TRAIN_STATION_COUNT, TosaRail_EventScript_OpenAllStations_Loop
+	return
+
+TosaRail_EventScript_LockAllStations::
+	setvar VAR_0x8004, 0
+TosaRail_EventScript_LockAllStations_Loop::
+	setvar VAR_0x8005, TRAIN_ACCESS_LOCKED
+	special TrainStation_SetAccess
+	addvar VAR_0x8004, 1
+	goto_if_lt VAR_0x8004, TRAIN_STATION_COUNT, TosaRail_EventScript_LockAllStations_Loop
+	return
+
+TosaRail_Text_Receptionist:
+	.string "Welcome to TOSA RAIL!\p"
+	.string "Tap your RAIL CARD at the fare\n"
+	.string "gates, then take the escalator\l"
+	.string "down to the platform.$"

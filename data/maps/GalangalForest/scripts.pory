@@ -1,0 +1,5 @@
+mapscripts GalangalForest_MapScripts {}
+
+script GalangalForest_EventScript_PlaceholderSign {
+    msgbox(format("Galangal Forest: a range of medicinal plants grow here. Placeholder map."), MSGBOX_SIGN)
+}

@@ -4,7 +4,7 @@ Export the ROM assets for the TOSA RAIL station map screen from network.json.
 Reads   dev_scripts/train_ui/network.json
         include/constants/train_stations.h   (station ids + TRAIN_STATION_COUNT, validated)
         src/data/train_stations.h            (display names, validated)
-Writes  graphics/train_map/bg.pal            JASC, 96 colours = BG palettes 0-5
+Writes  graphics/train_map/bg.pal            JASC, 112 colours = BG palettes 0-6 (6 = 4th line colour)
         graphics/train_map/grid.png/.bin     BG3 grid tiles + 32x32 tilemap (pal 5)
         graphics/train_map/diagram.png/.bin  BG2 tube + label tiles + 64x32 tilemap (screenblock order)
         graphics/train_map/frame.png/.bin    BG1 header + tray tiles + 32x32 tilemap (pal 0)
@@ -43,14 +43,16 @@ TRAY_ROWS = (128, 159)
 TRAY_Y = 128
 LEGEND_Y = 4                          # screen y of the 16x8 legend tube OBJs
 LEGEND_RIGHT = 236                    # legend block ends here
-TITLE = "TOSA RAIL"
+TITLE = ""                            # round 3 (header B): pictogram + named legend, no title text
 
 # BG palette slots (fixed by the screen spec)
-PAL_ORCHID, PAL_SEA, PAL_FOREST, PAL_GREY, PAL_SELECTED, PAL_GRID = range(6)
+PAL_ORCHID, PAL_SEA, PAL_FOREST, PAL_GREY, PAL_SELECTED, PAL_GRID, PAL_SUN = range(7)
+LINE_PALS = (PAL_ORCHID, PAL_SEA, PAL_FOREST, PAL_SUN)   # 4th line colour after the fixed slots
 RAMPS = {   # ACCENT_DARK, ACCENT, ACCENT_LIGHT, ACCENT_PALE
     PAL_ORCHID: THEMES["orchid"],
     PAL_SEA: SM.SEA,
     PAL_FOREST: [(40, 104, 64), (72, 160, 88), (144, 208, 136), (216, 240, 200)],
+    PAL_SUN: [(168, 72, 16), (232, 128, 48), (248, 184, 104), (252, 224, 184)],
     PAL_GREY: SM.GREY,
 }
 BACKDROP = GRID_PAL[1]                # BG palette 0 colour 0 = screen backdrop
@@ -104,8 +106,8 @@ def load_network():
     if len(lines) > 4:
         fail("obj_lines.pal holds at most 4 lines")
     for l in lines:
-        if l["bgPalette"] not in (PAL_ORCHID, PAL_SEA, PAL_FOREST):
-            fail("line %s: bgPalette must be 0, 1 or 2" % l["key"])
+        if l["bgPalette"] not in LINE_PALS:
+            fail("line %s: bgPalette must be one of %s" % (l["key"], LINE_PALS))
     byid = {s["id"]: s for s in st}
     for e in net["edges"]:
         if e["a"] not in byid or e["b"] not in byid or e["a"] == e["b"]:
@@ -145,6 +147,8 @@ def bg_palettes():
     pals.append(sel)
     grid = [snap(c) for c in GRID_PAL] + [(0, 0, 0)] * (16 - len(GRID_PAL))
     pals.append(grid)
+    THEMES["_x"] = RAMPS[PAL_SUN]
+    pals.append(palette("_x"))                      # slot 6: 4th line colour
     for p in pals:
         p[0] = snap(BACKDROP)
     return pals
@@ -291,7 +295,7 @@ def build_frame(lines):
     cv.hline(0, 255, 14, ACCENT_DARK)
     cv.hline(0, 255, 15, INK)
     SM.train_glyph(cv, 6, 2)
-    title_end = draw_text(cv, 22, -1, TITLE, WHITE, ACCENT_DARK)
+    title_end = draw_text(cv, 22, -1, TITLE, WHITE, ACCENT_DARK) if TITLE else 22
     xs = legend_layout(lines)
     if xs and xs[0] < title_end + 8:
         fail("legend collides with the title")
@@ -589,7 +593,7 @@ def export_check(st, lines, net, D, legend_xs, cam, cursor, accessible, path):
     cv = Canvas(lay)
     draw_text(cv, 24 + 2, 128 + 1, s["name"], INK, PANEL_SHADE)
     names = [lines[i]["name"] for i in s["lines"]]
-    draw_text(cv, 24 + 2, 144, " + ".join(names) + (" LINES" if len(names) > 1 else " LINE"), INK_SOFT, PANEL_SHADE, font="small")
+    draw_text(cv, 24 + 2, 144, " + ".join(names) + ("" if len(names) > 1 else " LINE"), INK_SOFT, PANEL_SHADE, font="small")
     x = 136 + 6
     x = draw_button(cv, x, 148, "A") + 3
     x = draw_text(cv, x, 144, "DEPART", INK, PANEL_SHADE, font="small") + 8
@@ -663,17 +667,16 @@ def main():
     open(HDR, "w", newline="\n").write(c_header(st, lines, net, D, legend_xs))
     # checks rendered back from the exported files
     ensure_out()
-    acc = {"TRAIN_STATION_TOSA_PORT", "TRAIN_STATION_TEST_EAST"}
+    acc = {"TRAIN_STATION_TOSA_PORT", "TRAIN_STATION_MOONGROVE_CITY", "TRAIN_STATION_TIMAH_CITY",
+           "TRAIN_STATION_FABER_TOWN", "TRAIN_STATION_CHANGU_CITY", "TRAIN_STATION_BURA_CITY",
+           "TRAIN_STATION_JURAN_CITY", "TRAIN_STATION_POKETOPIA_GATE"}
 
     def centre(sid):
         s = byid[sid]
         return (max(0, min(512 - 240, s["x"] - 120)), max(0, min(256 - 112, s["y"] - 56)))
-    export_check(st, lines, net, D, legend_xs, centre("TRAIN_STATION_TOSA_PORT"), "TRAIN_STATION_TOSA_PORT", acc,
-                 os.path.join(OUT, "export_check_west_3x.png"))
-    export_check(st, lines, net, D, legend_xs, centre("TRAIN_STATION_TEST_EAST"), "TRAIN_STATION_TEST_EAST", acc,
-                 os.path.join(OUT, "export_check_east_3x.png"))
-    export_check(st, lines, net, D, legend_xs, centre("TRAIN_STATION_TEST_NORTH"), "TRAIN_STATION_TEST_NORTH",
-                 acc | {"TRAIN_STATION_TEST_NORTH"}, os.path.join(OUT, "export_check_north_3x.png"))
+    for sid, tag in (("TRAIN_STATION_TOSA_PORT", "west"), ("TRAIN_STATION_CHANGU_CITY", "changu"),
+                     ("TRAIN_STATION_JURAN_CITY", "juran")):
+        export_check(st, lines, net, D, legend_xs, centre(sid), sid, acc, os.path.join(OUT, "export_check_%s_3x.png" % tag))
     print("diagram: %d tiles (budget %d), frame: %d tiles, label cells: %d, edge cells: %d"
           % (len(D["tiles"]), DIAGRAM_TILE_BUDGET, len(ftiles),
              sum(len(v) for v in D["label_cells"].values()), sum(len(c) for c in D["edge_cells"])))

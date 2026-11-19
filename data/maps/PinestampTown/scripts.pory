@@ -1,0 +1,5 @@
+mapscripts PinestampTown_MapScripts {}
+
+script PinestampTown_EventScript_PlaceholderSign {
+    msgbox(format("Pinestamp Town. Placeholder map."), MSGBOX_SIGN)
+}

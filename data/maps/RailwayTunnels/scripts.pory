@@ -1,0 +1,5 @@
+mapscripts RailwayTunnels_MapScripts {}
+
+script RailwayTunnels_EventScript_PlaceholderSign {
+    msgbox(format("Railway Tunnels: dingy tunnels beneath Tosa Port railway station. Placeholder map."), MSGBOX_SIGN)
+}

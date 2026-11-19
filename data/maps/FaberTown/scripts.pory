@@ -1,0 +1,5 @@
+mapscripts FaberTown_MapScripts {}
+
+script FaberTown_EventScript_PlaceholderSign {
+    msgbox(format("Faber Town: nestled in the cliffs, reached by cable car or a treacherous climb. Meru, the town's leader, trains against Rock Pokémon. Placeholder map."), MSGBOX_SIGN)
+}

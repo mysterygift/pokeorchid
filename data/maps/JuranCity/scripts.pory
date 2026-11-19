@@ -1,0 +1,5 @@
+mapscripts JuranCity_MapScripts {}
+
+script JuranCity_EventScript_PlaceholderSign {
+    msgbox(format("Juran City. Placeholder map."), MSGBOX_SIGN)
+}

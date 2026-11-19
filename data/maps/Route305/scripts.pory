@@ -1,0 +1,5 @@
+mapscripts Route305_MapScripts {}
+
+script Route305_EventScript_PlaceholderSign {
+    msgbox(format("Route 305 Placeholder map."), MSGBOX_SIGN)
+}

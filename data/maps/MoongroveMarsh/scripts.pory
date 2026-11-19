@@ -1,0 +1,5 @@
+mapscripts MoongroveMarsh_MapScripts {}
+
+script MoongroveMarsh_EventScript_PlaceholderSign {
+    msgbox(format("Moongrove Marsh: marshlands and mangroves around Moongrove City. Great for fishing up elusive Pokémon, and haunting ghosts come out at night. Placeholder map."), MSGBOX_SIGN)
+}

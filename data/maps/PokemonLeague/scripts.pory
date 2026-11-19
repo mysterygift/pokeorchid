@@ -1,0 +1,5 @@
+mapscripts PokemonLeague_MapScripts {}
+
+script PokemonLeague_EventScript_PlaceholderSign {
+    msgbox(format("Pokémon League. Placeholder map."), MSGBOX_SIGN)
+}
