@@ -50,3 +50,53 @@ TanglynTown_Text_Sign1:
 	.string "Home of TIKSI's ancient murals.\l"
 # 26 "data/maps/TanglynTown/scripts.pory"
 	.string "(Closed for restoration.)$"
+
+TanglynTown_EventScript_TiksiNpc1::
+# 33 "data/maps/TanglynTown/scripts.pory"
+	msgbox TanglynTown_EventScript_TiksiNpc1_Text_0, MSGBOX_NPC
+	return
+
+
+TanglynTown_EventScript_TiksiNpc2::
+# 37 "data/maps/TanglynTown/scripts.pory"
+	msgbox TanglynTown_EventScript_TiksiNpc2_Text_0, MSGBOX_NPC
+	return
+
+
+TanglynTown_EventScript_TiksiNpc3::
+# 41 "data/maps/TanglynTown/scripts.pory"
+	msgbox TanglynTown_EventScript_TiksiNpc3_Text_0, MSGBOX_NPC
+	return
+
+
+TanglynTown_EventScript_TiksiGuardianFrigoCave::
+# 45 "data/maps/TanglynTown/scripts.pory"
+	msgbox TanglynTown_EventScript_TiksiGuardianFrigoCave_Text_0, MSGBOX_NPC
+	return
+
+
+TanglynTown_EventScript_TiksiNpc1_Text_0:
+# 33 "data/maps/TanglynTown/scripts.pory"
+	.string "The murals in the hall show giants\n"
+	.string "sealed away by Tiksi's ancestors. Five\l"
+	.string "of them! Not three.$"
+
+TanglynTown_EventScript_TiksiNpc2_Text_0:
+# 37 "data/maps/TanglynTown/scripts.pory"
+	.string "The murals are older than any record.\n"
+	.string "Some say people from Sevii painted\l"
+	.string "them.$"
+
+TanglynTown_EventScript_TiksiNpc3_Text_0:
+# 41 "data/maps/TanglynTown/scripts.pory"
+	.string "Frigo Cave's off the north shore.\n"
+	.string "Locals say it's colder inside than it\l"
+	.string "has any right to be.$"
+
+TanglynTown_EventScript_TiksiGuardianFrigoCave_Text_0:
+# 45 "data/maps/TanglynTown/scripts.pory"
+	.string "Frigo Cave is colder than it has any\n"
+	.string "right to be. The ice giant is back\l"
+	.string "inside.\p"
+	.string "I have guarded this shore all my life.\n"
+	.string "Don't make me regret letting you pass.$"

@@ -1,0 +1,28 @@
+mapscripts ChanguCity_Gym_MapScripts {}
+
+script ChanguCity_Gym_EventScript_Leader {
+    trainerbattle_single(TRAINER_LEADER_LARRY, ChanguCity_Gym_Text_Intro, ChanguCity_Gym_Text_Defeat, ChanguCity_Gym_EventScript_Defeated, NO_MUSIC)
+    msgbox(ChanguCity_Gym_Text_Post, MSGBOX_AUTOCLOSE)
+}
+
+script ChanguCity_Gym_EventScript_Defeated {
+    setflag(FLAG_BADGE03_GET)
+    msgbox(format("{PLAYER} received the Larry Gym Badge!\p(Placeholder Gym: the badge flag is set.)"))
+    release
+}
+
+script ChanguCity_Gym_EventScript_Guide {
+    msgbox(format("Hey, Challenger! This is the Gym of Larry, who uses Normal-type Pokémon.\pThe Gym's still being fitted out. For now it's just you, Larry and this empty hall!"), MSGBOX_NPC)
+}
+
+text ChanguCity_Gym_Text_Intro {
+    format("I'm Larry. Paldea's Champion sent me here to build bridges with the Tosa League. Normal battle, normal Pokémon. Let's get this over with.")
+}
+
+text ChanguCity_Gym_Text_Defeat {
+    format("…Well. That's that, then.")
+}
+
+text ChanguCity_Gym_Text_Post {
+    format("I'd like to go home and have a nap now. That's normal, isn't it?")
+}

@@ -269,14 +269,14 @@
 #define TRAINER_PHOEBE                      262
 #define TRAINER_GLACIA                      263
 #define TRAINER_DRAKE                       264
-#define TRAINER_ROXANNE_1                   265
-#define TRAINER_BRAWLY_1                    266
-#define TRAINER_WATTSON_1                   267
-#define TRAINER_FLANNERY_1                  268
-#define TRAINER_NORMAN_1                    269
-#define TRAINER_WINONA_1                    270
-#define TRAINER_TATE_AND_LIZA_1             271
-#define TRAINER_JUAN_1                      272
+#define TRAINER_LEADER_HANA                 265
+#define TRAINER_LEADER_MERU                 266
+#define TRAINER_LEADER_MO                   267
+#define TRAINER_LEADER_MARIA                268
+#define TRAINER_LEADER_LARRY                269
+#define TRAINER_LEADER_MARINA               270
+#define TRAINER_LEADER_TORK                 271
+#define TRAINER_LEADER_FREA                 272
 #define TRAINER_JERRY_1                     273
 #define TRAINER_TED                         274
 #define TRAINER_PAUL                        275
@@ -876,6 +876,16 @@
 #define TRAINER_GRUNT_SEAFLOOR_CAVERN_1       TRAINER_JUN_JIE
 #define TRAINER_GRUNT_SEAFLOOR_CAVERN_2       TRAINER_PRIYA
 #define TRAINER_GRUNT_SEAFLOOR_CAVERN_3       TRAINER_RAVI
+
+// Orchid: the vanilla gym-leader slots were reused for the Tosa Gym Leaders (placeholder teams).
+#define TRAINER_ROXANNE_1                     TRAINER_LEADER_HANA
+#define TRAINER_WINONA_1                      TRAINER_LEADER_MARINA
+#define TRAINER_NORMAN_1                      TRAINER_LEADER_LARRY
+#define TRAINER_BRAWLY_1                      TRAINER_LEADER_MERU
+#define TRAINER_TATE_AND_LIZA_1               TRAINER_LEADER_TORK
+#define TRAINER_JUAN_1                        TRAINER_LEADER_FREA
+#define TRAINER_FLANNERY_1                    TRAINER_LEADER_MARIA
+#define TRAINER_WATTSON_1                     TRAINER_LEADER_MO
 
 // NOTE: Because each Trainer uses a flag to determine when they are defeated, there is only space for 2 additional trainers before trainer flag space overflows
 //       More space can be made by shifting flags around in constants/flags.h or changing how trainer flags are handled

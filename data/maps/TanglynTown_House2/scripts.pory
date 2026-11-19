@@ -1,0 +1,5 @@
+mapscripts TanglynTown_House2_MapScripts {}
+
+script TanglynTown_House2_EventScript_Npc1 {
+    msgbox(format("Tanglyn's quiet. Just the sea, the murals and the wind."), MSGBOX_NPC)
+}

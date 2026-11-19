@@ -3,3 +3,14 @@ mapscripts GalangalForest_MapScripts {}
 script GalangalForest_EventScript_PlaceholderSign {
     msgbox(format("Galangal Forest: a range of medicinal plants grow here. Placeholder map."), MSGBOX_SIGN)
 }
+
+// --- route_people.py (generated) ---
+
+script GalangalForest_EventScript_Route1 {
+    msgbox(format("Galangal Forest is full of medicinal plants. My grandmother made all her remedies from what grows here."), MSGBOX_NPC)
+}
+
+script GalangalForest_EventScript_Route2 {
+    msgbox(format("Shh! I'm stalking a rare Bug Pokémon. It's hiding in the galangal."), MSGBOX_NPC)
+}
+// --- end route_people.py ---

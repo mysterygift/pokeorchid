@@ -1,0 +1,5 @@
+mapscripts TanglynTown_House1_MapScripts {}
+
+script TanglynTown_House1_EventScript_Npc1 {
+    msgbox(format("The Mural Hall's closed for restoration. I came all this way!"), MSGBOX_NPC)
+}

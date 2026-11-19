@@ -1,5 +1,34 @@
-mapscripts IndustrialPark_MapScripts {}
+mapscripts IndustrialPark_MapScripts {
+}
 
-script IndustrialPark_EventScript_PlaceholderSign {
-    msgbox(format("Industrial Park. Placeholder map."), MSGBOX_SIGN)
+script IndustrialPark_EventScript_TownSign {
+    msgbox(format("Industrial Park"), MSGBOX_SIGN)
+}
+
+script IndustrialPark_EventScript_Sign0 {
+    msgbox(format("UNIT 1\nDeliveries round the back."), MSGBOX_SIGN)
+}
+
+script IndustrialPark_EventScript_Sign1 {
+    msgbox(format("UNIT 2\nNo entry."), MSGBOX_SIGN)
+}
+
+script IndustrialPark_EventScript_Sign2 {
+    msgbox(format("UNIT 3\nTo let."), MSGBOX_SIGN)
+}
+
+script IndustrialPark_EventScript_Sign3 {
+    msgbox(format("UNIT 4\nNo entry."), MSGBOX_SIGN)
+}
+
+script IndustrialPark_EventScript_Npc1 {
+    msgbox(format("Hard hats on past this point. Pokémon included."), MSGBOX_NPC)
+}
+
+script IndustrialPark_EventScript_Npc2 {
+    msgbox(format("Half these units belong to companies nobody's ever heard of. Funny that."), MSGBOX_NPC)
+}
+
+script IndustrialPark_EventScript_Npc3 {
+    msgbox(format("Careful round here. The forklifts don't stop for anyone."), MSGBOX_NPC)
 }

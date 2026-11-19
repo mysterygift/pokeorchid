@@ -1,0 +1,28 @@
+mapscripts CorralCity_Gym_MapScripts {}
+
+script CorralCity_Gym_EventScript_Leader {
+    trainerbattle_single(TRAINER_LEADER_MARINA, CorralCity_Gym_Text_Intro, CorralCity_Gym_Text_Defeat, CorralCity_Gym_EventScript_Defeated, NO_MUSIC)
+    msgbox(CorralCity_Gym_Text_Post, MSGBOX_AUTOCLOSE)
+}
+
+script CorralCity_Gym_EventScript_Defeated {
+    setflag(FLAG_BADGE02_GET)
+    msgbox(format("{PLAYER} received the Marina Gym Badge!\p(Placeholder Gym: the badge flag is set.)"))
+    release
+}
+
+script CorralCity_Gym_EventScript_Guide {
+    msgbox(format("Hey, Challenger! This is the Gym of Marina, who uses Water-type Pokémon.\pThe Gym's still being fitted out. For now it's just you, Marina and this empty hall!"), MSGBOX_NPC)
+}
+
+text CorralCity_Gym_Text_Intro {
+    format("I've swum every current around Pokétopia. Let's see if you can keep your head above water!")
+}
+
+text CorralCity_Gym_Text_Defeat {
+    format("You read the tide better than I did today.")
+}
+
+text CorralCity_Gym_Text_Post {
+    format("The sea always gives back what you put into it.")
+}

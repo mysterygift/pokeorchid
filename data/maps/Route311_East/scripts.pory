@@ -3,3 +3,10 @@ mapscripts Route311_East_MapScripts {}
 script Route311_East_EventScript_PlaceholderSign {
     msgbox(format("Route 311 (east of the Damp Path) Placeholder map."), MSGBOX_SIGN)
 }
+
+// --- route_people.py (generated) ---
+
+script Route311_East_EventScript_Route1 {
+    msgbox(format("You came through the Damp Path? Brave. Or foolish."), MSGBOX_NPC)
+}
+// --- end route_people.py ---

@@ -1,0 +1,28 @@
+mapscripts FaberTown_Gym_MapScripts {}
+
+script FaberTown_Gym_EventScript_Leader {
+    trainerbattle_single(TRAINER_LEADER_MERU, FaberTown_Gym_Text_Intro, FaberTown_Gym_Text_Defeat, FaberTown_Gym_EventScript_Defeated, NO_MUSIC)
+    msgbox(FaberTown_Gym_Text_Post, MSGBOX_AUTOCLOSE)
+}
+
+script FaberTown_Gym_EventScript_Defeated {
+    setflag(FLAG_BADGE04_GET)
+    msgbox(format("{PLAYER} received the Meru Gym Badge!\p(Placeholder Gym: the badge flag is set.)"))
+    release
+}
+
+script FaberTown_Gym_EventScript_Guide {
+    msgbox(format("Hey, Challenger! This is the Gym of Meru, who uses Fighting-type Pokémon.\pThe Gym's still being fitted out. For now it's just you, Meru and this empty hall!"), MSGBOX_NPC)
+}
+
+text FaberTown_Gym_Text_Intro {
+    format("I train alone in the mountains against wild Rock Pokémon. You climbed all the way up here? Then show me your strength!")
+}
+
+text FaberTown_Gym_Text_Defeat {
+    format("Hah! You hit harder than a rockslide!")
+}
+
+text FaberTown_Gym_Text_Post {
+    format("Strength comes from the climb, not the summit.")
+}

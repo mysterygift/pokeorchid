@@ -3,3 +3,10 @@ mapscripts Route308_MapScripts {}
 script Route308_EventScript_PlaceholderSign {
     msgbox(format("Route 308 Placeholder map."), MSGBOX_SIGN)
 }
+
+// --- route_people.py (generated) ---
+
+script Route308_EventScript_Route1 {
+    msgbox(format("I'm camping out to watch for rare Pokémon. Day three. Nothing yet."), MSGBOX_NPC)
+}
+// --- end route_people.py ---

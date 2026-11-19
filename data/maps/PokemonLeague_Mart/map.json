@@ -35,14 +35,14 @@
       "y": 8,
       "elevation": 0,
       "dest_map": "MAP_POKEMON_LEAGUE",
-      "dest_warp_id": "3"
+      "dest_warp_id": "4"
     },
     {
       "x": 7,
       "y": 8,
       "elevation": 0,
       "dest_map": "MAP_POKEMON_LEAGUE",
-      "dest_warp_id": "3"
+      "dest_warp_id": "4"
     }
   ],
   "coord_events": [],

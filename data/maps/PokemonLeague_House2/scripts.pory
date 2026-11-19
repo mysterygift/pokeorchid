@@ -1,0 +1,5 @@
+mapscripts PokemonLeague_House2_MapScripts {}
+
+script PokemonLeague_House2_EventScript_Npc1 {
+    msgbox(format("I've watched Challengers come and go for decades. The ones who care for their Pokémon always go furthest."), MSGBOX_NPC)
+}

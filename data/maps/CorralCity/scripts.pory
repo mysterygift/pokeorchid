@@ -1,5 +1,33 @@
-mapscripts CorralCity_MapScripts {}
+mapscripts CorralCity_MapScripts {
+    MAP_SCRIPT_ON_TRANSITION {
+        setflag(FLAG_VISITED_SOOTOPOLIS_CITY)
+    }
+}
 
-script CorralCity_EventScript_PlaceholderSign {
-    msgbox(format("Corral City: the bustling beach city on Pokétopia, home to Marina's gym and a lovely marina. Placeholder map."), MSGBOX_SIGN)
+script CorralCity_EventScript_TownSign {
+    msgbox(format("Corral City\n“Sun, sea and Pokétopia.”"), MSGBOX_SIGN)
+}
+
+script CorralCity_EventScript_GymSign {
+    msgbox(format("Corral City Pokémon Gym\nLeader: Marina. Water-type Pokémon."), MSGBOX_SIGN)
+}
+
+script CorralCity_EventScript_Npc1 {
+    msgbox(format("Marina's Gym is right by the water. They say she's mastered the seas themselves."), MSGBOX_NPC)
+}
+
+script CorralCity_EventScript_Npc2 {
+    msgbox(format("I'm going to swim to the little islands! Mum says I need a boat first. And to learn to swim."), MSGBOX_NPC)
+}
+
+script CorralCity_EventScript_Npc3 {
+    msgbox(format("Boats leave the marina for the small islands around Pokétopia. Once they're running again, anyway."), MSGBOX_NPC)
+}
+
+script CorralCity_EventScript_Npc4 {
+    msgbox(format("The night safari opens after dark. You can see nocturnal Pokémon up close!"), MSGBOX_NPC)
+}
+
+script CorralCity_EventScript_Npc5 {
+    msgbox(format("I came to Pokétopia for a quiet holiday. Then I found the ice cream stall."), MSGBOX_NPC)
 }

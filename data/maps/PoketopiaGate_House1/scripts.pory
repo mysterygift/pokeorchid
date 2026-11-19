@@ -1,0 +1,5 @@
+mapscripts PoketopiaGate_House1_MapScripts {}
+
+script PoketopiaGate_House1_EventScript_Npc1 {
+    msgbox(format("Ferries used to sail to Pokétopia from here. Now everyone takes the train."), MSGBOX_NPC)
+}

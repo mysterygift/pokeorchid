@@ -1,0 +1,5 @@
+mapscripts BuraCity_House1_MapScripts {}
+
+script BuraCity_House1_EventScript_Npc1 {
+    msgbox(format("Nobody stays in Bura long. That's what I like about it. It's quiet."), MSGBOX_NPC)
+}

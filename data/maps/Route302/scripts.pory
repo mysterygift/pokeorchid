@@ -3,3 +3,14 @@ mapscripts Route302_MapScripts {}
 script Route302_EventScript_PlaceholderSign {
     msgbox(format("Route 302 Placeholder map."), MSGBOX_SIGN)
 }
+
+// --- route_people.py (generated) ---
+
+script Route302_EventScript_Route1 {
+    msgbox(format("Mt. Batok's just east of here. The climb to Faber Town is no joke!"), MSGBOX_NPC)
+}
+
+script Route302_EventScript_Route2 {
+    msgbox(format("Route 302's my favourite place to train. The wild Pokémon here are gentle."), MSGBOX_NPC)
+}
+// --- end route_people.py ---

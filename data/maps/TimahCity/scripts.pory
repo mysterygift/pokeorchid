@@ -1,5 +1,33 @@
-mapscripts TimahCity_MapScripts {}
+mapscripts TimahCity_MapScripts {
+    MAP_SCRIPT_ON_TRANSITION {
+        setflag(FLAG_VISITED_PETALBURG_CITY)
+    }
+}
 
-script TimahCity_EventScript_PlaceholderSign {
-    msgbox(format("Timah City: in the tropical heart of the Tosa Reserve. Gym leader Hana cultivates orchids in her garden. Placeholder map."), MSGBOX_SIGN)
+script TimahCity_EventScript_TownSign {
+    msgbox(format("Timah City\n“The green heart of the Tosa Reserve.”"), MSGBOX_SIGN)
+}
+
+script TimahCity_EventScript_GymSign {
+    msgbox(format("Timah City Pokémon Gym\nLeader: Hana. Grass-type Pokémon."), MSGBOX_SIGN)
+}
+
+script TimahCity_EventScript_Npc1 {
+    msgbox(format("Hana grows orchids in her garden that bloom nowhere else in the world. She guards them better than her Gym Badge!"), MSGBOX_NPC)
+}
+
+script TimahCity_EventScript_Npc2 {
+    msgbox(format("Timah sits right in the middle of the Tosa Reserve. Stick to the paths. The Rangers are watching for poachers."), MSGBOX_NPC)
+}
+
+script TimahCity_EventScript_Npc3 {
+    msgbox(format("It rains here every afternoon, like clockwork. Bring an umbrella. Or a Lotad."), MSGBOX_NPC)
+}
+
+script TimahCity_EventScript_Npc4 {
+    msgbox(format("This city grew up around the old rubber trees on the hill. Now look at it: trains, Pokémon Centres…"), MSGBOX_NPC)
+}
+
+script TimahCity_EventScript_Npc5 {
+    msgbox(format("There are Pokémon up in the canopy that never come down to the ground. I've been waiting all week!"), MSGBOX_NPC)
 }

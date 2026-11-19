@@ -1,0 +1,9 @@
+mapscripts AbandonedHouse_House1_MapScripts {}
+
+script AbandonedHouse_House1_EventScript_Npc1 {
+    msgbox(format("…Hello? Is someone there?\p…Oh. It's only you. I thought I heard footsteps upstairs. There is no upstairs."), MSGBOX_NPC)
+}
+
+script AbandonedHouse_House1_EventScript_Npc2 {
+    msgbox(format("…\p(It stares at you without blinking.)"), MSGBOX_NPC)
+}

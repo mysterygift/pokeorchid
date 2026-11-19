@@ -3,3 +3,10 @@ mapscripts Route307_MapScripts {}
 script Route307_EventScript_PlaceholderSign {
     msgbox(format("Route 307 Placeholder map."), MSGBOX_SIGN)
 }
+
+// --- route_people.py (generated) ---
+
+script Route307_EventScript_Route1 {
+    msgbox(format("The east side of Mt. Batok comes out just north of here. Took me all day."), MSGBOX_NPC)
+}
+// --- end route_people.py ---

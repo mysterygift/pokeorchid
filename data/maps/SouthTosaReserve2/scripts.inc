@@ -8,6 +8,12 @@ SouthTosaReserve2_EventScript_PlaceholderSign::
 	return
 
 
+SouthTosaReserve2_EventScript_Route1::
+# 10 "data/maps/SouthTosaReserve2/scripts.pory"
+	msgbox SouthTosaReserve2_EventScript_Route1_Text_0, MSGBOX_NPC
+	return
+
+
 SouthTosaReserve2_EventScript_PlaceholderSign_Text_0:
 # 4 "data/maps/SouthTosaReserve2/scripts.pory"
 	.string "South Tosa Reserve. A sprawling nature\n"
@@ -16,3 +22,10 @@ SouthTosaReserve2_EventScript_PlaceholderSign_Text_0:
 	.string "Pokémon Rangers watch over it; invasive\l"
 	.string "species from other regions are a\l"
 	.string "growing problem. Placeholder map.$"
+
+SouthTosaReserve2_EventScript_Route1_Text_0:
+# 10 "data/maps/SouthTosaReserve2/scripts.pory"
+	.string "Rangers patrol the Tosa Reserve to\n"
+	.string "protect the native Pokémon. Lately we\l"
+	.string "spend most of our time tracking\l"
+	.string "invasive species.$"

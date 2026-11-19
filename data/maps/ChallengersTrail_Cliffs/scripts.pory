@@ -3,3 +3,10 @@ mapscripts ChallengersTrail_Cliffs_MapScripts {}
 script ChallengersTrail_Cliffs_EventScript_PlaceholderSign {
     msgbox(format("Challenger's Trail: the open cliffs halfway up. Placeholder map."), MSGBOX_SIGN)
 }
+
+// --- route_people.py (generated) ---
+
+script ChallengersTrail_Cliffs_EventScript_Route1 {
+    msgbox(format("Halfway there. Don't look down!"), MSGBOX_NPC)
+}
+// --- end route_people.py ---

@@ -1,0 +1,5 @@
+mapscripts FurongVillage_House2_MapScripts {}
+
+script FurongVillage_House2_EventScript_Npc1 {
+    msgbox(format("Tosa and Tiksi haven't got along for a hundred years. Don't take it personally."), MSGBOX_NPC)
+}

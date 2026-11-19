@@ -1,5 +1,18 @@
-mapscripts PoketopiaGate_MapScripts {}
+mapscripts PoketopiaGate_MapScripts {
+}
 
-script PoketopiaGate_EventScript_PlaceholderSign {
-    msgbox(format("Pokétopia Gate: the way across to Pokétopia. Placeholder map."), MSGBOX_SIGN)
+script PoketopiaGate_EventScript_TownSign {
+    msgbox(format("Pokétopia Gate\n“All aboard for paradise!”"), MSGBOX_SIGN)
+}
+
+script PoketopiaGate_EventScript_Npc1 {
+    msgbox(format("The train runs straight across to Pokétopia. Resort island, marina, night safari, you name it."), MSGBOX_NPC)
+}
+
+script PoketopiaGate_EventScript_Npc2 {
+    msgbox(format("I've got my swimming trunks on under my suit. Don't tell my boss."), MSGBOX_NPC)
+}
+
+script PoketopiaGate_EventScript_Npc3 {
+    msgbox(format("Tentacool wash up on this beach after storms. Tread carefully."), MSGBOX_NPC)
 }

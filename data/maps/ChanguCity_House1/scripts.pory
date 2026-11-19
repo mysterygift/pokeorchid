@@ -1,0 +1,5 @@
+mapscripts ChanguCity_House1_MapScripts {}
+
+script ChanguCity_House1_EventScript_Npc1 {
+    msgbox(format("I walk to the airport every day on Route 306. It's a short, pleasant commute… when it isn't raining."), MSGBOX_NPC)
+}

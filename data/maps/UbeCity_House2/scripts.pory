@@ -1,0 +1,5 @@
+mapscripts UbeCity_House2_MapScripts {}
+
+script UbeCity_House2_EventScript_Npc1 {
+    msgbox(format("People in Ube are tough. You have to be, out here."), MSGBOX_NPC)
+}

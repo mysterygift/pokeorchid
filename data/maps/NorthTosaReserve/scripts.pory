@@ -3,3 +3,14 @@ mapscripts NorthTosaReserve_MapScripts {}
 script NorthTosaReserve_EventScript_PlaceholderSign {
     msgbox(format("North Tosa Reserve. A sprawling nature reserve at the heart of the Tosa region, home to all manner of species. Pokémon Rangers watch over it; invasive species from other regions are a growing problem. Placeholder map."), MSGBOX_SIGN)
 }
+
+// --- route_people.py (generated) ---
+
+script NorthTosaReserve_EventScript_Route1 {
+    msgbox(format("Rangers patrol the Tosa Reserve to protect the native Pokémon. Lately we spend most of our time tracking invasive species."), MSGBOX_NPC)
+}
+
+script NorthTosaReserve_EventScript_Route2 {
+    msgbox(format("Professor Palm asked me to count the Pokémon here. The numbers keep changing every year."), MSGBOX_NPC)
+}
+// --- end route_people.py ---

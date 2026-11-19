@@ -1,5 +1,30 @@
-mapscripts BuraCity_MapScripts {}
+mapscripts BuraCity_MapScripts {
+}
 
-script BuraCity_EventScript_PlaceholderSign {
-    msgbox(format("Bura City: a quiet stopover on the way between Changu and Juran. Placeholder map."), MSGBOX_SIGN)
+script BuraCity_EventScript_TownSign {
+    msgbox(format("Bura City\n“Stop a while.”"), MSGBOX_SIGN)
+}
+
+script BuraCity_EventScript_GymSign {
+    msgbox(format("Bura City Pokémon Gym\nLeader: Maria. Cat-type Pokémon."), MSGBOX_SIGN)
+}
+
+script BuraCity_EventScript_Npc1 {
+    msgbox(format("Bura? I'm only here to change trains. Though the hawker centre's worth getting off for."), MSGBOX_NPC)
+}
+
+script BuraCity_EventScript_Npc2 {
+    msgbox(format("Maria's gone to Juran for the weekend again. Her cats are minding the Gym till Monday."), MSGBOX_NPC)
+}
+
+script BuraCity_EventScript_Npc3 {
+    msgbox(format("Maria dressed her Skitty up as a Wingull yesterday. It did not look happy."), MSGBOX_NPC)
+}
+
+script BuraCity_EventScript_Npc4 {
+    msgbox(format("Chicken rice! Laksa! Char kway teow! The best food between Changu and Juran!"), MSGBOX_NPC)
+}
+
+script BuraCity_EventScript_Npc5 {
+    msgbox(format("Skitty: Nyaa!\p(It's wearing a tiny sailor hat.)"), MSGBOX_NPC)
 }

@@ -1,0 +1,5 @@
+mapscripts JuranCity_House4_MapScripts {}
+
+script JuranCity_House4_EventScript_Npc1 {
+    msgbox(format("Maria from Bura comes here every weekend. She always brings a cat in a different hat."), MSGBOX_NPC)
+}

@@ -24,3 +24,22 @@ UbeCity_Text_Sign1:
 	.string "Closed today.$"
 
 `
+
+// --- tiksi_people.py (generated) ---
+
+script UbeCity_EventScript_TiksiNpc1 {
+    msgbox(format("Silph Co.'s Tiksi office! Well… it's more of a cupboard. Sales have been slow."), MSGBOX_NPC)
+}
+
+script UbeCity_EventScript_TiksiNpc2 {
+    msgbox(format("Ube's the only city in Tiksi. Which is why it's the only place with a decent cup of tea."), MSGBOX_NPC)
+}
+
+script UbeCity_EventScript_TiksiNpc3 {
+    msgbox(format("The guardians keep watch at the old shrines. If they're standing at the doors, something's very wrong."), MSGBOX_NPC)
+}
+
+script UbeCity_EventScript_TiksiNpc4 {
+    msgbox(format("My dad says Tosa people think we're backward. We've got a fountain! Have they got a fountain?"), MSGBOX_NPC)
+}
+// --- end tiksi_people.py ---

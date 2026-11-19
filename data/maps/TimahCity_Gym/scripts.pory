@@ -1,0 +1,28 @@
+mapscripts TimahCity_Gym_MapScripts {}
+
+script TimahCity_Gym_EventScript_Leader {
+    trainerbattle_single(TRAINER_LEADER_HANA, TimahCity_Gym_Text_Intro, TimahCity_Gym_Text_Defeat, TimahCity_Gym_EventScript_Defeated, NO_MUSIC)
+    msgbox(TimahCity_Gym_Text_Post, MSGBOX_AUTOCLOSE)
+}
+
+script TimahCity_Gym_EventScript_Defeated {
+    setflag(FLAG_BADGE01_GET)
+    msgbox(format("{PLAYER} received the Hana Gym Badge!\p(Placeholder Gym: the badge flag is set.)"))
+    release
+}
+
+script TimahCity_Gym_EventScript_Guide {
+    msgbox(format("Hey, Challenger! This is the Gym of Hana, who uses Grass-type Pokémon.\pThe Gym's still being fitted out. For now it's just you, Hana and this empty hall!"), MSGBOX_NPC)
+}
+
+text TimahCity_Gym_Text_Intro {
+    format("Welcome to my garden. My orchids bloom nowhere else in the world, and neither does my battling style!")
+}
+
+text TimahCity_Gym_Text_Defeat {
+    format("Oh my… you pruned my team right back.")
+}
+
+text TimahCity_Gym_Text_Post {
+    format("Treat every living thing as gently as an orchid and it will grow strong for you.")
+}

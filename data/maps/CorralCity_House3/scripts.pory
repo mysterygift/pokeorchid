@@ -1,0 +1,5 @@
+mapscripts CorralCity_House3_MapScripts {}
+
+script CorralCity_House3_EventScript_Npc1 {
+    msgbox(format("I found a Shellder on the beach! Then it found my finger."), MSGBOX_NPC)
+}

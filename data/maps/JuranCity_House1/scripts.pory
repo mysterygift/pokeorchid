@@ -1,0 +1,5 @@
+mapscripts JuranCity_House1_MapScripts {}
+
+script JuranCity_House1_EventScript_Npc1 {
+    msgbox(format("I used to own a little bakery. Then the rent went up… and the “visits” started."), MSGBOX_NPC)
+}

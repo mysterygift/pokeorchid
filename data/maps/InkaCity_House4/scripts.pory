@@ -1,0 +1,5 @@
+mapscripts InkaCity_House4_MapScripts {}
+
+script InkaCity_House4_EventScript_Npc1 {
+    msgbox(format("Frea let me hold her Spheal! It was cold!"), MSGBOX_NPC)
+}

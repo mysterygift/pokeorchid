@@ -3,3 +3,14 @@ mapscripts MoongroveMarsh_MapScripts {}
 script MoongroveMarsh_EventScript_PlaceholderSign {
     msgbox(format("Moongrove Marsh: marshlands and mangroves around Moongrove City. Great for fishing up elusive Pokémon, and haunting ghosts come out at night. Placeholder map."), MSGBOX_SIGN)
 }
+
+// --- route_people.py (generated) ---
+
+script MoongroveMarsh_EventScript_Route1 {
+    msgbox(format("The catfish here are elusive. Tork says patience is everything."), MSGBOX_NPC)
+}
+
+script MoongroveMarsh_EventScript_Route2 {
+    msgbox(format("Come back after dark… that's when the marsh ghosts come out to play."), MSGBOX_NPC)
+}
+// --- end route_people.py ---

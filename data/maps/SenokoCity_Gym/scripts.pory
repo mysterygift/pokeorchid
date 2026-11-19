@@ -1,0 +1,28 @@
+mapscripts SenokoCity_Gym_MapScripts {}
+
+script SenokoCity_Gym_EventScript_Leader {
+    trainerbattle_single(TRAINER_LEADER_MO, SenokoCity_Gym_Text_Intro, SenokoCity_Gym_Text_Defeat, SenokoCity_Gym_EventScript_Defeated, NO_MUSIC)
+    msgbox(SenokoCity_Gym_Text_Post, MSGBOX_AUTOCLOSE)
+}
+
+script SenokoCity_Gym_EventScript_Defeated {
+    setflag(FLAG_BADGE08_GET)
+    msgbox(format("{PLAYER} received the Mo Gym Badge!\p(Placeholder Gym: the badge flag is set.)"))
+    release
+}
+
+script SenokoCity_Gym_EventScript_Guide {
+    msgbox(format("Hey, Challenger! This is the Gym of Mo, who uses Electric-type Pokémon.\pThe Gym's still being fitted out. For now it's just you, Mo and this empty hall!"), MSGBOX_NPC)
+}
+
+text SenokoCity_Gym_Text_Intro {
+    format("I keep the lights on across the whole of Tosa. Let's see if you can handle the full voltage!")
+}
+
+text SenokoCity_Gym_Text_Defeat {
+    format("Wahahah! You've short-circuited me!")
+}
+
+text SenokoCity_Gym_Text_Post {
+    format("Every turbine on the hill turns a little faster when a good battle's going on.")
+}

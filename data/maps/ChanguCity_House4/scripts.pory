@@ -1,0 +1,5 @@
+mapscripts ChanguCity_House4_MapScripts {}
+
+script ChanguCity_House4_EventScript_Npc1 {
+    msgbox(format("Changu was a fishing village before the airport. Now the only thing we catch is flights."), MSGBOX_NPC)
+}

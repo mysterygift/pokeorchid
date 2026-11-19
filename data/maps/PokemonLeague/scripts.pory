@@ -1,5 +1,22 @@
-mapscripts PokemonLeague_MapScripts {}
+mapscripts PokemonLeague_MapScripts {
+}
 
-script PokemonLeague_EventScript_PlaceholderSign {
-    msgbox(format("Pokémon League. Placeholder map."), MSGBOX_SIGN)
+script PokemonLeague_EventScript_TownSign {
+    msgbox(format("Pokémon League\n“Only the strongest Trainers stand here.”"), MSGBOX_SIGN)
+}
+
+script PokemonLeague_EventScript_Npc1 {
+    msgbox(format("You made it up Challenger's Trail? Then you're ready to face the Elite Four."), MSGBOX_NPC)
+}
+
+script PokemonLeague_EventScript_Npc2 {
+    msgbox(format("Siya, Fue, Stern and Mawray. Four of the strongest Trainers in Tosa, one after the other."), MSGBOX_NPC)
+}
+
+script PokemonLeague_EventScript_Npc3 {
+    msgbox(format("Captain Stern sailed the seas for thirty years before joining the Elite Four. His Steel Pokémon are as tough as an anchor."), MSGBOX_NPC)
+}
+
+script PokemonLeague_EventScript_Npc4 {
+    msgbox(format("Stock up at the Mart and rest at the Pokémon Centre. Once you're inside, there's no turning back."), MSGBOX_NPC)
 }
