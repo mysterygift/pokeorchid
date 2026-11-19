@@ -379,8 +379,8 @@ Level: 35
 
 === TRAINER_GUARDIAN_REGOLIS ===
 Name: Tomas
-Class: Ruin Maniac
-Pic: Ruin Maniac
+Class: Guardian
+Pic: Expert M
 Gender: Male
 Music: Intense
 Double Battle: No
@@ -401,7 +401,7 @@ Level: 53
 Solrock
 Level: 54
 
-Tyranitar @ Hard Stone
+Tyranitar @ Tyranitarite
 Level: 55
 Ability: Sand Stream
 - Stone Edge
@@ -411,7 +411,7 @@ Ability: Sand Stream
 
 === TRAINER_GUARDIAN_FRIGO ===
 Name: Signe
-Class: Expert
+Class: Guardian
 Pic: Expert F
 Gender: Female
 Music: Intense
@@ -434,21 +434,25 @@ Level: 53
 Mantine
 Level: 53
 
-Glalie
-Level: 54
-
 Walrein @ Never-Melt Ice
-Level: 55
+Level: 54
 Ability: Thick Fat
 - Ice Beam
 - Surf
 - Earthquake
 - Body Slam
 
+Glalie @ Glalitite
+Level: 55
+- Double-Edge
+- Freeze-Dry
+- Earthquake
+- Ice Shard
+
 === TRAINER_GUARDIAN_FERRUM ===
 Name: Bram
-Class: Hiker
-Pic: Hiker
+Class: Guardian
+Pic: Expert M
 Gender: Male
 Music: Intense
 Double Battle: No
@@ -469,7 +473,7 @@ Level: 53
 Aggron
 Level: 54
 
-Metagross @ Metal Coat
+Metagross @ Metagrossite
 Level: 55
 Ability: Clear Body
 - Meteor Mash
@@ -479,40 +483,65 @@ Ability: Clear Body
 
 === TRAINER_GUARDIAN_GAVANI ===
 Name: Ines
-Class: Hex Maniac
-Pic: Hex Maniac
+Class: Guardian
+Pic: Expert F
 Gender: Female
 Music: Intense
-Double Battle: No
+Double Battle: Yes
 AI: Basic Trainer
 
 Plusle
 Level: 52
+Ability: Plus
+- Thunderbolt
+- Nasty Plot
+- Helping Hand
+- Protect
 
 Minun
 Level: 52
-
-Nosepass
-Level: 53
+Ability: Minus
+- Thunderbolt
+- Encore
+- Helping Hand
+- Light Screen
 
 Lanturn
 Level: 53
+Ability: Volt Absorb
+- Thunderbolt
+- Ice Beam
+- Confuse Ray
+- Thunder Wave
+
+Claydol
+Level: 53
+Ability: Levitate
+- Reflect
+- Light Screen
+- Earth Power
+- Psychic
 
 Manectric
 Level: 54
-
-Ampharos @ Magnet
-Level: 55
-Ability: Static
-- Thunderbolt
-- Power Gem
-- Dragon Pulse
+Ability: Minus
+- Discharge
+- Fire Fang
 - Thunder Wave
+- Protect
+
+Ampharos @ Ampharosite
+Level: 55
+Ability: Plus
+- Discharge
+- Dragon Pulse
+- Power Gem
+- Magnetic Flux
 
 === TRAINER_GUARDIAN_DRAKE ===
-Name: Aldric
-Class: Dragon Tamer
-Pic: Dragon Tamer
+Name: Alric
+Class: Guardian
+Pic: Expert M
 Gender: Male
 Music: Intense
 Double Battle: No
@@ -533,11 +562,11 @@ Level: 53
 Flygon
 Level: 54
 
-Salamence @ Dragon Fang
+Salamence @ Salamencite
 Level: 55
 Ability: Intimidate
 - Dragon Claw
-- Dual Wingbeat
+- Double-Edge
 - Crunch
 - Flamethrower
 
