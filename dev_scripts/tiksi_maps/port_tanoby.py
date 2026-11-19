@@ -9,7 +9,9 @@ rows, Emerald sand (0x124) under the bases, and the FRLG doorway's dark tiles be
 Sea, sand edges and rocks around the chambers are Emerald General tiles (dress.py), as the user asked.
 
 Writes data/tilesets/secondary/tanoby_delta/{tiles.png, palettes/00-15.pal, metatiles.bin,
-metatile_attributes.bin}; metatiles 0x200-0x20B are the facade, row by row.
+metatile_attributes.bin}; metatiles 0x200-0x20B are the facade, row by row, and 0x20C-0x20E a tall
+stone pillar (top, middle, base) in the facade's colours with small Unown glyphs carved down its centre
+(the user's design): the base is solid and below sprites, the upper two draw over the player.
 usage: <venv>/python dev_scripts/tiksi_maps/port_tanoby.py   (needs Pillow)
 """
 import os
@@ -23,7 +25,50 @@ OUT = P("data", "tilesets", "secondary", "tanoby_delta")
 FACADE = [[0x2C8, 0x2C9, 0x2CA], [0x2D0, 0x2D1, 0x2D2], [0x2D8, 0x2D9, 0x2DA], [0x2E0, 0x2E1, 0x2E2]]
 EM_ROCK, EM_SAND = 0x071, 0x124
 NEW_PAL = 6                                   # first secondary palette slot
-MB_NORMAL, LAYER_COVERED = 0x00, 1
+MB_NORMAL, LAYER_NORMAL, LAYER_COVERED = 0x00, 0, 1
+
+# Pillar, 16x48, in the facade palette: 5 outline, 6 light tan, 11 tan, 8 mid, 9 dark, 4 / 3 carved slate.
+# Top face (light) above a front face lit from the left; stone courses every 12 rows; three Unown.
+UNOWN = [  # 6 wide x 7 tall; '#' carved line, 'o' the eye
+    ["..##..", ".#..#.", "#.oo.#", "#.oo.#", "######", "#....#", "#....#"],   # A
+    ["#.....", "#.##..", "##oo#.", "#.oo.#", "#....#", ".####.", "......"],   # B-ish
+    [".####.", "#....#", "..oo.#", "..oo.#", "#....#", ".####.", "......"],   # C-ish
+]
+
+
+def pillar_art():
+    W, H = 16, 48
+    g = [[0] * W for _ in range(H)]
+    for y in range(H):
+        for x in range(1, 15):
+            g[y][x] = 11
+    for y in range(0, 6):                                  # top face, seen from above
+        for x in range(1, 15):
+            g[y][x] = 6
+    for x in range(1, 15):
+        g[0][x] = 5; g[5][x] = 9; g[H - 1][x] = 5
+    for y in range(6, H - 1):                              # front face: lit left, shaded right
+        g[y][2] = 6
+        g[y][12] = 8
+        g[y][13] = 9
+    for yy in (17, 29, 41):                                # stone courses
+        for x in range(2, 14):
+            g[yy][x] = 8
+        for x in range(2, 14):
+            g[yy + 1][x] = 6 if x < 12 else g[yy + 1][x]
+    for y in range(H):
+        g[y][1] = 5; g[y][14] = 5
+    for y in range(H - 4, H - 1):                          # weathered foot
+        for x in range(2, 14):
+            g[y][x] = 8 if x < 12 else 9
+    for k, top in enumerate((8, 20, 32)):
+        for j, row in enumerate(UNOWN[k]):
+            for i, ch in enumerate(row):
+                if ch == "#":
+                    g[top + j][5 + i] = 4
+                elif ch == "o":
+                    g[top + j][5 + i] = 3 if (i + j) % 2 else 4
+    return g
 
 
 def read_pal(path):
@@ -98,6 +143,17 @@ def main():
                         bottom.append(base[q])
             mts.append(bottom + top)
             attrs.append(MB_NORMAL | LAYER_COVERED << 12)
+
+    # the pillar: art on the top layer over Emerald sand
+    art = pillar_art()
+    for k in range(3):
+        top = []
+        for q in range(4):
+            ox, oy = (q % 2) * 8, k * 16 + (q // 2) * 8
+            idx = add(tuple(tuple(art[oy + j][ox + i] for i in range(8)) for j in range(8)))
+            top.append(0 if idx is None else (idx | NEW_PAL << 12))
+        mts.append(list(emt[EM_SAND][:4]) + top)
+        attrs.append(MB_NORMAL | (LAYER_COVERED if k == 2 else LAYER_NORMAL) << 12)
 
     os.makedirs(os.path.join(OUT, "palettes"), exist_ok=True)
     cols = (src_pal + [(0, 0, 0)] * 16)[:16]

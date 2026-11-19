@@ -2,7 +2,7 @@
   "id": "MAP_TANOBY_DELTA",
   "name": "TanobyDelta",
   "layout": "LAYOUT_TANOBY_DELTA",
-  "music": "MUS_ROUTE119",
+  "music": "MUS_SINJOH_RUINS",
   "region": "REGION_HOENN",
   "region_map_section": "MAPSEC_TANOBY_DELTA",
   "requires_flash": false,
