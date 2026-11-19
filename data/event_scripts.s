@@ -312,6 +312,7 @@ gStdScripts_End::
 	.include "data/maps/ChanguAirport_Station/scripts.inc"
 	.include "data/maps/ChanguAirport_StationPlatform/scripts.inc"
 	.include "data/maps/InkaCity/scripts.inc"
+	.include "data/maps/InkaSeawall/scripts.inc"
 	.include "data/maps/InkaCity_Station/scripts.inc"
 	.include "data/maps/InkaCity_StationPlatform/scripts.inc"
 	.include "data/maps/BuraCity/scripts.inc"

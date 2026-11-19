@@ -248,126 +248,134 @@ Taillow
 Level: 26
 IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 
-=== TRAINER_GRUNT_PETALBURG_WOODS ===
-Name: Grunt
-Class: Team Aqua
-Pic: Aqua Grunt M
+=== TRAINER_AMIR_AND_NUR ===
+Name: Amir & Nur
+Class: Young Couple
+Pic: Young Couple
 Gender: Male
-Music: Aqua
+Music: Girl
+Double Battle: Yes
+AI: Basic Trainer
+
+Plusle
+Level: 34
+
+Minun
+Level: 34
+
+=== TRAINER_JUN_AND_HUI ===
+Name: Jun & Hui
+Class: Young Couple
+Pic: Young Couple
+Gender: Male
+Music: Girl
+Double Battle: Yes
+AI: Basic Trainer
+
+Volbeat
+Level: 34
+
+Illumise
+Level: 34
+
+=== TRAINER_CHLOE ===
+Name: Chloe
+Class: Influencer
+Pic: Influencer
+Gender: Female
+Music: Female
 Double Battle: No
-AI: Check Bad Move
+AI: Basic Trainer
 
-Poochyena
-Level: 9
-IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+Delcatty
+Level: 34
 
-=== TRAINER_MARCEL ===
-Name: Marcel
-Class: Cooltrainer
-Pic: Cooltrainer M
+Jynx
+Level: 35
+
+=== TRAINER_IMRAN ===
+Name: Imran
+Class: Triathlete
+Pic: Running Triathlete M
 Gender: Male
-Music: Cool
-Items: Hyper Potion
+Music: Male
+Double Battle: No
+AI: Basic Trainer
+
+Ninjask
+Level: 34
+
+Linoone
+Level: 34
+
+Dodrio
+Level: 35
+
+=== TRAINER_SITI ===
+Name: Siti
+Class: Beauty
+Pic: Beauty
+Gender: Female
+Music: Female
+Double Battle: No
+AI: Basic Trainer
+
+Roselia
+Level: 35
+
+Bellossom
+Level: 35
+
+=== TRAINER_HOCK_AND_LAN ===
+Name: Hock & Lan
+Class: Old Couple
+Pic: Old Couple
+Gender: Male
+Music: Intense
+Double Battle: Yes
+AI: Basic Trainer
+
+Azumarill
+Level: 35
+
+Dewgong
+Level: 36
+
+=== TRAINER_YUKI ===
+Name: Yuki
+Class: Tourist
+Pic: Tourist F
+Gender: Female
+Music: Female
+Double Battle: No
+AI: Basic Trainer
+
+Spinda
+Level: 33
+
+Castform
+Level: 33
+
+Pelipper
+Level: 34
+
+=== TRAINER_FAIZ ===
+Name: Faiz
+Class: Rider
+Pic: Rider
+Gender: Male
+Music: Male
 Double Battle: No
 AI: Basic Trainer
 
 Manectric
-Level: 29
-IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
-
-Shiftry
-Level: 29
-IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
-
-=== TRAINER_ALBERTO ===
-Name: Alberto
-Class: Bird Keeper
-Pic: Bird Keeper
-Gender: Male
-Music: Cool
-Double Battle: No
-AI: Check Bad Move
-
-Pelipper
-Level: 30
-IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
-
-Xatu
-Level: 30
-IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
-
-=== TRAINER_ED ===
-Name: Ed
-Class: Collector
-Pic: Collector
-Gender: Male
-Music: Suspicious
-Double Battle: No
-AI: Check Bad Move
-
-Zangoose
-Level: 30
-IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
-
-Seviper
-Level: 30
-IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
-
-=== TRAINER_GRUNT_SEAFLOOR_CAVERN_4 ===
-Name: Grunt
-Class: Team Aqua
-Pic: Aqua Grunt F
-Gender: Female
-Music: Aqua
-Double Battle: No
-AI: Check Bad Move
-
-Carvanha
-Level: 36
-IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
-
-=== TRAINER_DECLAN ===
-Name: Declan
-Class: Swimmer M
-Pic: Swimmer M
-Gender: Male
-Music: Swimmer
-Double Battle: No
-AI: Check Bad Move
-
-Gyarados
 Level: 34
-IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 
-=== TRAINER_GRUNT_RUSTURF_TUNNEL ===
-Name: Grunt
-Class: Team Aqua
-Pic: Aqua Grunt M
-Gender: Male
-Music: Aqua
-Double Battle: No
-AI: Check Bad Move
+Raichu
+Level: 34
 
-Poochyena
-Level: 11
-IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
-
-=== TRAINER_GRUNT_WEATHER_INST_1 ===
-Name: Grunt
-Class: Team Aqua
-Pic: Aqua Grunt M
-Gender: Male
-Music: Aqua
-Double Battle: No
-AI: Check Bad Move
-
-Zubat
-Level: 27
-IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
-
-Poochyena
-Level: 27
-IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+Swellow
+Level: 35
 
 === TRAINER_GRUNT_WEATHER_INST_2 ===
 Name: Grunt

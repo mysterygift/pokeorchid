@@ -14,14 +14,14 @@
 #define TRAINER_PRIYA                         7
 #define TRAINER_RAVI                          8
 #define TRAINER_GABRIELLE_1                   9
-#define TRAINER_GRUNT_PETALBURG_WOODS        10
-#define TRAINER_MARCEL                       11
-#define TRAINER_ALBERTO                      12
-#define TRAINER_ED                           13
-#define TRAINER_GRUNT_SEAFLOOR_CAVERN_4      14
-#define TRAINER_DECLAN                       15
-#define TRAINER_GRUNT_RUSTURF_TUNNEL         16
-#define TRAINER_GRUNT_WEATHER_INST_1         17
+#define TRAINER_AMIR_AND_NUR                 10
+#define TRAINER_JUN_AND_HUI                  11
+#define TRAINER_CHLOE                        12
+#define TRAINER_IMRAN                        13
+#define TRAINER_SITI                         14
+#define TRAINER_HOCK_AND_LAN                 15
+#define TRAINER_YUKI                         16
+#define TRAINER_FAIZ                         17
 #define TRAINER_GRUNT_WEATHER_INST_2         18
 #define TRAINER_GRUNT_WEATHER_INST_3         19
 #define TRAINER_GRUNT_MUSEUM_1               20
@@ -886,6 +886,16 @@
 #define TRAINER_JUAN_1                        TRAINER_LEADER_FREA
 #define TRAINER_FLANNERY_1                    TRAINER_LEADER_MARIA
 #define TRAINER_WATTSON_1                     TRAINER_LEADER_MO
+
+// Orchid: vanilla slots 10-17 were reused for the Inka Seawall trainers.
+#define TRAINER_GRUNT_PETALBURG_WOODS         TRAINER_AMIR_AND_NUR
+#define TRAINER_MARCEL                        TRAINER_JUN_AND_HUI
+#define TRAINER_ALBERTO                       TRAINER_CHLOE
+#define TRAINER_ED                            TRAINER_IMRAN
+#define TRAINER_GRUNT_SEAFLOOR_CAVERN_4       TRAINER_SITI
+#define TRAINER_DECLAN                        TRAINER_HOCK_AND_LAN
+#define TRAINER_GRUNT_RUSTURF_TUNNEL          TRAINER_YUKI
+#define TRAINER_GRUNT_WEATHER_INST_1          TRAINER_FAIZ
 
 // NOTE: Because each Trainer uses a flag to determine when they are defeated, there is only space for 2 additional trainers before trainer flag space overflows
 //       More space can be made by shifting flags around in constants/flags.h or changing how trainer flags are handled

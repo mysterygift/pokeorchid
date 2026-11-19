@@ -8980,6 +8980,17 @@
       "border_filepath": "data/layouts/EastTosaReserve3/border.bin",
       "blockdata_filepath": "data/layouts/EastTosaReserve3/map.bin",
       "layout_version": "emerald"
+    },
+    {
+      "id": "LAYOUT_INKA_SEAWALL",
+      "name": "InkaSeawall_Layout",
+      "width": 40,
+      "height": 30,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_TosaPort",
+      "border_filepath": "data/layouts/InkaSeawall/border.bin",
+      "blockdata_filepath": "data/layouts/InkaSeawall/map.bin",
+      "layout_version": "emerald"
     }
   ]
 }

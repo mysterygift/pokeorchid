@@ -1,0 +1,229 @@
+mapscripts InkaSeawall_MapScripts {}
+
+
+script InkaSeawall_EventScript_Sign1 {
+    msgbox(format("INKA SEAWALL\nReclaimed from the sea for the people of Inka."), MSGBOX_SIGN)
+}
+
+script InkaSeawall_EventScript_Sign2 {
+    msgbox(format("LOVERS' KNOT\nCouples who walk the seawall at sunset are said to stay together forever."), MSGBOX_SIGN)
+}
+script InkaSeawall_EventScript_Amir {
+    trainerbattle_double(TRAINER_AMIR_AND_NUR, InkaSeawall_Text_AmirIntro, InkaSeawall_Text_AmirDefeat, InkaSeawall_Text_AmirNotEnough)
+    msgbox(InkaSeawall_Text_AmirPost, MSGBOX_AUTOCLOSE)
+}
+
+text InkaSeawall_Text_AmirIntro {
+    format("AMIR: We come here every Friday. Nur says the sunset's better than any film.")
+}
+
+text InkaSeawall_Text_AmirDefeat {
+    format("AMIR: Even losing is fine, as long as it's together.")
+}
+
+text InkaSeawall_Text_AmirPost {
+    format("AMIR: Our Pokémon are a couple too. They copy everything we do.")
+}
+
+text InkaSeawall_Text_AmirNotEnough {
+    format("AMIR: A double battle needs two Pokémon. Come back with a partner for yours!")
+}
+
+script InkaSeawall_EventScript_Nur {
+    trainerbattle_double(TRAINER_AMIR_AND_NUR, InkaSeawall_Text_NurIntro, InkaSeawall_Text_NurDefeat, InkaSeawall_Text_NurNotEnough)
+    msgbox(InkaSeawall_Text_NurPost, MSGBOX_AUTOCLOSE)
+}
+
+text InkaSeawall_Text_NurIntro {
+    format("NUR: You'll battle us both? That's very brave. Or very lonely.")
+}
+
+text InkaSeawall_Text_NurDefeat {
+    format("NUR: Amir, you were supposed to protect me!")
+}
+
+text InkaSeawall_Text_NurPost {
+    format("NUR: Plusle and Minun cheer each other on. Like us. Mostly.")
+}
+
+text InkaSeawall_Text_NurNotEnough {
+    format("NUR: We battle as a pair. You need two Pokémon to take us on.")
+}
+
+script InkaSeawall_EventScript_Jun {
+    trainerbattle_double(TRAINER_JUN_AND_HUI, InkaSeawall_Text_JunIntro, InkaSeawall_Text_JunDefeat, InkaSeawall_Text_JunNotEnough)
+    msgbox(InkaSeawall_Text_JunPost, MSGBOX_AUTOCLOSE)
+}
+
+text InkaSeawall_Text_JunIntro {
+    format("JUN: Shh, we're watching the ships come in. Unless… you want a battle?")
+}
+
+text InkaSeawall_Text_JunDefeat {
+    format("JUN: We were distracted. By the view. Obviously.")
+}
+
+text InkaSeawall_Text_JunPost {
+    format("JUN: At night Volbeat and Illumise light up the whole seawall.")
+}
+
+text InkaSeawall_Text_JunNotEnough {
+    format("JUN: Two of us, two of yours. Bring another Pokémon.")
+}
+
+script InkaSeawall_EventScript_Hui {
+    trainerbattle_double(TRAINER_JUN_AND_HUI, InkaSeawall_Text_HuiIntro, InkaSeawall_Text_HuiDefeat, InkaSeawall_Text_HuiNotEnough)
+    msgbox(InkaSeawall_Text_HuiPost, MSGBOX_AUTOCLOSE)
+}
+
+text InkaSeawall_Text_HuiIntro {
+    format("HUI: This is our anniversary! Make it a battle to remember!")
+}
+
+text InkaSeawall_Text_HuiDefeat {
+    format("HUI: Well, we'll definitely remember it.")
+}
+
+text InkaSeawall_Text_HuiPost {
+    format("HUI: Five years ago Jun asked me out right on this spot. He was so nervous.")
+}
+
+text InkaSeawall_Text_HuiNotEnough {
+    format("HUI: Come back with two Pokémon and we'll battle!")
+}
+
+script InkaSeawall_EventScript_Chloe {
+    trainerbattle_single(TRAINER_CHLOE, InkaSeawall_Text_ChloeIntro, InkaSeawall_Text_ChloeDefeat)
+    msgbox(InkaSeawall_Text_ChloePost, MSGBOX_AUTOCLOSE)
+}
+
+text InkaSeawall_Text_ChloeIntro {
+    format("Golden hour on the seawall! Quick, battle me while the lighting's good!")
+}
+
+text InkaSeawall_Text_ChloeDefeat {
+    format("Ugh, my followers saw that live.")
+}
+
+text InkaSeawall_Text_ChloePost {
+    format("Hashtag Inka Seawall, hashtag sunset, hashtag couple goals… I'm here alone, but the hashtags don't know that.")
+}
+
+script InkaSeawall_EventScript_Imran {
+    trainerbattle_single(TRAINER_IMRAN, InkaSeawall_Text_ImranIntro, InkaSeawall_Text_ImranDefeat)
+    msgbox(InkaSeawall_Text_ImranPost, MSGBOX_AUTOCLOSE)
+}
+
+text InkaSeawall_Text_ImranIntro {
+    format("Morning run, evening run, I'm always on the seawall! Keep up!")
+}
+
+text InkaSeawall_Text_ImranDefeat {
+    format("Out of breath… and out of Pokémon.")
+}
+
+text InkaSeawall_Text_ImranPost {
+    format("Five laps from the beach to Inka every day. The couples keep getting in my way.")
+}
+
+script InkaSeawall_EventScript_Siti {
+    trainerbattle_single(TRAINER_SITI, InkaSeawall_Text_SitiIntro, InkaSeawall_Text_SitiDefeat)
+    msgbox(InkaSeawall_Text_SitiPost, MSGBOX_AUTOCLOSE)
+}
+
+text InkaSeawall_Text_SitiIntro {
+    format("My date's late. Again. You'll have to do.")
+}
+
+text InkaSeawall_Text_SitiDefeat {
+    format("Hmph. At least you showed up.")
+}
+
+text InkaSeawall_Text_SitiPost {
+    format("If he isn't here by sunset, I'm giving these flowers to my Bellossom.")
+}
+
+script InkaSeawall_EventScript_UncleHock {
+    trainerbattle_double(TRAINER_HOCK_AND_LAN, InkaSeawall_Text_UncleHockIntro, InkaSeawall_Text_UncleHockDefeat, InkaSeawall_Text_UncleHockNotEnough)
+    msgbox(InkaSeawall_Text_UncleHockPost, MSGBOX_AUTOCLOSE)
+}
+
+text InkaSeawall_Text_UncleHockIntro {
+    format("UNCLE HOCK: When we were young, this was all water. We courted on a sampan!")
+}
+
+text InkaSeawall_Text_UncleHockDefeat {
+    format("UNCLE HOCK: Fifty years married and still learning.")
+}
+
+text InkaSeawall_Text_UncleHockPost {
+    format("UNCLE HOCK: They filled in the sea so people had room to walk. Best thing Inka ever did.")
+}
+
+text InkaSeawall_Text_UncleHockNotEnough {
+    format("UNCLE HOCK: We battle side by side. You'll need two Pokémon.")
+}
+
+script InkaSeawall_EventScript_AuntieLan {
+    trainerbattle_double(TRAINER_HOCK_AND_LAN, InkaSeawall_Text_AuntieLanIntro, InkaSeawall_Text_AuntieLanDefeat, InkaSeawall_Text_AuntieLanNotEnough)
+    msgbox(InkaSeawall_Text_AuntieLanPost, MSGBOX_AUTOCLOSE)
+}
+
+text InkaSeawall_Text_AuntieLanIntro {
+    format("AUNTIE LAN: Don't go easy on us, dear. We certainly won't on you.")
+}
+
+text InkaSeawall_Text_AuntieLanDefeat {
+    format("AUNTIE LAN: Oh, well done! Your mother must be proud.")
+}
+
+text InkaSeawall_Text_AuntieLanPost {
+    format("AUNTIE LAN: Every evening we walk to the sculpture and back. Every single evening.")
+}
+
+text InkaSeawall_Text_AuntieLanNotEnough {
+    format("AUNTIE LAN: Come back with two Pokémon, dear.")
+}
+
+script InkaSeawall_EventScript_Yuki {
+    trainerbattle_single(TRAINER_YUKI, InkaSeawall_Text_YukiIntro, InkaSeawall_Text_YukiDefeat)
+    msgbox(InkaSeawall_Text_YukiPost, MSGBOX_AUTOCLOSE)
+}
+
+text InkaSeawall_Text_YukiIntro {
+    format("The guidebook says this is the most romantic spot in Tosa! …I came with my Pokémon.")
+}
+
+text InkaSeawall_Text_YukiDefeat {
+    format("My Pokémon and I had a lovely time anyway.")
+}
+
+text InkaSeawall_Text_YukiPost {
+    format("I came all the way from Johto for this sunset. Totally worth it.")
+}
+
+script InkaSeawall_EventScript_Faiz {
+    trainerbattle_single(TRAINER_FAIZ, InkaSeawall_Text_FaizIntro, InkaSeawall_Text_FaizDefeat)
+    msgbox(InkaSeawall_Text_FaizPost, MSGBOX_AUTOCLOSE)
+}
+
+text InkaSeawall_Text_FaizIntro {
+    format("Flower delivery for… a couple on the seawall. That narrows it down to everyone!")
+}
+
+text InkaSeawall_Text_FaizDefeat {
+    format("Okay, okay, you win. Don't tell my customer I stopped.")
+}
+
+text InkaSeawall_Text_FaizPost {
+    format("Valentine's week, I deliver here forty times a day.")
+}
+
+
+script InkaSeawall_EventScript_Npc1 {
+    msgbox(format("This seawall used to be open sea. My father fished from a boat right where I'm standing.\pNow I fish from the wall. Same fish, though."), MSGBOX_NPC)
+}
+
+script InkaSeawall_EventScript_Npc2 {
+    msgbox(format("Couples tie a ribbon on the Lovers' Knot and make a wish.\pI tied three. Just to be safe."), MSGBOX_NPC)
+}
