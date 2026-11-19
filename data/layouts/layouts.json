@@ -8958,6 +8958,28 @@
       "border_filepath": "data/layouts/SouthTosaReserve4/border.bin",
       "blockdata_filepath": "data/layouts/SouthTosaReserve4/map.bin",
       "layout_version": "emerald"
+    },
+    {
+      "id": "LAYOUT_EAST_TOSA_RESERVE2",
+      "name": "EastTosaReserve2_Layout",
+      "width": 80,
+      "height": 40,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_TosaPort",
+      "border_filepath": "data/layouts/EastTosaReserve2/border.bin",
+      "blockdata_filepath": "data/layouts/EastTosaReserve2/map.bin",
+      "layout_version": "emerald"
+    },
+    {
+      "id": "LAYOUT_EAST_TOSA_RESERVE3",
+      "name": "EastTosaReserve3_Layout",
+      "width": 100,
+      "height": 50,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_TosaPort",
+      "border_filepath": "data/layouts/EastTosaReserve3/border.bin",
+      "blockdata_filepath": "data/layouts/EastTosaReserve3/map.bin",
+      "layout_version": "emerald"
     }
   ]
 }

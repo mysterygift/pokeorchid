@@ -1,0 +1,14 @@
+mapscripts EastTosaReserve2_MapScripts {}
+
+
+script EastTosaReserve2_EventScript_Sign {
+    msgbox(format("East Tosa Reserve\nWest: Bura City"), MSGBOX_SIGN)
+}
+
+script EastTosaReserve2_EventScript_Npc1 {
+    msgbox(format("This end of the reserve backs right onto Bura City. We get a lot of runaway pet Persian out here.\pThey don't last long against the wild Pokémon."), MSGBOX_NPC)
+}
+
+script EastTosaReserve2_EventScript_Npc2 {
+    msgbox(format("The tall grass out here is huge! I lost my net in it twice already."), MSGBOX_NPC)
+}

@@ -233,6 +233,8 @@ gStdScripts_End::
 	.include "data/maps/SouthTosaReserve4/scripts.inc"
 	.include "data/maps/NorthTosaReserve/scripts.inc"
 	.include "data/maps/EastTosaReserve/scripts.inc"
+	.include "data/maps/EastTosaReserve2/scripts.inc"
+	.include "data/maps/EastTosaReserve3/scripts.inc"
 	.include "data/maps/MtBatok_1F/scripts.inc"
 	.include "data/maps/MtBatok_2F/scripts.inc"
 	.include "data/maps/MtBatok_3F/scripts.inc"
