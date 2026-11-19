@@ -3,7 +3,6 @@
   "name": "WavebreakTown",
   "layout": "LAYOUT_WAVEBREAK_TOWN",
   "music": "MUS_DEWFORD",
-  "region": "REGION_HOENN",
   "region_map_section": "MAPSEC_WAVEBREAK_TOWN",
   "requires_flash": false,
   "weather": "WEATHER_SUNNY",
@@ -13,12 +12,23 @@
   "allow_running": true,
   "show_map_name": true,
   "battle_scene": "MAP_BATTLE_SCENE_NORMAL",
-  "connections": null,
+  "connections": [
+    {
+      "map": "MAP_ROUTE311_WEST",
+      "offset": 0,
+      "direction": "right"
+    },
+    {
+      "map": "MAP_ROUTE312",
+      "offset": 0,
+      "direction": "down"
+    }
+  ],
   "object_events": [
     {
       "graphics_id": "OBJ_EVENT_GFX_OLD_MAN",
-      "x": 16,
-      "y": 12,
+      "x": 23,
+      "y": 27,
       "elevation": 3,
       "movement_type": "MOVEMENT_TYPE_WANDER_AROUND",
       "movement_range_x": 1,
@@ -30,10 +40,10 @@
     },
     {
       "graphics_id": "OBJ_EVENT_GFX_FISHERMAN",
-      "x": 7,
-      "y": 18,
+      "x": 11,
+      "y": 26,
       "elevation": 3,
-      "movement_type": "MOVEMENT_TYPE_LOOK_AROUND",
+      "movement_type": "MOVEMENT_TYPE_FACE_LEFT",
       "movement_range_x": 0,
       "movement_range_y": 0,
       "trainer_type": "TRAINER_TYPE_NONE",
@@ -43,8 +53,8 @@
     },
     {
       "graphics_id": "OBJ_EVENT_GFX_OLD_WOMAN",
-      "x": 24,
-      "y": 14,
+      "x": 22,
+      "y": 17,
       "elevation": 3,
       "movement_type": "MOVEMENT_TYPE_WANDER_AROUND",
       "movement_range_x": 1,
@@ -56,8 +66,8 @@
     },
     {
       "graphics_id": "OBJ_EVENT_GFX_SAILOR",
-      "x": 7,
-      "y": 3,
+      "x": 12,
+      "y": 18,
       "elevation": 3,
       "movement_type": "MOVEMENT_TYPE_LOOK_AROUND",
       "movement_range_x": 0,
@@ -70,36 +80,36 @@
   ],
   "warp_events": [
     {
-      "x": 10,
-      "y": 18,
+      "x": 14,
+      "y": 22,
       "elevation": 0,
       "dest_map": "MAP_WAVEBREAK_TOWN_POKEMON_CENTER_1F",
       "dest_warp_id": "0"
     },
     {
-      "x": 22,
-      "y": 19,
+      "x": 26,
+      "y": 23,
       "elevation": 0,
       "dest_map": "MAP_WAVEBREAK_TOWN_MART",
       "dest_warp_id": "0"
     },
     {
-      "x": 16,
-      "y": 9,
+      "x": 20,
+      "y": 13,
       "elevation": 0,
       "dest_map": "MAP_WAVEBREAK_TOWN_HOUSE1",
       "dest_warp_id": "0"
     },
     {
-      "x": 10,
-      "y": 11,
+      "x": 14,
+      "y": 15,
       "elevation": 0,
       "dest_map": "MAP_WAVEBREAK_TOWN_HOUSE2",
       "dest_warp_id": "0"
     },
     {
-      "x": 24,
-      "y": 11,
+      "x": 28,
+      "y": 15,
       "elevation": 0,
       "dest_map": "MAP_WAVEBREAK_TOWN_HOUSE3",
       "dest_warp_id": "0"
@@ -109,43 +119,44 @@
   "bg_events": [
     {
       "type": "sign",
-      "x": 15,
-      "y": 26,
+      "x": 19,
+      "y": 30,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
       "script": "WavebreakTown_EventScript_TownSign"
     },
     {
       "type": "sign",
-      "x": 11,
-      "y": 19,
+      "x": 15,
+      "y": 23,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
       "script": "Common_EventScript_ShowPokemonCenterSign"
     },
     {
       "type": "sign",
-      "x": 12,
-      "y": 19,
+      "x": 16,
+      "y": 23,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
       "script": "Common_EventScript_ShowPokemonCenterSign"
     },
     {
       "type": "sign",
-      "x": 23,
-      "y": 19,
+      "x": 27,
+      "y": 23,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
       "script": "Common_EventScript_ShowPokemartSign"
     },
     {
       "type": "sign",
-      "x": 24,
-      "y": 19,
+      "x": 28,
+      "y": 23,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
       "script": "Common_EventScript_ShowPokemartSign"
     }
-  ]
+  ],
+  "region": "REGION_HOENN"
 }

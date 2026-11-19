@@ -3,7 +3,6 @@
   "name": "Route311_East",
   "layout": "LAYOUT_ROUTE311_EAST",
   "music": "MUS_ROUTE113",
-  "region": "REGION_HOENN",
   "region_map_section": "MAPSEC_ROUTE_311",
   "requires_flash": false,
   "weather": "WEATHER_SUNNY",
@@ -13,7 +12,18 @@
   "allow_running": true,
   "show_map_name": true,
   "battle_scene": "MAP_BATTLE_SCENE_NORMAL",
-  "connections": null,
+  "connections": [
+    {
+      "map": "MAP_OLDALE_TOWN",
+      "offset": 4,
+      "direction": "right"
+    },
+    {
+      "map": "MAP_ROUTE311_WEST",
+      "offset": 30,
+      "direction": "left"
+    }
+  ],
   "object_events": [
     {
       "graphics_id": "OBJ_EVENT_GFX_WOMAN_2",
@@ -48,5 +58,6 @@
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
       "script": "Route311_East_EventScript_PlaceholderSign"
     }
-  ]
+  ],
+  "region": "REGION_HOENN"
 }

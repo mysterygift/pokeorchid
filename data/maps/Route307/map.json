@@ -17,6 +17,11 @@
       "map": "MAP_FABER_TOWN",
       "offset": -30,
       "direction": "left"
+    },
+    {
+      "map": "MAP_PINESTAMP_TOWN",
+      "offset": -2,
+      "direction": "down"
     }
   ],
   "object_events": [

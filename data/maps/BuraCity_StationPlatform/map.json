@@ -3,7 +3,6 @@
   "name": "BuraCity_StationPlatform",
   "layout": "LAYOUT_TOSA_RAIL_PLATFORM_CENTRAL",
   "music": "MUS_VERDANTURF",
-  "region": "REGION_HOENN",
   "region_map_section": "MAPSEC_BURA_CITY",
   "requires_flash": false,
   "weather": "WEATHER_NONE",
@@ -39,5 +38,6 @@
     }
   ],
   "coord_events": [],
-  "bg_events": []
+  "bg_events": [],
+  "region": "REGION_HOENN"
 }

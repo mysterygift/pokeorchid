@@ -3,7 +3,6 @@
   "name": "Route312",
   "layout": "LAYOUT_ROUTE312",
   "music": "MUS_SURF",
-  "region": "REGION_HOENN",
   "region_map_section": "MAPSEC_ROUTE_312",
   "requires_flash": false,
   "weather": "WEATHER_SUNNY",
@@ -13,7 +12,18 @@
   "allow_running": true,
   "show_map_name": true,
   "battle_scene": "MAP_BATTLE_SCENE_NORMAL",
-  "connections": null,
+  "connections": [
+    {
+      "map": "MAP_WAVEBREAK_TOWN",
+      "offset": 0,
+      "direction": "up"
+    },
+    {
+      "map": "MAP_ROUTE313",
+      "offset": 0,
+      "direction": "down"
+    }
+  ],
   "object_events": [
     {
       "graphics_id": "OBJ_EVENT_GFX_SWIMMER_M",
@@ -31,5 +41,6 @@
   ],
   "warp_events": [],
   "coord_events": [],
-  "bg_events": []
+  "bg_events": [],
+  "region": "REGION_HOENN"
 }

@@ -22,6 +22,11 @@
       "map": "MAP_SOUTH_TOSA_RESERVE2",
       "offset": 0,
       "direction": "right"
+    },
+    {
+      "map": "MAP_ROUTE311_EAST",
+      "offset": -4,
+      "direction": "left"
     }
   ],
   "object_events": [

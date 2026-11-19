@@ -3,7 +3,6 @@
   "name": "BuraCity_Station",
   "layout": "LAYOUT_TOSA_RAIL_CONCOURSE",
   "music": "MUS_VERDANTURF",
-  "region": "REGION_HOENN",
   "region_map_section": "MAPSEC_BURA_CITY",
   "requires_flash": false,
   "weather": "WEATHER_NONE",
@@ -83,5 +82,6 @@
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
       "script": "TosaGateway_FareGateSouth"
     }
-  ]
+  ],
+  "region": "REGION_HOENN"
 }

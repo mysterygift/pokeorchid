@@ -14,9 +14,14 @@
   "battle_scene": "MAP_BATTLE_SCENE_NORMAL",
   "connections": [
     {
-      "map": "MAP_EAST_TOSA_RESERVE",
-      "offset": -16,
+      "map": "MAP_EAST_TOSA_RESERVE2",
+      "offset": -40,
       "direction": "up"
+    },
+    {
+      "map": "MAP_JURAN_CITY",
+      "offset": -2,
+      "direction": "down"
     }
   ],
   "object_events": [

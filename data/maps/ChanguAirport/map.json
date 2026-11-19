@@ -3,7 +3,6 @@
   "name": "ChanguAirport",
   "layout": "LAYOUT_CHANGU_AIRPORT",
   "music": "MUS_SLATEPORT",
-  "region": "REGION_HOENN",
   "region_map_section": "MAPSEC_CHANGU_AIRPORT",
   "requires_flash": false,
   "weather": "WEATHER_SUNNY",
@@ -13,7 +12,13 @@
   "allow_running": true,
   "show_map_name": true,
   "battle_scene": "MAP_BATTLE_SCENE_NORMAL",
-  "connections": null,
+  "connections": [
+    {
+      "map": "MAP_CHANGU_CITY",
+      "offset": 5,
+      "direction": "up"
+    }
+  ],
   "object_events": [
     {
       "graphics_id": "OBJ_EVENT_GFX_TOURIST_M",
@@ -117,5 +122,6 @@
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
       "script": "ChanguAirport_EventScript_Sign1"
     }
-  ]
+  ],
+  "region": "REGION_HOENN"
 }

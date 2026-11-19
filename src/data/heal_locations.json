@@ -310,7 +310,7 @@
       "id": "HEAL_LOCATION_JURAN_CITY",
       "map": "MAP_JURAN_CITY",
       "x": 22,
-      "y": 21,
+      "y": 26,
       "respawn_map": "MAP_JURAN_CITY_POKEMON_CENTER_1F",
       "respawn_npc": "LOCALID_JURAN_CITY_NURSE"
     },
@@ -341,8 +341,8 @@
     {
       "id": "HEAL_LOCATION_WAVEBREAK_TOWN",
       "map": "MAP_WAVEBREAK_TOWN",
-      "x": 10,
-      "y": 19,
+      "x": 14,
+      "y": 23,
       "respawn_map": "MAP_WAVEBREAK_TOWN_POKEMON_CENTER_1F",
       "respawn_npc": "LOCALID_WAVEBREAK_TOWN_NURSE"
     },
