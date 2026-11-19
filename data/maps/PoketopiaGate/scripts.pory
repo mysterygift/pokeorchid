@@ -1,1 +1,5 @@
 mapscripts PoketopiaGate_MapScripts {}
+
+script PoketopiaGate_EventScript_PlaceholderSign {
+    msgbox(format("Pokétopia Gate: the way across to Pokétopia. Placeholder map."), MSGBOX_SIGN)
+}

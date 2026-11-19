@@ -1,1 +1,5 @@
 mapscripts CorralCity_MapScripts {}
+
+script CorralCity_EventScript_PlaceholderSign {
+    msgbox(format("Corral City: the bustling beach city on Pokétopia, home to Marina's gym and a lovely marina. Placeholder map."), MSGBOX_SIGN)
+}

@@ -1,1 +1,5 @@
 mapscripts ChanguCity_MapScripts {}
+
+script ChanguCity_EventScript_PlaceholderSign {
+    msgbox(format("Changu City: home of the Tosa region's airport. Placeholder map."), MSGBOX_SIGN)
+}

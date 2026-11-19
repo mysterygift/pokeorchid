@@ -1,0 +1,45 @@
+{
+  "id": "MAP_MT_BATOK_3F",
+  "name": "MtBatok_3F",
+  "layout": "LAYOUT_MT_BATOK_3F",
+  "music": "MUS_MT_PYRE",
+  "region": "REGION_HOENN",
+  "region_map_section": "MAPSEC_MT_BATOK",
+  "requires_flash": false,
+  "weather": "WEATHER_NONE",
+  "map_type": "MAP_TYPE_UNDERGROUND",
+  "allow_cycling": true,
+  "allow_escaping": true,
+  "allow_running": true,
+  "show_map_name": true,
+  "battle_scene": "MAP_BATTLE_SCENE_NORMAL",
+  "connections": null,
+  "object_events": [],
+  "warp_events": [
+    {
+      "x": 29,
+      "y": 26,
+      "elevation": 3,
+      "dest_map": "MAP_FABER_TOWN",
+      "dest_warp_id": "1"
+    },
+    {
+      "x": 9,
+      "y": 10,
+      "elevation": 3,
+      "dest_map": "MAP_MT_BATOK_2F",
+      "dest_warp_id": "1"
+    }
+  ],
+  "coord_events": [],
+  "bg_events": [
+    {
+      "type": "sign",
+      "x": 21,
+      "y": 16,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "MtBatok_3F_EventScript_PlaceholderSign"
+    }
+  ]
+}

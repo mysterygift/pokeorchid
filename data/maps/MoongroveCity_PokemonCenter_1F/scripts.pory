@@ -1,0 +1,18 @@
+raw `
+MoongroveCity_PokemonCenter_1F_MapScripts::
+	map_script MAP_SCRIPT_ON_TRANSITION, MoongroveCity_PokemonCenter_1F_OnTransition
+	map_script MAP_SCRIPT_ON_RESUME, CableClub_OnResume
+	.byte 0
+
+MoongroveCity_PokemonCenter_1F_OnTransition:
+	setrespawn HEAL_LOCATION_MOONGROVE_CITY
+	end
+
+MoongroveCity_PokemonCenter_1F_EventScript_Nurse::
+	setvar VAR_0x800B, LOCALID_MOONGROVE_CITY_NURSE
+	call Common_EventScript_PkmnCenterNurse
+	waitmessage
+	waitbuttonpress
+	release
+	end
+`

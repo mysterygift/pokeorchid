@@ -1,0 +1,5 @@
+mapscripts ChallengersTrail_1F_MapScripts {}
+
+script ChallengersTrail_1F_EventScript_PlaceholderSign {
+    msgbox(format("Challenger's Trail 1F: the final test before the Pokémon League. Placeholder map."), MSGBOX_SIGN)
+}

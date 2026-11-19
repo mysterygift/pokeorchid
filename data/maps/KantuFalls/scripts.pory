@@ -1,0 +1,5 @@
+mapscripts KantuFalls_MapScripts {}
+
+script KantuFalls_EventScript_PlaceholderSign {
+    msgbox(format("Kantu Falls: a beautiful series of waterfalls near Faber Town. Locals come once or twice a year to bathe in the mineral-rich waters. Placeholder map."), MSGBOX_SIGN)
+}

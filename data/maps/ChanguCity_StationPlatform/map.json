@@ -1,5 +1,5 @@
 {
-  "id": "MAP_CHANGU_CITY__STATION_PLATFORM",
+  "id": "MAP_CHANGU_CITY_STATION_PLATFORM",
   "name": "ChanguCity_StationPlatform",
   "layout": "LAYOUT_TOSA_RAIL_PLATFORM_WEST_CENTRAL_EAST",
   "music": "MUS_SLATEPORT",
@@ -34,7 +34,7 @@
       "x": 1,
       "y": 7,
       "elevation": 4,
-      "dest_map": "MAP_CHANGU_CITY__STATION",
+      "dest_map": "MAP_CHANGU_CITY_STATION",
       "dest_warp_id": "2"
     }
   ],

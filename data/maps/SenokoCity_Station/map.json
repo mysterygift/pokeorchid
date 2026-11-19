@@ -1,5 +1,5 @@
 {
-  "id": "MAP_SENOKO_CITY__STATION",
+  "id": "MAP_SENOKO_CITY_STATION",
   "name": "SenokoCity_Station",
   "layout": "LAYOUT_TOSA_RAIL_CONCOURSE",
   "music": "MUS_RUSTBORO",
@@ -61,7 +61,7 @@
       "x": 1,
       "y": 4,
       "elevation": 4,
-      "dest_map": "MAP_SENOKO_CITY__STATION_PLATFORM",
+      "dest_map": "MAP_SENOKO_CITY_STATION_PLATFORM",
       "dest_warp_id": "0"
     }
   ],

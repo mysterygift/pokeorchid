@@ -4,8 +4,8 @@ Tosa Rail: the real network (round 3, approved 2026-11-18) — every station's m
 table. Re-runnable: rewrites what it owns, leaves everything else alone.
 
 Per station (Tosa Port already exists; its platform is only recoloured):
-    <Town>                  placeholder exterior: the Tosa Port gatehouse building in a small clearing
-                            (the user builds the real town around it later)
+    <Town>                  exterior, created only if missing (then the user's to edit): the Tosa Port
+                            gatehouse building in a clearing; placeholders.py enlarges it to town size
     <Town>_Station          concourse: copy of the Tosa Port gatehouse without its story NPCs or
                             rear arch; fare gates reuse TosaGateway_FareGateNorth/South
     <Town>_StationPlatform  platform: copy of the Tosa Port platform, wall in the line's colour
@@ -91,7 +91,7 @@ GROUP = "gMapGroup_TosaRail"
 
 # ---------------------------------------------------------------- small helpers
 def snake(name):
-    return re.sub(r"(?<!^)(?=[A-Z])", "_", name).upper()
+    return re.sub(r"(?<=[a-z])(?=[A-Z])", "_", name).upper()   # MtBatok_1F -> MT_BATOK_1F
 
 
 def map_id(name):
@@ -319,11 +319,13 @@ def main():
     maps, group = {"TOSA_PORT": "MAP_TOSA_PORT_BRENDANS_HOUSE_2F"}, []
     for key, name, prefix, mapsec, lines, vflag, music, mtype in STATIONS[1:]:
         ext, conc, plat = prefix, prefix + "_Station", prefix + "_StationPlatform"
-        w, h, g = exterior_blocks()
-        put_layout("LAYOUT_" + snake(ext), ext, ext, w, h, g, border_ext, "gTileset_General", "gTileset_TosaPort")
-        write_json(P("data", "maps", ext, "map.json"), map_json(
-            ext, "LAYOUT_" + snake(ext), music, mapsec, mtype, [],
-            [warp(7, 7, map_id(conc), 0)], [], True))
+        if not os.path.exists(P("data", "maps", ext, "map.json")):
+            # created once, then the user's (and dev_scripts/tosa_maps/placeholders.py's) to edit
+            w, h, g = exterior_blocks()
+            put_layout("LAYOUT_" + snake(ext), ext, ext, w, h, g, border_ext, "gTileset_General", "gTileset_TosaPort")
+            write_json(P("data", "maps", ext, "map.json"), map_json(
+                ext, "LAYOUT_" + snake(ext), music, mapsec, mtype, [],
+                [warp(7, 7, map_id(conc), 0)], [], True))
         write_json(P("data", "maps", conc, "map.json"), map_json(
             conc, "LAYOUT_TOSA_RAIL_CONCOURSE", music, mapsec, "MAP_TYPE_INDOOR",
             [obj("OBJ_EVENT_GFX_CLIPBOARD", 7, 4, "NULL", "MOVEMENT_TYPE_FACE_LEFT", 0),

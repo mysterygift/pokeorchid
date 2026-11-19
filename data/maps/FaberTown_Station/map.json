@@ -1,5 +1,5 @@
 {
-  "id": "MAP_FABER_TOWN__STATION",
+  "id": "MAP_FABER_TOWN_STATION",
   "name": "FaberTown_Station",
   "layout": "LAYOUT_TOSA_RAIL_CONCOURSE",
   "music": "MUS_FALLARBOR",
@@ -61,7 +61,7 @@
       "x": 1,
       "y": 4,
       "elevation": 4,
-      "dest_map": "MAP_FABER_TOWN__STATION_PLATFORM",
+      "dest_map": "MAP_FABER_TOWN_STATION_PLATFORM",
       "dest_warp_id": "0"
     }
   ],

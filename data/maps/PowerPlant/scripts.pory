@@ -1,0 +1,5 @@
+mapscripts PowerPlant_MapScripts {}
+
+script PowerPlant_EventScript_PlaceholderSign {
+    msgbox(format("Power Plant: Senoko City's wind power plant. Placeholder map."), MSGBOX_SIGN)
+}
