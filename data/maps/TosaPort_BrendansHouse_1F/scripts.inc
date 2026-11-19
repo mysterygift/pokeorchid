@@ -201,47 +201,49 @@ TosaGateway_FareGate::
 # 129 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
 	compare VAR_RESULT, FALSE
 	goto_if_eq TosaGateway_FareGate_2
-# 134 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
-	specialvar VAR_0x8006, GetPlayerFacingDirection
 # 135 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
-	playse SE_SELECT
+	specialvar VAR_0x8006, GetPlayerFacingDirection
 # 136 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
-	waitse
+	playse SE_FARE_GATE_TAP
 # 137 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
-	hidefollower
+	delay 16
 # 138 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
-	setmetatile VAR_0x8004, VAR_0x8005, METATILE_UrbanInterior_FareGate_Gate_Open_B, FALSE
+	hidefollower
 # 139 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
-	special DrawWholeMapView
+	setmetatile VAR_0x8004, VAR_0x8005, METATILE_UrbanInterior_FareGate_Gate_Open_B, FALSE
 # 140 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
-	playse SE_SLIDING_DOOR
+	special DrawWholeMapView
 # 141 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
+	playse SE_FARE_GATE_OPEN
+# 142 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
 	compare VAR_0x8006, DIR_WEST
 	goto_if_eq TosaGateway_FareGate_5
-# 144 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
+# 145 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
 	applymovement OBJ_EVENT_ID_PLAYER, TosaGateway_FareGate_Movement_1
 TosaGateway_FareGate_4:
-# 146 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
-	waitmovement 0
 # 147 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
-	setmetatile VAR_0x8004, VAR_0x8005, METATILE_UrbanInterior_FareGate_Gate_B, TRUE
+	waitmovement 0
 # 148 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
-	special DrawWholeMapView
+	setmetatile VAR_0x8004, VAR_0x8005, METATILE_UrbanInterior_FareGate_Gate_B, TRUE
 # 149 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
-	playse SE_SLIDING_DOOR
+	special DrawWholeMapView
 # 150 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
+	playse SE_FARE_GATE_SHUT
+# 151 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
 	releaseall
 	end
 
 TosaGateway_FareGate_2:
 # 130 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
-	msgbox TosaGateway_FareGate_Text_0, MSGBOX_DEFAULT
+	playse SE_FARE_GATE_DENIED
 # 131 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
+	msgbox TosaGateway_FareGate_Text_0, MSGBOX_DEFAULT
+# 132 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
 	releaseall
 	end
 
 TosaGateway_FareGate_5:
-# 142 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
+# 143 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
 	applymovement OBJ_EVENT_ID_PLAYER, TosaGateway_FareGate_Movement_0
 	goto TosaGateway_FareGate_4
 
@@ -282,19 +284,19 @@ TosaGateway_Haru_Defeated_Movement_0:
 	walk_up
 	step_end
 
-# 142 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
+# 143 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
 TosaGateway_FareGate_Movement_0:
-# 142 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
+# 143 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
 	walk_left
-# 142 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
+# 143 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
 	walk_left
 	step_end
 
-# 144 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
+# 145 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
 TosaGateway_FareGate_Movement_1:
-# 144 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
+# 145 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
 	walk_right
-# 144 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
+# 145 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
 	walk_right
 	step_end
 
@@ -364,7 +366,7 @@ TosaGateway_Kid_Text_0:
 	.string "reserve! They're so fluffy!$"
 
 TosaGateway_FareGate_Text_0:
-# 130 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
+# 131 "data/maps/TosaPort_BrendansHouse_1F/scripts.pory"
 	.string "The gate won't open. Passengers need a\n"
 	.string "Rail Card to go through.$"
 

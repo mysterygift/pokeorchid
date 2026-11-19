@@ -71,6 +71,7 @@
 #include "constants/trainer_tower.h"
 #include "constants/trainers.h"
 #include "constants/train_stations.h"
+#include "constants/train_sounds.h"
 #include "constants/trainer_card.h"
 #include "constants/tv.h"
 #include "constants/union_room.h"
