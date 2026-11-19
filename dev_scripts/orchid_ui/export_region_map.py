@@ -198,6 +198,10 @@ def write_jasc48(path, cols):
 SECTION_KEYS = ("id", "name", "x", "y", "width", "height")
 
 
+# Hoenn-block sections the voyages exporter owns (Southern Island = Eon Island's REGION_MAP_EON cell)
+VOYAGE_KEEP = {"MAPSEC_EON_ISLAND"}
+
+
 def update_sections(tags):
     path = P("src", "data", "region_map", "region_map_sections.json")
     data = json.load(open(path))
@@ -222,7 +226,9 @@ def update_sections(tags):
     for i, s in enumerate(secs):
         a = by_id.get(s["id"])
         if kanto0 <= i <= kanto1:
-            out.append(s)                          # Kanto/Sevii: reserved for the Tiksi region
+            out.append(s)                          # Kanto/Sevii: reserved for the Tiksi region + voyages
+        elif s["id"] in VOYAGE_KEEP:
+            out.append(s)                          # owned by dev_scripts/voyages/export_region_maps.py
         elif a is not None and a.cells:
             out.append(placed(a, s))
         elif s["id"].startswith("MAPSEC_TOSA_PH_"):

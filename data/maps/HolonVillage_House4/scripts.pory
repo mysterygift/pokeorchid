@@ -1,0 +1,5 @@
+mapscripts HolonVillage_House4_MapScripts {}
+
+script HolonVillage_House4_EventScript_Npc {
+    msgbox(format("You came by boat? That old sailor must trust you. He doesn't bring just anyone to Holon."), MSGBOX_NPC)
+}

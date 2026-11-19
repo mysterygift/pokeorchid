@@ -113,6 +113,7 @@ static void Task_AngledWipes(u8);
 static void Task_Mugshot(u8);
 static void Task_Aqua(u8);
 static void Task_Magma(u8);
+static void Task_Holon(u8);
 static void Task_Regice(u8);
 static void Task_Registeel(u8);
 static void Task_Regirock(u8);
@@ -157,6 +158,8 @@ static bool8 Shuffle_Init(struct Task *);
 static bool8 Shuffle_End(struct Task *);
 static bool8 Aqua_Init(struct Task *);
 static bool8 Aqua_SetGfx(struct Task *);
+static bool8 Holon_Init(struct Task *);
+static bool8 Holon_SetGfx(struct Task *);
 static bool8 Magma_Init(struct Task *);
 static bool8 Magma_SetGfx(struct Task *);
 static bool8 FramesCountdown(struct Task *);
@@ -306,6 +309,9 @@ static const u32 sTeamAqua_Tileset[] = INCGFX_U32("graphics/battle_transitions/t
 static const u32 sTeamAqua_Tilemap[] = INCGFX_U32("graphics/battle_transitions/team_aqua.bin", ".smolTM");
 static const u32 sTeamMagma_Tileset[] = INCGFX_U32("graphics/battle_transitions/team_magma.png", ".4bpp.smol");
 static const u32 sTeamMagma_Tilemap[] = INCGFX_U32("graphics/battle_transitions/team_magma.bin", ".smolTM");
+// Wavebreak Voyages: Holon logo, drawn in evil_team.pal's greys (palette 15), so sEvilTeam_Palette is reused.
+static const u32 sHolon_Tileset[] = INCGFX_U32("graphics/battle_transitions/holon.png", ".4bpp.smol");
+static const u32 sHolon_Tilemap[] = INCGFX_U32("graphics/battle_transitions/holon.bin", ".smolTM");
 static const u32 sRegis_Tileset[] = INCGFX_U32("graphics/battle_transitions/regis.png", ".4bpp", "-num_tiles 53 -Wnum_tiles");
 static const u16 sRegice_Palette[] = INCGFX_U16("graphics/battle_transitions/regice.pal", ".gbapal");
 static const u16 sRegisteel_Palette[] = INCGFX_U16("graphics/battle_transitions/registeel.pal", ".gbapal");
@@ -383,6 +389,7 @@ static const TaskFunc sTasks_Main[B_TRANSITION_COUNT] =
     [B_TRANSITION_FRONTIER_CIRCLES_CROSS_IN_SEQ] = Task_FrontierCirclesCrossInSeq,
     [B_TRANSITION_FRONTIER_CIRCLES_ASYMMETRIC_SPIRAL_IN_SEQ] = Task_FrontierCirclesAsymmetricSpiralInSeq,
     [B_TRANSITION_FRONTIER_CIRCLES_SYMMETRIC_SPIRAL_IN_SEQ] = Task_FrontierCirclesSymmetricSpiralInSeq,
+    [B_TRANSITION_HOLON] = Task_Holon,
 };
 
 static const TransitionStateFunc sTaskHandlers[] =
@@ -427,6 +434,17 @@ static const TransitionStateFunc sMagma_Funcs[] =
 {
     Magma_Init,
     Magma_SetGfx,
+    PatternWeave_Blend1,
+    PatternWeave_Blend2,
+    PatternWeave_FinishAppear,
+    FramesCountdown,
+    PatternWeave_CircularMask
+};
+
+static const TransitionStateFunc sHolon_Funcs[] =
+{
+    Holon_Init,
+    Holon_SetGfx,
     PatternWeave_Blend1,
     PatternWeave_Blend2,
     PatternWeave_FinishAppear,
@@ -1333,6 +1351,11 @@ static void Task_Magma(u8 taskId)
     while (sMagma_Funcs[gTasks[taskId].tState](&gTasks[taskId]));
 }
 
+static void Task_Holon(u8 taskId)
+{
+    while (sHolon_Funcs[gTasks[taskId].tState](&gTasks[taskId]));
+}
+
 static void Task_Regice(u8 taskId)
 {
     while (sRegice_Funcs[gTasks[taskId].tState](&gTasks[taskId]));
@@ -1408,6 +1431,21 @@ static bool8 Magma_Init(struct Task *task)
     return FALSE;
 }
 
+static bool8 Holon_Init(struct Task *task)
+{
+    u16 *tilemap, *tileset;
+
+    task->tEndDelay = 60;
+    InitPatternWeaveTransition(task);
+    GetBg0TilesDst(&tilemap, &tileset);
+    CpuFill16(0, tilemap, BG_SCREEN_SIZE);
+    DecompressDataWithHeaderVram(sHolon_Tileset, tileset);
+    LoadPalette(sEvilTeam_Palette, BG_PLTT_ID(15), sizeof(sEvilTeam_Palette));
+
+    task->tState++;
+    return FALSE;
+}
+
 static bool8 Regi_Init(struct Task *task)
 {
     u16 *tilemap, *tileset;
@@ -1462,6 +1500,18 @@ static bool8 Aqua_SetGfx(struct Task *task)
 
     GetBg0TilesDst(&tilemap, &tileset);
     DecompressDataWithHeaderVram(sTeamAqua_Tilemap, tilemap);
+    SetSinWave((s16*)gScanlineEffectRegBuffers[0], 0, task->tSinIndex, 132, task->tAmplitude, DISPLAY_HEIGHT);
+
+    task->tState++;
+    return FALSE;
+}
+
+static bool8 Holon_SetGfx(struct Task *task)
+{
+    u16 *tilemap, *tileset;
+
+    GetBg0TilesDst(&tilemap, &tileset);
+    DecompressDataWithHeaderVram(sHolon_Tilemap, tilemap);
     SetSinWave((s16*)gScanlineEffectRegBuffers[0], 0, task->tSinIndex, 132, task->tAmplitude, DISPLAY_HEIGHT);
 
     task->tState++;

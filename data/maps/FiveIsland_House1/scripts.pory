@@ -1,0 +1,5 @@
+mapscripts FiveIsland_House1_MapScripts {}
+
+script FiveIsland_House1_EventScript_Woman {
+    msgbox(format("It's lovely to meet a traveller from Tosa."), MSGBOX_NPC)
+}

@@ -1,0 +1,9 @@
+mapscripts ThreeIsland_House4_MapScripts {}
+
+script ThreeIsland_House4_EventScript_BaldingMan {
+    msgbox(format("Each island has its own character. Have you visited them all?"), MSGBOX_NPC)
+}
+
+script ThreeIsland_House4_EventScript_LittleBoy {
+    msgbox(format("Do you have a POKéMON from Tosa? Can I see it?"), MSGBOX_NPC)
+}

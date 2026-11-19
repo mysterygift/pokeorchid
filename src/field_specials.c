@@ -1663,6 +1663,22 @@ void TryInitBattleTowerAwardManObjectEvent(void)
     //TryInitLocalObjectEvent(6);
 }
 
+// Wavebreak Voyages: Cynthia's Battle Cafe rematch is offered once per RTC day. This reads the RTC
+// directly, so it works even when FLAG_SYS_CLOCK_SET (and with it VAR_DAYS) was never set.
+bool8 IsCynthiaCafeRematchAvailable(void)
+{
+    RtcCalcLocalTime();
+    return !FlagGet(FLAG_CYNTHIA_CAFE_REMATCHED)
+        || VarGet(VAR_CYNTHIA_CAFE_REMATCH_DAY) != (u16)gLocalTime.days;
+}
+
+void SetCynthiaCafeRematchDay(void)
+{
+    RtcCalcLocalTime();
+    FlagSet(FLAG_CYNTHIA_CAFE_REMATCHED);
+    VarSet(VAR_CYNTHIA_CAFE_REMATCH_DAY, (u16)gLocalTime.days);
+}
+
 u16 GetDaysUntilPacifidlogTMAvailable(void)
 {
     u16 tmReceivedDay = VarGet(VAR_PACIFIDLOG_TM_RECEIVED_DAY);

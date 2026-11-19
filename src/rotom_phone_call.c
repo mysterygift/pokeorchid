@@ -12,6 +12,7 @@
 #include "decompress.h"
 #include "event_data.h"
 #include "event_object_movement.h"
+#include "field_specials.h"
 #include "gpu_regs.h"
 #include "main.h"
 #include "malloc.h"
@@ -21,6 +22,7 @@
 #include "palette.h"
 #include "phone_ui.h"
 #include "pokenav.h"
+#include "random.h"
 #include "region_map.h"
 #include "scanline_effect.h"
 #include "sound.h"
@@ -32,6 +34,7 @@
 #include "text_window.h"
 #include "window.h"
 #include "constants/event_objects.h"
+#include "constants/map_groups.h"
 #include "constants/rgb.h"
 #include "constants/songs.h"
 #include "constants/trainers.h"
@@ -74,7 +77,7 @@ static const u8 sGlyphs_Gfx[] = INCGFX_U8("graphics/rotom_phone/call_glyphs.png"
 static const u16 sTagTextColours[] = { RGB(19, 5, 9), RGB(5, 13, 8) };
 
 enum { SCREEN_LIST, SCREEN_CARD, SCREEN_RING, SCREEN_TALK };
-enum { TAG_NONE_, TAG_REMATCH, TAG_HOME };
+enum { TAG_NONE_, TAG_REMATCH, TAG_HOME, TAG_CHAMPION };   // champion: tray text only, no row pictogram
 
 enum
 {
@@ -213,6 +216,8 @@ static u32 ContactTag(const struct PokenavMatchCallEntry *c)
 
     if (c->isSpecialTrainer && c->headerId == MC_HEADER_MOM)
         return TAG_HOME;
+    if (c->isSpecialTrainer && c->headerId == MC_HEADER_CYNTHIA)
+        return IsCynthiaCafeRematchAvailable() ? TAG_REMATCH : TAG_CHAMPION;
 #if FREE_MATCH_CALL == FALSE
     if (idx != REMATCH_TABLE_ENTRIES && gSaveBlock1Ptr->trainerRematches[idx] != 0)
         return TAG_REMATCH;
@@ -238,6 +243,7 @@ static void ContactName(const struct PokenavMatchCallEntry *c, u8 *dest)
 }
 
 static const u8 sText_MomProfile[] = _("Always happy to hear\nfrom you, dear!");
+static const u8 sText_CynthiaProfile[] = _("Sinnoh's Champion, relaxing\nat the Battle Café.");
 
 // two profile lines (the PokéNav check page's intro lines)
 static void ContactProfile(const struct PokenavMatchCallEntry *c, u8 *dest)
@@ -261,6 +267,11 @@ static void ContactProfile(const struct PokenavMatchCallEntry *c, u8 *dest)
         StringCopy(dest, sText_MomProfile);
         return;
     }
+    else if (c->headerId == MC_HEADER_CYNTHIA)
+    {
+        StringCopy(dest, sText_CynthiaProfile);
+        return;
+    }
     *dest = EOS;
     if (a == NULL)
         return;
@@ -279,6 +290,8 @@ static enum TrainerPicID ContactPic(const struct PokenavMatchCallEntry *c)
         return GetTrainerPicFromId(GetTrainerIdxByRematchIdx(idx));
     if (c->isSpecialTrainer && MatchCall_HasCheckPage(c->headerId))
         return gFacilityClassToPicIndex[MatchCall_GetOverrideFacilityClass(c->headerId)];
+    if (c->isSpecialTrainer && c->headerId == MC_HEADER_CYNTHIA)
+        return TRAINER_PIC_CYNTHIA;
     return TRAINER_PIC_COUNT;   // none: the card shows the overworld head at 2x
 }
 
@@ -348,6 +361,7 @@ static u16 ContactOwGfx(const struct PokenavMatchCallEntry *c)
         case MC_HEADER_WALLY:      return OBJ_EVENT_GFX_WALLY;
         case MC_HEADER_SCOTT:      return OBJ_EVENT_GFX_SCOTT;
         case MC_HEADER_MR_STONE:   return OBJ_EVENT_GFX_MAN_4;     // no Mr. Stone overworld sprite
+        case MC_HEADER_CYNTHIA:    return OBJ_EVENT_GFX_CYNTHIA;
         }
     }
     pic = ContactPic(c);
@@ -712,7 +726,15 @@ static void PrintTray(void)
     if (sCall->count != 0)
     {
         DrawLocationPill(WIN_B, 8, 119 - 112, c->mapSec);
-        if (tag == TAG_REMATCH)
+        if (c->isSpecialTrainer && c->headerId == MC_HEADER_CYNTHIA)
+        {
+            // the Champion tag (Champion gold); "rematch ready" when today's Battle Cafe rematch is still open
+            static const u8 sColors_Champion[] = {0, KIT_SELECT_DARK, KIT_PANEL_SHADE};
+            const u8 *s = tag == TAG_REMATCH ? COMPOUND_STRING("Champion · rematch ready!") : COMPOUND_STRING("Champion");
+            AddTextPrinterParameterized4(WIN_B, FONT_NARROW, 236 - GetStringWidth(FONT_NARROW, s, 0), 118 - 112, 0, 0,
+                                         tag == TAG_REMATCH ? sColors_Rematch : sColors_Champion, TEXT_SKIP_DRAW, s);
+        }
+        else if (tag == TAG_REMATCH)
         {
             const u8 *s = COMPOUND_STRING("Ready for a rematch!");
             AddTextPrinterParameterized4(WIN_B, FONT_NARROW, 236 - GetStringWidth(FONT_NARROW, s, 0), 118 - 112, 0, 0,
@@ -796,7 +818,8 @@ static void DrawCard(void)
     PrintProfile(WIN_A, 92 - 80, 57 - 16, c);
     if (ContactTag(c) == TAG_REMATCH)
         AddTextPrinterParameterized4(WIN_A, FONT_NARROW, 98 - 80, 91 - 16, 0, 0, sColors_StripText, TEXT_SKIP_DRAW,
-                                     COMPOUND_STRING("Wants a rematch!"));
+                                     c->isSpecialTrainer && c->headerId == MC_HEADER_CYNTHIA
+                                     ? COMPOUND_STRING("Rematch at the Café today!") : COMPOUND_STRING("Wants a rematch!"));
     CopyWindowToVram(WIN_A, COPYWIN_GFX);
 
     FillWindowPixelBuffer(WIN_B, PIXEL_FILL(0));
@@ -848,11 +871,16 @@ static void DrawRings(void)
 
 static void PrintTalkTimer(void)
 {
+    // The timer ticks while the call's dialogue printer is still running. Printing it regenerates the global
+    // font colour table (GenerateFontHalfRowLookupTable), so without the save/restore every glyph the dialogue
+    // drew after the first tick (page 2 onwards) used the title colours: pale green text.
+    union TextColor saved = SaveTextColors();
     u32 secs = sCall->talkFrames / 60;
     u8 *p = ConvertIntToDecimalStringN(gStringVar3, secs / 60, STR_CONV_MODE_LEFT_ALIGN, 2);
     *p++ = CHAR_COLON;
     ConvertIntToDecimalStringN(p, secs % 60, STR_CONV_MODE_LEADING_ZEROS, 2);
     PrintTitle(gStringVar3);
+    RestoreTextColors(saved);
 }
 
 // ---------------------------------------------------------------- screens
@@ -985,6 +1013,9 @@ static void MoveListCursor(s32 delta)
 static bool32 IsTrainerNearby(const struct PokenavMatchCallEntry *c)
 {
     // pokenav_match_call_list.c ShouldDoNearbyMessage
+    if (c->isSpecialTrainer && c->headerId == MC_HEADER_CYNTHIA)
+        return gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(MAP_CHANGU_CITY_CAFE)
+            && gSaveBlock1Ptr->location.mapNum == MAP_NUM(MAP_CHANGU_CITY_CAFE);
 #if FREE_MATCH_CALL == FALSE
     if (!c->isSpecialTrainer)
         return c->mapSec == gMapHeader.regionMapSectionId && !gSaveBlock1Ptr->trainerRematches[c->headerId];
@@ -992,6 +1023,32 @@ static bool32 IsTrainerNearby(const struct PokenavMatchCallEntry *c)
         return c->mapSec == gMapHeader.regionMapSectionId && FlagGet(FLAG_BADGE05_GET) && !FlagGet(FLAG_WATTSON_REMATCH_AVAILABLE);
 #endif
     return FALSE;
+}
+
+// Wavebreak Voyages: Cynthia (Sinnoh Champion) after FLAG_CYNTHIA_BEATEN_AT_LAKE. One of a few rotating openers, then
+// whether today's Battle Cafe rematch (Common_EventScript_CynthiaCafe, once per RTC day) is still open.
+static const u8 *const sCynthiaCallOpeners[] =
+{
+    COMPOUND_STRING("CYNTHIA: Hello, {PLAYER}.\nI'm at the Battle Café in Changu.\pThe harbour breeze, a good coffee…\nIt's a lovely change of pace.\p"),
+    COMPOUND_STRING("CYNTHIA: Oh, {PLAYER}! I was just\nreading about Tosa's old legends.\pMyths tie regions together, don't\nthey? Sinnoh's are no different.\p"),
+    COMPOUND_STRING("CYNTHIA: Hello. I keep thinking\nabout our battle at Holon Lake.\pYour Pokémon trusted you completely.\nThat can't be faked.\p"),
+    COMPOUND_STRING("CYNTHIA: Hi, {PLAYER}. Garchomp has\nclaimed a spot on the café terrace.\pThe barista keeps a table free for\nus now. Isn't that sweet?\p"),
+};
+
+static EWRAM_DATA u8 sCynthiaCallLine = 0;
+
+static void BuildCynthiaCallMessage(u8 *dest)
+{
+    u8 *p;
+
+    if (sCynthiaCallLine == 0)
+        sCynthiaCallLine = 1 + (Random() % ARRAY_COUNT(sCynthiaCallOpeners));     // first call of the session
+    p = StringExpandPlaceholders(dest, sCynthiaCallOpeners[sCynthiaCallLine - 1]);
+    sCynthiaCallLine = 1 + (sCynthiaCallLine % ARRAY_COUNT(sCynthiaCallOpeners));  // rotate
+    if (IsCynthiaCafeRematchAvailable())
+        StringExpandPlaceholders(p, COMPOUND_STRING("We haven't battled today yet.\nCome find me at the café!"));
+    else
+        StringExpandPlaceholders(p, COMPOUND_STRING("We've had our battle for today.\nCome back to the café tomorrow!"));
 }
 
 static void StartCall(void)
@@ -1018,6 +1075,8 @@ static void StartCall(void)
     }
     if (!c->isSpecialTrainer)
         sCall->newRematchRequest = SelectMatchCallMessage(GetTrainerIdxByRematchIdx(c->headerId), gStringVar4);
+    else if (c->headerId == MC_HEADER_CYNTHIA)
+        BuildCynthiaCallMessage(gStringVar4);
     else
         MatchCall_GetMessage(c->headerId, gStringVar4);
     sCall->message = gStringVar4;

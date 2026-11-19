@@ -1,0 +1,13 @@
+  surfing: True (8, 8, 25, 1)
+  sea route A? True (38, 7, 25, 62)
+  shot trainer_sea_route_a_swimmer_dylan (5, 6, 25, 62)
+PASS Sea Route A: surfing, swimmer Dylan spotted -> trainer 65
+  lake? True (31, 0, 24, 14)
+  rock (9,23) present before: False
+  shot lake_rock_9_23_prompt (8, 23, 24, 14)
+  shot lake_rock_9_23_after (8, 22, 24, 14)
+PASS Holon Lake rock (9,23) smashed: rock object gone=True, encounter: None
+  rock (27,41) present before: False
+  shot lake_rock_27_41_prompt (26, 41, 24, 14)
+  shot lake_rock_27_41_after (26, 40, 24, 14)
+PASS Holon Lake rock (27,41) smashed: rock object gone=True, encounter: None

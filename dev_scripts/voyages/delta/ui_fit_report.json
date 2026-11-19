@@ -1,0 +1,138 @@
+[
+ {
+  "screen": "PC box info",
+  "name": "Charmeleon-δ",
+  "font": "narrow",
+  "width": 59,
+  "limit": 76,
+  "clipped": false
+ },
+ {
+  "screen": "PC box info",
+  "name": "Gyarados-δ",
+  "font": "normal",
+  "width": 59,
+  "limit": 66,
+  "clipped": false
+ },
+ {
+  "screen": "battle healthbox",
+  "name": "Charmeleon-δ",
+  "font": "small_narrower",
+  "width": 46,
+  "limit": 55,
+  "clipped": false
+ },
+ {
+  "screen": "battle healthbox",
+  "name": "Farfetch'd-δ",
+  "font": "small_narrower",
+  "width": 46,
+  "limit": 55,
+  "clipped": false
+ },
+ {
+  "screen": "battle healthbox",
+  "name": "Gyarados-δ",
+  "font": "small",
+  "width": 50,
+  "limit": 55,
+  "clipped": false
+ },
+ {
+  "screen": "battle healthbox",
+  "name": "Kingdra-δ",
+  "font": "small",
+  "width": 44,
+  "limit": 55,
+  "clipped": false
+ },
+ {
+  "screen": "party slot",
+  "name": "Charmeleon-δ",
+  "font": "small_narrower",
+  "width": 46,
+  "limit": 50,
+  "clipped": false
+ },
+ {
+  "screen": "party slot",
+  "name": "Farfetch'd-δ",
+  "font": "small_narrower",
+  "width": 46,
+  "limit": 50,
+  "clipped": false
+ },
+ {
+  "screen": "party slot",
+  "name": "Gyarados-δ",
+  "font": "small",
+  "width": 50,
+  "limit": 50,
+  "clipped": false
+ },
+ {
+  "screen": "party slot",
+  "name": "Kingdra-δ",
+  "font": "small",
+  "width": 44,
+  "limit": 50,
+  "clipped": false
+ },
+ {
+  "screen": "pokédex list",
+  "name": "Charmeleon-δ",
+  "font": "narrow",
+  "width": 59,
+  "limit": 85,
+  "clipped": false
+ },
+ {
+  "screen": "pokédex list",
+  "name": "Farfetch'd-δ",
+  "font": "narrow",
+  "width": 58,
+  "limit": 85,
+  "clipped": false
+ },
+ {
+  "screen": "pokédex list",
+  "name": "Gyarados-δ",
+  "font": "narrow",
+  "width": 50,
+  "limit": 85,
+  "clipped": false
+ },
+ {
+  "screen": "pokédex list",
+  "name": "Kingdra-δ",
+  "font": "narrow",
+  "width": 44,
+  "limit": 85,
+  "clipped": false
+ },
+ {
+  "screen": "pokédex list",
+  "name": "Pikachu-δ",
+  "font": "narrow",
+  "width": 44,
+  "limit": 85,
+  "clipped": false
+ },
+ {
+  "screen": "summary header",
+  "name": "Charmeleon-δ",
+  "font": "narrower",
+  "width": 46,
+  "limit": 54,
+  "clipped": false
+ },
+ {
+  "screen": "summary header",
+  "name": "Gyarados-δ",
+  "font": "narrow",
+  "width": 50,
+  "limit": 54,
+  "clipped": false
+ }
+]

@@ -180,11 +180,13 @@ function guessKind(id) {
 
 function fromRepo() {
   const kantoStart = repo.sections.findIndex((s) => s.id === (repo.kantoStartId || "MAPSEC_PALLET_TOWN"));
-  const kantoEnd = repo.sections.findIndex((s) => s.id === "MAPSEC_SPECIAL_AREA");
+  // Tiksi ends where the Wavebreak Voyages block starts (MAPSEC_ONE_ISLAND..EMBER_SPA, export_region_maps.py)
+  const kantoEnd = repo.sections.findIndex((s) => s.id === "MAPSEC_ONE_ISLAND") - 1;
+  const voyageEnd = repo.sections.findIndex((s) => s.id === "MAPSEC_SPECIAL_AREA");
   const areas = repo.sections.map((s, i) => ({
     key: s.id, id: s.id, originalId: s.id, name: s.name || "", origName: s.name || "",
     kind: /^(Tiksi )?Site \d/.test(s.name || "") ? "landmark" : /^(Tiksi )?Town \d/.test(s.name || "") ? "town" : /^Tiksi Route \d/.test(s.name || "") ? "route" : guessKind(s.id), notes: "", kanto: kantoStart >= 0 && i >= kantoStart && (kantoEnd < 0 || i <= kantoEnd),
-  }));
+  voyage: s.id === "MAPSEC_EON_ISLAND" || (kantoEnd >= 0 && i > kantoEnd && i < voyageEnd)}));
   const known = new Set(areas.map((a) => a.key));
   const grid = repo.grid.map((row) => row.map((c) => (c === "MAPSEC_NONE" || !known.has(c) ? null : c)));
   const mapAssign = {};
@@ -444,7 +446,7 @@ function renderAreas() {
   const onMap = $("#optOnMap").checked, kanto = $("#optKanto").checked;
   const placed = new Set(S.grid.flat().filter(Boolean));
   const list = S.areas.filter((a) =>
-    (repo.region === "tiksi" ? (a.kanto || a.key === sel) : (kanto || !a.kanto || a.key === sel)) &&
+    (!a.voyage || a.key === sel) && (repo.region === "tiksi" ? (a.kanto || a.key === sel) : (kanto || !a.kanto || a.key === sel)) &&
     (!onMap || placed.has(a.key) || a.key === sel) &&
     (!$("#optStations").checked || a.station) &&
     (!q || (a.id + " " + a.name).toLowerCase().includes(q)));

@@ -305,6 +305,22 @@ static const u8 sDoorAnimPalettes_BattleDomeLobby[] = {7, 7, 7, 7, 7, 7, 7, 7};
 static const u8 sDoorAnimPalettes_BattlePalaceLobby[] = {7, 7, 7, 7, 7, 7, 7, 7};
 static const u8 sDoorAnimPalettes_BattleTent[] = {1, 1, 1, 1, 1, 1, 1, 1};
 static const u8 sDoorAnimPalettes_ColdStorage[] = {12, 12, 12, 12, 12, 12, 12, 12};
+
+// sevii-door begin
+static const u8 sDoorAnimTiles_SeviiRocketWarehouse[] = INCGFX_U8("graphics/door_anims/sevii_rocket_warehouse.png", ".4bpp");
+// sevii-door end
+
+
+
+
+
+
+
+
+
+
+
+
 static const u8 sDoorAnimPalettes_BattleDomeCorridor[] = {7, 7, 7, 7, 7, 7, 7, 7};
 static const u8 sDoorAnimPalettes_BattleTowerMultiCorridor[] = {7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7};
 static const u8 sDoorAnimPalettes_Unused[] = {1, 1, 1, 1, 1, 1, 1, 1};
@@ -705,6 +721,32 @@ static const struct DoorGraphics sDoorAnimGraphicsTable[] =
         .tiles = sDoorAnimTiles_ColdStorage,
         .palettes = sDoorAnimPalettes_ColdStorage
     },
+    // sevii-door-table begin: gTileset_SeviiIslands (Rustboro copy + Rocket Warehouse)
+    {
+        .metatileNum = METATILE_Rustboro_Door_Tan,
+        .tileset = &gTileset_SeviiIslands,
+        .sound = DOOR_SOUND_NORMAL,
+        .size = DOOR_SIZE_1x2,
+        .tiles = sDoorAnimTiles_RustboroTan,
+        .palettes = sDoorAnimPalettes_RustboroTan
+    },
+    {
+        .metatileNum = METATILE_Rustboro_Door_Gray,
+        .tileset = &gTileset_SeviiIslands,
+        .sound = DOOR_SOUND_NORMAL,
+        .size = DOOR_SIZE_1x2,
+        .tiles = sDoorAnimTiles_RustboroGray,
+        .palettes = sDoorAnimPalettes_RustboroGray
+    },
+    {
+        .metatileNum = METATILE_SeviiIslands_RocketWarehouse_Door,
+        .tileset = &gTileset_SeviiIslands,
+        .sound = DOOR_SOUND_SLIDING,
+        .size = DOOR_SIZE_1x2,
+        .tiles = sDoorAnimTiles_SeviiRocketWarehouse,
+        .palettes = sDoorAnimPalettes_ColdStorage
+    },
+    // sevii-door-table end
     // Tosa Port uses a copy of Slateport (gTileset_TosaPort) with the same metatile IDs
     {
         .metatileNum = METATILE_Slateport_Door,
@@ -1270,9 +1312,14 @@ static const struct DoorAnimFrame *GetLastDoorFrame(const struct DoorAnimFrame *
 
 static const struct DoorGraphics *GetDoorGraphics(const struct DoorGraphics *gfx, u16 metatileNum)
 {
+    const struct Tileset *primary = gMapHeader.mapLayout->primaryTileset;
+
+    // Orchid Holon: gTileset_General_Holon is General with other palettes, so it uses General's doors
+    if (primary == &gTileset_General_Holon)
+        primary = &gTileset_General;
     while (gfx->tiles != NULL)
     {
-        if (gfx->metatileNum == metatileNum && (gfx->tileset == gMapHeader.mapLayout->primaryTileset || gfx->tileset == gMapHeader.mapLayout->secondaryTileset))
+        if (gfx->metatileNum == metatileNum && (gfx->tileset == primary || gfx->tileset == gMapHeader.mapLayout->secondaryTileset))
             return gfx;
         gfx++;
     }

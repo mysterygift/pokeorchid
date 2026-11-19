@@ -1,0 +1,452 @@
+{
+ "size": [
+  15,
+  16
+ ],
+ "tileset": [
+  "gTileset_General",
+  "gTileset_Cave"
+ ],
+ "ground": [
+  "raw",
+  1553
+ ],
+ "marks": [
+  [
+   7,
+   13,
+   "CANYON",
+   "warp"
+  ],
+  [
+   7,
+   6,
+   "",
+   "field",
+   "pushable_boulder"
+  ],
+  [
+   8,
+   6,
+   "",
+   "field",
+   "pushable_boulder"
+  ],
+  [
+   8,
+   9,
+   "",
+   "field",
+   "pushable_boulder"
+  ],
+  [
+   6,
+   10,
+   "",
+   "field",
+   "pushable_boulder"
+  ],
+  [
+   8,
+   10,
+   "",
+   "field",
+   "pushable_boulder"
+  ],
+  [
+   6,
+   9,
+   "",
+   "field",
+   "pushable_boulder"
+  ],
+  [
+   6,
+   6,
+   "",
+   "field",
+   "pushable_boulder"
+  ],
+  [
+   7,
+   2,
+   "Switch1",
+   "note"
+  ],
+  [
+   9,
+   8,
+   "Switch7",
+   "note"
+  ],
+  [
+   5,
+   8,
+   "Switch6",
+   "note"
+  ],
+  [
+   9,
+   6,
+   "Switch5",
+   "note"
+  ],
+  [
+   5,
+   6,
+   "Switch4",
+   "note"
+  ],
+  [
+   10,
+   4,
+   "Switch3",
+   "note"
+  ],
+  [
+   4,
+   4,
+   "Switch2",
+   "note"
+  ]
+ ],
+ "grid_raw": [
+  "0611 0611 0611 0611 0611 061B 0619 0619 0611 0611 0611 0611 0611 0611 0611",
+  "0611 0611 0611 0611 061B 0611 061B 0619 0619 0619 061C 0611 0611 0611 0611",
+  "0611 0611 0611 0619 0611 061B 061A 322F 0619 061C 0618 0619 061C 0611 0611",
+  "0611 0611 0611 0611 0619 061A 3201 3211 3201 0618 0619 0611 0610 0611 0611",
+  "0611 0611 0611 0611 322F 3211 3211 3211 3211 3211 322F 0611 0610 0611 0611",
+  "0611 0611 0611 0611 060A 3211 0602 3211 0603 3211 0611 0611 0611 0611 0611",
+  "0611 0611 0611 0611 0612 322F 3211 3211 3211 322F 0611 0611 0611 0611 0611",
+  "0611 0611 0611 0611 061B 0619 3211 3201 3211 0619 0611 0611 0611 0611 0611",
+  "0611 0611 0611 0612 0612 322F 3211 3211 3211 322F 0610 0610 0611 0611 0611",
+  "0611 0611 0611 0612 0612 3211 3211 3211 3211 3211 0610 0610 0611 0611 0611",
+  "0611 0611 0611 0612 0612 3211 3211 3211 3211 3211 0610 0610 0611 0611 0611",
+  "0611 0611 0611 0612 0612 3211 0652 0652 0652 3211 0610 0610 0611 0611 0611",
+  "0611 0611 0611 0612 0612 3211 3211 3211 3201 3201 0610 0610 0611 0611 0611",
+  "0611 0611 0611 0612 0612 3211 3211 323C 3201 3211 0610 0610 0611 0611 0611",
+  "0611 0611 0611 0611 0623 0609 0609 0609 0609 0609 0609 0610 0611 0611 0611",
+  "0611 0611 0611 0611 0609 0609 0611 0611 0609 0609 0609 0609 0611 0611 0611"
+ ],
+ "report": {
+  "pair": [
+   "gTileset_General",
+   "gTileset_Cave"
+  ],
+  "set": "cave",
+  "look": "Granite Cave brown",
+  "classes": [
+   "###############",
+   "###############",
+   "#######b#######",
+   "######...######",
+   "####b.....b####",
+   "#####.B.B.#####",
+   "#####b...b#####",
+   "######...######",
+   "#####b...b#####",
+   "#####.....#####",
+   "#####.....#####",
+   "#####.JJJ.#####",
+   "#####.....#####",
+   "#####..v..#####",
+   "###############",
+   "###############"
+  ],
+  "sig_levels": {
+   "5": 152,
+   "1": 26,
+   "2": 7,
+   "3": 1
+  },
+  "notes": [],
+  "frlg_map": "SevenIsland_SevaultCanyon_TanobyKey",
+  "frlg_layout": "LAYOUT_SEVEN_ISLAND_SEVAULT_CANYON_TANOBY_KEY",
+  "frlg_pair": [
+   "gTileset_General_Frlg",
+   "gTileset_DiglettsCave"
+  ],
+  "maps": [
+   "MAP_SEVEN_ISLAND_SEVAULT_CANYON_TANOBY_KEY"
+  ],
+  "size": [
+   15,
+   16
+  ],
+  "method": "learned cave autotiler (interiors_caves.py), set 'cave'",
+  "warps": [
+   {
+    "x": 7,
+    "y": 13,
+    "dest_map": "MAP_SEVEN_ISLAND_SEVAULT_CANYON",
+    "dest_warp_id": "0"
+   }
+  ],
+  "objects": [
+   {
+    "x": 7,
+    "y": 6,
+    "frlg_gfx": "OBJ_EVENT_GFX_PUSHABLE_BOULDER",
+    "emerald_gfx": "OBJ_EVENT_GFX_PUSHABLE_BOULDER",
+    "movement": "MOVEMENT_TYPE_LOOK_AROUND",
+    "script": "EventScript_StrengthBoulder"
+   },
+   {
+    "x": 8,
+    "y": 6,
+    "frlg_gfx": "OBJ_EVENT_GFX_PUSHABLE_BOULDER",
+    "emerald_gfx": "OBJ_EVENT_GFX_PUSHABLE_BOULDER",
+    "movement": "MOVEMENT_TYPE_LOOK_AROUND",
+    "script": "EventScript_StrengthBoulder"
+   },
+   {
+    "x": 8,
+    "y": 9,
+    "frlg_gfx": "OBJ_EVENT_GFX_PUSHABLE_BOULDER",
+    "emerald_gfx": "OBJ_EVENT_GFX_PUSHABLE_BOULDER",
+    "movement": "MOVEMENT_TYPE_LOOK_AROUND",
+    "script": "EventScript_StrengthBoulder"
+   },
+   {
+    "x": 6,
+    "y": 10,
+    "frlg_gfx": "OBJ_EVENT_GFX_PUSHABLE_BOULDER",
+    "emerald_gfx": "OBJ_EVENT_GFX_PUSHABLE_BOULDER",
+    "movement": "MOVEMENT_TYPE_LOOK_AROUND",
+    "script": "EventScript_StrengthBoulder"
+   },
+   {
+    "x": 8,
+    "y": 10,
+    "frlg_gfx": "OBJ_EVENT_GFX_PUSHABLE_BOULDER",
+    "emerald_gfx": "OBJ_EVENT_GFX_PUSHABLE_BOULDER",
+    "movement": "MOVEMENT_TYPE_LOOK_AROUND",
+    "script": "EventScript_StrengthBoulder"
+   },
+   {
+    "x": 6,
+    "y": 9,
+    "frlg_gfx": "OBJ_EVENT_GFX_PUSHABLE_BOULDER",
+    "emerald_gfx": "OBJ_EVENT_GFX_PUSHABLE_BOULDER",
+    "movement": "MOVEMENT_TYPE_LOOK_AROUND",
+    "script": "EventScript_StrengthBoulder"
+   },
+   {
+    "x": 6,
+    "y": 6,
+    "frlg_gfx": "OBJ_EVENT_GFX_PUSHABLE_BOULDER",
+    "emerald_gfx": "OBJ_EVENT_GFX_PUSHABLE_BOULDER",
+    "movement": "MOVEMENT_TYPE_LOOK_AROUND",
+    "script": "EventScript_StrengthBoulder"
+   }
+  ],
+  "bg_events": [],
+  "coord_events": [
+   {
+    "type": "trigger",
+    "x": 7,
+    "y": 2,
+    "elevation": 3,
+    "var": "VAR_TEMP_1",
+    "var_value": "99",
+    "script": "SevenIsland_SevaultCanyon_TanobyKey_EventScript_Switch1"
+   },
+   {
+    "type": "trigger",
+    "x": 9,
+    "y": 8,
+    "elevation": 3,
+    "var": "VAR_TEMP_7",
+    "var_value": "99",
+    "script": "SevenIsland_SevaultCanyon_TanobyKey_EventScript_Switch7"
+   },
+   {
+    "type": "trigger",
+    "x": 5,
+    "y": 8,
+    "elevation": 3,
+    "var": "VAR_TEMP_6",
+    "var_value": "99",
+    "script": "SevenIsland_SevaultCanyon_TanobyKey_EventScript_Switch6"
+   },
+   {
+    "type": "trigger",
+    "x": 9,
+    "y": 6,
+    "elevation": 3,
+    "var": "VAR_TEMP_5",
+    "var_value": "99",
+    "script": "SevenIsland_SevaultCanyon_TanobyKey_EventScript_Switch5"
+   },
+   {
+    "type": "trigger",
+    "x": 5,
+    "y": 6,
+    "elevation": 3,
+    "var": "VAR_TEMP_4",
+    "var_value": "99",
+    "script": "SevenIsland_SevaultCanyon_TanobyKey_EventScript_Switch4"
+   },
+   {
+    "type": "trigger",
+    "x": 10,
+    "y": 4,
+    "elevation": 3,
+    "var": "VAR_TEMP_3",
+    "var_value": "99",
+    "script": "SevenIsland_SevaultCanyon_TanobyKey_EventScript_Switch3"
+   },
+   {
+    "type": "trigger",
+    "x": 4,
+    "y": 4,
+    "elevation": 3,
+    "var": "VAR_TEMP_2",
+    "var_value": "99",
+    "script": "SevenIsland_SevaultCanyon_TanobyKey_EventScript_Switch2"
+   }
+  ],
+  "walk_diff": [],
+  "seams_before_fix": 52,
+  "seam_cells_repicked": 22,
+  "seams": [
+   [
+    6,
+    2,
+    "E",
+    "0x21A",
+    "0x22F"
+   ],
+   [
+    7,
+    2,
+    "E",
+    "0x22F",
+    "0x219"
+   ],
+   [
+    4,
+    6,
+    "S",
+    "0x212",
+    "0x21B"
+   ],
+   [
+    5,
+    6,
+    "S",
+    "0x22F",
+    "0x219"
+   ],
+   [
+    9,
+    6,
+    "S",
+    "0x22F",
+    "0x219"
+   ],
+   [
+    7,
+    13,
+    "S",
+    "0x23C",
+    "0x209"
+   ]
+  ],
+  "secondary_users": [
+   "LAYOUT_ROUTE130_MIRAGE_ISLAND",
+   "LAYOUT_DESERT_RUINS",
+   "LAYOUT_GRANITE_CAVE_1F",
+   "LAYOUT_GRANITE_CAVE_B1F",
+   "LAYOUT_GRANITE_CAVE_B2F",
+   "LAYOUT_SEAFLOOR_CAVERN_ENTRANCE",
+   "LAYOUT_SEAFLOOR_CAVERN_ROOM1",
+   "LAYOUT_SEAFLOOR_CAVERN_ROOM2",
+   "LAYOUT_SEAFLOOR_CAVERN_ROOM3",
+   "LAYOUT_SEAFLOOR_CAVERN_ROOM4",
+   "LAYOUT_SEAFLOOR_CAVERN_ROOM5",
+   "LAYOUT_SEAFLOOR_CAVERN_ROOM8",
+   "LAYOUT_SEAFLOOR_CAVERN_ROOM9",
+   "LAYOUT_CAVE_OF_ORIGIN_ENTRANCE",
+   "LAYOUT_CAVE_OF_ORIGIN_1F",
+   "LAYOUT_CAVE_OF_ORIGIN_UNUSED_RUBY_SAPPHIRE_MAP1",
+   "LAYOUT_CAVE_OF_ORIGIN_UNUSED_RUBY_SAPPHIRE_MAP2",
+   "LAYOUT_CAVE_OF_ORIGIN_UNUSED_RUBY_SAPPHIRE_MAP3",
+   "LAYOUT_CAVE_OF_ORIGIN_B1F",
+   "LAYOUT_SHOAL_CAVE_LOW_TIDE_ENTRANCE_ROOM",
+   "LAYOUT_SHOAL_CAVE_LOW_TIDE_INNER_ROOM",
+   "LAYOUT_SHOAL_CAVE_LOW_TIDE_STAIRS_ROOM",
+   "LAYOUT_SHOAL_CAVE_LOW_TIDE_LOWER_ROOM",
+   "LAYOUT_SHOAL_CAVE_HIGH_TIDE_ENTRANCE_ROOM",
+   "LAYOUT_SHOAL_CAVE_HIGH_TIDE_INNER_ROOM",
+   "LAYOUT_UNUSED_CAVE1",
+   "LAYOUT_UNUSED_CAVE2",
+   "LAYOUT_UNUSED_CAVE3",
+   "LAYOUT_UNUSED_CAVE4",
+   "LAYOUT_UNUSED_CAVE5",
+   "LAYOUT_UNUSED_CAVE6",
+   "LAYOUT_UNUSED_CAVE7",
+   "LAYOUT_UNUSED_CAVE8",
+   "LAYOUT_UNUSED_CAVE9",
+   "LAYOUT_UNUSED_CAVE10",
+   "LAYOUT_UNUSED_CAVE11",
+   "LAYOUT_UNUSED_CAVE12",
+   "LAYOUT_UNUSED_CAVE13",
+   "LAYOUT_UNUSED_CAVE14",
+   "LAYOUT_ROUTE130",
+   "LAYOUT_ISLAND_CAVE",
+   "LAYOUT_ANCIENT_TOMB",
+   "LAYOUT_SEALED_CHAMBER_OUTER_ROOM",
+   "LAYOUT_GRANITE_CAVE_STEVENS_ROOM",
+   "LAYOUT_SEALED_CHAMBER_INNER_ROOM",
+   "LAYOUT_SCORCHED_SLAB",
+   "LAYOUT_CAVE_OF_ORIGIN_UNUSED_B4F_LAVA",
+   "LAYOUT_SKY_PILLAR_ENTRANCE",
+   "LAYOUT_SEAFLOOR_CAVERN_ROOM9_LAVA",
+   "LAYOUT_SHOAL_CAVE_LOW_TIDE_ICE_ROOM",
+   "LAYOUT_DESERT_UNDERPASS",
+   "LAYOUT_ARTISAN_CAVE_B1F",
+   "LAYOUT_ARTISAN_CAVE_1F",
+   "LAYOUT_MARINE_CAVE_ENTRANCE",
+   "LAYOUT_TERRA_CAVE_ENTRANCE",
+   "LAYOUT_TERRA_CAVE_END",
+   "LAYOUT_MARINE_CAVE_END",
+   "LAYOUT_ALTERING_CAVE",
+   "LAYOUT_DAMP_PATH",
+   "LAYOUT_MT_BATOK_1F",
+   "LAYOUT_MT_BATOK_2F",
+   "LAYOUT_MT_BATOK_3F",
+   "LAYOUT_MT_BATOK_EAST_2F",
+   "LAYOUT_MT_BATOK_EAST_1F",
+   "LAYOUT_CHALLENGERS_TRAIL_1F",
+   "LAYOUT_CHALLENGERS_TRAIL_2F",
+   "LAYOUT_CHALLENGERS_TRAIL_3F",
+   "LAYOUT_REGOLIS_SHRINE",
+   "LAYOUT_FRIGO_CAVE",
+   "LAYOUT_FERRUM_SHRINE",
+   "LAYOUT_GAVANI_PATH",
+   "LAYOUT_MT_DRAKE_1F",
+   "LAYOUT_MT_DRAKE_2F",
+   "LAYOUT_MT_DRAKE_3F"
+  ],
+  "metatiles": [
+   "0x201",
+   "0x202",
+   "0x203",
+   "0x209",
+   "0x20A",
+   "0x210",
+   "0x211",
+   "0x212",
+   "0x218",
+   "0x219",
+   "0x21A",
+   "0x21B",
+   "0x21C",
+   "0x223",
+   "0x22F",
+   "0x23C",
+   "0x252"
+  ]
+ }
+}

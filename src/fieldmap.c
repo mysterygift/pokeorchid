@@ -4,6 +4,7 @@
 #include "fieldmap.h"
 #include "fldeff.h"
 #include "fldeff_misc.h"
+#include "holon.h"
 #include "frontier_util.h"
 #include "menu.h"
 #include "mirage_tower.h"
@@ -1030,6 +1031,7 @@ static void LoadPrimaryTilesetPalette(struct MapLayout const *mapLayout)
 void LoadSecondaryTilesetPalette(struct MapLayout const *mapLayout, bool8 skipFaded)
 {
     LoadTilesetPalette(mapLayout->secondaryTileset, GetNumPalsInPrimary(mapLayout) * 16, (NUM_PALS_TOTAL - GetNumPalsInPrimary(mapLayout)) * PLTT_SIZE_4BPP, skipFaded, GetNumPalsInPrimary(mapLayout));
+    Holon_LoadHealedRingsPalette(mapLayout, skipFaded); // Wavebreak Voyages: rings heal after Faba
 }
 
 void CopyMapTilesetsToVram(struct MapLayout const *mapLayout)

@@ -1,0 +1,531 @@
+{
+ "size": [
+  18,
+  16
+ ],
+ "tileset": [
+  "gTileset_General",
+  "gTileset_Lavaridge"
+ ],
+ "ground": [
+  "raw",
+  1652
+ ],
+ "marks": [
+  [
+   14,
+   14,
+   "B5F",
+   "warp"
+  ],
+  [
+   4,
+   2,
+   "B3F",
+   "warp"
+  ],
+  [
+   3,
+   7,
+   "BrailleA",
+   "sign"
+  ],
+  [
+   4,
+   7,
+   "BrailleA",
+   "sign"
+  ],
+  [
+   5,
+   7,
+   "BrailleA",
+   "sign"
+  ],
+  [
+   4,
+   9,
+   "BrailleG",
+   "sign"
+  ],
+  [
+   3,
+   9,
+   "BrailleG",
+   "sign"
+  ],
+  [
+   5,
+   9,
+   "BrailleG",
+   "sign"
+  ],
+  [
+   3,
+   11,
+   "BrailleM",
+   "sign"
+  ],
+  [
+   4,
+   11,
+   "BrailleM",
+   "sign"
+  ],
+  [
+   5,
+   11,
+   "BrailleM",
+   "sign"
+  ],
+  [
+   3,
+   13,
+   "BrailleT",
+   "sign"
+  ],
+  [
+   4,
+   13,
+   "BrailleT",
+   "sign"
+  ],
+  [
+   5,
+   13,
+   "BrailleT",
+   "sign"
+  ],
+  [
+   7,
+   7,
+   "BrailleD",
+   "sign"
+  ],
+  [
+   8,
+   7,
+   "BrailleD",
+   "sign"
+  ],
+  [
+   9,
+   7,
+   "BrailleD",
+   "sign"
+  ],
+  [
+   7,
+   9,
+   "BrailleJ",
+   "sign"
+  ],
+  [
+   8,
+   9,
+   "BrailleJ",
+   "sign"
+  ],
+  [
+   9,
+   9,
+   "BrailleJ",
+   "sign"
+  ],
+  [
+   7,
+   11,
+   "BrailleP",
+   "sign"
+  ],
+  [
+   11,
+   7,
+   "BrailleP",
+   "sign"
+  ],
+  [
+   11,
+   9,
+   "BrailleC",
+   "sign"
+  ],
+  [
+   8,
+   11,
+   "BrailleP",
+   "sign"
+  ],
+  [
+   9,
+   11,
+   "BrailleP",
+   "sign"
+  ],
+  [
+   7,
+   13,
+   "BrailleW",
+   "sign"
+  ],
+  [
+   9,
+   13,
+   "BrailleW",
+   "sign"
+  ],
+  [
+   8,
+   13,
+   "BrailleW",
+   "sign"
+  ]
+ ],
+ "grid_raw": [
+  "0674 0674 0674 0674 0674 0674 0674 0674 0674 0674 0674 0674 0674 0674 0674 0674 0674 0671",
+  "067B 0674 0674 0674 067C 0674 0674 0674 0674 0674 0674 0674 0674 0674 0674 0674 067C 0670",
+  "0672 0672 3308 3308 32AE 3308 3308 3308 3308 3308 3308 3308 3308 3308 3308 3308 0670 0670",
+  "0672 0672 3308 3308 3308 3308 3308 3308 3308 3308 3308 3308 3308 3308 3308 3308 0670 0670",
+  "0672 0707 3308 3308 3308 3308 3308 3308 3308 3308 3308 3308 3308 3308 3308 3308 0706 0670",
+  "0672 0707 3308 3308 3308 3308 3308 3308 3308 3308 3308 3308 3308 3308 3308 3308 0706 0670",
+  "0672 0707 3308 3308 3308 3308 3308 3308 3308 3308 3308 3308 3308 3308 3308 3308 0706 0670",
+  "0672 0707 3308 070D 070D 070D 3308 070D 070D 070D 3308 070D 3308 3310 3308 3308 0706 0670",
+  "0672 0707 3308 3308 3308 3308 3308 3308 3308 3308 3308 3308 3308 3311 3308 3308 0706 0670",
+  "0672 0707 3308 070D 070D 070D 3308 070D 070D 070D 3308 070D 3308 3308 3308 3308 0706 0670",
+  "0672 0707 3308 3308 3308 3308 3308 3308 3308 3308 3308 3308 3308 3308 3308 3308 0706 0670",
+  "0672 0707 3308 070D 070D 070D 3308 070D 070D 070D 3308 3308 3308 3310 3308 3308 0706 0670",
+  "0672 0707 3308 3308 3308 3308 3308 3308 3308 3308 3308 3308 3308 3311 3308 3308 0706 0670",
+  "0672 0672 3308 070D 070D 070D 3308 070D 070D 070D 3308 3308 3308 3310 3308 3308 0706 0670",
+  "0672 0672 3308 3308 3308 3308 3308 3308 3308 3308 3308 3308 3308 3308 32AE 3308 0706 0670",
+  "0672 067F 070C 070C 070C 070C 070C 070C 070C 070C 070C 070C 070C 070C 070C 070C 067F 0670"
+ ],
+ "report": {
+  "pair": [
+   "gTileset_General",
+   "gTileset_Lavaridge"
+  ],
+  "set": "lava",
+  "look": "Fiery Path / Magma Hideout red rock (Mt. Chimney's volcano cave), Lavaridge hot-spring water",
+  "classes": [
+   "##################",
+   "##################",
+   "##..U...........##",
+   "##..............##",
+   "##..............##",
+   "##..............##",
+   "##..............##",
+   "##.BBB.BBB.B.*..##",
+   "##...........*..##",
+   "##.BBB.BBB.B....##",
+   "##..............##",
+   "##.BBB.BBB...*..##",
+   "##...........*..##",
+   "##.BBB.BBB...*..##",
+   "##............H.##",
+   "##################"
+  ],
+  "sig_levels": {
+   "5": 101,
+   "1": 5,
+   "2": 1
+  },
+  "notes": [],
+  "frlg_map": "MtEmber_RubyPath_B4F",
+  "frlg_layout": "LAYOUT_MT_EMBER_RUBY_PATH_B4F",
+  "frlg_pair": [
+   "gTileset_General_Frlg",
+   "gTileset_MtEmber"
+  ],
+  "maps": [
+   "MAP_MT_EMBER_RUBY_PATH_B4_F"
+  ],
+  "size": [
+   18,
+   16
+  ],
+  "method": "learned cave autotiler (interiors_caves.py), set 'lava'",
+  "warps": [
+   {
+    "x": 14,
+    "y": 14,
+    "dest_map": "MAP_MT_EMBER_RUBY_PATH_B5F",
+    "dest_warp_id": "0"
+   },
+   {
+    "x": 4,
+    "y": 2,
+    "dest_map": "MAP_MT_EMBER_RUBY_PATH_B3F",
+    "dest_warp_id": "2"
+   }
+  ],
+  "objects": [],
+  "bg_events": [
+   {
+    "type": "sign",
+    "x": 3,
+    "y": 7,
+    "elevation": 0,
+    "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
+    "script": "MtEmber_RubyPath_B4F_EventScript_BrailleABC"
+   },
+   {
+    "type": "sign",
+    "x": 4,
+    "y": 7,
+    "elevation": 0,
+    "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
+    "script": "MtEmber_RubyPath_B4F_EventScript_BrailleABC"
+   },
+   {
+    "type": "sign",
+    "x": 5,
+    "y": 7,
+    "elevation": 0,
+    "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
+    "script": "MtEmber_RubyPath_B4F_EventScript_BrailleABC"
+   },
+   {
+    "type": "sign",
+    "x": 4,
+    "y": 9,
+    "elevation": 0,
+    "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
+    "script": "MtEmber_RubyPath_B4F_EventScript_BrailleGHI"
+   },
+   {
+    "type": "sign",
+    "x": 3,
+    "y": 9,
+    "elevation": 0,
+    "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
+    "script": "MtEmber_RubyPath_B4F_EventScript_BrailleGHI"
+   },
+   {
+    "type": "sign",
+    "x": 5,
+    "y": 9,
+    "elevation": 0,
+    "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
+    "script": "MtEmber_RubyPath_B4F_EventScript_BrailleGHI"
+   },
+   {
+    "type": "sign",
+    "x": 3,
+    "y": 11,
+    "elevation": 0,
+    "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
+    "script": "MtEmber_RubyPath_B4F_EventScript_BrailleMNO"
+   },
+   {
+    "type": "sign",
+    "x": 4,
+    "y": 11,
+    "elevation": 0,
+    "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
+    "script": "MtEmber_RubyPath_B4F_EventScript_BrailleMNO"
+   },
+   {
+    "type": "sign",
+    "x": 5,
+    "y": 11,
+    "elevation": 0,
+    "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
+    "script": "MtEmber_RubyPath_B4F_EventScript_BrailleMNO"
+   },
+   {
+    "type": "sign",
+    "x": 3,
+    "y": 13,
+    "elevation": 0,
+    "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
+    "script": "MtEmber_RubyPath_B4F_EventScript_BrailleTUV"
+   },
+   {
+    "type": "sign",
+    "x": 4,
+    "y": 13,
+    "elevation": 0,
+    "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
+    "script": "MtEmber_RubyPath_B4F_EventScript_BrailleTUV"
+   },
+   {
+    "type": "sign",
+    "x": 5,
+    "y": 13,
+    "elevation": 0,
+    "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
+    "script": "MtEmber_RubyPath_B4F_EventScript_BrailleTUV"
+   },
+   {
+    "type": "sign",
+    "x": 7,
+    "y": 7,
+    "elevation": 0,
+    "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
+    "script": "MtEmber_RubyPath_B4F_EventScript_BrailleDEF"
+   },
+   {
+    "type": "sign",
+    "x": 8,
+    "y": 7,
+    "elevation": 0,
+    "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
+    "script": "MtEmber_RubyPath_B4F_EventScript_BrailleDEF"
+   },
+   {
+    "type": "sign",
+    "x": 9,
+    "y": 7,
+    "elevation": 0,
+    "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
+    "script": "MtEmber_RubyPath_B4F_EventScript_BrailleDEF"
+   },
+   {
+    "type": "sign",
+    "x": 7,
+    "y": 9,
+    "elevation": 0,
+    "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
+    "script": "MtEmber_RubyPath_B4F_EventScript_BrailleJKL"
+   },
+   {
+    "type": "sign",
+    "x": 8,
+    "y": 9,
+    "elevation": 0,
+    "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
+    "script": "MtEmber_RubyPath_B4F_EventScript_BrailleJKL"
+   },
+   {
+    "type": "sign",
+    "x": 9,
+    "y": 9,
+    "elevation": 0,
+    "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
+    "script": "MtEmber_RubyPath_B4F_EventScript_BrailleJKL"
+   },
+   {
+    "type": "sign",
+    "x": 7,
+    "y": 11,
+    "elevation": 0,
+    "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
+    "script": "MtEmber_RubyPath_B4F_EventScript_BraillePQRS"
+   },
+   {
+    "type": "sign",
+    "x": 11,
+    "y": 7,
+    "elevation": 0,
+    "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
+    "script": "MtEmber_RubyPath_B4F_EventScript_BraillePeriod"
+   },
+   {
+    "type": "sign",
+    "x": 11,
+    "y": 9,
+    "elevation": 0,
+    "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
+    "script": "MtEmber_RubyPath_B4F_EventScript_BrailleComma"
+   },
+   {
+    "type": "sign",
+    "x": 8,
+    "y": 11,
+    "elevation": 0,
+    "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
+    "script": "MtEmber_RubyPath_B4F_EventScript_BraillePQRS"
+   },
+   {
+    "type": "sign",
+    "x": 9,
+    "y": 11,
+    "elevation": 0,
+    "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
+    "script": "MtEmber_RubyPath_B4F_EventScript_BraillePQRS"
+   },
+   {
+    "type": "sign",
+    "x": 7,
+    "y": 13,
+    "elevation": 0,
+    "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
+    "script": "MtEmber_RubyPath_B4F_EventScript_BrailleWXYZ"
+   },
+   {
+    "type": "sign",
+    "x": 9,
+    "y": 13,
+    "elevation": 0,
+    "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
+    "script": "MtEmber_RubyPath_B4F_EventScript_BrailleWXYZ"
+   },
+   {
+    "type": "sign",
+    "x": 8,
+    "y": 13,
+    "elevation": 0,
+    "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
+    "script": "MtEmber_RubyPath_B4F_EventScript_BrailleWXYZ"
+   }
+  ],
+  "coord_events": [],
+  "walk_diff": [],
+  "seams_before_fix": 20,
+  "seam_cells_repicked": 5,
+  "seams": [
+   [
+    4,
+    1,
+    "E",
+    "0x27C",
+    "0x274"
+   ],
+   [
+    4,
+    1,
+    "S",
+    "0x27C",
+    "0x2AE"
+   ],
+   [
+    14,
+    14,
+    "S",
+    "0x2AE",
+    "0x30C"
+   ]
+  ],
+  "secondary_users": [
+   "LAYOUT_LAVARIDGE_TOWN",
+   "LAYOUT_JAGGED_PASS",
+   "LAYOUT_FIERY_PATH",
+   "LAYOUT_MAGMA_HIDEOUT_1F",
+   "LAYOUT_MAGMA_HIDEOUT_2F_1R",
+   "LAYOUT_MAGMA_HIDEOUT_2F_2R",
+   "LAYOUT_MAGMA_HIDEOUT_3F_1R",
+   "LAYOUT_MAGMA_HIDEOUT_3F_2R",
+   "LAYOUT_MAGMA_HIDEOUT_4F",
+   "LAYOUT_MAGMA_HIDEOUT_3F_3R",
+   "LAYOUT_MAGMA_HIDEOUT_2F_3R",
+   "LAYOUT_DRAKE_BASE_CAMP"
+  ],
+  "metatiles": [
+   "0x270",
+   "0x271",
+   "0x272",
+   "0x274",
+   "0x27B",
+   "0x27C",
+   "0x27F",
+   "0x2AE",
+   "0x306",
+   "0x307",
+   "0x308",
+   "0x30C",
+   "0x30D",
+   "0x310",
+   "0x311"
+  ]
+ }
+}

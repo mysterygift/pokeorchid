@@ -1,0 +1,21 @@
+mapscripts HolonResearchTower_1F_MapScripts {}
+
+script HolonResearchTower_1F_EventScript_Npc1 {
+    msgbox(format("Welcome to the Holon Research Tower. Visitors are welcome on the ground floor."), MSGBOX_NPC)
+}
+
+script HolonResearchTower_1F_EventScript_Npc2 {
+    msgbox(format("We study Holon's Power Spots and the Delta Species that appear around them."), MSGBOX_NPC)
+}
+
+script HolonResearchTower_1F_EventScript_Npc3 {
+    msgbox(format("Our readings show the land's energy falling every season. We're... looking into it."), MSGBOX_NPC)
+}
+
+script HolonResearchTower_1F_EventScript_Npc4 {
+    msgbox(format("I came to ask why my field's gone grey. They told me to fill in a form."), MSGBOX_NPC)
+}
+
+script HolonResearchTower_1F_EventScript_Bed {
+    msgbox(format("A neatly made bed for researchers on the night shift."), MSGBOX_SIGN)
+}

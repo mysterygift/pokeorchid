@@ -143,7 +143,10 @@
 
 #define ROUND_BITS_TO_BYTES(numBits) DIV_ROUND_UP(numBits, 8)
 
-#define NUM_DEX_FLAG_BYTES ROUND_BITS_TO_BYTES(POKEMON_SLOTS_NUMBER)
+// Orchid: the dex flag arrays reserve room for every planned Delta species (tier A + B = 91 after
+// Laomeow #1030), so adding tier B later doesn't shift dexCaught and the SaveBlock1 fields after it again.
+#define ORCHID_DEX_FLAG_SLOTS (1030 + 91 + 1)
+#define NUM_DEX_FLAG_BYTES ROUND_BITS_TO_BYTES(POKEMON_SLOTS_NUMBER > ORCHID_DEX_FLAG_SLOTS ? POKEMON_SLOTS_NUMBER : ORCHID_DEX_FLAG_SLOTS)
 #define NUM_FLAG_BYTES ROUND_BITS_TO_BYTES(FLAGS_COUNT)
 #define NUM_TRENDY_SAYING_BYTES ROUND_BITS_TO_BYTES(NUM_TRENDY_SAYINGS)
 

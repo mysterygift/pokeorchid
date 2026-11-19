@@ -1,0 +1,226 @@
+{
+ "size": [
+  11,
+  9
+ ],
+ "tileset": [
+  "gTileset_Building",
+  "gTileset_GenericBuilding"
+ ],
+ "ground": [
+  "raw",
+  1541
+ ],
+ "marks": [
+  [
+   4,
+   7,
+   "ISLAND",
+   "warp"
+  ],
+  [
+   3,
+   7,
+   "ISLAND",
+   "warp"
+  ],
+  [
+   4,
+   5,
+   "OldMan",
+   "npc",
+   "old_man"
+  ],
+  [
+   7,
+   5,
+   "OldWoman",
+   "npc",
+   "old_woman"
+  ]
+ ],
+ "grid_raw": [
+  "0605 0605 0686 0687 0607 0605 0605 0605 0605 0605 0678",
+  "0668 0669 068E 068F 060F 060D 060D 060D 066C 066D 0680",
+  "3270 3271 3296 3297 3224 3224 3224 3224 3274 3275 3288",
+  "3291 3223 3223 3223 3223 3223 3223 3223 3223 3223 3223",
+  "0699 3223 3223 3223 322B 064A 064B 322C 3223 3223 3223",
+  "3239 3223 3223 3223 322B 0652 0653 322C 3223 3223 3223",
+  "3291 3223 3223 3223 3223 3223 3223 3223 3223 3223 3223",
+  "0699 3223 3223 0208 0209 3223 3223 3223 3223 3223 3223",
+  "0401 0401 0401 0401 0401 0401 0401 0401 0401 0401 0401"
+ ],
+ "report": {
+  "frlg_map": "OneIsland_House1",
+  "frlg_layout": "LAYOUT_HOUSE3_FRLG",
+  "frlg_pair": [
+   "gTileset_BuildingFrlg",
+   "gTileset_GenericBuilding2"
+  ],
+  "maps": [
+   "ONE_ISLAND_HOUSE1",
+   "ONE_ISLAND_HOUSE2",
+   "TWO_ISLAND_HOUSE",
+   "TWO_ISLAND_CAPE_BRINK_HOUSE",
+   "THREE_ISLAND_HOUSE2",
+   "THREE_ISLAND_HOUSE3",
+   "THREE_ISLAND_HOUSE4",
+   "THREE_ISLAND_HOUSE5",
+   "FOUR_ISLAND_HOUSE1",
+   "FOUR_ISLAND_HOUSE2",
+   "FIVE_ISLAND_HOUSE1",
+   "FIVE_ISLAND_HOUSE2",
+   "SIX_ISLAND_HOUSE",
+   "SIX_ISLAND_WATER_PATH_HOUSE2",
+   "SEVEN_ISLAND_SEVAULT_CANYON_HOUSE"
+  ],
+  "pair": [
+   "gTileset_Building",
+   "gTileset_GenericBuilding"
+  ],
+  "size": [
+   11,
+   9
+  ],
+  "method": "hand class map; = vanilla LAYOUT_HOUSE2 furniture set + FRLG's plant column and black row",
+  "warps": [
+   {
+    "x": 4,
+    "y": 7,
+    "dest_map": "MAP_ONE_ISLAND",
+    "dest_warp_id": "1",
+    "frlg": true
+   },
+   {
+    "x": 3,
+    "y": 7,
+    "dest_map": "MAP_ONE_ISLAND",
+    "dest_warp_id": "1",
+    "frlg": false,
+    "note": "2nd half of the Emerald exit mat"
+   }
+  ],
+  "objects": [
+   {
+    "x": 4,
+    "y": 5,
+    "frlg_gfx": "OBJ_EVENT_GFX_OLD_MAN_1",
+    "emerald_gfx": "OBJ_EVENT_GFX_OLD_MAN",
+    "movement": "MOVEMENT_TYPE_FACE_RIGHT",
+    "script": "OneIsland_House1_EventScript_OldMan"
+   },
+   {
+    "x": 7,
+    "y": 5,
+    "frlg_gfx": "OBJ_EVENT_GFX_OLD_WOMAN_FRLG",
+    "emerald_gfx": "OBJ_EVENT_GFX_OLD_WOMAN",
+    "movement": "MOVEMENT_TYPE_FACE_LEFT",
+    "script": "OneIsland_House1_EventScript_OldWoman"
+   }
+  ],
+  "bg_events": [],
+  "coord_events": [],
+  "walk_diff": [],
+  "seams": [
+   [
+    3,
+    0,
+    "E",
+    "0x287",
+    "0x207"
+   ],
+   [
+    3,
+    1,
+    "E",
+    "0x28F",
+    "0x20F"
+   ],
+   [
+    7,
+    1,
+    "E",
+    "0x20D",
+    "0x26C"
+   ],
+   [
+    0,
+    2,
+    "S",
+    "0x270",
+    "0x291"
+   ],
+   [
+    7,
+    2,
+    "E",
+    "0x224",
+    "0x274"
+   ],
+   [
+    0,
+    4,
+    "S",
+    "0x299",
+    "0x239"
+   ]
+  ],
+  "secondary_users": [
+   "LAYOUT_HOUSE1",
+   "LAYOUT_HOUSE2",
+   "LAYOUT_HOUSE3",
+   "LAYOUT_DEWFORD_TOWN_HALL",
+   "LAYOUT_HOUSE4",
+   "LAYOUT_VERDANTURF_TOWN_WANDAS_HOUSE",
+   "LAYOUT_PACIFIDLOG_TOWN_HOUSE1",
+   "LAYOUT_PACIFIDLOG_TOWN_HOUSE2",
+   "LAYOUT_FORTREE_CITY_HOUSE1",
+   "LAYOUT_FORTREE_CITY_HOUSE2",
+   "LAYOUT_ROUTE116_TUNNELERS_REST_HOUSE",
+   "LAYOUT_FORTREE_CITY_DECORATION_SHOP",
+   "LAYOUT_ROUTE124_DIVING_TREASURE_HUNTERS_HOUSE",
+   "LAYOUT_SAFARI_ZONE_REST_HOUSE"
+  ],
+  "notes": [
+   "FRLG wall row (plant | blue shelf | yellow glass cabinet | picture | sink | fridge) -> drawer | green cabinet | the same yellow glass cabinet | shutter window | sink | fridge (Emerald puts plants one row lower, which would stack on the strip plant below).",
+   "3-wide FRLG mat (x3-5, warp x4) -> Emerald 2-wide mat x3-4, both halves warp (vanilla habit)."
+  ],
+  "metatiles": [
+   "0x001",
+   "0x205",
+   "0x207",
+   "0x208",
+   "0x209",
+   "0x20D",
+   "0x20F",
+   "0x223",
+   "0x224",
+   "0x22B",
+   "0x22C",
+   "0x239",
+   "0x24A",
+   "0x24B",
+   "0x252",
+   "0x253",
+   "0x268",
+   "0x269",
+   "0x26C",
+   "0x26D",
+   "0x270",
+   "0x271",
+   "0x274",
+   "0x275",
+   "0x278",
+   "0x280",
+   "0x286",
+   "0x287",
+   "0x288",
+   "0x28E",
+   "0x28F",
+   "0x291",
+   "0x296",
+   "0x297",
+   "0x299"
+  ]
+ }
+}

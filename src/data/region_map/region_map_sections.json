@@ -495,10 +495,12 @@
       "width": 0
     },
     {
-      "id": "MAPSEC_SOUTHERN_ISLAND",
-      "name": "SOUTHERN ISLAND",
-      "height": 0,
-      "width": 0
+      "id": "MAPSEC_EON_ISLAND",
+      "name": "Eon Island",
+      "x": 12,
+      "y": 14,
+      "width": 1,
+      "height": 1
     },
     {
       "id": "MAPSEC_FIERY_PATH",
@@ -901,7 +903,7 @@
     },
     {
       "id": "MAPSEC_POKEMON_MANSION",
-      "name": "POKéMON MANSION",
+      "name": "POK\u00e9MON MANSION",
       "height": 0,
       "width": 0
     },
@@ -913,7 +915,7 @@
     },
     {
       "id": "MAPSEC_POKEMON_LEAGUE",
-      "name": "POKéMON LEAGUE",
+      "name": "POK\u00e9MON LEAGUE",
       "height": 0,
       "width": 0
     },
@@ -931,7 +933,7 @@
     },
     {
       "id": "MAPSEC_POKEMON_TOWER",
-      "name": "POKéMON TOWER",
+      "name": "POK\u00e9MON TOWER",
       "height": 0,
       "width": 0
     },
@@ -949,297 +951,383 @@
     },
     {
       "id": "MAPSEC_ONE_ISLAND",
-      "name": "ONE ISLAND",
-      "height": 0,
-      "width": 0
+      "name": "One Island",
+      "x": 1,
+      "y": 8,
+      "width": 1,
+      "height": 1
     },
     {
       "id": "MAPSEC_TWO_ISLAND",
-      "name": "TWO ISLAND",
-      "height": 0,
-      "width": 0
+      "name": "Two Island",
+      "x": 9,
+      "y": 9,
+      "width": 1,
+      "height": 1
     },
     {
       "id": "MAPSEC_THREE_ISLAND",
-      "name": "THREE ISLAND",
-      "height": 0,
-      "width": 0
+      "name": "Three Island",
+      "x": 18,
+      "y": 12,
+      "width": 1,
+      "height": 1
     },
     {
       "id": "MAPSEC_FOUR_ISLAND",
-      "name": "FOUR ISLAND",
-      "height": 0,
-      "width": 0
+      "name": "Four Island",
+      "x": 3,
+      "y": 4,
+      "width": 1,
+      "height": 1
     },
     {
       "id": "MAPSEC_FIVE_ISLAND",
-      "name": "FIVE ISLAND",
-      "height": 0,
-      "width": 0
+      "name": "Five Island",
+      "x": 16,
+      "y": 11,
+      "width": 1,
+      "height": 1
     },
     {
       "id": "MAPSEC_SEVEN_ISLAND",
-      "name": "SEVEN ISLAND",
-      "height": 0,
-      "width": 0
+      "name": "Seven Island",
+      "x": 5,
+      "y": 8,
+      "width": 1,
+      "height": 1
     },
     {
       "id": "MAPSEC_SIX_ISLAND",
-      "name": "SIX ISLAND",
-      "height": 0,
-      "width": 0
+      "name": "Six Island",
+      "x": 17,
+      "y": 5,
+      "width": 1,
+      "height": 1
     },
     {
       "id": "MAPSEC_KINDLE_ROAD",
-      "name": "KINDLE ROAD",
-      "height": 0,
-      "width": 0
+      "name": "Kindle Road",
+      "x": 2,
+      "y": 4,
+      "width": 1,
+      "height": 5
     },
     {
       "id": "MAPSEC_TREASURE_BEACH",
-      "name": "TREASURE BEACH",
-      "height": 0,
-      "width": 0
+      "name": "Treasure Beach",
+      "x": 1,
+      "y": 9,
+      "width": 1,
+      "height": 2
     },
     {
       "id": "MAPSEC_CAPE_BRINK",
-      "name": "CAPE BRINK",
-      "height": 0,
-      "width": 0
+      "name": "Cape Brink",
+      "x": 9,
+      "y": 7,
+      "width": 1,
+      "height": 2
     },
     {
       "id": "MAPSEC_BOND_BRIDGE",
-      "name": "BOND BRIDGE",
-      "height": 0,
-      "width": 0
+      "name": "Bond Bridge",
+      "x": 15,
+      "y": 12,
+      "width": 3,
+      "height": 1
     },
     {
       "id": "MAPSEC_THREE_ISLE_PORT",
-      "name": "THREE ISLE PORT",
-      "height": 0,
-      "width": 0
+      "name": "Three Isle Port",
+      "x": 18,
+      "y": 13,
+      "width": 2,
+      "height": 1
     },
     {
-      "id": "MAPSEC_RESORT_GORGEOUS",
-      "name": "RESORT GORGEOUS",
-      "height": 0,
-      "width": 0
+      "id": "MAPSEC_HOLON_VILLAGE",
+      "name": "Holon Village",
+      "x": 10,
+      "y": 9,
+      "width": 1,
+      "height": 1
     },
     {
-      "id": "MAPSEC_WATER_LABYRINTH",
-      "name": "WATER LABYRINTH",
-      "height": 0,
-      "width": 0
+      "id": "MAPSEC_MIRAGE_FOREST",
+      "name": "Mirage Forest",
+      "x": 14,
+      "y": 11,
+      "width": 1,
+      "height": 1
     },
     {
       "id": "MAPSEC_FIVE_ISLE_MEADOW",
-      "name": "FIVE ISLE MEADOW",
-      "height": 0,
-      "width": 0
+      "name": "Five Isle Meadow",
+      "x": 17,
+      "y": 11,
+      "width": 1,
+      "height": 2
     },
     {
       "id": "MAPSEC_MEMORIAL_PILLAR",
-      "name": "MEMORIAL PILLAR",
-      "height": 0,
-      "width": 0
+      "name": "Memorial Pillar",
+      "x": 18,
+      "y": 12,
+      "width": 1,
+      "height": 3
     },
     {
-      "id": "MAPSEC_OUTCAST_ISLAND",
-      "name": "OUTCAST ISLAND",
-      "height": 0,
-      "width": 0
+      "id": "MAPSEC_RESEARCH_TOWER",
+      "name": "Research Tower",
+      "x": 8,
+      "y": 1,
+      "width": 1,
+      "height": 1
     },
     {
-      "id": "MAPSEC_GREEN_PATH",
-      "name": "GREEN PATH",
-      "height": 0,
-      "width": 0
+      "id": "MAPSEC_HOLON_LAKE",
+      "name": "Holon Lake",
+      "x": 2,
+      "y": 13,
+      "width": 1,
+      "height": 1
     },
     {
       "id": "MAPSEC_WATER_PATH",
-      "name": "WATER PATH",
-      "height": 0,
-      "width": 0
+      "name": "Water Path",
+      "x": 18,
+      "y": 3,
+      "width": 1,
+      "height": 5
     },
     {
       "id": "MAPSEC_RUIN_VALLEY",
-      "name": "RUIN VALLEY",
-      "height": 0,
-      "width": 0
+      "name": "Ruin Valley",
+      "x": 16,
+      "y": 7,
+      "width": 2,
+      "height": 2
     },
     {
       "id": "MAPSEC_TRAINER_TOWER",
       "name": "TRAINER TOWER",
-      "height": 0,
-      "width": 0
+      "width": 0,
+      "height": 0
     },
     {
       "id": "MAPSEC_CANYON_ENTRANCE",
-      "name": "CANYON ENTRANCE",
-      "height": 0,
-      "width": 0
+      "name": "Canyon Entrance",
+      "x": 5,
+      "y": 9,
+      "width": 1,
+      "height": 1
     },
     {
       "id": "MAPSEC_SEVAULT_CANYON",
-      "name": "SEVAULT CANYON",
-      "height": 0,
-      "width": 0
+      "name": "Sevault Canyon",
+      "x": 6,
+      "y": 9,
+      "width": 1,
+      "height": 3
     },
     {
       "id": "MAPSEC_TANOBY_RUINS",
-      "name": "TANOBY RUINS",
-      "height": 0,
-      "width": 0
+      "name": "Tanoby Ruins",
+      "x": 3,
+      "y": 12,
+      "width": 7,
+      "height": 1
     },
     {
-      "id": "MAPSEC_SEVII_ISLE_22",
-      "name": "SEVII ISLE 22",
-      "height": 0,
-      "width": 0
+      "id": "MAPSEC_ONE_TWO_STRAIT",
+      "name": "One-Two Strait",
+      "x": 2,
+      "y": 9,
+      "width": 7,
+      "height": 1
     },
     {
-      "id": "MAPSEC_SEVII_ISLE_23",
-      "name": "SEVII ISLE 23",
-      "height": 0,
-      "width": 0
+      "id": "MAPSEC_TWO_THREE_STRAIT",
+      "name": "Two-Three Strait",
+      "x": 10,
+      "y": 9,
+      "width": 4,
+      "height": 4
     },
     {
-      "id": "MAPSEC_SEVII_ISLE_24",
-      "name": "SEVII ISLE 24",
-      "height": 0,
-      "width": 0
+      "id": "MAPSEC_FOUR_FIVE_STRAIT",
+      "name": "Four-Five Strait",
+      "x": 4,
+      "y": 4,
+      "width": 12,
+      "height": 8
     },
     {
-      "id": "MAPSEC_NAVEL_ROCK_FRLG",
-      "name": "NAVEL ROCK",
-      "height": 0,
-      "width": 0
+      "id": "MAPSEC_NEWMOON_ISLAND",
+      "name": "Newmoon Island",
+      "x": 5,
+      "y": 2,
+      "width": 1,
+      "height": 1
     },
     {
       "id": "MAPSEC_MT_EMBER",
-      "name": "MT. EMBER",
-      "height": 0,
-      "width": 0
+      "name": "Mt. Ember",
+      "x": 2,
+      "y": 3,
+      "width": 1,
+      "height": 1
     },
     {
       "id": "MAPSEC_BERRY_FOREST",
-      "name": "BERRY FOREST",
-      "height": 0,
-      "width": 0
+      "name": "Berry Forest",
+      "x": 14,
+      "y": 12,
+      "width": 1,
+      "height": 1
     },
     {
       "id": "MAPSEC_ICEFALL_CAVE",
-      "name": "ICEFALL CAVE",
-      "height": 0,
-      "width": 0
+      "name": "Icefall Cave",
+      "x": 3,
+      "y": 4,
+      "width": 1,
+      "height": 1
     },
     {
       "id": "MAPSEC_ROCKET_WAREHOUSE",
-      "name": "ROCKET WAREHOUSE",
-      "height": 0,
-      "width": 0
+      "name": "Warehouse",
+      "x": 17,
+      "y": 11,
+      "width": 1,
+      "height": 2
     },
     {
       "id": "MAPSEC_TRAINER_TOWER_2",
       "name": "TRAINER TOWER",
-      "height": 0,
-      "width": 0
+      "width": 0,
+      "height": 0
     },
     {
       "id": "MAPSEC_DOTTED_HOLE",
-      "name": "DOTTED HOLE",
-      "height": 0,
-      "width": 0
+      "name": "Dotted Hole",
+      "x": 16,
+      "y": 7,
+      "width": 2,
+      "height": 2
     },
     {
       "id": "MAPSEC_LOST_CAVE",
       "name": "LOST CAVE",
-      "height": 0,
-      "width": 0
+      "width": 0,
+      "height": 0
     },
     {
       "id": "MAPSEC_PATTERN_BUSH",
       "name": "PATTERN BUSH",
-      "height": 0,
-      "width": 0
+      "width": 0,
+      "height": 0
     },
     {
       "id": "MAPSEC_ALTERING_CAVE_FRLG",
       "name": "ALTERING CAVE",
-      "height": 0,
-      "width": 0
+      "width": 0,
+      "height": 0
     },
     {
       "id": "MAPSEC_TANOBY_CHAMBERS",
       "name": "TANOBY CHAMBERS",
-      "height": 0,
-      "width": 0
+      "width": 0,
+      "height": 0
     },
     {
-      "id": "MAPSEC_THREE_ISLE_PATH",
-      "name": "THREE ISLE PATH",
-      "height": 0,
-      "width": 0
+      "id": "MAPSEC_SIX_SEVEN_STRAIT",
+      "name": "Six-Seven Strait",
+      "x": 6,
+      "y": 6,
+      "width": 11,
+      "height": 2
     },
     {
       "id": "MAPSEC_TANOBY_KEY",
-      "name": "TANOBY KEY",
-      "height": 0,
-      "width": 0
+      "name": "Tanoby Key",
+      "x": 3,
+      "y": 12,
+      "width": 7,
+      "height": 1
     },
     {
-      "id": "MAPSEC_BIRTH_ISLAND_FRLG",
-      "name": "BIRTH ISLAND",
-      "height": 0,
-      "width": 0
+      "id": "MAPSEC_FULLMOON_ISLAND",
+      "name": "Fullmoon Island",
+      "x": 7,
+      "y": 1,
+      "width": 1,
+      "height": 1
     },
     {
       "id": "MAPSEC_MONEAN_CHAMBER",
-      "name": "MONEAN CHAMBER",
-      "height": 0,
-      "width": 0
+      "name": "Monean Chamber",
+      "x": 3,
+      "y": 12,
+      "width": 7,
+      "height": 1
     },
     {
       "id": "MAPSEC_LIPTOO_CHAMBER",
-      "name": "LIPTOO CHAMBER",
-      "height": 0,
-      "width": 0
+      "name": "Liptoo Chamber",
+      "x": 3,
+      "y": 12,
+      "width": 7,
+      "height": 1
     },
     {
       "id": "MAPSEC_WEEPTH_CHAMBER",
-      "name": "WEEPTH CHAMBER",
-      "height": 0,
-      "width": 0
+      "name": "Weepth Chamber",
+      "x": 3,
+      "y": 12,
+      "width": 7,
+      "height": 1
     },
     {
       "id": "MAPSEC_DILFORD_CHAMBER",
-      "name": "DILFORD CHAMBER",
-      "height": 0,
-      "width": 0
+      "name": "Dilford Chamber",
+      "x": 3,
+      "y": 12,
+      "width": 7,
+      "height": 1
     },
     {
       "id": "MAPSEC_SCUFIB_CHAMBER",
-      "name": "SCUFIB CHAMBER",
-      "height": 0,
-      "width": 0
+      "name": "Scufib Chamber",
+      "x": 3,
+      "y": 12,
+      "width": 7,
+      "height": 1
     },
     {
       "id": "MAPSEC_RIXY_CHAMBER",
-      "name": "RIXY CHAMBER",
-      "height": 0,
-      "width": 0
+      "name": "Rixy Chamber",
+      "x": 3,
+      "y": 12,
+      "width": 7,
+      "height": 1
     },
     {
       "id": "MAPSEC_VIAPOIS_CHAMBER",
-      "name": "VIAPOIS CHAMBER",
-      "height": 0,
-      "width": 0
+      "name": "Viapois Chamber",
+      "x": 3,
+      "y": 12,
+      "width": 7,
+      "height": 1
     },
     {
       "id": "MAPSEC_EMBER_SPA",
-      "name": "EMBER SPA",
-      "height": 0,
-      "width": 0
+      "name": "Ember Spa",
+      "x": 2,
+      "y": 4,
+      "width": 1,
+      "height": 5
     },
     {
       "id": "MAPSEC_SPECIAL_AREA",
@@ -1331,7 +1419,7 @@
     },
     {
       "id": "MAPSEC_PKMN_LEAGUE",
-      "name": "Pokémon League",
+      "name": "Pok\u00e9mon League",
       "x": 23,
       "y": 4,
       "width": 1,
@@ -1419,7 +1507,7 @@
     },
     {
       "id": "MAPSEC_POKETOPIA_GATE",
-      "name": "Pokétopia Gate",
+      "name": "Pok\u00e9topia Gate",
       "x": 26,
       "y": 14,
       "width": 1,

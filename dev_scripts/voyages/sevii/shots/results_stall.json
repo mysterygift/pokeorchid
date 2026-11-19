@@ -1,0 +1,10 @@
+[
+ [
+  true,
+  "Two Island market stall open, VAR_SHOP_PRICE_MULTIPLIER=3"
+ ],
+ [
+  true,
+  "multiplier reset after the stall closes (0)"
+ ]
+]

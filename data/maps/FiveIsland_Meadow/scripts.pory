@@ -1,0 +1,18 @@
+mapscripts FiveIsland_Meadow_MapScripts {}
+
+script FiveIsland_Meadow_EventScript_Rocket3 {
+    msgbox(format("The boss said to keep an eye on the islands. So I'm keeping an eye."), MSGBOX_NPC)
+}
+
+script FiveIsland_Meadow_EventScript_Rocket1 {
+    msgbox(format("Hey! This is official business. Move along."), MSGBOX_NPC)
+}
+
+script FiveIsland_Meadow_EventScript_Rocket2 {
+    msgbox(format("We're just... looking after this place. Nothing to see."), MSGBOX_NPC)
+}
+
+script FiveIsland_Meadow_EventScript_WarehouseDoor {
+    msgbox(format("The door is locked tight.\n"
+        "A strange red R is painted on the shutter."), MSGBOX_SIGN)
+}

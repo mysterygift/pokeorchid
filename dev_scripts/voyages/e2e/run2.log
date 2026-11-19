@@ -1,0 +1,30 @@
+save had FLAG_VISITED_TIKSI = 1 -> cleared for the run
+  shot 10_to_sevii_menu (5, 29, 21, 21)
+  shot 10_to_sevii_scene (5, 29, 21, 21)
+-> sevii (8, 4, 25, 38)
+  shot 11_one_island_harbour (8, 4, 25, 38)
+  shot 12_sevii123_harbour_map (8, 4, 25, 38)
+map {'ok': True, 'viewed': 0}
+one island town (12, 18, 25, 0) VISITED_ONE_ISLAND 1
+  shot 13_sevii123_one_island_map (12, 18, 25, 0)
+two island (39, 9, 25, 1) VISITED_TWO 1
+  in route (21, 9, 25, 62)
+  shot 14_one_two_strait_map (21, 9, 25, 62)
+five island (12, 14, 25, 4)
+  in route (33, 16, 25, 64)
+  shot 15_four_five_strait_five_end (33, 16, 25, 64)
+  shot 16_four_five_strait_middle (20, 11, 25, 64)
+four island (18, 21, 25, 3)
+  shot 17_sevii45_four_island_map (18, 21, 25, 3)
+seven island (11, 10, 25, 6)
+  shot 18_sevii67_seven_island_map (11, 10, 25, 6)
+  in route (10, 6, 25, 65)
+  shot 19_six_seven_strait_map (10, 6, 25, 65)
+harbour again (8, 4, 25, 38)
+  shot 20_harbour_ferry_menu (8, 4, 25, 38)
+  shot 21_wavebreak_and_beyond_menu (8, 4, 25, 38)
+  text 'Set sail for Wavebreak Town?'
+  cutscene True
+home (5, 29, 21, 21)
+  shot 22_sevii_home_wavebreak (5, 29, 21, 21)
+FLAG_VISITED_TIKSI after Sevii 0

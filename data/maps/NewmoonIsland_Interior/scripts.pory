@@ -1,0 +1,53 @@
+raw `
+NewmoonIsland_Interior_MapScripts::
+	map_script MAP_SCRIPT_ON_RESUME, NewmoonIsland_Interior_OnResume
+	.byte 0
+
+NewmoonIsland_Interior_OnResume:
+	call_if_set FLAG_SYS_CTRL_OBJ_DELETE, NewmoonIsland_Interior_EventScript_TryRemoveDarkrai
+	end
+
+NewmoonIsland_Interior_EventScript_TryRemoveDarkrai::
+	specialvar VAR_RESULT, GetBattleOutcome
+	goto_if_ne VAR_RESULT, B_OUTCOME_CAUGHT, Common_EventScript_NopReturn
+	removeobject LOCALID_NEWMOON_DARKRAI
+	return
+
+NewmoonIsland_Interior_EventScript_Darkrai::
+	lock
+	faceplayer
+	waitse
+	playmoncry SPECIES_DARKRAI, CRY_MODE_ENCOUNTER
+	delay 40
+	waitmoncry
+	setwildbattle SPECIES_DARKRAI, VOYAGE_LEGENDARY_LEVEL
+	setflag FLAG_SYS_CTRL_OBJ_DELETE
+	special BattleSetup_StartLegendaryBattle
+	clearflag FLAG_SYS_CTRL_OBJ_DELETE
+	specialvar VAR_RESULT, GetBattleOutcome
+	goto_if_eq VAR_RESULT, B_OUTCOME_WON, NewmoonIsland_Interior_EventScript_DarkraiGone
+	goto_if_eq VAR_RESULT, B_OUTCOME_RAN, NewmoonIsland_Interior_EventScript_DarkraiGone
+	goto_if_eq VAR_RESULT, B_OUTCOME_PLAYER_TELEPORTED, NewmoonIsland_Interior_EventScript_DarkraiGone
+	setflag FLAG_CAUGHT_VOYAGE_DARKRAI
+	release
+	end
+
+@ Fainted or fled: its hide flag (the object's flag) stays set until the next voyage here (Voyage_Depart).
+NewmoonIsland_Interior_EventScript_DarkraiGone::
+	setvar VAR_0x8004, SPECIES_DARKRAI
+	goto Voyage_EventScript_LegendaryGone
+
+NewmoonIsland_Interior_EventScript_Leave::
+	lockall
+	warp MAP_NEWMOON_ISLAND, 0
+	waitstate
+	releaseall
+	end
+
+NewmoonIsland_Interior_EventScript_Leave2::
+	lockall
+	warp MAP_NEWMOON_ISLAND, 1
+	waitstate
+	releaseall
+	end
+`

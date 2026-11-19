@@ -1,0 +1,1528 @@
+{
+"size": [
+30,
+28
+],
+"tileset": [
+"gTileset_General",
+"gTileset_BikeShop"
+],
+"ground": [
+"id",
+520
+],
+"rows": [
+"abbbbbcdbbbcdebbbbbfgabbbbbbfg",
+"hijkkklmnoklmpkkkkkqghijrskkqg",
+"htuvwwxyzAwxypvwwwwqghtuBCvwqg",
+"hDEEEEEEEEEEEpDEEEEqghDFGHDEqg",
+"hDEEEEEEEEEEEpDEIJEqghDEKwLEqg",
+"hDEEEEEEEEEEEpDEMNEqghDEEEEEqg",
+"hDEEEEEEEEEEEpDEEFEqghDEEEEEqg",
+"hDEOPPPQREOPPSTQREEqghDEOPUPVg",
+"hDEWkkkXDEWYopkXDEEqghDEWkijqg",
+"hDEKwwwwLEKZA0vwLEEqghDEKw1uqg",
+"hDEEEEEEEEEEE2DEEEEqghDEEEEEqg",
+"hDEEEEEEEEEEEKLEEEEqghDEEEEEqg",
+"hDEEEEEEEEEEEEEEEEEqg34PQROPVg",
+"hDEEEEEEEEEEEEEEEEEqghkkXDWkqg",
+"hDEEEEEEEEEEEEEEEEEqghvwwLKwqg",
+"hDEEEEEEEEEEEEEEEEE5b6DEEEEEqg",
+"hDEEEEEEEEEEEEEEEEE7k8DEEEEEqg",
+"hDEEEEEEEEEEEEEEEEEKwwLEEEEEqg",
+"hDEEEEEEEEEEEEEEEEE9P#REEEEEqg",
+"hDEEEEEEEEEEEEEEEEE$k%DEEEEEqg",
+"hDEEEEEEEEEEEEEEEEEqghDEEEEEqg",
+"hDEEEEEEEEEEEEEEEEE5b6DEEEEEqg",
+"hDEEEEEEEEEEEEEEEEE7k8DEEEEEqg",
+"hDEEEEEEEEEEEEEEEEEKwwLEEEEEqg",
+"hEEEEEEEEEEEEEEEEEE9P#REEEEEqg",
+"hEEEEEEEEEEEEEEEEEE$k%DEEEEEqg",
+"&4PPPPPPPPPPPPPPPPP*ghDEEEEEqg",
+"+kkkkkkkkkkkkkkkkkk-ghDE=:EEqg"
+],
+"legend": {
+"a": [
+"id",
+616
+],
+"b": [
+"id",
+543
+],
+"c": [
+"id",
+665
+],
+"d": [
+"id",
+666
+],
+"e": [
+"id",
+648
+],
+"f": [
+"id",
+618
+],
+"g": [
+"id",
+520
+],
+"h": [
+"id",
+624
+],
+"i": [
+"id",
+726
+],
+"j": [
+"id",
+727
+],
+"k": [
+"id",
+551
+],
+"l": [
+"id",
+673
+],
+"m": [
+"id",
+674
+],
+"n": [
+"id",
+690
+],
+"o": [
+"id",
+692
+],
+"p": [
+"id",
+656
+],
+"q": [
+"id",
+626
+],
+"r": [
+"id",
+724
+],
+"s": [
+"id",
+725
+],
+"t": [
+"id",
+734
+],
+"u": [
+"id",
+735
+],
+"v": [
+"id",
+629
+],
+"w": [
+"id",
+559
+],
+"x": [
+"id",
+681
+],
+"y": [
+"id",
+682
+],
+"z": [
+"id",
+698
+],
+"A": [
+"id",
+700
+],
+"B": [
+"id",
+732
+],
+"C": [
+"id",
+733
+],
+"D": [
+"id",
+637
+],
+"E": [
+"id",
+528
+],
+"F": [
+"id",
+712
+],
+"G": [
+"id",
+740
+],
+"H": [
+"id",
+741
+],
+"I": [
+"id",
+675
+],
+"J": [
+"id",
+676
+],
+"K": [
+"id",
+639
+],
+"L": [
+"id",
+638
+],
+"M": [
+"id",
+683
+],
+"N": [
+"id",
+684
+],
+"O": [
+"id",
+670
+],
+"P": [
+"id",
+567
+],
+"Q": [
+"id",
+669
+],
+"R": [
+"id",
+645
+],
+"S": [
+"id",
+657
+],
+"T": [
+"id",
+647
+],
+"U": [
+"id",
+623
+],
+"V": [
+"id",
+650
+],
+"W": [
+"id",
+678
+],
+"X": [
+"id",
+677
+],
+"Y": [
+"id",
+691
+],
+"Z": [
+"id",
+699
+],
+"0": [
+"id",
+664
+],
+"1": [
+"id",
+750
+],
+"2": [
+"id",
+672
+],
+"3": [
+"id",
+649
+],
+"4": [
+"id",
+633
+],
+"5": [
+"id",
+652
+],
+"6": [
+"id",
+651
+],
+"7": [
+"id",
+660
+],
+"8": [
+"id",
+659
+],
+"9": [
+"id",
+654
+],
+"#": [
+"id",
+653
+],
+"$": [
+"id",
+662
+],
+"%": [
+"id",
+661
+],
+"&": [
+"id",
+632
+],
+"*": [
+"id",
+634
+],
+"+": [
+"id",
+640
+],
+"-": [
+"id",
+642
+],
+"=": [
+"id",
+536
+],
+":": [
+"id",
+544
+]
+},
+"auto": [
+[
+4,
+3,
+[
+704,
+705,
+706,
+707
+]
+],
+[
+5,
+3,
+[
+704,
+705,
+706,
+707
+]
+],
+[
+2,
+4,
+[
+704,
+705,
+706,
+707
+]
+],
+[
+3,
+4,
+[
+704,
+705,
+706,
+707
+]
+],
+[
+4,
+4,
+[
+704,
+705,
+706,
+707
+]
+],
+[
+5,
+4,
+[
+704,
+705,
+706,
+707
+]
+],
+[
+7,
+4,
+[
+704,
+705,
+706,
+707
+]
+],
+[
+8,
+4,
+[
+704,
+705,
+706,
+707
+]
+],
+[
+10,
+4,
+[
+704,
+705,
+706,
+707
+]
+],
+[
+11,
+4,
+[
+704,
+705,
+706,
+707
+]
+],
+[
+2,
+5,
+[
+704,
+705,
+706,
+707
+]
+],
+[
+3,
+5,
+[
+704,
+705,
+706,
+707
+]
+],
+[
+7,
+5,
+[
+704,
+705,
+706,
+707
+]
+],
+[
+8,
+5,
+[
+704,
+705,
+706,
+707
+]
+],
+[
+10,
+5,
+[
+704,
+705,
+706,
+707
+]
+],
+[
+11,
+5,
+[
+704,
+705,
+706,
+707
+]
+],
+[
+6,
+10,
+[
+704,
+705,
+706,
+707
+]
+],
+[
+7,
+10,
+[
+704,
+705,
+706,
+707
+]
+],
+[
+15,
+10,
+[
+704,
+705,
+706,
+707
+]
+],
+[
+5,
+11,
+[
+704,
+705,
+706,
+707
+]
+],
+[
+6,
+11,
+[
+704,
+705,
+706,
+707
+]
+],
+[
+4,
+12,
+[
+704,
+705,
+706,
+707
+]
+],
+[
+5,
+12,
+[
+704,
+705,
+706,
+707
+]
+],
+[
+4,
+13,
+[
+704,
+705,
+706,
+707
+]
+],
+[
+5,
+13,
+[
+704,
+705,
+706,
+707
+]
+],
+[
+12,
+13,
+[
+704,
+705,
+706,
+707
+]
+],
+[
+13,
+13,
+[
+704,
+705,
+706,
+707
+]
+],
+[
+17,
+14,
+[
+704,
+705,
+706,
+707
+]
+],
+[
+5,
+15,
+[
+704,
+705,
+706,
+707
+]
+],
+[
+10,
+15,
+[
+704,
+705,
+706,
+707
+]
+],
+[
+11,
+15,
+[
+704,
+705,
+706,
+707
+]
+],
+[
+5,
+16,
+[
+704,
+705,
+706,
+707
+]
+],
+[
+7,
+16,
+[
+704,
+705,
+706,
+707
+]
+],
+[
+10,
+16,
+[
+704,
+705,
+706,
+707
+]
+],
+[
+11,
+16,
+[
+704,
+705,
+706,
+707
+]
+],
+[
+12,
+16,
+[
+704,
+705,
+706,
+707
+]
+],
+[
+17,
+16,
+[
+704,
+705,
+706,
+707
+]
+],
+[
+5,
+17,
+[
+704,
+705,
+706,
+707
+]
+],
+[
+10,
+17,
+[
+704,
+705,
+706,
+707
+]
+],
+[
+11,
+17,
+[
+704,
+705,
+706,
+707
+]
+],
+[
+12,
+17,
+[
+704,
+705,
+706,
+707
+]
+],
+[
+17,
+17,
+[
+704,
+705,
+706,
+707
+]
+],
+[
+5,
+18,
+[
+704,
+705,
+706,
+707
+]
+],
+[
+12,
+18,
+[
+704,
+705,
+706,
+707
+]
+],
+[
+17,
+18,
+[
+704,
+705,
+706,
+707
+]
+],
+[
+5,
+19,
+[
+704,
+705,
+706,
+707
+]
+],
+[
+5,
+20,
+[
+704,
+705,
+706,
+707
+]
+],
+[
+24,
+20,
+[
+704,
+705,
+706,
+707
+]
+],
+[
+25,
+20,
+[
+704,
+705,
+706,
+707
+]
+],
+[
+15,
+21,
+[
+704,
+705,
+706,
+707
+]
+],
+[
+24,
+21,
+[
+704,
+705,
+706,
+707
+]
+],
+[
+25,
+21,
+[
+704,
+705,
+706,
+707
+]
+],
+[
+3,
+22,
+[
+704,
+705,
+706,
+707
+]
+],
+[
+4,
+22,
+[
+704,
+705,
+706,
+707
+]
+],
+[
+5,
+22,
+[
+704,
+705,
+706,
+707
+]
+],
+[
+6,
+22,
+[
+704,
+705,
+706,
+707
+]
+],
+[
+7,
+22,
+[
+704,
+705,
+706,
+707
+]
+],
+[
+3,
+23,
+[
+704,
+705,
+706,
+707
+]
+],
+[
+4,
+23,
+[
+704,
+705,
+706,
+707
+]
+],
+[
+15,
+23,
+[
+704,
+705,
+706,
+707
+]
+],
+[
+1,
+24,
+[
+704,
+705,
+706,
+707
+]
+],
+[
+3,
+24,
+[
+704,
+705,
+706,
+707
+]
+],
+[
+6,
+24,
+[
+704,
+705,
+706,
+707
+]
+],
+[
+7,
+24,
+[
+704,
+705,
+706,
+707
+]
+],
+[
+8,
+24,
+[
+704,
+705,
+706,
+707
+]
+],
+[
+9,
+24,
+[
+704,
+705,
+706,
+707
+]
+],
+[
+10,
+24,
+[
+704,
+705,
+706,
+707
+]
+],
+[
+11,
+24,
+[
+704,
+705,
+706,
+707
+]
+],
+[
+12,
+24,
+[
+704,
+705,
+706,
+707
+]
+],
+[
+13,
+24,
+[
+704,
+705,
+706,
+707
+]
+],
+[
+14,
+24,
+[
+704,
+705,
+706,
+707
+]
+],
+[
+15,
+24,
+[
+704,
+705,
+706,
+707
+]
+],
+[
+1,
+25,
+[
+704,
+705,
+706,
+707
+]
+],
+[
+2,
+25,
+[
+704,
+705,
+706,
+707
+]
+],
+[
+5,
+25,
+[
+704,
+705,
+706,
+707
+]
+],
+[
+6,
+25,
+[
+704,
+705,
+706,
+707
+]
+],
+[
+7,
+25,
+[
+704,
+705,
+706,
+707
+]
+],
+[
+18,
+25,
+[
+704,
+705,
+706,
+707
+]
+]
+],
+"marks": [
+[
+24,
+27,
+"EXIT",
+"warp"
+],
+[
+25,
+27,
+"EXIT",
+"warp"
+],
+[
+27,
+2,
+"h:Nest",
+"note"
+],
+[
+7,
+16,
+"h:Net",
+"note"
+],
+[
+26,
+8,
+"PC",
+"sign"
+],
+[
+27,
+8,
+"PC",
+"sign"
+],
+[
+4,
+3,
+"cage",
+"sign"
+],
+[
+2,
+4,
+"cage",
+"sign"
+],
+[
+7,
+4,
+"cage",
+"sign"
+],
+[
+10,
+4,
+"cage",
+"sign"
+],
+[
+6,
+1,
+"cage",
+"sign"
+],
+[
+11,
+1,
+"cage",
+"sign"
+],
+[
+25,
+11,
+"trg",
+"note"
+],
+[
+1,
+21,
+"spin maze -> plain crate hall",
+"note"
+],
+[
+23,
+22,
+"spin tiles -> floor",
+"note"
+],
+[
+6,
+6,
+"Grunt1",
+"npc",
+"grunt_f_up"
+],
+[
+15,
+11,
+"Grunt2",
+"npc",
+"grunt_m_down"
+],
+[
+17,
+15,
+"Grunt3",
+"npc",
+"grunt_m_right"
+],
+[
+26,
+11,
+"Admin2",
+"npc",
+"admin_m_left"
+],
+[
+27,
+16,
+"Admin1",
+"npc",
+"grunt_f_left"
+],
+[
+27,
+4,
+"Gideon",
+"npc",
+"scientist_left"
+],
+[
+4,
+5,
+"UpGrade",
+"item",
+"item"
+],
+[
+17,
+4,
+"TM36",
+"item",
+"item"
+],
+[
+1,
+16,
+"Pearl",
+"item",
+"item"
+],
+[
+8,
+25,
+"BigPearl",
+"item",
+"item"
+]
+],
+"report": {
+"pair": [
+"gTileset_General",
+"gTileset_BikeShop"
+],
+"size": [
+30,
+28
+],
+"frlg": {
+"map": "FiveIsland_RocketWarehouse",
+"layout": "LAYOUT_FIVE_ISLAND_ROCKET_WAREHOUSE",
+"size": [
+29,
+27
+],
+"pair": [
+"gTileset_BuildingFrlg",
+"gTileset_SilphCo"
+]
+},
+"base_vanilla_layout": "LAYOUT_NEW_MAUVILLE_INSIDE (git 1d1d50b3a2~1)",
+"secondary_users_working_tree": [],
+"secondary_users_vanilla": [
+"LAYOUT_MAUVILLE_CITY_BIKE_SHOP",
+"LAYOUT_NEW_MAUVILLE_INSIDE"
+],
+"warps": [
+{
+"x": 24,
+"y": 27,
+"dest_map": "MAP_FIVE_ISLAND_MEADOW",
+"dest_warp_id": 0,
+"frlg": [
+24,
+25
+]
+},
+{
+"x": 25,
+"y": 27,
+"dest_map": "MAP_FIVE_ISLAND_MEADOW",
+"dest_warp_id": 0,
+"frlg": [
+24,
+25
+]
+}
+],
+"objects": [
+{
+"x": 6,
+"y": 6,
+"label": "Grunt1",
+"gfx": "grunt_f_up",
+"frlg": "ROCKET_F (6,6) Grunt1"
+},
+{
+"x": 15,
+"y": 11,
+"label": "Grunt2",
+"gfx": "grunt_m_down",
+"frlg": "ROCKET_M (15,11) Grunt2"
+},
+{
+"x": 17,
+"y": 15,
+"label": "Grunt3",
+"gfx": "grunt_m_right",
+"frlg": "ROCKET_M (17,15) Grunt3"
+},
+{
+"x": 26,
+"y": 11,
+"label": "Admin2",
+"gfx": "admin_m_left",
+"frlg": "ROCKET_M (25,11) Admin2 (faced right); trigger (22-24,11) -> (25,11)"
+},
+{
+"x": 27,
+"y": 16,
+"label": "Admin1",
+"gfx": "grunt_f_left",
+"frlg": "ROCKET_F (27,16) Admin1"
+},
+{
+"x": 27,
+"y": 4,
+"label": "Gideon",
+"gfx": "scientist_left",
+"frlg": "SCIENTIST (27,4) Gideon = boss spot"
+},
+{
+"x": 4,
+"y": 5,
+"label": "UpGrade",
+"gfx": "item",
+"frlg": "ITEM_BALL (4,5) Up-Grade"
+},
+{
+"x": 17,
+"y": 4,
+"label": "TM36",
+"gfx": "item",
+"frlg": "ITEM_BALL (17,3) TM36, on the table (elevation 0) as in FRLG"
+},
+{
+"x": 1,
+"y": 16,
+"label": "Pearl",
+"gfx": "item",
+"frlg": "ITEM_BALL (1,16) Pearl"
+},
+{
+"x": 8,
+"y": 25,
+"label": "BigPearl",
+"gfx": "item",
+"frlg": "ITEM_BALL (8,25) Big Pearl"
+}
+],
+"hidden_items": [
+{
+"x": 27,
+"y": 2,
+"item": "ITEM_NEST_BALL"
+},
+{
+"x": 7,
+"y": 16,
+"item": "ITEM_NET_BALL"
+}
+],
+"metatiles": [
+"0x208",
+"0x210",
+"0x218",
+"0x21F",
+"0x220",
+"0x227",
+"0x22F",
+"0x237",
+"0x268",
+"0x26A",
+"0x26F",
+"0x270",
+"0x272",
+"0x275",
+"0x278",
+"0x279",
+"0x27A",
+"0x27D",
+"0x27E",
+"0x27F",
+"0x280",
+"0x282",
+"0x285",
+"0x287",
+"0x288",
+"0x289",
+"0x28A",
+"0x28B",
+"0x28C",
+"0x28D",
+"0x28E",
+"0x290",
+"0x291",
+"0x293",
+"0x294",
+"0x295",
+"0x296",
+"0x298",
+"0x299",
+"0x29A",
+"0x29D",
+"0x29E",
+"0x2A0",
+"0x2A1",
+"0x2A2",
+"0x2A3",
+"0x2A4",
+"0x2A5",
+"0x2A6",
+"0x2A9",
+"0x2AA",
+"0x2AB",
+"0x2AC",
+"0x2B2",
+"0x2B3",
+"0x2B4",
+"0x2BA",
+"0x2BB",
+"0x2BC",
+"0x2C0",
+"0x2C1",
+"0x2C2",
+"0x2C3",
+"0x2C8",
+"0x2D4",
+"0x2D5",
+"0x2D6",
+"0x2D7",
+"0x2DC",
+"0x2DD",
+"0x2DE",
+"0x2DF",
+"0x2E4",
+"0x2E5",
+"0x2EE"
+],
+"seams": [
+[
+20,
+12,
+"E",
+"0x208",
+"0x289"
+],
+[
+24,
+26,
+"S",
+"0x210",
+"0x218"
+],
+[
+25,
+26,
+"S",
+"0x210",
+"0x220"
+],
+[
+23,
+27,
+"E",
+"0x210",
+"0x218"
+],
+[
+25,
+27,
+"E",
+"0x220",
+"0x210"
+]
+],
+"open_questions": [
+"Spin-tile maze: New Mauville's pair has no spin tiles. Mockup = plain crate maze. Recommend keeping it plain (crates already force a route); alternative: Mauville's blue/green electric barriers (0x2B7/2BF/2C7/2CF, 0x2B6/2BE/2C6/2CE) with floor buttons 0x236/0x22E in the hall-to-exit-room corridors, scripted like NewMauville_Inside.",
+"Grunt gfx: Rocket sprites are invisible in this build; mockup uses Team Magma grunts. Recommend whichever team Orchid's Sevii story uses (or a new Orchid villain gfx later).",
+"Tileset: General+BikeShop is used by no working-tree map (New Mauville and the Bike Shop were deleted), so adding it back is risk-free; recommend reusing it as-is.",
+"Exit: Bike Shop green mat at the bottom of the exit room (2 warp cells) instead of New Mauville's wall door 0x276; recommend the mat (matches FRLG and the Meadow door)."
+]
+}
+}

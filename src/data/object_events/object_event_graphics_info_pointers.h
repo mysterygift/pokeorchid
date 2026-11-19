@@ -402,9 +402,13 @@ extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Orchidist;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Recruit;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_PortWorker;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_SchoolKidF;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_HolonSphere;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_PokemonRangerM;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_PokemonRangerF;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_MartSign;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_HolonResearcher;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Cynthia;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Faba;
 // Begin Pokémon event objects
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_PokeBall;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Follower;
@@ -824,9 +828,13 @@ const struct ObjectEventGraphicsInfo *const gObjectEventGraphicsInfoPointers[NUM
     [OBJ_EVENT_GFX_RECRUIT] = &gObjectEventGraphicsInfo_Recruit,
     [OBJ_EVENT_GFX_PORT_WORKER] = &gObjectEventGraphicsInfo_PortWorker,
     [OBJ_EVENT_GFX_SCHOOL_KID_F] = &gObjectEventGraphicsInfo_SchoolKidF,
+    [OBJ_EVENT_GFX_HOLON_SPHERE] = &gObjectEventGraphicsInfo_HolonSphere,
     [OBJ_EVENT_GFX_POKEMON_RANGER_M] = &gObjectEventGraphicsInfo_PokemonRangerM,
     [OBJ_EVENT_GFX_POKEMON_RANGER_F] = &gObjectEventGraphicsInfo_PokemonRangerF,
     [OBJ_EVENT_GFX_MART_SIGN] = &gObjectEventGraphicsInfo_MartSign,
+    [OBJ_EVENT_GFX_HOLON_RESEARCHER] = &gObjectEventGraphicsInfo_HolonResearcher,
+    [OBJ_EVENT_GFX_CYNTHIA] = &gObjectEventGraphicsInfo_Cynthia,
+    [OBJ_EVENT_GFX_FABA] = &gObjectEventGraphicsInfo_Faba,
 };
 
 const struct ObjectEventGraphicsInfo *const gMauvilleOldManGraphicsInfoPointers[] = {

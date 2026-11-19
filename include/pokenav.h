@@ -208,6 +208,7 @@ enum
     MC_HEADER_GLACIA,
     MC_HEADER_DRAKE,
     MC_HEADER_WALLACE,
+    MC_HEADER_CYNTHIA,      // Wavebreak Voyages: after FLAG_CYNTHIA_BEATEN_AT_LAKE (Rotom Phone CALL, rotom_phone_call.c)
     MC_HEADER_COUNT
 };
 

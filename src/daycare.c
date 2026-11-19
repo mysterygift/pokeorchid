@@ -954,6 +954,12 @@ static enum Species DetermineEggSpeciesAndParentSlots(struct DayCare *daycare, u
     else
         eggSpecies = motherEggSpecies;
 
+    // Orchid: either Delta (δ) parent passes Delta on. A δ mother already hatches the δ base form through
+    // GetEggSpecies; a δ father does too when the mother is his non-δ counterpart (or another stage of it).
+    if (!IsDeltaSpecies(eggSpecies) && IsDeltaSpecies(fatherEggSpecies)
+     && GetDeltaBaseSpecies(fatherEggSpecies) == eggSpecies)
+        eggSpecies = fatherEggSpecies;
+
     if (eggSpecies == SPECIES_NIDORAN_F && daycare->offspringPersonality & EGG_GENDER_MALE)
         eggSpecies = SPECIES_NIDORAN_M;
     else if (eggSpecies == SPECIES_ILLUMISE && daycare->offspringPersonality & EGG_GENDER_MALE)

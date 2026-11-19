@@ -1,0 +1,92 @@
+base_species,delta_species,delta_name,chars,type1,type2,evolves_from,base_types,line,tier,home_map,source,tcg_card,confidence
+SPECIES_STANTLER,SPECIES_STANTLER_DELTA,Stantler-δ,10,Psychic,,,Normal,Stantler,A,Village,user,-,user
+SPECIES_RALTS,SPECIES_RALTS_DELTA,Ralts-δ,7,Grass,,,Psychic/Fairy,Ralts,A,Village,user,TCG DF Ralts δ = Fire,user
+SPECIES_KIRLIA,SPECIES_KIRLIA_DELTA,Kirlia-δ,8,Grass,,SPECIES_RALTS_DELTA,Psychic/Fairy,Ralts,A,Village,user,TCG DF Kirlia δ = Fire,user
+SPECIES_GARDEVOIR,SPECIES_GARDEVOIR_DELTA,Gardevoir-δ,11,Grass,,SPECIES_KIRLIA_DELTA,Psychic/Fairy,Ralts,A,Village,user,TCG DS Gardevoir δ Psychic/Metal; DF Gardevoir ex δ Fire,user
+SPECIES_GALLADE,SPECIES_GALLADE_DELTA,Gallade-δ,9,Grass,,SPECIES_KIRLIA_DELTA,Psychic/Fighting,Ralts,A,Village,user (open pt 1),no card,user
+SPECIES_DRATINI,SPECIES_DRATINI_DELTA,Dratini-δ,9,Electric,,,Dragon,Dratini,A,Village,user,DS Dratini δ Lightning,high
+SPECIES_DRAGONAIR,SPECIES_DRAGONAIR_DELTA,Dragonair-δ,11,Electric,,SPECIES_DRATINI_DELTA,Dragon,Dratini,A,Village,user,DS Dragonair δ Lightning,high
+SPECIES_DRAGONITE,SPECIES_DRAGONITE_DELTA,Dragonite-δ,11,Electric,,SPECIES_DRAGONAIR_DELTA,Dragon/Flying,Dratini,A,Village,user,DS Dragonite δ Lightning/Metal (Q: add Steel?),user
+SPECIES_PURRLOIN,SPECIES_PURRLOIN_DELTA,Purrloin-δ,10,Fairy,,,Dark,Purrloin,A,Village,user,-,user
+SPECIES_LIEPARD,SPECIES_LIEPARD_DELTA,Liepard-δ,9,Fairy,,SPECIES_PURRLOIN_DELTA,Dark,Purrloin,A,Village,user (open pt 2),-,user
+SPECIES_GLAMEOW,SPECIES_GLAMEOW_DELTA,Glameow-δ,9,Fairy,,,Normal,Glameow,A,Village,user,-,user
+SPECIES_PURUGLY,SPECIES_PURUGLY_DELTA,Purugly-δ,9,Fairy,,SPECIES_GLAMEOW_DELTA,Normal,Glameow,A,Village,user (open pt 2),-,user
+SPECIES_DRIFLOON,SPECIES_DRIFLOON_DELTA,Drifloon-δ,10,Flying,Fire,,Ghost/Flying,Drifloon,A,Village,user,-,user
+SPECIES_DRIFBLIM,SPECIES_DRIFBLIM_DELTA,Drifblim-δ,10,Flying,Fire,SPECIES_DRIFLOON_DELTA,Ghost/Flying,Drifloon,A,Village,user,-,user
+SPECIES_KLINK,SPECIES_KLINK_DELTA,Klink-δ,7,Rock,Ice,,Steel,Klink,A,Tower,user,-,user
+SPECIES_KLANG,SPECIES_KLANG_DELTA,Klang-δ,7,Rock,Ice,SPECIES_KLINK_DELTA,Steel,Klink,A,Tower,user,-,user
+SPECIES_KLINKLANG,SPECIES_KLINKLANG_DELTA,Klinklang-δ,11,Rock,Ice,SPECIES_KLANG_DELTA,Steel,Klink,A,Tower,user,-,user
+SPECIES_FARFETCHD,SPECIES_FARFETCHD_DELTA,Farfetch'd-δ,12,Steel,,,Normal/Flying,Farfetch'd,A,Village,user,-,user
+SPECIES_PANCHAM,SPECIES_PANCHAM_DELTA,Pancham-δ,9,Psychic,,,Fighting,Pancham,A,Village,user,-,user
+SPECIES_PANGORO,SPECIES_PANGORO_DELTA,Pangoro-δ,9,Psychic,,SPECIES_PANCHAM_DELTA,Fighting/Dark,Pancham,A,Village,user,-,user
+SPECIES_RELICANTH,SPECIES_RELICANTH_DELTA,Relicanth-δ,11,Grass,Ground,,Water/Rock,Relicanth,A,Coast,user,-,user
+SPECIES_LARVITAR,SPECIES_LARVITAR_DELTA,Larvitar-δ,10,Fire,,,Rock/Ground,Larvitar,A,Village,TCG DS,DS Larvitar δ Fire,high
+SPECIES_PUPITAR,SPECIES_PUPITAR_DELTA,Pupitar-δ,9,Fire,,SPECIES_LARVITAR_DELTA,Rock/Ground,Larvitar,A,Village,TCG DS,DS Pupitar δ Fire,high
+SPECIES_TYRANITAR,SPECIES_TYRANITAR_DELTA,Tyranitar-δ,11,Fire,Steel,SPECIES_PUPITAR_DELTA,Rock/Dark,Larvitar,A,Village,TCG DS,DS Tyranitar δ Fire/Metal (DF ex δ = Lightning),high
+SPECIES_BAGON,SPECIES_BAGON_DELTA,Bagon-δ,7,Fire,,,Dragon,Bagon,A,Village,TCG DS,DS Bagon δ Fire (DF = Water),high
+SPECIES_SHELGON,SPECIES_SHELGON_DELTA,Shelgon-δ,9,Fire,,SPECIES_BAGON_DELTA,Dragon,Bagon,A,Village,TCG DS,DS Shelgon δ Fire,high
+SPECIES_SALAMENCE,SPECIES_SALAMENCE_DELTA,Salamence-δ,11,Fire,Steel,SPECIES_SHELGON_DELTA,Dragon/Flying,Bagon,A,Village,TCG DS,DS Salamence δ Fire/Metal (DF ex δ = Water),high
+SPECIES_BELDUM,SPECIES_BELDUM_DELTA,Beldum-δ,8,Electric,,,Steel/Psychic,Beldum,A,Tower,TCG DS,DS Beldum δ Lightning,high
+SPECIES_METANG,SPECIES_METANG_DELTA,Metang-δ,8,Electric,,SPECIES_BELDUM_DELTA,Steel/Psychic,Beldum,A,Tower,TCG DS,DS Metang δ Lightning,high
+SPECIES_METAGROSS,SPECIES_METAGROSS_DELTA,Metagross-δ,11,Electric,Steel,SPECIES_METANG_DELTA,Steel/Psychic,Beldum,A,Tower,TCG DS,DS Metagross δ Lightning/Metal,high
+SPECIES_EEVEE,SPECIES_EEVEE_DELTA,Eevee-δ,7,Steel,,,Normal,Eevee,A,Tower,TCG DS,DS Eevee δ Metal,high
+SPECIES_VAPOREON,SPECIES_VAPOREON_DELTA,Vaporeon-δ,10,Water,Steel,SPECIES_EEVEE_DELTA,Water,Eevee,A,Tower,TCG DS,DS Vaporeon δ Water/Metal,high
+SPECIES_JOLTEON,SPECIES_JOLTEON_DELTA,Jolteon-δ,9,Electric,Steel,SPECIES_EEVEE_DELTA,Electric,Eevee,A,Tower,TCG DS,DS Jolteon δ Lightning/Metal,high
+SPECIES_FLAREON,SPECIES_FLAREON_DELTA,Flareon-δ,9,Fire,Steel,SPECIES_EEVEE_DELTA,Fire,Eevee,A,Tower,TCG DS,DS Flareon δ Fire/Metal,high
+SPECIES_ESPEON,SPECIES_ESPEON_DELTA,Espeon-δ,8,Psychic,Steel,SPECIES_EEVEE_DELTA,Psychic,Eevee,A,Tower,TCG DS,DS Espeon δ Psychic/Metal,high
+SPECIES_UMBREON,SPECIES_UMBREON_DELTA,Umbreon-δ,9,Dark,Steel,SPECIES_EEVEE_DELTA,Dark,Eevee,A,Tower,TCG DS,DS Umbreon δ Darkness/Metal,high
+SPECIES_LEAFEON,SPECIES_LEAFEON_DELTA,Leafeon-δ,9,Grass,Steel,SPECIES_EEVEE_DELTA,Grass,Eevee,A,Tower,extrap,no card (Gen 4) - DS pattern: own type + Steel,extrap
+SPECIES_GLACEON,SPECIES_GLACEON_DELTA,Glaceon-δ,9,Ice,Steel,SPECIES_EEVEE_DELTA,Ice,Eevee,A,Tower,extrap,no card (Gen 4) - DS pattern,extrap
+SPECIES_SYLVEON,SPECIES_SYLVEON_DELTA,Sylveon-δ,9,Fairy,Steel,SPECIES_EEVEE_DELTA,Fairy,Eevee,A,Tower,extrap,no card (Gen 6) - DS pattern,extrap
+SPECIES_MAGIKARP,SPECIES_MAGIKARP_DELTA,Magikarp-δ,10,Steel,,,Water,Magikarp,A,Lake,TCG HP,HP Magikarp δ Metal,high
+SPECIES_GYARADOS,SPECIES_GYARADOS_DELTA,Gyarados-δ,10,Electric,Steel,SPECIES_MAGIKARP_DELTA,Water/Flying,Magikarp,A,Lake,TCG HP,HP Gyarados δ Lightning/Metal,high
+SPECIES_PICHU,SPECIES_PICHU_DELTA,Pichu-δ,7,Steel,,,Electric,Pichu,A,Lake,TCG HP,HP Pichu δ Metal,high
+SPECIES_PIKACHU,SPECIES_PIKACHU_DELTA,Pikachu-δ,9,Steel,,SPECIES_PICHU_DELTA,Electric,Pichu,A,Lake,TCG HP,HP/LM Pikachu δ Metal,high
+SPECIES_RAICHU,SPECIES_RAICHU_DELTA,Raichu-δ,8,Steel,,SPECIES_PIKACHU_DELTA,Electric,Pichu,A,Lake,TCG HP,HP Raichu δ Metal,high
+SPECIES_HORSEA,SPECIES_HORSEA_DELTA,Horsea-δ,8,Fire,,,Water,Horsea,A,Lake,TCG HP,HP Horsea δ Fire (DF = Fighting),high
+SPECIES_SEADRA,SPECIES_SEADRA_DELTA,Seadra-δ,8,Fire,,SPECIES_HORSEA_DELTA,Water,Horsea,A,Lake,TCG HP,HP Seadra δ Fire,high
+SPECIES_KINGDRA,SPECIES_KINGDRA_DELTA,Kingdra-δ,9,Fire,Steel,SPECIES_SEADRA_DELTA,Water/Dragon,Horsea,A,Lake,TCG HP,HP Kingdra δ Fire/Metal,high
+SPECIES_TRAPINCH,SPECIES_TRAPINCH_DELTA,Trapinch-δ,10,Grass,,,Ground,Trapinch,A,Lake,TCG HP,HP Trapinch δ Grass (DF = Psychic),high
+SPECIES_VIBRAVA,SPECIES_VIBRAVA_DELTA,Vibrava-δ,9,Grass,,SPECIES_TRAPINCH_DELTA,Ground/Dragon,Trapinch,A,Lake,TCG HP,HP Vibrava δ Grass,high
+SPECIES_FLYGON,SPECIES_FLYGON_DELTA,Flygon-δ,8,Grass,Steel,SPECIES_VIBRAVA_DELTA,Ground/Dragon,Trapinch,A,Lake,TCG HP,HP Flygon δ Grass/Metal,high
+SPECIES_MEOWTH,SPECIES_MEOWTH_DELTA,Meowth-δ,8,Dark,Steel,,Normal,Meowth,A,Lake,TCG HP,HP Meowth δ Darkness/Metal,high
+SPECIES_PERSIAN,SPECIES_PERSIAN_DELTA,Persian-δ,9,Dark,Steel,SPECIES_MEOWTH_DELTA,Normal,Meowth,A,Lake,TCG HP,HP Persian δ Darkness/Metal,high
+SPECIES_PIDGEY,SPECIES_PIDGEY_DELTA,Pidgey-δ,8,Electric,,,Normal/Flying,Pidgey,B,Lake,TCG HP,HP Pidgey δ Lightning,high
+SPECIES_PIDGEOTTO,SPECIES_PIDGEOTTO_DELTA,Pidgeotto-δ,11,Electric,,SPECIES_PIDGEY_DELTA,Normal/Flying,Pidgey,B,Lake,TCG HP,HP Pidgeotto δ Lightning,high
+SPECIES_PIDGEOT,SPECIES_PIDGEOT_DELTA,Pidgeot-δ,9,Electric,Steel,SPECIES_PIDGEOTTO_DELTA,Normal/Flying,Pidgey,B,Lake,TCG HP,HP Pidgeot δ Lightning/Metal,high
+SPECIES_PSYDUCK,SPECIES_PSYDUCK_DELTA,Psyduck-δ,9,Electric,,,Water,Psyduck,B,Lake,TCG HP,HP Psyduck δ Lightning,high
+SPECIES_GOLDUCK,SPECIES_GOLDUCK_DELTA,Golduck-δ,9,Electric,,SPECIES_PSYDUCK_DELTA,Water,Psyduck,B,Lake,TCG HP,HP Golduck δ Lightning,high
+SPECIES_ODDISH,SPECIES_ODDISH_DELTA,Oddish-δ,8,Water,,,Grass/Poison,Oddish,B,Lake,TCG HP,HP Oddish δ Water,high
+SPECIES_GLOOM,SPECIES_GLOOM_DELTA,Gloom-δ,7,Psychic,,SPECIES_ODDISH_DELTA,Grass/Poison,Oddish,B,Lake,TCG HP,HP Gloom δ Psychic (TCG Psychic also = Poison),med
+SPECIES_VILEPLUME,SPECIES_VILEPLUME_DELTA,Vileplume-δ,11,Psychic,Steel,SPECIES_GLOOM_DELTA,Grass/Poison,Oddish,B,Lake,TCG HP,HP Vileplume δ Psychic/Metal,med
+SPECIES_BELLOSSOM,SPECIES_BELLOSSOM_DELTA,Bellossom-δ,11,Water,,SPECIES_GLOOM_DELTA,Grass,Oddish,B,Lake,TCG HP,HP Bellossom δ Water,high
+SPECIES_KABUTO,SPECIES_KABUTO_DELTA,Kabuto-δ,8,Electric,,,Rock/Water,Kabuto,B,Lake,TCG HP,HP Kabuto δ Lightning,high
+SPECIES_KABUTOPS,SPECIES_KABUTOPS_DELTA,Kabutops-δ,10,Electric,,SPECIES_KABUTO_DELTA,Rock/Water,Kabuto,B,Lake,TCG HP,HP Kabutops δ Lightning,high
+SPECIES_OMANYTE,SPECIES_OMANYTE_DELTA,Omanyte-δ,9,Psychic,,,Rock/Water,Omanyte,B,Lake,TCG HP,HP Omanyte δ Psychic,high
+SPECIES_OMASTAR,SPECIES_OMASTAR_DELTA,Omastar-δ,9,Psychic,,SPECIES_OMANYTE_DELTA,Rock/Water,Omanyte,B,Lake,TCG HP,HP Omastar δ Psychic,high
+SPECIES_ANORITH,SPECIES_ANORITH_DELTA,Anorith-δ,9,Steel,,,Rock/Bug,Anorith,B,Lake,TCG HP,HP Anorith δ Metal,high
+SPECIES_ARMALDO,SPECIES_ARMALDO_DELTA,Armaldo-δ,9,Rock,Steel,SPECIES_ANORITH_DELTA,Rock/Bug,Anorith,B,Lake,TCG HP,HP Armaldo δ Fighting/Metal (Fighting read as Rock),med
+SPECIES_LILEEP,SPECIES_LILEEP_DELTA,Lileep-δ,8,Dark,,,Rock/Grass,Lileep,B,Lake,TCG HP,HP Lileep δ Darkness,high
+SPECIES_CRADILY,SPECIES_CRADILY_DELTA,Cradily-δ,9,Dark,Steel,SPECIES_LILEEP_DELTA,Rock/Grass,Lileep,B,Lake,TCG HP,HP Cradily δ Darkness/Metal,high
+SPECIES_CHARMANDER,SPECIES_CHARMANDER_DELTA,Charmander-δ,12,Electric,,,Fire,Charmander,A,Coast,TCG CG,CG Charmander δ Lightning,high
+SPECIES_CHARMELEON,SPECIES_CHARMELEON_DELTA,Charmeleon-δ,12,Electric,,SPECIES_CHARMANDER_DELTA,Fire,Charmander,A,Coast,TCG CG,CG Charmeleon δ Lightning,high
+SPECIES_CHARIZARD,SPECIES_CHARIZARD_DELTA,Charizard-δ,11,Electric,Steel,SPECIES_CHARMELEON_DELTA,Fire/Flying,Charmander,A,Coast,TCG CG,CG Charizard δ Lightning/Metal,high
+SPECIES_TREECKO,SPECIES_TREECKO_DELTA,Treecko-δ,9,Psychic,,,Grass,Treecko,B,Coast,TCG CG,CG Treecko δ Psychic,high
+SPECIES_GROVYLE,SPECIES_GROVYLE_DELTA,Grovyle-δ,9,Psychic,,SPECIES_TREECKO_DELTA,Grass,Treecko,B,Coast,TCG CG,CG Grovyle δ Psychic,high
+SPECIES_SCEPTILE,SPECIES_SCEPTILE_DELTA,Sceptile-δ,10,Psychic,,SPECIES_GROVYLE_DELTA,Grass,Treecko,B,Coast,TCG CG,CG Sceptile ex δ Psychic,high
+SPECIES_KRABBY,SPECIES_KRABBY_DELTA,Krabby-δ,8,Fire,,,Water,Krabby,B,Coast,extrap,no card (CG: final stage only),extrap
+SPECIES_KINGLER,SPECIES_KINGLER_DELTA,Kingler-δ,9,Fire,Steel,SPECIES_KRABBY_DELTA,Water,Krabby,B,Coast,TCG CG,CG Kingler δ Fire/Metal,high
+SPECIES_WINGULL,SPECIES_WINGULL_DELTA,Wingull-δ,9,Electric,,,Water/Flying,Wingull,B,Coast,extrap,no card (CG: final stage only),extrap
+SPECIES_PELIPPER,SPECIES_PELIPPER_DELTA,Pelipper-δ,10,Electric,,SPECIES_WINGULL_DELTA,Water/Flying,Wingull,B,Coast,TCG CG,CG Pelipper δ Lightning,high
+SPECIES_FEEBAS,SPECIES_FEEBAS_DELTA,Feebas-δ,8,Fire,,,Water,Feebas,A,Lake,TCG DF,DF Feebas δ Fire,high
+SPECIES_MILOTIC,SPECIES_MILOTIC_DELTA,Milotic-δ,9,Fire,,SPECIES_FEEBAS_DELTA,Water,Feebas,A,Lake,TCG DF,DF Milotic δ Fire,high
+SPECIES_SWABLU,SPECIES_SWABLU_DELTA,Swablu-δ,8,Water,,,Normal/Flying,Swablu,B,Coast,TCG DF,DF Swablu δ Water,high
+SPECIES_ALTARIA,SPECIES_ALTARIA_DELTA,Altaria-δ,9,Water,,SPECIES_SWABLU_DELTA,Dragon/Flying,Swablu,B,Coast,TCG DF,DF Altaria ex δ Water,high
+SPECIES_MAREEP,SPECIES_MAREEP_DELTA,Mareep-δ,8,Normal,,,Electric,Mareep,B,Coast,TCG DF,DF Mareep δ Colorless,med
+SPECIES_FLAAFFY,SPECIES_FLAAFFY_DELTA,Flaaffy-δ,9,Normal,,SPECIES_MAREEP_DELTA,Electric,Mareep,B,Coast,TCG DF,DF Flaaffy δ Colorless,med
+SPECIES_AMPHAROS,SPECIES_AMPHAROS_DELTA,Ampharos-δ,10,Normal,,SPECIES_FLAAFFY_DELTA,Electric,Mareep,B,Coast,TCG DF,DF Ampharos δ Colorless,med
+SPECIES_TOTODILE,SPECIES_TOTODILE_DELTA,Totodile-δ,10,Electric,,,Water,Totodile,B,Coast,TCG DF,DF Totodile δ Lightning,high
+SPECIES_CROCONAW,SPECIES_CROCONAW_DELTA,Croconaw-δ,10,Electric,,SPECIES_TOTODILE_DELTA,Water,Totodile,B,Coast,TCG DF,DF Croconaw δ Lightning,high
+SPECIES_FERALIGATR,SPECIES_FERALIGATR_DELTA,Feraligatr-δ,12,Electric,,SPECIES_CROCONAW_DELTA,Water,Totodile,B,Coast,TCG DF,DF Feraligatr δ Lightning,high
+SPECIES_VULPIX,SPECIES_VULPIX_DELTA,Vulpix-δ,8,Psychic,,,Fire,Vulpix,B,Coast,TCG DF,DF Vulpix δ Psychic,high
+SPECIES_NINETALES,SPECIES_NINETALES_DELTA,Ninetales-δ,11,Psychic,,SPECIES_VULPIX_DELTA,Fire,Vulpix,B,Coast,TCG DF,DF Ninetales δ Psychic,high

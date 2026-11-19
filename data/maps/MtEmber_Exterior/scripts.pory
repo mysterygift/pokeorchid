@@ -1,0 +1,75 @@
+mapscripts MtEmber_Exterior_MapScripts {}
+
+script MtEmber_Exterior_EventScript_ExplosionTutor {
+    msgbox(format("The ground here rumbles sometimes. Mt. Ember isn't fully asleep."), MSGBOX_NPC)
+}
+
+script MtEmber_Exterior_EventScript_Grunt1 {
+    msgbox(format("Mt. Ember is still smoking. Something lives at the very top..."), MSGBOX_NPC)
+}
+
+script MtEmber_Exterior_EventScript_Grunt2 {
+    msgbox(format("It's so hot on this mountain! My Pokémon love it."), MSGBOX_NPC)
+}
+
+script MtEmber_Exterior_EventScript_Jocelyn {
+    msgbox(format("It's so hot on this mountain! My Pokémon love it."), MSGBOX_NPC)
+}
+
+script MtEmber_Exterior_EventScript_Logan {
+    trainerbattle_single(TRAINER_SEVII_LOGAN, MtEmber_Exterior_Text_LoganIntro, MtEmber_Exterior_Text_LoganDefeat)
+    msgbox(MtEmber_Exterior_Text_LoganPost, MSGBOX_AUTOCLOSE)
+}
+
+text MtEmber_Exterior_Text_LoganIntro {
+    format("Rangers keep Mt. Ember safe. Show me your skill!")
+}
+
+text MtEmber_Exterior_Text_LoganDefeat {
+    format("You're the real deal.")
+}
+
+text MtEmber_Exterior_Text_LoganPost {
+    format("It's so hot on this mountain! My Pokémon love it.")
+}
+
+script MtEmber_Exterior_EventScript_Beth {
+    trainerbattle_single(TRAINER_SEVII_BETH, MtEmber_Exterior_Text_BethIntro, MtEmber_Exterior_Text_BethDefeat)
+    msgbox(MtEmber_Exterior_Text_BethPost, MSGBOX_AUTOCLOSE)
+}
+
+text MtEmber_Exterior_Text_BethIntro {
+    format("The mountain path is dangerous. Let me test you!")
+}
+
+text MtEmber_Exterior_Text_BethDefeat {
+    format("You can handle Mt. Ember.")
+}
+
+text MtEmber_Exterior_Text_BethPost {
+    format("I came to the islands to camp under the stars.")
+}
+
+raw `
+MtEmber_Exterior_EventScript_EdgeWarp_28_48::
+	specialvar VAR_RESULT, GetPlayerFacingDirection
+	goto_if_ne VAR_RESULT, DIR_SOUTH, Sevii_EventScript_End
+	warp MAP_ONE_ISLAND_KINDLE_ROAD, 0
+	waitstate
+	end
+
+MtEmber_Exterior_EventScript_EdgeWarp_29_48::
+	specialvar VAR_RESULT, GetPlayerFacingDirection
+	goto_if_ne VAR_RESULT, DIR_SOUTH, Sevii_EventScript_End
+	warp MAP_ONE_ISLAND_KINDLE_ROAD, 1
+	waitstate
+	end
+
+MtEmber_Exterior_EventScript_EdgeWarp_29_7::
+	specialvar VAR_RESULT, GetPlayerFacingDirection
+	goto_if_ne VAR_RESULT, DIR_NORTH, Sevii_EventScript_End
+	warp MAP_MT_EMBER_SUMMIT, 0
+	waitstate
+	end
+
+`

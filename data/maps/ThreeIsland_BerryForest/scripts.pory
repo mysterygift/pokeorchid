@@ -1,0 +1,15 @@
+mapscripts ThreeIsland_BerryForest_MapScripts {}
+
+script ThreeIsland_BerryForest_EventScript_Lostelle {
+    msgbox(format("I came here to pick Berries and got turned around... I think the exit is south!"), MSGBOX_NPC)
+}
+
+script ThreeIsland_BerryForest_EventScript_BewareSign {
+    msgbox(format("Beware of wild POKéMON!\n"
+        "Don't stray from the path."), MSGBOX_SIGN)
+}
+
+script ThreeIsland_BerryForest_EventScript_WelcomeSign {
+    msgbox(format("Welcome to BERRY FOREST.\n"
+        "Please leave the Berries for the POKéMON."), MSGBOX_SIGN)
+}

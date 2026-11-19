@@ -130,6 +130,9 @@ This project follows the [all-contributors](https://github.com/all-contributors/
 - [larryturbo](https://www.deviantart.com/larryturbo)
 - [kidkatt](https://www.deviantart.com/kidkatt)
 
+### Pokémon Orchid Sprite Credits:
+- lichen: Cynthia trainer and overworld sprites
+
 ## Resources
 - [Sugimori Palettes and Sprites](https://www.pokecommunity.com/showthread.php?t=336945)
 - [DS Style Gen VI Sprites](https://www.pokecommunity.com/showthread.php?t=314422)

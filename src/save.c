@@ -81,6 +81,9 @@ STATIC_ASSERT(sizeof(struct SaveBlock3) <= SAVE_BLOCK_3_CHUNK_SIZE * NUM_SECTORS
 STATIC_ASSERT(sizeof(struct SaveBlock2) <= SECTOR_DATA_SIZE, SaveBlock2FreeSpace);
 STATIC_ASSERT(sizeof(struct SaveBlock1) <= SECTOR_DATA_SIZE * (SECTOR_ID_SAVEBLOCK1_END - SECTOR_ID_SAVEBLOCK1_START + 1), SaveBlock1FreeSpace);
 STATIC_ASSERT(sizeof(struct PokemonStorage) <= SECTOR_DATA_SIZE * (SECTOR_ID_PKMN_STORAGE_END - SECTOR_ID_PKMN_STORAGE_START + 1), PokemonStorageFreeSpace);
+// Orchid: the dex flag arrays reserve room for every Delta species (tiers A + B); more dex entries than
+// ORCHID_DEX_FLAG_SLOTS would grow dexSeen/dexCaught and shift the rest of SaveBlock1.
+STATIC_ASSERT(POKEMON_SLOTS_NUMBER <= ORCHID_DEX_FLAG_SLOTS, OrchidDexFlagSlotsReserved);
 
 COMMON_DATA u16 gLastWrittenSector = 0;
 COMMON_DATA u32 gLastSaveCounter = 0;

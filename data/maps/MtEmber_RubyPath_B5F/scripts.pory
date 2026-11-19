@@ -1,0 +1,6 @@
+mapscripts MtEmber_RubyPath_B5F_MapScripts {}
+
+script MtEmber_RubyPath_B5F_EventScript_BrailleMessage {
+    msgbox(format("Rows of raised dots are carved into the rock.\n"
+        "You can't make sense of them."), MSGBOX_SIGN)
+}

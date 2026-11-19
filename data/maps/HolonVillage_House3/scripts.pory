@@ -1,0 +1,5 @@
+mapscripts HolonVillage_House3_MapScripts {}
+
+script HolonVillage_House3_EventScript_Npc {
+    msgbox(format("Holon's weather used to be gentle. Now storms roll in off the lake with no warning at all."), MSGBOX_NPC)
+}

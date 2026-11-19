@@ -1,0 +1,1 @@
+placeholders: one shared sheet, 123 unique tiles / 256 for all three maps, 6 colours of the vanilla 48-colour map.pal (113,114,123,124,126,132)

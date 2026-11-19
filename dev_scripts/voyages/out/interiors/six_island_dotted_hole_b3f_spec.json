@@ -1,0 +1,233 @@
+{
+ "size": [
+  13,
+  11
+ ],
+ "tileset": [
+  "gTileset_General",
+  "gTileset_NavelRock"
+ ],
+ "ground": [
+  "raw",
+  1563
+ ],
+ "marks": [
+  [
+   6,
+   7,
+   "B2F",
+   "warp"
+  ],
+  [
+   6,
+   1,
+   "1F",
+   "warp"
+  ],
+  [
+   11,
+   5,
+   "B4F",
+   "warp"
+  ],
+  [
+   6,
+   9,
+   "1F",
+   "warp"
+  ],
+  [
+   1,
+   5,
+   "1F",
+   "warp"
+  ],
+  [
+   6,
+   5,
+   "BrailleR",
+   "sign"
+  ]
+ ],
+ "grid_raw": [
+  "061B 0619 0619 0619 0619 0619 0619 0619 0619 0619 0619 0619 061C",
+  "0612 3201 3211 3201 3201 3201 3206 3201 3201 3201 3211 3201 0610",
+  "0612 3211 3201 3201 3211 3211 3211 3211 3211 3211 0602 3201 0610",
+  "0612 3211 3201 3201 3211 3211 3211 3211 3211 3201 3211 3211 0610",
+  "0612 3211 3211 3211 3211 3201 3211 3201 3211 3201 3201 3211 0610",
+  "0612 3206 3211 3211 3211 3211 062F 3211 3211 3211 3211 3206 0610",
+  "0612 3211 3211 3211 3211 3201 3211 3201 3211 3211 3211 3211 0610",
+  "0612 3211 3211 3211 3211 3211 3211 3211 3211 3211 3211 3211 0610",
+  "0612 3211 3211 3201 3201 3211 3211 3211 3211 3211 3211 3201 0610",
+  "0612 3211 3211 3211 3211 3211 3206 3211 3211 3211 3211 3201 0610",
+  "0623 0609 0609 0609 0609 0609 0609 0609 0609 0609 0609 0609 0624"
+ ],
+ "report": {
+  "pair": [
+   "gTileset_General",
+   "gTileset_NavelRock"
+  ],
+  "set": "navel",
+  "look": "Emerald Navel Rock (the R/S/E version of the tileset Dotted Hole uses in FRLG)",
+  "classes": [
+   "#############",
+   "#.....h.....#",
+   "#.**......B.#",
+   "#.**.....*..#",
+   "#....*.*.**.#",
+   "#h....b....h#",
+   "#....*.*....#",
+   "#...........#",
+   "#..**.......#",
+   "#.....h.....#",
+   "#############"
+  ],
+  "sig_levels": {
+   "5": 44
+  },
+  "notes": [],
+  "frlg_map": "SixIsland_DottedHole_B3F",
+  "frlg_layout": "LAYOUT_SIX_ISLAND_DOTTED_HOLE_B3F",
+  "frlg_pair": [
+   "gTileset_General_Frlg",
+   "gTileset_NavelRock_Frlg"
+  ],
+  "maps": [
+   "MAP_SIX_ISLAND_DOTTED_HOLE_B3_F"
+  ],
+  "size": [
+   13,
+   11
+  ],
+  "method": "learned cave autotiler (interiors_caves.py), set 'navel'",
+  "warps": [
+   {
+    "x": 6,
+    "y": 7,
+    "dest_map": "MAP_SIX_ISLAND_DOTTED_HOLE_B2F",
+    "dest_warp_id": "4"
+   },
+   {
+    "x": 6,
+    "y": 1,
+    "dest_map": "MAP_SIX_ISLAND_DOTTED_HOLE_1F",
+    "dest_warp_id": "3"
+   },
+   {
+    "x": 11,
+    "y": 5,
+    "dest_map": "MAP_SIX_ISLAND_DOTTED_HOLE_B4F",
+    "dest_warp_id": "0"
+   },
+   {
+    "x": 6,
+    "y": 9,
+    "dest_map": "MAP_SIX_ISLAND_DOTTED_HOLE_1F",
+    "dest_warp_id": "3"
+   },
+   {
+    "x": 1,
+    "y": 5,
+    "dest_map": "MAP_SIX_ISLAND_DOTTED_HOLE_1F",
+    "dest_warp_id": "3"
+   }
+  ],
+  "objects": [],
+  "bg_events": [
+   {
+    "type": "sign",
+    "x": 6,
+    "y": 5,
+    "elevation": 0,
+    "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
+    "script": "SixIsland_DottedHole_B3F_EventScript_BrailleRight"
+   }
+  ],
+  "coord_events": [],
+  "walk_diff": [],
+  "seams_before_fix": 89,
+  "seam_cells_repicked": 0,
+  "seams": [
+   [
+    6,
+    0,
+    "S",
+    "0x219",
+    "0x206"
+   ],
+   [
+    0,
+    5,
+    "E",
+    "0x212",
+    "0x206"
+   ],
+   [
+    11,
+    5,
+    "E",
+    "0x206",
+    "0x210"
+   ],
+   [
+    0,
+    9,
+    "S",
+    "0x212",
+    "0x223"
+   ],
+   [
+    6,
+    9,
+    "S",
+    "0x206",
+    "0x209"
+   ],
+   [
+    12,
+    9,
+    "S",
+    "0x210",
+    "0x224"
+   ],
+   [
+    0,
+    10,
+    "E",
+    "0x223",
+    "0x209"
+   ],
+   [
+    11,
+    10,
+    "E",
+    "0x209",
+    "0x224"
+   ]
+  ],
+  "secondary_users": [
+   "LAYOUT_NAVEL_ROCK_ENTRANCE",
+   "LAYOUT_NAVEL_ROCK_TOP",
+   "LAYOUT_NAVEL_ROCK_BOTTOM",
+   "LAYOUT_NAVEL_ROCK_LADDER_ROOM1",
+   "LAYOUT_NAVEL_ROCK_LADDER_ROOM2",
+   "LAYOUT_NAVEL_ROCK_B1F",
+   "LAYOUT_NAVEL_ROCK_FORK"
+  ],
+  "metatiles": [
+   "0x201",
+   "0x202",
+   "0x206",
+   "0x209",
+   "0x210",
+   "0x211",
+   "0x212",
+   "0x219",
+   "0x21B",
+   "0x21C",
+   "0x223",
+   "0x224",
+   "0x22F"
+  ]
+ }
+}

@@ -1,0 +1,3602 @@
+{
+ "classes": {
+  ".": "grass",
+  "<": "ledge, jump west",
+  ">": "ledge, jump east",
+  "B": "building (stamped)",
+  "D": "door (stamped)",
+  "F": "fence",
+  "M": "rock wall / cliff (autotiled)",
+  "T": "tree (2x2 where possible)",
+  "b": "bridge / boardwalk",
+  "c": "cave mouth (stamped)",
+  "d": "other decor (impassable)",
+  "f": "flowers",
+  "g": "tall grass",
+  "h": "stairs",
+  "k": "wooden deck / bridge planks",
+  "n": "sign",
+  "o": "small rock / boulder",
+  "p": "path (sandy road)",
+  "q": "pond water",
+  "r": "sea rock (2x2 Emerald rock placed)",
+  "s": "sand / beach",
+  "v": "ledge, jump south",
+  "x": "UNRESOLVED",
+  "|": "waterfall (lip 0BB/0B3/0BC, body 0B9, splash 02C/034/03C)",
+  "~": "sea (ocean / fast current)"
+ },
+ "counts": {
+  ".": 49,
+  "<": 1,
+  ">": 4,
+  "B": 121,
+  "D": 4,
+  "F": 21,
+  "M": 97,
+  "T": 45,
+  "c": 2,
+  "d": 2,
+  "f": 6,
+  "g": 2,
+  "h": 2,
+  "k": 12,
+  "n": 5,
+  "o": 2,
+  "p": 45,
+  "q": 15,
+  "r": 46,
+  "s": 32,
+  "v": 9,
+  "|": 3,
+  "~": 66
+ },
+ "table": {
+  "BerryForest:281": {
+   "cls": ".",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "BerryForest:282": {
+   "cls": ".",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "BerryForest:284": {
+   "cls": "g",
+   "coll": 0,
+   "mb": "MB_TALL_GRASS",
+   "override": false
+  },
+  "BerryForest:288": {
+   "cls": "T",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": true
+  },
+  "BerryForest:28A": {
+   "cls": "T",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": true
+  },
+  "BerryForest:290": {
+   "cls": "T",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": true
+  },
+  "BerryForest:291": {
+   "cls": "T",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": true
+  },
+  "BerryForest:292": {
+   "cls": "T",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": true
+  },
+  "BerryForest:297": {
+   "cls": ".",
+   "coll": 0,
+   "mb": "MB_SOUTH_ARROW_WARP",
+   "override": false
+  },
+  "BerryForest:298": {
+   "cls": "T",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": true
+  },
+  "BerryForest:299": {
+   "cls": "T",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": true
+  },
+  "BerryForest:29A": {
+   "cls": "T",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": true
+  },
+  "BerryForest:29B": {
+   "cls": ".",
+   "coll": 0,
+   "mb": "MB_SOUTH_ARROW_WARP",
+   "override": false
+  },
+  "BerryForest:29F": {
+   "cls": "p",
+   "coll": 0,
+   "mb": "MB_SOUTH_ARROW_WARP",
+   "override": false
+  },
+  "BerryForest:2A0": {
+   "cls": "T",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": true
+  },
+  "BerryForest:2A1": {
+   "cls": "T",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": true
+  },
+  "BerryForest:2A2": {
+   "cls": "T",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": true
+  },
+  "BerryForest:2A3": {
+   "cls": "T",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": true
+  },
+  "BerryForest:2A4": {
+   "cls": "T",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": true
+  },
+  "BerryForest:2A5": {
+   "cls": "T",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": true
+  },
+  "General_Frlg:001": {
+   "cls": ".",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:002": {
+   "cls": "n",
+   "coll": 1,
+   "mb": "MB_SIGNPOST",
+   "override": false
+  },
+  "General_Frlg:004": {
+   "cls": "f",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:005": {
+   "cls": "T",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:008": {
+   "cls": ".",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:009": {
+   "cls": ".",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:00D": {
+   "cls": "g",
+   "coll": 0,
+   "mb": "MB_TALL_GRASS",
+   "override": false
+  },
+  "General_Frlg:00E": {
+   "cls": ".",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:00F": {
+   "cls": ".",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:010": {
+   "cls": ".",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:011": {
+   "cls": ".",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:014": {
+   "cls": "T",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:015": {
+   "cls": "T",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:016": {
+   "cls": "T",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:017": {
+   "cls": "T",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:01C": {
+   "cls": "T",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:01D": {
+   "cls": "T",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:01E": {
+   "cls": "T",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:01F": {
+   "cls": "T",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:024": {
+   "cls": "T",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:025": {
+   "cls": "T",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:026": {
+   "cls": "T",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:027": {
+   "cls": "T",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:028": {
+   "cls": "~",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:029": {
+   "cls": "~",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:02A": {
+   "cls": "~",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:02B": {
+   "cls": "~",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:030": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:031": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:032": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:033": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:038": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:039": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:03A": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:03B": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:040": {
+   "cls": "n",
+   "coll": 1,
+   "mb": "MB_POKEMART_SIGN",
+   "override": false
+  },
+  "General_Frlg:041": {
+   "cls": "n",
+   "coll": 1,
+   "mb": "MB_POKEMART_SIGN",
+   "override": false
+  },
+  "General_Frlg:048": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:049": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:04A": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:04B": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:050": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:051": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:052": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:053": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:058": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:059": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:05A": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:05B": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:060": {
+   "cls": "n",
+   "coll": 1,
+   "mb": "MB_POKEMON_CENTER_SIGN",
+   "override": false
+  },
+  "General_Frlg:061": {
+   "cls": "n",
+   "coll": 1,
+   "mb": "MB_POKEMON_CENTER_SIGN",
+   "override": false
+  },
+  "General_Frlg:062": {
+   "cls": "D",
+   "coll": 1,
+   "mb": "MB_ANIMATED_DOOR",
+   "override": false
+  },
+  "General_Frlg:063": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:068": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:069": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:06A": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:06B": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:06C": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:06D": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:070": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:071": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:072": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:073": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:075": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:078": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:079": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:07A": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:07B": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:07C": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:07D": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:085": {
+   "cls": "<",
+   "coll": 1,
+   "mb": "MB_JUMP_WEST",
+   "override": false
+  },
+  "General_Frlg:086": {
+   "cls": ">",
+   "coll": 1,
+   "mb": "MB_JUMP_EAST",
+   "override": false
+  },
+  "General_Frlg:087": {
+   "cls": "v",
+   "coll": 1,
+   "mb": "MB_JUMP_SOUTH",
+   "override": false
+  },
+  "General_Frlg:088": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:089": {
+   "cls": "h",
+   "coll": 0,
+   "mb": "MB_ROCK_STAIRS",
+   "override": false
+  },
+  "General_Frlg:08A": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:08D": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:08E": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:090": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:091": {
+   "cls": "h",
+   "coll": 0,
+   "mb": "MB_ROCK_STAIRS",
+   "override": false
+  },
+  "General_Frlg:092": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:098": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:099": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:09A": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:09F": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:0A0": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:0A2": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:0A8": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:0A9": {
+   "cls": "c",
+   "coll": 0,
+   "mb": "MB_NON_ANIMATED_DOOR",
+   "override": false
+  },
+  "General_Frlg:0AA": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:0AF": {
+   "cls": "o",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": true
+  },
+  "General_Frlg:0B0": {
+   "cls": "v",
+   "coll": 1,
+   "mb": "MB_JUMP_SOUTH",
+   "override": false
+  },
+  "General_Frlg:0B1": {
+   "cls": "v",
+   "coll": 1,
+   "mb": "MB_JUMP_SOUTH",
+   "override": false
+  },
+  "General_Frlg:0B2": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:0B3": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:0B4": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:0B5": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:0BA": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:0BB": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:0BD": {
+   "cls": ".",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:0BE": {
+   "cls": ".",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:0BF": {
+   "cls": ".",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:0C2": {
+   "cls": ".",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:0C3": {
+   "cls": ".",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:0C4": {
+   "cls": ".",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:0C5": {
+   "cls": ".",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:0C6": {
+   "cls": ".",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:0C7": {
+   "cls": ".",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:0CB": {
+   "cls": ".",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:0CC": {
+   "cls": ".",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:0CD": {
+   "cls": ".",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:0CE": {
+   "cls": ".",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:0CF": {
+   "cls": ".",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:0D0": {
+   "cls": "p",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:0D1": {
+   "cls": "p",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:0D2": {
+   "cls": "p",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:0D3": {
+   "cls": ".",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:0D4": {
+   "cls": "p",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:0D5": {
+   "cls": ".",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:0D6": {
+   "cls": "F",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": true
+  },
+  "General_Frlg:0D7": {
+   "cls": "F",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": true
+  },
+  "General_Frlg:0D8": {
+   "cls": "p",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:0D9": {
+   "cls": "p",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:0DA": {
+   "cls": "p",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:0DB": {
+   "cls": "p",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": true
+  },
+  "General_Frlg:0DC": {
+   "cls": "p",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": true
+  },
+  "General_Frlg:0DD": {
+   "cls": "p",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": true
+  },
+  "General_Frlg:0E0": {
+   "cls": "p",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:0E1": {
+   "cls": "p",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:0E2": {
+   "cls": "p",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:0E3": {
+   "cls": ".",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:0E4": {
+   "cls": "p",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:0E5": {
+   "cls": ".",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:0E6": {
+   "cls": "F",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": true
+  },
+  "General_Frlg:0E7": {
+   "cls": "F",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": true
+  },
+  "General_Frlg:0E8": {
+   "cls": "F",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": true
+  },
+  "General_Frlg:0E9": {
+   "cls": "F",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": true
+  },
+  "General_Frlg:0EA": {
+   "cls": "T",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:0EC": {
+   "cls": "F",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": true
+  },
+  "General_Frlg:0F0": {
+   "cls": "F",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": true
+  },
+  "General_Frlg:0F1": {
+   "cls": "T",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:0F3": {
+   "cls": "T",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:0F4": {
+   "cls": "F",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": true
+  },
+  "General_Frlg:0F8": {
+   "cls": "F",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": true
+  },
+  "General_Frlg:0F9": {
+   "cls": "F",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": true
+  },
+  "General_Frlg:0FE": {
+   "cls": "p",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:0FF": {
+   "cls": "p",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:102": {
+   "cls": "p",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:103": {
+   "cls": "p",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:104": {
+   "cls": "p",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:105": {
+   "cls": "p",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:108": {
+   "cls": "r",
+   "coll": 1,
+   "mb": "MB_OCEAN_WATER",
+   "override": false
+  },
+  "General_Frlg:109": {
+   "cls": "r",
+   "coll": 1,
+   "mb": "MB_OCEAN_WATER",
+   "override": false
+  },
+  "General_Frlg:10C": {
+   "cls": "s",
+   "coll": 0,
+   "mb": "MB_SHALLOW_WATER",
+   "override": false
+  },
+  "General_Frlg:10D": {
+   "cls": "s",
+   "coll": 0,
+   "mb": "MB_SAND",
+   "override": false
+  },
+  "General_Frlg:10E": {
+   "cls": "s",
+   "coll": 0,
+   "mb": "MB_SHALLOW_WATER",
+   "override": false
+  },
+  "General_Frlg:10F": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:110": {
+   "cls": "r",
+   "coll": 1,
+   "mb": "MB_OCEAN_WATER",
+   "override": false
+  },
+  "General_Frlg:111": {
+   "cls": "r",
+   "coll": 1,
+   "mb": "MB_OCEAN_WATER",
+   "override": false
+  },
+  "General_Frlg:112": {
+   "cls": "r",
+   "coll": 1,
+   "mb": "MB_OCEAN_WATER",
+   "override": false
+  },
+  "General_Frlg:114": {
+   "cls": "s",
+   "coll": 0,
+   "mb": "MB_SHALLOW_WATER",
+   "override": false
+  },
+  "General_Frlg:115": {
+   "cls": "s",
+   "coll": 0,
+   "mb": "MB_SAND",
+   "override": false
+  },
+  "General_Frlg:116": {
+   "cls": "s",
+   "coll": 0,
+   "mb": "MB_SHALLOW_WATER",
+   "override": false
+  },
+  "General_Frlg:117": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:118": {
+   "cls": "r",
+   "coll": 1,
+   "mb": "MB_OCEAN_WATER",
+   "override": false
+  },
+  "General_Frlg:119": {
+   "cls": "r",
+   "coll": 1,
+   "mb": "MB_OCEAN_WATER",
+   "override": false
+  },
+  "General_Frlg:11A": {
+   "cls": "r",
+   "coll": 1,
+   "mb": "MB_OCEAN_WATER",
+   "override": false
+  },
+  "General_Frlg:11C": {
+   "cls": "s",
+   "coll": 0,
+   "mb": "MB_SHALLOW_WATER",
+   "override": false
+  },
+  "General_Frlg:11D": {
+   "cls": "s",
+   "coll": 0,
+   "mb": "MB_SHALLOW_WATER",
+   "override": false
+  },
+  "General_Frlg:11E": {
+   "cls": "s",
+   "coll": 0,
+   "mb": "MB_SHALLOW_WATER",
+   "override": false
+  },
+  "General_Frlg:11F": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:120": {
+   "cls": "~",
+   "coll": 0,
+   "mb": "MB_OCEAN_WATER",
+   "override": false
+  },
+  "General_Frlg:121": {
+   "cls": "~",
+   "coll": 0,
+   "mb": "MB_OCEAN_WATER",
+   "override": false
+  },
+  "General_Frlg:123": {
+   "cls": "~",
+   "coll": 0,
+   "mb": "MB_OCEAN_WATER",
+   "override": false
+  },
+  "General_Frlg:124": {
+   "cls": "~",
+   "coll": 0,
+   "mb": "MB_OCEAN_WATER",
+   "override": false
+  },
+  "General_Frlg:125": {
+   "cls": "s",
+   "coll": 0,
+   "mb": "MB_SAND",
+   "override": false
+  },
+  "General_Frlg:126": {
+   "cls": "s",
+   "coll": 0,
+   "mb": "MB_SAND",
+   "override": false
+  },
+  "General_Frlg:127": {
+   "cls": "|",
+   "coll": 0,
+   "mb": "MB_WATERFALL",
+   "override": false
+  },
+  "General_Frlg:129": {
+   "cls": "~",
+   "coll": 0,
+   "mb": "MB_OCEAN_WATER",
+   "override": false
+  },
+  "General_Frlg:12A": {
+   "cls": "~",
+   "coll": 0,
+   "mb": "MB_OCEAN_WATER",
+   "override": false
+  },
+  "General_Frlg:12B": {
+   "cls": "~",
+   "coll": 0,
+   "mb": "MB_OCEAN_WATER",
+   "override": false
+  },
+  "General_Frlg:12C": {
+   "cls": "~",
+   "coll": 0,
+   "mb": "MB_OCEAN_WATER",
+   "override": false
+  },
+  "General_Frlg:12D": {
+   "cls": "s",
+   "coll": 0,
+   "mb": "MB_SHALLOW_WATER",
+   "override": false
+  },
+  "General_Frlg:12E": {
+   "cls": "s",
+   "coll": 0,
+   "mb": "MB_SHALLOW_WATER",
+   "override": false
+  },
+  "General_Frlg:12F": {
+   "cls": "|",
+   "coll": 0,
+   "mb": "MB_WATERFALL",
+   "override": false
+  },
+  "General_Frlg:130": {
+   "cls": "~",
+   "coll": 0,
+   "mb": "MB_OCEAN_WATER",
+   "override": false
+  },
+  "General_Frlg:131": {
+   "cls": "~",
+   "coll": 0,
+   "mb": "MB_OCEAN_WATER",
+   "override": false
+  },
+  "General_Frlg:132": {
+   "cls": ".",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:133": {
+   "cls": ".",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:134": {
+   "cls": ".",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:137": {
+   "cls": "|",
+   "coll": 0,
+   "mb": "MB_WATERFALL",
+   "override": false
+  },
+  "General_Frlg:17B": {
+   "cls": "f",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:17C": {
+   "cls": "f",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:17D": {
+   "cls": "f",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:17E": {
+   "cls": "f",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:17F": {
+   "cls": "f",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:186": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:187": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:18F": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:197": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:19F": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:1A3": {
+   "cls": "q",
+   "coll": 0,
+   "mb": "MB_POND_WATER",
+   "override": false
+  },
+  "General_Frlg:1A4": {
+   "cls": "q",
+   "coll": 0,
+   "mb": "MB_POND_WATER",
+   "override": false
+  },
+  "General_Frlg:1A5": {
+   "cls": "q",
+   "coll": 0,
+   "mb": "MB_POND_WATER",
+   "override": false
+  },
+  "General_Frlg:1A6": {
+   "cls": "q",
+   "coll": 0,
+   "mb": "MB_POND_WATER",
+   "override": false
+  },
+  "General_Frlg:1A7": {
+   "cls": "q",
+   "coll": 0,
+   "mb": "MB_POND_WATER",
+   "override": false
+  },
+  "General_Frlg:1AD": {
+   "cls": "q",
+   "coll": 0,
+   "mb": "MB_POND_WATER",
+   "override": false
+  },
+  "General_Frlg:1AE": {
+   "cls": "q",
+   "coll": 0,
+   "mb": "MB_POND_WATER",
+   "override": false
+  },
+  "General_Frlg:1AF": {
+   "cls": "q",
+   "coll": 0,
+   "mb": "MB_POND_WATER",
+   "override": false
+  },
+  "General_Frlg:1B3": {
+   "cls": "q",
+   "coll": 0,
+   "mb": "MB_POND_WATER",
+   "override": false
+  },
+  "General_Frlg:1B4": {
+   "cls": "q",
+   "coll": 0,
+   "mb": "MB_POND_WATER",
+   "override": false
+  },
+  "General_Frlg:1BD": {
+   "cls": "k",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": true
+  },
+  "General_Frlg:1BE": {
+   "cls": "k",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": true
+  },
+  "General_Frlg:1BF": {
+   "cls": "k",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": true
+  },
+  "General_Frlg:1C5": {
+   "cls": "k",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": true
+  },
+  "General_Frlg:1C6": {
+   "cls": "k",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": true
+  },
+  "General_Frlg:1C7": {
+   "cls": "k",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": true
+  },
+  "General_Frlg:1CB": {
+   "cls": "r",
+   "coll": 1,
+   "mb": "MB_OCEAN_WATER",
+   "override": false
+  },
+  "General_Frlg:1CC": {
+   "cls": "r",
+   "coll": 1,
+   "mb": "MB_OCEAN_WATER",
+   "override": false
+  },
+  "General_Frlg:1CD": {
+   "cls": "~",
+   "coll": 0,
+   "mb": "MB_OCEAN_WATER",
+   "override": false
+  },
+  "General_Frlg:1CE": {
+   "cls": "~",
+   "coll": 0,
+   "mb": "MB_OCEAN_WATER",
+   "override": false
+  },
+  "General_Frlg:1D0": {
+   "cls": "~",
+   "coll": 0,
+   "mb": "MB_OCEAN_WATER",
+   "override": false
+  },
+  "General_Frlg:1D1": {
+   "cls": "~",
+   "coll": 0,
+   "mb": "MB_OCEAN_WATER",
+   "override": false
+  },
+  "General_Frlg:1D2": {
+   "cls": "~",
+   "coll": 0,
+   "mb": "MB_OCEAN_WATER",
+   "override": false
+  },
+  "General_Frlg:1D3": {
+   "cls": "r",
+   "coll": 1,
+   "mb": "MB_OCEAN_WATER",
+   "override": false
+  },
+  "General_Frlg:1D4": {
+   "cls": "r",
+   "coll": 1,
+   "mb": "MB_OCEAN_WATER",
+   "override": false
+  },
+  "General_Frlg:1D5": {
+   "cls": "s",
+   "coll": 0,
+   "mb": "MB_SAND",
+   "override": false
+  },
+  "General_Frlg:1D6": {
+   "cls": "s",
+   "coll": 0,
+   "mb": "MB_SAND",
+   "override": false
+  },
+  "General_Frlg:1D7": {
+   "cls": "s",
+   "coll": 0,
+   "mb": "MB_SAND",
+   "override": false
+  },
+  "General_Frlg:1D8": {
+   "cls": "~",
+   "coll": 0,
+   "mb": "MB_OCEAN_WATER",
+   "override": false
+  },
+  "General_Frlg:1D9": {
+   "cls": "~",
+   "coll": 0,
+   "mb": "MB_OCEAN_WATER",
+   "override": false
+  },
+  "General_Frlg:1DA": {
+   "cls": "~",
+   "coll": 0,
+   "mb": "MB_OCEAN_WATER",
+   "override": false
+  },
+  "General_Frlg:1DD": {
+   "cls": "s",
+   "coll": 0,
+   "mb": "MB_SAND",
+   "override": false
+  },
+  "General_Frlg:1DF": {
+   "cls": "s",
+   "coll": 0,
+   "mb": "MB_SAND",
+   "override": false
+  },
+  "General_Frlg:1E0": {
+   "cls": "~",
+   "coll": 0,
+   "mb": "MB_OCEAN_WATER",
+   "override": false
+  },
+  "General_Frlg:1E1": {
+   "cls": "~",
+   "coll": 0,
+   "mb": "MB_OCEAN_WATER",
+   "override": false
+  },
+  "General_Frlg:1E2": {
+   "cls": "~",
+   "coll": 0,
+   "mb": "MB_OCEAN_WATER",
+   "override": false
+  },
+  "General_Frlg:1E5": {
+   "cls": ".",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:1E6": {
+   "cls": "p",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:1E7": {
+   "cls": ".",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:1E8": {
+   "cls": "s",
+   "coll": 0,
+   "mb": "MB_SAND",
+   "override": false
+  },
+  "General_Frlg:1E9": {
+   "cls": "s",
+   "coll": 0,
+   "mb": "MB_SAND",
+   "override": false
+  },
+  "General_Frlg:1EA": {
+   "cls": "s",
+   "coll": 0,
+   "mb": "MB_SAND",
+   "override": false
+  },
+  "General_Frlg:1EB": {
+   "cls": "s",
+   "coll": 0,
+   "mb": "MB_SAND",
+   "override": false
+  },
+  "General_Frlg:1F1": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:1F2": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:1F5": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:1F6": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:1F7": {
+   "cls": "p",
+   "coll": 0,
+   "mb": "MB_NORTH_ARROW_WARP",
+   "override": false
+  },
+  "General_Frlg:1F8": {
+   "cls": "r",
+   "coll": 1,
+   "mb": "MB_OCEAN_WATER",
+   "override": false
+  },
+  "General_Frlg:1F9": {
+   "cls": "r",
+   "coll": 1,
+   "mb": "MB_OCEAN_WATER",
+   "override": false
+  },
+  "General_Frlg:1FA": {
+   "cls": "~",
+   "coll": 0,
+   "mb": "MB_OCEAN_WATER",
+   "override": false
+  },
+  "General_Frlg:1FB": {
+   "cls": "~",
+   "coll": 0,
+   "mb": "MB_OCEAN_WATER",
+   "override": false
+  },
+  "General_Frlg:1FC": {
+   "cls": "~",
+   "coll": 0,
+   "mb": "MB_OCEAN_WATER",
+   "override": false
+  },
+  "General_Frlg:1FD": {
+   "cls": "~",
+   "coll": 0,
+   "mb": "MB_OCEAN_WATER",
+   "override": false
+  },
+  "General_Frlg:1FE": {
+   "cls": "~",
+   "coll": 0,
+   "mb": "MB_OCEAN_WATER",
+   "override": false
+  },
+  "General_Frlg:1FF": {
+   "cls": "p",
+   "coll": 0,
+   "mb": "MB_SOUTH_ARROW_WARP",
+   "override": false
+  },
+  "General_Frlg:200": {
+   "cls": "r",
+   "coll": 1,
+   "mb": "MB_OCEAN_WATER",
+   "override": false
+  },
+  "General_Frlg:201": {
+   "cls": "r",
+   "coll": 1,
+   "mb": "MB_OCEAN_WATER",
+   "override": false
+  },
+  "General_Frlg:202": {
+   "cls": "~",
+   "coll": 0,
+   "mb": "MB_OCEAN_WATER",
+   "override": false
+  },
+  "General_Frlg:204": {
+   "cls": "~",
+   "coll": 0,
+   "mb": "MB_OCEAN_WATER",
+   "override": false
+  },
+  "General_Frlg:207": {
+   "cls": "p",
+   "coll": 0,
+   "mb": "MB_MOUNTAIN_TOP",
+   "override": false
+  },
+  "General_Frlg:208": {
+   "cls": "r",
+   "coll": 1,
+   "mb": "MB_OCEAN_WATER",
+   "override": false
+  },
+  "General_Frlg:209": {
+   "cls": "r",
+   "coll": 1,
+   "mb": "MB_OCEAN_WATER",
+   "override": false
+  },
+  "General_Frlg:20A": {
+   "cls": "~",
+   "coll": 0,
+   "mb": "MB_OCEAN_WATER",
+   "override": false
+  },
+  "General_Frlg:20C": {
+   "cls": "~",
+   "coll": 0,
+   "mb": "MB_OCEAN_WATER",
+   "override": false
+  },
+  "General_Frlg:20D": {
+   "cls": "s",
+   "coll": 0,
+   "mb": "MB_SHALLOW_WATER",
+   "override": false
+  },
+  "General_Frlg:20E": {
+   "cls": "s",
+   "coll": 0,
+   "mb": "MB_SHALLOW_WATER",
+   "override": false
+  },
+  "General_Frlg:210": {
+   "cls": "s",
+   "coll": 0,
+   "mb": "MB_SAND",
+   "override": false
+  },
+  "General_Frlg:211": {
+   "cls": "s",
+   "coll": 0,
+   "mb": "MB_SAND",
+   "override": false
+  },
+  "General_Frlg:212": {
+   "cls": "r",
+   "coll": 1,
+   "mb": "MB_OCEAN_WATER",
+   "override": false
+  },
+  "General_Frlg:213": {
+   "cls": "r",
+   "coll": 1,
+   "mb": "MB_OCEAN_WATER",
+   "override": false
+  },
+  "General_Frlg:218": {
+   "cls": "s",
+   "coll": 0,
+   "mb": "MB_SHALLOW_WATER",
+   "override": false
+  },
+  "General_Frlg:219": {
+   "cls": "s",
+   "coll": 0,
+   "mb": "MB_SHALLOW_WATER",
+   "override": false
+  },
+  "General_Frlg:21A": {
+   "cls": "r",
+   "coll": 1,
+   "mb": "MB_OCEAN_WATER",
+   "override": false
+  },
+  "General_Frlg:21B": {
+   "cls": "r",
+   "coll": 1,
+   "mb": "MB_OCEAN_WATER",
+   "override": false
+  },
+  "General_Frlg:224": {
+   "cls": "q",
+   "coll": 0,
+   "mb": "MB_POND_WATER",
+   "override": false
+  },
+  "General_Frlg:225": {
+   "cls": "q",
+   "coll": 0,
+   "mb": "MB_POND_WATER",
+   "override": false
+  },
+  "General_Frlg:226": {
+   "cls": "q",
+   "coll": 0,
+   "mb": "MB_POND_WATER",
+   "override": false
+  },
+  "General_Frlg:244": {
+   "cls": "r",
+   "coll": 1,
+   "mb": "MB_FAST_WATER",
+   "override": false
+  },
+  "General_Frlg:245": {
+   "cls": "r",
+   "coll": 1,
+   "mb": "MB_FAST_WATER",
+   "override": false
+  },
+  "General_Frlg:246": {
+   "cls": "~",
+   "coll": 1,
+   "mb": "MB_FAST_WATER",
+   "override": false
+  },
+  "General_Frlg:247": {
+   "cls": "~",
+   "coll": 1,
+   "mb": "MB_FAST_WATER",
+   "override": false
+  },
+  "General_Frlg:24C": {
+   "cls": "r",
+   "coll": 1,
+   "mb": "MB_FAST_WATER",
+   "override": false
+  },
+  "General_Frlg:24D": {
+   "cls": "r",
+   "coll": 1,
+   "mb": "MB_FAST_WATER",
+   "override": false
+  },
+  "General_Frlg:24E": {
+   "cls": "~",
+   "coll": 1,
+   "mb": "MB_FAST_WATER",
+   "override": false
+  },
+  "General_Frlg:24F": {
+   "cls": "~",
+   "coll": 1,
+   "mb": "MB_FAST_WATER",
+   "override": false
+  },
+  "General_Frlg:256": {
+   "cls": "~",
+   "coll": 1,
+   "mb": "MB_FAST_WATER",
+   "override": false
+  },
+  "General_Frlg:257": {
+   "cls": "~",
+   "coll": 1,
+   "mb": "MB_FAST_WATER",
+   "override": false
+  },
+  "General_Frlg:265": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_FAST_WATER",
+   "override": true
+  },
+  "General_Frlg:268": {
+   "cls": "~",
+   "coll": 1,
+   "mb": "MB_FAST_WATER",
+   "override": false
+  },
+  "General_Frlg:269": {
+   "cls": "~",
+   "coll": 1,
+   "mb": "MB_FAST_WATER",
+   "override": false
+  },
+  "General_Frlg:26B": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_FAST_WATER",
+   "override": true
+  },
+  "General_Frlg:26C": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_FAST_WATER",
+   "override": true
+  },
+  "General_Frlg:26D": {
+   "cls": "~",
+   "coll": 1,
+   "mb": "MB_FAST_WATER",
+   "override": false
+  },
+  "General_Frlg:26E": {
+   "cls": "~",
+   "coll": 1,
+   "mb": "MB_FAST_WATER",
+   "override": false
+  },
+  "General_Frlg:26F": {
+   "cls": "~",
+   "coll": 1,
+   "mb": "MB_FAST_WATER",
+   "override": false
+  },
+  "General_Frlg:270": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_FAST_WATER",
+   "override": true
+  },
+  "General_Frlg:272": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_FAST_WATER",
+   "override": true
+  },
+  "General_Frlg:273": {
+   "cls": "~",
+   "coll": 1,
+   "mb": "MB_FAST_WATER",
+   "override": false
+  },
+  "General_Frlg:274": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_FAST_WATER",
+   "override": true
+  },
+  "General_Frlg:275": {
+   "cls": "~",
+   "coll": 1,
+   "mb": "MB_FAST_WATER",
+   "override": false
+  },
+  "General_Frlg:276": {
+   "cls": "~",
+   "coll": 1,
+   "mb": "MB_FAST_WATER",
+   "override": false
+  },
+  "General_Frlg:278": {
+   "cls": "~",
+   "coll": 1,
+   "mb": "MB_FAST_WATER",
+   "override": false
+  },
+  "General_Frlg:279": {
+   "cls": "~",
+   "coll": 1,
+   "mb": "MB_FAST_WATER",
+   "override": false
+  },
+  "General_Frlg:27A": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:27C": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "General_Frlg:27D": {
+   "cls": "~",
+   "coll": 1,
+   "mb": "MB_FAST_WATER",
+   "override": false
+  },
+  "General_Frlg:27F": {
+   "cls": "~",
+   "coll": 1,
+   "mb": "MB_FAST_WATER",
+   "override": false
+  },
+  "SeviiIslands123:281": {
+   "cls": "p",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:282": {
+   "cls": "~",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:283": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:284": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:285": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:286": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:287": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:288": {
+   "cls": "r",
+   "coll": 1,
+   "mb": "MB_OCEAN_WATER",
+   "override": false
+  },
+  "SeviiIslands123:289": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:28A": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:28B": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:28C": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:28D": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:28E": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:28F": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:290": {
+   "cls": "~",
+   "coll": 0,
+   "mb": "MB_OCEAN_WATER",
+   "override": false
+  },
+  "SeviiIslands123:291": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:292": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:293": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:294": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:295": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:296": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:297": {
+   "cls": "D",
+   "coll": 1,
+   "mb": "MB_ANIMATED_DOOR",
+   "override": false
+  },
+  "SeviiIslands123:298": {
+   "cls": "~",
+   "coll": 1,
+   "mb": "MB_OCEAN_WATER",
+   "override": false
+  },
+  "SeviiIslands123:299": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:29A": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:29B": {
+   "cls": "D",
+   "coll": 1,
+   "mb": "MB_ANIMATED_DOOR",
+   "override": false
+  },
+  "SeviiIslands123:29C": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:29D": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:29E": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:29F": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:2A0": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:2A1": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:2A3": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:2A4": {
+   "cls": "r",
+   "coll": 1,
+   "mb": "MB_OCEAN_WATER",
+   "override": false
+  },
+  "SeviiIslands123:2A5": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:2A6": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:2A7": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:2A8": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:2A9": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:2AA": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:2AB": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:2AC": {
+   "cls": "~",
+   "coll": 1,
+   "mb": "MB_OCEAN_WATER",
+   "override": false
+  },
+  "SeviiIslands123:2AD": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:2AE": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:2AF": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:2B0": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:2B1": {
+   "cls": "p",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:2B2": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:2B3": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:2B4": {
+   "cls": "k",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": true
+  },
+  "SeviiIslands123:2B5": {
+   "cls": "k",
+   "coll": 0,
+   "mb": "MB_SOUTH_ARROW_WARP",
+   "override": true
+  },
+  "SeviiIslands123:2B6": {
+   "cls": "k",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": true
+  },
+  "SeviiIslands123:2B7": {
+   "cls": "~",
+   "coll": 0,
+   "mb": "MB_OCEAN_WATER",
+   "override": false
+  },
+  "SeviiIslands123:2B8": {
+   "cls": "T",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:2B9": {
+   "cls": "d",
+   "coll": 1,
+   "mb": "MB_TRASH_CAN",
+   "override": true
+  },
+  "SeviiIslands123:2BA": {
+   "cls": "T",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:2BB": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:2BC": {
+   "cls": "d",
+   "coll": 1,
+   "mb": "MB_TRASH_CAN",
+   "override": true
+  },
+  "SeviiIslands123:2BD": {
+   "cls": "~",
+   "coll": 0,
+   "mb": "MB_OCEAN_WATER",
+   "override": false
+  },
+  "SeviiIslands123:2BE": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:2BF": {
+   "cls": "~",
+   "coll": 1,
+   "mb": "MB_OCEAN_WATER",
+   "override": false
+  },
+  "SeviiIslands123:2C0": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:2C1": {
+   "cls": "p",
+   "coll": 0,
+   "mb": "MB_MOUNTAIN_TOP",
+   "override": false
+  },
+  "SeviiIslands123:2C2": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:2C3": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:2C4": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:2C5": {
+   "cls": "~",
+   "coll": 1,
+   "mb": "MB_OCEAN_WATER",
+   "override": false
+  },
+  "SeviiIslands123:2C6": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:2C7": {
+   "cls": "r",
+   "coll": 1,
+   "mb": "MB_OCEAN_WATER",
+   "override": false
+  },
+  "SeviiIslands123:2C8": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:2CA": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:2CB": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:2CC": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:2CD": {
+   "cls": "r",
+   "coll": 1,
+   "mb": "MB_OCEAN_WATER",
+   "override": false
+  },
+  "SeviiIslands123:2CE": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:2CF": {
+   "cls": "~",
+   "coll": 1,
+   "mb": "MB_OCEAN_WATER",
+   "override": false
+  },
+  "SeviiIslands123:2D0": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:2D1": {
+   "cls": ".",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:2D2": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:2D3": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:2D4": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:2D5": {
+   "cls": "~",
+   "coll": 1,
+   "mb": "MB_OCEAN_WATER",
+   "override": false
+  },
+  "SeviiIslands123:2D6": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:2D7": {
+   "cls": "~",
+   "coll": 0,
+   "mb": "MB_OCEAN_WATER",
+   "override": false
+  },
+  "SeviiIslands123:2D8": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:2D9": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:2DA": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:2DB": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:2DC": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:2DD": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:2DE": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:2DF": {
+   "cls": "~",
+   "coll": 1,
+   "mb": "MB_OCEAN_WATER",
+   "override": false
+  },
+  "SeviiIslands123:2E0": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:2E1": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:2E2": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:2E3": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:2E4": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:2E5": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:2E6": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:2E7": {
+   "cls": "r",
+   "coll": 1,
+   "mb": "MB_OCEAN_WATER",
+   "override": false
+  },
+  "SeviiIslands123:2E8": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:2E9": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:2EA": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:2EB": {
+   "cls": "D",
+   "coll": 1,
+   "mb": "MB_ANIMATED_DOOR",
+   "override": false
+  },
+  "SeviiIslands123:2EC": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:2ED": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:2EE": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:2EF": {
+   "cls": "~",
+   "coll": 1,
+   "mb": "MB_OCEAN_WATER",
+   "override": false
+  },
+  "SeviiIslands123:2F0": {
+   "cls": "k",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": true
+  },
+  "SeviiIslands123:2F1": {
+   "cls": "k",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": true
+  },
+  "SeviiIslands123:2F2": {
+   "cls": "k",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": true
+  },
+  "SeviiIslands123:2F3": {
+   "cls": "r",
+   "coll": 1,
+   "mb": "MB_OCEAN_WATER",
+   "override": false
+  },
+  "SeviiIslands123:2F4": {
+   "cls": "r",
+   "coll": 1,
+   "mb": "MB_OCEAN_WATER",
+   "override": false
+  },
+  "SeviiIslands123:2F5": {
+   "cls": "r",
+   "coll": 1,
+   "mb": "MB_OCEAN_WATER",
+   "override": false
+  },
+  "SeviiIslands123:2F6": {
+   "cls": "r",
+   "coll": 1,
+   "mb": "MB_OCEAN_WATER",
+   "override": false
+  },
+  "SeviiIslands123:2F7": {
+   "cls": "r",
+   "coll": 1,
+   "mb": "MB_OCEAN_WATER",
+   "override": false
+  },
+  "SeviiIslands123:2F8": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:2F9": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:2FA": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:2FB": {
+   "cls": "r",
+   "coll": 1,
+   "mb": "MB_OCEAN_WATER",
+   "override": false
+  },
+  "SeviiIslands123:2FC": {
+   "cls": "r",
+   "coll": 1,
+   "mb": "MB_OCEAN_WATER",
+   "override": false
+  },
+  "SeviiIslands123:2FD": {
+   "cls": "r",
+   "coll": 1,
+   "mb": "MB_OCEAN_WATER",
+   "override": false
+  },
+  "SeviiIslands123:2FE": {
+   "cls": "r",
+   "coll": 1,
+   "mb": "MB_OCEAN_WATER",
+   "override": false
+  },
+  "SeviiIslands123:2FF": {
+   "cls": "r",
+   "coll": 1,
+   "mb": "MB_OCEAN_WATER",
+   "override": false
+  },
+  "SeviiIslands123:300": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:301": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:302": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:303": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:304": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:305": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:306": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:307": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:30B": {
+   "cls": "r",
+   "coll": 1,
+   "mb": "MB_OCEAN_WATER",
+   "override": false
+  },
+  "SeviiIslands123:30C": {
+   "cls": "r",
+   "coll": 1,
+   "mb": "MB_OCEAN_WATER",
+   "override": false
+  },
+  "SeviiIslands123:30D": {
+   "cls": "r",
+   "coll": 1,
+   "mb": "MB_OCEAN_WATER",
+   "override": false
+  },
+  "SeviiIslands123:30E": {
+   "cls": "r",
+   "coll": 1,
+   "mb": "MB_OCEAN_WATER",
+   "override": false
+  },
+  "SeviiIslands123:30F": {
+   "cls": "r",
+   "coll": 1,
+   "mb": "MB_OCEAN_WATER",
+   "override": false
+  },
+  "SeviiIslands123:310": {
+   "cls": ".",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:311": {
+   "cls": ".",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:312": {
+   "cls": ".",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:313": {
+   "cls": ".",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:314": {
+   "cls": ".",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:315": {
+   "cls": ".",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:316": {
+   "cls": ".",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:317": {
+   "cls": ".",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:318": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": true
+  },
+  "SeviiIslands123:319": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": true
+  },
+  "SeviiIslands123:31A": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": true
+  },
+  "SeviiIslands123:31B": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": true
+  },
+  "SeviiIslands123:31C": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:31D": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": true
+  },
+  "SeviiIslands123:31E": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": true
+  },
+  "SeviiIslands123:31F": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": true
+  },
+  "SeviiIslands123:320": {
+   "cls": ".",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:321": {
+   "cls": ".",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:322": {
+   "cls": ".",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:323": {
+   "cls": ".",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:324": {
+   "cls": "F",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": true
+  },
+  "SeviiIslands123:326": {
+   "cls": "F",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": true
+  },
+  "SeviiIslands123:327": {
+   "cls": "F",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": true
+  },
+  "SeviiIslands123:328": {
+   "cls": "F",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": true
+  },
+  "SeviiIslands123:329": {
+   "cls": "F",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": true
+  },
+  "SeviiIslands123:32A": {
+   "cls": "F",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": true
+  },
+  "SeviiIslands123:32B": {
+   "cls": "F",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": true
+  },
+  "SeviiIslands123:32C": {
+   "cls": "F",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": true
+  },
+  "SeviiIslands123:32D": {
+   "cls": "F",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": true
+  },
+  "SeviiIslands123:32E": {
+   "cls": "F",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": true
+  },
+  "SeviiIslands123:32F": {
+   "cls": "~",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": true
+  },
+  "SeviiIslands123:330": {
+   "cls": "T",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:331": {
+   "cls": "T",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:332": {
+   "cls": "T",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:333": {
+   "cls": "T",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:334": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:335": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:336": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:337": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:338": {
+   "cls": "T",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:339": {
+   "cls": "T",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:33A": {
+   "cls": "T",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:33B": {
+   "cls": "T",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:33C": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:33D": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:33E": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:33F": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:340": {
+   "cls": "T",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:341": {
+   "cls": ".",
+   "coll": 0,
+   "mb": "MB_NORTH_ARROW_WARP",
+   "override": false
+  },
+  "SeviiIslands123:342": {
+   "cls": ".",
+   "coll": 0,
+   "mb": "MB_NORTH_ARROW_WARP",
+   "override": false
+  },
+  "SeviiIslands123:343": {
+   "cls": "T",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:344": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:345": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:346": {
+   "cls": "c",
+   "coll": 0,
+   "mb": "MB_NON_ANIMATED_DOOR",
+   "override": false
+  },
+  "SeviiIslands123:347": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:34B": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:34C": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:34D": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:34E": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:34F": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:350": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:351": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:352": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:353": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:354": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:355": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:356": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:357": {
+   "cls": "o",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": true
+  },
+  "SeviiIslands123:358": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:359": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:35A": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:35B": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:35C": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:35D": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:35E": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:35F": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:360": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:361": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:362": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:363": {
+   "cls": "v",
+   "coll": 1,
+   "mb": "MB_JUMP_SOUTH",
+   "override": false
+  },
+  "SeviiIslands123:364": {
+   "cls": "v",
+   "coll": 1,
+   "mb": "MB_JUMP_SOUTH",
+   "override": false
+  },
+  "SeviiIslands123:365": {
+   "cls": "v",
+   "coll": 1,
+   "mb": "MB_JUMP_SOUTH",
+   "override": false
+  },
+  "SeviiIslands123:366": {
+   "cls": ">",
+   "coll": 1,
+   "mb": "MB_JUMP_EAST",
+   "override": false
+  },
+  "SeviiIslands123:367": {
+   "cls": ">",
+   "coll": 1,
+   "mb": "MB_JUMP_EAST",
+   "override": false
+  },
+  "SeviiIslands123:368": {
+   "cls": "v",
+   "coll": 1,
+   "mb": "MB_JUMP_SOUTH",
+   "override": false
+  },
+  "SeviiIslands123:369": {
+   "cls": "v",
+   "coll": 1,
+   "mb": "MB_JUMP_SOUTH",
+   "override": false
+  },
+  "SeviiIslands123:36A": {
+   "cls": "v",
+   "coll": 1,
+   "mb": "MB_JUMP_SOUTH",
+   "override": false
+  },
+  "SeviiIslands123:36F": {
+   "cls": ">",
+   "coll": 1,
+   "mb": "MB_JUMP_EAST",
+   "override": false
+  },
+  "SeviiIslands123:373": {
+   "cls": "T",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:37A": {
+   "cls": "q",
+   "coll": 0,
+   "mb": "MB_POND_WATER",
+   "override": false
+  },
+  "SeviiIslands123:37B": {
+   "cls": "q",
+   "coll": 0,
+   "mb": "MB_POND_WATER",
+   "override": false
+  },
+  "SeviiIslands123:37C": {
+   "cls": "p",
+   "coll": 0,
+   "mb": "MB_MOUNTAIN_TOP",
+   "override": false
+  },
+  "SeviiIslands123:37D": {
+   "cls": "p",
+   "coll": 0,
+   "mb": "MB_MOUNTAIN_TOP",
+   "override": false
+  },
+  "SeviiIslands123:37E": {
+   "cls": "p",
+   "coll": 0,
+   "mb": "MB_MOUNTAIN_TOP",
+   "override": false
+  },
+  "SeviiIslands123:37F": {
+   "cls": "s",
+   "coll": 1,
+   "mb": "MB_SHALLOW_WATER",
+   "override": false
+  },
+  "SeviiIslands123:380": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:381": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:382": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:383": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:384": {
+   "cls": "p",
+   "coll": 0,
+   "mb": "MB_MOUNTAIN_TOP",
+   "override": false
+  },
+  "SeviiIslands123:385": {
+   "cls": "p",
+   "coll": 0,
+   "mb": "MB_MOUNTAIN_TOP",
+   "override": false
+  },
+  "SeviiIslands123:386": {
+   "cls": "p",
+   "coll": 0,
+   "mb": "MB_MOUNTAIN_TOP",
+   "override": false
+  },
+  "SeviiIslands123:387": {
+   "cls": "s",
+   "coll": 1,
+   "mb": "MB_SHALLOW_WATER",
+   "override": false
+  },
+  "SeviiIslands123:388": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:389": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:38A": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:38B": {
+   "cls": "B",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:38C": {
+   "cls": "p",
+   "coll": 0,
+   "mb": "MB_MOUNTAIN_TOP",
+   "override": false
+  },
+  "SeviiIslands123:38D": {
+   "cls": "p",
+   "coll": 0,
+   "mb": "MB_MOUNTAIN_TOP",
+   "override": false
+  },
+  "SeviiIslands123:38E": {
+   "cls": "p",
+   "coll": 0,
+   "mb": "MB_MOUNTAIN_TOP",
+   "override": false
+  },
+  "SeviiIslands123:38F": {
+   "cls": "s",
+   "coll": 1,
+   "mb": "MB_SHALLOW_WATER",
+   "override": false
+  },
+  "SeviiIslands123:390": {
+   "cls": "p",
+   "coll": 0,
+   "mb": "MB_MOUNTAIN_TOP",
+   "override": false
+  },
+  "SeviiIslands123:391": {
+   "cls": "p",
+   "coll": 0,
+   "mb": "MB_MOUNTAIN_TOP",
+   "override": false
+  },
+  "SeviiIslands123:392": {
+   "cls": "p",
+   "coll": 0,
+   "mb": "MB_MOUNTAIN_TOP",
+   "override": false
+  },
+  "SeviiIslands123:393": {
+   "cls": "p",
+   "coll": 0,
+   "mb": "MB_MOUNTAIN_TOP",
+   "override": false
+  },
+  "SeviiIslands123:394": {
+   "cls": "s",
+   "coll": 1,
+   "mb": "MB_SHALLOW_WATER",
+   "override": false
+  },
+  "SeviiIslands123:395": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:396": {
+   "cls": "M",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:397": {
+   "cls": "p",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:398": {
+   "cls": "T",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:399": {
+   "cls": "T",
+   "coll": 1,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:39A": {
+   "cls": "p",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:39B": {
+   "cls": "p",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": false
+  },
+  "SeviiIslands123:39C": {
+   "cls": "p",
+   "coll": 0,
+   "mb": "MB_NORMAL",
+   "override": false
+  }
+ }
+}

@@ -1,0 +1,5 @@
+mapscripts ThreeIsland_DunsparceTunnel_MapScripts {}
+
+script ThreeIsland_DunsparceTunnel_EventScript_Prospector {
+    msgbox(format("I'm digging for a lost treasure. Dunsparce keep digging holes in my holes!"), MSGBOX_NPC)
+}

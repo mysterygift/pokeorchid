@@ -1,0 +1,5 @@
+mapscripts FiveIsland_House2_MapScripts {}
+
+script FiveIsland_House2_EventScript_OldMan {
+    msgbox(format("A ferry hops between the islands from every harbour."), MSGBOX_NPC)
+}

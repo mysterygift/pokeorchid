@@ -1,0 +1,5 @@
+mapscripts SixIsland_WaterPath_House2_MapScripts {}
+
+script SixIsland_WaterPath_House2_EventScript_Man {
+    msgbox(format("Out here between the islands, you can hear the sea from every room."), MSGBOX_NPC)
+}

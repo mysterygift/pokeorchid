@@ -1,0 +1,25 @@
+mapscripts OneIsland_KindleRoad_EmberSpa_MapScripts {}
+
+script OneIsland_KindleRoad_EmberSpa_EventScript_OldMan {
+    msgbox(format("Ahh... Step into the hot water there. Your POKéMON will feel brand new."), MSGBOX_NPC)
+}
+
+script OneIsland_KindleRoad_EmberSpa_EventScript_BaldingMan1 {
+    msgbox(format("The sunsets out here are something special."), MSGBOX_NPC)
+}
+
+script OneIsland_KindleRoad_EmberSpa_EventScript_BlackBelt {
+    msgbox(format("A true fighter trains wherever the road takes them."), MSGBOX_NPC)
+}
+
+script OneIsland_KindleRoad_EmberSpa_EventScript_OldWoman {
+    msgbox(format("Each island has its own character. Have you visited them all?"), MSGBOX_NPC)
+}
+
+script OneIsland_KindleRoad_EmberSpa_EventScript_RockSmashMan {
+    msgbox(format("Mt. Ember's rocks crack under a good Rock Smash. There are treasures under some."), MSGBOX_NPC)
+}
+
+script OneIsland_KindleRoad_EmberSpa_EventScript_BaldingMan2 {
+    msgbox(format("The Sevii Islands are so peaceful. I could stay here forever."), MSGBOX_NPC)
+}

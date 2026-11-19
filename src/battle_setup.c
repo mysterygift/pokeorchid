@@ -933,6 +933,11 @@ enum BattleTransition GetTrainerBattleTransition(void)
         || trainerClass == TRAINER_CLASS_AQUA_ADMIN)
         return B_TRANSITION_AQUA;
 
+    // Wavebreak Voyages: the Holon logo for Faba and the six Holon Researchers.
+    if (trainerClass == TRAINER_CLASS_HOLON_RESEARCHER
+        || trainerClass == TRAINER_CLASS_HOLON_LEADER)
+        return B_TRANSITION_HOLON;
+
     switch (GetTrainerBattleType(trainerId))
     {
     case TRAINER_BATTLE_TYPE_SINGLES:
@@ -1759,7 +1764,7 @@ void PlayTrainerEncounterMusic(void)
         trainerId = TRAINER_BATTLE_PARAM.opponentB;
 
     enum TrainerApproachMusic musicStyle = GetTrainerEncounterMusicId(trainerId);
-    music = gTrainerApproachMusicStyles[musicStyle];
+    music = GetSeviiTrainerEncounterBGM(gTrainerApproachMusicStyles[musicStyle]);
     PlayNewMapMusic(music);
 
 }

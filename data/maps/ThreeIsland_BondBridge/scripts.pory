@@ -1,0 +1,78 @@
+mapscripts ThreeIsland_BondBridge_MapScripts {}
+
+script ThreeIsland_BondBridge_EventScript_Nikki {
+    trainerbattle_single(TRAINER_SEVII_NIKKI, ThreeIsland_BondBridge_Text_NikkiIntro, ThreeIsland_BondBridge_Text_NikkiDefeat)
+    msgbox(ThreeIsland_BondBridge_Text_NikkiPost, MSGBOX_AUTOCLOSE)
+}
+
+text ThreeIsland_BondBridge_Text_NikkiIntro {
+    format("Breathe in the sea breeze... then battle!")
+}
+
+text ThreeIsland_BondBridge_Text_NikkiDefeat {
+    format("What a sour ending.")
+}
+
+text ThreeIsland_BondBridge_Text_NikkiPost {
+    format("Each island has its own character. Have you visited them all?")
+}
+
+script ThreeIsland_BondBridge_EventScript_Violet {
+    msgbox(format("The sunsets out here are something special."), MSGBOX_NPC)
+}
+
+script ThreeIsland_BondBridge_EventScript_Amira {
+    trainerbattle_single(TRAINER_SEVII_AMIRA, ThreeIsland_BondBridge_Text_AmiraIntro, ThreeIsland_BondBridge_Text_AmiraDefeat)
+    msgbox(ThreeIsland_BondBridge_Text_AmiraPost, MSGBOX_AUTOCLOSE)
+}
+
+text ThreeIsland_BondBridge_Text_AmiraIntro {
+    format("My float ring and I are ready!")
+}
+
+text ThreeIsland_BondBridge_Text_AmiraDefeat {
+    format("Waaah! I lost!")
+}
+
+text ThreeIsland_BondBridge_Text_AmiraPost {
+    format("Bond Bridge is a lovely spot for a stroll with your partner.")
+}
+
+script ThreeIsland_BondBridge_EventScript_Alexis {
+    msgbox(format("I'm gonna be the best trainer in all seven islands!"), MSGBOX_NPC)
+}
+
+script ThreeIsland_BondBridge_EventScript_Tisha {
+    trainerbattle_single(TRAINER_SEVII_TISHA, ThreeIsland_BondBridge_Text_TishaIntro, ThreeIsland_BondBridge_Text_TishaDefeat)
+    msgbox(ThreeIsland_BondBridge_Text_TishaPost, MSGBOX_AUTOCLOSE)
+}
+
+text ThreeIsland_BondBridge_Text_TishaIntro {
+    format("Swimming under Bond Bridge is the best!")
+}
+
+text ThreeIsland_BondBridge_Text_TishaDefeat {
+    format("I'm all washed up.")
+}
+
+text ThreeIsland_BondBridge_Text_TishaPost {
+    format("The water around the Sevii Islands is so clear!")
+}
+
+script ThreeIsland_BondBridge_EventScript_Joy {
+    msgbox(format("Bond Bridge is a lovely spot for a stroll with your partner."), MSGBOX_NPC)
+}
+
+script ThreeIsland_BondBridge_EventScript_Meg {
+    msgbox(format("Berry Forest is at the end of the bridge."), MSGBOX_NPC)
+}
+
+script ThreeIsland_BondBridge_EventScript_BerryForestSign {
+    msgbox(format("BERRY FOREST\n"
+        "Keep to the paths. Wild POKéMON gather here for Berries."), MSGBOX_SIGN)
+}
+
+script ThreeIsland_BondBridge_EventScript_BondBridgeSign {
+    msgbox(format("BOND BRIDGE\n"
+        "A place where friendships are tested and made."), MSGBOX_SIGN)
+}

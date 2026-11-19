@@ -1,0 +1,1093 @@
+{
+"name": "FourIsland",
+"size": [
+48,
+40
+],
+"tileset": [
+"gTileset_General",
+"gTileset_SeviiIslands"
+],
+"ground": [
+"id",
+368,
+0,
+1
+],
+"mask": [
+"~WKMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM",
+"~WKMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM",
+"~WKMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM",
+"~WKMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM",
+"~WKMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM",
+"~WKMKMMTTFMMRRRFFFFMMMMFMMMMMMMMMMMMMMMMMMMMMMMM",
+"~WKKwSMTTFTRWWWRgg.TTTTTMMMMMMMMMMMMMMMMMMMMMMMM",
+"~WWWwSMTTFTRW~WR.RRTTTTTMMMMMMMMMMMMMMMMMMMMMMMM",
+"~~~~wSMTTF.RWWWRRWWRf..TMMMMMMMMMMMMMMMMMMMMMMMM",
+"~~~~wSMTTFfgRRRgRWWWR.fTMMMMMMMMMMMMMMMMMMMMMMMM",
+"~~~~wSMTTFgffff.RWWWRf.TMMMMMMMMMMMMMMMMMMMMMMMM",
+"~~~~wSMMMF.....f.RRRFFFF.....MMMMMMMMMMMMMMMMMMM",
+"~~~~wSssMF.......T...........TTMLLLLMMMMMMMMMMMM",
+"~~~~wSssMFF....F.F.TTT.......TTLQQQQL....MMMMMMM",
+"~~~~wSssM..........TTT.......TTLQqqQLLLLLMMMMMMM",
+"~~~~wSssM....................TTLQqqQQQQQQLMMMMMM",
+"~~~~wSssM.......fffffLLLLL...TTLQqqqqqqqQLMMMMMM",
+"~~~~wSssM....f..ffffLQQQQQL..TTLQqqqqqqqQLMMMMMM",
+"~~~~wSssM.....TTffffLQqqqQL..TTLQQQQQQQqQLMMMMMM",
+"~~~~wSssM....nTTffffLQqqqQL..TTMLLLLLLQqQLMMMMMM",
+"~~~~wSssM......fffffLQQQQQL..T.......LQqQLMMMMMM",
+"~~~~wSssM............LLLLL...T.......LQqQLMMMMMM",
+"~~~~wSssM...........RRRR.............LQQQLMMMMMM",
+"~~~~wSssMhhhMMMMM..RWWWWR............MLLLMMMMMMM",
+"~~~~wSssssssssssM...RRRR...........f.M...MMMMMMM",
+"~~~~wSssssssssssM...................fM...MMMMMMM",
+"~~~~wSssssssssSsM..................f.M...MMMMMMM",
+"~~~~wKKKKkkkKKwSM..............MMhRKMMRR.MMMMMMM",
+"~~~~WWWWWRRRWWwSM..............M.RWWRRWWRMMMMMMM",
+"~~~~~~~~WWWWW~wSM..............M.RWWbWWWRMMMMMMM",
+"~~~~~~~~~~~~~~wSMMMMMTTTTTTTT..M..RRRWWR.MMMMMMM",
+"~~~~~~~~~~~~~~wSsSssMTTTTTTTTMMMMMMMMKKMMMMMMMMM",
+"~~~~~~~~~~~~~~wwKwSsMMMMMMMMMMMMMMMMMMMMMMMMMMMM",
+"~~~~~~~~~~~~~~~WWwSsssssMMMMMMMMMMMMMMMMMMMMMMMM",
+"~~~~~~~~~~~~~~~~~wSsSsssMMMMMMMMMMMMMMMMMMMMMMMM",
+"~~~~~~~~~~~~~~~~~wKKwSsSMMMMMMMMMMMMMMMMMMMMMMMM",
+"~~~~~~~~~~~~~~~~~WWWwKKwKMMMMMMMMMKMMMMMMMMMMMMM",
+"~~~~~~~~~~~~~~~~~~~~WWWWKKKKKKKKKKWKMMMMMMMMMMMM",
+"~~~~~~~~~~~~~~~~~~~~~~~WWWWWWWWWWWWKMMMMMMMMMMMM",
+"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~WKMMMMMMMMMMMM"
+],
+"big_trees": "T",
+"stamps": [
+[
+"LAYOUT_ROUTE116@git",
+47,
+7,
+1,
+2,
+38,
+11
+],
+[
+"LAYOUT_ROUTE104@git",
+3,
+15,
+7,
+4,
+30,
+20
+],
+[
+"LAYOUT_SOUTHERN_ISLAND_EXTERIOR",
+10,
+21,
+9,
+4,
+6,
+29
+]
+],
+"pstamps": [
+[
+"LAYOUT_LAVARIDGE_TOWN",
+8,
+3,
+5,
+5,
+16,
+16
+],
+[
+"LAYOUT_LAVARIDGE_TOWN",
+11,
+12,
+4,
+4,
+11,
+10
+],
+[
+"LAYOUT_LAVARIDGE_TOWN",
+14,
+2,
+4,
+5,
+21,
+22
+],
+[
+"LAYOUT_ROUTE104@git",
+7,
+48,
+2,
+2,
+0,
+11
+],
+[
+"LAYOUT_ROUTE104@git",
+7,
+48,
+2,
+2,
+2,
+18
+],
+[
+"LAYOUT_ROUTE104@git",
+7,
+48,
+2,
+2,
+2,
+23
+],
+[
+"LAYOUT_ROUTE104@git",
+7,
+48,
+2,
+2,
+1,
+27
+],
+[
+"LAYOUT_ROUTE104@git",
+7,
+48,
+2,
+2,
+4,
+31
+],
+[
+"LAYOUT_ROUTE104@git",
+7,
+48,
+2,
+2,
+28,
+38
+]
+],
+"cells": [
+[
+9,
+28,
+[
+"id",
+280
+]
+],
+[
+10,
+28,
+[
+"id",
+281
+]
+],
+[
+11,
+28,
+[
+"id",
+282
+]
+],
+[
+9,
+23,
+[
+"id",
+175
+]
+],
+[
+10,
+23,
+[
+"id",
+207
+]
+],
+[
+11,
+23,
+[
+"id",
+207
+]
+],
+[
+9,
+27,
+[
+"LAYOUT_ROUTE104@git",
+12,
+51
+]
+],
+[
+10,
+27,
+[
+"LAYOUT_ROUTE104@git",
+12,
+51
+]
+],
+[
+11,
+27,
+[
+"LAYOUT_ROUTE104@git",
+12,
+51
+]
+],
+[
+33,
+27,
+[
+"id",
+175
+]
+],
+[
+34,
+27,
+[
+"id",
+207
+]
+],
+[
+36,
+29,
+[
+"LAYOUT_ROUTE104@git",
+12,
+51
+]
+]
+],
+"auto": [
+[
+9,
+5,
+[
+329,
+330,
+331,
+332,
+333
+]
+],
+[
+12,
+5,
+[
+329,
+330,
+331,
+332,
+333
+]
+],
+[
+13,
+5,
+[
+329,
+330,
+331,
+332,
+333
+]
+],
+[
+14,
+5,
+[
+329,
+330,
+331,
+332,
+333
+]
+],
+[
+15,
+5,
+[
+329,
+330,
+331,
+332,
+333
+]
+],
+[
+16,
+5,
+[
+329,
+330,
+331,
+332,
+333
+]
+],
+[
+17,
+5,
+[
+329,
+330,
+331,
+332,
+333
+]
+],
+[
+18,
+5,
+[
+329,
+330,
+331,
+332,
+333
+]
+],
+[
+23,
+5,
+[
+329,
+330,
+331,
+332,
+333
+]
+],
+[
+9,
+6,
+[
+329,
+330,
+331,
+332,
+333
+]
+],
+[
+9,
+7,
+[
+329,
+330,
+331,
+332,
+333
+]
+],
+[
+9,
+8,
+[
+329,
+330,
+331,
+332,
+333
+]
+],
+[
+9,
+9,
+[
+329,
+330,
+331,
+332,
+333
+]
+],
+[
+9,
+10,
+[
+329,
+330,
+331,
+332,
+333
+]
+],
+[
+9,
+11,
+[
+329,
+330,
+331,
+332,
+333
+]
+],
+[
+18,
+11,
+[
+329,
+330,
+331,
+332,
+333
+]
+],
+[
+19,
+11,
+[
+329,
+330,
+331,
+332,
+333
+]
+],
+[
+20,
+11,
+[
+329,
+330,
+331,
+332,
+333
+]
+],
+[
+21,
+11,
+[
+329,
+330,
+331,
+332,
+333
+]
+],
+[
+9,
+12,
+[
+329,
+330,
+331,
+332,
+333
+]
+],
+[
+9,
+13,
+[
+329,
+330,
+331,
+332,
+333
+]
+],
+[
+10,
+13,
+[
+329,
+330,
+331,
+332,
+333
+]
+],
+[
+15,
+13,
+[
+329,
+330,
+331,
+332,
+333
+]
+],
+[
+17,
+13,
+[
+329,
+330,
+331,
+332,
+333
+]
+]
+],
+"marks": [
+[
+18,
+20,
+"pokemon_center",
+"warp"
+],
+[
+12,
+13,
+"pokemon_day_ca",
+"warp"
+],
+[
+25,
+14,
+"house1",
+"warp"
+],
+[
+38,
+12,
+"icefall_cave_e",
+"warp"
+],
+[
+33,
+23,
+"loreleis_house",
+"warp"
+],
+[
+25,
+26,
+"house2",
+"warp"
+],
+[
+10,
+28,
+"harbor (arrow S)",
+"warp"
+],
+[
+22,
+26,
+"mart",
+"warp"
+],
+[
+16,
+13,
+"",
+"npc",
+"old_man"
+],
+[
+12,
+9,
+"Doduo",
+"spot"
+],
+[
+13,
+7,
+"",
+"npc",
+"man"
+],
+[
+14,
+7,
+"",
+"npc",
+"man"
+],
+[
+17,
+9,
+"",
+"npc",
+"man"
+],
+[
+26,
+19,
+"",
+"npc",
+"man"
+],
+[
+5,
+11,
+"",
+"field",
+"breakable_rock"
+],
+[
+5,
+6,
+"",
+"item",
+"item"
+],
+[
+32,
+19,
+"",
+"item",
+"item"
+],
+[
+8,
+25,
+"",
+"npc",
+"man"
+],
+[
+36,
+13,
+"",
+"npc",
+"man"
+],
+[
+31,
+21,
+"",
+"npc",
+"lass"
+],
+[
+13,
+19,
+"",
+"sign"
+],
+[
+22,
+34,
+"h",
+"note"
+],
+[
+6,
+21,
+"h",
+"note"
+],
+[
+31,
+23,
+"",
+"sign"
+]
+],
+"post": [],
+"vstamps": [
+[
+"cottage_v3",
+22,
+11
+],
+[
+"cottage",
+23,
+23
+]
+],
+"vcells": [],
+"arrow_warps": [
+[
+10,
+28,
+"S"
+]
+],
+"object_events": [
+{
+"graphics_id": "OBJ_EVENT_GFX_OLD_MAN",
+"x": 16,
+"y": 13,
+"script": "FourIsland_EventScript_DaycareMan"
+},
+{
+"graphics_id": "OBJ_EVENT_GFX_SPECIES(DODUO)",
+"x": 12,
+"y": 9,
+"script": "0x0"
+},
+{
+"graphics_id": "OBJ_EVENT_GFX_NIDORAN_F",
+"x": 13,
+"y": 7,
+"script": "0x0"
+},
+{
+"graphics_id": "OBJ_EVENT_GFX_NIDORAN_M",
+"x": 14,
+"y": 7,
+"script": "0x0"
+},
+{
+"graphics_id": "OBJ_EVENT_GFX_PSYDUCK",
+"x": 17,
+"y": 9,
+"script": "0x0"
+},
+{
+"graphics_id": "OBJ_EVENT_GFX_OLD_WOMAN_FRLG",
+"x": 26,
+"y": 19,
+"script": "FourIsland_EventScript_OldWoman"
+},
+{
+"graphics_id": "OBJ_EVENT_GFX_BREAKABLE_ROCK",
+"x": 5,
+"y": 11,
+"script": "EventScript_RockSmash"
+},
+{
+"graphics_id": "OBJ_EVENT_GFX_ITEM_BALL",
+"x": 5,
+"y": 6,
+"script": "FourIsland_EventScript_ItemStarPiece"
+},
+{
+"graphics_id": "OBJ_EVENT_GFX_ITEM_BALL",
+"x": 32,
+"y": 19,
+"script": "FourIsland_EventScript_ItemStardust"
+},
+{
+"graphics_id": "OBJ_EVENT_GFX_BLUE",
+"x": 8,
+"y": 25,
+"script": "0x0"
+},
+{
+"graphics_id": "OBJ_EVENT_GFX_FAT_MAN_FRLG",
+"x": 36,
+"y": 13,
+"script": "FourIsland_EventScript_FatMan"
+},
+{
+"graphics_id": "OBJ_EVENT_GFX_LITTLE_GIRL",
+"x": 31,
+"y": 21,
+"script": "FourIsland_EventScript_LittleGirl"
+}
+],
+"report": {
+"map": "FourIsland",
+"size": [
+48,
+40
+],
+"pair": [
+"gTileset_General",
+"gTileset_SeviiIslands"
+],
+"unresolved": [],
+"buildings": [
+{
+"warp": [
+18,
+20
+],
+"dest": "MAP_FOUR_ISLAND_POKEMON_CENTER_1F",
+"footprint": [
+16,
+17,
+5,
+4
+],
+"stamp": "centre",
+"at": [
+16,
+16,
+5,
+5
+]
+},
+{
+"warp": [
+12,
+13
+],
+"dest": "MAP_FOUR_ISLAND_POKEMON_DAY_CARE",
+"footprint": [
+11,
+11,
+4,
+3
+],
+"stamp": "house",
+"at": [
+11,
+10,
+4,
+4
+]
+},
+{
+"warp": [
+25,
+14
+],
+"dest": "MAP_FOUR_ISLAND_HOUSE1",
+"footprint": [
+24,
+11,
+5,
+4
+],
+"stamp": "cottage_v3",
+"at": [
+22,
+11,
+5,
+4
+]
+},
+{
+"warp": [
+33,
+23
+],
+"dest": "MAP_FOUR_ISLAND_LORELEIS_HOUSE",
+"footprint": [
+31,
+20,
+7,
+4
+],
+"stamp": "flowershop",
+"at": [
+30,
+20,
+7,
+4
+]
+},
+{
+"warp": [
+25,
+26
+],
+"dest": "MAP_FOUR_ISLAND_HOUSE2",
+"footprint": [
+24,
+24,
+5,
+3
+],
+"stamp": "cottage",
+"at": [
+23,
+23,
+5,
+4
+]
+},
+{
+"warp": [
+10,
+28
+],
+"dest": "MAP_FOUR_ISLAND_HARBOR",
+"footprint": 85,
+"stamp": "harbor dock"
+},
+{
+"warp": [
+22,
+26
+],
+"dest": "MAP_FOUR_ISLAND_MART",
+"footprint": [
+20,
+24,
+4,
+3
+],
+"stamp": "mart",
+"at": [
+21,
+22,
+4,
+5
+]
+}
+],
+"caves": [
+[
+38,
+12,
+"MAP_FOUR_ISLAND_ICEFALL_CAVE_ENTRANCE"
+]
+],
+"ported_cells": 0,
+"arrow_warps": [
+[
+10,
+28,
+"S"
+]
+],
+"connections": [],
+"warps": [
+[
+18,
+20,
+"MAP_FOUR_ISLAND_POKEMON_CENTER_1F"
+],
+[
+12,
+13,
+"MAP_FOUR_ISLAND_POKEMON_DAY_CARE"
+],
+[
+25,
+14,
+"MAP_FOUR_ISLAND_HOUSE1"
+],
+[
+38,
+12,
+"MAP_FOUR_ISLAND_ICEFALL_CAVE_ENTRANCE"
+],
+[
+33,
+23,
+"MAP_FOUR_ISLAND_LORELEIS_HOUSE"
+],
+[
+25,
+26,
+"MAP_FOUR_ISLAND_HOUSE2"
+],
+[
+10,
+28,
+"MAP_FOUR_ISLAND_HARBOR"
+],
+[
+22,
+26,
+"MAP_FOUR_ISLAND_MART"
+]
+],
+"objects": [
+[
+16,
+13,
+"OBJ_EVENT_GFX_OLD_MAN_1",
+"OLD_MAN"
+],
+[
+12,
+9,
+"OBJ_EVENT_GFX_DODUO",
+"SPECIES(DODUO)"
+],
+[
+13,
+7,
+"OBJ_EVENT_GFX_NIDORAN_F",
+"NIDORAN_F"
+],
+[
+14,
+7,
+"OBJ_EVENT_GFX_NIDORAN_M",
+"NIDORAN_M"
+],
+[
+17,
+9,
+"OBJ_EVENT_GFX_PSYDUCK",
+"PSYDUCK"
+],
+[
+26,
+19,
+"OBJ_EVENT_GFX_OLD_WOMAN_FRLG",
+"OLD_WOMAN_FRLG"
+],
+[
+5,
+11,
+"OBJ_EVENT_GFX_BREAKABLE_ROCK_FRLG",
+"BREAKABLE_ROCK"
+],
+[
+5,
+6,
+"OBJ_EVENT_GFX_ITEM_BALL",
+"ITEM_BALL"
+],
+[
+32,
+19,
+"OBJ_EVENT_GFX_ITEM_BALL",
+"ITEM_BALL"
+],
+[
+8,
+25,
+"OBJ_EVENT_GFX_BLUE",
+"BLUE"
+],
+[
+36,
+13,
+"OBJ_EVENT_GFX_FAT_MAN_FRLG",
+"FAT_MAN_FRLG"
+],
+[
+31,
+21,
+"OBJ_EVENT_GFX_LITTLE_GIRL_FRLG",
+"LITTLE_GIRL"
+]
+],
+"classes": {
+"~": 399,
+"M": 810,
+"T": 75,
+"F": 26,
+"s": 101,
+".": 371,
+"g": 9,
+"f": 40,
+"q": 76,
+"n": 1,
+"h": 5,
+"k": 3,
+"p": 3,
+"b": 1
+},
+"sea_rocks_cleared_for_route": [
+[
+12,
+37
+],
+[
+17,
+37
+]
+]
+}
+}
