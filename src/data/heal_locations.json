@@ -13,76 +13,12 @@
       "y": 2
     },
     {
-      "id": "HEAL_LOCATION_PETALBURG_CITY",
-      "map": "MAP_PETALBURG_CITY",
-      "x": 20,
-      "y": 17,
-      "respawn_map": "MAP_PETALBURG_CITY_POKEMON_CENTER_1F",
-      "respawn_npc": "LOCALID_PETALBURG_NURSE"
-    },
-    {
-      "id": "HEAL_LOCATION_SLATEPORT_CITY",
-      "map": "MAP_SLATEPORT_CITY",
-      "x": 19,
-      "y": 20,
-      "respawn_map": "MAP_SLATEPORT_CITY_POKEMON_CENTER_1F",
-      "respawn_npc": "LOCALID_SLATEPORT_NURSE"
-    },
-    {
-      "id": "HEAL_LOCATION_MAUVILLE_CITY",
-      "map": "MAP_MAUVILLE_CITY",
-      "x": 22,
-      "y": 6,
-      "respawn_map": "MAP_MAUVILLE_CITY_POKEMON_CENTER_1F",
-      "respawn_npc": "LOCALID_MAUVILLE_NURSE"
-    },
-    {
-      "id": "HEAL_LOCATION_RUSTBORO_CITY",
-      "map": "MAP_RUSTBORO_CITY",
-      "x": 16,
-      "y": 39,
-      "respawn_map": "MAP_RUSTBORO_CITY_POKEMON_CENTER_1F",
-      "respawn_npc": "LOCALID_RUSTBORO_NURSE"
-    },
-    {
       "id": "HEAL_LOCATION_FORTREE_CITY",
       "map": "MAP_FORTREE_CITY",
       "x": 5,
       "y": 7,
       "respawn_map": "MAP_FORTREE_CITY_POKEMON_CENTER_1F",
       "respawn_npc": "LOCALID_FORTREE_NURSE"
-    },
-    {
-      "id": "HEAL_LOCATION_LILYCOVE_CITY",
-      "map": "MAP_LILYCOVE_CITY",
-      "x": 24,
-      "y": 15,
-      "respawn_map": "MAP_LILYCOVE_CITY_POKEMON_CENTER_1F",
-      "respawn_npc": "LOCALID_LILYCOVE_NURSE"
-    },
-    {
-      "id": "HEAL_LOCATION_MOSSDEEP_CITY",
-      "map": "MAP_MOSSDEEP_CITY",
-      "x": 28,
-      "y": 17,
-      "respawn_map": "MAP_MOSSDEEP_CITY_POKEMON_CENTER_1F",
-      "respawn_npc": "LOCALID_MOSSDEEP_NURSE"
-    },
-    {
-      "id": "HEAL_LOCATION_SOOTOPOLIS_CITY",
-      "map": "MAP_SOOTOPOLIS_CITY",
-      "x": 43,
-      "y": 32,
-      "respawn_map": "MAP_SOOTOPOLIS_CITY_POKEMON_CENTER_1F",
-      "respawn_npc": "LOCALID_SOOTOPOLIS_NURSE"
-    },
-    {
-      "id": "HEAL_LOCATION_EVER_GRANDE_CITY",
-      "map": "MAP_EVER_GRANDE_CITY",
-      "x": 27,
-      "y": 49,
-      "respawn_map": "MAP_EVER_GRANDE_CITY_POKEMON_CENTER_1F",
-      "respawn_npc": "LOCALID_EVER_GRANDE_NURSE"
     },
     {
       "id": "HEAL_LOCATION_TOSA_PORT_MAYS_HOUSE",
@@ -141,16 +77,6 @@
       "y": 16,
       "respawn_map": "MAP_PACIFIDLOG_TOWN_POKEMON_CENTER_1F",
       "respawn_npc": "LOCALID_PACIFIDLOG_NURSE"
-    },
-    {
-      "id": "HEAL_LOCATION_EVER_GRANDE_CITY_POKEMON_LEAGUE",
-      "map": "MAP_EVER_GRANDE_CITY",
-      "x": 18,
-      "y": 6,
-      "respawn_map": "MAP_EVER_GRANDE_CITY_POKEMON_LEAGUE_1F",
-      "respawn_npc": "LOCALID_LEAGUE_NURSE",
-      "respawn_x": 3,
-      "respawn_y": 4
     },
     {
       "id": "HEAL_LOCATION_SOUTHERN_ISLAND_EXTERIOR",

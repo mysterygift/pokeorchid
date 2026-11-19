@@ -113,28 +113,28 @@
       "x": 14,
       "y": 40,
       "elevation": 3,
-      "dest_map": "MAP_ROUTE112",
-      "dest_warp_id": "2"
+      "dest_map": "MAP_JAGGED_PASS",
+      "dest_warp_id": "0"
     },
     {
       "x": 15,
       "y": 40,
       "elevation": 3,
-      "dest_map": "MAP_ROUTE112",
-      "dest_warp_id": "3"
+      "dest_map": "MAP_JAGGED_PASS",
+      "dest_warp_id": "1"
     },
     {
       "x": 13,
       "y": 5,
       "elevation": 3,
-      "dest_map": "MAP_MT_CHIMNEY",
+      "dest_map": "MAP_JAGGED_PASS",
       "dest_warp_id": "2"
     },
     {
       "x": 14,
       "y": 5,
       "elevation": 3,
-      "dest_map": "MAP_MT_CHIMNEY",
+      "dest_map": "MAP_JAGGED_PASS",
       "dest_warp_id": "3"
     },
     {

@@ -11,4 +11,7 @@ enum {
     NUM_HEAL_LOCATIONS
 };
 
+// Orchid: heal locations of deleted Hoenn maps -> the Tosa Centres (delete_hoenn_maps.py)
+#include "constants/heal_location_aliases.h"
+
 #endif // GUARD_CONSTANTS_HEAL_LOCATIONS_H
