@@ -14,8 +14,8 @@
   "battle_scene": "MAP_BATTLE_SCENE_NORMAL",
   "connections": [
     {
-      "map": "MAP_ROUTE314",
-      "offset": 0,
+      "map": "MAP_INKA_SEAWALL",
+      "offset": 4,
       "direction": "left"
     }
   ],

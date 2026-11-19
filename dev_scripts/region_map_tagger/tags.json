@@ -2276,6 +2276,16 @@
       "kind": "landmark",
       "notes": "",
       "kanto": false
+    },
+    {
+      "key": "MAPSEC_INKA_SEAWALL",
+      "id": "MAPSEC_INKA_SEAWALL",
+      "originalId": "MAPSEC_INKA_SEAWALL",
+      "name": "Inka Seawall",
+      "origName": "Inka Seawall",
+      "kind": "route",
+      "notes": "",
+      "kanto": false
     }
   ],
   "grid": [
@@ -2714,7 +2724,7 @@
       "MAPSEC_ROUTE_314",
       "MAPSEC_ROUTE_314",
       "MAPSEC_ROUTE_314",
-      "MAPSEC_ROUTE_314",
+      "MAPSEC_INKA_SEAWALL",
       "MAPSEC_INKA_CITY",
       null,
       null,
@@ -3255,7 +3265,8 @@
     "VerdanturfTown_WandasHouse": "MAPSEC_VERDANTURF_TOWN",
     "VictoryRoad_1F": "MAPSEC_CHALLENGERS_TRAIL",
     "VictoryRoad_B1F": "MAPSEC_CHALLENGERS_TRAIL",
-    "VictoryRoad_B2F": "MAPSEC_CHALLENGERS_TRAIL"
+    "VictoryRoad_B2F": "MAPSEC_CHALLENGERS_TRAIL",
+    "InkaSeawall": "MAPSEC_INKA_SEAWALL"
   },
   "lines": [
     {
