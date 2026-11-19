@@ -1193,13 +1193,17 @@ static const union AnimCmd sAnim_HoOhStayStill[] =
     ANIMCMD_JUMP(0),
 };
 
-// Orchid: the Poke Mart signpost turns on its pole (face, three-quarter, edge, other three-quarter)
+// Orchid: the Poke Mart signpost turns on its pole: 8 frames = half a turn (the board is symmetric)
 static const union AnimCmd sAnim_MartSignSpin[] =
 {
-    ANIMCMD_FRAME(0, 40),
-    ANIMCMD_FRAME(1, 8),
-    ANIMCMD_FRAME(2, 8),
-    ANIMCMD_FRAME(3, 8),
+    ANIMCMD_FRAME(0, 30),
+    ANIMCMD_FRAME(1, 6),
+    ANIMCMD_FRAME(2, 6),
+    ANIMCMD_FRAME(3, 6),
+    ANIMCMD_FRAME(4, 6),
+    ANIMCMD_FRAME(5, 6),
+    ANIMCMD_FRAME(6, 6),
+    ANIMCMD_FRAME(7, 6),
     ANIMCMD_JUMP(0),
 };
 

@@ -43,8 +43,8 @@ Tiles 167-168 hold the Centre sign's arrow panel; `QueueAnimTiles_General_Centre
 If `integrate.py` is re-run on a fresh tree it may choose a different pair: check `installed.json`.
 
 ## Signpost
-`OBJ_EVENT_GFX_MART_SIGN`: 16x32 inanimate object on the shared npc_1 palette, anim loops
-face (40 frames) -> three-quarter -> edge -> other three-quarter (8 each). Placed on a free cell
+`OBJ_EVENT_GFX_MART_SIGN`: 16x32 inanimate object on the shared npc_1 palette: a 14x10x4 board
+drawn in 3/4 overhead projection (top face always visible), 8 frames per half turn. Placed on a free cell
 beside each Mart's front row; not placed at Battle Frontier West, Lavaridge, Verdanturf (no room).
 
 ## Forced placements (legacy Hoenn maps)
