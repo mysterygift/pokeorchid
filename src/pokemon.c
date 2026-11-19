@@ -5228,6 +5228,8 @@ u16 GetSeviiTrainerEncounterBGM(u16 music)
         return music;
     switch (music)
     {
+    case MUS_ORCHID_ENCOUNTER_HOLON:    // the Holon team keeps its own theme everywhere
+        return music;
     case MUS_ENCOUNTER_FEMALE:
     case MUS_ENCOUNTER_GIRL:
     case MUS_ENCOUNTER_TWINS:

@@ -721,7 +721,7 @@ Name: Ido
 Class: Holon Researcher
 Pic: Holon Researcher
 Gender: Male
-Music: Intense
+Music: Holon
 Double Battle: No
 AI: Basic Trainer
 
@@ -743,7 +743,7 @@ Name: Christophe
 Class: Holon Researcher
 Pic: Holon Researcher
 Gender: Male
-Music: Intense
+Music: Holon
 Double Battle: No
 AI: Basic Trainer
 
@@ -765,7 +765,7 @@ Name: Mateo
 Class: Holon Researcher
 Pic: Holon Researcher
 Gender: Male
-Music: Intense
+Music: Holon
 Double Battle: No
 AI: Basic Trainer
 
@@ -787,7 +787,7 @@ Name: Henrik
 Class: Holon Researcher
 Pic: Holon Researcher
 Gender: Male
-Music: Intense
+Music: Holon
 Double Battle: No
 AI: Basic Trainer
 
@@ -812,7 +812,7 @@ Name: Tobias
 Class: Holon Researcher
 Pic: Holon Researcher
 Gender: Male
-Music: Intense
+Music: Holon
 Double Battle: No
 AI: Basic Trainer
 
@@ -831,7 +831,7 @@ Name: Kenji
 Class: Holon Researcher
 Pic: Holon Researcher
 Gender: Male
-Music: Intense
+Music: Holon
 Double Battle: No
 AI: Basic Trainer
 
@@ -2166,7 +2166,7 @@ Name: Faba
 Class: Holon Leader
 Pic: Holon Leader Faba
 Gender: Male
-Music: Aqua
+Music: Holon
 Items: Full Restore / Full Restore / Full Restore / Full Restore
 Double Battle: No
 AI: Basic Trainer
