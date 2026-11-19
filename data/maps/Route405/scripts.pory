@@ -1,0 +1,10 @@
+mapscripts Route405_MapScripts {}
+
+
+script Route405_EventScript_Sign {
+    msgbox(format("Route 405"), MSGBOX_SIGN)
+}
+
+script Route405_EventScript_Npc1 {
+    msgbox(format("Ube City is south of here. It's the only city in Tiksi. Silph Co. even has an office there!"), MSGBOX_NPC)
+}

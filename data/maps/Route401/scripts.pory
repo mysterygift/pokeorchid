@@ -1,0 +1,10 @@
+mapscripts Route401_MapScripts {}
+
+
+script Route401_EventScript_Sign {
+    msgbox(format("Route 401"), MSGBOX_SIGN)
+}
+
+script Route401_EventScript_Npc1 {
+    msgbox(format("You came on that boat? Nobody comes to Tiksi on purpose. Furong's just east of here, if you need a bed."), MSGBOX_NPC)
+}

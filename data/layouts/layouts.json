@@ -8991,6 +8991,127 @@
       "border_filepath": "data/layouts/InkaSeawall/border.bin",
       "blockdata_filepath": "data/layouts/InkaSeawall/map.bin",
       "layout_version": "emerald"
+    },
+    {
+      "id": "LAYOUT_ROUTE401",
+      "name": "Route401_Layout",
+      "width": 180,
+      "height": 36,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_TosaPort",
+      "border_filepath": "data/layouts/Route401/border.bin",
+      "blockdata_filepath": "data/layouts/Route401/map.bin",
+      "layout_version": "emerald"
+    },
+    {
+      "id": "LAYOUT_ROUTE402",
+      "name": "Route402_Layout",
+      "width": 30,
+      "height": 60,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_TosaPort",
+      "border_filepath": "data/layouts/Route402/border.bin",
+      "blockdata_filepath": "data/layouts/Route402/map.bin",
+      "layout_version": "emerald"
+    },
+    {
+      "id": "LAYOUT_ROUTE403",
+      "name": "Route403_Layout",
+      "width": 30,
+      "height": 90,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_TosaPort",
+      "border_filepath": "data/layouts/Route403/border.bin",
+      "blockdata_filepath": "data/layouts/Route403/map.bin",
+      "layout_version": "emerald"
+    },
+    {
+      "id": "LAYOUT_ROUTE404",
+      "name": "Route404_Layout",
+      "width": 144,
+      "height": 48,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_TosaPort",
+      "border_filepath": "data/layouts/Route404/border.bin",
+      "blockdata_filepath": "data/layouts/Route404/map.bin",
+      "layout_version": "emerald"
+    },
+    {
+      "id": "LAYOUT_ROUTE405",
+      "name": "Route405_Layout",
+      "width": 30,
+      "height": 150,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_TosaPort",
+      "border_filepath": "data/layouts/Route405/border.bin",
+      "blockdata_filepath": "data/layouts/Route405/map.bin",
+      "layout_version": "emerald"
+    },
+    {
+      "id": "LAYOUT_ROUTE406",
+      "name": "Route406_Layout",
+      "width": 210,
+      "height": 30,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_TosaPort",
+      "border_filepath": "data/layouts/Route406/border.bin",
+      "blockdata_filepath": "data/layouts/Route406/map.bin",
+      "layout_version": "emerald"
+    },
+    {
+      "id": "LAYOUT_ROUTE407",
+      "name": "Route407_Layout",
+      "width": 60,
+      "height": 120,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_TosaPort",
+      "border_filepath": "data/layouts/Route407/border.bin",
+      "blockdata_filepath": "data/layouts/Route407/map.bin",
+      "layout_version": "emerald"
+    },
+    {
+      "id": "LAYOUT_ROUTE408",
+      "name": "Route408_Layout",
+      "width": 130,
+      "height": 52,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_TosaPort",
+      "border_filepath": "data/layouts/Route408/border.bin",
+      "blockdata_filepath": "data/layouts/Route408/map.bin",
+      "layout_version": "emerald"
+    },
+    {
+      "id": "LAYOUT_ROUTE409",
+      "name": "Route409_Layout",
+      "width": 90,
+      "height": 30,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_TosaPort",
+      "border_filepath": "data/layouts/Route409/border.bin",
+      "blockdata_filepath": "data/layouts/Route409/map.bin",
+      "layout_version": "emerald"
+    },
+    {
+      "id": "LAYOUT_ROUTE410",
+      "name": "Route410_Layout",
+      "width": 30,
+      "height": 30,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_TosaPort",
+      "border_filepath": "data/layouts/Route410/border.bin",
+      "blockdata_filepath": "data/layouts/Route410/map.bin",
+      "layout_version": "emerald"
+    },
+    {
+      "id": "LAYOUT_TANOBY_DELTA",
+      "name": "TanobyDelta_Layout",
+      "width": 44,
+      "height": 36,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_TosaPort",
+      "border_filepath": "data/layouts/TanobyDelta/border.bin",
+      "blockdata_filepath": "data/layouts/TanobyDelta/map.bin",
+      "layout_version": "emerald"
     }
   ]
 }

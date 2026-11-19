@@ -1,0 +1,30 @@
+mapscripts TanobyDelta_MapScripts {}
+
+
+script TanobyDelta_EventScript_Sign1 {
+    msgbox(format("Tanoby Delta\nA river delta with a mysterious ruin at its centre."), MSGBOX_SIGN)
+}
+
+script TanobyDelta_EventScript_Sign2 {
+    msgbox(format("An ancient stone chamber. Strange carvings cover the sealed doorway.\pIt's said the delta's ruins were built by people who came from across the sea."), MSGBOX_SIGN)
+}
+
+script TanobyDelta_EventScript_Sign3 {
+    msgbox(format("An ancient stone chamber. Strange carvings cover the sealed doorway.\pIt's said the delta's ruins were built by people who came from across the sea."), MSGBOX_SIGN)
+}
+
+script TanobyDelta_EventScript_Sign4 {
+    msgbox(format("An ancient stone chamber. Strange carvings cover the sealed doorway.\pIt's said the delta's ruins were built by people who came from across the sea."), MSGBOX_SIGN)
+}
+
+script TanobyDelta_EventScript_Sign5 {
+    msgbox(format("An ancient stone chamber. Strange carvings cover the sealed doorway.\pIt's said the delta's ruins were built by people who came from across the sea."), MSGBOX_SIGN)
+}
+
+script TanobyDelta_EventScript_Sign6 {
+    msgbox(format("An ancient stone chamber. Strange carvings cover the sealed doorway.\pIt's said the delta's ruins were built by people who came from across the sea."), MSGBOX_SIGN)
+}
+
+script TanobyDelta_EventScript_Npc1 {
+    msgbox(format("Nobody knows who built the ruin out there. Some say people came from across the sea, long before Tiksi had towns."), MSGBOX_NPC)
+}

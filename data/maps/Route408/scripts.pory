@@ -1,0 +1,10 @@
+mapscripts Route408_MapScripts {}
+
+
+script Route408_EventScript_Sign {
+    msgbox(format("Route 408"), MSGBOX_SIGN)
+}
+
+script Route408_EventScript_Npc1 {
+    msgbox(format("This road follows the shore of the bay. On a calm day you can see right across the water."), MSGBOX_NPC)
+}

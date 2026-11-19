@@ -1,0 +1,10 @@
+mapscripts Route410_MapScripts {}
+
+
+script Route410_EventScript_Sign {
+    msgbox(format("Route 410\nA well-concealed route only known by locals of Tiksi."), MSGBOX_SIGN)
+}
+
+script Route410_EventScript_Npc1 {
+    msgbox(format("Hm? You found this path? Only us locals know about it. It leads down to the delta."), MSGBOX_NPC)
+}
