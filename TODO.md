@@ -33,6 +33,15 @@ LOCATIONS
 * Kantu Falls – A beautiful series of waterfalls near Faber Town, locals travel here once or twice a year to bathe in the mineral-rich waters.
 * Moongrove Marsh – marshlands and mangroves that weave themselves around Moongrove city. Great for fishing up ellusive Pokémon species.
 * Corral City – the bustling beach city on Pokétopia where Marina's gym resides. There's also a lovely marina.
+* Abandoned House – A mysterious house abandoned in the early days of the Tosa region. People in Moongrove spot lights here at night. It's haunted.
+* Galangal Forest – A range of medicinal plants grow in Galangal Forest.
+* Power Plant - Senoko City's Wind Power Plant
+* Railway Tunnels – Dungeon beneath Tosa Port train station.
+* Challenger's Trail – Victory Road
+* Damp Path – A wet abandoned path through the hills of West Tosa. Filled with rowdy thugs and neverdowells now. And Zubat.
+* Mt. Drake – Tosa's craggy cliffs.
+* 
+
 
 
 TIKSI
@@ -43,6 +52,7 @@ TIKSI
 * Frigo Cave – A deep cave where Regice resides, off the coast of Tiksi's north shore.
 * Gavani Path – An electromagnetically charged cave at the heart of the thunderous lands of Tiksi. Regileki resides here.
 * Mt. Drake – at the peak of Mt. Drake Regidrago is said to reside.
+* Silph Co. Office – A remote sales office for Kanto's famous Silph Co. They've been struggling to break into the Tosa market.
 
 To unlock these dungeons players must defeat a Regi Guardian. After the regis disappeared from Team Torrent's HQ they appeared at the entrances of these dungeons, and head inside. Local myths on Tiksi predicted this event, and the guardians were in place to protect the Tiksi natives from these fearsome Pokémon. They will not let the player in, unless the player can defeat them.
 
@@ -84,4 +94,4 @@ BROAD PLOT
 
 * On their journey, the player uncovers people looming in the shadows tied to incidents across the Tosa region. These eventually come to a head with a number of encounters with Matt. At the peak – Matt unavails five new Pokémon he's brought over to Tosa Region – the Regi 5. With Regigigas slumbering in Snowpoint Temple, the player has to delve into the ruins deep in the Tosa Reserve to uncover the legendary Merlion Pokémon – the only hope of restoring balance to the region.
 
-* When Matt is defeated, he actually escapes. He is not giving up. Him and his team flee to a region West of Tosa – Tiksi. A rural harsh region with rugged people who look after it. Tosa's authorities do not permit entry for anyone from the Tiksi branch because of historical conflicts between the two regions. You are tasked by the League to travel to the Tiksi branch (you go via a small ship – one of Team Torrent's smuggling ships) and land in a small fishing village on Tiksi. From there, you travel around the island to capture the five regis and take down Matt once and for all on top of Mount Batok.
+* When Matt is defeated, he actually escapes. He is not giving up. Him and his team flee to a region West of Tosa – Tiksi. A rural harsh region with rugged people who look after it. Tosa's authorities do not permit entry for anyone from the Tiksi branch because of historical conflicts between the two regions. You are tasked by the League to travel to the Tiksi branch (you go via a small ship – one of Team Torrent's smuggling ships) and land in a small fishing village on Tiksi. From there, you travel around the island to capture the five regis and take down Matt once and for all on top of Mount Drake.
