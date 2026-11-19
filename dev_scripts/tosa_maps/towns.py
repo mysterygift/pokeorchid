@@ -28,6 +28,7 @@ from collections import OrderedDict
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import placeholders as PH                        # noqa: E402  helpers + block constants
+import dress                                     # noqa: E402  vanilla edges, groves, flowers
 from town_text import TOWNS, GYMS                # noqa: E402
 
 P = PH.P
@@ -139,6 +140,7 @@ class Town:
         self.buildings = []                 # (kind, x, y, w, h, door_xy, key)
         self.signs = []                     # (x, y, script, facing)
         self.npcs = []
+        self.props = {}                     # (x, y) -> block drawn over the rendered ground
 
     # -- helpers
     def free(self, x0, y0, x1, y1, ok=("G",)):
@@ -239,6 +241,12 @@ class Town:
         rocky = self.theme == "rocky"
         for key, side in self.spec.get("mouths", {}).items():
             mx, my = {"N": (hx + 4, 5), "S": (hx - 6, self.h - 5), "W": (5, hy - 4), "E": (self.w - 6, hy - 4)}[side]
+            if self.station:
+                # keep the rock clear of the station and the spur under its entrance
+                sx, sy = self.st_xy
+                hits = lambda mx_, my_: mx_ + 3 >= sx - 1 and mx_ - 3 <= sx + 6 and my_ - 4 <= sy + 6 and my_ + 1 >= sy
+                alts = [(mx, my)] + ([(sx - 5, my), (sx + 11, my)] if side in "NS" else [(mx, hy + 4), (mx, hy + 8)])
+                mx, my = next((a for a in alts if not hits(*a) and 2 <= a[0] - 3 and a[0] + 3 < self.w), (mx, my))
             cv.rect(mx - 3, my - 4, mx + 3, my + 1, "R")
             self.seg(mx - 1, my + 1, mx + 1, my + 2, True)
             cv.stamp(mx - 1, my - 3, PH.MOUTH)
@@ -403,15 +411,19 @@ class Town:
                     for yy in (y0 + bh - 2, y0 + bh - 1):
                         if cv.ok(xx, yy) and cv.t[yy][xx] == "m" and rnd.random() < 0.8:
                             cv.t[yy][xx] = "F"
-        # ponds (marsh)
+        # ponds (marsh): squared, on the 2x2 grid, a grass rim all round and room for the bank below
         made = 0
-        for _ in range(60):
+        for _ in range(600):
             if made >= self.spec.get("ponds", 0):
                 break
-            cx, cy = rnd.randrange(5, self.w - 5), rnd.randrange(5, self.h - 5)
-            r = rnd.randint(2, 3)
-            if self.free(cx - r - 2, cy - r - 2, cx + r + 2, cy + r + 2):
-                cv.blob(rnd, cx, cy, r, "W", ("P", "B", "m", "F", "X", "R", "S"))
+            pw, ph = rnd.choice(((6, 4), (4, 4), (8, 4), (6, 6), (4, 6)))
+            x0, y0 = rnd.randrange(2, self.w - pw - 2) & ~1, rnd.randrange(2, self.h - ph - 3) & ~1
+            if self.free(x0 - 1, y0 - 1, x0 + pw, y0 + ph + 1, ("G", "X")) and \
+                    not any(x0 - 3 <= fx <= x0 + pw + 2 and y0 - 3 <= fy <= y0 + ph + 3 for fx, fy in self.fronts):
+                cv.rect(x0, y0, x0 + pw - 1, y0 + ph - 1, "W")
+                if rnd.random() < 0.6:                       # bite a corner block out so it isn't a box
+                    bx, by = rnd.choice(((x0, y0), (x0 + pw - 2, y0), (x0, y0 + ph - 2), (x0 + pw - 2, y0 + ph - 2)))
+                    cv.rect(bx, by, bx + 1, by + 1, "G")
                 made += 1
         # rock outcrops (rocky)
         if self.theme == "rocky":
@@ -419,6 +431,17 @@ class Town:
                 bx, by = rnd.randrange(2, self.w // 2 - 2), rnd.randrange(2, self.h // 2 - 2)
                 if self.free(bx * 2 - 1, by * 2 - 1, bx * 2 + 2, by * 2 + 2):
                     cv.rect(bx * 2, by * 2, bx * 2 + 1, by * 2 + 1, "R")
+        # a second, ragged row of trees inside the frame
+        if self.theme != "rocky":
+            for by in range(1, self.h // 2 - 1):
+                for bx in range(1, self.w // 2 - 1):
+                    if not (bx == 1 or by == 1 or bx == self.w // 2 - 2 or by == self.h // 2 - 2):
+                        continue
+                    x, yy = bx * 2, by * 2
+                    if self.free(x - 1, yy - 1, x + 2, yy + 2, ("G", "X")) and self.free(x, yy, x + 1, yy + 1) \
+                            and rnd.random() < 0.45 and not any(abs(fx - x) < 4 and abs(fy - yy) < 4 for fx, fy in self.fronts):
+                        cv.rect(x, yy, x + 1, yy + 1, "X")
+        self.hedges()
         # trees on open grass, never next to a road / building front
         dens = self.spec.get("trees", 0.1)
         for by in range(1, self.h // 2 - 1):
@@ -427,8 +450,43 @@ class Town:
                 if self.free(x - 1, yy - 1, x + 2, yy + 2, ("G", "X", "m", "F")) and self.free(x, yy, x + 1, yy + 1) \
                         and rnd.random() < dens and not any(abs(fx - x) < 3 and abs(fy - yy) < 3 for fx, fy in self.fronts):
                     cv.rect(x, yy, x + 1, yy + 1, "X")
+        self.plaza_props()
         # town sign beside the main road in
         self.town_sign()
+
+    def hedges(self):
+        """Round shrubs down one side of a house, like the hedged gardens in Petalburg."""
+        for kind, x0, y0, bw, bh, dxy, key in self.buildings:
+            if not kind.startswith("house"):
+                continue
+            side = x0 - 1 if self.rnd.random() < 0.5 else x0 + bw
+            col = [(side, yy) for yy in range(y0, y0 + bh)]
+            if all(self.cv.ok(x, yy) and self.cv.t[yy][x] in ("m", "F") and (x, yy) not in self.cv.raw
+                   and (x, yy) not in self.fronts for x, yy in col):
+                for x, yy in col:
+                    self.cv.t[yy][x] = "m"
+                    self.props[(x, yy)] = 0x0400 | 0x243
+
+    def plaza_props(self):
+        """Flower planters on the plaza corners (paved towns) or round shrubs just off them (dirt towns)."""
+        hx, hy = self.hub
+        corners = [(hx - 3, hy - 2, -1, -1), (hx + 4, hy - 2, 1, -1), (hx - 3, hy + 3, -1, 1), (hx + 4, hy + 3, 1, 1)]
+        busy = set(self.warps.values()) | set(self.fronts)
+        for k, (x, yy, dx, dy) in enumerate(corners):
+            if self.road == "cobble":
+                spot, want = (x, yy), "P"
+                block = 0x0400 | (0x213 if k % 2 == 0 else 0x214)
+            else:
+                spot, want = (x + dx, yy + dy), ("G", "m")
+                block = 0x0400 | 0x243
+            sx, sy = spot
+            if not self.cv.ok(sx, sy) or self.cv.t[sy][sx] not in want or spot in self.cv.raw or spot in busy:
+                continue
+            if self.road == "cobble":
+                # a corner only: the two cells beyond it along the plaza edges must not be road
+                if any(self.cv.ok(sx + ax, sy + ay) and self.cv.t[sy + ay][sx + ax] == "P" for ax, ay in ((dx, 0), (0, dy))):
+                    continue
+            self.props[spot] = block
 
     def town_sign(self):
         cv = self.cv
@@ -446,7 +504,7 @@ class Town:
                     return
 
     def walkable(self, x, yy):
-        return self.cv.ok(x, yy) and (x, yy) not in self.cv.raw and self.cv.t[yy][x] in ("G", "P", "m", "S")
+        return self.cv.ok(x, yy) and (x, yy) not in self.cv.raw and (x, yy) not in self.props and self.cv.t[yy][x] in ("G", "P", "m", "S")
 
     def place_npcs(self):
         hx, hy = self.hub
@@ -611,6 +669,17 @@ def main():
             t.warps = OrderedDict([(k, t.warps[k]) for k in ("station", "station2")] +
                                   [(k, v) for k, v in t.warps.items() if k not in ("station", "station2")])
         blocks = t.render()
+        for (px, py), v in t.props.items():
+            blocks[py * t.w + px] = v
+        events = list(t.warps.values()) + t.fronts + [(s_[0], s_[1]) for s_ in t.signs] + [(n_[1], n_[2]) for n_ in t.npcs]
+        blocks = dress.apply(blocks, t.w, t.h, t.road, events, name, flowers=t.w * t.h // 400,
+                             groves=t.w * t.h // 450 if t.theme in ("city", "town", "marsh", "coast") else 0)
+        ends = [(x_, y_ + 1) for k_, (x_, y_) in t.warps.items()] + [(n_[1], n_[2]) for n_ in t.npcs]
+        ends += [{"S": (p_, t.h - 1), "N": (p_, 0), "W": (0, p_), "E": (t.w - 1, p_)}[s_] for s_, ps_ in t.opens.items() for p_ in ps_]
+        labels = dress.regions(blocks, t.w, t.h, [t.hub] + ends)
+        cut = [e for e, l_ in zip(ends, labels[1:]) if l_ != labels[0]]
+        if cut:
+            print("  %s: cut off from the plaza %s (%04X): %s" % (name, t.hub, blocks[t.hub[1] * t.w + t.hub[0]], cut))
         PH.write_bin(P(lay["blockdata_filepath"]), blocks)
         lay["width"], lay["height"] = t.w, t.h
         lay["secondary_tileset"] = "gTileset_TosaPort"

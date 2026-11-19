@@ -16,7 +16,7 @@ G = lambda s: "OBJ_EVENT_GFX_" + s
 TOWNS = O()
 
 TOWNS["MoongroveCity"] = dict(
-    size=(42, 38), theme="marsh", road="cobble", trees=0.16,
+    size=(46, 42), theme="marsh", road="cobble", trees=0.12, ponds=4,
     sign="Moongrove City\n“Roots in the mud, eyes on the tide.”",
     buildings=["centre", "mart", "gym", "house_r", "house_p", "house_w", "house_p"],
     npcs=[
