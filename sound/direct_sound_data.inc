@@ -8757,6 +8757,18 @@ Cry_Torpesquid::
 .if TESTING == FALSE
 	.incbin "sound/direct_sound_samples/cries/torpesquid.bin"
 .endif
+
+	.align 2
+Cry_Purrchi::
+.if TESTING == FALSE
+	.incbin "sound/direct_sound_samples/cries/purrchi.bin"
+.endif
+
+	.align 2
+Cry_Laomeow::
+.if TESTING == FALSE
+	.incbin "sound/direct_sound_samples/cries/laomeow.bin"
+.endif
 .endif @ P_CRIES_ENABLED
 
 .if TESTING == TRUE

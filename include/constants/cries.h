@@ -2559,6 +2559,8 @@ enum PokemonCry
     CRY_PINGUIN,
     CRY_IYEPURE,
     CRY_TORPESQUID,
+    CRY_PURRCHI,
+    CRY_LAOMEOW,
     CRY_COUNT,
 };
 

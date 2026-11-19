@@ -4889,13 +4889,27 @@ Double Battle: No
 AI: Basic Trainer
 
 Delcatty
-Level: 43
+Level: 42
+
+Persian
+Level: 42
 
 Espeon
 Level: 43
 
-Persian
-Level: 45
+SPECIES_MEOWSTIC_F (F)
+Level: 43
+
+Laomeow @ Throat Spray
+Level: 44
+Shiny: Yes
+- Hyper Voice
+- Psychic Noise
+- Shadow Ball
+- Calm Mind
+
+Purrchi
+Level: 46
 
 === TRAINER_LEADER_LARRY ===
 Name: Larry

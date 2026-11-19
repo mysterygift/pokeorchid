@@ -2554,6 +2554,8 @@ gCryTable::
 	cry Cry_Pinguin
 	cry Cry_Iyepure
 	cry Cry_Torpesquid
+	cry Cry_Purrchi
+	cry Cry_Laomeow
 .endif @ P_FAMILY_PECHARUNT
 .endif @ P_CRIES_ENABLED
 
@@ -5113,5 +5115,7 @@ gCryTable_Reverse::
 	cry_reverse Cry_Pinguin
 	cry_reverse Cry_Iyepure
 	cry_reverse Cry_Torpesquid
+	cry_reverse Cry_Purrchi
+	cry_reverse Cry_Laomeow
 .endif @ P_FAMILY_PECHARUNT
 .endif @ P_CRIES_ENABLED
