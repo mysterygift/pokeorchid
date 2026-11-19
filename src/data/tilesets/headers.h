@@ -295,6 +295,19 @@ const struct Tileset gTileset_HawkerCentre =
     .callback = NULL,
 };
 
+// Ube City (Tiksi): its own copy of gTileset_Rustboro plus the Silph Co. office (Mossdeep's Space Center,
+// roof cleared, recoloured lilac-grey; dev_scripts/tiksi_maps/ube_silph.py). Keeps Rustboro's animations.
+const struct Tileset gTileset_UbeCity =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_UbeCity,
+    .palettes = gTilesetPalettes_UbeCity,
+    .metatiles = gMetatiles_UbeCity,
+    .metatileAttributes = gMetatileAttributes_UbeCity,
+    .callback = InitTilesetAnim_Rustboro,
+};
+
 // Tanoby Delta (Tiksi): the Tanoby Ruins chamber facade ported from FRLG's Sevii Islands 6-7 onto
 // Emerald's General primary (dev_scripts/tiksi_maps/port_tanoby.py). Sea, sand and rock are Emerald's.
 const struct Tileset gTileset_TanobyDelta =
