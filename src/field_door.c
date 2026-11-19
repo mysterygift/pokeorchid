@@ -60,7 +60,7 @@ static const u8 sDoorAnimTiles_General[] = INCGFX_U8("graphics/door_anims/genera
 static const u16 sDoorNullPalette6[16] = {};
 static const u8 sDoorAnimTiles_PokeCenter[] = INCGFX_U8("graphics/door_anims/poke_center.png", ".4bpp");
 static const u8 sDoorAnimTiles_Gym[] = INCGFX_U8("graphics/door_anims/gym.png", ".4bpp");
-static const u8 sDoorAnimTiles_PokeMart[] = INCGFX_U8("graphics/door_anims/poke_mart.png", ".4bpp");
+static const u8 sDoorAnimTiles_PokeMart[] = INCGFX_U8("graphics/door_anims/poke_mart.png", ".4bpp", "-mwidth 2 -mheight 4"); // Orchid Mart: 2x2 sliding double door
 static const u8 sDoorAnimTiles_RustboroTan[] = INCGFX_U8("graphics/door_anims/rustboro_tan.png", ".4bpp");
 static const u16 sDoorNullPalette7[16] = {};
 static const u8 sDoorAnimTiles_RustboroGray[] = INCGFX_U8("graphics/door_anims/rustboro_gray.png", ".4bpp");
@@ -264,7 +264,7 @@ static const struct DoorSizeInfo sDoorSizeInfo[DOOR_SIZE_COUNT] =
 static const u8 sDoorAnimPalettes_General[] = {1, 1, 1, 1, 1, 1, 1, 1};
 static const u8 sDoorAnimPalettes_PokeCenter[] = {1, 1, 1, 1, 1, 1, 1, 1};
 static const u8 sDoorAnimPalettes_Gym[] = {5, 5, 5, 5, 5, 5, 5, 5};
-static const u8 sDoorAnimPalettes_PokeMart[] = {0, 0, 0, 0, 0, 0, 0, 0}; // Orchid Mart: canopy + door, all palette 0
+static const u8 sDoorAnimPalettes_PokeMart[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}; // Orchid Mart: 2x2 door, all palette 0
 static const u8 sDoorAnimPalettes_Littleroot[] = {10, 10, 6, 6, 6, 6, 6, 6};
 static const u8 sDoorAnimPalettes_BirchsLab[] = {8, 8, 8, 8, 8, 8, 8, 8};
 static const u8 sDoorAnimPalettes_RustboroTan[] = {11, 11, 11, 11, 11, 11, 11, 11};
@@ -382,7 +382,15 @@ static const struct DoorGraphics sDoorAnimGraphicsTable[] =
         .metatileNum = METATILE_General_Door_PokeMart,
         .tileset = &gTileset_General,
         .sound = DOOR_SOUND_SLIDING,
-        .size = DOOR_SIZE_1x2,
+        .size = DOOR_SIZE_2x2_LEFT,
+        .tiles = sDoorAnimTiles_PokeMart,
+        .palettes = sDoorAnimPalettes_PokeMart
+    },
+    {
+        .metatileNum = METATILE_General_Door_PokeMart_Right,
+        .tileset = &gTileset_General,
+        .sound = DOOR_SOUND_SLIDING,
+        .size = DOOR_SIZE_2x2_RIGHT,
         .tiles = sDoorAnimTiles_PokeMart,
         .palettes = sDoorAnimPalettes_PokeMart
     },

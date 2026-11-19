@@ -1420,6 +1420,10 @@ static const struct SpriteFrameImage sPicTable_PokemonRangerF[] = {
     overworld_ascending_frames(gObjectEventPic_PokemonRangerF, 2, 4),
 };
 
+static const struct SpriteFrameImage sPicTable_MartSign[] = {
+    overworld_ascending_frames(gObjectEventPic_MartSign, 2, 4),
+};
+
 #if IS_FRLG
 
 static const struct SpriteFrameImage sPicTable_RedNormal[] = {

@@ -495,6 +495,7 @@ const u32 gObjectEventPic_PortWorker[] = INCGFX_U32("graphics/object_events/pics
 const u32 gObjectEventPic_SchoolKidF[] = INCGFX_U32("graphics/object_events/pics/people/school_kid_f.png", ".4bpp", "-mwidth 2 -mheight 4");
 const u32 gObjectEventPic_PokemonRangerM[] = INCGFX_U32("graphics/object_events/pics/people/pokemon_ranger_m.png", ".4bpp", "-mwidth 2 -mheight 4");
 const u32 gObjectEventPic_PokemonRangerF[] = INCGFX_U32("graphics/object_events/pics/people/pokemon_ranger_f.png", ".4bpp", "-mwidth 2 -mheight 4");
+const u32 gObjectEventPic_MartSign[] = INCGFX_U32("graphics/object_events/pics/misc/mart_sign.png", ".4bpp", "-mwidth 2 -mheight 4");
 
 #if IS_FRLG
 

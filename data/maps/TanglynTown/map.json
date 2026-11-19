@@ -80,8 +80,8 @@
   ],
   "warp_events": [
     {
-      "x": 4,
-      "y": 14,
+      "x": 5,
+      "y": 16,
       "elevation": 0,
       "dest_map": "MAP_TANGLYN_TOWN_POKEMON_CENTER_1F",
       "dest_warp_id": "0"

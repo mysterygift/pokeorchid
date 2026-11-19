@@ -89,7 +89,7 @@
   "warp_events": [
     {
       "x": 4,
-      "y": 6,
+      "y": 7,
       "elevation": 0,
       "dest_map": "MAP_FURONG_VILLAGE_POKEMON_CENTER_1F",
       "dest_warp_id": "0"

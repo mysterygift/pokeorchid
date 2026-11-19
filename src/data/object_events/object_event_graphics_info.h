@@ -4756,6 +4756,24 @@ const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_PokemonRangerF = {
     .images = sPicTable_PokemonRangerF,
 };
 
+const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_MartSign = {
+    .tileTag = TAG_NONE,
+    .paletteTag = OBJ_EVENT_PAL_TAG_NPC_1,
+    .reflectionPaletteTag = OBJ_EVENT_PAL_TAG_NONE,
+    .size = 256,
+    .width = 16,
+    .height = 32,
+    .paletteSlot = PALSLOT_NPC_1,
+    .shadowSize = SHADOW_SIZE_M,
+    .inanimate = TRUE,
+    .compressed = FALSE,
+    .tracks = TRACKS_NONE,
+    .oam = &gObjectEventBaseOam_16x32,
+    .subspriteTables = sOamTables_16x32,
+    .anims = sAnimTable_MartSign,
+    .images = sPicTable_MartSign,
+};
+
 #if IS_FRLG
 
 const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_RedNormal = {

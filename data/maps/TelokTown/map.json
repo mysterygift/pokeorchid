@@ -120,12 +120,25 @@
       "trainer_sight_or_berry_tree_id": "0",
       "script": "TelokTown_EventScript_ExistentialMan",
       "flag": "0"
+    },
+    {
+      "graphics_id": "OBJ_EVENT_GFX_MART_SIGN",
+      "x": 13,
+      "y": 15,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_NONE",
+      "movement_range_x": 0,
+      "movement_range_y": 0,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "0x0",
+      "flag": "0"
     }
   ],
   "warp_events": [
     {
       "x": 6,
-      "y": 15,
+      "y": 16,
       "elevation": 0,
       "dest_map": "MAP_OLDALE_TOWN_POKEMON_CENTER_1F",
       "dest_warp_id": "0"
@@ -142,6 +155,13 @@
       "y": 6,
       "elevation": 0,
       "dest_map": "MAP_TOSA_PORT_PROFESSOR_BIRCHS_LAB",
+      "dest_warp_id": "0"
+    },
+    {
+      "x": 16,
+      "y": 16,
+      "elevation": 0,
+      "dest_map": "MAP_OLDALE_TOWN_MART",
       "dest_warp_id": "0"
     }
   ],
