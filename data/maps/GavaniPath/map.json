@@ -3,7 +3,6 @@
   "name": "GavaniPath",
   "layout": "LAYOUT_GAVANI_PATH",
   "music": "MUS_SEALED_CHAMBER",
-  "region": "REGION_HOENN",
   "region_map_section": "MAPSEC_GAVANI_PATH",
   "requires_flash": false,
   "weather": "WEATHER_NONE",
@@ -13,7 +12,13 @@
   "allow_running": true,
   "show_map_name": true,
   "battle_scene": "MAP_BATTLE_SCENE_NORMAL",
-  "connections": null,
+  "connections": [
+    {
+      "map": "MAP_ROUTE401",
+      "offset": -1,
+      "direction": "up"
+    }
+  ],
   "object_events": [
     {
       "graphics_id": "OBJ_EVENT_GFX_SPECIES(REGIELEKI)",
@@ -39,5 +44,6 @@
     }
   ],
   "coord_events": [],
-  "bg_events": []
+  "bg_events": [],
+  "region": "REGION_HOENN"
 }
