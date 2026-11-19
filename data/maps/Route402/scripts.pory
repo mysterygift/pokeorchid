@@ -1,0 +1,10 @@
+mapscripts Route402_MapScripts {}
+
+
+script Route402_EventScript_Sign {
+    msgbox(format("Route 402"), MSGBOX_SIGN)
+}
+
+script Route402_EventScript_Npc1 {
+    msgbox(format("Mt. Drake starts just north of here. Its peaks are higher than anything in Tosa."), MSGBOX_NPC)
+}

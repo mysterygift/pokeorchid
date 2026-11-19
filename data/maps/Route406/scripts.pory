@@ -1,0 +1,10 @@
+mapscripts Route406_MapScripts {}
+
+
+script Route406_EventScript_Sign {
+    msgbox(format("Route 406"), MSGBOX_SIGN)
+}
+
+script Route406_EventScript_Npc1 {
+    msgbox(format("Tanglyn Town is at the east end. Have you seen the murals there? They're older than Tosa!"), MSGBOX_NPC)
+}

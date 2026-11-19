@@ -359,6 +359,17 @@ gStdScripts_End::
 	.include "data/maps/UbeCity_House2/scripts.inc" @ tiksi-people
 	.include "data/maps/TanglynTown_House1/scripts.inc" @ tiksi-people
 	.include "data/maps/TanglynTown_House2/scripts.inc" @ tiksi-people
+	.include "data/maps/Route401/scripts.inc" @ tiksi-routes
+	.include "data/maps/Route402/scripts.inc" @ tiksi-routes
+	.include "data/maps/Route403/scripts.inc" @ tiksi-routes
+	.include "data/maps/Route404/scripts.inc" @ tiksi-routes
+	.include "data/maps/Route405/scripts.inc" @ tiksi-routes
+	.include "data/maps/Route406/scripts.inc" @ tiksi-routes
+	.include "data/maps/Route407/scripts.inc" @ tiksi-routes
+	.include "data/maps/Route408/scripts.inc" @ tiksi-routes
+	.include "data/maps/Route409/scripts.inc" @ tiksi-routes
+	.include "data/maps/Route410/scripts.inc" @ tiksi-routes
+	.include "data/maps/TanobyDelta/scripts.inc" @ tiksi-routes
 	.include "data/maps/TelokTown_House2/scripts.inc"
 	.include "data/maps/TelokTown_PokemonCenter_1F/scripts.inc"
 	.include "data/maps/TelokTown_PokemonCenter_2F/scripts.inc"

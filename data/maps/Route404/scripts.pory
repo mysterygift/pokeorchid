@@ -1,0 +1,10 @@
+mapscripts Route404_MapScripts {}
+
+
+script Route404_EventScript_Sign {
+    msgbox(format("Route 404"), MSGBOX_SIGN)
+}
+
+script Route404_EventScript_Npc1 {
+    msgbox(format("Drake Base Camp is where climbers rest before Mt. Drake. Warm stew, cold nights."), MSGBOX_NPC)
+}
