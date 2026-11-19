@@ -13,6 +13,7 @@ engine's map-size limit allows, up to 30):
   - dressed like the Tosa routes (dress.py): path / pond / shore edges, groves, ledges, flowers
   - a route sign quoting the tagger notes and one NPC each
 
+FrigoCave_Exterior is the shore outside Frigo Cave (east of Route 409), with the cave's mouth and guardian.
 Tanoby Delta nods to Sevii's Tanoby Ruins: a beach, then open water (Surf) with islets that each hold
 a sealed stone chamber, the biggest at the centre. The chamber facade is FRLG's Tanoby art, ported by
 port_tanoby.py into gTileset_TanobyDelta; everything else there is Emerald General. Maps edited since generation
@@ -65,6 +66,11 @@ ROUTES = OrderedDict([
                   "Feel that chill? Tiksi is warm everywhere else. The cold comes from the cave at the end of this route…", {"cold": True})),
     ("Route410", ("MAPSEC_ROUTE_410", "MUS_ROUTE120", "OLD_MAN",
                   "Hm? You found this path? Only us locals know about it. It leads down to the delta.", {"hidden": True})),
+    ("FrigoCave_Exterior", ("MAPSEC_FRIGO_CAVE", "MUS_ROUTE113", "FISHERMAN",
+                            "The sea's gone cold out here, colder every day. Something in that cave is chilling the whole shore.",
+                            {"seal": "W", "cave": ("N", "FrigoCave", "OLD_WOMAN",
+                                      "Frigo Cave is colder than it has any right to be. The ice giant is back inside."
+                                      "\\pI have guarded this shore all my life. Don't make me regret letting you pass.")})),
     ("TanobyDelta", ("MAPSEC_TANOBY_DELTA", "MUS_SINJOH_RUINS_TEST", "SCIENTIST_1",
                      "Nobody knows who built the ruin out there. Some say people came from across the sea, long before Tiksi had towns.", {"delta": True})),
 ])
@@ -228,8 +234,12 @@ def build(name, sec, extra, grid):
     caves = []
     if extra.get("cave"):                        # a cave mouth on the route's edge path (the Regi shrines)
         side, folder, gfx, line = extra["cave"]
-        d, c, (ex, ey), _ = next(o for o in opens if o[0] == side)
-        mx, _ = centre(c)
+        opening = next((o for o in opens if o[0] == side), None)
+        mx = centre(opening[1] if opening else hub)[0]
+        if not opening:                              # no neighbour that way: a path from the cave down to the hub
+            hy_ = centre(hub)[1]
+            for y in range(4, hy_ + 2):
+                cv.set(mx, y, "P"); cv.set(mx + 1, y, "P")
         cv.rect(mx - 3, 0, mx + 4, 3, "R")
         cv.stamp(mx - 1 + 1, 0, PH.MOUTH)            # door (mx + 1, 3) sits on the path's right lane
         for y in range(4, 6):
@@ -267,6 +277,13 @@ def build(name, sec, extra, grid):
         for x in range(w):
             if cv.t[y][x] in ("G", "T", "X") and any((x + dx, y + dy) in sea for dx in (-2, -1, 0, 1, 2) for dy in (-2, -1, 0, 1, 2)):
                 cv.t[y][x] = "S"
+    if extra.get("seal"):                        # the neighbour that way has no coast: only the road crosses
+        side = extra["seal"]
+        for t in range(h if side in "WE" else w):
+            for k in (0, 1):
+                x, y = {"W": (k, t), "E": (w - 1 - k, t), "N": (t, k), "S": (t, h - 1 - k)}[side]
+                if cv.t[y][x] != "P":
+                    cv.t[y][x] = "R" if cv.t[y][x] == "W" else "X"
     # sign and NPC near the hub
     hx, hy = centre(hub)
     sign = None

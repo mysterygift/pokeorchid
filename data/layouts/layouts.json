@@ -9189,6 +9189,17 @@
       "border_filepath": "data/layouts/MtDrake_Peak/border.bin",
       "blockdata_filepath": "data/layouts/MtDrake_Peak/map.bin",
       "layout_version": "emerald"
+    },
+    {
+      "id": "LAYOUT_FRIGO_CAVE_EXTERIOR",
+      "name": "FrigoCave_Exterior_Layout",
+      "width": 30,
+      "height": 30,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_TosaPort",
+      "border_filepath": "data/layouts/FrigoCave_Exterior/border.bin",
+      "blockdata_filepath": "data/layouts/FrigoCave_Exterior/map.bin",
+      "layout_version": "emerald"
     }
   ]
 }
