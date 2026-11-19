@@ -35,14 +35,14 @@
       "y": 8,
       "elevation": 0,
       "dest_map": "MAP_DRAKE_BASE_CAMP",
-      "dest_warp_id": "4"
+      "dest_warp_id": "2"
     },
     {
       "x": 7,
       "y": 8,
       "elevation": 0,
       "dest_map": "MAP_DRAKE_BASE_CAMP",
-      "dest_warp_id": "4"
+      "dest_warp_id": "2"
     }
   ],
   "coord_events": [],

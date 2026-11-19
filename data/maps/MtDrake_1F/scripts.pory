@@ -1,0 +1,10 @@
+mapscripts MtDrake_1F_MapScripts {}
+
+
+script MtDrake_1F_EventScript_Npc1 {
+    msgbox(format("Ferrum Shrine lies below us, at the core of Mt. Drake. The steel giant has returned to it.\pI am sworn to guard this way down."), MSGBOX_NPC)
+}
+
+script MtDrake_1F_EventScript_Npc2 {
+    msgbox(format("The way up is steep. Don't push your Pokémon too hard."), MSGBOX_NPC)
+}

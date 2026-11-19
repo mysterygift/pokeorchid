@@ -349,6 +349,12 @@ gStdScripts_End::
 	.include "data/maps/FerrumShrine/scripts.inc" @ tiksi-maps
 	.include "data/maps/GavaniPath/scripts.inc" @ tiksi-maps
 	.include "data/maps/MtDrakeSummit/scripts.inc" @ tiksi-maps
+	.include "data/maps/MtDrake_SouthFace/scripts.inc" @ mt-drake
+	.include "data/maps/MtDrake_1F/scripts.inc" @ mt-drake
+	.include "data/maps/MtDrake_2F/scripts.inc" @ mt-drake
+	.include "data/maps/MtDrake_NorthFace/scripts.inc" @ mt-drake
+	.include "data/maps/MtDrake_3F/scripts.inc" @ mt-drake
+	.include "data/maps/MtDrake_Peak/scripts.inc" @ mt-drake
 	.include "data/maps/FurongVillage_House1/scripts.inc" @ tiksi-people
 	.include "data/maps/FurongVillage_House2/scripts.inc" @ tiksi-people
 	.include "data/maps/DrakeBaseCamp_Mart/scripts.inc" @ tiksi-people

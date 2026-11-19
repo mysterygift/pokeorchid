@@ -1,0 +1,10 @@
+mapscripts MtDrake_Peak_MapScripts {}
+
+
+script MtDrake_Peak_EventScript_Sign {
+    msgbox(format("Mt. Drake\nThe peak. The summit cave is above."), MSGBOX_SIGN)
+}
+
+script MtDrake_Peak_EventScript_Npc1 {
+    msgbox(format("Beyond here, the old trail climbs into the summit. They say the dragon giant waits at the top.\pI guard the way. Be ready."), MSGBOX_NPC)
+}

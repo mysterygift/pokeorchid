@@ -34,12 +34,4 @@ script DrakeBaseCamp_EventScript_TiksiNpc3 {
 script DrakeBaseCamp_EventScript_TiksiGuardianRegolisShrine {
     msgbox(format("This path leads to Regolis Shrine, in the heart of the desert. The rock giant sleeps there once more.\pI am its guardian. Go if you must."), MSGBOX_NPC)
 }
-
-script DrakeBaseCamp_EventScript_TiksiGuardianMtDrakeSummit {
-    msgbox(format("Beyond here, the old trail climbs to the peak of Mt. Drake. They say the dragon giant waits at the top.\pI guard the way. Be ready."), MSGBOX_NPC)
-}
-
-script DrakeBaseCamp_EventScript_TiksiGuardianFerrumShrine {
-    msgbox(format("Ferrum Shrine lies at the core of Mt. Drake. The steel giant has returned to it.\pI am sworn to guard this door."), MSGBOX_NPC)
-}
 // --- end tiksi_people.py ---

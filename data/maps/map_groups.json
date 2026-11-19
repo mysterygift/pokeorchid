@@ -627,6 +627,12 @@
     "Route408",
     "Route409",
     "Route410",
-    "TanobyDelta"
+    "TanobyDelta",
+    "MtDrake_SouthFace",
+    "MtDrake_1F",
+    "MtDrake_2F",
+    "MtDrake_NorthFace",
+    "MtDrake_3F",
+    "MtDrake_Peak"
   ]
 }

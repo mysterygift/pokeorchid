@@ -55,18 +55,6 @@ DrakeBaseCamp_EventScript_TiksiGuardianRegolisShrine::
 	return
 
 
-DrakeBaseCamp_EventScript_TiksiGuardianMtDrakeSummit::
-# 39 "data/maps/DrakeBaseCamp/scripts.pory"
-	msgbox DrakeBaseCamp_EventScript_TiksiGuardianMtDrakeSummit_Text_0, MSGBOX_NPC
-	return
-
-
-DrakeBaseCamp_EventScript_TiksiGuardianFerrumShrine::
-# 43 "data/maps/DrakeBaseCamp/scripts.pory"
-	msgbox DrakeBaseCamp_EventScript_TiksiGuardianFerrumShrine_Text_0, MSGBOX_NPC
-	return
-
-
 DrakeBaseCamp_EventScript_TiksiNpc1_Text_0:
 # 23 "data/maps/DrakeBaseCamp/scripts.pory"
 	.string "The peak of Mt. Drake is said to be home\n"
@@ -91,17 +79,3 @@ DrakeBaseCamp_EventScript_TiksiGuardianRegolisShrine_Text_0:
 	.string "the heart of the desert. The rock giant\l"
 	.string "sleeps there once more.\p"
 	.string "I am its guardian. Go if you must.$"
-
-DrakeBaseCamp_EventScript_TiksiGuardianMtDrakeSummit_Text_0:
-# 39 "data/maps/DrakeBaseCamp/scripts.pory"
-	.string "Beyond here, the old trail climbs to the\n"
-	.string "peak of Mt. Drake. They say the dragon\l"
-	.string "giant waits at the top.\p"
-	.string "I guard the way. Be ready.$"
-
-DrakeBaseCamp_EventScript_TiksiGuardianFerrumShrine_Text_0:
-# 43 "data/maps/DrakeBaseCamp/scripts.pory"
-	.string "Ferrum Shrine lies at the core of Mt.\n"
-	.string "Drake. The steel giant has returned to\l"
-	.string "it.\p"
-	.string "I am sworn to guard this door.$"

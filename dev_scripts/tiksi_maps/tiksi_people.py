@@ -36,16 +36,16 @@ MOUND_DOOR = (1, 2)
 MOUTH_DOOR = (1, 3)
 CLOSED = {"UbeCity": [(20, 7)], "TanglynTown": [(5, 5), (6, 5)]}     # Silph office, Mural Hall (approved)
 MART_DOOR = 0x041
+# mouths moved elsewhere: where they were, and the approved map's blocks there (aefd62456c)
+GONE = {("DrakeBaseCamp", "MtDrakeSummit"): ((9, 7), [[12913, 12913, 12913], [12913, 12913, 12913], [1657, 1657, 1657]]),
+        ("DrakeBaseCamp", "FerrumShrine"): ((23, 7), [[1815, 1494, 1493], [1817, 1500, 1501], [1493, 1492, 1493]])}
 # cave folder, top-left of the stamp, kind, guardian graphics, guardian line
 MOUTHS = {
     "FurongVillage": [("GavaniPath", (6, 13), "general", G("EXPERT_M"),
                        "I am the guardian of Gavani Path. The thunder giant has come home to its cave.\\pTiksi's elders swore to keep it from the people. Tread carefully in there.")],
     "DrakeBaseCamp": [("RegolisShrine", (4, 7), "jagged", G("EXPERT_F"),
                        "This path leads to Regolis Shrine, in the heart of the desert. The rock giant sleeps there once more.\\pI am its guardian. Go if you must."),
-                      ("MtDrakeSummit", (9, 7), "jagged", G("HIKER"),
-                       "Beyond here, the old trail climbs to the peak of Mt. Drake. They say the dragon giant waits at the top.\\pI guard the way. Be ready."),
-                      ("FerrumShrine", (23, 7), "jagged", G("BLACK_BELT"),
-                       "Ferrum Shrine lies at the core of Mt. Drake. The steel giant has returned to it.\\pI am sworn to guard this door.")],
+                      ],   # Mt. Drake Summit and Ferrum Shrine are entered from inside Mt. Drake (mt_drake.py)
     "TanglynTown": [("FrigoCave", (30, 2), "general", G("OLD_WOMAN"),
                      "Frigo Cave is colder than it has any right to be. The ice giant is back inside.\\pI have guarded this shore all my life. Don't make me regret letting you pass.")],
 }
@@ -119,7 +119,10 @@ def main():
     mg = json.load(open(mg_path), object_pairs_hook=OrderedDict)
     group = mg[GROUP]
     new_includes = []
+    only = sys.argv[sys.argv.index("--only") + 1].split(",") if "--only" in sys.argv else None
     for town, spec in TIKSI.items():
+        if only and town not in only:
+            continue
         mpath = P("data", "maps", town, "map.json")
         m = json.load(open(mpath), object_pairs_hook=OrderedDict)
         lay, vals = read_layout(m, layouts)
@@ -132,17 +135,28 @@ def main():
         for wv in m["warp_events"]:
             dest_folder = TW.folder_of(wv["dest_map"]) if wv["dest_map"].startswith("MAP_") else None
             if dest_folder and (dest_folder in [c[0] for c in MOUTHS.get(town, [])] or
+                                (town, dest_folder) in GONE or
                                 dest_folder.startswith(town + "_House") or dest_folder == town + "_Mart"):
                 continue                                   # rebuilt below
             keep.append(wv)
         m["warp_events"] = keep
         guardians = []
+        # mouths that were moved elsewhere (mt_drake.py): put the approved blocks back
+        for (t, cave), ((x0, y0), rows) in GONE.items():
+            if t != town:
+                continue
+            for j, row in enumerate(rows):
+                for i, v in enumerate(row):
+                    vals[(y0 + j) * w + x0 + i] = v
+            st.pop(cave, None)
+            st.pop(cave + "@", None)
         for cave, (x0, y0), kind, gfx, line in MOUTHS.get(town, []):
             rows = JAGGED_MOUND if kind == "jagged" else PH.MOUTH
             door = MOUND_DOOR if kind == "jagged" else MOUTH_DOOR
             key = cave
             if key not in st:
                 st[key] = [[vals[(y0 + j) * w + x0 + i] for i in range(len(rows[0]))] for j in range(len(rows))]
+            st[key + "@"] = [x0, y0]
             for j, row in enumerate(rows):
                 for i, v in enumerate(row):
                     vals[(y0 + j) * w + x0 + i] = v
