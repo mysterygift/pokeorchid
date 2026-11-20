@@ -89,14 +89,14 @@
       "y": 9,
       "elevation": 3,
       "dest_map": "MAP_CHANGU_CITY",
-      "dest_warp_id": "10"
+      "dest_warp_id": "9"
     },
     {
       "x": 6,
       "y": 9,
       "elevation": 3,
       "dest_map": "MAP_CHANGU_CITY",
-      "dest_warp_id": "10"
+      "dest_warp_id": "9"
     }
   ],
   "coord_events": [],

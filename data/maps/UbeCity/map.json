@@ -109,13 +109,6 @@
       "elevation": 0,
       "dest_map": "MAP_UBE_CITY_HOUSE2",
       "dest_warp_id": "0"
-    },
-    {
-      "x": 12,
-      "y": 8,
-      "elevation": 0,
-      "dest_map": "MAP_UBE_CITY_MART",
-      "dest_warp_id": "0"
     }
   ],
   "coord_events": [],

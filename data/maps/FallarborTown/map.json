@@ -69,7 +69,7 @@
     },
     {
       "graphics_id": "OBJ_EVENT_GFX_MART_SIGN",
-      "x": 13,
+      "x": 12,
       "y": 15,
       "elevation": 3,
       "movement_type": "MOVEMENT_TYPE_NONE",
@@ -115,13 +115,6 @@
       "y": 6,
       "elevation": 0,
       "dest_map": "MAP_FALLARBOR_TOWN_MOVE_RELEARNERS_HOUSE",
-      "dest_warp_id": "0"
-    },
-    {
-      "x": 16,
-      "y": 15,
-      "elevation": 0,
-      "dest_map": "MAP_FALLARBOR_TOWN_MART",
       "dest_warp_id": "0"
     }
   ],
