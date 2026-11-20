@@ -25,7 +25,7 @@ LOCATIONS
 * Faber Town – A town nestled in the cliffs of the Tosa region accessible via cable car or a trecherous climb up the cliff. The leader of the town is Meru, a fierce fighter who trains against Rock Pokémon in the mountains solo.
 * Moongrove City – Nestled in the mangroves, gym leader Tork enjoys hunting for catfish.
 * Inka City – Gym leader Frea heads up a cold food distribution centre here. Inka City is the domestic logistics hub of the city, and Frea makes sure all the imported food from Hoenn and Johto gets on the plates of the Tosa people. Team Torrent's hidden base is here, with a shipping company as the front (Marlin Co.)
-* Bura City – Maria. Cat lady who frequently travels to Juran City for a weekend of gambling. Loves to put her Pokémon in costumes.
+* Bura City – Maria. Cat lady who frequently travels to Juran City for a weekend of gambling. Loves to put her Pokémon in costumes. Great foodhall here.
 * Senoko City – Mo, runs the national power grid. He looks after the wind farms that dot around this town.
 * Tosa Port – where our player first arrives. Mainly a domestic port, there is also a cold storage warehouse here.
 * Telok Town – where Professor Palm's research laboratory is. A quiet town in the North Tosa Reserve (this is currently called South Tosa Reserve need to change these references in game).
@@ -47,7 +47,7 @@ LOCATIONS
 TIKSI
 * Furong Village – a fishing village near the route the player lands on when they make the trip to Tiksi in search of Matt.
 
-* Ferrum Shrine – A mysterious shrine where Registeel resides at the core of Mt. Drake.
+* Ferrum Shrine – A mysterious shrine where Registeel resides at the core of Mt. Batok.
 * Regolis Shrine – A mysterious shrine where Regirock resides in the heart of a desert.
 * Frigo Cave – A deep cave where Regice resides, off the coast of Tiksi's north shore.
 * Gavani Path – An electromagnetically charged cave at the heart of the thunderous lands of Tiksi. Regileki resides here.
@@ -95,3 +95,22 @@ BROAD PLOT
 * On their journey, the player uncovers people looming in the shadows tied to incidents across the Tosa region. These eventually come to a head with a number of encounters with Matt. At the peak – Matt unavails five new Pokémon he's brought over to Tosa Region – the Regi 5. With Regigigas slumbering in Snowpoint Temple, the player has to delve into the ruins deep in the Tosa Reserve to uncover the legendary Merlion Pokémon – the only hope of restoring balance to the region.
 
 * When Matt is defeated, he actually escapes. He is not giving up. Him and his team flee to a region West of Tosa – Tiksi. A rural harsh region with rugged people who look after it. Tosa's authorities do not permit entry for anyone from the Tiksi branch because of historical conflicts between the two regions. You are tasked by the League to travel to the Tiksi branch (you go via a small ship – one of Team Torrent's smuggling ships) and land in a small fishing village on Tiksi. From there, you travel around the island to capture the five regis and take down Matt once and for all on top of Mount Drake.
+
+* In the Tanoby Delta the player encounters a number of puzzles, capturing Unowns, completing the Unown report and receiving some hints forshadowing the events of the Holon and Sevii B-Sides. Once the Holon B-side is completed, a portal to encounter Dialga can be found in the heart of the ruins (an Unown cry plays, the screen flashes white and Dialga appears). Once the Sevii B-side is completed, the same happens for Palkia. Once the player receives all silver symbols at the Battle Frontier, the same happens for Giratina. Once all the gold symbols are received and the player travels to the Tanoby Delta with all three Sinnoh legends, the "Chamber of Origin" will open at Tanoby Delta, where the player encounters Arceus.
+
+
+HOLON B-SIDE
+* Faba from the former Aether Foundation has arrived in the region of Holon where he's extracting the energy from one of the region's "Power Spots".
+* Holon was a quiet agricultural region where people focused on living simply and in harmony with nature. It is the antithesis of Tosa – a region where humans have carved space for themselves from Pokémon.
+* The player is tasked with going to three regions and defeating the Holon researchers there, acquiring key cards along the way. Once all the keys are acquired, they can head to the Holon Research tower and battle their way up, eventually defeating Faba. Once defeated, he disappears with his researchers. The village elder thanks you and gives you a gift: a Delta Eevee.
+* Delta species are unique to Holon, they are Pokémon who have been transformed by the energy emanating from the power spots in Holon.
+
+
+SEVII B-SIDE
+* You travel to the Sevii region, completing a series of short side stories on each island.
+* More tourists have been travelling to Sevii from Kanto, and the islands have seen massive investment and growth since the players travelled to them in FRLG.
+* An incident in Hoenn (implied to be Brendan/May's clash with Kyogre/Groudon/Rayquaza) have had a massive impact on the seas around the islands, which have grown calm.
+* It transpires that Kyogre is sleeping beneath the waters of Sevii, and Groudon is sleeping in the chambers of Mt. Ember.
+* Faba appears again having left Holon to try and use what he learned from extracting energy from Power Spots to drain the power that lurks within these two Pokémon, threatening to destroy the balance the two Pokémon have finally achieved.
+* The player clashes with them once and for all at a hidden underground laboratory on Seven Island, near the dotted hole.
+* Faba is arrested and taken away by the international police. Maybe we have a cameo from Looker and Anabelle?
