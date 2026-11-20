@@ -1,6 +1,6 @@
 // Orchid custom species. Included from species_info.h after gen_9_families.h.
 // Learnsets: src/data/pokemon/orchid_learnsets.h (level-up/egg), all_learnables.json (TM/tutor).
-// No OVERWORLD() block yet: followers fall back to the substitute doll (OW_SUBSTITUTE_PLACEHOLDER).
+// Pinguin/Iyepure/Torpesquid have follower sprites; Purrchi/Laomeow still use the substitute doll.
 
     [SPECIES_PINGUIN] =
     {
@@ -54,6 +54,15 @@
         .pokemonJumpType = PKMN_JUMP_TYPE_NONE,
         SHADOW(0, 7, SHADOW_SIZE_M)
         FOOTPRINT(Pinguin)
+        OVERWORLD(
+            sPicTable_Pinguin,
+            SIZE_32x32,
+            SHADOW_SIZE_M,
+            TRACKS_FOOT,
+            sAnimTable_Following,
+            gOverworldPalette_Pinguin,
+            gShinyOverworldPalette_Pinguin
+        )
         .levelUpLearnset = sPinguinLevelUpLearnset,
         .teachableLearnset = sPinguinTeachableLearnset,
         .eggMoveLearnset = sPinguinEggMoveLearnset,
@@ -111,6 +120,15 @@
         .pokemonJumpType = PKMN_JUMP_TYPE_NONE,
         SHADOW(0, 6, SHADOW_SIZE_L)
         FOOTPRINT(Iyepure)
+        OVERWORLD(
+            sPicTable_Iyepure,
+            SIZE_32x32,
+            SHADOW_SIZE_M,
+            TRACKS_FOOT,
+            sAnimTable_Following,
+            gOverworldPalette_Iyepure,
+            gShinyOverworldPalette_Iyepure
+        )
         .levelUpLearnset = sIyepureLevelUpLearnset,
         .teachableLearnset = sIyepureTeachableLearnset,
         .eggMoveLearnset = sIyepureEggMoveLearnset,
@@ -168,6 +186,15 @@
         .pokemonJumpType = PKMN_JUMP_TYPE_NONE,
         SHADOW(0, 12, SHADOW_SIZE_M)
         FOOTPRINT(Torpesquid)
+        OVERWORLD(
+            sPicTable_Torpesquid,
+            SIZE_32x32,
+            SHADOW_SIZE_M,
+            TRACKS_SPOT,
+            sAnimTable_Following,
+            gOverworldPalette_Torpesquid,
+            gShinyOverworldPalette_Torpesquid
+        )
         .levelUpLearnset = sTorpesquidLevelUpLearnset,
         .teachableLearnset = sTorpesquidTeachableLearnset,
         .eggMoveLearnset = sTorpesquidEggMoveLearnset,
