@@ -1,5 +1,5 @@
 voice_group mus_orchid_vs_cynthia
-	voice_keysplit_all voicegroup_rs_drumset
+	voice_noise 60, 0, 0, 0, 1, 7, 1
 	voice_keysplit voicegroup_piano_keysplit, keysplit_piano
 	voice_square_1 60, 0, 0, 2, 0, 0, 15, 0
 	voice_square_1 60, 0, 0, 2, 0, 0, 15, 0
@@ -81,7 +81,7 @@ voice_group mus_orchid_vs_cynthia
 	voice_square_1 60, 0, 0, 2, 0, 0, 15, 0
 	voice_square_1 60, 0, 0, 2, 0, 1, 7, 1
 	voice_square_1 60, 0, 0, 2, 0, 0, 15, 0
-	voice_square_2 60, 0, 2, 0, 1, 7, 1
+	voice_square_2 60, 0, 1, 0, 1, 3, 1
 	voice_square_1 60, 0, 0, 2, 0, 0, 15, 0
 	voice_square_1 60, 0, 0, 2, 0, 0, 15, 0
 	voice_square_1 60, 0, 0, 2, 0, 0, 15, 0
@@ -113,7 +113,7 @@ voice_group mus_orchid_vs_cynthia
 	voice_square_1 60, 0, 0, 2, 0, 0, 15, 0
 	voice_square_1 60, 0, 0, 2, 0, 0, 15, 0
 	voice_square_1 60, 0, 0, 2, 0, 0, 15, 0
-	voice_directsound 60, 0, DirectSoundWaveData_sc88pro_xylophone, 255, 235, 0, 204
+	voice_directsound 60, 0, DirectSoundWaveData_sc88pro_organ2, 255, 0, 255, 210
 	voice_square_1 60, 0, 0, 2, 0, 0, 15, 0
 	voice_square_1 60, 0, 0, 2, 0, 0, 15, 0
 	voice_square_1 60, 0, 0, 2, 0, 0, 15, 0

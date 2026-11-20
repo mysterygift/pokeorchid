@@ -494,7 +494,7 @@
 #define MUS_ORCHID_VS_TRAINER       560 // Placeholder trainer battle theme (dev_scripts/battle_music)
 #define MUS_SINJOH_RUINS_TEST       561
 #define MUS_TANOBY_DELTA_TEST       562
-#define MUS_ORCHID_ENCOUNTER_CYNTHIA 563 // Wavebreak Voyages: Cynthia's encounter theme (dev_scripts/voyages/trainers)
+#define MUS_ORCHID_ENCOUNTER_CYNTHIA 563
 #define MUS_ORCHID_VS_CYNTHIA       564 // Wavebreak Voyages: vs Cynthia (dev_scripts/voyages/trainers)
 #define MUS_ORCHID_SEVII_VS_WILD           565 // Wavebreak Voyages: FRLG vs_wild re-voiced for Hoenn (dev_scripts/voyages/polish_phone_music)
 #define MUS_ORCHID_SEVII_VS_TRAINER        566 // Wavebreak Voyages: FRLG vs_trainer re-voiced for Hoenn (dev_scripts/voyages/polish_phone_music)
