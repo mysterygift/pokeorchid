@@ -236,3 +236,6 @@
 .include "sound/voicegroups/mus_bw_cheren.inc"
 .include "sound/voicegroups/mus_bw_white_treehollow.inc"
 .include "sound/voicegroups/mus_bw_entralink.inc"
+.include "sound/voicegroups/mus_dp_route228v2.inc"
+.include "sound/voicegroups/mus_dp_hearthomev2.inc"
+.include "sound/voicegroups/mus_dp_lake_cavernv2.inc"
