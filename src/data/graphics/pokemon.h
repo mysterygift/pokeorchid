@@ -27694,6 +27694,13 @@ const u32 gObjectEventPic_Substitute[] = INCGFX_COMP("graphics/pokemon/question_
 #if P_FOOTPRINTS
     const u8 gMonFootprint_Pinguin[] = INCGFX_U8("graphics/pokemon/pinguin/footprint.png", ".1bpp");
 #endif //P_FOOTPRINTS
+#if OW_POKEMON_OBJECT_EVENTS
+    const u32 gObjectEventPic_Pinguin[] = INCGFX_COMP("graphics/pokemon/pinguin/overworld.png", ".4bpp", "-mwidth 4 -mheight 4");
+#if OW_PKMN_OBJECTS_SHARE_PALETTES == FALSE
+    const u16 gOverworldPalette_Pinguin[] = INCGFX_U16("graphics/pokemon/pinguin/overworld_normal.pal", ".gbapal");
+    const u16 gShinyOverworldPalette_Pinguin[] = INCGFX_U16("graphics/pokemon/pinguin/overworld_shiny.pal", ".gbapal");
+#endif //OW_PKMN_OBJECTS_SHARE_PALETTES
+#endif //OW_POKEMON_OBJECT_EVENTS
 
     const u32 gMonFrontPic_Iyepure[] = INCGFX_U32("graphics/pokemon/iyepure/front.png", ".4bpp.smol");
     const u32 gMonBackPic_Iyepure[] = INCGFX_U32("graphics/pokemon/iyepure/back.png", ".4bpp.smol");
@@ -27703,6 +27710,13 @@ const u32 gObjectEventPic_Substitute[] = INCGFX_COMP("graphics/pokemon/question_
 #if P_FOOTPRINTS
     const u8 gMonFootprint_Iyepure[] = INCGFX_U8("graphics/pokemon/iyepure/footprint.png", ".1bpp");
 #endif //P_FOOTPRINTS
+#if OW_POKEMON_OBJECT_EVENTS
+    const u32 gObjectEventPic_Iyepure[] = INCGFX_COMP("graphics/pokemon/iyepure/overworld.png", ".4bpp", "-mwidth 4 -mheight 4");
+#if OW_PKMN_OBJECTS_SHARE_PALETTES == FALSE
+    const u16 gOverworldPalette_Iyepure[] = INCGFX_U16("graphics/pokemon/iyepure/overworld_normal.pal", ".gbapal");
+    const u16 gShinyOverworldPalette_Iyepure[] = INCGFX_U16("graphics/pokemon/iyepure/overworld_shiny.pal", ".gbapal");
+#endif //OW_PKMN_OBJECTS_SHARE_PALETTES
+#endif //OW_POKEMON_OBJECT_EVENTS
 
     const u32 gMonFrontPic_Torpesquid[] = INCGFX_U32("graphics/pokemon/torpesquid/front.png", ".4bpp.smol");
     const u32 gMonBackPic_Torpesquid[] = INCGFX_U32("graphics/pokemon/torpesquid/back.png", ".4bpp.smol");
@@ -27712,6 +27726,13 @@ const u32 gObjectEventPic_Substitute[] = INCGFX_COMP("graphics/pokemon/question_
 #if P_FOOTPRINTS
     const u8 gMonFootprint_Torpesquid[] = INCGFX_U8("graphics/pokemon/torpesquid/footprint.png", ".1bpp");
 #endif //P_FOOTPRINTS
+#if OW_POKEMON_OBJECT_EVENTS
+    const u32 gObjectEventPic_Torpesquid[] = INCGFX_COMP("graphics/pokemon/torpesquid/overworld.png", ".4bpp", "-mwidth 4 -mheight 4");
+#if OW_PKMN_OBJECTS_SHARE_PALETTES == FALSE
+    const u16 gOverworldPalette_Torpesquid[] = INCGFX_U16("graphics/pokemon/torpesquid/overworld_normal.pal", ".gbapal");
+    const u16 gShinyOverworldPalette_Torpesquid[] = INCGFX_U16("graphics/pokemon/torpesquid/overworld_shiny.pal", ".gbapal");
+#endif //OW_PKMN_OBJECTS_SHARE_PALETTES
+#endif //OW_POKEMON_OBJECT_EVENTS
 
     const u32 gMonFrontPic_Purrchi[] = INCBIN_U32("graphics/pokemon/purrchi/front.4bpp.smol");
     const u32 gMonBackPic_Purrchi[] = INCBIN_U32("graphics/pokemon/purrchi/back.4bpp.smol");

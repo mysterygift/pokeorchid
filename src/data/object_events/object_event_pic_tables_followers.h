@@ -6693,4 +6693,15 @@ static const struct SpriteFrameImage sPicTable_Pecharunt[] = {
 };
 #endif //P_FAMILY_PECHARUNT
 
+// Orchid species
+static const struct SpriteFrameImage sPicTable_Pinguin[] = {
+    overworld_ascending_frames(gObjectEventPic_Pinguin, 4, 4),
+};
+static const struct SpriteFrameImage sPicTable_Iyepure[] = {
+    overworld_ascending_frames(gObjectEventPic_Iyepure, 4, 4),
+};
+static const struct SpriteFrameImage sPicTable_Torpesquid[] = {
+    overworld_ascending_frames(gObjectEventPic_Torpesquid, 4, 4),
+};
+
 #endif //OW_POKEMON_OBJECT_EVENTS
