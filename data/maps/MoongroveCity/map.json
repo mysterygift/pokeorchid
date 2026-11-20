@@ -92,7 +92,7 @@
     },
     {
       "graphics_id": "OBJ_EVENT_GFX_MART_SIGN",
-      "x": 41,
+      "x": 42,
       "y": 15,
       "elevation": 3,
       "movement_type": "MOVEMENT_TYPE_NONE",
@@ -127,7 +127,7 @@
       "dest_warp_id": "0"
     },
     {
-      "x": 38,
+      "x": 39,
       "y": 15,
       "elevation": 0,
       "dest_map": "MAP_MOONGROVE_CITY_MART",
@@ -167,13 +167,6 @@
       "elevation": 0,
       "dest_map": "MAP_MOONGROVE_CITY_HOUSE4",
       "dest_warp_id": "0"
-    },
-    {
-      "x": 39,
-      "y": 15,
-      "elevation": 0,
-      "dest_map": "MAP_MOONGROVE_CITY_MART",
-      "dest_warp_id": "0"
     }
   ],
   "coord_events": [],
@@ -204,7 +197,7 @@
     },
     {
       "type": "sign",
-      "x": 39,
+      "x": 40,
       "y": 15,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
@@ -212,7 +205,7 @@
     },
     {
       "type": "sign",
-      "x": 40,
+      "x": 41,
       "y": 15,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",

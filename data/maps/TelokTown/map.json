@@ -110,8 +110,8 @@
     },
     {
       "graphics_id": "OBJ_EVENT_GFX_FAT_MAN",
-      "x": 13,
-      "y": 16,
+      "x": 12,
+      "y": 15,
       "elevation": 0,
       "movement_type": "MOVEMENT_TYPE_NONE",
       "movement_range_x": 0,
@@ -123,8 +123,8 @@
     },
     {
       "graphics_id": "OBJ_EVENT_GFX_MART_SIGN",
-      "x": 13,
-      "y": 15,
+      "x": 12,
+      "y": 16,
       "elevation": 3,
       "movement_type": "MOVEMENT_TYPE_NONE",
       "movement_range_x": 0,
@@ -155,13 +155,6 @@
       "y": 6,
       "elevation": 0,
       "dest_map": "MAP_TOSA_PORT_PROFESSOR_BIRCHS_LAB",
-      "dest_warp_id": "0"
-    },
-    {
-      "x": 16,
-      "y": 16,
-      "elevation": 0,
-      "dest_map": "MAP_OLDALE_TOWN_MART",
       "dest_warp_id": "0"
     }
   ],

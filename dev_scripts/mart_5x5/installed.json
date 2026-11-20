@@ -1,0 +1,333 @@
+{
+ "ids": {
+  "mart_0_0": 74,
+  "mart_1_0": 75,
+  "mart_2_0": 80,
+  "mart_3_0": 81,
+  "mart_4_0": 82,
+  "mart_0_1": 83,
+  "mart_1_1": 88,
+  "mart_2_1": 89,
+  "mart_3_1": 90,
+  "mart_4_1": 91,
+  "mart_0_2": 92,
+  "mart_1_2": 96,
+  "mart_2_2": 97,
+  "mart_3_2": 98,
+  "mart_4_2": 99,
+  "mart_0_3": 126,
+  "mart_1_3": 127,
+  "mart_2_3": 157,
+  "mart_3_3": 158,
+  "mart_4_3": 197,
+  "mart_0_4": 205,
+  "mart_1_4": 215,
+  "mart_2_4": 151,
+  "mart_3_4": 221,
+  "mart_4_4": 222
+ },
+ "marts": [
+  {
+   "layout": "LAYOUT_BATTLE_FRONTIER_OUTSIDE_WEST",
+   "new": [
+    50,
+    47
+   ],
+   "side": "R",
+   "forced": [
+    [
+     54,
+     50,
+     "006"
+    ],
+    [
+     54,
+     51,
+     "006"
+    ]
+   ]
+  },
+  {
+   "layout": "LAYOUT_BURA_CITY",
+   "new": [
+    29,
+    23
+   ],
+   "side": "L",
+   "forced": []
+  },
+  {
+   "layout": "LAYOUT_CHALLENGER_GATE",
+   "new": [
+    29,
+    27
+   ],
+   "side": "L",
+   "forced": []
+  },
+  {
+   "layout": "LAYOUT_CHANGU_CITY",
+   "new": [
+    28,
+    9
+   ],
+   "side": "L",
+   "forced": []
+  },
+  {
+   "layout": "LAYOUT_CORRAL_CITY",
+   "new": [
+    29,
+    19
+   ],
+   "side": "L",
+   "forced": []
+  },
+  {
+   "layout": "LAYOUT_DRAKE_BASE_CAMP",
+   "new": [
+    20,
+    12
+   ],
+   "side": "L",
+   "forced": []
+  },
+  {
+   "layout": "LAYOUT_FABER_TOWN",
+   "new": [
+    21,
+    15
+   ],
+   "side": "L",
+   "forced": []
+  },
+  {
+   "layout": "LAYOUT_FALLARBOR_TOWN",
+   "new": [
+    13,
+    11
+   ],
+   "side": "L",
+   "forced": []
+  },
+  {
+   "layout": "LAYOUT_FORTREE_CITY",
+   "new": [
+    3,
+    10
+   ],
+   "side": "R",
+   "forced": []
+  },
+  {
+   "layout": "LAYOUT_INKA_CITY",
+   "new": [
+    29,
+    17
+   ],
+   "side": "L",
+   "forced": []
+  },
+  {
+   "layout": "LAYOUT_JURAN_CITY",
+   "new": [
+    35,
+    22
+   ],
+   "side": "R",
+   "forced": []
+  },
+  {
+   "layout": "LAYOUT_LAVARIDGE_TOWN",
+   "new": [
+    13,
+    2
+   ],
+   "side": "L",
+   "forced": [
+    [
+     13,
+     2,
+     "271"
+    ],
+    [
+     13,
+     3,
+     "279"
+    ],
+    [
+     13,
+     5,
+     "1d7"
+    ],
+    [
+     13,
+     6,
+     "1e7"
+    ]
+   ]
+  },
+  {
+   "layout": "LAYOUT_MOONGROVE_CITY",
+   "new": [
+    37,
+    11
+   ],
+   "side": "R",
+   "forced": []
+  },
+  {
+   "layout": "LAYOUT_PINESTAMP_TOWN",
+   "new": [
+    20,
+    13
+   ],
+   "side": "L",
+   "forced": []
+  },
+  {
+   "layout": "LAYOUT_POKEMON_LEAGUE",
+   "new": [
+    24,
+    15
+   ],
+   "side": "L",
+   "forced": []
+  },
+  {
+   "layout": "LAYOUT_SENOKO_CITY",
+   "new": [
+    25,
+    17
+   ],
+   "side": "L",
+   "forced": []
+  },
+  {
+   "layout": "LAYOUT_SEVEN_ISLAND",
+   "new": [
+    4,
+    5
+   ],
+   "side": "R",
+   "forced": []
+  },
+  {
+   "layout": "LAYOUT_SIX_ISLAND",
+   "new": [
+    18,
+    7
+   ],
+   "side": "L",
+   "forced": [
+    [
+     18,
+     7,
+     "0a9"
+    ],
+    [
+     18,
+     8,
+     "180"
+    ]
+   ]
+  },
+  {
+   "layout": "LAYOUT_OLDALE_TOWN",
+   "new": [
+    13,
+    12
+   ],
+   "side": "L",
+   "forced": []
+  },
+  {
+   "layout": "LAYOUT_THREE_ISLAND",
+   "new": [
+    17,
+    8
+   ],
+   "side": "R",
+   "forced": []
+  },
+  {
+   "layout": "LAYOUT_TIMAH_CITY",
+   "new": [
+    24,
+    9
+   ],
+   "side": "L",
+   "forced": [
+    [
+     24,
+     12,
+     "214"
+    ]
+   ]
+  },
+  {
+   "layout": "LAYOUT_UBE_CITY",
+   "new": [
+    9,
+    4
+   ],
+   "side": "L",
+   "forced": []
+  },
+  {
+   "layout": "LAYOUT_VERDANTURF_TOWN",
+   "new": [
+    10,
+    0
+   ],
+   "side": "L",
+   "forced": [
+    [
+     10,
+     0,
+     "07c"
+    ],
+    [
+     10,
+     1,
+     "091"
+    ],
+    [
+     10,
+     2,
+     "3b0"
+    ],
+    [
+     10,
+     3,
+     "34e"
+    ],
+    [
+     10,
+     4,
+     "323"
+    ]
+   ]
+  },
+  {
+   "layout": "LAYOUT_WAVEBREAK_TOWN",
+   "new": [
+    24,
+    19
+   ],
+   "side": "L",
+   "forced": []
+  },
+  {
+   "layout": "LAYOUT_FOUR_ISLAND",
+   "new": [
+    18,
+    22
+   ],
+   "side": "moved",
+   "forced": [
+    "moved"
+   ]
+  }
+ ]
+}

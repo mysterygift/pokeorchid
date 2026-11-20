@@ -372,7 +372,7 @@
       "dest_warp_id": "0"
     },
     {
-      "x": 51,
+      "x": 52,
       "y": 51,
       "elevation": 0,
       "dest_map": "MAP_BATTLE_FRONTIER_MART",
@@ -419,13 +419,6 @@
       "elevation": 0,
       "dest_map": "MAP_ARTISAN_CAVE_B1F",
       "dest_warp_id": "0"
-    },
-    {
-      "x": 52,
-      "y": 51,
-      "elevation": 0,
-      "dest_map": "MAP_BATTLE_FRONTIER_MART",
-      "dest_warp_id": "0"
     }
   ],
   "coord_events": [],
@@ -456,7 +449,7 @@
     },
     {
       "type": "sign",
-      "x": 52,
+      "x": 53,
       "y": 51,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
@@ -464,7 +457,7 @@
     },
     {
       "type": "sign",
-      "x": 53,
+      "x": 54,
       "y": 51,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",

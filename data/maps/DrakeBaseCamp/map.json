@@ -106,13 +106,6 @@
       "elevation": 0,
       "dest_map": "MAP_DRAKE_BASE_CAMP_HOUSE2",
       "dest_warp_id": "0"
-    },
-    {
-      "x": 23,
-      "y": 16,
-      "elevation": 0,
-      "dest_map": "MAP_DRAKE_BASE_CAMP_MART",
-      "dest_warp_id": "0"
     }
   ],
   "coord_events": [],
