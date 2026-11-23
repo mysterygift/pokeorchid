@@ -331,7 +331,7 @@ def apply(key):
             f.write("JASC-PAL\n0100\n16\n" + "".join(f"{r} {g} {b}\n" for r, g, b in cols))
         lights = sorted(set(remap.values()))
         with open(p[:-4] + ".pla", "w") as f:
-            f.write("# Window glass lit at night (dev_scripts/orchid_dns/windows.py); 0 = lamp colour\n0\n")
+            f.write("# lit glass (orchid_dns/windows.py)\n0\n")  # gbagfx reads 64-char lines
             f.write("".join(f"{i}\n" for i in lights))
     print(f"copied {made} tiles; lit palettes {sorted(alloc)}")
 

@@ -170,8 +170,11 @@ Approved decisions:
 - Wild tables: placeholders for every Tosa / Tiksi map (`dev_scripts/orchid_encounters/encounters.py`), day + night.
 
 Day / night (OW_ENABLE_DNS) lives in `dev_scripts/orchid_dns/`: house windows, gym door, Pokémon Center upper
-windows + door, Mart door only, station glass, Tosa Port jetty lamp bulbs. All on the TosaPort tileset; Telok
-(Petalburg) and the Tiksi towns are not lit yet.
+windows + door, Mart door only, station glass, Tosa Port jetty lamp bulbs (TosaPort tileset: lightpal.py,
+lamps.py). Telok (Petalburg) and the Tiksi towns (Furong / Dewford, Drake Base Camp / Lavaridge, Ube City,
+Tanglyn / Lilycove) use `towns.py`: the same lit Centre / Mart / house metatiles, plus each town's own buildings
+(Palm Labs, Ube's tower, Tanglyn's mansion and houses); day look unchanged. Ube's olive house and street lamps
+stay dark (no spare palette slot in UbeCity).
 
 ## Palm's research + Habitats round 4 (2026-11-23)
 
