@@ -1440,6 +1440,20 @@ static const struct SpriteFrameImage sPicTable_Faba[] = {
     overworld_ascending_frames(gObjectEventPic_Faba, 2, 4),
 };
 
+// Orchid: FRLG sprites used on Emerald-build maps (stations, hawker centre, cafe). They used to sit inside
+// the IS_FRLG block, which left NULL graphics pointers and crashed on respawn ("Jumped to invalid address").
+static const struct SpriteFrameImage sPicTable_Chef[] = {
+    overworld_ascending_frames(gObjectEventPic_Chef, 2, 4),
+};
+
+static const struct SpriteFrameImage sPicTable_Clerk[] = {
+    overworld_ascending_frames(gObjectEventPic_Clerk, 2, 4),
+};
+
+static const struct SpriteFrameImage sPicTable_Clipboard[] = {
+    overworld_frame(gObjectEventPic_Clipboard, 2, 2, 0),
+};
+
 #if IS_FRLG
 
 static const struct SpriteFrameImage sPicTable_RedNormal[] = {
@@ -1626,10 +1640,6 @@ static const struct SpriteFrameImage sPicTable_BeautyFrlg[] = {
     overworld_ascending_frames(gObjectEventPic_BeautyFrlg, 2, 4),
 };
 
-static const struct SpriteFrameImage sPicTable_Chef[] = {
-    overworld_ascending_frames(gObjectEventPic_Chef, 2, 4),
-};
-
 static const struct SpriteFrameImage sPicTable_OldMan2[] = {
     overworld_frame(gObjectEventPic_OldMan2, 2, 4, 0),
     overworld_frame(gObjectEventPic_OldMan2, 2, 4, 1),
@@ -1805,10 +1815,6 @@ static const struct SpriteFrameImage sPicTable_CuttableTreeFrlg[] = {
     overworld_frame(gObjectEventPic_CuttableTreeFrlg, 2, 2, 1),
     overworld_frame(gObjectEventPic_CuttableTreeFrlg, 2, 2, 2),
     overworld_frame(gObjectEventPic_CuttableTreeFrlg, 2, 2, 3),
-};
-
-static const struct SpriteFrameImage sPicTable_Clerk[] = {
-    overworld_ascending_frames(gObjectEventPic_Clerk, 2, 4),
 };
 
 static const struct SpriteFrameImage sPicTable_MGDeliveryman[] = {
@@ -2060,10 +2066,6 @@ static const struct SpriteFrameImage sPicTable_Sign[] = {
 
 static const struct SpriteFrameImage sPicTable_WoodenSign[] = {
     overworld_frame(gObjectEventPic_WoodenSign, 2, 2, 0),
-};
-
-static const struct SpriteFrameImage sPicTable_Clipboard[] = {
-    overworld_frame(gObjectEventPic_Clipboard, 2, 2, 0),
 };
 
 static const struct SpriteFrameImage sPicTable_BirthIslandStoneFrlg[] = {

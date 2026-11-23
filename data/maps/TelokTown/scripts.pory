@@ -5,7 +5,13 @@ TelokTown_MapScripts::
 
 TelokTown_OnTransition:
 	setflag FLAG_VISITED_TELOK_TOWN
+	call_if_ne VAR_TELOK_TOWN_STATE, 0, TelokTown_EventScript_HideAide
 	end
+
+@ The aide has gone into Palm Labs; FLAG_TEMP_1 is the aide's hide flag (temp flags reset on every map load)
+TelokTown_EventScript_HideAide:
+	setflag FLAG_TEMP_1
+	return
 
 TelokTown_EventScript_TownSign::
 	msgbox TelokTown_Text_TownSign, MSGBOX_SIGN
@@ -32,3 +38,98 @@ TelokTown_Text_TownSign:
 	.string "“Where new journeys take root.”$"
 
 `
+script TelokTown_EventScript_HideSeekBoy {
+	msgbox(format("I'm playing hide and seek with a-ma! She's really good at hiding..."), MSGBOX_NPC)
+	release
+	end
+}
+
+script TelokTown_EventScript_HideSeekLady {
+	msgbox(format("I'm sure I left my glasses around here somewhere... I can't see a thing without them!"), MSGBOX_NPC)
+	release
+	end
+}
+
+script TelokTown_EventScript_ProfessorGuy {
+	msgbox(format("Other than researchers visiting the professor's lab, Telok Town is a peaceful place."), MSGBOX_NPC)
+	release
+	end
+}
+
+// ---------------------------------------------------------------------------------------------
+// Aide intro: Prof. Palm's aide waits at (19,9) and walks the player to Palm Labs (door 31,6).
+// Three ways in, all ending in TelokTown_EventScript_AideLeadsToLab:
+//   trigger (19,10)  - player is already under the aide, just looks up
+//   trigger (19,11)  - player looks up, then steps up one tile to (19,10)
+//   talking to aide  - from (18,9) or (19,8); the trigger tiles cover every way to (19,10)
+// ---------------------------------------------------------------------------------------------
+
+script TelokTown_EventScript_AideTrigger_NoStep {
+	lockall
+	call(TelokTown_EventScript_AideNotices)
+	goto(TelokTown_EventScript_AideLeadsToLab)
+}
+
+script TelokTown_EventScript_AideTrigger_StepUp {
+	lockall
+	call(TelokTown_EventScript_AideNotices)
+	applymovement(LOCALID_PLAYER, moves(walk_up))
+	waitmovement(0)
+	goto(TelokTown_EventScript_AideLeadsToLab)
+}
+
+script TelokTown_EventScript_Aide {
+	lockall
+	faceplayer
+	playse(SE_PIN)
+	applymovement(LOCALID_TELOK_AIDE, moves(emote_exclamation_mark))
+	waitmovement(0)
+	delay(24)
+	goto(TelokTown_EventScript_AideLeadsToLab)
+}
+
+script TelokTown_EventScript_AideNotices {
+	playse(SE_PIN)
+	applymovement(LOCALID_PLAYER, moves(face_up))
+	applymovement(LOCALID_TELOK_AIDE, moves(emote_exclamation_mark face_down))
+	waitmovement(0)
+	delay(24)
+	return
+}
+
+script TelokTown_EventScript_AideLeadsToLab {
+	msgbox(format("Ah, you must be {PLAYER}. Professor Palm told me you were coming. If you just follow me..."), MSGBOX_DEFAULT)
+	closemessage
+
+	// Line up: player at (18,10), aide steps down to (19,10), both facing the lab
+	getplayerxy(VAR_TEMP_1, VAR_TEMP_2)
+	if (var(VAR_TEMP_2) == 8) {          // talked from above (19,8)
+		applymovement(LOCALID_PLAYER, moves(walk_left walk_down * 2 face_right))
+	} elif (var(VAR_TEMP_1) == 18) {     // talked from the left (18,9)
+		applymovement(LOCALID_PLAYER, moves(walk_down face_right))
+	} else {                             // standing under the aide (19,10)
+		applymovement(LOCALID_PLAYER, moves(walk_left face_right))
+	}
+	waitmovement(0)
+	applymovement(LOCALID_TELOK_AIDE, moves(walk_down face_right))
+	waitmovement(0)
+
+	// Walk to the lab, player one tile behind: east along row 10, up column 25, east along row 7
+	applymovement(LOCALID_TELOK_AIDE, moves(walk_right * 6 walk_up * 3 walk_right * 6))
+	applymovement(LOCALID_PLAYER, moves(walk_right * 7 walk_up * 3 walk_right * 5))
+	waitmovement(LOCALID_TELOK_AIDE)
+	waitmovement(LOCALID_PLAYER)
+
+	// Aide goes in first, player follows
+	opendoor(31, 6)
+	waitdooranim
+	applymovement(LOCALID_TELOK_AIDE, moves(walk_up set_invisible))
+	waitmovement(0)
+	removeobject(LOCALID_TELOK_AIDE)
+	applymovement(LOCALID_PLAYER, moves(walk_right walk_up set_invisible))
+	waitmovement(0)
+	closedoor(31, 6)
+	waitdooranim
+	setvar(VAR_TELOK_TOWN_STATE, 1)
+	warp(MAP_TELOK_TOWN_PALM_LABS, 6, 12)
+}

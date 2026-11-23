@@ -109,6 +109,8 @@ void BlendPalettesGradually(u32 selectedPalettes, s8 delay, u8 coeff, u8 coeffTa
 void TimeMixPalettes(u32 palettes, u16 *src, u16 *dst, struct BlendSettings *blend0, struct BlendSettings *blend1, u16 weight0);
 void AvgPaletteWeighted(u16 *src0, u16 *src1, u16 *dst, u16 weight0);
 void TintPalette_GrayScale(u16 *palette, u32 count);
+extern bool8 gFieldGrayscale;
+void PrepareFieldGrayscalePltt(void);
 void TintPalette_GrayScale2(u16 *palette, u32 count);
 void TintPalette_SepiaTone(u16 *palette, u32 count);
 void TintPalette_CustomTone(u16 *palette, u32 count, u16 rTone, u16 gTone, u16 bTone);

@@ -68,15 +68,15 @@
     "TosaPort_BrendansHouse_1F",
     "TosaPort_BrendansHouse_2F",
     "TosaPort_MaysHouse_1F",
-    "TosaPort_MaysHouse_2F",
-    "TosaPort_ProfessorBirchsLab"
+    "TosaPort_MaysHouse_2F"
   ],
   "gMapGroup_IndoorOldale": [
     "TelokTown_House1",
     "TelokTown_House2",
     "TelokTown_PokemonCenter_1F",
     "TelokTown_PokemonCenter_2F",
-    "TelokTown_Mart"
+    "TelokTown_Mart",
+    "TelokTown_PalmLabs"
   ],
   "gMapGroup_IndoorDewford": [
     "DewfordTown_House1",
@@ -595,7 +595,8 @@
     "EastTosaReserve2",
     "EastTosaReserve3",
     "InkaSeawall",
-    "ChanguCity_Cafe"
+    "ChanguCity_Cafe",
+    "TelokTown_PalmLabs_Flashback"
   ],
   "gMapGroup_Tiksi": [
     "FurongVillage",

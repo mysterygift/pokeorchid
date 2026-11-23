@@ -66,11 +66,35 @@ void FillPalette(u32 value, u32 offset, u32 size)
     CpuFill16(value, &gPlttBufferFaded[offset], size);
 }
 
+// Orchid: black-and-white field filter (flashback cutscenes). The overworld CB2 builds a grayscale copy of
+// gPlttBufferFaded at the end of each frame and VBlank sends that instead, so every BG/OBJ palette and every
+// fade or weather blend is covered. Falls back to the colour buffer on any frame the copy wasn't built.
+EWRAM_DATA bool8 gFieldGrayscale = FALSE;
+static EWRAM_DATA bool8 sGrayPlttReady = FALSE;
+static EWRAM_DATA ALIGNED(4) u16 sGrayPltt[PLTT_BUFFER_SIZE] = {0};
+
+void PrepareFieldGrayscalePltt(void)
+{
+    if (!gFieldGrayscale)
+        return;
+    CpuFastCopy(gPlttBufferFaded, sGrayPltt, PLTT_SIZE);
+    TintPalette_GrayScale(sGrayPltt, PLTT_BUFFER_SIZE);
+    sGrayPlttReady = TRUE;
+}
+
 void TransferPlttBuffer(void)
 {
     if (!gPaletteFade.bufferTransferDisabled)
     {
-        DmaCopy16Defvars(3, gPlttBufferFaded, (void *)PLTT, PLTT_SIZE);
+        if (gFieldGrayscale && sGrayPlttReady)
+        {
+            DmaCopy16Defvars(3, sGrayPltt, (void *)PLTT, PLTT_SIZE);
+            sGrayPlttReady = FALSE;
+        }
+        else
+        {
+            DmaCopy16Defvars(3, gPlttBufferFaded, (void *)PLTT, PLTT_SIZE);
+        }
         sPlttBufferTransferPending = FALSE;
         if (gPaletteFade.mode == HARDWARE_FADE && gPaletteFade.active)
             UpdateBlendRegisters();

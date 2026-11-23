@@ -37,8 +37,24 @@ script TosaGateway_RivalEncounter {
     }
     delay(24)
     msgbox(format("Haru: I'm Haru by the way, it's a pleasure to meet you. I'm travelling the Tosa region in search of the ultimate Pok\emon."))
-    msgbox(format("Haru: What's the ultimate Pok\emon?\p"))
-    trainerbattle_single(TRAINER_HARU_GATEWAY, TosaGateway_Haru_Intro, TosaGateway_Haru_Defeat, TosaGateway_Haru_Defeated)
+    msgbox(format("Haru: What's the ultimate Pok\emon?\pLet's find out!"))
+    closemessage
+    // No whiteout: if the player loses, Haru slides in with TosaGateway_Haru_Victory, the party is healed
+    // and the script carries on here with VAR_RESULT = TRUE.
+    setvar(VAR_RESULT, FALSE)   // stays FALSE if the battle is skipped (Haru already beaten)
+    trainerbattle_earlyrival(TRAINER_HARU_GATEWAY, RIVAL_BATTLE_HEAL_AFTER, TosaGateway_Haru_Defeat, TosaGateway_Haru_Victory)
+    if (var(VAR_RESULT) == TRUE) {
+        lockall
+        fadescreen(FADE_TO_BLACK)
+        special(HealPlayerParty)
+        playfanfare(MUS_HEAL)
+        waitfanfare
+        fadescreen(FADE_FROM_BLACK)
+        bufferleadmonspeciesname(STR_VAR_1)
+        msgbox(format("Haru: Don't beat yourself up. I get the sense that you and your buddy {STR_VAR_1} are just getting to know each other."))
+        closemessage
+    }
+    call(TosaGateway_Haru_Defeated)
     return
 }
 
@@ -55,8 +71,8 @@ script TosaGateway_Haru_Defeated {
     return
 }
 
-text TosaGateway_Haru_Intro {
-    "Let's find out!"
+text TosaGateway_Haru_Victory {
+    "Yes! Great work Axew."
 }
 
 text TosaGateway_Haru_Defeat {

@@ -65,7 +65,7 @@ SouthTosaReserve_EventScript_BirchsBag::
 # 33 "data/maps/SouthTosaReserve/scripts.pory"
 	@ call_if_eq VAR_RESULT, FEMALE, SouthTosaReserve_EventScript_HideBrendanInBedroom
 # 34 "data/maps/SouthTosaReserve/scripts.pory"
-	@ warp MAP_TOSA_PORT_PROFESSOR_BIRCHS_LAB, 6, 5
+	@ warp MAP_TELOK_TOWN_PALM_LABS, 6, 5
 # 35 "data/maps/SouthTosaReserve/scripts.pory"
 	@ waitstate
 # 36 "data/maps/SouthTosaReserve/scripts.pory"

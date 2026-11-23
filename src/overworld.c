@@ -1890,6 +1890,7 @@ static void OverworldBasic(void)
         }
     }
     UpdateOverworldWildEncounter();
+    PrepareFieldGrayscalePltt();
 }
 
 // This CB2 is used when starting

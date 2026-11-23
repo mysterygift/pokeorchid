@@ -1492,7 +1492,9 @@ void BattleSetup_StartTrainerBattle(void)
         }
     }
 
-    if (TRAINER_BATTLE_PARAM.earlyRival && GetRivalBattleFlags() & RIVAL_BATTLE_TUTORIAL)
+    // Orchid: RIVAL_BATTLE_TUTORIAL (3) includes the HEAL_AFTER bit (1), so a plain "heal after, no whiteout"
+    // rival battle must not count as the FRLG Oak tutorial. Require both bits.
+    if (TRAINER_BATTLE_PARAM.earlyRival && (GetRivalBattleFlags() & RIVAL_BATTLE_TUTORIAL) == RIVAL_BATTLE_TUTORIAL)
         gBattleTypeFlags |= BATTLE_TYPE_FIRST_BATTLE;
 
     if (CurrentBattlePyramidLocation() != PYRAMID_LOCATION_NONE)
