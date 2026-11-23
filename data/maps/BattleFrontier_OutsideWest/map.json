@@ -417,8 +417,8 @@
       "x": 39,
       "y": 55,
       "elevation": 0,
-      "dest_map": "MAP_ARTISAN_CAVE_B1F",
-      "dest_warp_id": "0"
+      "dest_map": "MAP_BATTLE_FRONTIER_OUTSIDE_WEST",
+      "dest_warp_id": "10"
     }
   ],
   "coord_events": [],

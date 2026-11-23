@@ -8443,6 +8443,7 @@ static void Cmd_trysetcaughtmondexflags(void)
 
     if (GetSetPokedexFlag(SpeciesToNationalPokedexNum(species), FLAG_GET_CAUGHT))
     {
+        SetSpeciesCatalogued(SpeciesToNationalPokedexNum(species)); // Orchid: second capture catalogues it
         gBattlescriptCurrInstr = cmd->failInstr;
     }
     else

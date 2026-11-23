@@ -144,6 +144,9 @@
 const $ = (s) => document.querySelector(s);
 const NAME_MAX = 16; // MAP_NAME_LENGTH
 const KINDS = ["town", "city", "route", "landmark", "dungeon", "water", "other"];
+// Pokédex HABITATS zone (export_habitats.py); Tiksi areas form one zone
+const HABITATS = ["", "NORTH", "EAST", "SOUTH", "WEST"];
+const HABITAT_NAMES = {"": "—", NORTH: "Northern Tosa", EAST: "Eastern Tosa", SOUTH: "Southern Tosa", WEST: "Western Tosa"};
 const OUTDOOR = new Set(["MAP_TYPE_TOWN", "MAP_TYPE_CITY", "MAP_TYPE_ROUTE", "MAP_TYPE_OCEAN_ROUTE", "MAP_TYPE_UNDERWATER"]);
 
 let repo, img, routeImg = null;
@@ -485,6 +488,7 @@ function renderDetail() {
     <span class="lab">Station</span><label style="display:flex;gap:6px;align-items:center;cursor:pointer"><input type="checkbox" id="dStation" style="width:auto" ${a.station ? "checked" : ""}> has a train station
       ${a.station ? `<span class="lab" style="font-size:11px">— ${linesServing(a.key).map((l) => esc(l.name)).join(", ") || "no lines yet"}</span>` : ""}</label>
     <span class="lab">Kind</span><select id="dKind">${KINDS.map((k) => `<option ${k === a.kind ? "selected" : ""}>${k}</option>`).join("")}</select>
+    ${a.kanto ? "" : `<span class="lab">Habitat</span><select id="dHabitat" title="Pokédex HABITATS zone (dev_scripts/orchid_ui/export_habitats.py)">${HABITATS.map((h) => `<option value="${h}" ${h === (a.habitat || "") ? "selected" : ""}>${HABITAT_NAMES[h]}</option>`).join("")}</select>`}
     <span class="lab">Notes</span><textarea id="dNotes" placeholder="Anything I should know when applying this (landmark, connections, music…)">${esc(a.notes || "")}</textarea>
     <span class="lab">Cells</span><span>${bb ? `${cellsOf(a.key).length} — box x${bb.x} y${bb.y} ${bb.width}×${bb.height}` : "not on the map"}
       ${bb ? ` <button id="dClear" style="padding:1px 6px">clear</button>` : ""}</span>
@@ -503,6 +507,7 @@ function renderDetail() {
   $("#dIdAuto").onclick = () => { if (!a.name) return; snapshot(); a.id = toId(a.name); changed(); };
   $("#dStation").onchange = (e) => { snapshot(); a.station = e.target.checked; changed(); };
   $("#dKind").onchange = (e) => { snapshot(); a.kind = e.target.value; changed(); };
+  if ($("#dHabitat")) $("#dHabitat").onchange = (e) => { snapshot(); if (e.target.value) a.habitat = e.target.value; else delete a.habitat; changed(); };
   if ($("#dClear")) $("#dClear").onclick = () => { snapshot(); S.grid = S.grid.map((r) => r.map((c) => (c === a.key ? null : c))); changed(); };
   el.querySelectorAll(".chip").forEach((c) => c.onclick = () => { snapshot(); S.mapAssign[c.dataset.f] = "MAPSEC_NONE"; changed(); });
   if ($("#dDel")) $("#dDel").onclick = () => {

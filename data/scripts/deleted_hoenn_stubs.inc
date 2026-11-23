@@ -28,3 +28,29 @@ Route110_TrickHousePuzzle_EventScript_Door::
 
 RustboroCity_Gym_EventScript_RegisterRoxanne::
 	end
+
+@ Second pass (dev_scripts/tosa_maps/delete_hoenn_leftovers.py).
+
+FarawayIsland_Interior_EventScript_HideMewWhenGrassCut::
+	end
+
+IslandCave_EventScript_OpenRegiEntrance::
+	end
+
+Kecleon_Text_SomethingUnseeable::
+	.string "$"
+
+Kecleon_Text_UseDevonScopeMonAttacked::
+	.string "$"
+
+Kecleon_Text_WantToUseDevonScope::
+	.string "$"
+
+Route119_EventScript_ScottWonAtFortreeGymCall::
+	end
+
+SkyPillar_Outside_EventScript_ClosedDoor::
+	end
+
+TrainerHill_Entrance_Text_ChallengeTime::
+	.string "$"

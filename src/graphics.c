@@ -1806,6 +1806,7 @@ const u32 gOrchidRegionMapFrame_Tilemap[] = INCGFX_U32("graphics/pokenav/region_
 const u16 gOrchidDexScreen_Pal[] = INCGFX_U16("graphics/pokedex/orchid/screen.pal", ".gbapal");
 const u8 gOrchidDexRow_Gfx[] = INCGFX_U8("graphics/pokedex/orchid/row.png", ".4bpp");
 const u8 gOrchidDexBall_Gfx[] = INCGFX_U8("graphics/pokedex/orchid/ball.png", ".4bpp");
+const u8 gOrchidDexBallGrey_Gfx[] = INCGFX_U8("graphics/pokedex/orchid/hab_ball_grey.png", ".4bpp");
 const u8 gOrchidDexThumb_Gfx[] = INCGFX_U8("graphics/pokedex/orchid/thumb.png", ".4bpp");
 const u8 gSatchelRing_Gfx[] = INCGFX_U8("graphics/bag/satchel_ring.png", ".4bpp");
 const u8 gSatchelThumb_Gfx[] = INCGFX_U8("graphics/bag/satchel_thumb.png", ".4bpp");

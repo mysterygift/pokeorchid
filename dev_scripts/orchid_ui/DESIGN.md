@@ -147,3 +147,28 @@ MAP (region map) — v2, approved 2026-11-17
 - MAP v2: `export_map_v2.py` + `RegionMap_LoadOrchidMapV2` in region_map.c. Placeholder places have no visited
   flags yet, so they stay grey. The Fly map cursor still moves freely (A only works on places you can fly to).
 - PokéNav Condition / Ribbons retired behind `ORCHID_RETIRE_POKENAV_CONDITION_RIBBONS` (include/config/general.h).
+
+## Pokédex HABITATS (2026-11-22 / 23)
+
+Review page: https://claude.ai/artifact/DSMUW9W3u7BdwJ6APXue4b. Mock: `mock_habitats.py`; ROM art + data:
+`export_habitats.py` → `graphics/pokedex/orchid/habitats_*`, `hab_*.png`, `src/data/pokedex_habitats.h`;
+code: `src/pokedex_habitats.c` (START on the dex list).
+
+Approved decisions:
+- Region map view; the cursor hops habitat to habitat (sections with wild tables); the hovered habitat glows,
+  its zone (Northern / Eastern / Southern / Western Tosa) is lit, other land dimmed (sea untouched), gold rim.
+  Zones are set per area in the region map tagger (Habitat dropdown, `tags.json` "habitat"); Tiksi is one zone.
+- "Ⓐ Route View" call to action above the route name. L / R switch region; the Tiksi tab appears once
+  FLAG_VISITED_FURONG_VILLAGE is set. SELECT flips day / night (morning + day + evening share the day list).
+- Seen → Captured → Catalogued. Captured = the caught flag (any acquisition); catalogued = caught a second time
+  (`SaveBlock3.dexCatalogued`, set in `Cmd_trysetcaughtmondexflags`). One capture: category, HT/WT, AREA tab,
+  level ranges. Two captures: dex description and encounter rates. Progress is per species, not per route.
+- Icons: not seen = black silhouette, seen = greyscale, captured = colour + GREY Poké Ball, catalogued =
+  colour + COLOUR Poké Ball (user 2026-11-23; replaced the gold book). The same balls mark list rows, the entry
+  name pill, counts and map badges. A habitat badge needs both its day and night lists.
+- A on a seen species opens its dex entry (B then returns to the list, not the route page).
+- Wild tables: placeholders for every Tosa / Tiksi map (`dev_scripts/orchid_encounters/encounters.py`), day + night.
+
+Day / night (OW_ENABLE_DNS) lives in `dev_scripts/orchid_dns/`: house windows, gym door, Pokémon Center upper
+windows + door, Mart door only, station glass, Tosa Port jetty lamp bulbs. All on the TosaPort tileset; Telok
+(Petalburg) and the Tiksi towns are not lit yet.

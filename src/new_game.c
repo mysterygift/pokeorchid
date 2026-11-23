@@ -254,4 +254,5 @@ static void ResetDexNav(void)
     memset(gSaveBlock3Ptr->dexNavSearchLevels, 0, sizeof(gSaveBlock3Ptr->dexNavSearchLevels));
 #endif
     gSaveBlock3Ptr->dexNavChain = 0;
+    memset(gSaveBlock3Ptr->dexCatalogued, 0, sizeof(gSaveBlock3Ptr->dexCatalogued));
 }
