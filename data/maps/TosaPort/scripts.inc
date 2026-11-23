@@ -11,9 +11,9 @@ TosaPort_MapScripts::
 # 6 "data/maps/TosaPort/scripts.pory"
 
 # 7 "data/maps/TosaPort/scripts.pory"
-@ The player arrives with their Rotom Phone (PHONE on the start menu, quests enabled). It stays
+@ The player arrives with their Rotom Phone (PHONE on the start menu). It stays offline until
 # 8 "data/maps/TosaPort/scripts.pory"
-@ offline until Prof. Palm connects it in Palm Labs (FLAG_SYS_PHONE_ACTIVE).
+@ Prof. Palm connects it in Palm Labs (FLAG_SYS_PHONE_ACTIVE); quest givers wait for that.
 # 9 "data/maps/TosaPort/scripts.pory"
 TosaPort_OnTransition:
 # 10 "data/maps/TosaPort/scripts.pory"
@@ -531,7 +531,7 @@ TosaPort_GBAKid::
 # 294 "data/maps/TosaPort/scripts.pory"
 	faceplayer
 # 295 "data/maps/TosaPort/scripts.pory"
-	goto_if_unset FLAG_SYS_ROTOM_PHONE_GET, TosaPort_GBAKid_2
+	goto_if_unset FLAG_SYS_PHONE_ACTIVE, TosaPort_GBAKid_2
 # 301 "data/maps/TosaPort/scripts.pory"
 	questmenu QUEST_MENU_CHECK_COMPLETE, QUEST_GBA_BATTERIES
 # 302 "data/maps/TosaPort/scripts.pory"
@@ -739,7 +739,7 @@ TosaPort_OldMan::
 # 415 "data/maps/TosaPort/scripts.pory"
 	lock
 # 416 "data/maps/TosaPort/scripts.pory"
-	goto_if_unset FLAG_SYS_ROTOM_PHONE_GET, TosaPort_OldMan_2
+	goto_if_unset FLAG_SYS_PHONE_ACTIVE, TosaPort_OldMan_2
 # 422 "data/maps/TosaPort/scripts.pory"
 	questmenu QUEST_MENU_CHECK_COMPLETE, QUEST_HEART_SCALE
 # 423 "data/maps/TosaPort/scripts.pory"

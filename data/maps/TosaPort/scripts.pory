@@ -4,8 +4,8 @@ TosaPort_MapScripts::
 	map_script MAP_SCRIPT_ON_WARP_INTO_MAP_TABLE, TosaPort_OnWarp
 	.byte 0
 
-@ The player arrives with their Rotom Phone (PHONE on the start menu, quests enabled). It stays
-@ offline until Prof. Palm connects it in Palm Labs (FLAG_SYS_PHONE_ACTIVE).
+@ The player arrives with their Rotom Phone (PHONE on the start menu). It stays offline until
+@ Prof. Palm connects it in Palm Labs (FLAG_SYS_PHONE_ACTIVE); quest givers wait for that.
 TosaPort_OnTransition:
 	setflag FLAG_VISITED_TOSA_PORT
 	setflag FLAG_SYS_ROTOM_PHONE_GET
@@ -292,7 +292,7 @@ mart ChefStallGoods{
 script TosaPort_GBAKid {
 	lock
 	faceplayer
-	if (!flag(FLAG_SYS_ROTOM_PHONE_GET)) {
+	if (!flag(FLAG_SYS_PHONE_ACTIVE)) {
 		msgbox("Ugh, Dad's making me watch his stall.\n"
 		"At least he let me bring my GBA.")
 		release
@@ -413,7 +413,7 @@ script TosaPort_LoadingTrucker {
 // hidden one on the South Tosa Reserve riverbank (FLAG_HIDDEN_ITEM_SOUTH_TOSA_RESERVE_HEART_SCALE).
 script TosaPort_OldMan {
 	lock
-	if (!flag(FLAG_SYS_ROTOM_PHONE_GET)) {
+	if (!flag(FLAG_SYS_PHONE_ACTIVE)) {
 		msgbox("Fu-fu-fu...I met my wife at this very\n"
 		"spot 10 years ago.")
 		release

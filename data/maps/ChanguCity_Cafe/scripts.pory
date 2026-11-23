@@ -36,7 +36,7 @@ script ChanguCity_Cafe_EventScript_Tourist {
 script ChanguCity_Cafe_EventScript_KalosArtist {
     lock
     faceplayer
-    if (!flag(FLAG_SYS_ROTOM_PHONE_GET)) {
+    if (!flag(FLAG_SYS_PHONE_ACTIVE)) {
         msgbox(format("Bonjour… Pardon, I am a little homesick today."))
         msgbox(format("I came from Lumiose to paint the colours of Tosa. The light here is magnifique, but the food… it is not home."))
         release

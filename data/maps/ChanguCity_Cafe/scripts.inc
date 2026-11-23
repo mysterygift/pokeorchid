@@ -53,7 +53,7 @@ ChanguCity_Cafe_EventScript_KalosArtist::
 # 38 "data/maps/ChanguCity_Cafe/scripts.pory"
 	faceplayer
 # 39 "data/maps/ChanguCity_Cafe/scripts.pory"
-	goto_if_unset FLAG_SYS_ROTOM_PHONE_GET, ChanguCity_Cafe_EventScript_KalosArtist_2
+	goto_if_unset FLAG_SYS_PHONE_ACTIVE, ChanguCity_Cafe_EventScript_KalosArtist_2
 # 45 "data/maps/ChanguCity_Cafe/scripts.pory"
 	questmenu QUEST_MENU_CHECK_COMPLETE, QUEST_TASTE_OF_HOME
 # 46 "data/maps/ChanguCity_Cafe/scripts.pory"
