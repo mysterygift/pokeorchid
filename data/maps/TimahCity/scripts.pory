@@ -27,8 +27,7 @@ script TimahCity_EventScript_PalmCall {
     waitmessage
     closemessage
     setvar(VAR_ORCHID_RESEARCH, 2)
-    questmenu(QUEST_MENU_BUZZ, 0)
-    msgbox(format("Bzzt! Palm's Research is now in the QUESTS app!"))
+    msgbox(format("Bzzt! Palm's Research is now in the QUESTS app!"), MSGBOX_ROTOM)
     releaseall
 }
 

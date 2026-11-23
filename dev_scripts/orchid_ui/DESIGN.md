@@ -85,7 +85,8 @@ QUESTS app (PSF Unbound Quest Menu, branch `unbound-quest-menu`, reskinned)
 - Tray: sprite in the icon well (item / mon / object), pin location pill, 2 description lines, Ⓐ Steps
   only on quests with subquests. Steps view: quest name header, segmented progress bar, B = back.
 - Scrollbar hidden when everything fits.
-- **New/updated quests: Rotom buzzes on the field** (phone icon + jingle) instead of PSF's message box.
+- **New/updated quests: the Rotom Phone tells you** (`MSGBOX_ROTOM`: Rotom's cry + a message box, lines in
+  data/scripts/rotom_phone.inc). The earlier phone-icon popup over the player was dropped (2026-11-23, user: non-standard).
 - Gift pictogram: keep; redraw at 9x8 if it doesn't read in mGBA.
 - Strings say Quests, not Missions; PSF/Skeli background art is not used.
 
@@ -189,7 +190,7 @@ Code: `src/research.c` (+ `src/data/research_tasks.h`), QUESTS Research tab in `
   (zone's night-only species), Palm requests (catalogue one species; clipboard mark only in the habitat Palm
   names). Save keeps claimed / announced bits (SaveBlock3.researchClaimed / researchNotified).
 - Claim in the app (A: Send to Palm): reward item + RP; Research Rank (5 ranks, 0/40/120/240/400 RP) with a gift
-  per rank-up (key items already owned are skipped). Rotom buzzes in the field when a catch finishes a task.
+  per rank-up (key items already owned are skipped). The Rotom Phone says so (MSGBOX_ROTOM) when a catch finishes a task.
 - Habitats: rows you can't use yet are locked (Surf / Rock Smash, per rod owned); unseen species with a share of
   5% or less show "?"; night lists show levels +2 with a moon.
 - Night behaviour (wild_encounter.c): +2 levels and a 1-in-10 Hidden Ability at night.

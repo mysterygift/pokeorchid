@@ -212,9 +212,6 @@ bool8 ScrCmd_questmenu(struct ScriptContext *ctx)
     case QUEST_MENU_BUFFER_QUEST_NAME:
         QuestMenu_CopyQuestName(gStringVar1, questId);
         break;
-    case QUEST_MENU_BUZZ:
-        Quests_StartRotomBuzz();
-        break;
     }
     return FALSE;
 }
@@ -256,61 +253,3 @@ bool8 ScrCmd_returnqueststate(struct ScriptContext *ctx)
         gSpecialVar_Result = FLAG_GET_COMPLETED;
     return FALSE;
 }
-
-// ---------------------------------------------------------------- Rotom buzz (field)
-// A new or updated quest: the start menu's Rotom Phone icon pops up over the player and shakes,
-// with the phone's ring (DESIGN.md "New/updated quests: Rotom buzzes on the field").
-#define TAG_ROTOM_BUZZ      0x7A40
-#define BUZZ_FRAMES         72
-#define MENU_ICON_PHONE     3       // menu_icons.png frame (menu_icons.py NAMES)
-
-static const struct OamData sOam_Buzz = { .shape = SPRITE_SHAPE(16x16), .size = SPRITE_SIZE(16x16), .priority = 1 };
-static const struct SpriteTemplate sTemplate_Buzz =
-{
-    .tileTag = TAG_ROTOM_BUZZ, .paletteTag = TAG_ROTOM_BUZZ, .oam = &sOam_Buzz, .anims = gDummySpriteAnimTable,
-    .images = NULL, .affineAnims = gDummySpriteAffineAnimTable, .callback = SpriteCallbackDummy,
-};
-
-#define tSpriteId data[0]
-#define tTimer    data[1]
-
-static void Task_RotomBuzz(u8 taskId)
-{
-    s16 *data = gTasks[taskId].data;
-    struct Sprite *sprite = &gSprites[tSpriteId];
-    struct Sprite *player = &gSprites[gPlayerAvatar.spriteId];
-
-    tTimer++;
-    sprite->x = player->x + player->x2;
-    sprite->y = player->y + player->y2 - 26 - (tTimer < 6 ? 6 - tTimer : 0);
-    sprite->x2 = (tTimer < 48 && (tTimer / 3) % 2) ? 1 : -((tTimer < 48) && ((tTimer / 3) % 2 == 0));
-    if (tTimer >= BUZZ_FRAMES)
-    {
-        DestroySprite(sprite);
-        FreeSpriteTilesByTag(TAG_ROTOM_BUZZ);
-        FreeSpritePaletteByTag(TAG_ROTOM_BUZZ);
-        DestroyTask(taskId);
-    }
-}
-
-void Quests_StartRotomBuzz(void)
-{
-    struct SpriteSheet sheet = { gOrchidStartMenuIcons_Gfx + MENU_ICON_PHONE * 16 * 16 / 2, 16 * 16 / 2, TAG_ROTOM_BUZZ };
-    struct SpritePalette pal = { gOrchidStartMenuIcons_Pal, TAG_ROTOM_BUZZ };
-    u8 taskId, spriteId;
-
-    if (FuncIsActiveTask(Task_RotomBuzz))
-        return;
-    LoadSpriteSheet(&sheet);
-    LoadSpritePalette(&pal);
-    spriteId = CreateSprite(&sTemplate_Buzz, 0, 0, 0);
-    if (spriteId == MAX_SPRITES)
-        return;
-    taskId = CreateTask(Task_RotomBuzz, 80);
-    gTasks[taskId].tSpriteId = spriteId;
-    Task_RotomBuzz(taskId);
-    PlaySE(SE_POKENAV_CALL);
-}
-
-#undef tSpriteId
-#undef tTimer

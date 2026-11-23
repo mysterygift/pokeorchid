@@ -16,7 +16,6 @@
 #define QUEST_MENU_CHECK_REWARD         8   // checks if questId is in Reward state. Returns result to gSpecialVar_Result
 #define QUEST_MENU_CHECK_COMPLETE       9   // checks if questId has been completed. Returns result to gSpecialVar_Result
 #define QUEST_MENU_BUFFER_QUEST_NAME    10  // buffers a quest name to gStringVar1
-#define QUEST_MENU_BUZZ                 11  // Orchid: Rotom buzzes on the field (new / updated quest)
 
 // quest number defines
 #define QUEST_1          0

@@ -66,6 +66,14 @@ Std_MsgboxPokenav:
 	waitmessage
 	return
 
+@ Orchid: whenever the Rotom Phone talks to the player it cries first; otherwise like MSGBOX_DEFAULT.
+Std_MsgboxRotom:
+	playmoncry SPECIES_ROTOM, CRY_MODE_NORMAL
+	message NULL
+	waitmessage
+	waitbuttonpress
+	return
+
 EventScript_UnusedReturn:
 	return
 

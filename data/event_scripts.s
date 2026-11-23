@@ -132,6 +132,7 @@ gStdScripts::
 	.4byte Std_MsgboxPokenav           @ MSGBOX_POKENAV
 	.4byte Std_PutItemAway             @ STD_PUT_ITEM_AWAY
 	.4byte Std_ReceivedItem            @ STD_RECEIVED_ITEM
+	.4byte Std_MsgboxRotom             @ MSGBOX_ROTOM
 gStdScripts_End::
 
 
@@ -580,6 +581,7 @@ gStdScripts_End::
 .endif
 
 	.include "data/scripts/std_msgbox.inc"
+	.include "data/scripts/rotom_phone.inc"
 	.include "data/scripts/type_rps.inc"
 	.include "data/scripts/trainer_battle.inc"
 	.include "data/scripts/new_game.inc"

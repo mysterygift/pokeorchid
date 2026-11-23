@@ -2121,6 +2121,7 @@
 	MSGBOX_AUTOCLOSE = 6
 	MSGBOX_GETPOINTS = 9
 	MSGBOX_POKENAV = 10
+	MSGBOX_ROTOM = 13     @ Orchid: the Rotom Phone speaks (Rotom's cry, then a default message box)
 
 	YES = 1
 	NO  = 0
@@ -3048,28 +3049,34 @@
     questmenu 0 0
     .endm
 
-    @ Starts the specified quest. Orchid: Rotom buzzes on the field instead of PSF's message box.
+    @ Orchid: the Rotom Phone announces quest changes (data/scripts/rotom_phone.inc, MSGBOX_ROTOM).
+    .macro rotomquestmsg quest:req, text:req
+    questmenu QUEST_MENU_BUFFER_QUEST_NAME, \quest
+    msgbox \text, MSGBOX_ROTOM
+    .endm
+
+    @ Starts the specified quest.
     .macro startquest quest:req
     questmenu QUEST_MENU_SET_ACTIVE, \quest
-    questmenu QUEST_MENU_BUZZ, \quest
+    rotomquestmsg \quest, gText_Rotom_QuestStarted
     .endm
 
     @ Marks the specified quest ready for its reward (counts on the phone's QUESTS badge).
     .macro rewardquest quest:req
     questmenu QUEST_MENU_SET_REWARD, \quest
-    questmenu QUEST_MENU_BUZZ, \quest
+    rotomquestmsg \quest, gText_Rotom_QuestReward
     .endm
 
     @ Completes the specified quest.
     .macro completequest quest:req
     questmenu QUEST_MENU_COMPLETE_QUEST, \quest
-    questmenu QUEST_MENU_BUZZ, \quest
+    rotomquestmsg \quest, gText_Rotom_QuestComplete
     .endm
 
     @ Unlocks the specified quest (it shows in the list as New).
     .macro unlockquest quest:req
     questmenu QUEST_MENU_UNLOCK_QUEST, \quest
-    questmenu QUEST_MENU_BUZZ, \quest
+    rotomquestmsg \quest, gText_Rotom_QuestUnlocked
     .endm
 
     .macro goto_if_quest_inactive quest:req, dest:req
@@ -3154,7 +3161,7 @@
 
     .macro completesubquest quest:req, subquest:req
     subquestmenu QUEST_MENU_COMPLETE_QUEST, \quest, \subquest
-    questmenu QUEST_MENU_BUZZ, \quest
+    rotomquestmsg \quest, gText_Rotom_QuestUpdated
     .endm
 
     .macro goto_if_subquest_complete parent:req,child:req, dest:req

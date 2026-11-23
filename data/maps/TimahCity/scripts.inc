@@ -53,102 +53,100 @@ TimahCity_EventScript_PalmCall::
 # 29 "data/maps/TimahCity/scripts.pory"
 	setvar VAR_ORCHID_RESEARCH, 2
 # 30 "data/maps/TimahCity/scripts.pory"
-	questmenu QUEST_MENU_BUZZ, 0
+	msgbox TimahCity_EventScript_PalmCall_Text_0, MSGBOX_ROTOM
 # 31 "data/maps/TimahCity/scripts.pory"
-	msgbox TimahCity_EventScript_PalmCall_Text_0
-# 32 "data/maps/TimahCity/scripts.pory"
 	releaseall
 	return
 
 
 TimahCity_EventScript_TownSign::
-# 40 "data/maps/TimahCity/scripts.pory"
+# 39 "data/maps/TimahCity/scripts.pory"
 	msgbox TimahCity_EventScript_TownSign_Text_0, MSGBOX_SIGN
 	return
 
 
 TimahCity_EventScript_GymSign::
-# 44 "data/maps/TimahCity/scripts.pory"
+# 43 "data/maps/TimahCity/scripts.pory"
 	msgbox TimahCity_EventScript_GymSign_Text_0, MSGBOX_SIGN
 	return
 
 
 TimahCity_EventScript_Npc1::
-# 48 "data/maps/TimahCity/scripts.pory"
+# 47 "data/maps/TimahCity/scripts.pory"
 	msgbox TimahCity_EventScript_Npc1_Text_0, MSGBOX_NPC
 	return
 
 
 TimahCity_EventScript_Npc2::
-# 52 "data/maps/TimahCity/scripts.pory"
+# 51 "data/maps/TimahCity/scripts.pory"
 	msgbox TimahCity_EventScript_Npc2_Text_0, MSGBOX_NPC
 	return
 
 
 TimahCity_EventScript_Npc3::
-# 56 "data/maps/TimahCity/scripts.pory"
+# 55 "data/maps/TimahCity/scripts.pory"
 	msgbox TimahCity_EventScript_Npc3_Text_0, MSGBOX_NPC
 	return
 
 
 TimahCity_EventScript_Npc4::
-# 60 "data/maps/TimahCity/scripts.pory"
+# 59 "data/maps/TimahCity/scripts.pory"
 	msgbox TimahCity_EventScript_Npc4_Text_0, MSGBOX_NPC
 	return
 
 
 TimahCity_EventScript_Npc5::
-# 64 "data/maps/TimahCity/scripts.pory"
+# 63 "data/maps/TimahCity/scripts.pory"
 	msgbox TimahCity_EventScript_Npc5_Text_0, MSGBOX_NPC
 	return
 
 
 TimahCity_EventScript_PalmCall_Text_0:
-# 31 "data/maps/TimahCity/scripts.pory"
+# 30 "data/maps/TimahCity/scripts.pory"
 	.string "Bzzt! Palm's Research is now in the\n"
 	.string "QUESTS app!$"
 
 TimahCity_EventScript_TownSign_Text_0:
-# 40 "data/maps/TimahCity/scripts.pory"
+# 39 "data/maps/TimahCity/scripts.pory"
 	.string "Timah City\n"
 	.string "“The green heart of the Tosa Reserve.”$"
 
 TimahCity_EventScript_GymSign_Text_0:
-# 44 "data/maps/TimahCity/scripts.pory"
+# 43 "data/maps/TimahCity/scripts.pory"
 	.string "Timah City Pokémon Gym\n"
 	.string "Leader: Hana. Grass-type Pokémon.$"
 
 TimahCity_EventScript_Npc1_Text_0:
-# 48 "data/maps/TimahCity/scripts.pory"
+# 47 "data/maps/TimahCity/scripts.pory"
 	.string "Hana grows orchids in her garden that\n"
 	.string "bloom nowhere else in the world. She\l"
 	.string "guards them better than her Gym Badge!$"
 
 TimahCity_EventScript_Npc2_Text_0:
-# 52 "data/maps/TimahCity/scripts.pory"
+# 51 "data/maps/TimahCity/scripts.pory"
 	.string "Timah sits right in the middle of the\n"
 	.string "Tosa Reserve. Stick to the paths. The\l"
 	.string "Rangers are watching for poachers.$"
 
 TimahCity_EventScript_Npc3_Text_0:
-# 56 "data/maps/TimahCity/scripts.pory"
+# 55 "data/maps/TimahCity/scripts.pory"
 	.string "It rains here every afternoon, like\n"
 	.string "clockwork. Bring an umbrella. Or a Lotad.$"
 
 TimahCity_EventScript_Npc4_Text_0:
-# 60 "data/maps/TimahCity/scripts.pory"
+# 59 "data/maps/TimahCity/scripts.pory"
 	.string "This city grew up around the old rubber\n"
 	.string "trees on the hill. Now look at it: trains,\l"
 	.string "Pokémon Centres…$"
 
 TimahCity_EventScript_Npc5_Text_0:
-# 64 "data/maps/TimahCity/scripts.pory"
+# 63 "data/maps/TimahCity/scripts.pory"
 	.string "There are Pokémon up in the canopy\n"
 	.string "that never come down to the ground.\l"
 	.string "I've been waiting all week!$"
 
 TimahCity_Text_PalmCall::
-# 35 "data/maps/TimahCity/scripts.pory"
+# 34 "data/maps/TimahCity/scripts.pory"
 	.string "PALM: {PLAYER}! Professor\n"
 	.string "Palm here. Word travels fast:\l"
 	.string "you beat Hana! Congratulations!\p"

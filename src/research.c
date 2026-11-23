@@ -1,8 +1,10 @@
 // Orchid: Professor Palm's research tasks. See include/research.h.
 #include "global.h"
 #include "event_data.h"
+#include "event_scripts.h"
 #include "field_player_avatar.h"
 #include "item.h"
+#include "palette.h"
 #include "pokedex.h"
 #include "pokedex_habitats.h"
 #include "quests.h"
@@ -242,9 +244,10 @@ void Research_MarkDirty(void)
 void Research_Update(void)
 {
     u32 id;
-    bool32 buzz = FALSE;
+    bool32 buzz = FALSE;   // the Rotom Phone tells the player (data/scripts/rotom_phone.inc)
 
-    if (!sResearchDirty || ArePlayerFieldControlsLocked() || !Research_IsUnlocked())
+    if (!sResearchDirty || ArePlayerFieldControlsLocked() || ScriptContext_IsEnabled() || gPaletteFade.active
+     || !Research_IsUnlocked())
         return;
     sResearchDirty = FALSE;
     for (id = 0; id < ARRAY_COUNT(sResearchTasks); id++)
@@ -258,5 +261,5 @@ void Research_Update(void)
         }
     }
     if (buzz)
-        Quests_StartRotomBuzz();
+        ScriptContext_SetupScript(Rotom_EventScript_ResearchTaskDone);
 }
