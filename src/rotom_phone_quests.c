@@ -65,6 +65,14 @@ static const u8 sGlyphs_Gfx[] = INCGFX_U8("graphics/rotom_phone/quests_glyphs.pn
 #define TRAY_Y      114
 #define WELL_X      20
 #define WELL_Y      137
+// tray rows (screen y): location pill + right-hand label, then the two description lines.
+// Line 2's descenders end on y 158, just above the tray's bottom border, so the pill moves up instead.
+#define TRAY_TOP        112     // WIN_TRAY tilemapTop * 8
+#define TRAY_PILL_Y     117
+#define TRAY_TEXT_Y     131
+#define TRAY_TEXT_Y2    144
+// item icons draw their 24x24 art in the top-left of a 32x32 sprite: shift by 4 to centre it in the well
+#define ITEM_ICON_NUDGE 4
 
 enum { FILTER_ALL, FILTER_NEW, FILTER_ACTIVE, FILTER_REWARD, FILTER_DONE, FILTER_RESEARCH, FILTER_COUNT };
 enum { POPUP_NONE, POPUP_CLAIM, POPUP_RANK, POPUP_BAG_FULL };
@@ -488,8 +496,8 @@ static void CreateIcon(u16 sprite, u8 type)
         sQ->iconSpriteId = AddItemIconSprite(TAG_Q_ITEM, TAG_Q_ITEM, sprite);
         if (sQ->iconSpriteId != MAX_SPRITES)
         {
-            gSprites[sQ->iconSpriteId].x = WELL_X;
-            gSprites[sQ->iconSpriteId].y = WELL_Y;
+            gSprites[sQ->iconSpriteId].x = WELL_X + ITEM_ICON_NUDGE;
+            gSprites[sQ->iconSpriteId].y = WELL_Y + ITEM_ICON_NUDGE;
         }
         break;
     case PKMN:
@@ -717,7 +725,7 @@ static void PrintTray(void)
     if (sQ->count == 0)
     {
         DestroyIcon();
-        AddTextPrinterParameterized4(WIN_TRAY, FONT_NORMAL, 47, 130 - 112, 0, 0, sColors_Ink, TEXT_SKIP_DRAW,
+        AddTextPrinterParameterized4(WIN_TRAY, FONT_NORMAL, 47, TRAY_TEXT_Y - TRAY_TOP, 0, 0, sColors_Ink, TEXT_SKIP_DRAW,
                                      COMPOUND_STRING("Nothing here yet, bzzt!"));
         CopyWindowToVram(WIN_TRAY, COPYWIN_GFX);
         return;
@@ -819,26 +827,26 @@ static void PrintTray(void)
     // location pill (pin cap) sized to the name
     {
         u32 w = GetStringWidth(FONT_NARROW, map, 0);
-        PhoneUI_RoundBox(WIN_TRAY, 46, 119 - 112, 10 + 16 + w, 14, 4, KIT_PANEL, KIT_INK, KIT_WHITE, KIT_PANEL_SHADE, TRUE);
-        BlitBitmapRectToWindow(WIN_TRAY, sGlyphs_Gfx, 0, 0, 64, 16, 46, 119 - 112, 17, 14);
-        AddTextPrinterParameterized4(WIN_TRAY, FONT_NARROW, 46 + 16 + 4, 118 - 112, 0, 0, sColors_Ink, TEXT_SKIP_DRAW, map);
+        PhoneUI_RoundBox(WIN_TRAY, 46, TRAY_PILL_Y - TRAY_TOP, 10 + 16 + w, 14, 4, KIT_PANEL, KIT_INK, KIT_WHITE, KIT_PANEL_SHADE, TRUE);
+        BlitBitmapRectToWindow(WIN_TRAY, sGlyphs_Gfx, 0, 0, 64, 16, 46, TRAY_PILL_Y - TRAY_TOP, 17, 14);
+        AddTextPrinterParameterized4(WIN_TRAY, FONT_NARROW, 46 + 16 + 4, TRAY_PILL_Y - 1 - TRAY_TOP, 0, 0, sColors_Ink, TEXT_SKIP_DRAW, map);
     }
     if (stepsHint)
     {
         const u8 *s = COMPOUND_STRING("Steps");
         u32 w = GetStringWidth(FONT_NARROW, s, 0);
-        BlitBitmapRectToWindow(WIN_TRAY, sGlyphs_Gfx, 24, 0, 64, 16, 236 - w - 12, 122 - 112, 8, 8);
-        AddTextPrinterParameterized4(WIN_TRAY, FONT_NARROW, 236 - w, 118 - 112, 0, 0, sColors_Soft, TEXT_SKIP_DRAW, s);
+        BlitBitmapRectToWindow(WIN_TRAY, sGlyphs_Gfx, 24, 0, 64, 16, 236 - w - 12, TRAY_PILL_Y + 3 - TRAY_TOP, 8, 8);
+        AddTextPrinterParameterized4(WIN_TRAY, FONT_NARROW, 236 - w, TRAY_PILL_Y - 1 - TRAY_TOP, 0, 0, sColors_Soft, TEXT_SKIP_DRAW, s);
     }
     else if (sendHint)
     {
         u32 w = GetStringWidth(FONT_NARROW, right, 0);
-        BlitBitmapRectToWindow(WIN_TRAY, sGlyphs_Gfx, 24, 0, 64, 16, 236 - w - 12, 122 - 112, 8, 8);
-        AddTextPrinterParameterized4(WIN_TRAY, FONT_NARROW, 236 - w, 118 - 112, 0, 0, sColors_Soft, TEXT_SKIP_DRAW, right);
+        BlitBitmapRectToWindow(WIN_TRAY, sGlyphs_Gfx, 24, 0, 64, 16, 236 - w - 12, TRAY_PILL_Y + 3 - TRAY_TOP, 8, 8);
+        AddTextPrinterParameterized4(WIN_TRAY, FONT_NARROW, 236 - w, TRAY_PILL_Y - 1 - TRAY_TOP, 0, 0, sColors_Soft, TEXT_SKIP_DRAW, right);
     }
     else if (right != NULL)
     {
-        AddTextPrinterParameterized4(WIN_TRAY, FONT_NARROW, 236 - GetStringWidth(FONT_NARROW, right, 0), 118 - 112, 0, 0,
+        AddTextPrinterParameterized4(WIN_TRAY, FONT_NARROW, 236 - GetStringWidth(FONT_NARROW, right, 0), TRAY_PILL_Y - 1 - TRAY_TOP, 0, 0,
                                      sColors_Soft, TEXT_SKIP_DRAW, right);
     }
     if (text != NULL)
@@ -850,9 +858,9 @@ static void PrintTray(void)
         if (*nl == CHAR_NEWLINE)
         {
             *nl = EOS;
-            AddTextPrinterParameterized4(WIN_TRAY, FONT_NORMAL, 47, 130 - 112 + 14, 0, 0, sColors_Ink, TEXT_SKIP_DRAW, nl + 1);
+            AddTextPrinterParameterized4(WIN_TRAY, FONT_NORMAL, 47, TRAY_TEXT_Y2 - TRAY_TOP, 0, 0, sColors_Ink, TEXT_SKIP_DRAW, nl + 1);
         }
-        AddTextPrinterParameterized4(WIN_TRAY, FONT_NORMAL, 47, 130 - 112, 0, 0, sColors_Ink, TEXT_SKIP_DRAW, gStringVar4);
+        AddTextPrinterParameterized4(WIN_TRAY, FONT_NORMAL, 47, TRAY_TEXT_Y - TRAY_TOP, 0, 0, sColors_Ink, TEXT_SKIP_DRAW, gStringVar4);
     }
     CopyWindowToVram(WIN_TRAY, COPYWIN_GFX);
     CreateIcon(sprite, type);
