@@ -263,10 +263,15 @@ script TosaPort_ChefStall {
 }
 
 // A Taste of Home (QUEST_TASTE_OF_HOME): the Kalos artist in the Changu City Café wants an Old Gateau.
+// While the quest is active the chef gives one Old Gateau for free (once).
 script TosaPort_ChefStall_GateauHint {
 	questmenu(QUEST_MENU_CHECK_ACTIVE, QUEST_TASTE_OF_HOME)
-	if (var(VAR_RESULT)) {
-		msgbox(format("Quoi? Someone from Kalos is missing home? Then they need an Old Gateau! A taste of Kalos in every bite, mon ami."))
+	if (var(VAR_RESULT) && !flag(FLAG_RECEIVED_CHEF_OLD_GATEAU)) {
+		msgbox(format("Quoi? Someone from Kalos is missing home? Bien sûr, they only need a taste of my delicious gateau! Bring this to ton ami, mon ami."))
+		giveitem(ITEM_OLD_GATEAU)
+		if (var(VAR_RESULT)) {
+			setflag(FLAG_RECEIVED_CHEF_OLD_GATEAU)
+		}
 	}
 	return
 }
@@ -280,13 +285,13 @@ mart ChefStallGoods{
 }
 
 // Flat Batteries (QUEST_PSP_BATTERIES): step 1 = the dad at the chef's stall hands over a
-// Cell Battery, step 2 = bring it back here. The player keeps the battery.
+// Cell Battery, step 2 = bring it back here; the kid takes it for his GBA.
 script TosaPort_PSPKid {
 	lock
 	faceplayer
 	questmenu(QUEST_MENU_CHECK_COMPLETE, QUEST_PSP_BATTERIES)
 	if (var(VAR_RESULT)) {
-		msgbox(format("Dad says no new batteries until the stall sells out. So now I'm selling fruit. I'm actually kind of good at it!"))
+		msgbox(format("I've been helping my Dad sell fruit we import from Hoenn."))
 		release
 		end
 	}
@@ -295,8 +300,21 @@ script TosaPort_PSPKid {
 		subquestmenu(QUEST_MENU_CHECK_COMPLETE, QUEST_PSP_BATTERIES, SUB_QUEST_1)
 		if (var(VAR_RESULT)) {
 			msgbox(format("You found Dad? Did he give you some batteries?"))
-			msgbox(format("…A Cell Battery? That's for Pokémon, not a PSP!"))
-			msgbox(format("Ugh, Dad… You keep it. Your Pokémon will get more use out of it than me."))
+			checkitem(ITEM_CELL_BATTERY)
+			if (!var(VAR_RESULT)) {
+				msgbox(format("Huh? Dad said he gave you one. Did you lose it?"))
+				release
+				end
+			}
+			removeitem(ITEM_CELL_BATTERY)
+			msgbox(format("{PLAYER} handed over the Cell Battery."))
+			msgbox(format("A Cell Battery? I guess that'd work!"))
+			checkplayergender
+			if (var(VAR_RESULT) == MALE) {
+				msgbox(format("Thanks mister. Now that I've got some power again, do you fancy trading Pokémon with me? If you have a Magnemite I can trade you my Corsola."))
+			} else {
+				msgbox(format("Thanks miss. Now that I've got some power again, do you fancy trading Pokémon with me? If you have a Magnemite I can trade you my Corsola."))
+			}
 			subquestmenu(QUEST_MENU_COMPLETE_QUEST, QUEST_PSP_BATTERIES, SUB_QUEST_2)
 			completequest(QUEST_PSP_BATTERIES)
 			release
@@ -307,15 +325,15 @@ script TosaPort_PSPKid {
 		end
 	}
 	msgbox("Ugh, Dad's making me watch his stall.\n"
-	"At least he let me bring my PSP.")
+	"At least he let me bring my GBA.")
 	msgbox(format("…And now the batteries are flat! Dad wandered off for a snack ages ago."))
 	msgbox(format("Could you find him and ask him for some batteries?"), MSGBOX_YESNO)
 	if (var(VAR_RESULT) == NO) {
-		msgbox(format("Fine. I'll just stare at the fruit, then."))
+		msgbox(format("Ugh, adults are so lame!"))
 		release
 		end
 	}
-	msgbox(format("Thanks! He's big, and he's always hungry. Try anywhere that sells food."))
+	msgbox(format("Thanks! Dad said he was in the mood for something sweet."))
 	startquest(QUEST_PSP_BATTERIES)
 	release
 	end
@@ -445,7 +463,7 @@ script TosaPort_OldMan_ShowHeartScale {
 	closemessage
 	applymovement(LOCALID_TOSA_PORT_OLD_WOMAN, moves(face_player))
 	waitmovement(0)
-	msgbox(format("Thank you, dearie. Please, take this. It rang at our wedding. Now it's rung for us twice."))
+	msgbox(format("Thank you, dearie. Please, take this. It was a gift for our Pokémon we received on our wedding day. I hope it brings you and your Pokémon as much joy as it did for us."))
 	giveitem(ITEM_SOOTHE_BELL)
 	completequest(QUEST_HEART_SCALE)
 	applymovement(LOCALID_TOSA_PORT_OLD_MAN, moves(face_down))

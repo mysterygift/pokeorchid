@@ -165,7 +165,10 @@ ChanguCity_Cafe_EventScript_KalosArtist_Text_0:
 # 41 "data/maps/ChanguCity_Cafe/scripts.pory"
 	.string "Merci encore, mon ami! I wrote to the\n"
 	.string "chef in Tosa Port. Now he posts me an\l"
-	.string "Old Gateau every month!$"
+	.string "Old Gateau every month! It's a shame it\l"
+	.string "always comes so mushy in the post, I'll\l"
+	.string "have to make le voyage there myself one\l"
+	.string "day!$"
 
 ChanguCity_Cafe_EventScript_KalosArtist_Text_1:
 # 47 "data/maps/ChanguCity_Cafe/scripts.pory"

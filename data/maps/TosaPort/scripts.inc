@@ -475,449 +475,491 @@ TosaPort_ChefStall_2:
 
 
 TosaPort_ChefStall_GateauHint::
-# 267 "data/maps/TosaPort/scripts.pory"
-	questmenu QUEST_MENU_CHECK_ACTIVE, QUEST_TASTE_OF_HOME
 # 268 "data/maps/TosaPort/scripts.pory"
+	questmenu QUEST_MENU_CHECK_ACTIVE, QUEST_TASTE_OF_HOME
+# 269 "data/maps/TosaPort/scripts.pory"
 	compare VAR_RESULT, 0
-	goto_if_ne TosaPort_ChefStall_GateauHint_2
+	goto_if_ne TosaPort_ChefStall_GateauHint_3
 TosaPort_ChefStall_GateauHint_1:
 	return
 
 TosaPort_ChefStall_GateauHint_2:
-# 269 "data/maps/TosaPort/scripts.pory"
+# 270 "data/maps/TosaPort/scripts.pory"
 	msgbox TosaPort_ChefStall_GateauHint_Text_0
+# 271 "data/maps/TosaPort/scripts.pory"
+	giveitem ITEM_OLD_GATEAU
+# 272 "data/maps/TosaPort/scripts.pory"
+	compare VAR_RESULT, 0
+	goto_if_ne TosaPort_ChefStall_GateauHint_6
+	goto TosaPort_ChefStall_GateauHint_1
+
+TosaPort_ChefStall_GateauHint_3:
+# 269 "data/maps/TosaPort/scripts.pory"
+	goto_if_unset FLAG_RECEIVED_CHEF_OLD_GATEAU, TosaPort_ChefStall_GateauHint_2
+	goto TosaPort_ChefStall_GateauHint_1
+
+TosaPort_ChefStall_GateauHint_6:
+# 273 "data/maps/TosaPort/scripts.pory"
+	setflag FLAG_RECEIVED_CHEF_OLD_GATEAU
 	goto TosaPort_ChefStall_GateauHint_1
 
 
 	.align 2
-# 274 "data/maps/TosaPort/scripts.pory"
-ChefStallGoods:
-# 275 "data/maps/TosaPort/scripts.pory"
-	.2byte ITEM_LAVA_COOKIE
-# 276 "data/maps/TosaPort/scripts.pory"
-	.2byte ITEM_PEWTER_CRUNCHIES
-# 277 "data/maps/TosaPort/scripts.pory"
-	.2byte ITEM_OLD_GATEAU
-# 278 "data/maps/TosaPort/scripts.pory"
-	.2byte ITEM_BIG_MALASADA
 # 279 "data/maps/TosaPort/scripts.pory"
+ChefStallGoods:
+# 280 "data/maps/TosaPort/scripts.pory"
+	.2byte ITEM_LAVA_COOKIE
+# 281 "data/maps/TosaPort/scripts.pory"
+	.2byte ITEM_PEWTER_CRUNCHIES
+# 282 "data/maps/TosaPort/scripts.pory"
+	.2byte ITEM_OLD_GATEAU
+# 283 "data/maps/TosaPort/scripts.pory"
+	.2byte ITEM_BIG_MALASADA
+# 284 "data/maps/TosaPort/scripts.pory"
 	.2byte ITEM_SHALOUR_SABLE
 	.2byte ITEM_NONE
 
 TosaPort_PSPKid::
-# 285 "data/maps/TosaPort/scripts.pory"
+# 290 "data/maps/TosaPort/scripts.pory"
 	lock
-# 286 "data/maps/TosaPort/scripts.pory"
+# 291 "data/maps/TosaPort/scripts.pory"
 	faceplayer
-# 287 "data/maps/TosaPort/scripts.pory"
+# 292 "data/maps/TosaPort/scripts.pory"
 	questmenu QUEST_MENU_CHECK_COMPLETE, QUEST_PSP_BATTERIES
-# 288 "data/maps/TosaPort/scripts.pory"
+# 293 "data/maps/TosaPort/scripts.pory"
 	compare VAR_RESULT, 0
 	goto_if_ne TosaPort_PSPKid_2
-# 293 "data/maps/TosaPort/scripts.pory"
+# 298 "data/maps/TosaPort/scripts.pory"
 	questmenu QUEST_MENU_CHECK_ACTIVE, QUEST_PSP_BATTERIES
-# 294 "data/maps/TosaPort/scripts.pory"
+# 299 "data/maps/TosaPort/scripts.pory"
 	compare VAR_RESULT, 0
 	goto_if_ne TosaPort_PSPKid_5
-# 309 "data/maps/TosaPort/scripts.pory"
-	msgbox TosaPort_PSPKid_Text_5
-# 311 "data/maps/TosaPort/scripts.pory"
-	msgbox TosaPort_PSPKid_Text_6
-# 312 "data/maps/TosaPort/scripts.pory"
-	msgbox TosaPort_PSPKid_Text_7, MSGBOX_YESNO
-# 313 "data/maps/TosaPort/scripts.pory"
+# 327 "data/maps/TosaPort/scripts.pory"
+	msgbox TosaPort_PSPKid_Text_8
+# 329 "data/maps/TosaPort/scripts.pory"
+	msgbox TosaPort_PSPKid_Text_9
+# 330 "data/maps/TosaPort/scripts.pory"
+	msgbox TosaPort_PSPKid_Text_10, MSGBOX_YESNO
+# 331 "data/maps/TosaPort/scripts.pory"
 	compare VAR_RESULT, NO
 	goto_if_eq TosaPort_PSPKid_8
-# 318 "data/maps/TosaPort/scripts.pory"
-	msgbox TosaPort_PSPKid_Text_9
-# 319 "data/maps/TosaPort/scripts.pory"
+# 336 "data/maps/TosaPort/scripts.pory"
+	msgbox TosaPort_PSPKid_Text_12
+# 337 "data/maps/TosaPort/scripts.pory"
 	startquest QUEST_PSP_BATTERIES
-# 320 "data/maps/TosaPort/scripts.pory"
+# 338 "data/maps/TosaPort/scripts.pory"
 	release
 	end
 
 TosaPort_PSPKid_2:
-# 289 "data/maps/TosaPort/scripts.pory"
+# 294 "data/maps/TosaPort/scripts.pory"
 	msgbox TosaPort_PSPKid_Text_0
-# 290 "data/maps/TosaPort/scripts.pory"
+# 295 "data/maps/TosaPort/scripts.pory"
 	release
 	end
 
 TosaPort_PSPKid_5:
-# 295 "data/maps/TosaPort/scripts.pory"
+# 300 "data/maps/TosaPort/scripts.pory"
 	subquestmenu QUEST_MENU_CHECK_COMPLETE, QUEST_PSP_BATTERIES, SUB_QUEST_1
-# 296 "data/maps/TosaPort/scripts.pory"
+# 301 "data/maps/TosaPort/scripts.pory"
 	compare VAR_RESULT, 0
 	goto_if_ne TosaPort_PSPKid_11
-# 305 "data/maps/TosaPort/scripts.pory"
-	msgbox TosaPort_PSPKid_Text_4
-# 306 "data/maps/TosaPort/scripts.pory"
+# 323 "data/maps/TosaPort/scripts.pory"
+	msgbox TosaPort_PSPKid_Text_7
+# 324 "data/maps/TosaPort/scripts.pory"
 	release
 	end
 
 TosaPort_PSPKid_8:
-# 314 "data/maps/TosaPort/scripts.pory"
-	msgbox TosaPort_PSPKid_Text_8
-# 315 "data/maps/TosaPort/scripts.pory"
+# 332 "data/maps/TosaPort/scripts.pory"
+	msgbox TosaPort_PSPKid_Text_11
+# 333 "data/maps/TosaPort/scripts.pory"
 	release
 	end
 
 TosaPort_PSPKid_11:
-# 297 "data/maps/TosaPort/scripts.pory"
-	msgbox TosaPort_PSPKid_Text_1
-# 298 "data/maps/TosaPort/scripts.pory"
-	msgbox TosaPort_PSPKid_Text_2
-# 299 "data/maps/TosaPort/scripts.pory"
-	msgbox TosaPort_PSPKid_Text_3
-# 300 "data/maps/TosaPort/scripts.pory"
-	subquestmenu QUEST_MENU_COMPLETE_QUEST, QUEST_PSP_BATTERIES, SUB_QUEST_2
-# 301 "data/maps/TosaPort/scripts.pory"
-	completequest QUEST_PSP_BATTERIES
 # 302 "data/maps/TosaPort/scripts.pory"
+	msgbox TosaPort_PSPKid_Text_1
+# 303 "data/maps/TosaPort/scripts.pory"
+	checkitem ITEM_CELL_BATTERY
+# 304 "data/maps/TosaPort/scripts.pory"
+	compare VAR_RESULT, 0
+	goto_if_eq TosaPort_PSPKid_14
+# 309 "data/maps/TosaPort/scripts.pory"
+	removeitem ITEM_CELL_BATTERY
+# 310 "data/maps/TosaPort/scripts.pory"
+	msgbox TosaPort_PSPKid_Text_3
+# 311 "data/maps/TosaPort/scripts.pory"
+	msgbox TosaPort_PSPKid_Text_4
+# 312 "data/maps/TosaPort/scripts.pory"
+	checkplayergender
+# 313 "data/maps/TosaPort/scripts.pory"
+	compare VAR_RESULT, MALE
+	goto_if_eq TosaPort_PSPKid_17
+# 316 "data/maps/TosaPort/scripts.pory"
+	msgbox TosaPort_PSPKid_Text_6
+TosaPort_PSPKid_16:
+# 318 "data/maps/TosaPort/scripts.pory"
+	subquestmenu QUEST_MENU_COMPLETE_QUEST, QUEST_PSP_BATTERIES, SUB_QUEST_2
+# 319 "data/maps/TosaPort/scripts.pory"
+	completequest QUEST_PSP_BATTERIES
+# 320 "data/maps/TosaPort/scripts.pory"
 	release
 	end
 
+TosaPort_PSPKid_14:
+# 305 "data/maps/TosaPort/scripts.pory"
+	msgbox TosaPort_PSPKid_Text_2
+# 306 "data/maps/TosaPort/scripts.pory"
+	release
+	end
+
+TosaPort_PSPKid_17:
+# 314 "data/maps/TosaPort/scripts.pory"
+	msgbox TosaPort_PSPKid_Text_5
+	goto TosaPort_PSPKid_16
+
 
 TosaPort_StallDad::
-# 325 "data/maps/TosaPort/scripts.pory"
+# 343 "data/maps/TosaPort/scripts.pory"
 	lock
-# 326 "data/maps/TosaPort/scripts.pory"
+# 344 "data/maps/TosaPort/scripts.pory"
 	faceplayer
-# 327 "data/maps/TosaPort/scripts.pory"
+# 345 "data/maps/TosaPort/scripts.pory"
 	questmenu QUEST_MENU_CHECK_ACTIVE, QUEST_PSP_BATTERIES
-# 328 "data/maps/TosaPort/scripts.pory"
+# 346 "data/maps/TosaPort/scripts.pory"
 	compare VAR_RESULT, 0
 	goto_if_ne TosaPort_StallDad_2
-# 347 "data/maps/TosaPort/scripts.pory"
+# 365 "data/maps/TosaPort/scripts.pory"
 	questmenu QUEST_MENU_CHECK_COMPLETE, QUEST_PSP_BATTERIES
-# 348 "data/maps/TosaPort/scripts.pory"
+# 366 "data/maps/TosaPort/scripts.pory"
 	compare VAR_RESULT, 0
 	goto_if_ne TosaPort_StallDad_5
-# 353 "data/maps/TosaPort/scripts.pory"
+# 371 "data/maps/TosaPort/scripts.pory"
 	msgbox TosaPort_StallDad_Text_5
-# 354 "data/maps/TosaPort/scripts.pory"
+# 372 "data/maps/TosaPort/scripts.pory"
 	release
 	end
 
 TosaPort_StallDad_2:
-# 329 "data/maps/TosaPort/scripts.pory"
+# 347 "data/maps/TosaPort/scripts.pory"
 	subquestmenu QUEST_MENU_CHECK_COMPLETE, QUEST_PSP_BATTERIES, SUB_QUEST_1
-# 330 "data/maps/TosaPort/scripts.pory"
+# 348 "data/maps/TosaPort/scripts.pory"
 	compare VAR_RESULT, 0
 	goto_if_ne TosaPort_StallDad_8
-# 335 "data/maps/TosaPort/scripts.pory"
+# 353 "data/maps/TosaPort/scripts.pory"
 	msgbox TosaPort_StallDad_Text_1
-# 336 "data/maps/TosaPort/scripts.pory"
+# 354 "data/maps/TosaPort/scripts.pory"
 	msgbox TosaPort_StallDad_Text_2
-# 337 "data/maps/TosaPort/scripts.pory"
+# 355 "data/maps/TosaPort/scripts.pory"
 	giveitem ITEM_CELL_BATTERY
-# 338 "data/maps/TosaPort/scripts.pory"
+# 356 "data/maps/TosaPort/scripts.pory"
 	compare VAR_RESULT, 0
 	goto_if_eq TosaPort_StallDad_11
-# 342 "data/maps/TosaPort/scripts.pory"
+# 360 "data/maps/TosaPort/scripts.pory"
 	msgbox TosaPort_StallDad_Text_3
-# 343 "data/maps/TosaPort/scripts.pory"
+# 361 "data/maps/TosaPort/scripts.pory"
 	completesubquest QUEST_PSP_BATTERIES, SUB_QUEST_1
-# 344 "data/maps/TosaPort/scripts.pory"
+# 362 "data/maps/TosaPort/scripts.pory"
 	release
 	end
 
 TosaPort_StallDad_5:
-# 349 "data/maps/TosaPort/scripts.pory"
+# 367 "data/maps/TosaPort/scripts.pory"
 	msgbox TosaPort_StallDad_Text_4
-# 350 "data/maps/TosaPort/scripts.pory"
+# 368 "data/maps/TosaPort/scripts.pory"
 	release
 	end
 
 TosaPort_StallDad_8:
-# 331 "data/maps/TosaPort/scripts.pory"
+# 349 "data/maps/TosaPort/scripts.pory"
 	msgbox TosaPort_StallDad_Text_0
-# 332 "data/maps/TosaPort/scripts.pory"
+# 350 "data/maps/TosaPort/scripts.pory"
 	release
 	end
 
 TosaPort_StallDad_11:
-# 339 "data/maps/TosaPort/scripts.pory"
+# 357 "data/maps/TosaPort/scripts.pory"
 	release
 	end
 
 
 TosaPort_RepelGuy::
-# 359 "data/maps/TosaPort/scripts.pory"
-	lock
-# 360 "data/maps/TosaPort/scripts.pory"
-	faceplayer
-# 361 "data/maps/TosaPort/scripts.pory"
-	msgbox TosaPort_RepelGuy_Text_0
-# 364 "data/maps/TosaPort/scripts.pory"
-	release
-	end
-
-
-TosaPort_BreakTrucker::
-# 369 "data/maps/TosaPort/scripts.pory"
-	lock
-# 370 "data/maps/TosaPort/scripts.pory"
-	faceplayer
-# 371 "data/maps/TosaPort/scripts.pory"
-	msgbox TosaPort_BreakTrucker_Text_0
-# 372 "data/maps/TosaPort/scripts.pory"
-	release
-	end
-
-
-TosaPort_LoadingTrucker::
 # 377 "data/maps/TosaPort/scripts.pory"
 	lock
 # 378 "data/maps/TosaPort/scripts.pory"
 	faceplayer
 # 379 "data/maps/TosaPort/scripts.pory"
+	msgbox TosaPort_RepelGuy_Text_0
+# 382 "data/maps/TosaPort/scripts.pory"
+	release
+	end
+
+
+TosaPort_BreakTrucker::
+# 387 "data/maps/TosaPort/scripts.pory"
+	lock
+# 388 "data/maps/TosaPort/scripts.pory"
+	faceplayer
+# 389 "data/maps/TosaPort/scripts.pory"
+	msgbox TosaPort_BreakTrucker_Text_0
+# 390 "data/maps/TosaPort/scripts.pory"
+	release
+	end
+
+
+TosaPort_LoadingTrucker::
+# 395 "data/maps/TosaPort/scripts.pory"
+	lock
+# 396 "data/maps/TosaPort/scripts.pory"
+	faceplayer
+# 397 "data/maps/TosaPort/scripts.pory"
 	msgbox TosaPort_LoadingTrucker_Text_0
-# 381 "data/maps/TosaPort/scripts.pory"
+# 399 "data/maps/TosaPort/scripts.pory"
 	release
 	end
 
 
 TosaPort_OldMan::
-# 388 "data/maps/TosaPort/scripts.pory"
+# 406 "data/maps/TosaPort/scripts.pory"
 	lock
-# 389 "data/maps/TosaPort/scripts.pory"
+# 407 "data/maps/TosaPort/scripts.pory"
 	questmenu QUEST_MENU_CHECK_COMPLETE, QUEST_HEART_SCALE
-# 390 "data/maps/TosaPort/scripts.pory"
+# 408 "data/maps/TosaPort/scripts.pory"
 	compare VAR_RESULT, 0
 	goto_if_ne TosaPort_OldMan_2
-# 395 "data/maps/TosaPort/scripts.pory"
+# 413 "data/maps/TosaPort/scripts.pory"
 	questmenu QUEST_MENU_CHECK_ACTIVE, QUEST_HEART_SCALE
-# 396 "data/maps/TosaPort/scripts.pory"
+# 414 "data/maps/TosaPort/scripts.pory"
 	compare VAR_RESULT, 0
 	goto_if_ne TosaPort_OldMan_5
-# 406 "data/maps/TosaPort/scripts.pory"
+# 424 "data/maps/TosaPort/scripts.pory"
 	msgbox TosaPort_OldMan_Text_2
-# 408 "data/maps/TosaPort/scripts.pory"
+# 426 "data/maps/TosaPort/scripts.pory"
 	faceplayer
-# 409 "data/maps/TosaPort/scripts.pory"
+# 427 "data/maps/TosaPort/scripts.pory"
 	msgbox TosaPort_OldMan_Text_3
-# 410 "data/maps/TosaPort/scripts.pory"
+# 428 "data/maps/TosaPort/scripts.pory"
 	msgbox TosaPort_OldMan_Text_4
-# 411 "data/maps/TosaPort/scripts.pory"
+# 429 "data/maps/TosaPort/scripts.pory"
 	startquest QUEST_HEART_SCALE
-# 412 "data/maps/TosaPort/scripts.pory"
+# 430 "data/maps/TosaPort/scripts.pory"
 	checkitem ITEM_HEART_SCALE
-# 413 "data/maps/TosaPort/scripts.pory"
+# 431 "data/maps/TosaPort/scripts.pory"
 	compare VAR_RESULT, 0
 	goto_if_ne TosaPort_OldMan_8
 TosaPort_OldMan_7:
-# 416 "data/maps/TosaPort/scripts.pory"
+# 434 "data/maps/TosaPort/scripts.pory"
 	release
 	end
 
 TosaPort_OldMan_2:
-# 391 "data/maps/TosaPort/scripts.pory"
+# 409 "data/maps/TosaPort/scripts.pory"
 	msgbox TosaPort_OldMan_Text_0
-# 392 "data/maps/TosaPort/scripts.pory"
+# 410 "data/maps/TosaPort/scripts.pory"
 	release
 	end
 
 TosaPort_OldMan_5:
-# 397 "data/maps/TosaPort/scripts.pory"
+# 415 "data/maps/TosaPort/scripts.pory"
 	checkitem ITEM_HEART_SCALE
-# 398 "data/maps/TosaPort/scripts.pory"
+# 416 "data/maps/TosaPort/scripts.pory"
 	compare VAR_RESULT, 0
 	goto_if_ne TosaPort_OldMan_11
 TosaPort_OldMan_10:
-# 401 "data/maps/TosaPort/scripts.pory"
+# 419 "data/maps/TosaPort/scripts.pory"
 	faceplayer
-# 402 "data/maps/TosaPort/scripts.pory"
+# 420 "data/maps/TosaPort/scripts.pory"
 	msgbox TosaPort_OldMan_Text_1
-# 403 "data/maps/TosaPort/scripts.pory"
+# 421 "data/maps/TosaPort/scripts.pory"
 	release
 	end
 
 TosaPort_OldMan_8:
-# 414 "data/maps/TosaPort/scripts.pory"
+# 432 "data/maps/TosaPort/scripts.pory"
 	goto TosaPort_OldMan_ShowHeartScale
 	goto TosaPort_OldMan_7
 
 TosaPort_OldMan_11:
-# 399 "data/maps/TosaPort/scripts.pory"
+# 417 "data/maps/TosaPort/scripts.pory"
 	goto TosaPort_OldMan_ShowHeartScale
 	goto TosaPort_OldMan_10
 
 
 TosaPort_OldMan_ShowHeartScale::
-# 421 "data/maps/TosaPort/scripts.pory"
+# 439 "data/maps/TosaPort/scripts.pory"
 	faceplayer
-# 422 "data/maps/TosaPort/scripts.pory"
+# 440 "data/maps/TosaPort/scripts.pory"
 	msgbox TosaPort_OldMan_ShowHeartScale_Text_0, MSGBOX_YESNO
-# 423 "data/maps/TosaPort/scripts.pory"
+# 441 "data/maps/TosaPort/scripts.pory"
 	compare VAR_RESULT, NO
 	goto_if_eq TosaPort_OldMan_ShowHeartScale_2
-# 428 "data/maps/TosaPort/scripts.pory"
+# 446 "data/maps/TosaPort/scripts.pory"
 	checkitemspace ITEM_SOOTHE_BELL
-# 429 "data/maps/TosaPort/scripts.pory"
+# 447 "data/maps/TosaPort/scripts.pory"
 	compare VAR_RESULT, 0
 	goto_if_eq TosaPort_OldMan_ShowHeartScale_5
-# 434 "data/maps/TosaPort/scripts.pory"
-	removeitem ITEM_HEART_SCALE
-# 435 "data/maps/TosaPort/scripts.pory"
-	msgbox TosaPort_OldMan_ShowHeartScale_Text_3
-# 436 "data/maps/TosaPort/scripts.pory"
-	closemessage
-# 437 "data/maps/TosaPort/scripts.pory"
-	applymovement LOCALID_TOSA_PORT_OLD_MAN, TosaPort_PassAide_Movement_2
-# 438 "data/maps/TosaPort/scripts.pory"
-	applymovement LOCALID_TOSA_PORT_OLD_WOMAN, TosaPort_OldMan_ShowHeartScale_Movement_0
-# 439 "data/maps/TosaPort/scripts.pory"
-	waitmovement 0
-# 440 "data/maps/TosaPort/scripts.pory"
-	msgbox TosaPort_OldMan_ShowHeartScale_Text_4
-# 441 "data/maps/TosaPort/scripts.pory"
-	closemessage
-# 442 "data/maps/TosaPort/scripts.pory"
-	applymovement LOCALID_TOSA_PORT_OLD_WOMAN, TosaPort_OldMan_ShowHeartScale_Movement_1
-# 443 "data/maps/TosaPort/scripts.pory"
-	waitmovement 0
-# 444 "data/maps/TosaPort/scripts.pory"
-	msgbox TosaPort_OldMan_ShowHeartScale_Text_5
-# 445 "data/maps/TosaPort/scripts.pory"
-	closemessage
-# 446 "data/maps/TosaPort/scripts.pory"
-	applymovement LOCALID_TOSA_PORT_OLD_WOMAN, TosaPort_PassAide_Movement_3
-# 447 "data/maps/TosaPort/scripts.pory"
-	waitmovement 0
-# 448 "data/maps/TosaPort/scripts.pory"
-	msgbox TosaPort_OldMan_ShowHeartScale_Text_6
-# 449 "data/maps/TosaPort/scripts.pory"
-	giveitem ITEM_SOOTHE_BELL
-# 450 "data/maps/TosaPort/scripts.pory"
-	completequest QUEST_HEART_SCALE
-# 451 "data/maps/TosaPort/scripts.pory"
-	applymovement LOCALID_TOSA_PORT_OLD_MAN, TosaPort_OldMan_ShowHeartScale_Movement_2
 # 452 "data/maps/TosaPort/scripts.pory"
-	applymovement LOCALID_TOSA_PORT_OLD_WOMAN, TosaPort_OldMan_ShowHeartScale_Movement_2
+	removeitem ITEM_HEART_SCALE
 # 453 "data/maps/TosaPort/scripts.pory"
-	waitmovement 0
+	msgbox TosaPort_OldMan_ShowHeartScale_Text_3
 # 454 "data/maps/TosaPort/scripts.pory"
+	closemessage
+# 455 "data/maps/TosaPort/scripts.pory"
+	applymovement LOCALID_TOSA_PORT_OLD_MAN, TosaPort_PassAide_Movement_2
+# 456 "data/maps/TosaPort/scripts.pory"
+	applymovement LOCALID_TOSA_PORT_OLD_WOMAN, TosaPort_OldMan_ShowHeartScale_Movement_0
+# 457 "data/maps/TosaPort/scripts.pory"
+	waitmovement 0
+# 458 "data/maps/TosaPort/scripts.pory"
+	msgbox TosaPort_OldMan_ShowHeartScale_Text_4
+# 459 "data/maps/TosaPort/scripts.pory"
+	closemessage
+# 460 "data/maps/TosaPort/scripts.pory"
+	applymovement LOCALID_TOSA_PORT_OLD_WOMAN, TosaPort_OldMan_ShowHeartScale_Movement_1
+# 461 "data/maps/TosaPort/scripts.pory"
+	waitmovement 0
+# 462 "data/maps/TosaPort/scripts.pory"
+	msgbox TosaPort_OldMan_ShowHeartScale_Text_5
+# 463 "data/maps/TosaPort/scripts.pory"
+	closemessage
+# 464 "data/maps/TosaPort/scripts.pory"
+	applymovement LOCALID_TOSA_PORT_OLD_WOMAN, TosaPort_PassAide_Movement_3
+# 465 "data/maps/TosaPort/scripts.pory"
+	waitmovement 0
+# 466 "data/maps/TosaPort/scripts.pory"
+	msgbox TosaPort_OldMan_ShowHeartScale_Text_6
+# 467 "data/maps/TosaPort/scripts.pory"
+	giveitem ITEM_SOOTHE_BELL
+# 468 "data/maps/TosaPort/scripts.pory"
+	completequest QUEST_HEART_SCALE
+# 469 "data/maps/TosaPort/scripts.pory"
+	applymovement LOCALID_TOSA_PORT_OLD_MAN, TosaPort_OldMan_ShowHeartScale_Movement_2
+# 470 "data/maps/TosaPort/scripts.pory"
+	applymovement LOCALID_TOSA_PORT_OLD_WOMAN, TosaPort_OldMan_ShowHeartScale_Movement_2
+# 471 "data/maps/TosaPort/scripts.pory"
+	waitmovement 0
+# 472 "data/maps/TosaPort/scripts.pory"
 	release
 	end
 
 TosaPort_OldMan_ShowHeartScale_2:
-# 424 "data/maps/TosaPort/scripts.pory"
+# 442 "data/maps/TosaPort/scripts.pory"
 	msgbox TosaPort_OldMan_ShowHeartScale_Text_1
-# 425 "data/maps/TosaPort/scripts.pory"
+# 443 "data/maps/TosaPort/scripts.pory"
 	release
 	end
 
 TosaPort_OldMan_ShowHeartScale_5:
-# 430 "data/maps/TosaPort/scripts.pory"
+# 448 "data/maps/TosaPort/scripts.pory"
 	msgbox TosaPort_OldMan_ShowHeartScale_Text_2
-# 431 "data/maps/TosaPort/scripts.pory"
+# 449 "data/maps/TosaPort/scripts.pory"
 	release
 	end
 
 
 TosaPort_OldWoman::
-# 459 "data/maps/TosaPort/scripts.pory"
+# 477 "data/maps/TosaPort/scripts.pory"
 	lock
-# 460 "data/maps/TosaPort/scripts.pory"
+# 478 "data/maps/TosaPort/scripts.pory"
 	questmenu QUEST_MENU_CHECK_COMPLETE, QUEST_HEART_SCALE
-# 461 "data/maps/TosaPort/scripts.pory"
+# 479 "data/maps/TosaPort/scripts.pory"
 	compare VAR_RESULT, 0
 	goto_if_ne TosaPort_OldWoman_2
-# 466 "data/maps/TosaPort/scripts.pory"
+# 484 "data/maps/TosaPort/scripts.pory"
 	msgbox TosaPort_OldWoman_Text_1
-# 468 "data/maps/TosaPort/scripts.pory"
+# 486 "data/maps/TosaPort/scripts.pory"
 	release
 	end
 
 TosaPort_OldWoman_2:
-# 462 "data/maps/TosaPort/scripts.pory"
+# 480 "data/maps/TosaPort/scripts.pory"
 	msgbox TosaPort_OldWoman_Text_0
-# 463 "data/maps/TosaPort/scripts.pory"
+# 481 "data/maps/TosaPort/scripts.pory"
 	release
 	end
 
 
 TosaPort_Skitty::
-# 473 "data/maps/TosaPort/scripts.pory"
+# 491 "data/maps/TosaPort/scripts.pory"
 	lock
-# 474 "data/maps/TosaPort/scripts.pory"
+# 492 "data/maps/TosaPort/scripts.pory"
 	faceplayer
-# 475 "data/maps/TosaPort/scripts.pory"
+# 493 "data/maps/TosaPort/scripts.pory"
 	playmoncry SPECIES_SKITTY, CRY_MODE_NORMAL
-# 476 "data/maps/TosaPort/scripts.pory"
+# 494 "data/maps/TosaPort/scripts.pory"
 	msgbox TosaPort_Skitty_Text_0
-# 477 "data/maps/TosaPort/scripts.pory"
+# 495 "data/maps/TosaPort/scripts.pory"
 	waitmoncry
-# 478 "data/maps/TosaPort/scripts.pory"
+# 496 "data/maps/TosaPort/scripts.pory"
 	release
 	end
 
 
 TosaPort_Fisherman::
-# 483 "data/maps/TosaPort/scripts.pory"
+# 501 "data/maps/TosaPort/scripts.pory"
 	lock
-# 484 "data/maps/TosaPort/scripts.pory"
+# 502 "data/maps/TosaPort/scripts.pory"
 	faceplayer
-# 485 "data/maps/TosaPort/scripts.pory"
+# 503 "data/maps/TosaPort/scripts.pory"
 	msgbox TosaPort_Fisherman_Text_0
-# 487 "data/maps/TosaPort/scripts.pory"
+# 505 "data/maps/TosaPort/scripts.pory"
 	release
 	end
 
 
 TosaPort_Tuber::
-# 492 "data/maps/TosaPort/scripts.pory"
+# 510 "data/maps/TosaPort/scripts.pory"
 	lock
-# 493 "data/maps/TosaPort/scripts.pory"
+# 511 "data/maps/TosaPort/scripts.pory"
 	faceplayer
-# 494 "data/maps/TosaPort/scripts.pory"
+# 512 "data/maps/TosaPort/scripts.pory"
 	msgbox TosaPort_Tuber_Text_0
-# 498 "data/maps/TosaPort/scripts.pory"
+# 516 "data/maps/TosaPort/scripts.pory"
 	release
 	end
 
 
 TosaPort_ColdStorageGuard::
-# 503 "data/maps/TosaPort/scripts.pory"
+# 521 "data/maps/TosaPort/scripts.pory"
 	lock
-# 504 "data/maps/TosaPort/scripts.pory"
+# 522 "data/maps/TosaPort/scripts.pory"
 	faceplayer
-# 505 "data/maps/TosaPort/scripts.pory"
+# 523 "data/maps/TosaPort/scripts.pory"
 	msgbox TosaPort_ColdStorageGuard_Text_0
-# 507 "data/maps/TosaPort/scripts.pory"
+# 525 "data/maps/TosaPort/scripts.pory"
 	release
 	end
 
 
 TosaPort_Martin::
-# 512 "data/maps/TosaPort/scripts.pory"
+# 530 "data/maps/TosaPort/scripts.pory"
 	lock
-# 513 "data/maps/TosaPort/scripts.pory"
+# 531 "data/maps/TosaPort/scripts.pory"
 	faceplayer
-# 514 "data/maps/TosaPort/scripts.pory"
+# 532 "data/maps/TosaPort/scripts.pory"
 	msgbox TosaPort_Martin_Text_0
-# 516 "data/maps/TosaPort/scripts.pory"
+# 534 "data/maps/TosaPort/scripts.pory"
 	pokemart MartinsMartGoods
-# 517 "data/maps/TosaPort/scripts.pory"
+# 535 "data/maps/TosaPort/scripts.pory"
 	msgbox TosaPort_Martin_Text_1
-# 518 "data/maps/TosaPort/scripts.pory"
+# 536 "data/maps/TosaPort/scripts.pory"
 	release
 	end
 
 
 	.align 2
-# 522 "data/maps/TosaPort/scripts.pory"
+# 540 "data/maps/TosaPort/scripts.pory"
 MartinsMartGoods:
-# 523 "data/maps/TosaPort/scripts.pory"
+# 541 "data/maps/TosaPort/scripts.pory"
 	.2byte ITEM_POTION
-# 524 "data/maps/TosaPort/scripts.pory"
+# 542 "data/maps/TosaPort/scripts.pory"
 	.2byte ITEM_POKE_BALL
-# 525 "data/maps/TosaPort/scripts.pory"
+# 543 "data/maps/TosaPort/scripts.pory"
 	.2byte ITEM_ANTIDOTE
-# 526 "data/maps/TosaPort/scripts.pory"
+# 544 "data/maps/TosaPort/scripts.pory"
 	.2byte ITEM_PARALYZE_HEAL
-# 527 "data/maps/TosaPort/scripts.pory"
+# 545 "data/maps/TosaPort/scripts.pory"
 	.2byte ITEM_REPEL
 	.2byte ITEM_NONE
 
@@ -969,21 +1011,21 @@ TosaPort_PassAide_Movement_4:
 	walk_fast_down
 	step_end
 
-# 438 "data/maps/TosaPort/scripts.pory"
+# 456 "data/maps/TosaPort/scripts.pory"
 TosaPort_OldMan_ShowHeartScale_Movement_0:
-# 438 "data/maps/TosaPort/scripts.pory"
+# 456 "data/maps/TosaPort/scripts.pory"
 	face_left
 	step_end
 
-# 442 "data/maps/TosaPort/scripts.pory"
+# 460 "data/maps/TosaPort/scripts.pory"
 TosaPort_OldMan_ShowHeartScale_Movement_1:
-# 442 "data/maps/TosaPort/scripts.pory"
+# 460 "data/maps/TosaPort/scripts.pory"
 	emote_heart
 	step_end
 
-# 451 "data/maps/TosaPort/scripts.pory"
+# 469 "data/maps/TosaPort/scripts.pory"
 TosaPort_OldMan_ShowHeartScale_Movement_2:
-# 451 "data/maps/TosaPort/scripts.pory"
+# 469 "data/maps/TosaPort/scripts.pory"
 	face_down
 	step_end
 
@@ -1054,210 +1096,230 @@ TosaPort_ChefStall_Text_3:
 	.string "Always a pleasure, mon ami!$"
 
 TosaPort_ChefStall_GateauHint_Text_0:
-# 269 "data/maps/TosaPort/scripts.pory"
+# 270 "data/maps/TosaPort/scripts.pory"
 	.string "Quoi? Someone from Kalos is missing\n"
-	.string "home? Then they need an Old Gateau! A\l"
-	.string "taste of Kalos in every bite, mon ami.$"
+	.string "home? Bien sûr, they only need a taste\l"
+	.string "of my delicious gateau! Bring this to\l"
+	.string "ton ami, mon ami.$"
 
 TosaPort_PSPKid_Text_0:
-# 289 "data/maps/TosaPort/scripts.pory"
-	.string "Dad says no new batteries until the\n"
-	.string "stall sells out. So now I'm selling fruit.\l"
-	.string "I'm actually kind of good at it!$"
+# 294 "data/maps/TosaPort/scripts.pory"
+	.string "I've been helping my Dad sell fruit we\n"
+	.string "import from Hoenn.$"
 
 TosaPort_PSPKid_Text_1:
-# 297 "data/maps/TosaPort/scripts.pory"
+# 302 "data/maps/TosaPort/scripts.pory"
 	.string "You found Dad? Did he give you some\n"
 	.string "batteries?$"
 
 TosaPort_PSPKid_Text_2:
-# 298 "data/maps/TosaPort/scripts.pory"
-	.string "…A Cell Battery? That's for Pokémon,\n"
-	.string "not a PSP!$"
+# 305 "data/maps/TosaPort/scripts.pory"
+	.string "Huh? Dad said he gave you one. Did you\n"
+	.string "lose it?$"
 
 TosaPort_PSPKid_Text_3:
-# 299 "data/maps/TosaPort/scripts.pory"
-	.string "Ugh, Dad… You keep it. Your Pokémon will\n"
-	.string "get more use out of it than me.$"
+# 310 "data/maps/TosaPort/scripts.pory"
+	.string "{PLAYER} handed over the Cell\n"
+	.string "Battery.$"
 
 TosaPort_PSPKid_Text_4:
-# 305 "data/maps/TosaPort/scripts.pory"
+# 311 "data/maps/TosaPort/scripts.pory"
+	.string "A Cell Battery? I guess that'd work!$"
+
+TosaPort_PSPKid_Text_5:
+# 314 "data/maps/TosaPort/scripts.pory"
+	.string "Thanks mister. Now that I've got some\n"
+	.string "power again, do you fancy trading\l"
+	.string "Pokémon with me? If you have a\l"
+	.string "Magnemite I can trade you my Corsola.$"
+
+TosaPort_PSPKid_Text_6:
+# 316 "data/maps/TosaPort/scripts.pory"
+	.string "Thanks miss. Now that I've got some\n"
+	.string "power again, do you fancy trading\l"
+	.string "Pokémon with me? If you have a\l"
+	.string "Magnemite I can trade you my Corsola.$"
+
+TosaPort_PSPKid_Text_7:
+# 323 "data/maps/TosaPort/scripts.pory"
 	.string "Did you find Dad yet? He said he was\n"
 	.string "only getting a snack. That was ages\l"
 	.string "ago…$"
 
-TosaPort_PSPKid_Text_5:
-# 309 "data/maps/TosaPort/scripts.pory"
+TosaPort_PSPKid_Text_8:
+# 327 "data/maps/TosaPort/scripts.pory"
 	.string "Ugh, Dad's making me watch his stall.\n"
-	.string "At least he let me bring my PSP.$"
+	.string "At least he let me bring my GBA.$"
 
-TosaPort_PSPKid_Text_6:
-# 311 "data/maps/TosaPort/scripts.pory"
+TosaPort_PSPKid_Text_9:
+# 329 "data/maps/TosaPort/scripts.pory"
 	.string "…And now the batteries are flat! Dad\n"
 	.string "wandered off for a snack ages ago.$"
 
-TosaPort_PSPKid_Text_7:
-# 312 "data/maps/TosaPort/scripts.pory"
+TosaPort_PSPKid_Text_10:
+# 330 "data/maps/TosaPort/scripts.pory"
 	.string "Could you find him and ask him for some\n"
 	.string "batteries?$"
 
-TosaPort_PSPKid_Text_8:
-# 314 "data/maps/TosaPort/scripts.pory"
-	.string "Fine. I'll just stare at the fruit, then.$"
+TosaPort_PSPKid_Text_11:
+# 332 "data/maps/TosaPort/scripts.pory"
+	.string "Ugh, adults are so lame!$"
 
-TosaPort_PSPKid_Text_9:
-# 318 "data/maps/TosaPort/scripts.pory"
-	.string "Thanks! He's big, and he's always\n"
-	.string "hungry. Try anywhere that sells food.$"
+TosaPort_PSPKid_Text_12:
+# 336 "data/maps/TosaPort/scripts.pory"
+	.string "Thanks! Dad said he was in the mood for\n"
+	.string "something sweet.$"
 
 TosaPort_StallDad_Text_0:
-# 331 "data/maps/TosaPort/scripts.pory"
+# 349 "data/maps/TosaPort/scripts.pory"
 	.string "Go on, take that battery to my boy. I'll\n"
 	.string "be back… after one more gateau.$"
 
 TosaPort_StallDad_Text_1:
-# 335 "data/maps/TosaPort/scripts.pory"
+# 353 "data/maps/TosaPort/scripts.pory"
 	.string "Huh? My boy sent you? He wants\n"
 	.string "batteries for that game of his?$"
 
 TosaPort_StallDad_Text_2:
-# 336 "data/maps/TosaPort/scripts.pory"
+# 354 "data/maps/TosaPort/scripts.pory"
 	.string "Hmm… All I've got is this. I picked it up\n"
 	.string "at the market this morning. A battery's\l"
 	.string "a battery, right?$"
 
 TosaPort_StallDad_Text_3:
-# 342 "data/maps/TosaPort/scripts.pory"
+# 360 "data/maps/TosaPort/scripts.pory"
 	.string "Tell him I'll be back once I've finished\n"
 	.string "my Old Gateau. Or two.$"
 
 TosaPort_StallDad_Text_4:
-# 349 "data/maps/TosaPort/scripts.pory"
+# 367 "data/maps/TosaPort/scripts.pory"
 	.string "My boy runs that fruit stall better\n"
 	.string "than I do! Shh… don't tell him I said\l"
 	.string "that.$"
 
 TosaPort_StallDad_Text_5:
-# 353 "data/maps/TosaPort/scripts.pory"
+# 371 "data/maps/TosaPort/scripts.pory"
 	.string "Mmm! The Old Gateau at this stall is\n"
 	.string "magnifique. Don't tell anyone you saw me\l"
 	.string "here. I'm meant to be minding our fruit\l"
 	.string "stall.$"
 
 TosaPort_RepelGuy_Text_0:
-# 361 "data/maps/TosaPort/scripts.pory"
+# 379 "data/maps/TosaPort/scripts.pory"
 	.string "I read in “Pokémon Garden” that\n"
 	.string "spraying repel on your flowers can keep\l"
 	.string "bug Pokémon at bay.$"
 
 TosaPort_BreakTrucker_Text_0:
-# 371 "data/maps/TosaPort/scripts.pory"
+# 389 "data/maps/TosaPort/scripts.pory"
 	.string "Buzz off, I'm on my break!$"
 
 TosaPort_LoadingTrucker_Text_0:
-# 379 "data/maps/TosaPort/scripts.pory"
+# 397 "data/maps/TosaPort/scripts.pory"
 	.string "I wish my Pokémon was strong enough to\n"
 	.string "load this truck...$"
 
 TosaPort_OldMan_Text_0:
-# 391 "data/maps/TosaPort/scripts.pory"
+# 409 "data/maps/TosaPort/scripts.pory"
 	.string "Fu-fu-fu… I asked her again, and she\n"
 	.string "said yes again. Some things never\l"
 	.string "change.$"
 
 TosaPort_OldMan_Text_1:
-# 402 "data/maps/TosaPort/scripts.pory"
+# 420 "data/maps/TosaPort/scripts.pory"
 	.string "(Psst… When I was young, Heart Scales\n"
 	.string "used to wash up on the riverbanks of\l"
 	.string "the reserve, just north of here.)$"
 
 TosaPort_OldMan_Text_2:
-# 406 "data/maps/TosaPort/scripts.pory"
+# 424 "data/maps/TosaPort/scripts.pory"
 	.string "Fu-fu-fu...I met my wife at this very\n"
 	.string "spot 10 years ago.$"
 
 TosaPort_OldMan_Text_3:
-# 409 "data/maps/TosaPort/scripts.pory"
+# 427 "data/maps/TosaPort/scripts.pory"
 	.string "(Psst… I proposed to her right here,\n"
 	.string "with a Heart Scale. I lost it years ago.)$"
 
 TosaPort_OldMan_Text_4:
-# 410 "data/maps/TosaPort/scripts.pory"
+# 428 "data/maps/TosaPort/scripts.pory"
 	.string "(I'd love to see one again… Fu-fu…)$"
 
 TosaPort_OldMan_ShowHeartScale_Text_0:
-# 422 "data/maps/TosaPort/scripts.pory"
+# 440 "data/maps/TosaPort/scripts.pory"
 	.string "Wh-what's that? A Heart Scale?! Could\n"
 	.string "I… borrow it? There's something I'd like\l"
 	.string "to do.$"
 
 TosaPort_OldMan_ShowHeartScale_Text_1:
-# 424 "data/maps/TosaPort/scripts.pory"
+# 442 "data/maps/TosaPort/scripts.pory"
 	.string "Fu-fu… I understand. It's a precious\n"
 	.string "thing.$"
 
 TosaPort_OldMan_ShowHeartScale_Text_2:
-# 430 "data/maps/TosaPort/scripts.pory"
+# 448 "data/maps/TosaPort/scripts.pory"
 	.string "Hm? Your Bag looks awfully full, young\n"
 	.string "one. Come back once you've made a little\l"
 	.string "room.$"
 
 TosaPort_OldMan_ShowHeartScale_Text_3:
-# 435 "data/maps/TosaPort/scripts.pory"
+# 453 "data/maps/TosaPort/scripts.pory"
 	.string "{PLAYER} handed over the Heart Scale.$"
 
 TosaPort_OldMan_ShowHeartScale_Text_4:
-# 440 "data/maps/TosaPort/scripts.pory"
+# 458 "data/maps/TosaPort/scripts.pory"
 	.string "Dear… do you remember this? Will you\n"
 	.string "marry me… again?$"
 
 TosaPort_OldMan_ShowHeartScale_Text_5:
-# 444 "data/maps/TosaPort/scripts.pory"
+# 462 "data/maps/TosaPort/scripts.pory"
 	.string "Ha-ha-ha! You old romantic… Of course I\n"
 	.string "will!$"
 
 TosaPort_OldMan_ShowHeartScale_Text_6:
-# 448 "data/maps/TosaPort/scripts.pory"
+# 466 "data/maps/TosaPort/scripts.pory"
 	.string "Thank you, dearie. Please, take this. It\n"
-	.string "rang at our wedding. Now it's rung for us\l"
-	.string "twice.$"
+	.string "was a gift for our Pokémon we received\l"
+	.string "on our wedding day. I hope it brings you\l"
+	.string "and your Pokémon as much joy as it did\l"
+	.string "for us.$"
 
 TosaPort_OldWoman_Text_0:
-# 462 "data/maps/TosaPort/scripts.pory"
+# 480 "data/maps/TosaPort/scripts.pory"
 	.string "Ha-ha-ha… he proposed again! At our\n"
 	.string "age! Life is too short, dearie.$"
 
 TosaPort_OldWoman_Text_1:
-# 466 "data/maps/TosaPort/scripts.pory"
+# 484 "data/maps/TosaPort/scripts.pory"
 	.string "Ha-ha-ha...we were so reckless back\n"
 	.string "then...life is too short...$"
 
 TosaPort_Skitty_Text_0:
-# 476 "data/maps/TosaPort/scripts.pory"
+# 494 "data/maps/TosaPort/scripts.pory"
 	.string "Skitty: Meooow!$"
 
 TosaPort_Fisherman_Text_0:
-# 485 "data/maps/TosaPort/scripts.pory"
+# 503 "data/maps/TosaPort/scripts.pory"
 	.string "I came all this way from Pasira City to\n"
 	.string "fish in the reserve.$"
 
 TosaPort_Tuber_Text_0:
-# 494 "data/maps/TosaPort/scripts.pory"
+# 512 "data/maps/TosaPort/scripts.pory"
 	.string "Awww...\n"
 	.string "I was hoping to swim while visiting\l"
 	.string "Daddy, but the current here is too\l"
 	.string "strong!$"
 
 TosaPort_ColdStorageGuard_Text_0:
-# 505 "data/maps/TosaPort/scripts.pory"
+# 523 "data/maps/TosaPort/scripts.pory"
 	.string "The site's open, pal, but mind your\n"
 	.string "step. The floor in there is solid ice.$"
 
 TosaPort_Martin_Text_0:
-# 514 "data/maps/TosaPort/scripts.pory"
+# 532 "data/maps/TosaPort/scripts.pory"
 	.string "Welcome to Martin's Mart!\n"
 	.string "Trainer Supplies and Sundries.$"
 
 TosaPort_Martin_Text_1:
-# 517 "data/maps/TosaPort/scripts.pory"
+# 535 "data/maps/TosaPort/scripts.pory"
 	.string "Come back soon!$"

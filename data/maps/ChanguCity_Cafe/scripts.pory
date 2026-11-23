@@ -38,7 +38,7 @@ script ChanguCity_Cafe_EventScript_KalosArtist {
     faceplayer
     questmenu(QUEST_MENU_CHECK_COMPLETE, QUEST_TASTE_OF_HOME)
     if (var(VAR_RESULT)) {
-        msgbox(format("Merci encore, mon ami! I wrote to the chef in Tosa Port. Now he posts me an Old Gateau every month!"))
+        msgbox(format("Merci encore, mon ami! I wrote to the chef in Tosa Port. Now he posts me an Old Gateau every month! It's a shame it always comes so mushy in the post, I'll have to make le voyage there myself one day!"))
         release
         end
     }

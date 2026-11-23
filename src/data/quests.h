@@ -10,9 +10,9 @@ static const u8 sText_TosaPort[] = _("Tosa Port");
 // subquest ids are unique across all quests (bits in gSaveBlock2Ptr->subQuests)
 static const struct SubQuest sSubQuests_PspBatteries[QUEST_PSP_BATTERIES_SUB_COUNT] =
 {
-    sub_quest(0, COMPOUND_STRING("Find the kid's dad"), COMPOUND_STRING("He left the fruit stall for\na snack and never came back."),
+    sub_quest(0, COMPOUND_STRING("Find the kid's dad"), COMPOUND_STRING("He should be somewhere\naround the port."),
               sText_TosaPort, ITEM_CELL_BATTERY, ITEM, NULL),
-    sub_quest(1, COMPOUND_STRING("Back to the fruit stall"), COMPOUND_STRING("Dad handed over a Cell\nBattery. Take it to the kid."),
+    sub_quest(1, COMPOUND_STRING("Back to the fruit stall"), COMPOUND_STRING("Bring the Cell Battery\nto the kid."),
               sText_TosaPort, ITEM_CELL_BATTERY, ITEM, NULL),
 };
 
@@ -24,13 +24,13 @@ const struct SideQuest gSideQuests[QUEST_COUNT] =
 {
     [QUEST_PSP_BATTERIES] = {
         .name = COMPOUND_STRING("Flat Batteries"),
-        .desc = COMPOUND_STRING("The fruit stall kid's PSP\nis dead. Find his dad!"),
-        .donedesc = COMPOUND_STRING("Dad's battery was for\nPokémon. You got to keep it!"),
+        .desc = COMPOUND_STRING("A kid at the fruit stall wants\nto play on his GBA. Find his dad!"),
+        .donedesc = COMPOUND_STRING("The kid's dad gave him\nsome batteries."),
         .map = sText_TosaPort, .sprite = ITEM_CELL_BATTERY, .spritetype = ITEM,
         .subquests = sSubQuests_PspBatteries, .numSubquests = QUEST_PSP_BATTERIES_SUB_COUNT,
     },
     [QUEST_HEART_SCALE] = {
-        .name = COMPOUND_STRING("A Scale to Remember"),
+        .name = COMPOUND_STRING("Scale as old as Time"),
         .desc = COMPOUND_STRING("Show the old man by the\nlighthouse a Heart Scale."),
         .donedesc = COMPOUND_STRING("He proposed all over again.\nShe said yes, of course!"),
         .map = sText_TosaPort, .sprite = ITEM_HEART_SCALE, .spritetype = ITEM,

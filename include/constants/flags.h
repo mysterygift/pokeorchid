@@ -313,7 +313,7 @@
 #define FLAG_RECEIVED_MACHO_BRACE            0x115
 #define FLAG_RECEIVED_SOOTHE_BELL            0x116
 #define FLAG_RECEIVED_WHITE_HERB             0x117
-#define FLAG_RECEIVED_SOFT_SAND              0x118
+#define FLAG_RECEIVED_CHEF_OLD_GATEAU        0x118 // Orchid: Tosa Port chef's free Old Gateau (A Taste of Home); was FLAG_RECEIVED_SOFT_SAND
 #define FLAG_ENABLE_PROF_BIRCH_MATCH_CALL    0x119
 #define FLAG_ENABLE_PROF_PALM_MATCH_CALL     FLAG_ENABLE_PROF_BIRCH_MATCH_CALL // Orchid: Birch's phone contact is Prof. Palm
 #define FLAG_RECEIVED_CLEANSE_TAG            0x11A
@@ -1318,6 +1318,8 @@
 
 // Orchid: Route 118 is unreachable; its hidden Heart Scale flag now marks the one on the South Tosa Reserve riverbank.
 #define FLAG_HIDDEN_ITEM_ROUTE_118_HEART_SCALE               FLAG_HIDDEN_ITEM_SOUTH_TOSA_RESERVE_HEART_SCALE
+// Orchid: Route 109's Soft Sand gift is unreachable; its flag marks the chef's free Old Gateau.
+#define FLAG_RECEIVED_SOFT_SAND                              FLAG_RECEIVED_CHEF_OLD_GATEAU
 
 
 
