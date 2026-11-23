@@ -519,105 +519,105 @@ ChefStallGoods:
 	.2byte ITEM_SHALOUR_SABLE
 	.2byte ITEM_NONE
 
-TosaPort_PSPKid::
+TosaPort_GBAKid::
 # 290 "data/maps/TosaPort/scripts.pory"
 	lock
 # 291 "data/maps/TosaPort/scripts.pory"
 	faceplayer
 # 292 "data/maps/TosaPort/scripts.pory"
-	questmenu QUEST_MENU_CHECK_COMPLETE, QUEST_PSP_BATTERIES
+	questmenu QUEST_MENU_CHECK_COMPLETE, QUEST_GBA_BATTERIES
 # 293 "data/maps/TosaPort/scripts.pory"
 	compare VAR_RESULT, 0
-	goto_if_ne TosaPort_PSPKid_2
+	goto_if_ne TosaPort_GBAKid_2
 # 298 "data/maps/TosaPort/scripts.pory"
-	questmenu QUEST_MENU_CHECK_ACTIVE, QUEST_PSP_BATTERIES
+	questmenu QUEST_MENU_CHECK_ACTIVE, QUEST_GBA_BATTERIES
 # 299 "data/maps/TosaPort/scripts.pory"
 	compare VAR_RESULT, 0
-	goto_if_ne TosaPort_PSPKid_5
+	goto_if_ne TosaPort_GBAKid_5
 # 327 "data/maps/TosaPort/scripts.pory"
-	msgbox TosaPort_PSPKid_Text_8
+	msgbox TosaPort_GBAKid_Text_8
 # 329 "data/maps/TosaPort/scripts.pory"
-	msgbox TosaPort_PSPKid_Text_9
+	msgbox TosaPort_GBAKid_Text_9
 # 330 "data/maps/TosaPort/scripts.pory"
-	msgbox TosaPort_PSPKid_Text_10, MSGBOX_YESNO
+	msgbox TosaPort_GBAKid_Text_10, MSGBOX_YESNO
 # 331 "data/maps/TosaPort/scripts.pory"
 	compare VAR_RESULT, NO
-	goto_if_eq TosaPort_PSPKid_8
+	goto_if_eq TosaPort_GBAKid_8
 # 336 "data/maps/TosaPort/scripts.pory"
-	msgbox TosaPort_PSPKid_Text_12
+	msgbox TosaPort_GBAKid_Text_12
 # 337 "data/maps/TosaPort/scripts.pory"
-	startquest QUEST_PSP_BATTERIES
+	startquest QUEST_GBA_BATTERIES
 # 338 "data/maps/TosaPort/scripts.pory"
 	release
 	end
 
-TosaPort_PSPKid_2:
+TosaPort_GBAKid_2:
 # 294 "data/maps/TosaPort/scripts.pory"
-	msgbox TosaPort_PSPKid_Text_0
+	msgbox TosaPort_GBAKid_Text_0
 # 295 "data/maps/TosaPort/scripts.pory"
 	release
 	end
 
-TosaPort_PSPKid_5:
+TosaPort_GBAKid_5:
 # 300 "data/maps/TosaPort/scripts.pory"
-	subquestmenu QUEST_MENU_CHECK_COMPLETE, QUEST_PSP_BATTERIES, SUB_QUEST_1
+	subquestmenu QUEST_MENU_CHECK_COMPLETE, QUEST_GBA_BATTERIES, SUB_QUEST_1
 # 301 "data/maps/TosaPort/scripts.pory"
 	compare VAR_RESULT, 0
-	goto_if_ne TosaPort_PSPKid_11
+	goto_if_ne TosaPort_GBAKid_11
 # 323 "data/maps/TosaPort/scripts.pory"
-	msgbox TosaPort_PSPKid_Text_7
+	msgbox TosaPort_GBAKid_Text_7
 # 324 "data/maps/TosaPort/scripts.pory"
 	release
 	end
 
-TosaPort_PSPKid_8:
+TosaPort_GBAKid_8:
 # 332 "data/maps/TosaPort/scripts.pory"
-	msgbox TosaPort_PSPKid_Text_11
+	msgbox TosaPort_GBAKid_Text_11
 # 333 "data/maps/TosaPort/scripts.pory"
 	release
 	end
 
-TosaPort_PSPKid_11:
+TosaPort_GBAKid_11:
 # 302 "data/maps/TosaPort/scripts.pory"
-	msgbox TosaPort_PSPKid_Text_1
+	msgbox TosaPort_GBAKid_Text_1
 # 303 "data/maps/TosaPort/scripts.pory"
 	checkitem ITEM_CELL_BATTERY
 # 304 "data/maps/TosaPort/scripts.pory"
 	compare VAR_RESULT, 0
-	goto_if_eq TosaPort_PSPKid_14
+	goto_if_eq TosaPort_GBAKid_14
 # 309 "data/maps/TosaPort/scripts.pory"
 	removeitem ITEM_CELL_BATTERY
 # 310 "data/maps/TosaPort/scripts.pory"
-	msgbox TosaPort_PSPKid_Text_3
+	msgbox TosaPort_GBAKid_Text_3
 # 311 "data/maps/TosaPort/scripts.pory"
-	msgbox TosaPort_PSPKid_Text_4
+	msgbox TosaPort_GBAKid_Text_4
 # 312 "data/maps/TosaPort/scripts.pory"
 	checkplayergender
 # 313 "data/maps/TosaPort/scripts.pory"
 	compare VAR_RESULT, MALE
-	goto_if_eq TosaPort_PSPKid_17
+	goto_if_eq TosaPort_GBAKid_17
 # 316 "data/maps/TosaPort/scripts.pory"
-	msgbox TosaPort_PSPKid_Text_6
-TosaPort_PSPKid_16:
+	msgbox TosaPort_GBAKid_Text_6
+TosaPort_GBAKid_16:
 # 318 "data/maps/TosaPort/scripts.pory"
-	subquestmenu QUEST_MENU_COMPLETE_QUEST, QUEST_PSP_BATTERIES, SUB_QUEST_2
+	subquestmenu QUEST_MENU_COMPLETE_QUEST, QUEST_GBA_BATTERIES, SUB_QUEST_2
 # 319 "data/maps/TosaPort/scripts.pory"
-	completequest QUEST_PSP_BATTERIES
+	completequest QUEST_GBA_BATTERIES
 # 320 "data/maps/TosaPort/scripts.pory"
 	release
 	end
 
-TosaPort_PSPKid_14:
+TosaPort_GBAKid_14:
 # 305 "data/maps/TosaPort/scripts.pory"
-	msgbox TosaPort_PSPKid_Text_2
+	msgbox TosaPort_GBAKid_Text_2
 # 306 "data/maps/TosaPort/scripts.pory"
 	release
 	end
 
-TosaPort_PSPKid_17:
+TosaPort_GBAKid_17:
 # 314 "data/maps/TosaPort/scripts.pory"
-	msgbox TosaPort_PSPKid_Text_5
-	goto TosaPort_PSPKid_16
+	msgbox TosaPort_GBAKid_Text_5
+	goto TosaPort_GBAKid_16
 
 
 TosaPort_StallDad::
@@ -626,12 +626,12 @@ TosaPort_StallDad::
 # 344 "data/maps/TosaPort/scripts.pory"
 	faceplayer
 # 345 "data/maps/TosaPort/scripts.pory"
-	questmenu QUEST_MENU_CHECK_ACTIVE, QUEST_PSP_BATTERIES
+	questmenu QUEST_MENU_CHECK_ACTIVE, QUEST_GBA_BATTERIES
 # 346 "data/maps/TosaPort/scripts.pory"
 	compare VAR_RESULT, 0
 	goto_if_ne TosaPort_StallDad_2
 # 365 "data/maps/TosaPort/scripts.pory"
-	questmenu QUEST_MENU_CHECK_COMPLETE, QUEST_PSP_BATTERIES
+	questmenu QUEST_MENU_CHECK_COMPLETE, QUEST_GBA_BATTERIES
 # 366 "data/maps/TosaPort/scripts.pory"
 	compare VAR_RESULT, 0
 	goto_if_ne TosaPort_StallDad_5
@@ -643,7 +643,7 @@ TosaPort_StallDad::
 
 TosaPort_StallDad_2:
 # 347 "data/maps/TosaPort/scripts.pory"
-	subquestmenu QUEST_MENU_CHECK_COMPLETE, QUEST_PSP_BATTERIES, SUB_QUEST_1
+	subquestmenu QUEST_MENU_CHECK_COMPLETE, QUEST_GBA_BATTERIES, SUB_QUEST_1
 # 348 "data/maps/TosaPort/scripts.pory"
 	compare VAR_RESULT, 0
 	goto_if_ne TosaPort_StallDad_8
@@ -659,7 +659,7 @@ TosaPort_StallDad_2:
 # 360 "data/maps/TosaPort/scripts.pory"
 	msgbox TosaPort_StallDad_Text_3
 # 361 "data/maps/TosaPort/scripts.pory"
-	completesubquest QUEST_PSP_BATTERIES, SUB_QUEST_1
+	completesubquest QUEST_GBA_BATTERIES, SUB_QUEST_1
 # 362 "data/maps/TosaPort/scripts.pory"
 	release
 	end
@@ -1102,70 +1102,70 @@ TosaPort_ChefStall_GateauHint_Text_0:
 	.string "of my delicious gateau! Bring this to\l"
 	.string "ton ami, mon ami.$"
 
-TosaPort_PSPKid_Text_0:
+TosaPort_GBAKid_Text_0:
 # 294 "data/maps/TosaPort/scripts.pory"
 	.string "I've been helping my Dad sell fruit we\n"
 	.string "import from Hoenn.$"
 
-TosaPort_PSPKid_Text_1:
+TosaPort_GBAKid_Text_1:
 # 302 "data/maps/TosaPort/scripts.pory"
 	.string "You found Dad? Did he give you some\n"
 	.string "batteries?$"
 
-TosaPort_PSPKid_Text_2:
+TosaPort_GBAKid_Text_2:
 # 305 "data/maps/TosaPort/scripts.pory"
 	.string "Huh? Dad said he gave you one. Did you\n"
 	.string "lose it?$"
 
-TosaPort_PSPKid_Text_3:
+TosaPort_GBAKid_Text_3:
 # 310 "data/maps/TosaPort/scripts.pory"
 	.string "{PLAYER} handed over the Cell\n"
 	.string "Battery.$"
 
-TosaPort_PSPKid_Text_4:
+TosaPort_GBAKid_Text_4:
 # 311 "data/maps/TosaPort/scripts.pory"
 	.string "A Cell Battery? I guess that'd work!$"
 
-TosaPort_PSPKid_Text_5:
+TosaPort_GBAKid_Text_5:
 # 314 "data/maps/TosaPort/scripts.pory"
 	.string "Thanks mister. Now that I've got some\n"
 	.string "power again, do you fancy trading\l"
 	.string "Pokémon with me? If you have a\l"
 	.string "Magnemite I can trade you my Corsola.$"
 
-TosaPort_PSPKid_Text_6:
+TosaPort_GBAKid_Text_6:
 # 316 "data/maps/TosaPort/scripts.pory"
 	.string "Thanks miss. Now that I've got some\n"
 	.string "power again, do you fancy trading\l"
 	.string "Pokémon with me? If you have a\l"
 	.string "Magnemite I can trade you my Corsola.$"
 
-TosaPort_PSPKid_Text_7:
+TosaPort_GBAKid_Text_7:
 # 323 "data/maps/TosaPort/scripts.pory"
 	.string "Did you find Dad yet? He said he was\n"
 	.string "only getting a snack. That was ages\l"
 	.string "ago…$"
 
-TosaPort_PSPKid_Text_8:
+TosaPort_GBAKid_Text_8:
 # 327 "data/maps/TosaPort/scripts.pory"
 	.string "Ugh, Dad's making me watch his stall.\n"
 	.string "At least he let me bring my GBA.$"
 
-TosaPort_PSPKid_Text_9:
+TosaPort_GBAKid_Text_9:
 # 329 "data/maps/TosaPort/scripts.pory"
 	.string "…And now the batteries are flat! Dad\n"
 	.string "wandered off for a snack ages ago.$"
 
-TosaPort_PSPKid_Text_10:
+TosaPort_GBAKid_Text_10:
 # 330 "data/maps/TosaPort/scripts.pory"
 	.string "Could you find him and ask him for some\n"
 	.string "batteries?$"
 
-TosaPort_PSPKid_Text_11:
+TosaPort_GBAKid_Text_11:
 # 332 "data/maps/TosaPort/scripts.pory"
 	.string "Ugh, adults are so lame!$"
 
-TosaPort_PSPKid_Text_12:
+TosaPort_GBAKid_Text_12:
 # 336 "data/maps/TosaPort/scripts.pory"
 	.string "Thanks! Dad said he was in the mood for\n"
 	.string "something sweet.$"

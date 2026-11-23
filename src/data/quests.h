@@ -1,5 +1,5 @@
 // Quest data (PSF Unbound Quest Menu format, include/quests.h). Edits to quests are made here.
-// Quest names live in include/constants/quests.h (QUEST_PSP_BATTERIES ...); QUEST_4 onward are PSF's numbered
+// Quest names live in include/constants/quests.h (QUEST_GBA_BATTERIES ...); QUEST_4 onward are PSF's numbered
 // placeholders, hidden until a script unlocks them. Tray text: 2 lines of about 26 characters.
 
 #define sub_quest(i, n, d, m, s, st, t) {.id = i, .name = n, .desc = d, .map = m, .sprite = s, .spritetype = st, .type = t}
@@ -8,7 +8,7 @@
 static const u8 sText_TosaPort[] = _("Tosa Port");
 
 // subquest ids are unique across all quests (bits in gSaveBlock2Ptr->subQuests)
-static const struct SubQuest sSubQuests_PspBatteries[QUEST_PSP_BATTERIES_SUB_COUNT] =
+static const struct SubQuest sSubQuests_GbaBatteries[QUEST_GBA_BATTERIES_SUB_COUNT] =
 {
     sub_quest(0, COMPOUND_STRING("Find the kid's dad"), COMPOUND_STRING("He should be somewhere\naround the port."),
               sText_TosaPort, ITEM_CELL_BATTERY, ITEM, NULL),
@@ -22,12 +22,12 @@ static const struct SubQuest sSubQuests_PspBatteries[QUEST_PSP_BATTERIES_SUB_COU
 
 const struct SideQuest gSideQuests[QUEST_COUNT] =
 {
-    [QUEST_PSP_BATTERIES] = {
+    [QUEST_GBA_BATTERIES] = {
         .name = COMPOUND_STRING("Flat Batteries"),
         .desc = COMPOUND_STRING("A kid at the fruit stall wants\nto play on his GBA. Find his dad!"),
         .donedesc = COMPOUND_STRING("The kid's dad gave him\nsome batteries."),
         .map = sText_TosaPort, .sprite = ITEM_CELL_BATTERY, .spritetype = ITEM,
-        .subquests = sSubQuests_PspBatteries, .numSubquests = QUEST_PSP_BATTERIES_SUB_COUNT,
+        .subquests = sSubQuests_GbaBatteries, .numSubquests = QUEST_GBA_BATTERIES_SUB_COUNT,
     },
     [QUEST_HEART_SCALE] = {
         .name = COMPOUND_STRING("Scale as old as Time"),

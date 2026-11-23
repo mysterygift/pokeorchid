@@ -284,20 +284,20 @@ mart ChefStallGoods{
 	ITEM_SHALOUR_SABLE
 }
 
-// Flat Batteries (QUEST_PSP_BATTERIES): step 1 = the dad at the chef's stall hands over a
+// Flat Batteries (QUEST_GBA_BATTERIES): step 1 = the dad at the chef's stall hands over a
 // Cell Battery, step 2 = bring it back here; the kid takes it for his GBA.
-script TosaPort_PSPKid {
+script TosaPort_GBAKid {
 	lock
 	faceplayer
-	questmenu(QUEST_MENU_CHECK_COMPLETE, QUEST_PSP_BATTERIES)
+	questmenu(QUEST_MENU_CHECK_COMPLETE, QUEST_GBA_BATTERIES)
 	if (var(VAR_RESULT)) {
 		msgbox(format("I've been helping my Dad sell fruit we import from Hoenn."))
 		release
 		end
 	}
-	questmenu(QUEST_MENU_CHECK_ACTIVE, QUEST_PSP_BATTERIES)
+	questmenu(QUEST_MENU_CHECK_ACTIVE, QUEST_GBA_BATTERIES)
 	if (var(VAR_RESULT)) {
-		subquestmenu(QUEST_MENU_CHECK_COMPLETE, QUEST_PSP_BATTERIES, SUB_QUEST_1)
+		subquestmenu(QUEST_MENU_CHECK_COMPLETE, QUEST_GBA_BATTERIES, SUB_QUEST_1)
 		if (var(VAR_RESULT)) {
 			msgbox(format("You found Dad? Did he give you some batteries?"))
 			checkitem(ITEM_CELL_BATTERY)
@@ -315,8 +315,8 @@ script TosaPort_PSPKid {
 			} else {
 				msgbox(format("Thanks miss. Now that I've got some power again, do you fancy trading Pokémon with me? If you have a Magnemite I can trade you my Corsola."))
 			}
-			subquestmenu(QUEST_MENU_COMPLETE_QUEST, QUEST_PSP_BATTERIES, SUB_QUEST_2)
-			completequest(QUEST_PSP_BATTERIES)
+			subquestmenu(QUEST_MENU_COMPLETE_QUEST, QUEST_GBA_BATTERIES, SUB_QUEST_2)
+			completequest(QUEST_GBA_BATTERIES)
 			release
 			end
 		}
@@ -334,7 +334,7 @@ script TosaPort_PSPKid {
 		end
 	}
 	msgbox(format("Thanks! Dad said he was in the mood for something sweet."))
-	startquest(QUEST_PSP_BATTERIES)
+	startquest(QUEST_GBA_BATTERIES)
 	release
 	end
 }
@@ -342,9 +342,9 @@ script TosaPort_PSPKid {
 script TosaPort_StallDad {
 	lock
 	faceplayer
-	questmenu(QUEST_MENU_CHECK_ACTIVE, QUEST_PSP_BATTERIES)
+	questmenu(QUEST_MENU_CHECK_ACTIVE, QUEST_GBA_BATTERIES)
 	if (var(VAR_RESULT)) {
-		subquestmenu(QUEST_MENU_CHECK_COMPLETE, QUEST_PSP_BATTERIES, SUB_QUEST_1)
+		subquestmenu(QUEST_MENU_CHECK_COMPLETE, QUEST_GBA_BATTERIES, SUB_QUEST_1)
 		if (var(VAR_RESULT)) {
 			msgbox(format("Go on, take that battery to my boy. I'll be back… after one more gateau."))
 			release
@@ -358,11 +358,11 @@ script TosaPort_StallDad {
 			end
 		}
 		msgbox(format("Tell him I'll be back once I've finished my Old Gateau. Or two."))
-		completesubquest(QUEST_PSP_BATTERIES, SUB_QUEST_1)
+		completesubquest(QUEST_GBA_BATTERIES, SUB_QUEST_1)
 		release
 		end
 	}
-	questmenu(QUEST_MENU_CHECK_COMPLETE, QUEST_PSP_BATTERIES)
+	questmenu(QUEST_MENU_CHECK_COMPLETE, QUEST_GBA_BATTERIES)
 	if (var(VAR_RESULT)) {
 		msgbox(format("My boy runs that fruit stall better than I do! Shh… don't tell him I said that."))
 		release

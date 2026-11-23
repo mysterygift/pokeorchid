@@ -61,13 +61,13 @@
 #define SUB_QUEST_8          7
 
 // Orchid quest names (src/data/quests.h). QUEST_4 onward are still numbered placeholders.
-#define QUEST_PSP_BATTERIES     QUEST_1     // Tosa Port: the PSP kid's flat batteries; find his dad
+#define QUEST_GBA_BATTERIES     QUEST_1     // Tosa Port: the GBA kid's flat batteries; find his dad
 #define QUEST_HEART_SCALE       QUEST_2     // Tosa Port: show the old man a Heart Scale
 #define QUEST_TASTE_OF_HOME     QUEST_3     // Changu City Café: bring the Kalos expat an Old Gateau
 
 // steps per quest that has them
-#define QUEST_PSP_BATTERIES_SUB_COUNT 2
-#define SUB_QUEST_COUNT (QUEST_PSP_BATTERIES_SUB_COUNT)
+#define QUEST_GBA_BATTERIES_SUB_COUNT 2
+#define SUB_QUEST_COUNT (QUEST_GBA_BATTERIES_SUB_COUNT)
 
 #define QUEST_ARRAY_COUNT (SUB_QUEST_COUNT > QUEST_COUNT ? SUB_QUEST_COUNT : QUEST_COUNT)
 #endif // GUARD_CONSTANTS_QUESTS_H
