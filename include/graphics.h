@@ -1896,6 +1896,7 @@ extern const u32 gOrchidRegionMapFrame_Tilemap[];
 extern const u16 gOrchidDexScreen_Pal[];
 extern const u8 gOrchidDexRow_Gfx[];
 extern const u8 gOrchidDexBall_Gfx[];
+extern const u8 gOrchidDexBallGrey_Gfx[];
 extern const u8 gOrchidDexThumb_Gfx[];
 extern const u8 gSatchelRing_Gfx[];
 extern const u8 gSatchelThumb_Gfx[];

@@ -83,16 +83,16 @@ enum
 #include "data/start_menu_orchid.h"
 
 #define TAG_OSM_ICONS        0x6E20
-#define TAG_OSM_ICON_PAL     0x6E21 // menu_icons.png palette (also the saving ball + sparkles)
-#define TAG_OSM_ICON_MUTED   0x6E22 // resting icons
+#define TAG_OSM_ICON_PAL     (0x6E21 | BLEND_IMMUNE_FLAG) // menu_icons.png palette (also the saving ball + sparkles)
+#define TAG_OSM_ICON_MUTED   (0x6E22 | BLEND_IMMUNE_FLAG) // resting icons
 #define TAG_OSM_BALL         0x6E23
 #define TAG_OSM_SPARKLES     0x6E24
 #define TAG_OSM_SAFARI_ICON  0x6E25
 #define TAG_OSM_BANNER       0x6E26 // start menu v2: banner body
 #define TAG_OSM_TAB          0x6E27 // gold tab with the option name (drawn at runtime)
 #define TAG_OSM_PILL         0x6E28 // location pill (drawn at runtime)
-#define TAG_OSM_OBJ_PAL      0x6E29 // start_obj.pal: banner, tab
-#define TAG_OSM_PILL_PAL     0x6E2A // start_obj.pal with the cap ramp of the current weather: location pill
+#define TAG_OSM_OBJ_PAL      (0x6E29 | BLEND_IMMUNE_FLAG) // start_obj.pal: banner, tab
+#define TAG_OSM_PILL_PAL     (0x6E2A | BLEND_IMMUNE_FLAG) // start_obj.pal with the cap ramp of the current weather: location pill
 
 // Start menu v2: the tab and the location pill are drawn into an off-screen window, then copied to OBJ tiles.
 #define OSM2_CANVAS_W        16 // tiles

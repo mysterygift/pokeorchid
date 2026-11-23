@@ -11,7 +11,8 @@
       "kind": "town",
       "notes": "",
       "kanto": false,
-      "station": true
+      "station": true,
+      "habitat": "WEST"
     },
     {
       "key": "MAPSEC_OLDALE_TOWN",
@@ -21,7 +22,8 @@
       "origName": "Telok Town",
       "kind": "town",
       "notes": "",
-      "kanto": false
+      "kanto": false,
+      "habitat": "WEST"
     },
     {
       "key": "MAPSEC_DEWFORD_TOWN",
@@ -82,7 +84,8 @@
       "kind": "city",
       "notes": "city in the tropical portion of the region, at the heart of the Tosa Reserve. Gym leader is Hana – she cultivates Orchids in her garden.",
       "kanto": false,
-      "station": true
+      "station": true,
+      "habitat": "NORTH"
     },
     {
       "key": "MAPSEC_CHANGU_CITY",
@@ -93,7 +96,8 @@
       "kind": "city",
       "notes": "There is an airport here.",
       "kanto": false,
-      "station": true
+      "station": true,
+      "habitat": "SOUTH"
     },
     {
       "key": "MAPSEC_SENOKO_CITY",
@@ -104,7 +108,8 @@
       "kind": "city",
       "notes": "Mo, runs the national power grid. He looks after the wind farms that dot around this town.",
       "kanto": false,
-      "station": true
+      "station": true,
+      "habitat": "EAST"
     },
     {
       "key": "MAPSEC_INKA_CITY",
@@ -115,7 +120,8 @@
       "kind": "city",
       "notes": "Gym leader Frea heads up a cold food distribution centre here. Inka City is the domestic logistics hub of the city, and Frea makes sure all the imported food from Hoenn and Johto gets on the plates of the Tosa people. Team Torrent's hidden base is here, with a shipping company as the front (Marlin Co.)",
       "kanto": false,
-      "station": true
+      "station": true,
+      "habitat": "SOUTH"
     },
     {
       "key": "MAPSEC_FORTREE_CITY",
@@ -136,7 +142,8 @@
       "kind": "city",
       "notes": "",
       "kanto": false,
-      "station": true
+      "station": true,
+      "habitat": "EAST"
     },
     {
       "key": "MAPSEC_MOONGROVE_CITY",
@@ -147,7 +154,8 @@
       "kind": "city",
       "notes": "Nestled in the mangroves, gym leader Tork enjoys hunting for catfish.",
       "kanto": false,
-      "station": true
+      "station": true,
+      "habitat": "SOUTH"
     },
     {
       "key": "MAPSEC_CORRAL_CITY",
@@ -158,7 +166,8 @@
       "kind": "city",
       "notes": "the bustling beach city on Pokétopia where Marina's gym resides. There's also a lovely marina.",
       "kanto": false,
-      "station": true
+      "station": true,
+      "habitat": "EAST"
     },
     {
       "key": "MAPSEC_CHALLENGER_GATE",
@@ -168,7 +177,8 @@
       "origName": "Challenger Gate",
       "kind": "city",
       "notes": "",
-      "kanto": false
+      "kanto": false,
+      "habitat": "NORTH"
     },
     {
       "key": "MAPSEC_SOUTH_TOSA_RESERVE_1",
@@ -178,7 +188,8 @@
       "origName": "South Tosa Reserve",
       "kind": "landmark",
       "notes": "",
-      "kanto": false
+      "kanto": false,
+      "habitat": "SOUTH"
     },
     {
       "key": "MAPSEC_ROUTE_302",
@@ -188,7 +199,8 @@
       "origName": "Route 302",
       "kind": "route",
       "notes": "",
-      "kanto": false
+      "kanto": false,
+      "habitat": "NORTH"
     },
     {
       "key": "MAPSEC_ROUTE_303",
@@ -198,7 +210,8 @@
       "origName": "Route 303",
       "kind": "route",
       "notes": "",
-      "kanto": false
+      "kanto": false,
+      "habitat": "NORTH"
     },
     {
       "key": "MAPSEC_ROUTE_304",
@@ -208,7 +221,8 @@
       "origName": "Route 304",
       "kind": "route",
       "notes": "",
-      "kanto": false
+      "kanto": false,
+      "habitat": "NORTH"
     },
     {
       "key": "MAPSEC_ROUTE_305",
@@ -218,7 +232,8 @@
       "origName": "Route 305",
       "kind": "route",
       "notes": "",
-      "kanto": false
+      "kanto": false,
+      "habitat": "NORTH"
     },
     {
       "key": "MAPSEC_ROUTE_306",
@@ -228,7 +243,8 @@
       "origName": "Route 306",
       "kind": "route",
       "notes": "A short, pleasant path for people commuting from Changu City to Changu Airport.",
-      "kanto": false
+      "kanto": false,
+      "habitat": "SOUTH"
     },
     {
       "key": "MAPSEC_ROUTE_307",
@@ -238,7 +254,8 @@
       "origName": "Route 307",
       "kind": "route",
       "notes": "",
-      "kanto": false
+      "kanto": false,
+      "habitat": "NORTH"
     },
     {
       "key": "MAPSEC_ROUTE_308",
@@ -248,7 +265,8 @@
       "origName": "Route 308",
       "kind": "route",
       "notes": "",
-      "kanto": false
+      "kanto": false,
+      "habitat": "SOUTH"
     },
     {
       "key": "MAPSEC_ROUTE_309",
@@ -258,7 +276,8 @@
       "origName": "Route 309",
       "kind": "route",
       "notes": "",
-      "kanto": false
+      "kanto": false,
+      "habitat": "EAST"
     },
     {
       "key": "MAPSEC_ROUTE_310",
@@ -268,7 +287,8 @@
       "origName": "Route 310",
       "kind": "route",
       "notes": "",
-      "kanto": false
+      "kanto": false,
+      "habitat": "EAST"
     },
     {
       "key": "MAPSEC_ROUTE_311",
@@ -278,7 +298,8 @@
       "origName": "Route 311",
       "kind": "route",
       "notes": "",
-      "kanto": false
+      "kanto": false,
+      "habitat": "WEST"
     },
     {
       "key": "MAPSEC_ROUTE_312",
@@ -288,7 +309,8 @@
       "origName": "Route 312",
       "kind": "water",
       "notes": "",
-      "kanto": false
+      "kanto": false,
+      "habitat": "WEST"
     },
     {
       "key": "MAPSEC_ROUTE_313",
@@ -298,7 +320,8 @@
       "origName": "Route 313",
       "kind": "water",
       "notes": "",
-      "kanto": false
+      "kanto": false,
+      "habitat": "WEST"
     },
     {
       "key": "MAPSEC_ROUTE_314",
@@ -308,7 +331,8 @@
       "origName": "Route 314",
       "kind": "water",
       "notes": "",
-      "kanto": false
+      "kanto": false,
+      "habitat": "SOUTH"
     },
     {
       "key": "MAPSEC_ROUTE_115",
@@ -578,7 +602,8 @@
       "origName": "Mt. Batok",
       "kind": "dungeon",
       "notes": "",
-      "kanto": false
+      "kanto": false,
+      "habitat": "NORTH"
     },
     {
       "key": "MAPSEC_SAFARI_ZONE",
@@ -608,7 +633,8 @@
       "origName": "Moongrove Marsh",
       "kind": "landmark",
       "notes": "marshlands and mangroves that weave themselves around Moongrove city. Great for fishing up ellusive Pokémon species, and some haunting ghost Pokémon at night.",
-      "kanto": false
+      "kanto": false,
+      "habitat": "SOUTH"
     },
     {
       "key": "MAPSEC_RUSTURF_TUNNEL",
@@ -638,7 +664,8 @@
       "origName": "Power Plant",
       "kind": "landmark",
       "notes": "This replaces the existing power plant.",
-      "kanto": false
+      "kanto": false,
+      "habitat": "EAST"
     },
     {
       "key": "MAPSEC_METEOR_FALLS",
@@ -718,7 +745,8 @@
       "origName": "Challenger's Trail",
       "kind": "dungeon",
       "notes": "",
-      "kanto": false
+      "kanto": false,
+      "habitat": "NORTH"
     },
     {
       "key": "MAPSEC_MIRAGE_ISLAND",
@@ -2109,7 +2137,8 @@
       "kind": "landmark",
       "notes": "",
       "kanto": false,
-      "station": true
+      "station": true,
+      "habitat": "NORTH"
     },
     {
       "key": "MAPSEC_INDUSTRIAL_PARK",
@@ -2119,7 +2148,8 @@
       "origName": "Industrial Park",
       "kind": "landmark",
       "notes": "",
-      "kanto": false
+      "kanto": false,
+      "habitat": "SOUTH"
     },
     {
       "key": "MAPSEC_CHANGU_AIRPORT",
@@ -2130,7 +2160,8 @@
       "kind": "landmark",
       "notes": "The Tosa Region's international airport.",
       "kanto": false,
-      "station": true
+      "station": true,
+      "habitat": "SOUTH"
     },
     {
       "key": "MAPSEC_ABANDONED_HOUSE",
@@ -2141,7 +2172,8 @@
       "kind": "landmark",
       "notes": "A mysterious house abandoned in the early days of the Tosa region. People in Moongrove spot lights here at night. It's haunted.",
       "kanto": false,
-      "station": false
+      "station": false,
+      "habitat": "SOUTH"
     },
     {
       "key": "MAPSEC_BURA_CITY",
@@ -2152,7 +2184,8 @@
       "kind": "city",
       "notes": "A quiet city people spend little time in. It's mostly a place for people to stop over on journeys between Changu and Juran city.",
       "kanto": false,
-      "station": true
+      "station": true,
+      "habitat": "EAST"
     },
     {
       "key": "MAPSEC_DAMP_PATH",
@@ -2162,7 +2195,8 @@
       "origName": "Damp Path",
       "kind": "dungeon",
       "notes": "A wet abandoned path through the hills of West Tosa. Filled with rowdy thugs and neverdowells now. And Zubat.",
-      "kanto": false
+      "kanto": false,
+      "habitat": "WEST"
     },
     {
       "key": "MAPSEC_WAVEBREAK_TOWN",
@@ -2173,7 +2207,8 @@
       "kind": "town",
       "notes": "A forgotten seaside town. Home to Tosa's first port before Tosa Port opened.",
       "kanto": false,
-      "station": false
+      "station": false,
+      "habitat": "WEST"
     },
     {
       "key": "MAPSEC_PINESTAMP_TOWN",
@@ -2183,7 +2218,8 @@
       "origName": "Pinestamp Town",
       "kind": "town",
       "notes": "",
-      "kanto": false
+      "kanto": false,
+      "habitat": "NORTH"
     },
     {
       "key": "MAPSEC_FABER_TOWN",
@@ -2194,7 +2230,8 @@
       "kind": "town",
       "notes": "A town nestled in the cliffs of the Tosa region accessible via cable car or a trecherous climb up the cliff. The leader of the town is Meru, a fierce fighter who trains against Rock Pokémon in the mountains solo.",
       "kanto": false,
-      "station": true
+      "station": true,
+      "habitat": "NORTH"
     },
     {
       "key": "MAPSEC_GALANGAL_FOREST",
@@ -2204,7 +2241,8 @@
       "origName": "Galangal Forest",
       "kind": "dungeon",
       "notes": "A range of medicinal plants grow in Galangal Forest.",
-      "kanto": false
+      "kanto": false,
+      "habitat": "NORTH"
     },
     {
       "key": "MAPSEC_KANTU_FALLS",
@@ -2214,7 +2252,8 @@
       "origName": "Kantu Falls",
       "kind": "landmark",
       "notes": "A beautiful series of waterfalls near Faber Town, locals travel here once or twice a year to bathe in the mineral-rich waters.",
-      "kanto": false
+      "kanto": false,
+      "habitat": "NORTH"
     },
     {
       "key": "MAPSEC_POKETOPIA_GATE",
@@ -2225,7 +2264,8 @@
       "kind": "landmark",
       "notes": "",
       "kanto": false,
-      "station": true
+      "station": true,
+      "habitat": "EAST"
     },
     {
       "key": "MAPSEC_RAILWAY_TUNNELS",
@@ -2235,7 +2275,8 @@
       "origName": "Railway Tunnels",
       "kind": "dungeon",
       "notes": "Dingy tunnels beneath Tosa Port railway station.",
-      "kanto": false
+      "kanto": false,
+      "habitat": "SOUTH"
     },
     {
       "key": "MAPSEC_SOUTH_TOSA_RESERVE_2",
@@ -2245,7 +2286,8 @@
       "origName": "South Tosa Reserve",
       "kind": "landmark",
       "notes": "",
-      "kanto": false
+      "kanto": false,
+      "habitat": "SOUTH"
     },
     {
       "key": "MAPSEC_SOUTH_TOSA_RESERVE_3",
@@ -2255,7 +2297,8 @@
       "origName": "South Tosa Reserve",
       "kind": "landmark",
       "notes": "",
-      "kanto": false
+      "kanto": false,
+      "habitat": "SOUTH"
     },
     {
       "key": "MAPSEC_NORTH_TOSA_RESERVE",
@@ -2265,7 +2308,8 @@
       "origName": "North Tosa Reserve",
       "kind": "landmark",
       "notes": "",
-      "kanto": false
+      "kanto": false,
+      "habitat": "NORTH"
     },
     {
       "key": "MAPSEC_EAST_TOSA_RESERVE",
@@ -2275,7 +2319,8 @@
       "origName": "East Tosa Reserve",
       "kind": "landmark",
       "notes": "",
-      "kanto": false
+      "kanto": false,
+      "habitat": "EAST"
     },
     {
       "key": "MAPSEC_INKA_SEAWALL",

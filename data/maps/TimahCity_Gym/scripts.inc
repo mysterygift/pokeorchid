@@ -14,43 +14,52 @@ TimahCity_Gym_EventScript_Defeated::
 # 9 "data/maps/TimahCity_Gym/scripts.pory"
 	setflag FLAG_BADGE01_GET
 # 10 "data/maps/TimahCity_Gym/scripts.pory"
+	compare VAR_ORCHID_RESEARCH, 0
+	goto_if_eq TimahCity_Gym_EventScript_Defeated_2
+TimahCity_Gym_EventScript_Defeated_1:
+# 13 "data/maps/TimahCity_Gym/scripts.pory"
 	msgbox TimahCity_Gym_EventScript_Defeated_Text_0
-# 11 "data/maps/TimahCity_Gym/scripts.pory"
+# 14 "data/maps/TimahCity_Gym/scripts.pory"
 	release
 	return
 
+TimahCity_Gym_EventScript_Defeated_2:
+# 11 "data/maps/TimahCity_Gym/scripts.pory"
+	setvar VAR_ORCHID_RESEARCH, 1
+	goto TimahCity_Gym_EventScript_Defeated_1
+
 
 TimahCity_Gym_EventScript_Guide::
-# 15 "data/maps/TimahCity_Gym/scripts.pory"
+# 18 "data/maps/TimahCity_Gym/scripts.pory"
 	msgbox TimahCity_Gym_EventScript_Guide_Text_0, MSGBOX_NPC
 	return
 
 
 TimahCity_Gym_EventScript_Defeated_Text_0:
-# 10 "data/maps/TimahCity_Gym/scripts.pory"
+# 13 "data/maps/TimahCity_Gym/scripts.pory"
 	.string "{PLAYER} received the Hana Gym\n"
 	.string "Badge!\p"
 	.string "(Placeholder Gym: the badge flag is\n"
 	.string "set.)$"
 
 TimahCity_Gym_EventScript_Guide_Text_0:
-# 15 "data/maps/TimahCity_Gym/scripts.pory"
+# 18 "data/maps/TimahCity_Gym/scripts.pory"
 	.string "Hey, Challenger! This is the Gym of Hana,\n"
 	.string "who uses Grass-type Pokémon.\p"
 	.string "The Gym's still being fitted out. For now\n"
 	.string "it's just you, Hana and this empty hall!$"
 
 TimahCity_Gym_Text_Intro::
-# 18 "data/maps/TimahCity_Gym/scripts.pory"
+# 21 "data/maps/TimahCity_Gym/scripts.pory"
 	.string "Welcome to my garden. My orchids bloom\n"
 	.string "nowhere else in the world, and neither\l"
 	.string "does my battling style!$"
 
 TimahCity_Gym_Text_Defeat::
-# 22 "data/maps/TimahCity_Gym/scripts.pory"
+# 25 "data/maps/TimahCity_Gym/scripts.pory"
 	.string "Oh my… you pruned my team right back.$"
 
 TimahCity_Gym_Text_Post::
-# 26 "data/maps/TimahCity_Gym/scripts.pory"
+# 29 "data/maps/TimahCity_Gym/scripts.pory"
 	.string "Treat every living thing as gently as an\n"
 	.string "orchid and it will grow strong for you.$"

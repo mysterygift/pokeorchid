@@ -3,11 +3,18 @@
 // Reward / Done), bag-style pill rows with pictogram state tags, ★ favourites (Select), hidden A–Z sort
 // (Start), a tray with the quest's sprite and location, and the steps view (A) for quests with subquests.
 // Locked quests are hidden; the header counts completed / unlocked.
+// Orchid: a 6th tab, RESEARCH (Professor Palm's research tasks, src/research.c), appears once Palm has called
+// after the first gym badge; its header shows the Research Rank (stars) and research points, A on a finished
+// task sends the notes to Palm (reward + RP, rank-up gift), surveys have one step per habitat.
 //
 // Layers: BG3 grid, BG2 static art (export_quests.py), BG0 windows (pills, text, thumb, progress fill).
 // OBJ: the selected filter tab, state tags, the quest sprite in the tray's icon well.
 #include "global.h"
 #include "quests.h"
+#include "research.h"
+#include "region_map.h"
+#include "item.h"
+#include "pokedex_habitats.h"
 #include "rotom_phone.h"
 #include "bg.h"
 #include "decompress.h"
@@ -35,6 +42,7 @@
 static const u32 sQuestsBg_Gfx[] = INCGFX_U32("graphics/rotom_phone/quests_bg.png", ".4bpp.smol");
 static const u32 sQuestsList_Tilemap[] = INCGFX_U32("graphics/rotom_phone/quests_list.bin", ".smolTM");
 static const u32 sQuestsSteps_Tilemap[] = INCGFX_U32("graphics/rotom_phone/quests_steps.bin", ".smolTM");
+static const u32 sQuestsList6_Tilemap[] = INCGFX_U32("graphics/rotom_phone/quests_list6.bin", ".smolTM");
 static const u16 sQuestsBg_Pal[] = INCGFX_U16("graphics/rotom_phone/quests_bg.pal", ".gbapal");
 static const u8 sTab_Gfx[] = INCGFX_U8("graphics/rotom_phone/quests_tab.png", ".4bpp");
 static const u8 sTagsA_Gfx[] = INCGFX_U8("graphics/rotom_phone/quests_tags_a.png", ".4bpp");
@@ -58,7 +66,8 @@ static const u8 sGlyphs_Gfx[] = INCGFX_U8("graphics/rotom_phone/quests_glyphs.pn
 #define WELL_X      20
 #define WELL_Y      137
 
-enum { FILTER_ALL, FILTER_NEW, FILTER_ACTIVE, FILTER_REWARD, FILTER_DONE, FILTER_COUNT };
+enum { FILTER_ALL, FILTER_NEW, FILTER_ACTIVE, FILTER_REWARD, FILTER_DONE, FILTER_RESEARCH, FILTER_COUNT };
+enum { POPUP_NONE, POPUP_CLAIM, POPUP_RANK, POPUP_BAG_FULL };
 enum { STATE_NEW, STATE_ACTIVE, STATE_REWARD, STATE_DONE, STATE_LOCKED };
 enum { WIN_TITLE, WIN_BAR, WIN_ROWS, WIN_TRAY };
 
@@ -88,6 +97,7 @@ static const u8 sColors_SoftSel[] = {0, KIT_INK_SOFT, KIT_SELECT_DARK};
 static const u8 *const sFilterNames[FILTER_COUNT] =
 {
     COMPOUND_STRING("All"), COMPOUND_STRING("New"), COMPOUND_STRING("Active"), COMPOUND_STRING("Reward"), COMPOUND_STRING("Done"),
+    COMPOUND_STRING("Research"),
 };
 static const u8 sText_Unknown[] = _("??????");
 
@@ -112,6 +122,15 @@ struct QuestsApp
     u8 tagSpriteIds[ROWS];
     u8 iconSpriteId;
     u8 iconType;
+    u8 popup;           // POPUP_*: the claim / rank-up message over the rows
+    u8 popupTask;
+    u8 popupOldRank;
+    mapsec_u16_t steps6[RESEARCH_MAX_STEPS];   // research survey steps (habitats)
+    // research tasks are worked out from the dex: computed once per list build, not per row draw
+    u8 rState[32];
+    u16 rDone[32], rTotal[32];
+    u8 stepState[RESEARCH_MAX_STEPS];
+    u16 stepDone[RESEARCH_MAX_STEPS], stepTotal[RESEARCH_MAX_STEPS], stepSeen[RESEARCH_MAX_STEPS];
 };
 
 static EWRAM_DATA struct QuestsApp *sQ = NULL;
@@ -174,6 +193,16 @@ static bool32 HasSteps(u32 q)
     return gSideQuests[q].numSubquests != 0 && QuestState(q) != STATE_NEW && QuestState(q) != STATE_LOCKED;
 }
 
+static u32 NumFilters(void)
+{
+    return Research_IsUnlocked() ? FILTER_COUNT : FILTER_RESEARCH;
+}
+
+static bool32 IsResearch(void)
+{
+    return sQ->filter == FILTER_RESEARCH;
+}
+
 static bool32 MatchesFilter(u32 q, u32 filter)
 {
     u32 st = QuestState(q);
@@ -183,6 +212,7 @@ static bool32 MatchesFilter(u32 q, u32 filter)
     case FILTER_ACTIVE: return st == STATE_ACTIVE;
     case FILTER_REWARD: return st == STATE_REWARD;
     case FILTER_DONE:   return st == STATE_DONE;
+    case FILTER_RESEARCH: return FALSE;
     default:            return st != STATE_LOCKED;
     }
 }
@@ -190,6 +220,12 @@ static bool32 MatchesFilter(u32 q, u32 filter)
 static u32 CountFilter(u32 filter)
 {
     u32 q, n = 0;
+    if (filter == FILTER_RESEARCH)
+    {
+        for (q = 0; q < Research_Count(); q++)
+            n += Research_IsVisible(q) ? 1 : 0;
+        return n;
+    }
     for (q = 0; q < QUEST_COUNT; q++)
         n += MatchesFilter(q, filter) ? 1 : 0;
     return n;
@@ -200,10 +236,38 @@ static void BuildList(void)
     u32 q, i, j;
 
     sQ->count = 0;
+    if (sQ->steps && IsResearch())
+    {
+        sQ->count = Research_GetSteps(sQ->parent, sQ->steps6);
+        for (i = 0; i < sQ->count; i++)
+        {
+            struct HabitatCounts c;
+            Habitats_CountSections(&sQ->steps6[i], 1, &c);
+            sQ->list[i] = i;
+            sQ->stepDone[i] = c.catalogued;
+            sQ->stepTotal[i] = c.total;
+            sQ->stepSeen[i] = c.seen;
+            sQ->stepState[i] = (c.total && c.catalogued == c.total) ? STATE_DONE : (c.seen ? STATE_ACTIVE : STATE_NEW);
+        }
+        return;
+    }
     if (sQ->steps)
     {
         for (i = 0; i < gSideQuests[sQ->parent].numSubquests; i++)
             sQ->list[sQ->count++] = i;
+        return;
+    }
+    if (IsResearch())
+    {
+        for (q = 0; q < Research_Count(); q++)
+        {
+            if (Research_IsVisible(q))
+            {
+                sQ->list[sQ->count++] = q;
+                sQ->rState[q] = Research_GetState(q);
+                Research_GetProgress(q, &sQ->rDone[q], &sQ->rTotal[q]);
+            }
+        }
         return;
     }
     // favourites first, then quest order (or A–Z)
@@ -237,7 +301,7 @@ void QuestMenu_Init(u8 a0, MainCallback callback)
 {
     sQ = AllocZeroed(sizeof(*sQ));
     sQ->exitCallback = callback;
-    sQ->filter = sSavedFilter < FILTER_COUNT ? sSavedFilter : 0;
+    sQ->filter = sSavedFilter < NumFilters() ? sSavedFilter : 0;
     sQ->alpha = sSavedAlpha;
     gMain.state = 0;
     SetMainCallback2(CB2_SetupQuests);
@@ -271,7 +335,14 @@ static const union AnimCmd sAnim_Q1[] = { ANIMCMD_FRAME(8, 0), ANIMCMD_END };
 static const union AnimCmd sAnim_Q2[] = { ANIMCMD_FRAME(16, 0), ANIMCMD_END };
 static const union AnimCmd sAnim_Q3[] = { ANIMCMD_FRAME(24, 0), ANIMCMD_END };
 static const union AnimCmd sAnim_Q4[] = { ANIMCMD_FRAME(32, 0), ANIMCMD_END };
-static const union AnimCmd *const sAnims_Frames[] = { sAnim_Q0, sAnim_Q1, sAnim_Q2, sAnim_Q3, sAnim_Q4 };
+static const union AnimCmd sAnim_Q5[] = { ANIMCMD_FRAME(40, 0), ANIMCMD_END };
+static const union AnimCmd sAnim_Q6[] = { ANIMCMD_FRAME(48, 0), ANIMCMD_END };
+static const union AnimCmd sAnim_Q7[] = { ANIMCMD_FRAME(56, 0), ANIMCMD_END };
+static const union AnimCmd sAnim_Q8[] = { ANIMCMD_FRAME(64, 0), ANIMCMD_END };
+static const union AnimCmd sAnim_Q9[] = { ANIMCMD_FRAME(72, 0), ANIMCMD_END };
+static const union AnimCmd sAnim_Q10[] = { ANIMCMD_FRAME(80, 0), ANIMCMD_END };
+static const union AnimCmd *const sAnims_Frames[] = { sAnim_Q0, sAnim_Q1, sAnim_Q2, sAnim_Q3, sAnim_Q4, sAnim_Q5,
+                                                      sAnim_Q6, sAnim_Q7, sAnim_Q8, sAnim_Q9, sAnim_Q10 };
 
 static const struct SpriteTemplate sTemplate_Tab =
 {
@@ -294,7 +365,7 @@ static void LoadGfx(void)
     u32 x, y;
     static const struct SpriteSheet sheets[] =
     {
-        { sTab_Gfx, 32 * 16 / 2 * 5, TAG_Q_TAB },
+        { sTab_Gfx, 32 * 16 / 2 * 11, TAG_Q_TAB },
         { sTagsA_Gfx, 32 * 16 / 2 * 3, TAG_Q_TAGS_A },
         { sTagsB_Gfx, 32 * 16 / 2 * 2, TAG_Q_TAGS_B },
         {}
@@ -458,7 +529,27 @@ static void PrintHeader(void)
     u32 a, b;
 
     FillWindowPixelBuffer(WIN_TITLE, PIXEL_FILL(0));
-    if (sQ->steps)
+    if (IsResearch() && !sQ->steps)
+    {
+        // Research Rank: 5 stars (lit up to the rank) + research points
+        u32 rank = Research_GetRank(), k, x;
+        AddTextPrinterParameterized4(WIN_TITLE, FONT_NORMAL, 23, 0, 0, 0, sColors_Title, TEXT_SKIP_DRAW, COMPOUND_STRING("QUESTS"));
+        ConvertIntToDecimalStringN(gStringVar1, Research_GetRP(), STR_CONV_MODE_LEFT_ALIGN, 4);
+        StringExpandPlaceholders(gStringVar4, COMPOUND_STRING("{STR_VAR_1} RP"));
+        x = 236 - GetStringWidth(FONT_NARROW, gStringVar4, 0);
+        AddTextPrinterParameterized4(WIN_TITLE, FONT_NARROW, x, 0, 0, 0, sColors_Title, TEXT_SKIP_DRAW, gStringVar4);
+        for (k = 0; k < 5; k++)
+            BlitBitmapRectToWindow(WIN_TITLE, sGlyphs_Gfx, k <= rank ? 32 : 48, 0, 64, 16, x - 12 - (4 - k) * 10, 3, 9, 9);
+        CopyWindowToVram(WIN_TITLE, COPYWIN_GFX);
+        return;
+    }
+    if (sQ->steps && IsResearch())
+    {
+        title = Research_GetTask(sQ->parent)->name;
+        a = sQ->rDone[sQ->parent];
+        b = sQ->rTotal[sQ->parent];
+    }
+    else if (sQ->steps)
     {
         title = gSideQuests[sQ->parent].name;
         a = StepsDone(sQ->parent);
@@ -498,6 +589,11 @@ static void PrintBar(void)
     else
     {
         u32 n = gSideQuests[sQ->parent].numSubquests, done = StepsDone(sQ->parent), k;
+        if (IsResearch())
+        {
+            n = sQ->rTotal[sQ->parent] ? sQ->rTotal[sQ->parent] : 1;
+            done = sQ->rDone[sQ->parent];
+        }
         AddTextPrinterParameterized4(WIN_BAR, FONT_NARROW, 16, 17 - 16, 0, 0, sColors_Label, TEXT_SKIP_DRAW, COMPOUND_STRING("Back"));
         if (done > 0)
             PhoneUI_RoundBox(WIN_BAR, 54, 21 - 16, (180 * done + n / 2) / n, 8, 2,
@@ -507,8 +603,16 @@ static void PrintBar(void)
     }
     CopyWindowToVram(WIN_BAR, COPYWIN_GFX);
     gSprites[sQ->tabSpriteId].invisible = sQ->steps;
-    gSprites[sQ->tabSpriteId].x = 22 + sQ->filter * 26 + 16;
-    StartSpriteAnim(&gSprites[sQ->tabSpriteId], sQ->filter);
+    if (Research_IsUnlocked())
+    {
+        gSprites[sQ->tabSpriteId].x = QUESTS_TAB6_X0 + sQ->filter * QUESTS_TAB6_PITCH + 16;
+        StartSpriteAnim(&gSprites[sQ->tabSpriteId], FILTER_RESEARCH + sQ->filter);
+    }
+    else
+    {
+        gSprites[sQ->tabSpriteId].x = 22 + sQ->filter * 26 + 16;
+        StartSpriteAnim(&gSprites[sQ->tabSpriteId], sQ->filter);
+    }
 }
 
 static void PrintRow(u32 r)
@@ -529,7 +633,27 @@ static void PrintRow(u32 r)
     else
         PhoneUI_RoundBox(WIN_ROWS, 0, y, PILL_W, 14, 4, KIT_PANEL, KIT_INK, KIT_WHITE, KIT_PANEL_SHADE, TRUE);
 
-    if (sQ->steps)
+    if (sQ->steps && IsResearch())
+    {
+        u32 k = sQ->list[i];
+        state = sQ->stepState[k];
+        GetMapName(gStringVar3, sQ->steps6[k], 0);
+        name = gStringVar3;
+        total = sQ->stepTotal[k];
+        done = sQ->stepDone[k];
+    }
+    else if (IsResearch())
+    {
+        u32 id = sQ->list[i];
+        state = sQ->rState[id];
+        name = Research_GetTask(id)->name;
+        if (Research_GetTask(id)->type != RESEARCH_REQUEST && state != STATE_NEW)
+        {
+            total = sQ->rTotal[id];
+            done = sQ->rDone[id];
+        }
+    }
+    else if (sQ->steps)
     {
         const struct SubQuest *sub = &gSideQuests[sQ->parent].subquests[sQ->list[i]];
         state = StepState(sQ->parent, sQ->list[i]);
@@ -541,7 +665,7 @@ static void PrintRow(u32 r)
         state = QuestState(q);
         name = gSideQuests[q].name;
         if (IsFavorite(q))
-            BlitBitmapRectToWindow(WIN_ROWS, sGlyphs_Gfx, 32, 0, 48, 16, 4, y + 2, 9, 9);
+            BlitBitmapRectToWindow(WIN_ROWS, sGlyphs_Gfx, 32, 0, 64, 16, 4, y + 2, 9, 9);
         if (gSideQuests[q].numSubquests != 0 && state != STATE_NEW)
         {
             total = gSideQuests[q].numSubquests;
@@ -578,12 +702,16 @@ static void DrawScroll(void)
     PhoneUI_RoundBox(WIN_ROWS, 231 - 8, ROW_Y + 1 - 32 + y, 5, h, 1, KIT_SELECT, KIT_INK, KIT_SELECT_LIGHT, KIT_SELECT_DARK, TRUE);
 }
 
+static EWRAM_DATA u8 sTrayText[64] = {0};
+static EWRAM_DATA u8 sTrayRight[24] = {0};
+static EWRAM_DATA u8 sTrayMap[24] = {0};
+
 static void PrintTray(void)
 {
     const u8 *map = NULL, *text = NULL, *right = NULL;
     u16 sprite = 0;
     u8 type = 0;
-    bool32 stepsHint = FALSE;
+    bool32 stepsHint = FALSE, sendHint = FALSE;
 
     FillWindowPixelBuffer(WIN_TRAY, PIXEL_FILL(0));
     if (sQ->count == 0)
@@ -594,7 +722,55 @@ static void PrintTray(void)
         CopyWindowToVram(WIN_TRAY, COPYWIN_GFX);
         return;
     }
-    if (sQ->steps)
+    if (sQ->steps && IsResearch())
+    {
+        u32 k = sQ->list[sQ->cursor];
+        mapsec_u16_t sec = sQ->steps6[k];
+        const struct ResearchTask *task = Research_GetTask(sQ->parent);
+        ConvertIntToDecimalStringN(gStringVar1, sQ->stepTotal[k], STR_CONV_MODE_LEFT_ALIGN, 3);
+        ConvertIntToDecimalStringN(gStringVar3, sQ->stepDone[k], STR_CONV_MODE_LEFT_ALIGN, 3);
+        StringExpandPlaceholders(gStringVar4, COMPOUND_STRING("Catalogue all {STR_VAR_1} species,\nday and night: {STR_VAR_3} done."));
+        StringCopy(sTrayText, gStringVar4);
+        text = sTrayText;
+        sprite = task->sprite;
+        type = task->spriteType;
+        ConvertIntToDecimalStringN(gStringVar1, sQ->cursor + 1, STR_CONV_MODE_LEFT_ALIGN, 2);
+        ConvertIntToDecimalStringN(gStringVar3, sQ->count, STR_CONV_MODE_LEFT_ALIGN, 2);
+        StringCopy(gStringVar2, gStringVar3);
+        StringExpandPlaceholders(sTrayRight, COMPOUND_STRING("Step {STR_VAR_1} of {STR_VAR_2}"));
+        right = sTrayRight;
+        map = sTrayMap;
+        GetMapName(sTrayMap, sec, 0);
+    }
+    else if (IsResearch())
+    {
+        u32 id = sQ->list[sQ->cursor], st = sQ->rState[id];
+        const struct ResearchTask *task = Research_GetTask(id);
+        map = Research_GetLocationName(id, sTrayMap);
+        sprite = task->sprite;
+        type = task->spriteType;
+        stepsHint = task->type == RESEARCH_SURVEY && st != STATE_NEW;
+        if (st == STATE_REWARD)
+        {
+            text = COMPOUND_STRING("Send your notes to Palm\nto claim the reward.");
+            right = COMPOUND_STRING("Send to Palm");
+            sendHint = TRUE;
+            stepsHint = FALSE;
+        }
+        else if (st == STATE_DONE)
+        {
+            text = COMPOUND_STRING("Filed in Palm's notes.\nThank you!");
+        }
+        else
+        {
+            text = task->desc;
+            ConvertIntToDecimalStringN(gStringVar1, task->rp, STR_CONV_MODE_LEFT_ALIGN, 3);
+            StringExpandPlaceholders(sTrayRight, COMPOUND_STRING("+{STR_VAR_1} RP"));
+            if (!stepsHint)
+                right = sTrayRight;
+        }
+    }
+    else if (sQ->steps)
     {
         u32 i = sQ->list[sQ->cursor], st = StepState(sQ->parent, i);
         const struct SubQuest *sub = &gSideQuests[sQ->parent].subquests[i];
@@ -644,15 +820,21 @@ static void PrintTray(void)
     {
         u32 w = GetStringWidth(FONT_NARROW, map, 0);
         PhoneUI_RoundBox(WIN_TRAY, 46, 119 - 112, 10 + 16 + w, 14, 4, KIT_PANEL, KIT_INK, KIT_WHITE, KIT_PANEL_SHADE, TRUE);
-        BlitBitmapRectToWindow(WIN_TRAY, sGlyphs_Gfx, 0, 0, 48, 16, 46, 119 - 112, 17, 14);
+        BlitBitmapRectToWindow(WIN_TRAY, sGlyphs_Gfx, 0, 0, 64, 16, 46, 119 - 112, 17, 14);
         AddTextPrinterParameterized4(WIN_TRAY, FONT_NARROW, 46 + 16 + 4, 118 - 112, 0, 0, sColors_Ink, TEXT_SKIP_DRAW, map);
     }
     if (stepsHint)
     {
         const u8 *s = COMPOUND_STRING("Steps");
         u32 w = GetStringWidth(FONT_NARROW, s, 0);
-        BlitBitmapRectToWindow(WIN_TRAY, sGlyphs_Gfx, 24, 0, 48, 16, 236 - w - 12, 122 - 112, 8, 8);
+        BlitBitmapRectToWindow(WIN_TRAY, sGlyphs_Gfx, 24, 0, 64, 16, 236 - w - 12, 122 - 112, 8, 8);
         AddTextPrinterParameterized4(WIN_TRAY, FONT_NARROW, 236 - w, 118 - 112, 0, 0, sColors_Soft, TEXT_SKIP_DRAW, s);
+    }
+    else if (sendHint)
+    {
+        u32 w = GetStringWidth(FONT_NARROW, right, 0);
+        BlitBitmapRectToWindow(WIN_TRAY, sGlyphs_Gfx, 24, 0, 64, 16, 236 - w - 12, 122 - 112, 8, 8);
+        AddTextPrinterParameterized4(WIN_TRAY, FONT_NARROW, 236 - w, 118 - 112, 0, 0, sColors_Soft, TEXT_SKIP_DRAW, right);
     }
     else if (right != NULL)
     {
@@ -687,7 +869,8 @@ static void Redraw(bool32 rebuild)
             sQ->cursor = sQ->count ? sQ->count - 1 : 0;
         if (sQ->top > sQ->cursor)
             sQ->top = sQ->cursor;
-        DecompressDataWithHeaderWram(sQ->steps ? sQuestsSteps_Tilemap : sQuestsList_Tilemap, sQ->bg2Tilemap);
+        DecompressDataWithHeaderWram(sQ->steps ? sQuestsSteps_Tilemap
+                                     : (Research_IsUnlocked() ? sQuestsList6_Tilemap : sQuestsList_Tilemap), sQ->bg2Tilemap);
         if (sQ->count <= ROWS)  // scrollbar hidden when everything fits
             for (r = 4; r <= 13; r++)
                 sQ->bg2Tilemap[r * 32 + 28] = sQ->bg2Tilemap[r * 32 + 29] = 0;
@@ -700,6 +883,103 @@ static void Redraw(bool32 rebuild)
     DrawScroll();
     CopyWindowToVram(WIN_ROWS, COPYWIN_GFX);
     PrintTray();
+}
+
+// ---------------------------------------------------------------- research claim pop-ups (drawn over the rows)
+static void ShowPopup(u32 kind, u32 taskId)
+{
+    const struct ResearchTask *t = Research_GetTask(taskId);
+    const u8 *title, *l1 = NULL, *l2 = NULL, *l3 = NULL;
+    u8 line1[48], line2[48];
+    u32 r, y0 = 4, w = 196, x0 = (PILL_W - w) / 2;
+
+    sQ->popup = kind;
+    for (r = 0; r < ROWS; r++)
+        SetTag(r, -1);
+    FillWindowPixelBuffer(WIN_ROWS, PIXEL_FILL(0));
+    switch (kind)
+    {
+    case POPUP_CLAIM:
+        title = COMPOUND_STRING("FIELD NOTES");
+        CopyItemNameHandlePlural(t->rewardItem, gStringVar2, t->rewardQty);
+        ConvertIntToDecimalStringN(gStringVar1, t->rewardQty, STR_CONV_MODE_LEFT_ALIGN, 3);
+        StringExpandPlaceholders(line1, COMPOUND_STRING("Palm sent {STR_VAR_1} {STR_VAR_2}"));
+        ConvertIntToDecimalStringN(gStringVar1, t->rp, STR_CONV_MODE_LEFT_ALIGN, 3);
+        StringExpandPlaceholders(line2, COMPOUND_STRING("and {STR_VAR_1} research points!"));
+        l1 = line1;
+        l2 = line2;
+        l3 = t->name;
+        break;
+    case POPUP_RANK:
+        title = COMPOUND_STRING("RANK UP");
+        l1 = Research_GetRankName(Research_GetRank());
+        CopyItemName(Research_GetRankGift(Research_GetRank()), gStringVar2);
+        StringExpandPlaceholders(line2, COMPOUND_STRING("Palm sent you {STR_VAR_2}!"));
+        l2 = line2;
+        l3 = COMPOUND_STRING("“The habitat data is amazing!”");
+        break;
+    default:
+        title = COMPOUND_STRING("FIELD NOTES");
+        l1 = COMPOUND_STRING("Your Bag is full!");
+        l2 = COMPOUND_STRING("Make room, then send");
+        l3 = COMPOUND_STRING("your notes again.");
+        break;
+    }
+    PhoneUI_RoundBox(WIN_ROWS, x0, y0 + 6, w, 66, 4, KIT_PANEL, KIT_INK, KIT_WHITE, KIT_PANEL_SHADE, TRUE);
+    PhoneUI_RoundBox(WIN_ROWS, x0 + 6, y0, GetStringWidth(FONT_NORMAL, title, 0) + 14, 14, 4,
+                     kind == POPUP_RANK ? KIT_SELECT : KIT_ACCENT, KIT_INK,
+                     kind == POPUP_RANK ? KIT_SELECT_LIGHT : KIT_ACCENT_LIGHT,
+                     kind == POPUP_RANK ? KIT_SELECT_DARK : KIT_ACCENT_DARK, TRUE);
+    AddTextPrinterParameterized4(WIN_ROWS, FONT_NORMAL, x0 + 13, y0 - 1, 0, 0,
+                                 kind == POPUP_RANK ? sColors_InkSel : sColors_Title, TEXT_SKIP_DRAW, title);
+    if (kind == POPUP_RANK)
+    {
+        u32 k, rank = Research_GetRank();
+        for (k = 0; k < 5; k++)
+            BlitBitmapRectToWindow(WIN_ROWS, sGlyphs_Gfx, k <= rank ? 32 : 48, 0, 64, 16, x0 + 70 + k * 12, y0 + 17, 9, 9);
+        AddTextPrinterParameterized4(WIN_ROWS, FONT_NORMAL, x0 + (w - GetStringWidth(FONT_NORMAL, l1, 0)) / 2, y0 + 27, 0, 0,
+                                     sColors_Ink, TEXT_SKIP_DRAW, l1);
+        AddTextPrinterParameterized4(WIN_ROWS, FONT_NARROW, x0 + 10, y0 + 43, 0, 0, sColors_Soft, TEXT_SKIP_DRAW, l2);
+        AddTextPrinterParameterized4(WIN_ROWS, FONT_NARROW, x0 + 10, y0 + 55, 0, 0, sColors_Soft, TEXT_SKIP_DRAW, l3);
+    }
+    else
+    {
+        AddTextPrinterParameterized4(WIN_ROWS, FONT_NORMAL, x0 + 10, y0 + 15, 0, 0, sColors_Ink, TEXT_SKIP_DRAW, l1);
+        AddTextPrinterParameterized4(WIN_ROWS, FONT_NORMAL, x0 + 10, y0 + 31, 0, 0, sColors_Ink, TEXT_SKIP_DRAW, l2);
+        AddTextPrinterParameterized4(WIN_ROWS, FONT_NARROW, x0 + 10, y0 + 49, 0, 0, sColors_Soft, TEXT_SKIP_DRAW, l3);
+    }
+    CopyWindowToVram(WIN_ROWS, COPYWIN_GFX);
+}
+
+static void TryClaim(void)
+{
+    u32 id = sQ->list[sQ->cursor];
+
+    sQ->popupTask = id;
+    sQ->popupOldRank = Research_GetRank();
+    if (Research_Claim(id))
+    {
+        PlaySE(SE_EXP_MAX);
+        ShowPopup(POPUP_CLAIM, id);
+    }
+    else
+    {
+        PlaySE(SE_FAILURE);
+        ShowPopup(POPUP_BAG_FULL, id);
+    }
+}
+
+// A / B on a pop-up: claim -> rank up (if the RP crossed a rank) -> back to the list
+static void AdvancePopup(void)
+{
+    PlaySE(SE_SELECT);
+    if (sQ->popup == POPUP_CLAIM && Research_GetRank() != sQ->popupOldRank)
+    {
+        ShowPopup(POPUP_RANK, sQ->popupTask);
+        return;
+    }
+    sQ->popup = POPUP_NONE;
+    Redraw(TRUE);
 }
 
 // ---------------------------------------------------------------- input
@@ -735,6 +1015,12 @@ static void Task_Quests(u8 taskId)
         SetMainCallback2(cb);
         return;
     }
+    if (sQ->popup != POPUP_NONE)
+    {
+        if (JOY_NEW(A_BUTTON | B_BUTTON))
+            AdvancePopup();
+        return;
+    }
     if (JOY_REPEAT(DPAD_UP))
     {
         MoveCursor(-1);
@@ -757,18 +1043,18 @@ static void Task_Quests(u8 taskId)
     else if (JOY_NEW(L_BUTTON | R_BUTTON))
     {
         PlaySE(SE_SELECT);
-        sQ->filter = (sQ->filter + (JOY_NEW(R_BUTTON) ? 1 : FILTER_COUNT - 1)) % FILTER_COUNT;
+        sQ->filter = (sQ->filter + (JOY_NEW(R_BUTTON) ? 1 : NumFilters() - 1)) % NumFilters();
         sQ->cursor = sQ->top = 0;
         Redraw(TRUE);
     }
-    else if (JOY_NEW(START_BUTTON))
+    else if (JOY_NEW(START_BUTTON) && !IsResearch())
     {
         PlaySE(SE_SELECT);
         sQ->alpha ^= 1;
         sQ->cursor = sQ->top = 0;
         Redraw(TRUE);
     }
-    else if (JOY_NEW(SELECT_BUTTON) && sQ->count != 0)
+    else if (JOY_NEW(SELECT_BUTTON) && sQ->count != 0 && !IsResearch())
     {
         u8 q = sQ->list[sQ->cursor];
         PlaySE(SE_SELECT);
@@ -787,7 +1073,23 @@ static void Task_Quests(u8 taskId)
         }
         Redraw(FALSE);
     }
-    else if (JOY_NEW(A_BUTTON) && sQ->count != 0 && HasSteps(sQ->list[sQ->cursor]))
+    else if (JOY_NEW(A_BUTTON) && sQ->count != 0 && IsResearch() && !sQ->steps
+          && sQ->rState[sQ->list[sQ->cursor]] == RESEARCH_ST_REWARD)
+    {
+        TryClaim();
+    }
+    else if (JOY_NEW(A_BUTTON) && sQ->count != 0 && IsResearch() && !sQ->steps
+          && Research_GetTask(sQ->list[sQ->cursor])->type == RESEARCH_SURVEY)
+    {
+        PlaySE(SE_SELECT);
+        sQ->listCursor = sQ->cursor;
+        sQ->listTop = sQ->top;
+        sQ->parent = sQ->list[sQ->cursor];
+        sQ->steps = TRUE;
+        sQ->cursor = sQ->top = 0;
+        Redraw(TRUE);
+    }
+    else if (JOY_NEW(A_BUTTON) && sQ->count != 0 && !IsResearch() && HasSteps(sQ->list[sQ->cursor]))
     {
         PlaySE(SE_SELECT);
         sQ->listCursor = sQ->cursor;

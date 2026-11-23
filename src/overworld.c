@@ -1,5 +1,6 @@
 #include "global.h"
 #include "overworld.h"
+#include "research.h"
 #include "radio.h"
 #include "battle_pyramid.h"
 #include "battle_setup.h"
@@ -1864,6 +1865,7 @@ static void OverworldBasic(void)
 {
     ScriptContext_RunScript();
     Radio_Update();
+    Research_Update();
     RunTasks();
     AnimateSprites();
     CameraUpdate();

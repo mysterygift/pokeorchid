@@ -1420,6 +1420,8 @@ static const u8 sODexText_UnkHeight[] = _("???.? m");
 static const u8 sODexText_UnkWeight[] = _("???.? kg");
 static const u8 sODexText_LivesIn[] = _("{STR_VAR_1} lives in:");
 static const u8 sODexText_AreaUnknown[] = _("Its habitat is unknown.");
+static const u8 sODexText_CatchAgain[] = _("Catch one more to catalogue it.");
+static const u8 sODexText_AreaLocked[] = _("Catch it to learn where it lives.");
 static const u8 sODexText_AndMore[] = _("…and other places.");
 static const u8 sODexText_CryHint[] = _("Press A to play the cry.");
 static const u8 sODexText_SizeLabel[] = _("Size comparison to {STR_VAR_1}");
@@ -1503,6 +1505,14 @@ static EWRAM_DATA u8 sODexGridBg = 0;   // 1 + the BG that holds the grid on thi
 static EWRAM_DATA u8 sODexGridTimer = 0;
 static EWRAM_DATA u8 sODexGridPos = 0;
 static EWRAM_DATA u16 sODexLastTop = 0;
+static EWRAM_DATA bool8 sODexOpenEntryOnLoad = FALSE;   // HABITATS asked for a species' entry
+static EWRAM_DATA bool8 sODexReturnToHabitats = FALSE;  // ...so B on that entry goes back to its route page
+
+static void Task_ODexToHabitats(u8 taskId);
+static void Task_WaitForExitHabitats(u8 taskId);
+static void Task_ODexEntryBackToHabitats(u8 taskId);
+static void Task_ODexResumeHabitats(u8 taskId);
+static const u8 *ODex_BallGfx(u16 dexNum);
 
 // ---------------------------------------------------------------- shared helpers
 
@@ -1516,6 +1526,19 @@ static void ODex_UpdateGrid(void)
         SetGpuReg(REG_OFFSET_BG0HOFS + (sODexGridBg - 1) * 4, (-sODexGridPos) & 0xF);
         SetGpuReg(REG_OFFSET_BG0VOFS + (sODexGridBg - 1) * 4, (-sODexGridPos) & 0xF);
     }
+}
+
+// For pokedex_habitats.c: which BG the scrolling grid is on (0 = none) / fill a BG with the grid
+void ODex_SetGridBg(u8 bgPlusOne)
+{
+    sODexGridBg = bgPlusOne;
+}
+
+static void ODex_FillGridMap(u8 bg);
+
+void ODex_FillGrid(u8 bg)
+{
+    ODex_FillGridMap(bg);
 }
 
 // Ease-out (1 - (1 - u)^2) of frame t of ODEX_FADE_FRAMES, in 1/256ths
@@ -1813,7 +1836,13 @@ static void ODex_PrintListRow(s32 entry)
         ODex_Print(ODEX_LWIN_LIST, FONT_NARROW, sODexText_Dashes, ODEX_ROW_NAME_X, y, sODexText_InkSoft);
     }
     if (item->owned)
-        BlitBitmapToWindow(ODEX_LWIN_LIST, gOrchidDexBall_Gfx, ODEX_ROW_BALL_X, y + ODEX_ROW_BALL_Y, 8, 8);
+        BlitBitmapToWindow(ODEX_LWIN_LIST, ODex_BallGfx(item->dexNum), ODEX_ROW_BALL_X, y + ODEX_ROW_BALL_Y, 8, 8);
+}
+
+// Caught marker: grey ball after the first capture, colour once catalogued (second capture)
+static const u8 *ODex_BallGfx(u16 dexNum)
+{
+    return IsSpeciesCatalogued(dexNum) ? gOrchidDexBall_Gfx : gOrchidDexBallGrey_Gfx;
 }
 
 // The cursor row is the gold pill: palette 1 on its 17x2 cells
@@ -2192,9 +2221,19 @@ static void ODex_HandleListInput(u8 taskId, TaskFunc onB)
         return;
     }
 
-    if (JOY_NEW(A_BUTTON) && sPokedexView->pokedexList[sPokedexView->selectedPokemon].seen
+    if (JOY_NEW(START_BUTTON) && !sPokedexView->isSearchResults)
+    {
+        PlaySE(SE_PC_LOGIN);
+        BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK);
+        sPokedexView->selectedPokemonBackup = sPokedexView->selectedPokemon;
+        sODexLastTop = sPokedexView->odexTop;
+        gTasks[taskId].func = Task_ODexToHabitats;
+        return;
+    }
+    if ((JOY_NEW(A_BUTTON) || sODexOpenEntryOnLoad) && sPokedexView->pokedexList[sPokedexView->selectedPokemon].seen
      && sPokedexView->odexPicSpriteId != SPRITE_NONE)
     {
+        sODexOpenEntryOnLoad = FALSE;
         struct Sprite *pic = &gSprites[sPokedexView->odexPicSpriteId];
         enum Species species = NationalPokedexNumToSpeciesForm(sPokedexView->pokedexList[sPokedexView->selectedPokemon].dexNum);
 
@@ -2352,9 +2391,12 @@ static void ODex_PrintInfoTab(enum Species species, bool32 owned)
 
     // Description in the tray: 14px line pitch (FONT_NORMAL is 16px; the printer adds
     // maxLetterHeight + lineSpacing to its u8 currentY, so (u8)-2 wraps to +14)
-    if (owned)
+    // Orchid: the description needs a second capture (catalogued); one capture = measurements only
+    if (owned && IsSpeciesCatalogued(SpeciesToNationalPokedexNum(species)))
         AddTextPrinterParameterized4(WIN_INFO, FONT_NORMAL, ODEX_DESC_X, ODEX_DESC_Y, 0, (u8)-2,
                                      sODexText_Ink, TEXT_SKIP_DRAW, GetSpeciesPokedexDescription(species));
+    else if (owned)
+        ODex_Print(WIN_INFO, FONT_NORMAL, sODexText_CatchAgain, ODEX_DESC_X, ODEX_DESC_Y, sODexText_InkSoft);
 }
 
 // AREA: where the species lives (wild encounter tables), listed in the tray
@@ -2421,7 +2463,7 @@ static u32 ODex_FindHabitats(enum Species species, mapsec_u16_t *found, u8 *meth
     return numFound;
 }
 
-static void ODex_PrintAreaTab(enum Species species)
+static void ODex_PrintAreaTab(enum Species species, bool32 owned)
 {
     mapsec_u16_t found[ODEX_AREA_LINES + 1];
     u8 method[ODEX_AREA_LINES + 1];
@@ -2429,6 +2471,11 @@ static void ODex_PrintAreaTab(enum Species species)
     u8 str[64];
     u8 *end;
 
+    if (!owned)  // Orchid: the first capture records where it lives
+    {
+        ODex_Print(WIN_INFO, FONT_NORMAL, sODexText_AreaLocked, ODEX_DESC_X, ODEX_DESC_Y, sODexText_InkSoft);
+        return;
+    }
     numFound = ODex_FindHabitats(species, found, method, ODEX_AREA_LINES + 1);
     StringCopy(gStringVar1, GetSpeciesName(species));
     if (numFound == 0)
@@ -2636,7 +2683,7 @@ static void ODex_PrintEntry(u8 tab)
     ODex_PrintCentered(WIN_INFO, FONT_NORMAL, str, ODEX_E_X + 1, ODEX_E_NUM_CAP, ODEX_E_NAME_Y - 1, sODexText_Label);
     ODex_Print(WIN_INFO, FONT_NORMAL, GetSpeciesName(species), ODEX_E_X + ODEX_E_NUM_CAP + 6, ODEX_E_NAME_Y - 1, sODexText_Ink);
     if (item->owned)
-        BlitBitmapToWindow(WIN_INFO, gOrchidDexBall_Gfx, ODEX_E_X + ODEX_E_W - 15, ODEX_E_NAME_Y + 3, 8, 8);
+        BlitBitmapToWindow(WIN_INFO, ODex_BallGfx(item->dexNum), ODEX_E_X + ODEX_E_W - 15, ODEX_E_NAME_Y + 3, 8, 8);
 
     switch (tab)
     {
@@ -2644,7 +2691,7 @@ static void ODex_PrintEntry(u8 tab)
         ODex_PrintInfoTab(species, item->owned);
         break;
     case ODEX_TAB_AREA:
-        ODex_PrintAreaTab(species);
+        ODex_PrintAreaTab(species, item->owned);
         break;
     case ODEX_TAB_CRY:
         ODex_Print(WIN_INFO, FONT_NORMAL, sODexText_CryHint, ODEX_DESC_X, ODEX_DESC_Y, sODexText_Ink);
@@ -3286,9 +3333,16 @@ static void Task_WaitForExitInfoScreen(u8 taskId)
     }
     else
     {
-        // Exiting, back to list view
+        // Exiting, back to list view (or to the HABITATS route page the entry was opened from)
         sLastSelectedPokemon = sPokedexView->selectedPokemon;
         sPokeBallRotation = sPokedexView->pokeBallRotation;
+        if (sODexReturnToHabitats)
+        {
+            sODexReturnToHabitats = FALSE;
+            sODexLastTop = sPokedexView->odexTop;
+            gTasks[taskId].func = Task_ODexResumeHabitats;
+            return;
+        }
         gTasks[taskId].func = Task_OpenPokedexMainPage;
     }
 }
@@ -3320,6 +3374,66 @@ static void Task_WaitForExitSearch(u8 taskId)
             gTasks[taskId].func = Task_OpenPokedexMainPage;
         }
     }
+}
+
+// ---------------------------------------------------------------- Orchid HABITATS (pokedex_habitats.c)
+static void Task_ODexToHabitats(u8 taskId)
+{
+    if (gPaletteFade.active)
+        return;
+    ODex_DestroyListSprites();
+    ClearMonSprites();
+    FreeWindowAndBgBuffers();
+    gTasks[taskId].tLoadScreenTaskId = OpenPokedexHabitats(FALSE);
+    gTasks[taskId].func = Task_WaitForExitHabitats;
+}
+
+// B on an entry opened from HABITATS: the entry's buffers are already freed (Task_ODexEntryBackToHabitats)
+static void Task_ODexResumeHabitats(u8 taskId)
+{
+    gTasks[taskId].tLoadScreenTaskId = OpenPokedexHabitats(TRUE);
+    gTasks[taskId].func = Task_WaitForExitHabitats;
+}
+
+// Info-screen task: fade out and close the entry; Task_WaitForExitInfoScreen then reopens HABITATS
+static void Task_ODexEntryBackToHabitats(u8 taskId)
+{
+    if (gPaletteFade.active)
+        return;
+    ODex_DestroyUiSprites();
+    ODex_DestroyPic();
+    FreeInfoScreenWindowAndBgBuffers();
+    DestroyTask(taskId);
+}
+
+static void Task_WaitForExitHabitats(u8 taskId)
+{
+    u32 i, dexNum;
+
+    if (gTasks[gTasks[taskId].tLoadScreenTaskId].isActive)
+        return;
+    sPokedexView->selectedPokemon = sPokedexView->selectedPokemonBackup;
+    if (gHabitatsJumpSpecies != SPECIES_NONE)
+    {
+        dexNum = SpeciesToNationalPokedexNum(gHabitatsJumpSpecies);
+        for (i = 0; i < sPokedexView->pokemonListCount && sPokedexView->pokedexList[i].dexNum != dexNum; i++)
+            ;
+        if (i == sPokedexView->pokemonListCount && IsNationalPokedexEnabled() && sPokedexView->dexMode != DEX_MODE_NATIONAL)
+        {
+            sPokedexView->dexMode = DEX_MODE_NATIONAL;
+            CreatePokedexList(sPokedexView->dexMode, sPokedexView->dexOrder);
+            for (i = 0; i < sPokedexView->pokemonListCount && sPokedexView->pokedexList[i].dexNum != dexNum; i++)
+                ;
+        }
+        if (i < sPokedexView->pokemonListCount)
+        {
+            sPokedexView->selectedPokemon = i;
+            sODexOpenEntryOnLoad = TRUE;
+            sODexReturnToHabitats = TRUE;
+        }
+        gHabitatsJumpSpecies = SPECIES_NONE;
+    }
+    gTasks[taskId].func = Task_OpenPokedexMainPage;
 }
 
 static void Task_ClosePokedex(u8 taskId)
@@ -4294,6 +4408,13 @@ void Task_HandleInfoScreenInput(u8 taskId)
         PlaySE(SE_DEX_SCROLL);
         return;
     }
+    if (JOY_NEW(B_BUTTON) && sODexReturnToHabitats)
+    {
+        BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK);
+        gTasks[taskId].func = Task_ODexEntryBackToHabitats;
+        PlaySE(SE_PC_OFF);
+        return;
+    }
     if (JOY_NEW(B_BUTTON))
     {
         gTasks[taskId].tFadeTimer = 0;
@@ -4945,7 +5066,7 @@ static void ODex_PrintRegistered(enum Species species)
     ConvertIntToDecimalStringN(str, num, STR_CONV_MODE_LEADING_ZEROS, num > 999 ? 4 : 3);
     ODex_PrintCentered(WIN_INFO, FONT_NORMAL, str, ODEX_E_X + 1, ODEX_E_NUM_CAP, ODEX_E_NAME_Y - 1, sODexText_Label);
     ODex_Print(WIN_INFO, FONT_NORMAL, GetSpeciesName(species), ODEX_E_X + ODEX_E_NUM_CAP + 6, ODEX_E_NAME_Y - 1, sODexText_Ink);
-    BlitBitmapToWindow(WIN_INFO, gOrchidDexBall_Gfx, ODEX_E_X + ODEX_E_W - 15, ODEX_E_NAME_Y + 3, 8, 8);
+    BlitBitmapToWindow(WIN_INFO, ODex_BallGfx(SpeciesToNationalPokedexNum(species)), ODEX_E_X + ODEX_E_W - 15, ODEX_E_NAME_Y + 3, 8, 8);
     ODex_PrintInfoTab(species, TRUE);
 }
 
@@ -5449,6 +5570,21 @@ s8 GetSetPokedexFlag(enum NationalDexOrder nationalDexNo, u8 caseID)
     }
 
     return retVal;
+}
+
+// Orchid: Seen -> Captured -> Catalogued. Captured = the vanilla caught flag; a species is catalogued
+// once it has been caught a second time (Cmd_trysetcaughtmondexflags), which unlocks its dex
+// description and its encounter rates in the HABITATS view.
+bool32 IsSpeciesCatalogued(enum NationalDexOrder nationalDexNo)
+{
+    nationalDexNo--;
+    return (gSaveBlock3Ptr->dexCatalogued[nationalDexNo / 8] & (1 << (nationalDexNo % 8))) != 0;
+}
+
+void SetSpeciesCatalogued(enum NationalDexOrder nationalDexNo)
+{
+    nationalDexNo--;
+    gSaveBlock3Ptr->dexCatalogued[nationalDexNo / 8] |= 1 << (nationalDexNo % 8);
 }
 
 u16 GetNationalPokedexCount(u8 caseID)

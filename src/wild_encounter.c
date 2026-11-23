@@ -22,6 +22,7 @@
 #include "script.h"
 #include "tv.h"
 #include "wild_encounter.h"
+#include "rtc.h"
 #include "battle_debug.h"
 #include "battle_pike.h"
 #include "battle_pyramid.h"
@@ -524,6 +525,29 @@ void CreateWildMon(enum Species species, u8 level)
 #define TRY_GET_ABILITY_INFLUENCED_WILD_MON_INDEX(wildPokemon, type, ability, ptr, count) TryGetAbilityInfluencedWildMonIndex(wildPokemon, type, ability, ptr)
 #endif
 
+// Orchid night behaviour (user, 2026-11-23): at night wild Pokémon are 2 levels higher and have a 1-in-10
+// chance of their Hidden Ability. Pokédex HABITATS shows the +2 on its night lists.
+#define ORCHID_NIGHT_LEVEL_BONUS 2
+#define ORCHID_NIGHT_HIDDEN_ABILITY_ODDS 10
+
+static u8 OrchidNightLevel(u8 level)
+{
+    if (GetTimeOfDay() == TIME_NIGHT)
+        level = min(MAX_LEVEL, level + ORCHID_NIGHT_LEVEL_BONUS);
+    return level;
+}
+
+static void OrchidNightHiddenAbility(void)
+{
+    struct Pokemon *mon = &gParties[B_TRAINER_OPPONENT_A][0];
+    enum Species species = GetMonData(mon, MON_DATA_SPECIES);
+    u32 abilityNum = 2;
+
+    if (GetTimeOfDay() == TIME_NIGHT && GetSpeciesAbility(species, 2) != ABILITY_NONE
+     && Random() % ORCHID_NIGHT_HIDDEN_ABILITY_ODDS == 0)
+        SetMonData(mon, MON_DATA_ABILITY_NUM, &abilityNum);
+}
+
 bool8 TryGenerateWildMon(const struct WildPokemonInfo *wildMonInfo, enum WildPokemonArea area, u8 flags)
 {
     u8 wildMonIndex = 0;
@@ -572,13 +596,14 @@ bool8 TryGenerateWildMon(const struct WildPokemonInfo *wildMonInfo, enum WildPok
         break;
     }
 
-    level = ChooseWildMonLevel(wildMonInfo->wildPokemon, wildMonIndex, area);
+    level = OrchidNightLevel(ChooseWildMonLevel(wildMonInfo->wildPokemon, wildMonIndex, area));
     if (flags & WILD_CHECK_REPEL && !IsWildLevelAllowedByRepel(level))
         return FALSE;
     if (gMapHeader.mapLayoutId != LAYOUT_BATTLE_FRONTIER_BATTLE_PIKE_ROOM_WILD_MONS && flags & WILD_CHECK_KEEN_EYE && !IsAbilityAllowingEncounter(level))
         return FALSE;
 
     CreateWildMon(wildMonInfo->wildPokemon[wildMonIndex].species, level);
+    OrchidNightHiddenAbility();
     return TRUE;
 }
 
@@ -586,10 +611,11 @@ static u16 GenerateFishingWildMon(const struct WildPokemonInfo *wildMonInfo, u8 
 {
     u8 wildMonIndex = ChooseWildMonIndex_Fishing(rod);
     enum Species wildMonSpecies = wildMonInfo->wildPokemon[wildMonIndex].species;
-    u8 level = ChooseWildMonLevel(wildMonInfo->wildPokemon, wildMonIndex, WILD_AREA_FISHING);
+    u8 level = OrchidNightLevel(ChooseWildMonLevel(wildMonInfo->wildPokemon, wildMonIndex, WILD_AREA_FISHING));
 
     UpdateChainFishingStreak();
     CreateWildMon(wildMonSpecies, level);
+    OrchidNightHiddenAbility();
     return wildMonSpecies;
 }
 
