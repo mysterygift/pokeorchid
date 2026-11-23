@@ -2693,6 +2693,14 @@ u8 *WrapFontIdToFit(u8 *start, u8 *end, u32 fontId, u32 width)
     }
 }
 
+// Orchid: InitHeap wipes every allocation, including the text printer list. MoveSaveBlocks_ResetHeap runs
+// on every warp, so a printer still listed then (e.g. a message box closed mid-print) left sFirstTextPrinter
+// dangling, and the next FreeFinishedTextPrinters freed a block that no longer existed (heap assert/corruption).
+void ForgetAllTextPrinters(void)
+{
+    sFirstTextPrinter = NULL;
+}
+
 static struct TextPrinter *AllocateTextPrinter(void)
 {
     struct TextPrinter *printer = Alloc(sizeof(struct TextPrinter));

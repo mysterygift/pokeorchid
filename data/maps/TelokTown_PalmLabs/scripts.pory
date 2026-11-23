@@ -2,6 +2,7 @@ raw `
 TelokTown_PalmLabs_MapScripts::
 	map_script MAP_SCRIPT_ON_TRANSITION, TelokTown_PalmLabs_OnTransition
 	map_script MAP_SCRIPT_ON_FRAME_TABLE, TelokTown_PalmLabs_OnFrame
+	map_script MAP_SCRIPT_ON_WARP_INTO_MAP_TABLE, TelokTown_PalmLabs_OnWarp
 	.byte 0
 
 TelokTown_PalmLabs_OnTransition:
@@ -27,6 +28,15 @@ TelokTown_PalmLabs_EventScript_AideAtDoor:
 TelokTown_PalmLabs_EventScript_ProfFacesPlayer:
 	setobjectmovementtype LOCALID_PALM_LABS_PROF, MOVEMENT_TYPE_FACE_DOWN
 	return
+
+@ Back from the flashback: scripted warps land the player facing down, so turn them up to the professor
+TelokTown_PalmLabs_OnWarp:
+	map_script_2 VAR_TELOK_TOWN_STATE, 3, TelokTown_PalmLabs_EventScript_PlayerFacesProf
+	.2byte 0
+
+TelokTown_PalmLabs_EventScript_PlayerFacesProf:
+	turnobject LOCALID_PLAYER, DIR_NORTH
+	end
 
 TelokTown_PalmLabs_OnFrame:
 	map_script_2 VAR_TELOK_TOWN_STATE, 1, TelokTown_PalmLabs_EventScript_AideIntro

@@ -1,5 +1,5 @@
 // Prof. Palm's flashback during the Palm Labs intro (VAR_TELOK_TOWN_STATE 2).
-// Black-and-white town scene on the Tosa Port layout: the player is hidden and the camera sits on them at (12,14).
+// Black-and-white tour of the Tosa Port layout: the player is hidden at (12,14) and a camera object pans between shots.
 // The professor narrates with self-advancing text, then everyone warps back to the lab (state 3).
 mapscripts TelokTown_PalmLabs_Flashback_MapScripts {
 	MAP_SCRIPT_ON_TRANSITION {
@@ -19,26 +19,49 @@ mapscripts TelokTown_PalmLabs_Flashback_MapScripts {
 
 // lockall is needed (unlocked field controls re-run this ON_FRAME script every frame), but it also
 // freezes everyone, so the townsfolk are unfrozen straight after.
+// The camera object (spawned on the hidden player at 12,14) tours Tosa Port, one shot per line:
+//   1 town square and its Pokémon (12,14 -> 15,14)
+//   2 development: the warehouse row (8,8 -> 23,8)
+//   3 licensing and imports: the moorings (30,9 -> 30,14)
+//   4 "glad you're here": the ferry pier (19,34)
+// Each line starts with the move to its shot, then the camera drifts slowly while the text pages.
+// The message box hides the bottom three rows, so each shot keeps its subject at or above camera y+2.
 script TelokTown_PalmLabs_Flashback_EventScript_Narration {
 	lockall
 	special(UnfreezeObjectsKeepLock)
+	special(SpawnCameraObject)
 	delay(60)
 	special(TextAutoScrollOn)
+
+	applymovement(LOCALID_CAMERA, moves(walk_slow_right * 3))
 	message(format("It's dire times in the Tosa region. We've seen unprecedented changes in Pokémon populations across the region."))
 	waitmessage
 	delay(150)
+	waitmovement(LOCALID_CAMERA)
+
+	applymovement(LOCALID_CAMERA, moves(walk_diag_northwest * 6 walk_left walk_slow_right * 15))
 	message(format("In all my 20 years living in Tosa I've never seen such dramatic changes in species, and it's no coincidence that as the region has developed, Pokémon numbers have dwindled."))
 	waitmessage
 	delay(150)
+	waitmovement(LOCALID_CAMERA)
+
+	applymovement(LOCALID_CAMERA, moves(walk_diag_southeast walk_right * 6 walk_slow_down * 5))
 	message(format("The League have had to crack down on Trainer licensing and imports. The entire ecosystem is on the cusp of collapse."))
 	waitmessage
 	delay(150)
+	waitmovement(LOCALID_CAMERA)
+
+	applymovement(LOCALID_CAMERA, moves(walk_diag_southwest * 11 walk_fast_down * 7 walk_slow_down * 2))
 	message(format("That's why I'm so glad you're here. There is simply too much data to collect and analyse..."))
 	waitmessage
 	delay(150)
+	waitmovement(LOCALID_CAMERA)
+
 	closemessage
 	special(TextAutoScrollOff)
 	delay(30)
+	fadescreen(FADE_TO_BLACK)
+	special(RemoveCameraObject)
 	setvar(VAR_TELOK_TOWN_STATE, 3)
 	warp(MAP_TELOK_TOWN_PALM_LABS, 9, 8)
 }
