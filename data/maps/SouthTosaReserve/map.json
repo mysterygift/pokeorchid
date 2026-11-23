@@ -270,6 +270,14 @@
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
       "script": "SouthTosaReserve_EventScript_RouteSign"
+    },
+    {
+      "type": "hidden_item",
+      "x": 24,
+      "y": 26,
+      "elevation": 3,
+      "item": "ITEM_HEART_SCALE",
+      "flag": "FLAG_HIDDEN_ITEM_SOUTH_TOSA_RESERVE_HEART_SCALE"
     }
   ],
   "region": "REGION_HOENN"

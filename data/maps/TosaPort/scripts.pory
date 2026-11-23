@@ -247,6 +247,7 @@ script TosaPort_ChefStall {
 	"Have a look at my goods, see they are\n"
 	"the most fresh, non?")
 	setflag(FLAG_CHEF_STALL_MET)
+	call(TosaPort_ChefStall_GateauHint)
 	pokemart(ChefStallGoods)
 	msgbox("See you again, mon ami!")
 	release
@@ -254,10 +255,20 @@ script TosaPort_ChefStall {
 	}
 	msgbox("Good to see you mon ami!\n"
 	"What can I get for you?")
+	call(TosaPort_ChefStall_GateauHint)
 	pokemart(ChefStallGoods)
 	msgbox("Always a pleasure, mon ami!")
 	release
 	end
+}
+
+// A Taste of Home (QUEST_TASTE_OF_HOME): the Kalos artist in the Changu City Café wants an Old Gateau.
+script TosaPort_ChefStall_GateauHint {
+	questmenu(QUEST_MENU_CHECK_ACTIVE, QUEST_TASTE_OF_HOME)
+	if (var(VAR_RESULT)) {
+		msgbox(format("Quoi? Someone from Kalos is missing home? Then they need an Old Gateau! A taste of Kalos in every bite, mon ami."))
+	}
+	return
 }
 
 mart ChefStallGoods{
@@ -268,11 +279,78 @@ mart ChefStallGoods{
 	ITEM_SHALOUR_SABLE
 }
 
+// Flat Batteries (QUEST_PSP_BATTERIES): step 1 = the dad at the chef's stall hands over a
+// Cell Battery, step 2 = bring it back here. The player keeps the battery.
 script TosaPort_PSPKid {
 	lock
 	faceplayer
+	questmenu(QUEST_MENU_CHECK_COMPLETE, QUEST_PSP_BATTERIES)
+	if (var(VAR_RESULT)) {
+		msgbox(format("Dad says no new batteries until the stall sells out. So now I'm selling fruit. I'm actually kind of good at it!"))
+		release
+		end
+	}
+	questmenu(QUEST_MENU_CHECK_ACTIVE, QUEST_PSP_BATTERIES)
+	if (var(VAR_RESULT)) {
+		subquestmenu(QUEST_MENU_CHECK_COMPLETE, QUEST_PSP_BATTERIES, SUB_QUEST_1)
+		if (var(VAR_RESULT)) {
+			msgbox(format("You found Dad? Did he give you some batteries?"))
+			msgbox(format("…A Cell Battery? That's for Pokémon, not a PSP!"))
+			msgbox(format("Ugh, Dad… You keep it. Your Pokémon will get more use out of it than me."))
+			subquestmenu(QUEST_MENU_COMPLETE_QUEST, QUEST_PSP_BATTERIES, SUB_QUEST_2)
+			completequest(QUEST_PSP_BATTERIES)
+			release
+			end
+		}
+		msgbox(format("Did you find Dad yet? He said he was only getting a snack. That was ages ago…"))
+		release
+		end
+	}
 	msgbox("Ugh, Dad's making me watch his stall.\n"
 	"At least he let me bring my PSP.")
+	msgbox(format("…And now the batteries are flat! Dad wandered off for a snack ages ago."))
+	msgbox(format("Could you find him and ask him for some batteries?"), MSGBOX_YESNO)
+	if (var(VAR_RESULT) == NO) {
+		msgbox(format("Fine. I'll just stare at the fruit, then."))
+		release
+		end
+	}
+	msgbox(format("Thanks! He's big, and he's always hungry. Try anywhere that sells food."))
+	startquest(QUEST_PSP_BATTERIES)
+	release
+	end
+}
+
+script TosaPort_StallDad {
+	lock
+	faceplayer
+	questmenu(QUEST_MENU_CHECK_ACTIVE, QUEST_PSP_BATTERIES)
+	if (var(VAR_RESULT)) {
+		subquestmenu(QUEST_MENU_CHECK_COMPLETE, QUEST_PSP_BATTERIES, SUB_QUEST_1)
+		if (var(VAR_RESULT)) {
+			msgbox(format("Go on, take that battery to my boy. I'll be back… after one more gateau."))
+			release
+			end
+		}
+		msgbox(format("Huh? My boy sent you? He wants batteries for that game of his?"))
+		msgbox(format("Hmm… All I've got is this. I picked it up at the market this morning. A battery's a battery, right?"))
+		giveitem(ITEM_CELL_BATTERY)
+		if (!var(VAR_RESULT)) {
+			release
+			end
+		}
+		msgbox(format("Tell him I'll be back once I've finished my Old Gateau. Or two."))
+		completesubquest(QUEST_PSP_BATTERIES, SUB_QUEST_1)
+		release
+		end
+	}
+	questmenu(QUEST_MENU_CHECK_COMPLETE, QUEST_PSP_BATTERIES)
+	if (var(VAR_RESULT)) {
+		msgbox(format("My boy runs that fruit stall better than I do! Shh… don't tell him I said that."))
+		release
+		end
+	}
+	msgbox(format("Mmm! The Old Gateau at this stall is magnifique. Don't tell anyone you saw me here. I'm meant to be minding our fruit stall."))
 	release
 	end
 }
@@ -304,16 +382,87 @@ script TosaPort_LoadingTrucker {
 	end
 }
 
+// A Scale to Remember (QUEST_HEART_SCALE): the old man proposed with a Heart Scale. There is a
+// hidden one on the South Tosa Reserve riverbank (FLAG_HIDDEN_ITEM_SOUTH_TOSA_RESERVE_HEART_SCALE).
 script TosaPort_OldMan {
 	lock
+	questmenu(QUEST_MENU_CHECK_COMPLETE, QUEST_HEART_SCALE)
+	if (var(VAR_RESULT)) {
+		msgbox(format("Fu-fu-fu… I asked her again, and she said yes again. Some things never change."))
+		release
+		end
+	}
+	questmenu(QUEST_MENU_CHECK_ACTIVE, QUEST_HEART_SCALE)
+	if (var(VAR_RESULT)) {
+		checkitem(ITEM_HEART_SCALE)
+		if (var(VAR_RESULT)) {
+			goto(TosaPort_OldMan_ShowHeartScale)
+		}
+		faceplayer
+		msgbox(format("(Psst… When I was young, Heart Scales used to wash up on the riverbanks of the reserve, just north of here.)"))
+		release
+		end
+	}
 	msgbox("Fu-fu-fu...I met my wife at this very\n"
 	"spot 10 years ago.")
+	faceplayer
+	msgbox(format("(Psst… I proposed to her right here, with a Heart Scale. I lost it years ago.)"))
+	msgbox(format("(I'd love to see one again… Fu-fu…)"))
+	startquest(QUEST_HEART_SCALE)
+	checkitem(ITEM_HEART_SCALE)
+	if (var(VAR_RESULT)) {
+		goto(TosaPort_OldMan_ShowHeartScale)
+	}
+	release
+	end
+}
+
+script TosaPort_OldMan_ShowHeartScale {
+	faceplayer
+	msgbox(format("Wh-what's that? A Heart Scale?! Could I… borrow it? There's something I'd like to do."), MSGBOX_YESNO)
+	if (var(VAR_RESULT) == NO) {
+		msgbox(format("Fu-fu… I understand. It's a precious thing."))
+		release
+		end
+	}
+	checkitemspace(ITEM_SOOTHE_BELL)
+	if (!var(VAR_RESULT)) {
+		msgbox(format("Hm? Your Bag looks awfully full, young one. Come back once you've made a little room."))
+		release
+		end
+	}
+	removeitem(ITEM_HEART_SCALE)
+	msgbox(format("{PLAYER} handed over the Heart Scale."))
+	closemessage
+	applymovement(LOCALID_TOSA_PORT_OLD_MAN, moves(face_right))
+	applymovement(LOCALID_TOSA_PORT_OLD_WOMAN, moves(face_left))
+	waitmovement(0)
+	msgbox(format("Dear… do you remember this? Will you marry me… again?"))
+	closemessage
+	applymovement(LOCALID_TOSA_PORT_OLD_WOMAN, moves(emote_heart))
+	waitmovement(0)
+	msgbox(format("Ha-ha-ha! You old romantic… Of course I will!"))
+	closemessage
+	applymovement(LOCALID_TOSA_PORT_OLD_WOMAN, moves(face_player))
+	waitmovement(0)
+	msgbox(format("Thank you, dearie. Please, take this. It rang at our wedding. Now it's rung for us twice."))
+	giveitem(ITEM_SOOTHE_BELL)
+	completequest(QUEST_HEART_SCALE)
+	applymovement(LOCALID_TOSA_PORT_OLD_MAN, moves(face_down))
+	applymovement(LOCALID_TOSA_PORT_OLD_WOMAN, moves(face_down))
+	waitmovement(0)
 	release
 	end
 }
 
 script TosaPort_OldWoman {
 	lock
+	questmenu(QUEST_MENU_CHECK_COMPLETE, QUEST_HEART_SCALE)
+	if (var(VAR_RESULT)) {
+		msgbox(format("Ha-ha-ha… he proposed again! At our age! Life is too short, dearie."))
+		release
+		end
+	}
 	msgbox("Ha-ha-ha...we were so reckless back\n"
 	"then...life is too short...")
 	release
