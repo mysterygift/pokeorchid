@@ -81,6 +81,19 @@
       "trainer_sight_or_berry_tree_id": "0",
       "script": "Common_EventScript_CynthiaCafe",
       "flag": "FLAG_HIDE_CHANGU_CAFE_CYNTHIA"
+    },
+    {
+      "graphics_id": "OBJ_EVENT_GFX_ARTIST",
+      "x": 5,
+      "y": 5,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_FACE_RIGHT",
+      "movement_range_x": 0,
+      "movement_range_y": 0,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "ChanguCity_Cafe_EventScript_KalosArtist",
+      "flag": "0"
     }
   ],
   "warp_events": [
