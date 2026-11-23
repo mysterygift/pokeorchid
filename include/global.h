@@ -273,6 +273,8 @@ struct SaveBlock3
 #endif
     u8 dexNavChain;
     u8 dexCatalogued[NUM_DEX_FLAG_BYTES]; // Orchid: species caught at least twice (Pokédex HABITATS)
+    u32 researchClaimed;                  // Orchid: Palm's research tasks whose reward was claimed (bit per task)
+    u32 researchNotified;                 // ... whose completion Rotom already announced
 #if APRICORN_TREE_COUNT > 0
     u8 apricornTrees[NUM_APRICORN_TREE_BYTES];
 #endif

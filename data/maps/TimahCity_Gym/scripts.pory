@@ -7,6 +7,9 @@ script TimahCity_Gym_EventScript_Leader {
 
 script TimahCity_Gym_EventScript_Defeated {
     setflag(FLAG_BADGE01_GET)
+    if (var(VAR_ORCHID_RESEARCH) == 0) {
+        setvar(VAR_ORCHID_RESEARCH, 1)   // Professor Palm calls once you step outside (TimahCity_OnFrame)
+    }
     msgbox(format("{PLAYER} received the Hana Gym Badge!\p(Placeholder Gym: the badge flag is set.)"))
     release
 }

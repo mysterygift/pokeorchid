@@ -469,7 +469,19 @@ def route_rows(sec, time):
     return rows
 
 
-def render_route(sec, cursor=(0, 0), time="day", frame=0, grid_scroll=0, top=0, tags=None):
+LOCK = [".kkk.", "k...k", "k...k", "kkkkk", "kk.kk", "kkkkk"]
+QMARK = ["..kkkk..", ".kk..kk.", ".....kk.", "....kk..", "...kk...", "...kk...", "........", "...kk..."]
+RARE_PCT = 5      # a slot share at or below this (any method) counts as rare
+
+
+def is_rare(sec, time, m, sp):
+    e = ENC[sec][time][m][sp]
+    return max(e["rate"].values()) <= RARE_PCT
+
+
+def render_route(sec, cursor=(0, 0), time="day", frame=0, grid_scroll=0, top=0, tags=None, locked=(), rare_q=False):
+    """locked: methods the player can't use yet (no Surf / no rod): padlock on the chip, wells greyed with a
+    padlock, no icons. rare_q: unseen rare species show a "?" instead of their silhouette."""
     tags = tags or RT.Tags(region="tosa")
     area = next(a for a in tags.placed() if a.id == sec)
     pal = D.dex_palette("orchid")
@@ -491,7 +503,10 @@ def render_route(sec, cursor=(0, 0), time="day", frame=0, grid_scroll=0, top=0, 
             rounded_box(cv, CHIP_X, y0 + WELL_DY, CHIP_W, WELL_H, 3, ACCENT, INK, ACCENT_LIGHT, ACCENT_DARK)
         for k in range(len(sps)):
             if (r, k) != cursor:
-                D.well(cv, SLOT_X0 + k * SLOT_PITCH, y0 + WELL_DY, SLOT_W, WELL_H)
+                if m in locked:
+                    rounded_box(cv, SLOT_X0 + k * SLOT_PITCH, y0 + WELL_DY, SLOT_W, WELL_H, 3, PANEL_DARK, INK, PANEL_SHADE, PANEL_DARK)
+                else:
+                    D.well(cv, SLOT_X0 + k * SLOT_PITCH, y0 + WELL_DY, SLOT_W, WELL_H)
     D.tray(cv, TRAY_Y)
     out.alpha_composite(KX.sheet_rgba(art, pal))
     # gold palette swaps: selected well + selected half of the time toggle
@@ -517,6 +532,9 @@ def render_route(sec, cursor=(0, 0), time="day", frame=0, grid_scroll=0, top=0, 
     for r2, (m, sps, first) in vis:
         if first:
             stamp_rows(tc, CHIP_X + 4, ry(r2) + WELL_DY + 6, PICTO[m], {"#": WHITE})
+            if m in locked:      # padlock tab on the chip's lower edge
+                rounded_box(tc, CHIP_X + 4, ry(r2) + WELL_DY + WELL_H - 6, 11, 9, 2, PANEL, INK, WHITE, PANEL_SHADE)
+                stamp_rows(tc, CHIP_X + 7, ry(r2) + WELL_DY + WELL_H - 5, LOCK, {"k": INK})
     # tray: selected species, gated by how many times it has been captured
     m, sps, _ = rows[r]
     sp = sps[k]
@@ -534,6 +552,9 @@ def render_route(sec, cursor=(0, 0), time="day", frame=0, grid_scroll=0, top=0, 
         lv = "Lv.%d" % e["lv"][0] if e["lv"][0] == e["lv"][1] else "Lv.%d-%d" % tuple(e["lv"])
     else:
         lv = "Lv.?"
+    if m in locked:
+        rate, lv = {"water_mons": "Needs Surf", "fishing_mons": "Needs a Super Rod",
+                    "rock_smash_mons": "Needs Rock Smash"}.get(m, "Locked"), ""
     stamp_rows(tc, 8, TRAY_Y + 18, PICTO[m], {"#": INK_SOFT})
     draw_text(tc, 22, TRAY_Y + 14, rate + "   " + lv, INK_SOFT, PANEL_SHADE, font="narrow")
     c3 = counts(species_of(sec, time))
@@ -554,6 +575,16 @@ def render_route(sec, cursor=(0, 0), time="day", frame=0, grid_scroll=0, top=0, 
             st2 = state(sp2)
             f = frame if st2 in ("captured", "catalogued") or ((r2, k2) == (r, k) and st2 != "unseen") else 0
             x0, y0 = SLOT_X0 + k2 * SLOT_PITCH, ry(r2) + WELL_DY
+            if m2 in locked:
+                lk = new_sheet(W, H, "orchid")
+                stamp_rows(Canvas(lk), x0 + SLOT_W // 2 - 2, y0 + WELL_H // 2 - 3, LOCK, {"k": INK_SOFT})
+                out.alpha_composite(KX.sheet_rgba(lk, pal))
+                continue
+            if rare_q and st2 == "unseen" and is_rare(sec, time, m2, sp2):
+                qm = new_sheet(W, H, "orchid")
+                stamp_rows(Canvas(qm), x0 + SLOT_W // 2 - 4, y0 + WELL_H // 2 - 4, QMARK, {"k": INK})
+                out.alpha_composite(KX.sheet_rgba(qm, pal))
+                continue
             out.alpha_composite(icon(sp2, st2, f), (x0, y0 + WELL_H - 30))
             b = new_sheet(W, H, "orchid", spare_a=D.BALL_RED)
             bc = Canvas(b)

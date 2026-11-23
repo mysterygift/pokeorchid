@@ -32,6 +32,10 @@
 #include "overworld.h"
 #include "palette.h"
 #include "pokedex.h"
+#include "pokedex_habitats.h"
+#include "research.h"
+#include "item.h"
+#include "field_move.h"
 #include "pokemon_icon.h"
 #include "region_map.h"
 #include "rtc.h"
@@ -90,6 +94,11 @@ static const u8 sHabCompassE_Gfx[] = INCGFX_U8("graphics/pokedex/orchid/hab_comp
 static const u8 sHabCompassS_Gfx[] = INCGFX_U8("graphics/pokedex/orchid/hab_compass_south.png", ".4bpp");
 static const u8 sHabCompassW_Gfx[] = INCGFX_U8("graphics/pokedex/orchid/hab_compass_west.png", ".4bpp");
 static const u8 sHabBadge_Gfx[] = INCGFX_U8("graphics/pokedex/orchid/hab_badges.png", ".4bpp");
+static const u8 sHabClip_Gfx[] = INCGFX_U8("graphics/pokedex/orchid/hab_clip.png", ".4bpp");
+static const u8 sHabWellLock_Gfx[] = INCGFX_U8("graphics/pokedex/orchid/hab_well_lock.png", ".4bpp");
+static const u8 sHabWellLockSel_Gfx[] = INCGFX_U8("graphics/pokedex/orchid/hab_well_lock_sel.png", ".4bpp");
+static const u8 sHabChipLock_Gfx[] = INCGFX_U8("graphics/pokedex/orchid/hab_chip_lock.png", ".4bpp");
+static const u8 sHabQMark_Gfx[] = INCGFX_U8("graphics/pokedex/orchid/hab_qmark.png", ".4bpp");
 
 static const u8 *const sHabCompass[] = {sHabCompassNone_Gfx, sHabCompassN_Gfx, sHabCompassE_Gfx, sHabCompassS_Gfx, sHabCompassW_Gfx};
 static const u8 *const sHabMethodPic[] = {sHabPicGrass_Gfx, sHabPicSurf_Gfx, sHabPicRock_Gfx, sHabPicFish_Gfx};
@@ -117,7 +126,6 @@ static const u8 *const sHabMethodPicSoft[] = {sHabPicSGrass_Gfx, sHabPicSSurf_Gf
 enum { HAB_PAGE_MAP, HAB_PAGE_ROUTE };
 enum { HAB_DAY, HAB_NIGHT };
 enum { HAB_ST_UNSEEN, HAB_ST_SEEN, HAB_ST_CAPTURED, HAB_ST_CATALOGUED };
-enum { HAB_REGION_TOSA, HAB_REGION_TIKSI, HAB_REGION_COUNT };
 
 struct HabRow
 {
@@ -129,6 +137,7 @@ struct HabRow
     u8 rod[HAB_SLOT_N];     // fishing: 0 old, 1 good, 2 super
     u8 minLv[HAB_SLOT_N];
     u8 maxLv[HAB_SLOT_N];
+    u8 rodMask[HAB_SLOT_N]; // fishing: rods it bites on (bit 0 old, 1 good, 2 super)
 };
 
 struct HabState
@@ -136,6 +145,7 @@ struct HabState
     u8 state;
     u8 page;
     u8 ownBgs;                    // BGs whose tilemap buffer this view allocated (bit per BG)
+    bool8 resuming;               // reopened on the route page after a dex entry
     u8 region;
     u8 regions[HAB_REGION_COUNT];
     u8 numRegions;
@@ -146,6 +156,7 @@ struct HabState
     u8 glowTimer;
     u8 arrowSpriteIds[2];
     u8 badgeSpriteIds[HAB_MAX_HABITATS];
+    u8 clipSpriteIds[HAB_MAX_HABITATS];
     // route page
     u8 numRows;
     struct HabRow rows[HAB_MAX_ROWS];
@@ -157,6 +168,8 @@ struct HabState
 };
 
 static EWRAM_DATA struct HabState *sHab = NULL;
+// Where the route page was when A opened a dex entry, so B on that entry comes straight back
+static EWRAM_DATA struct { bool8 valid; u8 region, cur, time, row, col, top; } sHabResume = {0};
 EWRAM_DATA u16 gHabitatsJumpSpecies = SPECIES_NONE;   // read by pokedex.c after the view closes
 
 static const u8 sHabText_Ink[3]     = {TEXT_COLOR_TRANSPARENT, HAB_C_INK, HAB_C_PANEL_SHADE};
@@ -216,12 +229,13 @@ static const struct OamData sHabOam_8x16 = {.shape = SPRITE_SHAPE(8x16), .size =
 static const struct OamData sHabOam_8x8 = {.shape = SPRITE_SHAPE(8x8), .size = SPRITE_SIZE(8x8), .priority = 1};
 static const struct SpriteSheet sHabArrowSheet = {gSatchelArrow_Gfx, 8 * 16 / 2, TAG_HAB_ARROW};
 static const struct SpritePalette sHabArrowPal = {gSatchelArrow_Pal, TAG_HAB_ARROW};
-static const struct SpriteSheet sHabBadgeSheet = {sHabBadge_Gfx, 2 * 8 * 8 / 2, TAG_HAB_BADGE};
+static const struct SpriteSheet sHabBadgeSheet = {sHabBadge_Gfx, 3 * 8 * 8 / 2, TAG_HAB_BADGE};
 static const struct SpritePalette sHabUiPal = {gOrchidDexScreen_Pal, TAG_HAB_UI_PAL};
 
 static const union AnimCmd sHabAnim_Frame0[] = {ANIMCMD_FRAME(0, 0), ANIMCMD_END};
 static const union AnimCmd sHabAnim_Frame1[] = {ANIMCMD_FRAME(1, 0), ANIMCMD_END};
-static const union AnimCmd *const sHabAnims_Badge[] = {sHabAnim_Frame0, sHabAnim_Frame1};
+static const union AnimCmd sHabAnim_Frame2[] = {ANIMCMD_FRAME(2, 0), ANIMCMD_END};
+static const union AnimCmd *const sHabAnims_Badge[] = {sHabAnim_Frame0, sHabAnim_Frame1, sHabAnim_Frame2};
 static const union AnimCmd *const sHabAnims_Arrow[] = {sHabAnim_Frame0};
 
 static const struct SpriteTemplate sHabArrowTemplate =
@@ -261,21 +275,41 @@ static const struct OrchidHabitat *Hab_Cur(void)
 }
 
 // ------------------------------------------------------------------ species data
+// The section of every wild header, worked out once (the tables are const): Habitats and Palm's research
+// scan them a lot, and the map-header lookup is the slow part.
+#define HAB_MAX_HEADERS 640
+static EWRAM_DATA u16 sHabHeaderMapsec[HAB_MAX_HEADERS] = {0};
+static EWRAM_DATA u8 sHabMapsecHasWild[(MAPSEC_COUNT + 7) / 8] = {0};
+static EWRAM_DATA bool8 sHabHeaderCacheReady = FALSE;
+
+static void Hab_InitHeaderCache(void)
+{
+    u32 i;
+
+    if (sHabHeaderCacheReady)
+        return;
+    for (i = 0; gWildMonHeaders[i].mapGroup != MAP_GROUP(MAP_UNDEFINED) && i < HAB_MAX_HEADERS; i++)
+    {
+        mapsec_u16_t sec = Overworld_GetMapHeaderByGroupAndId(gWildMonHeaders[i].mapGroup, gWildMonHeaders[i].mapNum)->regionMapSectionId;
+        sHabHeaderMapsec[i] = sec;
+        if (sec < MAPSEC_COUNT)
+            sHabMapsecHasWild[sec / 8] |= 1 << (sec % 8);
+    }
+    sHabHeaderCacheReady = TRUE;
+}
+
 static mapsec_u16_t Hab_MapsecOfHeader(u32 i)
 {
+    Hab_InitHeaderCache();
+    if (i < HAB_MAX_HEADERS)
+        return sHabHeaderMapsec[i];
     return Overworld_GetMapHeaderByGroupAndId(gWildMonHeaders[i].mapGroup, gWildMonHeaders[i].mapNum)->regionMapSectionId;
 }
 
 static bool32 Hab_SectionHasWild(mapsec_u16_t mapsec)
 {
-    u32 i;
-
-    for (i = 0; gWildMonHeaders[i].mapGroup != MAP_GROUP(MAP_UNDEFINED); i++)
-    {
-        if (Hab_MapsecOfHeader(i) == mapsec)
-            return TRUE;
-    }
-    return FALSE;
+    Hab_InitHeaderCache();
+    return mapsec < MAPSEC_COUNT && (sHabMapsecHasWild[mapsec / 8] & (1 << (mapsec % 8)));
 }
 
 static const struct WildPokemonInfo *Hab_Table(const struct WildEncounterTypes *types, u32 method)
@@ -324,6 +358,41 @@ static const struct WildPokemonInfo *Hab_TableAt(u32 header, u32 method, u32 tim
     return info;
 }
 
+#define HAB_RARE_PCT 5     // a species whose share is at or below this shows "?" until seen
+#define HAB_NIGHT_LEVELS 2 // wild_encounter.c ORCHID_NIGHT_LEVEL_BONUS
+
+static u32 Hab_OwnedRods(void)
+{
+    return (CheckBagHasItem(ITEM_OLD_ROD, 1) ? 1 : 0) | (CheckBagHasItem(ITEM_GOOD_ROD, 1) ? 2 : 0)
+         | (CheckBagHasItem(ITEM_SUPER_ROD, 1) ? 4 : 0);
+}
+
+// a method the player can't use yet (Surf / Rock Smash not unlocked, no rod at all)
+static bool32 Hab_MethodLocked(u32 method)
+{
+    switch (method)
+    {
+    case 1: return !IsFieldMoveUnlocked(FIELD_MOVE_SURF);
+    case 2: return !IsFieldMoveUnlocked(FIELD_MOVE_ROCK_SMASH);
+    case 3: return Hab_OwnedRods() == 0;
+    default: return FALSE;
+    }
+}
+
+static u32 Hab_SpeciesState(enum Species species);
+
+static bool32 Hab_SlotLocked(const struct HabRow *row, u32 k)
+{
+    if (row->method == 3)
+        return (row->rodMask[k] & Hab_OwnedRods()) == 0;
+    return Hab_MethodLocked(row->method);
+}
+
+static bool32 Hab_SlotRareHidden(const struct HabRow *row, u32 k)
+{
+    return row->rate[k] <= HAB_RARE_PCT && Hab_SpeciesState(row->species[k]) == HAB_ST_UNSEEN;
+}
+
 static u32 Hab_SpeciesState(enum Species species)
 {
     u32 num = SpeciesToNationalPokedexNum(species);
@@ -343,6 +412,7 @@ static void Hab_BuildRows(mapsec_u16_t mapsec, u32 time)
     u32 i, m, s, k, n;
     u16 species[NUM_LAND_MONS_ENCOUNTER_SLOTS * 4];
     u8 rate[ARRAY_COUNT(species)], rod[ARRAY_COUNT(species)], minLv[ARRAY_COUNT(species)], maxLv[ARRAY_COUNT(species)];
+    u8 rodMask[ARRAY_COUNT(species)];
 
     sHab->numRows = 0;
     for (m = 0; m < HAB_METHODS; m++)
@@ -373,12 +443,15 @@ static void Hab_BuildRows(mapsec_u16_t mapsec, u32 time)
                     species[n] = mon->species;
                     rate[n] = 0;
                     rod[n] = 0;
+                    rodMask[n] = 0;
                     minLv[n] = mon->minLevel;
                     maxLv[n] = mon->maxLevel;
                     n++;
                 }
                 minLv[k] = min(minLv[k], mon->minLevel);
                 maxLv[k] = max(maxLv[k], mon->maxLevel);
+                if (m == 3)
+                    rodMask[k] |= 1 << sHabFishRod[s];
                 if (m == 3)
                 {
                     // fishing: the best rod's share
@@ -418,6 +491,7 @@ static void Hab_BuildRows(mapsec_u16_t mapsec, u32 time)
                 SWAP(rod[k], rod[k - 1], s);
                 SWAP(minLv[k], minLv[k - 1], s);
                 SWAP(maxLv[k], maxLv[k - 1], s);
+                SWAP(rodMask[k], rodMask[k - 1], s);
             }
         }
         for (i = 0; i < n && sHab->numRows < HAB_MAX_ROWS; i += HAB_SLOT_N)
@@ -434,15 +508,14 @@ static void Hab_BuildRows(mapsec_u16_t mapsec, u32 time)
                 row->rod[k] = rod[i + k];
                 row->minLv[k] = minLv[i + k];
                 row->maxLv[k] = maxLv[i + k];
+                row->rodMask[k] = rodMask[i + k];
             }
         }
     }
 }
 
 // Seen / captured / catalogued / total over the species of a set of sections (both times of day)
-struct HabCounts { u16 seen, captured, catalogued, total; };
-
-static void Hab_CountSections(const mapsec_u16_t *secs, u32 numSecs, struct HabCounts *c)
+void Habitats_CountSections(const mapsec_u16_t *secs, u32 numSecs, struct HabitatCounts *c)
 {
     u8 *bits = AllocZeroed(NUM_SPECIES / 8 + 1);
     u32 i, j, m, s, t;
@@ -487,6 +560,110 @@ static void Hab_CountSections(const mapsec_u16_t *secs, u32 numSecs, struct HabC
     Free(bits);
 }
 
+
+// ------------------------------------------------------------------ shared with Palm's research (research.c)
+u32 Habitats_GetSections(u32 region, u32 zone, mapsec_u16_t *out, u32 max)
+{
+    const struct HabRegionInfo *r = &sHabRegions[region];
+    u32 i, n = 0;
+
+    for (i = 0; i < r->count && n < max; i++)
+    {
+        if (zone != HAB_ZONE_NONE && r->habitats[i].zone != zone)
+            continue;
+        if (Hab_SectionHasWild(r->habitats[i].mapsec))
+            out[n++] = r->habitats[i].mapsec;
+    }
+    return n;
+}
+
+static bool32 Hab_InTables(u32 header, u32 time, u16 species)
+{
+    u32 m, s;
+
+    for (m = 0; m < HAB_METHODS; m++)
+    {
+        const struct WildPokemonInfo *info = Hab_TableAt(header, m, time);
+        if (info == NULL)
+            continue;
+        for (s = 0; s < Hab_SlotCount(m); s++)
+        {
+            if (info->wildPokemon[s].species == species)
+                return TRUE;
+        }
+    }
+    return FALSE;
+}
+
+bool32 Habitats_SectionHasSpecies(mapsec_u16_t mapsec, u16 species)
+{
+    u32 i;
+
+    for (i = 0; gWildMonHeaders[i].mapGroup != MAP_GROUP(MAP_UNDEFINED); i++)
+    {
+        if (Hab_MapsecOfHeader(i) == mapsec && (Hab_InTables(i, HAB_DAY, species) || Hab_InTables(i, HAB_NIGHT, species)))
+            return TRUE;
+    }
+    return FALSE;
+}
+
+// Species found in a night table of the sections but in none of their day tables
+void Habitats_CountNightOnly(const mapsec_u16_t *secs, u32 numSecs, struct HabitatCounts *c)
+{
+    u8 *night = AllocZeroed(NUM_SPECIES / 8 + 1), *day = AllocZeroed(NUM_SPECIES / 8 + 1);
+    u32 i, j, m, s, t, sp;
+
+    c->seen = c->captured = c->catalogued = c->total = 0;
+    if (night != NULL && day != NULL)
+    {
+        for (i = 0; gWildMonHeaders[i].mapGroup != MAP_GROUP(MAP_UNDEFINED); i++)
+        {
+            mapsec_u16_t sec = Hab_MapsecOfHeader(i);
+
+            for (j = 0; j < numSecs && secs[j] != sec; j++)
+                ;
+            if (j == numSecs)
+                continue;
+            for (t = 0; t < 2; t++)
+            {
+                for (m = 0; m < HAB_METHODS; m++)
+                {
+                    const struct WildPokemonInfo *info = (t == HAB_NIGHT)
+                        ? Hab_Table(&gWildMonHeaders[i].encounterTypes[TIME_NIGHT], m)
+                        : Hab_Table(&gWildMonHeaders[i].encounterTypes[OW_TIME_OF_DAY_FALLBACK], m);
+                    if (info == NULL)
+                        continue;
+                    for (s = 0; s < Hab_SlotCount(m); s++)
+                    {
+                        sp = info->wildPokemon[s].species;
+                        if (sp != SPECIES_NONE && sp < NUM_SPECIES)
+                            (t == HAB_NIGHT ? night : day)[sp / 8] |= 1 << (sp % 8);
+                    }
+                }
+            }
+        }
+        for (sp = 1; sp < NUM_SPECIES; sp++)
+        {
+            if (!(night[sp / 8] & (1 << (sp % 8))) || (day[sp / 8] & (1 << (sp % 8))))
+                continue;
+            c->total++;
+            switch (Hab_SpeciesState(sp))
+            {
+            case HAB_ST_CATALOGUED: c->catalogued++; // fallthrough
+            case HAB_ST_CAPTURED:   c->captured++;   // fallthrough
+            case HAB_ST_SEEN:       c->seen++;
+            }
+        }
+    }
+    Free(night);
+    Free(day);
+}
+
+const u8 *Habitats_GetZoneName(u32 zone)
+{
+    return zone < ARRAY_COUNT(sHabZoneNames) ? sHabZoneNames[zone] : sHabZoneNames[0];
+}
+
 // ------------------------------------------------------------------ text helpers
 static void Hab_Print(u8 fontId, const u8 *str, s32 x, s32 y, const u8 *color)
 {
@@ -513,7 +690,7 @@ static s32 Hab_PrintNum(u32 num, s32 x, s32 y, const u8 *color)
 }
 
 // eye seen, grey ball captured, colour ball catalogued (+ "/total"); returns the end x
-static s32 Hab_PrintCounts(const struct HabCounts *c, s32 x, s32 y, bool32 total)
+static s32 Hab_PrintCounts(const struct HabitatCounts *c, s32 x, s32 y, bool32 total)
 {
     BlitBitmapToWindow(0, sHabEye_Gfx, x, y + 4, 16, 8);
     x = Hab_PrintNum(c->seen, x + 11, y, sHabText_Ink) + 5;
@@ -592,6 +769,9 @@ static void Hab_DestroySprites(void)
         if (sHab->badgeSpriteIds[i] != SPRITE_NONE)
             DestroySprite(&gSprites[sHab->badgeSpriteIds[i]]);
         sHab->badgeSpriteIds[i] = SPRITE_NONE;
+        if (sHab->clipSpriteIds[i] != SPRITE_NONE && sHab->clipSpriteIds[i] != MAX_SPRITES)
+            DestroySprite(&gSprites[sHab->clipSpriteIds[i]]);
+        sHab->clipSpriteIds[i] = SPRITE_NONE;
     }
     for (i = 0; i < sHab->numIcons; i++)
     {
@@ -733,7 +913,7 @@ static void Hab_PrintMap(void)
     const struct HabRegionInfo *r = &sHabRegions[sHab->region];
     const struct OrchidHabitat *h = Hab_Cur();
     mapsec_u16_t secs[HAB_MAX_HABITATS];
-    struct HabCounts c;
+    struct HabitatCounts c;
     u32 n, i, px = r->plateX, py = r->plateY;
     u8 name[32];
 
@@ -755,7 +935,7 @@ static void Hab_PrintMap(void)
     BlitBitmapToWindow(0, sHabCompass[sHab->region == HAB_REGION_TOSA ? h->zone : 0], px + 3, py + 2, 16, 16);
     Hab_Print(FONT_NORMAL, sHab->region == HAB_REGION_TOSA ? sHabZoneNames[h->zone] : sHabText_Tiksi, px + 16, py - 1, sHabText_Ink);
     Hab_MapSectionsOfZone(secs, &n);
-    Hab_CountSections(secs, n, &c);
+    Habitats_CountSections(secs, n, &c);
     Hab_PrintCounts(&c, px + 4, py + 13, TRUE);
 
     // Ⓐ Route View
@@ -765,7 +945,7 @@ static void Hab_PrintMap(void)
     // tray: habitat name + its counts
     GetMapName(name, h->mapsec, 0);
     Hab_Print(GetFontIdToFit(name, FONT_NORMAL, 0, HAB_NAME_W - 10), name, HAB_NAME_X + 6, HAB_NAME_Y - 1, sHabText_Ink);
-    Hab_CountSections(&h->mapsec, 1, &c);
+    Habitats_CountSections(&h->mapsec, 1, &c);
     Hab_PrintCounts(&c, 128, 140, TRUE);
     CopyWindowToVram(0, COPYWIN_GFX);
 }
@@ -779,10 +959,17 @@ static void Hab_CreateBadges(void)
     for (i = 0; i < sHab->numValid; i++)
     {
         const struct OrchidHabitat *h = &r->habitats[sHab->valid[i]];
-        struct HabCounts c;
+        struct HabitatCounts c;
         u8 spriteId;
 
-        Hab_CountSections(&h->mapsec, 1, &c);
+        if (Research_IsSectionRequested(h->mapsec))
+        {
+            u8 clip = CreateSprite(&sHabBadgeTemplate, HAB_GRID_X + h->nodeX * 8 + 12, HAB_GRID_Y + h->nodeY * 8 - 3, 0);
+            if (clip != MAX_SPRITES)
+                StartSpriteAnim(&gSprites[clip], 2);
+            sHab->clipSpriteIds[i] = clip;
+        }
+        Habitats_CountSections(&h->mapsec, 1, &c);
         if (c.total == 0 || c.captured < c.total)
             continue;
         spriteId = CreateSprite(&sHabBadgeTemplate, HAB_GRID_X + h->nodeX * 8 + 4, HAB_GRID_Y + h->nodeY * 8 + 1, 0);
@@ -931,6 +1118,8 @@ static void Hab_CreateIcons(void)
         for (k = 0; k < row->count; k++)
         {
             u32 st = Hab_SpeciesState(row->species[k]);
+            if (Hab_SlotLocked(row, k) || Hab_SlotRareHidden(row, k))
+                continue;
             s16 x = HAB_SLOT_X0 + k * HAB_SLOT_PITCH + 16;
             s16 y = Hab_RowY(r) + HAB_WELL_DY + HAB_WELL_H - 30 + 16;
             u8 spriteId = CreateMonIcon(row->species[k], st >= HAB_ST_CAPTURED ? SpriteCB_MonIcon : SpriteCallbackDummy,
@@ -955,7 +1144,7 @@ static void Hab_PrintRoute(void)
     u16 species = row->species[sHab->col];
     u32 st = Hab_SpeciesState(species), r, k;
     u8 name[32], str[48], *end;
-    struct HabCounts c = {0};
+    struct HabitatCounts c = {0};
     s32 x, tw;
 
     FillWindowPixelBuffer(0, PIXEL_FILL(0));
@@ -981,13 +1170,25 @@ static void Hab_PrintRoute(void)
         {
             BlitBitmapToWindow(0, sHabChip_Gfx, HAB_CHIP_X, y + HAB_WELL_DY, 24, 24);
             BlitBitmapToWindow(0, sHabMethodPic[rw->method], HAB_CHIP_X + 4, y + HAB_WELL_DY + 6, 16, 16);
+            if (Hab_MethodLocked(rw->method))
+                BlitBitmapToWindow(0, sHabChipLock_Gfx, HAB_CHIP_X + 4, y + HAB_WELL_DY + HAB_WELL_H - 6, 16, 16);
         }
         for (k = 0; k < rw->count; k++)
         {
             u32 sx = HAB_SLOT_X0 + k * HAB_SLOT_PITCH;
             u32 s2 = Hab_SpeciesState(rw->species[k]);
 
-            BlitBitmapToWindow(0, (r == sHab->row && k == sHab->col) ? sHabWellSel_Gfx : sHabWell_Gfx, sx, y + HAB_WELL_DY, 40, 24);
+            bool32 sel = (r == sHab->row && k == sHab->col);
+            if (Hab_SlotLocked(rw, k))
+            {
+                BlitBitmapToWindow(0, sel ? sHabWellLockSel_Gfx : sHabWellLock_Gfx, sx, y + HAB_WELL_DY, 40, 24);
+                continue;
+            }
+            BlitBitmapToWindow(0, sel ? sHabWellSel_Gfx : sHabWell_Gfx, sx, y + HAB_WELL_DY, 40, 24);
+            if (Hab_SlotRareHidden(rw, k))
+                BlitBitmapToWindow(0, sHabQMark_Gfx, sx + HAB_SLOT_W / 2 - 4, y + HAB_WELL_DY + HAB_WELL_H / 2 - 4, 8, 8);
+            if (Research_IsSpeciesRequested(rw->species[k], Hab_Cur()->mapsec))
+                BlitBitmapToWindow(0, sHabClip_Gfx, sx + 2, y + HAB_WELL_DY + 2, 8, 8);
             if (s2 == HAB_ST_CATALOGUED)
                 BlitBitmapToWindow(0, gOrchidDexBall_Gfx, sx + HAB_SLOT_W - 10, y + HAB_WELL_DY + HAB_WELL_H - 10, 8, 8);
             else if (s2 == HAB_ST_CAPTURED)
@@ -1010,6 +1211,24 @@ static void Hab_PrintRoute(void)
         BlitBitmapToWindow(0, gOrchidDexBallGrey_Gfx, x, HAB_TRAY_Y + 7, 8, 8);
 
     BlitBitmapToWindow(0, sHabMethodPicSoft[row->method], 8, HAB_TRAY_Y + 18, 16, 16);
+    if (Hab_SlotLocked(row, sHab->col))
+    {
+        static const u8 *const sNeeds[] = {
+            COMPOUND_STRING(""), COMPOUND_STRING("Needs Surf"), COMPOUND_STRING("Needs Rock Smash"), COMPOUND_STRING("Needs a rod"),
+        };
+        const u8 *needs = sNeeds[row->method];
+        if (row->method == 3)
+            needs = (row->rodMask[sHab->col] & 1) ? COMPOUND_STRING("Needs an Old Rod")
+                  : (row->rodMask[sHab->col] & 2) ? COMPOUND_STRING("Needs a Good Rod") : COMPOUND_STRING("Needs a Super Rod");
+        Hab_Print(FONT_NARROW, needs, 22, HAB_TRAY_Y + 14, sHabText_InkSoft);
+        goto counts;
+    }
+    if (Research_IsSpeciesRequested(species, h->mapsec))
+    {
+        BlitBitmapToWindow(0, sHabClip_Gfx, 8, HAB_TRAY_Y + 20, 8, 8);
+        Hab_Print(FONT_NARROW, COMPOUND_STRING("Palm: catalogue this one"), 22, HAB_TRAY_Y + 14, sHabText_InkSoft);
+        goto counts;
+    }
     end = StringCopy(str, row->method == 3 ? sHabRodNames[row->rod[sHab->col]] : sHabMethodNames[row->method]);
     *end++ = CHAR_SPACE;
     if (st == HAB_ST_CATALOGUED)
@@ -1022,11 +1241,13 @@ static void Hab_PrintRoute(void)
     end = StringCopy(end, sHabText_Lv);
     if (st >= HAB_ST_CAPTURED)
     {
-        end = ConvertIntToDecimalStringN(end, row->minLv[sHab->col], STR_CONV_MODE_LEFT_ALIGN, 3);
+        // night: wild Pokémon are HAB_NIGHT_LEVELS higher (wild_encounter.c), shown with a moon
+        u32 bonus = (sHab->time == HAB_NIGHT) ? HAB_NIGHT_LEVELS : 0;
+        end = ConvertIntToDecimalStringN(end, min(MAX_LEVEL, row->minLv[sHab->col] + bonus), STR_CONV_MODE_LEFT_ALIGN, 3);
         if (row->maxLv[sHab->col] != row->minLv[sHab->col])
         {
             *end++ = CHAR_HYPHEN;
-            end = ConvertIntToDecimalStringN(end, row->maxLv[sHab->col], STR_CONV_MODE_LEFT_ALIGN, 3);
+            end = ConvertIntToDecimalStringN(end, min(MAX_LEVEL, row->maxLv[sHab->col] + bonus), STR_CONV_MODE_LEFT_ALIGN, 3);
         }
     }
     else
@@ -1035,7 +1256,10 @@ static void Hab_PrintRoute(void)
         *end = EOS;
     }
     Hab_Print(FONT_NARROW, str, 22, HAB_TRAY_Y + 14, sHabText_InkSoft);
+    if (sHab->time == HAB_NIGHT && st >= HAB_ST_CAPTURED)
+        BlitBitmapToWindow(0, sHabMoon_Gfx, 24 + GetStringWidth(FONT_NARROW, str, 0), HAB_TRAY_Y + 17, 16, 16);
 
+counts:
     // this time of day's species counts
     for (r = 0; r < sHab->numRows; r++)
     {
@@ -1254,7 +1478,8 @@ static void Task_HabLoadRoute(u8 taskId)
         sHab->arrowSpriteIds[0] = CreateSprite(&sHabArrowTemplate, 60, 8, 0);
         sHab->arrowSpriteIds[1] = CreateSprite(&sHabArrowTemplate, 150, 8, 0);
         gSprites[sHab->arrowSpriteIds[1]].hFlip = TRUE;
-        Hab_RebuildRoute(FALSE);
+        Hab_RebuildRoute(sHab->resuming);
+        sHab->resuming = FALSE;
         sHab->state++;
         break;
     case 3:
@@ -1303,6 +1528,13 @@ static void Task_HabRouteInput(u8 taskId)
         {
             PlaySE(SE_PIN);
             sHab->jumpSpecies = species;
+            sHabResume.valid = TRUE;
+            sHabResume.region = sHab->region;
+            sHabResume.cur = sHab->cur;
+            sHabResume.time = sHab->time;
+            sHabResume.row = sHab->row;
+            sHabResume.col = sHab->col;
+            sHabResume.top = sHab->top;
             Hab_FadeTo(taskId, Task_HabExit);
         }
         else
@@ -1372,7 +1604,7 @@ static void Task_HabExit(u8 taskId)
 
 // ------------------------------------------------------------------ entry
 // Returns the task id; the caller waits for it to finish (gHabitatsJumpSpecies = species to open, or NONE).
-u8 OpenPokedexHabitats(void)
+u8 OpenPokedexHabitats(bool32 resumeRoutePage)
 {
     u32 i;
 
@@ -1380,7 +1612,7 @@ u8 OpenPokedexHabitats(void)
     for (i = 0; i < 2; i++)
         sHab->arrowSpriteIds[i] = SPRITE_NONE;
     for (i = 0; i < HAB_MAX_HABITATS; i++)
-        sHab->badgeSpriteIds[i] = SPRITE_NONE;
+        sHab->badgeSpriteIds[i] = sHab->clipSpriteIds[i] = SPRITE_NONE;
     for (i = 0; i < HAB_MAX_ICONS; i++)
         sHab->iconSpriteIds[i] = SPRITE_NONE;
     sHab->regions[sHab->numRegions++] = HAB_REGION_TOSA;
@@ -1409,5 +1641,18 @@ u8 OpenPokedexHabitats(void)
         Hab_FindValid();
     sHab->time = (GetTimeOfDay() == TIME_NIGHT) ? HAB_NIGHT : HAB_DAY;
     gHabitatsJumpSpecies = SPECIES_NONE;
+    if (resumeRoutePage && sHabResume.valid)
+    {
+        sHabResume.valid = FALSE;
+        sHab->region = sHabResume.region;
+        Hab_FindValid();
+        sHab->cur = min(sHabResume.cur, sHab->numValid ? sHab->numValid - 1 : 0);
+        sHab->time = sHabResume.time;
+        sHab->row = sHabResume.row;
+        sHab->col = sHabResume.col;
+        sHab->top = sHabResume.top;
+        sHab->resuming = TRUE;
+        return CreateTask(Task_HabLoadRoute, 0);
+    }
     return CreateTask(Task_HabLoadMap, 0);
 }

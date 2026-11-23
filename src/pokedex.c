@@ -1506,9 +1506,12 @@ static EWRAM_DATA u8 sODexGridTimer = 0;
 static EWRAM_DATA u8 sODexGridPos = 0;
 static EWRAM_DATA u16 sODexLastTop = 0;
 static EWRAM_DATA bool8 sODexOpenEntryOnLoad = FALSE;   // HABITATS asked for a species' entry
+static EWRAM_DATA bool8 sODexReturnToHabitats = FALSE;  // ...so B on that entry goes back to its route page
 
 static void Task_ODexToHabitats(u8 taskId);
 static void Task_WaitForExitHabitats(u8 taskId);
+static void Task_ODexEntryBackToHabitats(u8 taskId);
+static void Task_ODexResumeHabitats(u8 taskId);
 static const u8 *ODex_BallGfx(u16 dexNum);
 
 // ---------------------------------------------------------------- shared helpers
@@ -3330,9 +3333,16 @@ static void Task_WaitForExitInfoScreen(u8 taskId)
     }
     else
     {
-        // Exiting, back to list view
+        // Exiting, back to list view (or to the HABITATS route page the entry was opened from)
         sLastSelectedPokemon = sPokedexView->selectedPokemon;
         sPokeBallRotation = sPokedexView->pokeBallRotation;
+        if (sODexReturnToHabitats)
+        {
+            sODexReturnToHabitats = FALSE;
+            sODexLastTop = sPokedexView->odexTop;
+            gTasks[taskId].func = Task_ODexResumeHabitats;
+            return;
+        }
         gTasks[taskId].func = Task_OpenPokedexMainPage;
     }
 }
@@ -3374,8 +3384,26 @@ static void Task_ODexToHabitats(u8 taskId)
     ODex_DestroyListSprites();
     ClearMonSprites();
     FreeWindowAndBgBuffers();
-    gTasks[taskId].tLoadScreenTaskId = OpenPokedexHabitats();
+    gTasks[taskId].tLoadScreenTaskId = OpenPokedexHabitats(FALSE);
     gTasks[taskId].func = Task_WaitForExitHabitats;
+}
+
+// B on an entry opened from HABITATS: the entry's buffers are already freed (Task_ODexEntryBackToHabitats)
+static void Task_ODexResumeHabitats(u8 taskId)
+{
+    gTasks[taskId].tLoadScreenTaskId = OpenPokedexHabitats(TRUE);
+    gTasks[taskId].func = Task_WaitForExitHabitats;
+}
+
+// Info-screen task: fade out and close the entry; Task_WaitForExitInfoScreen then reopens HABITATS
+static void Task_ODexEntryBackToHabitats(u8 taskId)
+{
+    if (gPaletteFade.active)
+        return;
+    ODex_DestroyUiSprites();
+    ODex_DestroyPic();
+    FreeInfoScreenWindowAndBgBuffers();
+    DestroyTask(taskId);
 }
 
 static void Task_WaitForExitHabitats(u8 taskId)
@@ -3401,6 +3429,7 @@ static void Task_WaitForExitHabitats(u8 taskId)
         {
             sPokedexView->selectedPokemon = i;
             sODexOpenEntryOnLoad = TRUE;
+            sODexReturnToHabitats = TRUE;
         }
         gHabitatsJumpSpecies = SPECIES_NONE;
     }
@@ -4377,6 +4406,13 @@ void Task_HandleInfoScreenInput(u8 taskId)
         SetGpuReg(REG_OFFSET_BLDCNT, ODEX_BLD_TARGETS);
         gTasks[taskId].func = Task_LoadInfoScreenWaitForFade;
         PlaySE(SE_DEX_SCROLL);
+        return;
+    }
+    if (JOY_NEW(B_BUTTON) && sODexReturnToHabitats)
+    {
+        BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK);
+        gTasks[taskId].func = Task_ODexEntryBackToHabitats;
+        PlaySE(SE_PC_OFF);
         return;
     }
     if (JOY_NEW(B_BUTTON))

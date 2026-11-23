@@ -138,8 +138,19 @@ def export_bitmaps():
         bitmap("ps_" + key, 16, 16, lambda c, m=m: MH.stamp_rows(c, 0, 0, MH.PICTO[m], {"#": INK_SOFT}))
     bitmap("ball_grey", 8, 8, lambda c: MH.grey_ball(c, 0, 0))
     bitmap("ball", 8, 8, lambda c: D.caught_ball(c, 0, 0))
-    # map badge OBJ sheet: frame 0 grey ball (every species captured), frame 1 colour (all catalogued)
-    bitmap("badges", 8, 16, lambda c: (MH.grey_ball(c, 0, 0), D.caught_ball(c, 0, 8)))
+    # map badge OBJ sheet: frame 0 grey ball (every species captured), 1 colour (all catalogued), 2 Palm's clipboard
+    clip = ["..kkk..", "kkwwwkk", "kwkkkwk", "kwwwwwk", "kwkkkwk", "kwwwwwk", "kwkkwwk", "kkkkkkk"]
+    bitmap("badges", 8, 24, lambda c: (MH.grey_ball(c, 0, 0), D.caught_ball(c, 0, 8),
+                                        MH.stamp_rows(c, 0, 16, clip, {"k": INK, "w": SELECT_LIGHT})))
+    bitmap("clip", 8, 8, lambda c: MH.stamp_rows(c, 0, 0, clip, {"k": INK, "w": SELECT_LIGHT}))
+    # locked wells / chips, rare "?" (round 4, user 2026-11-23)
+    bitmap("well_lock", 40, 24, lambda c: (rounded_box(c, 0, 0, sw, sh, 3, PANEL_DARK, INK, PANEL_SHADE, PANEL_DARK),
+                                           MH.stamp_rows(c, sw // 2 - 2, sh // 2 - 3, MH.LOCK, {"k": INK_SOFT})))
+    bitmap("well_lock_sel", 40, 24, lambda c: (rounded_box(c, 0, 0, sw, sh, 3, SELECT, INK, SELECT_LIGHT, SELECT_DARK),
+                                               MH.stamp_rows(c, sw // 2 - 2, sh // 2 - 3, MH.LOCK, {"k": INK})))
+    bitmap("chip_lock", 16, 16, lambda c: (rounded_box(c, 0, 0, 11, 9, 2, PANEL, INK, WHITE, PANEL_SHADE),
+                                           MH.stamp_rows(c, 3, 1, MH.LOCK, {"k": INK})))
+    bitmap("qmark", 8, 8, lambda c: MH.stamp_rows(c, 0, 0, MH.QMARK, {"k": INK}))
     bitmap("eye", 16, 8, lambda c: MH.stamp_rows(c, 0, 0, MH.EYE, {"#": INK, "+": WHITE}))
     bitmap("a_btn", 16, 16, lambda c: MH.stamp_rows(c, 0, 0, MH.A_BTN, {"#": INK, "+": WHITE}))
     bitmap("sun", 16, 16, lambda c: MH.stamp_rows(c, 0, 0, MH.SUN, {"#": SELECT_DARK, "+": SELECT}))

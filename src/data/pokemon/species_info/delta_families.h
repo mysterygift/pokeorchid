@@ -2359,9 +2359,9 @@
                                 {EVO_LEVEL, 0, SPECIES_UMBREON_DELTA, CONDITIONS({IF_MIN_FRIENDSHIP, FRIENDSHIP_EVO_THRESHOLD}, {IF_TIME, TIME_NIGHT})}
                             #endif
                             #if P_GEN_4_CROSS_EVOS
-                                ,{EVO_LEVEL, 0, SPECIES_LEAFEON_DELTA, CONDITIONS({IF_IN_MAP, MAP_PETALBURG_WOODS})},
+                                ,{EVO_LEVEL, 0, SPECIES_LEAFEON_DELTA, CONDITIONS({IF_IN_MAP, MAP_HOLON_MIRAGE_FOREST})},
                                 {EVO_ITEM, ITEM_LEAF_STONE, SPECIES_LEAFEON_DELTA},
-                                {EVO_LEVEL, 0, SPECIES_GLACEON_DELTA, CONDITIONS({IF_IN_MAP, MAP_SHOAL_CAVE_LOW_TIDE_ICE_ROOM})},
+                                {EVO_LEVEL, 0, SPECIES_GLACEON_DELTA, CONDITIONS({IF_IN_MAP, MAP_HOLON_LAKE})},
                                 {EVO_ITEM, ITEM_ICE_STONE, SPECIES_GLACEON_DELTA}
                             #endif
                             ),

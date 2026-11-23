@@ -27,6 +27,7 @@
 #include "text.h"
 #include "sound.h"
 #include "pokedex.h"
+#include "research.h"
 #include "recorded_battle.h"
 #include "window.h"
 #include "reshow_battle_screen.h"
@@ -8440,6 +8441,8 @@ static void Cmd_trysetcaughtmondexflags(void)
     struct Pokemon *caughtMon = GetBattlerMon(GetCatchingBattler());
     enum Species species = GetMonData(caughtMon, MON_DATA_SPECIES);
     u32 personality = GetMonData(caughtMon, MON_DATA_PERSONALITY);
+
+    Research_MarkDirty();   // Orchid: Rotom buzzes back on the overworld if this catch finished a research task
 
     if (GetSetPokedexFlag(SpeciesToNationalPokedexNum(species), FLAG_GET_CAUGHT))
     {

@@ -1,7 +1,39 @@
-mapscripts TimahCity_MapScripts {
-    MAP_SCRIPT_ON_TRANSITION {
-        setflag(FLAG_VISITED_PETALBURG_CITY)
-    }
+raw `
+TimahCity_MapScripts::
+	map_script MAP_SCRIPT_ON_TRANSITION, TimahCity_OnTransition
+	map_script MAP_SCRIPT_ON_FRAME_TABLE, TimahCity_OnFrame
+	.byte 0
+
+@ Orchid: Professor Palm calls once the first badge is won (VAR_ORCHID_RESEARCH 0 locked, 1 call pending,
+@ 2 research unlocked - include/research.h). Arming it here too covers saves that already have the badge.
+TimahCity_OnTransition:
+	setflag FLAG_VISITED_PETALBURG_CITY
+	goto_if_unset FLAG_BADGE01_GET, TimahCity_OnTransition_End
+	goto_if_ne VAR_ORCHID_RESEARCH, 0, TimahCity_OnTransition_End
+	setvar VAR_ORCHID_RESEARCH, 1
+TimahCity_OnTransition_End:
+	end
+
+TimahCity_OnFrame:
+	map_script_2 VAR_ORCHID_RESEARCH, 1, TimahCity_EventScript_PalmCall
+	.2byte 0
+`
+
+script TimahCity_EventScript_PalmCall {
+    lockall
+    playse(SE_POKENAV_CALL)
+    waitse
+    pokenavcall(TimahCity_Text_PalmCall)
+    waitmessage
+    closemessage
+    setvar(VAR_ORCHID_RESEARCH, 2)
+    questmenu(QUEST_MENU_BUZZ, 0)
+    msgbox(format("Bzzt! Palm's Research is now in the QUESTS app!"))
+    releaseall
+}
+
+text TimahCity_Text_PalmCall {
+    format("PALM: {PLAYER}! Professor Palm here. Word travels fast: you beat Hana! Congratulations!\pNow that you've proven yourself, I'd like your help with my research.\pCatalogue the Pokémon of each habitat, by day and by night. Catch each species twice so we can record everything about it.\pI've sent my field notes to your Rotom Phone. Look for Research in the QUESTS app!", 168)
 }
 
 script TimahCity_EventScript_TownSign {

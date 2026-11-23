@@ -14,7 +14,7 @@ u16 GetKantoPokedexCount(u8 caseID);
 u8 DisplayCaughtMonDexPage(enum Species species, bool32 isShiny, u32 personality);
 s8 GetSetPokedexFlag(enum NationalDexOrder nationalDexNo, u8 caseID);
 bool32 IsSpeciesCatalogued(enum NationalDexOrder nationalDexNo);
-u8 OpenPokedexHabitats(void);
+u8 OpenPokedexHabitats(bool32 resumeRoutePage);
 void ODex_SetGridBg(u8 bgPlusOne);
 void ODex_FillGrid(u8 bg);
 extern u16 gHabitatsJumpSpecies;

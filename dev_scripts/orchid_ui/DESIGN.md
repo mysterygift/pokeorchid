@@ -172,3 +172,23 @@ Approved decisions:
 Day / night (OW_ENABLE_DNS) lives in `dev_scripts/orchid_dns/`: house windows, gym door, Pokémon Center upper
 windows + door, Mart door only, station glass, Tosa Port jetty lamp bulbs. All on the TosaPort tileset; Telok
 (Petalburg) and the Tiksi towns are not lit yet.
+
+## Palm's research + Habitats round 4 (2026-11-23)
+
+Mock: `mock_research.py` / `review_research.py` (all recommendations approved).
+Code: `src/research.c` (+ `src/data/research_tasks.h`), QUESTS Research tab in `src/rotom_phone_quests.c`.
+
+- Unlock: Professor Palm phones (pokenavcall) the first time you're outside in Timah City after the first badge
+  (VAR_ORCHID_RESEARCH 0 -> 1 at the badge -> 2 after the call); the Research tab then appears in QUESTS
+  (6-tab layout `quests_list6.bin`; the 5-tab layout stays before that). Call text must leave room for the
+  "next" arrow (format width 168).
+- Tasks are computed from the dex: zone surveys (one step per habitat, catalogue all day + night), night watches
+  (zone's night-only species), Palm requests (catalogue one species; clipboard mark only in the habitat Palm
+  names). Save keeps claimed / announced bits (SaveBlock3.researchClaimed / researchNotified).
+- Claim in the app (A: Send to Palm): reward item + RP; Research Rank (5 ranks, 0/40/120/240/400 RP) with a gift
+  per rank-up (key items already owned are skipped). Rotom buzzes in the field when a catch finishes a task.
+- Habitats: rows you can't use yet are locked (Surf / Rock Smash, per rod owned); unseen species with a share of
+  5% or less show "?"; night lists show levels +2 with a moon.
+- Night behaviour (wild_encounter.c): +2 levels and a 1-in-10 Hidden Ability at night.
+- A on a species -> its dex entry; B returns to the same route page. No DexNav (user).
+- Delta Leafeon / Glaceon location evolutions: Holon Mirage Forest / Holon Lake.
