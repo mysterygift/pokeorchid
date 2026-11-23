@@ -90,14 +90,14 @@
       "layout_version": "emerald"
     },
     {
-      "id": "LAYOUT_TOSA_PORT_PROFESSOR_BIRCHS_LAB",
-      "name": "TosaPort_ProfessorBirchsLab_Layout",
+      "id": "LAYOUT_TELOK_TOWN_PALM_LABS",
+      "name": "TelokTown_PalmLabs_Layout",
       "width": 13,
       "height": 13,
       "primary_tileset": "gTileset_Building",
       "secondary_tileset": "gTileset_Lab",
-      "border_filepath": "data/layouts/TosaPort_ProfessorBirchsLab/border.bin",
-      "blockdata_filepath": "data/layouts/TosaPort_ProfessorBirchsLab/map.bin",
+      "border_filepath": "data/layouts/TelokTown_PalmLabs/border.bin",
+      "blockdata_filepath": "data/layouts/TelokTown_PalmLabs/map.bin",
       "layout_version": "emerald"
     },
     {

@@ -1,0 +1,44 @@
+// Prof. Palm's flashback during the Palm Labs intro (VAR_TELOK_TOWN_STATE 2).
+// Black-and-white town scene on the Tosa Port layout: the player is hidden and the camera sits on them at (12,14).
+// The professor narrates with self-advancing text, then everyone warps back to the lab (state 3).
+mapscripts TelokTown_PalmLabs_Flashback_MapScripts {
+	MAP_SCRIPT_ON_TRANSITION {
+		special(FieldGrayscaleOn)
+	}
+	MAP_SCRIPT_ON_WARP_INTO_MAP_TABLE [
+		VAR_TEMP_1, 0 {
+			hideobjectat(LOCALID_PLAYER, MAP_TELOK_TOWN_PALM_LABS_FLASHBACK)
+			hideobjectat(OBJ_EVENT_ID_FOLLOWER, MAP_TELOK_TOWN_PALM_LABS_FLASHBACK)
+			setvar(VAR_TEMP_1, 1)
+		}
+	]
+	MAP_SCRIPT_ON_FRAME_TABLE [
+		VAR_TELOK_TOWN_STATE, 2: TelokTown_PalmLabs_Flashback_EventScript_Narration
+	]
+}
+
+// lockall is needed (unlocked field controls re-run this ON_FRAME script every frame), but it also
+// freezes everyone, so the townsfolk are unfrozen straight after.
+script TelokTown_PalmLabs_Flashback_EventScript_Narration {
+	lockall
+	special(UnfreezeObjectsKeepLock)
+	delay(60)
+	special(TextAutoScrollOn)
+	message(format("It's dire times in the Tosa region. We've seen unprecedented changes in Pokémon populations across the region."))
+	waitmessage
+	delay(150)
+	message(format("In all my 20 years living in Tosa I've never seen such dramatic changes in species, and it's no coincidence that as the region has developed, Pokémon numbers have dwindled."))
+	waitmessage
+	delay(150)
+	message(format("The League have had to crack down on Trainer licensing and imports. The entire ecosystem is on the cusp of collapse."))
+	waitmessage
+	delay(150)
+	message(format("That's why I'm so glad you're here. There is simply too much data to collect and analyse..."))
+	waitmessage
+	delay(150)
+	closemessage
+	special(TextAutoScrollOff)
+	delay(30)
+	setvar(VAR_TELOK_TOWN_STATE, 3)
+	warp(MAP_TELOK_TOWN_PALM_LABS, 9, 8)
+}

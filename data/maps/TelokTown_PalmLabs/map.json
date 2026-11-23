@@ -1,10 +1,9 @@
 {
-  "id": "MAP_TOSA_PORT_PROFESSOR_BIRCHS_LAB",
-  "name": "TosaPort_ProfessorBirchsLab",
-  "layout": "LAYOUT_TOSA_PORT_PROFESSOR_BIRCHS_LAB",
+  "id": "MAP_TELOK_TOWN_PALM_LABS",
+  "name": "TelokTown_PalmLabs",
+  "layout": "LAYOUT_TELOK_TOWN_PALM_LABS",
   "music": "MUS_BIRCH_LAB",
-  "region": "REGION_HOENN",
-  "region_map_section": "MAPSEC_TOSA_PORT",
+  "region_map_section": "MAPSEC_OLDALE_TOWN",
   "requires_flash": false,
   "weather": "WEATHER_NONE",
   "map_type": "MAP_TYPE_INDOOR",
@@ -14,7 +13,49 @@
   "show_map_name": false,
   "battle_scene": "MAP_BATTLE_SCENE_NORMAL",
   "connections": null,
-  "object_events": [],
+  "object_events": [
+    {
+      "local_id": "LOCALID_PALM_LABS_PROF",
+      "graphics_id": "OBJ_EVENT_GFX_PROF_BIRCH",
+      "x": 9,
+      "y": 7,
+      "elevation": 0,
+      "movement_type": "MOVEMENT_TYPE_FACE_RIGHT",
+      "movement_range_x": 0,
+      "movement_range_y": 0,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "TelokTown_PalmLabs_EventScript_Prof",
+      "flag": "0"
+    },
+    {
+      "graphics_id": "OBJ_EVENT_GFX_SCIENTIST_2",
+      "x": 2,
+      "y": 10,
+      "elevation": 0,
+      "movement_type": "MOVEMENT_TYPE_NONE",
+      "movement_range_x": 0,
+      "movement_range_y": 0,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "NULL",
+      "flag": "0"
+    },
+    {
+      "local_id": "LOCALID_PALM_LABS_AIDE",
+      "graphics_id": "OBJ_EVENT_GFX_SCIENTIST_2",
+      "x": 4,
+      "y": 9,
+      "elevation": 0,
+      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
+      "movement_range_x": 0,
+      "movement_range_y": 0,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "TelokTown_PalmLabs_EventScript_Aide",
+      "flag": "FLAG_TEMP_1"
+    }
+  ],
   "warp_events": [
     {
       "x": 6,
@@ -39,7 +80,7 @@
       "y": 7,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
-      "script": "TosaPort_ProfessorBirchsLab_EventScript_Machine"
+      "script": "TelokTown_PalmLabs_EventScript_Machine"
     },
     {
       "type": "sign",
@@ -47,7 +88,7 @@
       "y": 7,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
-      "script": "TosaPort_ProfessorBirchsLab_EventScript_Machine"
+      "script": "TelokTown_PalmLabs_EventScript_Machine"
     },
     {
       "type": "sign",
@@ -55,7 +96,7 @@
       "y": 1,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
-      "script": "TosaPort_ProfessorBirchsLab_EventScript_Book"
+      "script": "TelokTown_PalmLabs_EventScript_Book"
     },
     {
       "type": "sign",
@@ -63,7 +104,7 @@
       "y": 1,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
-      "script": "TosaPort_ProfessorBirchsLab_EventScript_Book"
+      "script": "TelokTown_PalmLabs_EventScript_Book"
     },
     {
       "type": "sign",
@@ -71,7 +112,7 @@
       "y": 1,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
-      "script": "TosaPort_ProfessorBirchsLab_EventScript_Bookshelf"
+      "script": "TelokTown_PalmLabs_EventScript_Bookshelf"
     },
     {
       "type": "sign",
@@ -79,7 +120,7 @@
       "y": 7,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
-      "script": "TosaPort_ProfessorBirchsLab_EventScript_Bookshelf"
+      "script": "TelokTown_PalmLabs_EventScript_Bookshelf"
     },
     {
       "type": "sign",
@@ -87,7 +128,7 @@
       "y": 7,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
-      "script": "TosaPort_ProfessorBirchsLab_EventScript_Bookshelf"
+      "script": "TelokTown_PalmLabs_EventScript_Bookshelf"
     },
     {
       "type": "sign",
@@ -95,7 +136,7 @@
       "y": 7,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
-      "script": "TosaPort_ProfessorBirchsLab_EventScript_Bookshelf"
+      "script": "TelokTown_PalmLabs_EventScript_Bookshelf"
     },
     {
       "type": "sign",
@@ -103,7 +144,7 @@
       "y": 7,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
-      "script": "TosaPort_ProfessorBirchsLab_EventScript_Bookshelf"
+      "script": "TelokTown_PalmLabs_EventScript_Bookshelf"
     },
     {
       "type": "sign",
@@ -111,7 +152,7 @@
       "y": 1,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
-      "script": "TosaPort_ProfessorBirchsLab_EventScript_PC"
+      "script": "TelokTown_PalmLabs_EventScript_PC"
     },
     {
       "type": "sign",
@@ -119,7 +160,7 @@
       "y": 1,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
-      "script": "TosaPort_ProfessorBirchsLab_EventScript_PC"
+      "script": "TelokTown_PalmLabs_EventScript_PC"
     },
     {
       "type": "sign",
@@ -127,7 +168,7 @@
       "y": 10,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
-      "script": "TosaPort_ProfessorBirchsLab_EventScript_PC"
+      "script": "TelokTown_PalmLabs_EventScript_PC"
     },
     {
       "type": "sign",
@@ -135,7 +176,7 @@
       "y": 9,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
-      "script": "TosaPort_ProfessorBirchsLab_EventScript_PC"
+      "script": "TelokTown_PalmLabs_EventScript_PC"
     },
     {
       "type": "sign",
@@ -143,7 +184,7 @@
       "y": 10,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
-      "script": "TosaPort_ProfessorBirchsLab_EventScript_PC"
+      "script": "TelokTown_PalmLabs_EventScript_PC"
     },
     {
       "type": "sign",
@@ -151,7 +192,8 @@
       "y": 9,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
-      "script": "TosaPort_ProfessorBirchsLab_EventScript_PC"
+      "script": "TelokTown_PalmLabs_EventScript_PC"
     }
-  ]
+  ],
+  "region": "REGION_HOENN"
 }

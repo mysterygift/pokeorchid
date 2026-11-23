@@ -650,3 +650,8 @@ gSpecials::
 	def_special Voyage_BuildMenu
 	def_special Voyage_IsDestinationOpen
 	def_special Voyage_Depart, waitstate=1
+	def_special FieldGrayscaleOn
+	def_special FieldGrayscaleOff
+	def_special UnfreezeObjectsKeepLock
+	def_special TextAutoScrollOn
+	def_special TextAutoScrollOff

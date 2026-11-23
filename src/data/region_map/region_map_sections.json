@@ -903,7 +903,7 @@
     },
     {
       "id": "MAPSEC_POKEMON_MANSION",
-      "name": "POK\u00e9MON MANSION",
+      "name": "POKéMON MANSION",
       "height": 0,
       "width": 0
     },
@@ -915,7 +915,7 @@
     },
     {
       "id": "MAPSEC_POKEMON_LEAGUE",
-      "name": "POK\u00e9MON LEAGUE",
+      "name": "POKéMON LEAGUE",
       "height": 0,
       "width": 0
     },
@@ -933,7 +933,7 @@
     },
     {
       "id": "MAPSEC_POKEMON_TOWER",
-      "name": "POK\u00e9MON TOWER",
+      "name": "POKéMON TOWER",
       "height": 0,
       "width": 0
     },
@@ -1112,8 +1112,8 @@
     {
       "id": "MAPSEC_TRAINER_TOWER",
       "name": "TRAINER TOWER",
-      "width": 0,
-      "height": 0
+      "height": 0,
+      "width": 0
     },
     {
       "id": "MAPSEC_CANYON_ENTRANCE",
@@ -1206,8 +1206,8 @@
     {
       "id": "MAPSEC_TRAINER_TOWER_2",
       "name": "TRAINER TOWER",
-      "width": 0,
-      "height": 0
+      "height": 0,
+      "width": 0
     },
     {
       "id": "MAPSEC_DOTTED_HOLE",
@@ -1220,26 +1220,26 @@
     {
       "id": "MAPSEC_LOST_CAVE",
       "name": "LOST CAVE",
-      "width": 0,
-      "height": 0
+      "height": 0,
+      "width": 0
     },
     {
       "id": "MAPSEC_PATTERN_BUSH",
       "name": "PATTERN BUSH",
-      "width": 0,
-      "height": 0
+      "height": 0,
+      "width": 0
     },
     {
       "id": "MAPSEC_ALTERING_CAVE_FRLG",
       "name": "ALTERING CAVE",
-      "width": 0,
-      "height": 0
+      "height": 0,
+      "width": 0
     },
     {
       "id": "MAPSEC_TANOBY_CHAMBERS",
       "name": "TANOBY CHAMBERS",
-      "width": 0,
-      "height": 0
+      "height": 0,
+      "width": 0
     },
     {
       "id": "MAPSEC_SIX_SEVEN_STRAIT",
@@ -1419,7 +1419,7 @@
     },
     {
       "id": "MAPSEC_PKMN_LEAGUE",
-      "name": "Pok\u00e9mon League",
+      "name": "Pokémon League",
       "x": 23,
       "y": 4,
       "width": 1,
@@ -1507,7 +1507,7 @@
     },
     {
       "id": "MAPSEC_POKETOPIA_GATE",
-      "name": "Pok\u00e9topia Gate",
+      "name": "Pokétopia Gate",
       "x": 26,
       "y": 14,
       "width": 1,

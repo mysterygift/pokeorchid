@@ -503,6 +503,12 @@ const u32 gObjectEventPic_HolonResearcher[] = INCGFX_U32("graphics/object_events
 const u32 gObjectEventPic_Cynthia[] = INCGFX_U32("graphics/object_events/pics/people/cynthia.png", ".4bpp", "-mwidth 2 -mheight 4");
 const u32 gObjectEventPic_Faba[] = INCGFX_U32("graphics/object_events/pics/people/faba.png", ".4bpp", "-mwidth 2 -mheight 4");
 
+// Orchid: FRLG sprites used on Emerald-build maps (stations, hawker centre, cafe). They used to sit inside
+// the IS_FRLG block, which left NULL graphics pointers and crashed on respawn ("Jumped to invalid address").
+const u16 gObjectEventPic_Chef[] = INCGFX_U16("graphics/object_events/pics/people/chef.png", ".4bpp", "-mwidth 2 -mheight 4");
+const u16 gObjectEventPic_Clerk[] = INCGFX_U16("graphics/object_events/pics/people/clerk.png", ".4bpp", "-mwidth 2 -mheight 4");
+const u16 gObjectEventPic_Clipboard[] = INCGFX_U16("graphics/object_events/pics/misc/clipboard.png", ".4bpp");
+
 #if IS_FRLG
 
 const u16 gObjectEventPic_RedNormal[] = INCGFX_U16("graphics/object_events/pics/people/red/red_normal.png", ".4bpp", "-mwidth 2 -mheight 4");
@@ -553,7 +559,6 @@ const u16 gObjectEventPic_OldManLyingDown[] = INCGFX_U16("graphics/object_events
 const u16 gObjectEventPic_WorkerM[] = INCGFX_U16("graphics/object_events/pics/people/worker_m.png", ".4bpp", "-mwidth 2 -mheight 4");
 const u16 gObjectEventPic_WorkerF[] = INCGFX_U16("graphics/object_events/pics/people/worker_f.png", ".4bpp", "-mwidth 2 -mheight 4");
 const u16 gObjectEventPic_BeautyFrlg[] = INCGFX_U16("graphics/object_events/pics/people/beauty_frlg.png", ".4bpp", "-mwidth 2 -mheight 4");
-const u16 gObjectEventPic_Chef[] = INCGFX_U16("graphics/object_events/pics/people/chef.png", ".4bpp", "-mwidth 2 -mheight 4");
 const u16 gObjectEventPic_OldMan2[] = INCGFX_U16("graphics/object_events/pics/people/old_man_2.png", ".4bpp", "-mwidth 2 -mheight 4");
 const u16 gObjectEventPic_OldWomanFrlg[] = INCGFX_U16("graphics/object_events/pics/people/old_woman_frlg.png", ".4bpp", "-mwidth 2 -mheight 4");
 const u16 gObjectEventPic_CamperFrlg[] = INCGFX_U16("graphics/object_events/pics/people/camper_frlg.png", ".4bpp", "-mwidth 2 -mheight 4");
@@ -589,7 +594,6 @@ const u16 gObjectEventPic_CableClubReceptionist[] = INCGFX_U16("graphics/object_
 const u16 gObjectEventPic_UnionRoomReceptionist[] = INCGFX_U16("graphics/object_events/pics/people/union_room_receptionist.png", ".4bpp", "-mwidth 2 -mheight 4");
 const u16 gObjectEventPic_MrFuji[] = INCGFX_U16("graphics/object_events/pics/people/mr_fuji.png", ".4bpp", "-mwidth 2 -mheight 4");
 const u16 gObjectEventPic_Bruno[] = INCGFX_U16("graphics/object_events/pics/people/bruno.png", ".4bpp", "-mwidth 2 -mheight 4");
-const u16 gObjectEventPic_Clerk[] = INCGFX_U16("graphics/object_events/pics/people/clerk.png", ".4bpp", "-mwidth 2 -mheight 4");
 const u16 gObjectEventPic_MGDeliveryman[] = INCGFX_U16("graphics/object_events/pics/people/mg_deliveryman.png", ".4bpp", "-mwidth 2 -mheight 4");
 const u16 gObjectEventPic_TrainerTowerDude[] = INCGFX_U16("graphics/object_events/pics/people/trainer_tower_dude.png", ".4bpp", "-mwidth 2 -mheight 4");
 const u16 gObjectEventPic_RocketM[] = INCGFX_U16("graphics/object_events/pics/people/rocket_m.png", ".4bpp", "-mwidth 2 -mheight 4");
@@ -611,7 +615,6 @@ const u16 gObjectEventPic_OldAmber[] = INCGFX_U16("graphics/object_events/pics/m
 const u16 gObjectEventPic_GymSign[] = INCGFX_U16("graphics/object_events/pics/misc/gym_sign.png", ".4bpp");
 const u16 gObjectEventPic_Sign[] = INCGFX_U16("graphics/object_events/pics/misc/sign.png", ".4bpp");
 const u16 gObjectEventPic_WoodenSign[] = INCGFX_U16("graphics/object_events/pics/misc/wooden_sign.png", ".4bpp");
-const u16 gObjectEventPic_Clipboard[] = INCGFX_U16("graphics/object_events/pics/misc/clipboard.png", ".4bpp");
 const u16 gObjectEventPal_Meteorite[] = INCGFX_U16("graphics/object_events/palettes/meteorite.pal", ".gbapal");
 const u16 gObjectEventPic_BirthIslandStoneFrlg[] = INCGFX_U16("graphics/object_events/pics/misc/birth_island_stone_frlg.png", ".4bpp");
 const u16 gObjectEventPic_LaprasDoll[] = INCGFX_U16("graphics/object_events/pics/misc/lapras_doll.png", ".4bpp");

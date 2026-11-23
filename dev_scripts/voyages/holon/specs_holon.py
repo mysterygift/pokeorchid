@@ -451,7 +451,7 @@ ALL["holon_lake"] = _lake()
 # without palette animation; see NOTES q6.
 WI1 = "LAYOUT_ROUTE119_WEATHER_INSTITUTE_1F"
 WI2 = "LAYOUT_ROUTE119_WEATHER_INSTITUTE_2F"
-LAB = "LAYOUT_TOSA_PORT_PROFESSOR_BIRCHS_LAB"
+LAB = "LAYOUT_TELOK_TOWN_PALM_LABS"
 TOWER_2F = dict(
     name="Holon Research Tower 2F", size=(20, 11), tileset=("gTileset_Building", "gTileset_Lab"), base=WI2,
     fill=[(7, 7, 4, 3, (WI2, 6, 6)), (12, 7, 4, 3, (WI2, 6, 6))],

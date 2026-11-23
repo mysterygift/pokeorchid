@@ -1260,9 +1260,12 @@ void TextPrinterClearDownArrow(struct TextPrinter *textPrinter)
     CopyWindowToVram(textPrinter->printerTemplate.windowId, COPYWIN_GFX);
 }
 
+// Orchid: when non-zero, overrides NUM_FRAMES_AUTO_SCROLL_DELAY (set by the TextAutoScrollOn special)
+EWRAM_DATA u8 gTextAutoScrollFrames = 0;
+
 bool32 TextPrinterWaitAutoMode(struct TextPrinter *textPrinter)
 {
-    if (textPrinter->autoScrollDelay == NUM_FRAMES_AUTO_SCROLL_DELAY)
+    if (textPrinter->autoScrollDelay >= (gTextAutoScrollFrames ? gTextAutoScrollFrames : NUM_FRAMES_AUTO_SCROLL_DELAY))
     {
         textPrinter->autoScrollDelay = 0;
         return TRUE;

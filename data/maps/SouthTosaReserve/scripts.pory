@@ -31,7 +31,7 @@ SouthTosaReserve_EventScript_BirchsBag::
 	@ checkplayergender
 	@ call_if_eq VAR_RESULT, MALE, SouthTosaReserve_EventScript_HideMayInBedroom
 	@ call_if_eq VAR_RESULT, FEMALE, SouthTosaReserve_EventScript_HideBrendanInBedroom
-	@ warp MAP_TOSA_PORT_PROFESSOR_BIRCHS_LAB, 6, 5
+	@ warp MAP_TELOK_TOWN_PALM_LABS, 6, 5
 	@ waitstate
 	@ release
 	@ end

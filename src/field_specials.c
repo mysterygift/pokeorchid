@@ -5796,3 +5796,35 @@ bool8 CheckAddCoins(void)
     else
         return TRUE;
 }
+
+// Orchid: flashback cutscene helpers (TelokTown_PalmLabs intro). FieldGrayscaleOn goes in the flashback map's
+// ON_TRANSITION so the map fades in already grey; the off switch runs on the way back.
+void FieldGrayscaleOn(void)
+{
+    gFieldGrayscale = TRUE;
+}
+
+void FieldGrayscaleOff(void)
+{
+    gFieldGrayscale = FALSE;
+}
+
+// Keeps the player's controls locked (lockall) but lets the townsfolk keep wandering during a cutscene.
+void UnfreezeObjectsKeepLock(void)
+{
+    UnfreezeObjectEvents();
+}
+
+// Narration that pages itself: \p and \l advance after ~2.5 seconds with no button press.
+extern u8 gTextAutoScrollFrames;
+void TextAutoScrollOn(void)
+{
+    gTextFlags.autoScroll = TRUE;
+    gTextAutoScrollFrames = 150;
+}
+
+void TextAutoScrollOff(void)
+{
+    gTextFlags.autoScroll = FALSE;
+    gTextAutoScrollFrames = 0;
+}

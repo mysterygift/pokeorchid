@@ -1,0 +1,194 @@
+raw `
+TelokTown_PalmLabs_MapScripts::
+	map_script MAP_SCRIPT_ON_TRANSITION, TelokTown_PalmLabs_OnTransition
+	map_script MAP_SCRIPT_ON_FRAME_TABLE, TelokTown_PalmLabs_OnFrame
+	.byte 0
+
+TelokTown_PalmLabs_OnTransition:
+	call Common_EventScript_SetupRivalGfxId
+	special FieldGrayscaleOff
+	call_if_eq VAR_TELOK_TOWN_STATE, 0, TelokTown_PalmLabs_EventScript_HideAide
+	call_if_eq VAR_TELOK_TOWN_STATE, 1, TelokTown_PalmLabs_EventScript_AideAtDoor
+	call_if_eq VAR_TELOK_TOWN_STATE, 3, TelokTown_PalmLabs_EventScript_ProfFacesPlayer
+	end
+
+@ Aide is still waiting outside in Telok Town
+TelokTown_PalmLabs_EventScript_HideAide:
+	setflag FLAG_TEMP_1
+	return
+
+@ Walking in with the player: aide starts just inside the door, one tile ahead
+TelokTown_PalmLabs_EventScript_AideAtDoor:
+	setobjectxyperm LOCALID_PALM_LABS_AIDE, 6, 11
+	setobjectmovementtype LOCALID_PALM_LABS_AIDE, MOVEMENT_TYPE_FACE_UP
+	return
+
+@ Back from the flashback: the professor is still turned towards the player
+TelokTown_PalmLabs_EventScript_ProfFacesPlayer:
+	setobjectmovementtype LOCALID_PALM_LABS_PROF, MOVEMENT_TYPE_FACE_DOWN
+	return
+
+TelokTown_PalmLabs_OnFrame:
+	map_script_2 VAR_TELOK_TOWN_STATE, 1, TelokTown_PalmLabs_EventScript_AideIntro
+	map_script_2 VAR_TELOK_TOWN_STATE, 3, TelokTown_PalmLabs_EventScript_ProfBriefing
+	.2byte 0
+
+TelokTown_PalmLabs_EventScript_Machine::
+	msgbox TelokTown_PalmLabs_Text_SeriousLookingMachine, MSGBOX_SIGN
+	end
+
+TelokTown_PalmLabs_EventScript_PC::
+	msgbox TelokTown_PalmLabs_Text_PCUsedForResearch, MSGBOX_SIGN
+	end
+
+TelokTown_PalmLabs_EventScript_Bookshelf::
+	msgbox TelokTown_PalmLabs_Text_CrammedWithBooksOnPokemon, MSGBOX_SIGN
+	end
+
+TelokTown_PalmLabs_EventScript_Book::
+	msgbox TelokTown_PalmLabs_Text_InterestingBook, MSGBOX_SIGN
+	end
+
+TelokTown_PalmLabs_Text_SeriousLookingMachine:
+	.string "It's a serious-looking machine.\n"
+	.string "The Professor must use this for research.$"
+
+TelokTown_PalmLabs_Text_PCUsedForResearch:
+	.string "It's a PC used for research.\n"
+	.string "Best leave it be.$"
+
+TelokTown_PalmLabs_Text_CrammedWithBooksOnPokemon:
+	.string "It's crammed with books on Pokémon habitats.$"
+
+TelokTown_PalmLabs_Text_InterestingBook:
+	.string "This book on Pokémon migration\n"
+	.string "seems fascinating...$"
+`
+
+// ---------------------------------------------------------------------------------------------
+// Palm Labs intro. VAR_TELOK_TOWN_STATE: 1 walking in -> 2 flashback (TelokTown_PalmLabs_Flashback)
+// -> 3 back in the lab for the briefing -> 4 done.
+// Aide (LOCALID_PALM_LABS_AIDE) ends up at its post (4,9); Prof. Palm (local ID 1) works the machine at (9,7).
+// ---------------------------------------------------------------------------------------------
+
+// Part 1: aide walks the player up from the door to Prof. Palm, then the flashback starts.
+script TelokTown_PalmLabs_EventScript_AideIntro {
+	lockall
+	applymovement(LOCALID_PALM_LABS_AIDE, moves(walk_up * 3 walk_right * 4 face_up))
+	applymovement(LOCALID_PLAYER, moves(walk_up * 4 walk_right * 3 face_up))
+	waitmovement(LOCALID_PALM_LABS_AIDE)
+	waitmovement(LOCALID_PLAYER)
+
+	msgbox(format("Palm? {PLAYER} is here to see you."), MSGBOX_DEFAULT)
+	closemessage
+	playse(SE_PIN)
+	applymovement(LOCALID_PALM_LABS_PROF, moves(emote_exclamation_mark face_down))
+	waitmovement(0)
+	applymovement(LOCALID_PALM_LABS_AIDE, moves(face_left))
+	waitmovement(0)
+	msgbox(format("{PLAYER}, this is the esteemed Professor Palm. I'll leave you both to it."), MSGBOX_DEFAULT)
+	closemessage
+	applymovement(LOCALID_PALM_LABS_AIDE, moves(walk_down walk_left * 6 face_down))
+	waitmovement(0)
+	setobjectxyperm(LOCALID_PALM_LABS_AIDE, 4, 9)
+	setobjectmovementtype(LOCALID_PALM_LABS_AIDE, MOVEMENT_TYPE_FACE_DOWN)
+
+	msgbox(format("Welcome to Tosa, {PLAYER}! It's great to see you again, it's been months since my conference back in Galar, hasn't it!\pI deeply appreciate you offering to come all the way out here to assist our work. People who share my enthusiasm for Pokémon habitats are few and far between these days..."), MSGBOX_DEFAULT)
+	closemessage
+	delay(20)
+	setvar(VAR_TELOK_TOWN_STATE, 2)
+	warp(MAP_TELOK_TOWN_PALM_LABS_FLASHBACK, 12, 14)
+}
+
+// Part 2: back from the flashback (player at 9,8 under the professor).
+script TelokTown_PalmLabs_EventScript_ProfBriefing {
+	lockall
+	delay(20)
+	msgbox(format("I need you to travel the Tosa region and collect as much data as you can about species diversity across the region.\pMy team here will analyse the data you send back, and hopefully we'll be able to help the Tosa League plan better for the future.\pI fear for what will happen if we don't strike while the iron's hot.\pAnyway, you know all of this so I'll cut right to it: we've prepared a customised Pokédex that'll interface with our servers here."), MSGBOX_DEFAULT)
+
+	playfanfare(MUS_OBTAIN_ITEM)
+	message(format("{PLAYER} received the Pokédex!"))
+	waitmessage
+	waitfanfare
+	setflag(FLAG_SYS_POKEDEX_GET)
+	special(SetUnlockedPokedexFlags)
+	setflag(FLAG_RECEIVED_POKEDEX_FROM_BIRCH)
+	setvar(VAR_CABLE_CLUB_TUTORIAL_STATE, 1)
+
+	msgbox(format("Unlike Galar, we don't rely on Pokémon for transport, {PLAYER}. There's a metro station beneath Tosa Port that'll take you to Timah Town.\pYou've brought your Rotom Phone with you, right? One second..."), MSGBOX_DEFAULT)
+	closemessage
+
+	// Palm tinkers with the phone
+	applymovement(LOCALID_PALM_LABS_PROF, moves(walk_in_place_faster_down))
+	playse(SE_CLICK)
+	delay(10)
+	playse(SE_RG_BAG_POCKET)
+	delay(14)
+	playse(SE_SWITCH)
+	delay(10)
+	playse(SE_CLICK)
+	waitmovement(0)
+	delay(24)
+	playse(SE_POKENAV_ON)
+	waitse
+	setflag(FLAG_SYS_POKENAV_GET)
+	setflag(FLAG_SYS_PHONE_ACTIVE)
+
+	msgbox(format("There, I've given you access to our research network. You should be able to make calls across the Tosa region.\pI'll also give you my number so you can call me anytime."), MSGBOX_DEFAULT)
+	playfanfare(MUS_REGISTER_MATCH_CALL)
+	message(format("Registered Prof. Palm in the Rotom Phone."))
+	waitmessage
+	waitfanfare
+	setflag(FLAG_ENABLE_PROF_PALM_MATCH_CALL)
+	closemessage
+
+	// Player steps back to the centre of the room, facing the professor across the floor
+	applymovement(LOCALID_PLAYER, moves(walk_left * 3 walk_up face_right))
+	waitmovement(0)
+	applymovement(LOCALID_PALM_LABS_PROF, moves(face_left))
+	waitmovement(0)
+	msgbox(format("My assistant should be able to answer any questions you have, I've got to get back to work.\pWe'll speak soon {PLAYER}, and thank you!"), MSGBOX_DEFAULT)
+	closemessage
+	applymovement(LOCALID_PALM_LABS_PROF, moves(face_right))
+	waitmovement(0)
+	setobjectmovementtype(LOCALID_PALM_LABS_PROF, MOVEMENT_TYPE_FACE_RIGHT)
+	setvar(VAR_TELOK_TOWN_STATE, 4)
+	releaseall
+}
+
+script TelokTown_PalmLabs_EventScript_Prof {
+	lock
+	faceplayer
+	msgbox(format("I've got to get back to work, {PLAYER}. My assistant can answer any questions you have!"), MSGBOX_DEFAULT)
+	closemessage
+	applymovement(LOCALID_PALM_LABS_PROF, moves(face_right))
+	waitmovement(0)
+	release
+}
+
+// Aide Q&A after the intro
+script TelokTown_PalmLabs_EventScript_Aide {
+	lock
+	faceplayer
+	msgbox(format("Palm has asked me to answer any questions you may have, so please do!"), MSGBOX_DEFAULT)
+	while {
+		message(format("What would you like to know?"))
+		waitmessage
+		dynmultichoice(19, 1, FALSE, 5, 0, DYN_MULTICHOICE_CB_NONE, "Region", "License", "Tosa Reserve", "Metro", "Bye!")
+		if (var(VAR_RESULT) == 4 || var(VAR_RESULT) == MULTI_B_PRESSED) {
+			break
+		}
+		switch (var(VAR_RESULT)) {
+			case 0:
+				msgbox(format("The Tosa region is mostly tropical, with steep mountains to the north.\pBeing so close to Hoenn, it used to be really popular with tourists from there. Over the years, though, their numbers have dwindled."), MSGBOX_DEFAULT)
+			case 1:
+				msgbox(format("Because of the dramatic changes in Pokémon populations, the Tosa League has put tiered restrictions on Trainers.\pTrainers can certify at eight different ranks, and each Badge you earn gives you a bit more flexibility.\pThe hope is that it'll encourage more responsible, measured approaches to training Pokémon... though I don't have much hope, to be honest."), MSGBOX_DEFAULT)
+			case 2:
+				msgbox(format("The Reserve has been part of the island since it was founded. It's meant to preserve the unique ecosystems of the region.\pOver the decades, though, development has slowly encroached on it and eroded it away.\pWe're trying to prove that this will lead to the collapse of the Tosa region's delicate habitats. That's why you're here!"), MSGBOX_DEFAULT)
+			case 3:
+				msgbox(format("Very few people are certified to the level where they can ride their Pokémon, so everyone relies on public transport here.\pThe metro will get you around most of the region in a flash. Trains run non-stop!"), MSGBOX_DEFAULT)
+		}
+	}
+	msgbox(format("If you need any clarification, you can ask me anytime, {PLAYER}."), MSGBOX_DEFAULT)
+	release
+}

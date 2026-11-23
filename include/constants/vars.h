@@ -100,7 +100,7 @@
 #define VAR_COLD_STORAGE_STATE                            0x404E // 0: villains waiting in the back room, 1: multi battle won
 #define VAR_LOTAD_SIZE_RECORD                            0x404F
 #define VAR_TOSA_PORT_STATE                              0x4050
-#define VAR_OLDALE_TOWN_STATE                            0x4051
+#define VAR_TELOK_TOWN_STATE                             0x4051 // 0: aide waiting outside, 1: walking into Palm Labs, 2: flashback, 3: briefing, 4: intro done
 #define VAR_DEWFORD_TOWN_STATE                           0x4052 // Unused Var
 #define VAR_LAVARIDGE_TOWN_STATE                         0x4053
 #define VAR_CURRENT_SECRET_BASE                          0x4054 // was probably allocated for VAR_FALLARBOR_TOWN_STATE at one point
