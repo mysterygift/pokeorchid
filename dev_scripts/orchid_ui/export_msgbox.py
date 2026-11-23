@@ -165,7 +165,7 @@ def main():
          ""]
     for name, s in sorted(SLOTS.items(), key=lambda kv: kv[1]):
         L.append("#define MSGBOX_TILE_%-9s %d" % (name, s))
-    L += ["", "#endif // GUARD_DATA_MSGBOX_ORCHID_H", ""]
+    L += ["", "#define MSGBOX_NUM_TILES      %d" % N_TILES, "", "#endif // GUARD_DATA_MSGBOX_ORCHID_H", ""]
     with open(HEADER, "w", newline="\n") as f:
         f.write("\n".join(L))
     print("wrote", HEADER)

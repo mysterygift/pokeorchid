@@ -18,4 +18,6 @@
 #define MSGBOX_TILE_BOT_L1    12
 #define MSGBOX_TILE_BOT_EDGE  13
 
+#define MSGBOX_NUM_TILES      14
+
 #endif // GUARD_DATA_MSGBOX_ORCHID_H

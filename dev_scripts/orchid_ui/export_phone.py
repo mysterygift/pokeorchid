@@ -213,7 +213,8 @@ def save(im, path, pal):
 
 
 # Field match-call window: the PokéNav's spinning icon becomes a buzzing Rotom Phone (start-menu PHONE icon,
-# shaking with buzz arcs). 32x32 x 8 frames on the call window's white (index 8, as the vanilla icon).
+# shaking with buzz arcs). 32x32 x 8 frames on the call window's white (index 8, as the vanilla icon; matches the
+# Orchid message box WHITE, since the call box is the field message box).
 RING_PAL = [(255, 255, 255), M.INK, (248, 144, 56), (224, 88, 56), (176, 72, 56), (96, 96, 120), (160, 160, 184),
             (112, 112, 136), (255, 255, 255)]
 RING_CMAP = {"k": 1, "o": 2, "r": 3, "R": 4, "d": 5, "m": 6}
@@ -230,7 +231,11 @@ def export_ring_icon():
         if 1 <= f <= 4:
             kit.stamp(cv, 4 + dx, f * 32 + 12, BUZZ, {"#": 7})
             kit.stamp(cv, 25 + dx, f * 32 + 12, BUZZ, {"#": 7}, hflip=True)
-    save(im, P("graphics", "pokenav", "match_call", "nav_icon.png"), pad16(RING_PAL))
+    # 16-entry PLTE: match_call.c loads sizeof(sPokenavIcon_Pal) into BG palette 15, so a 256-colour PNG would
+    # spill 240 colours into the sprite palettes (every overworld sprite went black during calls).
+    flat = [c for rgb in pad16(RING_PAL) for c in rgb]
+    im.putpalette(flat)
+    im.save(P("graphics", "pokenav", "match_call", "nav_icon.png"), transparency=0, bits=4)
 
 
 def main():

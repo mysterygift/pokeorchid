@@ -28,12 +28,14 @@
 #include "wild_encounter.h"
 #include "window.h"
 #include "field_name_box.h"
+#include "graphics.h"
 #include "constants/abilities.h"
 #include "constants/battle_frontier.h"
 #include "constants/event_objects.h"
 #include "constants/region_map_sections.h"
 #include "constants/songs.h"
 #include "constants/trainers.h"
+#include "data/msgbox_orchid.h"
 
 // In this file only the values normally associated with Battle Pike and Factory are swapped.
 // Note that this is *not* a bug, because they are properly swapped consistently in this file.
@@ -142,6 +144,8 @@ static void StartMatchCall(void);
 static void ExecuteMatchCall(u8);
 static void DrawMatchCallTextBoxBorder_Internal(u32, u32, u32);
 static void Task_SpinPokenavIcon(u8);
+static void DrawOrchidCallBoxRow(u32 windowId, s32 rowOffset, u32 l2, u32 l1, u32 edge, u32 r1, u32 r);
+static void DrawOrchidCallBoxFrame(u32 windowId);
 static void InitMatchCallTextPrinter(int, const u8 *);
 static bool32 RunMatchCallTextPrinter(int);
 static const struct MatchCallText *GetSameRouteMatchCallText(int, u8 *);
@@ -1203,6 +1207,9 @@ static const u32 sPokenavIcon_Gfx[] = INCGFX_U32("graphics/pokenav/match_call/na
 
 static const u8 sText_PokenavCallEllipsis[] = _("………………\p");
 
+#define MC_WINDOW_PAL 14   // Orchid message box palette (text + frame)
+#define MC_ICON_PAL   15   // Rotom Phone icon
+
 #define tState      data[0]
 #define tWindowId   data[2]
 #define tIconTaskId data[5]
@@ -1231,19 +1238,24 @@ static void ExecuteMatchCall(u8 taskId)
     }
 }
 
+// Orchid: the field call box is the Orchid field message box (white panel, purple end cap, INK text; see
+// dev_scripts/orchid_ui/export_msgbox.py), so it has the field text window's geometry and uses the message box's
+// tiles and palette. The Rotom Phone icon fills the window's first 4 columns, text starts after it (176 px).
 static const struct WindowTemplate sMatchCallTextWindow =
 {
     .bg = 0,
-    .tilemapLeft = 1,
+    .tilemapLeft = 2,
     .tilemapTop = 15,
-    .width = 28,
+    .width = 27,
     .height = 4,
-    .paletteNum = 15,
+    .paletteNum = MC_WINDOW_PAL,
     .baseBlock = 0x200
 };
 
-#define TILE_MC_WINDOW    0x270
-#define TILE_POKENAV_ICON 0x279
+#define TILE_MC_WINDOW    0x26C                                 // 14 message box tiles, after the window's 108
+#define TILE_POKENAV_ICON (TILE_MC_WINDOW + MSGBOX_NUM_TILES)   // 8 frames x 16 tiles
+#define MC_ICON_X         2
+#define MC_ICON_Y         15
 
 static bool32 MatchCall_LoadGfx(u8 taskId)
 {
@@ -1255,7 +1267,7 @@ static bool32 MatchCall_LoadGfx(u8 taskId)
         return FALSE;
     }
 
-    if (LoadBgTiles(0, sMatchCallWindow_Gfx, sizeof(sMatchCallWindow_Gfx), TILE_MC_WINDOW) == 0xFFFF)
+    if (LoadBgTiles(0, gMessageBox_Gfx, MSGBOX_NUM_TILES * TILE_SIZE_4BPP, TILE_MC_WINDOW) == 0xFFFF)
     {
         RemoveWindow(tWindowId);
         DestroyTask(taskId);
@@ -1269,9 +1281,9 @@ static bool32 MatchCall_LoadGfx(u8 taskId)
         return FALSE;
     }
 
-    FillWindowPixelBuffer(tWindowId, PIXEL_FILL(8));
-    LoadPalette(sMatchCallWindow_Pal, BG_PLTT_ID(14), sizeof(sMatchCallWindow_Pal));
-    LoadPalette(sPokenavIcon_Pal, BG_PLTT_ID(15), sizeof(sPokenavIcon_Pal));
+    FillWindowPixelBuffer(tWindowId, PIXEL_FILL(1));
+    LoadPalette(gMessageBox_Pal, BG_PLTT_ID(MC_WINDOW_PAL), PLTT_SIZE_4BPP);
+    LoadPalette(sPokenavIcon_Pal, BG_PLTT_ID(MC_ICON_PAL), PLTT_SIZE_4BPP);
     ChangeBgY(0, -0x2000, BG_COORD_SET);
     return TRUE;
 }
@@ -1283,8 +1295,8 @@ static bool32 MatchCall_DrawWindow(u8 taskId)
         return FALSE;
 
     PutWindowTilemap(tWindowId);
-    DrawMatchCallTextBoxBorder_Internal(tWindowId, TILE_MC_WINDOW, 14);
-    WriteSequenceToBgTilemapBuffer(0, (0xF << 12) | TILE_POKENAV_ICON, 1, 15, 4, 4, 17, 1);
+    DrawOrchidCallBoxFrame(tWindowId);
+    WriteSequenceToBgTilemapBuffer(0, (MC_ICON_PAL << 12) | TILE_POKENAV_ICON, MC_ICON_X, MC_ICON_Y, 4, 4, 17, 1);
     tIconTaskId = CreateTask(Task_SpinPokenavIcon, 10);
     CopyWindowToVram(tWindowId, COPYWIN_GFX);
     CopyBgTilemapBufferToVram(0);
@@ -1320,7 +1332,7 @@ static bool32 MatchCall_PrintIntro(u8 taskId)
     s16 *data = gTasks[taskId].data;
     if (!RunMatchCallTextPrinter(tWindowId))
     {
-        FillWindowPixelBuffer(tWindowId, PIXEL_FILL(8));
+        FillWindowPixelBuffer(tWindowId, PIXEL_FILL(1));
 
         // Ready the message (and the speaker's name if possible)
         if (!sMatchCallState.triggeredFromScript)
@@ -1341,7 +1353,7 @@ static bool32 MatchCall_PrintMessage(u8 taskId)
     s16 *data = gTasks[taskId].data;
     if (!RunMatchCallTextPrinter(tWindowId) && !IsSEPlaying() && JOY_NEW(A_BUTTON | B_BUTTON))
     {
-        FillWindowPixelBuffer(tWindowId, PIXEL_FILL(8));
+        FillWindowPixelBuffer(tWindowId, PIXEL_FILL(1));
         CopyWindowToVram(tWindowId, COPYWIN_GFX);
         PlaySE(SE_POKENAV_HANG_UP);
         return TRUE;
@@ -1422,17 +1434,41 @@ static u8 GetMatchCallWindowId(void)
 // redraw only the top-half
 void RedrawMatchCallTextBoxBorder(void)
 {
-    u32 windowId = GetMatchCallWindowId();
+    DrawOrchidCallBoxRow(GetMatchCallWindowId(), -1, MSGBOX_TILE_TOP_L2, MSGBOX_TILE_TOP_L1, MSGBOX_TILE_TOP_EDGE,
+                         MSGBOX_TILE_TOP_R1, MSGBOX_TILE_TOP_R);
+}
+
+// One frame row of the Orchid message box around the call window (rowOffset relative to the window's top), laid
+// out like menu.c's WindowFunc_DrawDialogueFrame: two left end-cap columns, the edge, and the right end-cap, which
+// reaches into the window's last column.
+static void DrawOrchidCallBoxRow(u32 windowId, s32 rowOffset, u32 l2, u32 l1, u32 edge, u32 r1, u32 r)
+{
     u32 bg = GetWindowAttribute(windowId, WINDOW_BG);
     u32 x = GetWindowAttribute(windowId, WINDOW_TILEMAP_LEFT);
-    u32 y = GetWindowAttribute(windowId, WINDOW_TILEMAP_TOP);
+    u32 y = GetWindowAttribute(windowId, WINDOW_TILEMAP_TOP) + rowOffset;
     u32 width = GetWindowAttribute(windowId, WINDOW_WIDTH);
-    u32 tileNum = TILE_MC_WINDOW + GetBgAttribute(bg, BG_ATTR_BASETILE);
-    u32 paletteId = 14;
+    u32 base = (MC_WINDOW_PAL << 12) | (TILE_MC_WINDOW + GetBgAttribute(bg, BG_ATTR_BASETILE));
 
-    FillBgTilemapBufferRect_Palette0(bg, ((paletteId << 12) & 0xF000) | (tileNum + 0), x - 1,     y - 1, 1,     1);
-    FillBgTilemapBufferRect_Palette0(bg, ((paletteId << 12) & 0xF000) | (tileNum + 1), x,         y - 1, width, 1);
-    FillBgTilemapBufferRect_Palette0(bg, ((paletteId << 12) & 0xF000) | (tileNum + 2), x + width, y - 1, 1,     1);
+    FillBgTilemapBufferRect_Palette0(bg, base + l2,   x - 2,         y, 1,         1);
+    FillBgTilemapBufferRect_Palette0(bg, base + l1,   x - 1,         y, 1,         1);
+    if (edge != MSGBOX_NUM_TILES)
+        FillBgTilemapBufferRect_Palette0(bg, base + edge, x,         y, width - 1, 1);
+    FillBgTilemapBufferRect_Palette0(bg, base + r1,   x + width - 1, y, 1,         1);
+    FillBgTilemapBufferRect_Palette0(bg, base + r,    x + width,     y, 1,         1);
+}
+
+// Call after PutWindowTilemap: the middle rows' right end-cap covers the window's last column (no text reaches it).
+static void DrawOrchidCallBoxFrame(u32 windowId)
+{
+    u32 i, height = GetWindowAttribute(windowId, WINDOW_HEIGHT);
+
+    DrawOrchidCallBoxRow(windowId, -1, MSGBOX_TILE_TOP_L2, MSGBOX_TILE_TOP_L1, MSGBOX_TILE_TOP_EDGE,
+                         MSGBOX_TILE_TOP_R1, MSGBOX_TILE_TOP_R);
+    for (i = 0; i < height; i++)
+        DrawOrchidCallBoxRow(windowId, i, MSGBOX_TILE_MID_L2, MSGBOX_TILE_MID_L1, MSGBOX_NUM_TILES,
+                             MSGBOX_TILE_MID_R1, MSGBOX_TILE_MID_R);
+    DrawOrchidCallBoxRow(windowId, height, MSGBOX_TILE_BOT_L2, MSGBOX_TILE_BOT_L1, MSGBOX_TILE_BOT_EDGE,
+                         MSGBOX_TILE_BOT_R1, MSGBOX_TILE_BOT_R);
 }
 
 static void InitMatchCallTextPrinter(int windowId, const u8 *str)
@@ -1448,10 +1484,11 @@ static void InitMatchCallTextPrinter(int windowId, const u8 *str)
     printerTemplate.currentY = 1;
     printerTemplate.letterSpacing = 0;
     printerTemplate.lineSpacing = 0;
-    printerTemplate.color.accent = TEXT_COLOR_BLUE;
-    printerTemplate.color.foreground = TEXT_DYNAMIC_COLOR_1;
-    printerTemplate.color.background = TEXT_COLOR_BLUE;
-    printerTemplate.color.shadow = TEXT_DYNAMIC_COLOR_5;
+    // Orchid message box palette: INK on WHITE with a PANEL_SHADE shadow, as field text
+    printerTemplate.color.accent = TEXT_COLOR_WHITE;
+    printerTemplate.color.foreground = TEXT_COLOR_DARK_GRAY;
+    printerTemplate.color.background = TEXT_COLOR_WHITE;
+    printerTemplate.color.shadow = TEXT_COLOR_LIGHT_GRAY;
     gTextFlags.useAlternateDownArrow = FALSE;
 
     AddTextPrinter(&printerTemplate, GetPlayerTextSpeedDelay(), NULL);
@@ -1482,7 +1519,7 @@ static void Task_SpinPokenavIcon(u8 taskId)
             tSpinStage = 0;
 
         tTileNum = (tSpinStage * 16) + TILE_POKENAV_ICON;
-        WriteSequenceToBgTilemapBuffer(0, tTileNum | ~0xFFF, 1, 15, 4, 4, 17, 1);
+        WriteSequenceToBgTilemapBuffer(0, (MC_ICON_PAL << 12) | tTileNum, MC_ICON_X, MC_ICON_Y, 4, 4, 17, 1);
         CopyBgTilemapBufferToVram(0);
     }
 }
